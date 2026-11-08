@@ -242,3 +242,7 @@ effort high, in a Herdr pane.
 - Round 2: FAIL. Custom video containment was checked apart from its open.
 - Round 3: FAIL. The identity checks opened the path, which blocks on a FIFO.
 - Round 4: PASS. lstat identities, a non-blocking no-follow open, sealed verified bytes.
+
+## 6.9e3b Wallpaper video, macOS
+
+- Round 1: PASS. Not run on a Mac; the macOS CI leg runs the decode test.

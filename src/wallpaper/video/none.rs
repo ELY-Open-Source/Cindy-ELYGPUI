@@ -1,4 +1,4 @@
-//! No decoder yet on this platform: 6.9e3b and 6.9e3c bring them.
+//! No decoder yet on Windows: 6.9e3c brings it.
 
 use anyhow::{Result, bail};
 

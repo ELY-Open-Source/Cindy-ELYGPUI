@@ -4,9 +4,13 @@
 mod gst;
 #[cfg(target_os = "linux")]
 use gst::Player;
-#[cfg(not(target_os = "linux"))]
+#[cfg(target_os = "macos")]
+mod avf;
+#[cfg(target_os = "macos")]
+use avf::Player;
+#[cfg(target_os = "windows")]
 mod none;
-#[cfg(not(target_os = "linux"))]
+#[cfg(target_os = "windows")]
 use none::Player;
 
 use std::{sync::Arc, time::Instant};

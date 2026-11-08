@@ -61,7 +61,7 @@ fn a_dropped_players_frames_are_ignored(cx: &mut gpui::TestAppContext) {
     });
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 fn first_event(bytes: &[u8]) -> Event {
     let (send, events) = std::sync::mpsc::channel();
     let fit = Fit {
@@ -80,9 +80,9 @@ fn first_event(bytes: &[u8]) -> Event {
     event
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 #[test]
-fn gstreamer_plays_the_bytes_that_were_checked() {
+fn the_decoder_plays_the_bytes_that_were_checked() {
     let fixture = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/fixtures/video/tiny.mp4");
     let dir = tempfile::tempdir().unwrap();
     let hash = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";

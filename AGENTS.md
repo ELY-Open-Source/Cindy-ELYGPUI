@@ -123,7 +123,9 @@ defines scope and what 1:1 means.
   The decoder plays the bytes that were read and checked, never a path reopened later; errors
   log GStreamer's domain and code, not its text. Each platform decodes with its system
   framework: Linux GStreamer (`video/gst.rs`, from a sealed memfd, needs
-  `gst-plugins-good` and `gst-libav` at run time); macOS and Windows come with 6.9e3b/c. A hidden
+  `gst-plugins-good` and `gst-libav` at run time); macOS AVFoundation (`video/avf.rs`: the
+  checked bytes in a private temp file, an `AVAssetReader` scaled to the cover size on its own
+  thread, paced by frame times, restarted to loop or refit); Windows comes with 6.9e3c. A hidden
   window pauses through gpui's `WindowVisibility`; Hyprland 0.56 sends no `suspended` state for a
   window on another workspace, so there it keeps playing. Decoder threads wake gpui from outside,
   so tests drive the real decoder only outside the gpui test scheduler.
