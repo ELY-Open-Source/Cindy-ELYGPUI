@@ -103,3 +103,9 @@ effort high, in a Herdr pane.
 ## 5.6 Omarchy live theme
 
 - Round 1: PASS.
+
+## 5.7 Font settings
+
+- Round 1: FAIL. serde_json rejected a whole file for one number past f64 (1e400) that JSON.parse
+  reads as Infinity. Fixed: fields kept raw, uiSize parsed per JS with Number.isFinite.
+- Round 2: PASS.

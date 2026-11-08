@@ -26,6 +26,9 @@ defines scope and what 1:1 means.
   through the VS Code converter as family `omarchy`, never writing Omarchy files. An inotify
   watcher (`notify`) reloads every theme on each finished `theme.name` write; a read inside
   Omarchy's folder swap keeps the last good theme.
+- Fonts: `src/appearance_settings.rs` reads Cindy's shared `appearance-settings.json` (fonts only so
+  far) and sets Ely's font scale (`uiSize / 14`) and families; gpui takes one family, so the first
+  of Cindy's CSS font list is used.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).

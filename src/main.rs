@@ -1,3 +1,4 @@
+mod appearance_settings;
 mod i18n;
 mod locale;
 mod logger;
@@ -108,8 +109,30 @@ fn follow_omarchy(dir: &std::path::Path, cx: &mut App) {
     .detach();
 }
 
-fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String>)) -> Result<()> {
+/// Cindy's `applyFontSettings` on Ely's theme: UI scale and families.
+fn apply_fonts(fonts: &appearance_settings::Fonts, cx: &mut App) {
+    let ui = appearance_settings::first_family(&fonts.ui_family);
+    let code = appearance_settings::first_family(&fonts.code_family);
+    log::info!(target: "appearance-settings-store", "fonts: ui {ui:?} code {code:?} size {}", fonts.ui_size);
+    Theme::update(cx, |theme| {
+        theme.font_scale = (fonts.ui_size / appearance_settings::DEFAULT_UI_SIZE) as f32;
+        if let Some(family) = ui {
+            theme.font_family = family.into();
+        }
+        if let Some(family) = code {
+            theme.mono_family = family.into();
+        }
+    });
+}
+
+fn open(
+    cx: &mut App,
+    translator: Translator,
+    theme: (theme::Mode, Option<String>),
+    fonts: appearance_settings::Fonts,
+) -> Result<()> {
     ely_gpui_component::init(cx).context("Ely failed to start")?;
+    apply_fonts(&fonts, cx);
     cx.set_global(I18n::new(translator.ely_tag()));
     cx.set_global(translator);
     let home = dirs::home_dir().context("this user has no home folder")?;
@@ -160,13 +183,14 @@ fn main() {
         .text("theme.familyId")
         .unwrap_or_else(|error| panic!("{error:#}"))
         .map(str::to_owned);
+    let fonts = appearance_settings::fonts(&user_data);
     let tag = locale::effective(language);
     let translator = Translator::new(tag).unwrap_or_else(|error| panic!("{error:#}"));
     log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());
     gpui_platform::application()
         .with_assets(Assets)
         .run(move |cx: &mut App| {
-            open(cx, translator, (theme_mode, family))
+            open(cx, translator, (theme_mode, family), fonts)
                 .unwrap_or_else(|error| panic!("startup failed: {error:#}"));
         });
 }

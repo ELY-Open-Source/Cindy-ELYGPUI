@@ -68,8 +68,10 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `~/.xdmaker/themes` move, `-local` ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
 - [x] 5.6 The Omarchy live theme as `main/local-themes/omarchy.ts` does it: family `omarchy` from the
   current Omarchy theme through 5.4's VS Code converter, retinted on each switch
-- [ ] 5.7 `appearance-settings.json` read as `main/appearance-settings-store.ts` does (UI, code and
-  terminal font sizes and families, wallpaper fields), applied to Ely's font scale and families
+- [x] 5.7 `appearance-settings.json` read as `main/appearance-settings-store.ts` does, and its UI size
+  and UI and code families applied to Ely's font scale and families as `applyFontSettings` does;
+  code size goes with code blocks (9), terminal fonts with the terminal (18), zoom, wallpaper and
+  app icon with the window shell (6)
 
 ## 6. Window shell and layout
 
