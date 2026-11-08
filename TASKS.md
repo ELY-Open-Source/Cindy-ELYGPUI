@@ -123,11 +123,14 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `enable-animations`, macOS reduce motion, Windows client-area animation), applied as `globals.css`
   does: motion tokens at 0, spinners still, `motion-reduce:` transitions off; other features' rules
   land with them
-- [ ] 6.9b Window zoom and app icon from `appearance-settings.json`; zoom read, applied and restored
-  across navigation and focus as `appearance-settings-ipc.ts` does
-- [ ] 6.9c The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
+- [ ] 6.9b Window zoom from `appearance-settings.json` (`windowZoom`, clamped and stepped as
+  `appearanceSettings.ts` does), scaling everything as Chromium's zoom factor does: Cindy's CSS
+  pixels drawn as rems, the rem size 16 × zoom, layout math in CSS pixels; Chromium's per-URL zoom
+  memory, which `restoreWindowZoom` undoes, has no gpui counterpart
+- [ ] 6.9c The app icon (`appIcon`) in the macOS Dock as `app-icon.ts` sets it, light and dark
+- [ ] 6.9d The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
   mica, macOS vibrancy)
-- [ ] 6.9d Wallpaper as Cindy shows it: `wallpaperId` with the custom URL from
+- [ ] 6.9e Wallpaper as Cindy shows it: `wallpaperId` with the custom URL from
   `custom-wallpaper.json` (`custom` without one falls back to `none`), official images and videos
   downloaded and cached as `wallpaper-video.ts` does, static and dynamic motion with reduced motion;
   `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur` with their normalization, null
