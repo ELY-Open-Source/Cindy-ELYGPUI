@@ -111,16 +111,21 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`;
   rail kept in `sidebar-rail`, card snap read from `sidebar.cardMode`; ⌘B through the
   `toggle-sidebar` shortcut; the content area takes the rest of the window
-- [ ] 6.6 Title bar: `ContentHeader` drag band, `WindowControls` per platform, `ChromeActions` placed
-  by the mac traffic lights and fullscreen, the sidebar toggle with hover peek and pin as
-  `useSidebarPeek.ts` does, the menu
-  button whose items land with their targets (`DESIGN.md` §14.6); the pane placement signals
-  panels read (`panePlacement.tsx`: at window top, at window left, fill)
+- [ ] 6.6a Window chrome: frameless per platform as `bootstrap-electron.ts` opens it (macOS hidden
+  title bar with the traffic lights at 12,16; Windows and Linux without a frame, Linux resizing from
+  its edges); `WindowControls` on Windows and Linux (minimize, maximize or restore, close; the close
+  behavior prompt goes to chapter 22, the in-turn close confirm to chapter 10); the sidebar's 46px
+  top row and `ContentHeader`'s 46px band drag the window, with the traffic-light inset and border
+- [ ] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
+  its tooltip and hover peek and pin as `useSidebarPeek.ts` does, the menu button whose items land
+  with their targets (`DESIGN.md` §14.6); the hit holes `chromeActionsGeometry.ts` cuts
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
   place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
-  trigger is `TabGroupPanel.tsx`); the panel registry as `panels/registry.ts` keeps it (built-in
-  kinds with their collapse memory, tab group kinds registered, unregistered and parked); `right-tabs`
+  trigger is `TabGroupPanel.tsx`); the pane placement signals panels read (`panePlacement.tsx`:
+  at window top, at window left, fill); the panel registry as `panels/registry.ts` keeps it
+  (built-in kinds with their collapse memory, tab group kinds registered, unregistered and
+  parked); `right-tabs`
   collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
   as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
