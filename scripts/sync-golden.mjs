@@ -44,15 +44,21 @@ try {
     "export * as pinnedOrder from './renderer/features/cc-agent/lib/pinnedSidebarOrder';",
     "export * as sourceLabel from './renderer/features/cc-agent/lib/sessionSourceLabel';",
     "export { getSessionDisplayTitle, toStoredSessionTitle } from './renderer/features/cc-agent/lib/sessionDisplayTitle';",
+    "export { richAnswerText } from '@cindy/maker-shared/rich-answer';",
+    "export { markdownPreviewText } from './shared/markdownPreviewText';",
+    "export { finalizePlainPreview } from './main/localDb/mapper';",
   ].join('\n'));
+  // mapper.ts imports Electron's main-process modules; the functions run here never call them.
+  const electronStub = path.join(tmp, 'electron-stub.cjs');
+  fs.writeFileSync(electronStub, 'const any = new Proxy(function () {}, { get: (_, key) => key === Symbol.toPrimitive ? () => "" : any, apply: () => any, construct: () => any });\nmodule.exports = any;\n');
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
     nodePaths: [links, path.join(path.resolve(cindy), 'node_modules')],
-    alias: { '@': path.join(tmp, src, 'renderer') },
+    alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -270,6 +276,15 @@ try {
   write(path.join(fixtures, 'stored-title.json'), ['New Maker', '[Schedule] nightly', 'Fix login'].flatMap((title) =>
     sources.flatMap((source) => dirs.flatMap((workingDir) => edits.map((edited) =>
       [title, source, workingDir, edited, toStoredSessionTitle({ title, source, workingDir }, edited)])))));
+
+  // The task preview: rich answers, Markdown and the mapper's finalize step.
+  const previewDir = path.join(fixtures, 'preview');
+  const previewCases = JSON.parse(fs.readFileSync(path.join(previewDir, 'cases.json'), 'utf8'));
+  write(path.join(previewDir, 'expected.json'), {
+    rich: previewCases.rich.map((source) => [source, richAnswerText(source)]),
+    markdown: previewCases.markdown.map((source) => [source, markdownPreviewText(source)]),
+    finalize: previewCases.finalize.map(([text, role]) => [text, role, finalizePlainPreview(text, role)]),
+  });
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

@@ -323,3 +323,13 @@ effort high, in a Herdr pane.
   was never watched. Fixed: `cindy_json` parsing, an entry error fails closed, attribute-only
   stat, a durable baseline and a serial save queue, `watch_owner` after each save.
 - Round 2: PASS.
+
+## 8.5c1 The task preview text and the list's projection backfill
+
+- Round 1: FAIL. The image regexes folded Unicode case (`httpſ://` passed); serde_json refused
+  JSON nested past 128 levels, which V8 parses. Fixed: ASCII letter classes, and a `JSON.parse`
+  port with no nesting limit whose recursion grows the stack through `stacker`.
+- Round 2: FAIL. NUL stayed in previews; markdown-rs dropped a heading's leading hashes, read
+  Unicode whitespace as Rust does, and ended a lazy block-quote line before an incomplete tag.
+  Fixed: NUL reads as U+FFFD as micromark's preprocess does. The parser defects moved to 8.5c1b.
+- Round 3: PASS.

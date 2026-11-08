@@ -11,6 +11,8 @@ mod meta;
 mod paths;
 mod pin;
 mod pinned;
+mod preview;
+mod projection;
 mod query;
 mod rename;
 mod row;
@@ -196,14 +198,16 @@ pub fn reload(cx: &mut App) {
             let now = jiff::Timestamp::now().as_millisecond();
             sweep::sweep(conn, &user_data, now);
         }
-        Ok::<_, rusqlite::Error>(Loaded {
-            sessions: query::list(conn, status)?,
+        let (sessions, backfill) = query::list(conn, status)?;
+        let loaded = Loaded {
+            sessions,
             recent: query::recent(conn, paths::PLATFORM)?,
             aliases: query::aliases(conn)?,
             settings: owner_dir
                 .map(|dir| settings::read(&dir, paths::PLATFORM))
                 .unwrap_or_default(),
-        })
+        };
+        Ok::<_, rusqlite::Error>((loaded, backfill))
     });
     cx.spawn(async move |cx| {
         let rows = read.await;
@@ -211,11 +215,15 @@ pub fn reload(cx: &mut App) {
             let store = cx.global_mut::<Sessions>();
             store.loading = false;
             match rows {
-                Ok(Ok(loaded)) => {
+                Ok(Ok((loaded, backfill))) => {
                     log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases, {} pins ordered, {} hidden projects",
                         loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len(),
                         loaded.settings.pinned_order.len(), loaded.settings.hidden.len());
                     store.show(loaded);
+                    if !backfill.is_empty() {
+                        // The worker runs it; nothing waits for the reply.
+                        drop(db.call(move |conn| projection::backfill(conn, &backfill)));
+                    }
                 }
                 Ok(Err(error)) => log::error!(target: "sessions", "task list read failed: {error}"),
                 Err(_) => log::error!(target: "sessions", "the database closed during the read"),

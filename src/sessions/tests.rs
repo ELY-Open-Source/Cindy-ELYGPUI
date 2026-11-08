@@ -13,8 +13,11 @@ pub(super) fn db() -> Connection {
            working_dir text, project_dir text, remote_host_id text, list_message_count integer,
            agent_kind text NOT NULL DEFAULT 'cc', orca_role text, total_token_usage integer NOT NULL DEFAULT 0,
            total_cost_usd real NOT NULL DEFAULT 0, total_cost_amount real NOT NULL DEFAULT 0, total_cost_currency text,
-           notifications_muted integer DEFAULT false NOT NULL, summary text);
-         CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
+           notifications_muted integer DEFAULT false NOT NULL, summary text, cleared_at integer,
+           list_preview text, list_preview_role text);
+         CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL,
+           role text NOT NULL DEFAULT 'user', content text NOT NULL DEFAULT '\"\"',
+           created_at integer NOT NULL DEFAULT 0, rewind_at integer, agent_meta text);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
     )
@@ -54,18 +57,18 @@ fn lists_ordinary_tasks_newest_first_per_bucket() {
          INSERT INTO bot_session_links VALUES ('routine', 'bot', 'routine'), ('canonical', 'bot', 'canonical');",
     )
     .unwrap();
-    let active = query::list(&db, query::Status::Active).unwrap();
+    let active = query::list(&db, query::Status::Active).unwrap().0;
     assert_eq!(
         ids(&active),
         ["g", "b", "a", "routine"],
         "same updated_at: id DESC"
     );
     assert_eq!(
-        ids(&query::list(&db, query::Status::Archived).unwrap()),
+        ids(&query::list(&db, query::Status::Archived).unwrap().0),
         ["e"]
     );
     assert_eq!(
-        ids(&query::list(&db, query::Status::All).unwrap()),
+        ids(&query::list(&db, query::Status::All).unwrap().0),
         ["g", "b", "e", "a", "routine"]
     );
     assert_eq!(query::Status::parse(Some("bogus")), query::Status::Active);
@@ -78,7 +81,7 @@ fn activity_falls_back_from_activity_to_send_to_update() {
     db.execute("UPDATE sessions SET user_send_at = 15 WHERE id = 'a'", [])
         .unwrap();
     assert_eq!(
-        query::list(&db, query::Status::Active).unwrap()[0].activity_at,
+        query::list(&db, query::Status::Active).unwrap().0[0].activity_at,
         15
     );
     db.execute(
@@ -87,7 +90,7 @@ fn activity_falls_back_from_activity_to_send_to_update() {
     )
     .unwrap();
     assert_eq!(
-        query::list(&db, query::Status::Active).unwrap()[0].activity_at,
+        query::list(&db, query::Status::Active).unwrap().0[0].activity_at,
         25
     );
 }
@@ -126,8 +129,11 @@ fn the_sweep_removes_only_unsent_empty_leftovers() {
     }
     db.execute("UPDATE sessions SET user_send_at = 5 WHERE id = 'sent'", [])
         .unwrap();
-    db.execute("INSERT INTO messages VALUES ('m', 'chatty')", [])
-        .unwrap();
+    db.execute(
+        "INSERT INTO messages (id, session_id) VALUES ('m', 'chatty')",
+        [],
+    )
+    .unwrap();
     let managed = dir.path().join("unsent");
     std::fs::create_dir(&managed).unwrap();
     let now = 1_000_000_000_000i64;
@@ -178,14 +184,14 @@ fn reads_what_grouping_needs() {
     db.execute_batch(
         "UPDATE sessions SET list_message_count = 7, workspace_kind = 'dialogue' WHERE id = 'cached';
          UPDATE sessions SET working_dir = '/w/app', remote_host_id = 'h' WHERE id = 'counted';
-         INSERT INTO messages VALUES ('m1', 'counted'), ('m2', 'counted');
+         INSERT INTO messages (id, session_id) VALUES ('m1', 'counted'), ('m2', 'counted');
          CREATE TABLE recent_workdirs (path text PRIMARY KEY, last_used_at integer NOT NULL);
          INSERT INTO recent_workdirs VALUES ('/old', 1), ('/new', 2);
          CREATE TABLE project_aliases (project_key text PRIMARY KEY, alias text NOT NULL, updated_at integer NOT NULL);
          INSERT INTO project_aliases VALUES ('local:/a', 'older', 1), ('local:/a/', 'newer', 2);",
     )
     .unwrap();
-    let rows = query::list(&db, query::Status::Active).unwrap();
+    let rows = query::list(&db, query::Status::Active).unwrap().0;
     assert_eq!(
         (rows[0].messages, rows[0].dialogue),
         (7, true),
@@ -357,7 +363,7 @@ fn formats_tokens_and_money_as_cindy_does() {
 fn joins_money_as_session_to_camel_does() {
     let db = db();
     add(&db, "s", "desktop", "active", 1);
-    let mut s = query::list(&db, query::Status::Active).unwrap().remove(0);
+    let mut s = query::list(&db, query::Status::Active).unwrap().0.remove(0);
     let at = |s: &group::Session| meta::money(s);
     assert_eq!(at(&s), None, "nothing spent");
     s.cost_usd = 2.0;

@@ -7,7 +7,7 @@ use regex::Regex;
 use super::group::Session;
 use crate::{
     i18n::{Translator, cross_locale},
-    theme_import::color::js_space,
+    theme_import::color::{JS_SPACE, js_space},
 };
 
 /// `DEFAULT_DRAFT_SESSION_TITLE`, the untitled sentinel.
@@ -28,9 +28,6 @@ static WORKTREE: LazyLock<Regex> = LazyLock::new(|| {
 static MAKE_TAG: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(&format!(r"(?i)^\[Cindy(?:-| )Make\]{JS_SPACE}*")).expect("valid pattern")
 });
-
-/// JavaScript's `\s`; Rust's also matches U+0085.
-const JS_SPACE: &str = r"[\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}]";
 
 /// `cindyMakeWorktreeName`.
 fn worktree_name(working_dir: Option<&str>) -> Option<&str> {

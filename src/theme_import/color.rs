@@ -34,6 +34,9 @@ pub fn js_space(c: char) -> bool {
     )
 }
 
+/// JavaScript's `\s` as a regex class; Rust's also matches U+0085.
+pub const JS_SPACE: &str = r"[\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}]";
+
 /// JavaScript's `String.prototype.trim`.
 pub fn js_trim(text: &str) -> &str {
     text.trim_matches(js_space)

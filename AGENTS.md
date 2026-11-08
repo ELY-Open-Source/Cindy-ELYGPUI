@@ -51,6 +51,16 @@ defines scope and what 1:1 means.
   `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed by section and group and
   resets once its list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
   `background_executor().now()` so tests can advance the clock.
+  `preview.rs` is `finalizePlainPreview` (its LRU cache, `stripInternalWebCitations`) and
+  `projection.rs` the list's latest-message extract with `scheduleSessionListProjectionBackfill`:
+  after a read, one `UPDATE` fills the empty `list_preview` and `list_message_count` columns.
+- Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
+  (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). `src/rich_answer.rs` is
+  `richAnswerText`: `cindy-ui` fences split from Markdown, `stream.rs` replays the ops once,
+  `values.rs` resolves them, `js.rs` parses them as `JSON.parse` does (`Infinity` apart from
+  `null`, no nesting limit: its recursion grows the stack through `stacker`, as V8 nests a
+  million levels). Goldens in `tests/fixtures/preview` come from Cindy's functions; `sync-golden.mjs`
+  stubs Electron, which `mapper.ts` imports.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

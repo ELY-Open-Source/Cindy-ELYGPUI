@@ -1000,9 +1000,11 @@ dependencies = [
  "icu_locale_core",
  "icu_plurals",
  "image",
+ "indexmap",
  "jiff",
  "libc",
  "log",
+ "markdown",
  "notify",
  "objc2 0.6.5",
  "objc2-app-kit 0.3.2",
@@ -1018,6 +1020,7 @@ dependencies = [
  "serde_json",
  "sha2 0.10.9",
  "sqlite-vec",
+ "stacker",
  "sys-locale",
  "tempfile",
  "uuid",
@@ -4512,6 +4515,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "markdown"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5cab8f2cadc416a82d2e783a1946388b31654d391d1c7d92cc1f03e295b1deb"
+dependencies = [
+ "unicode-id",
+]
+
+[[package]]
 name = "markup5ever"
 version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7759,6 +7771,12 @@ name = "unicode-ccc"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ce61d488bcdc9bc8b5d1772c404828b17fc481c0a582b5581e95fb233aef503e"
+
+[[package]]
+name = "unicode-id"
+version = "0.3.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "65dd75ab2d9d379dbe86d4059e91d8b5a6e7054865eaba1ddbfc7a817ff96392"
 
 [[package]]
 name = "unicode-ident"

@@ -262,9 +262,23 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     The task summary a pin starts (`maybeGenerateSessionTaskSummary`) needs a model and goes
     to 11.0; the input-device task slots go with their chapter. Pins still in Cindy's renderer
     storage stay unread, as 8.4b records, so a pin here makes the scoped order authoritative
-  - [ ] 8.5c The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes,
-    the main list's display mode, with the preview (`sessionToCamel`, `markdownPreviewText`) and
-    message count of `projectSessionReadResult`
+  - [x] 8.5c1 The task preview text and the list's projection backfill: `finalizePlainPreview`
+    (`isSyntheticTriggerText`, `stripInternalWebCitations`, `markdownPreviewText` over remark's
+    mdast, here the `markdown` crate) and `richAnswerText` (`packages/maker-shared/src/richAnswer.ts`:
+    `cindy-ui` fences split from Markdown, the op stream replayed once, values resolved, each node
+    written as text; the chat view's components stay with chapter 9). The list reads
+    `latest_message_extract` and `latest_message_role` as `sessionReadSelection` does, and
+    `scheduleSessionListProjectionBackfill` writes `SESSION_LIST_PROJECTION_BACKFILL_SQL` after
+    it. Checked against Cindy's own functions through `sync-golden.mjs`
+  - [ ] 8.5c1b The `markdown` crate parses as micromark does where they part, in a vendored copy
+    with the fixes only: an ATX heading keeps hashes before its first text (`# # heading` is
+    `# heading`), Unicode whitespace is JavaScript's `\s` (U+FEFF ends a GFM autolink, U+0085
+    does not; `https://x.com😀_![alt](img)` keeps its image), and a lazy line in a block quote
+    that starts an incomplete tag continues the paragraph (`>a\\` then `<a` is `a <a`). Golden
+    cases from round 2 of 8.5c1's review
+  - [ ] 8.5c2 The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes and
+    the main list's display mode, with `sessionToCamel`'s `preview` and `summary`,
+    `resolveSessionCardBody` and the message count
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),

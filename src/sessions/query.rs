@@ -5,6 +5,7 @@ use rusqlite::Connection;
 use super::{
     group::{Recent, Session},
     paths::{comparison_key, grouping},
+    projection,
 };
 
 /// `DESKTOP_TASK_LIST_SESSION_SOURCES`: the visible sources less `review` and `side-chat`;
@@ -55,8 +56,12 @@ const MESSAGES: &str =
     "CASE WHEN sessions.list_message_count IS NOT NULL THEN sessions.list_message_count
     ELSE (SELECT count(*) FROM messages m WHERE m.session_id = sessions.id) END";
 
-/// Newest `updated_at` first, ties by `id`, as the list's CTE picks them.
-pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
+/// Newest `updated_at` first, ties by `id`, as the list's CTE picks them; with the rows whose
+/// cached preview or count is still empty.
+pub fn list(
+    db: &Connection,
+    status: Status,
+) -> rusqlite::Result<(Vec<Session>, Vec<projection::Item>)> {
     let filter = ORDINARY.replace("TASK_SOURCES", TASK_SOURCES);
     let sql = format!(
         "SELECT sessions.id, sessions.title, sessions.status, sessions.source, sessions.workspace_kind,
@@ -65,14 +70,15 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
                 coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at),
                 sessions.agent_kind, sessions.orca_role, sessions.total_token_usage,
                 sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency,
-                sessions.notifications_muted
+                sessions.notifications_muted, {}
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
+        projection::columns(),
         status.sql()
     );
     let mut statement = db.prepare(&sql)?;
     let rows = statement.query_map([LIMIT], |row| {
-        Ok(Session {
+        let session = Session {
             id: row.get(0)?,
             title: row.get(1)?,
             status: row.get(2)?,
@@ -93,9 +99,26 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
             cost_amount: row.get(17)?,
             cost_currency: row.get(18)?,
             muted: row.get(19)?,
-        })
+        };
+        let (extract, role): (Option<String>, Option<String>) = (row.get(20)?, row.get(21)?);
+        let uncached = (row.get(22)?, row.get(23)?);
+        let item = projection::item(
+            &session.id,
+            extract.as_deref(),
+            role.as_deref(),
+            uncached,
+            session.messages,
+        );
+        Ok((session, item))
     })?;
-    rows.collect()
+    let mut sessions = Vec::new();
+    let mut items = Vec::new();
+    for row in rows {
+        let (session, item) = row?;
+        sessions.push(session);
+        items.extend(item);
+    }
+    Ok((sessions, items))
 }
 
 /// `listRecentWorkdirs`: paths last used first, with the agent kinds of their local tasks.
