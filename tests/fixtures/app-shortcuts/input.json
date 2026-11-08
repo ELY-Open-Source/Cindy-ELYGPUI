@@ -1,0 +1,260 @@
+{
+ "platforms": [
+  "darwin",
+  "win32",
+  "linux"
+ ],
+ "overrides": [
+  {
+   "name": "none",
+   "raw": null
+  },
+  {
+   "name": "array",
+   "raw": [
+    {
+     "code": "KeyB",
+     "ctrl": true
+    }
+   ]
+  },
+  {
+   "name": "string",
+   "raw": "x"
+  },
+  {
+   "name": "empty",
+   "raw": {}
+  },
+  {
+   "name": "rebind sidebar",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "KeyJ",
+     "ctrl": true,
+     "key": "j"
+    }
+   }
+  },
+  {
+   "name": "remove sidebar",
+   "raw": {
+    "toggle-sidebar": null
+   }
+  },
+  {
+   "name": "unknown and fixed",
+   "raw": {
+    "nope": {
+     "code": "KeyJ",
+     "ctrl": true
+    },
+    "close-tab-or-window": {
+     "code": "KeyQ",
+     "ctrl": true
+    }
+   }
+  },
+  {
+   "name": "onto reserved",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "KeyW",
+     "ctrl": true
+    },
+    "open-terminal": {
+     "code": "KeyW",
+     "meta": true
+    }
+   }
+  },
+  {
+   "name": "bad combos",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "  "
+    },
+    "open-terminal": {
+     "code": "ShiftLeft",
+     "ctrl": true
+    },
+    "find-in-page": {
+     "code": 3
+    },
+    "new-maker": [
+     1
+    ],
+    "save-file": 5
+   }
+  },
+  {
+   "name": "truthy",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "KeyB",
+     "meta": 1,
+     "ctrl": "",
+     "alt": "0",
+     "shift": [],
+     "key": 7
+    }
+   }
+  },
+  {
+   "name": "platform only",
+   "raw": {
+    "zoom-in": {
+     "code": "KeyI",
+     "ctrl": true
+    },
+    "open-settings": {
+     "code": "Comma",
+     "meta": true,
+     "shift": true
+    },
+    "region-screenshot": null
+   }
+  },
+  {
+   "name": "yield to binding",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "Digit1",
+     "ctrl": true
+    },
+    "new-maker": {
+     "code": "Digit2",
+     "meta": true
+    },
+    "search-in-project": {
+     "code": "BracketLeft",
+     "ctrl": true
+    }
+   }
+  },
+  {
+   "name": "yield workdir",
+   "raw": {
+    "save-file": {
+     "code": "Digit3",
+     "ctrl": true
+    },
+    "browser-reload": {
+     "code": "Digit4",
+     "meta": true
+    }
+   }
+  },
+  {
+   "name": "slot rebound",
+   "raw": {
+    "switch-session-5": {
+     "code": "F7"
+    },
+    "session-history-back": null
+   }
+  },
+  {
+   "name": "insert",
+   "raw": {
+    "toggle-sidebar": {
+     "code": "Insert",
+     "ctrl": true
+    }
+   }
+  },
+  {
+   "name": "overflow flags",
+   "text": "{\"toggle-sidebar\":{\"code\":\"KeyJ\",\"ctrl\":1e400,\"shift\":-1e999,\"alt\":1e-400,\"key\":\"j\"},\"open-terminal\":{\"code\":\"KeyK\",\"meta\":0.0,\"ctrl\":1.5e308}}"
+  }
+ ],
+ "yieldTo": [
+  {
+   "code": "Digit6",
+   "meta": false,
+   "ctrl": true,
+   "alt": false,
+   "shift": false
+  },
+  {
+   "code": "Digit6",
+   "meta": true,
+   "ctrl": false,
+   "alt": false,
+   "shift": false
+  }
+ ],
+ "formats": [
+  {
+   "code": "KeyB",
+   "ctrl": true
+  },
+  {
+   "code": "KeyB",
+   "meta": true,
+   "shift": true,
+   "alt": true,
+   "ctrl": true
+  },
+  {
+   "code": "BracketLeft",
+   "meta": true
+  },
+  {
+   "code": "PageUp",
+   "ctrl": true
+  },
+  {
+   "code": "ArrowLeft",
+   "alt": true
+  },
+  {
+   "code": "NumpadAdd",
+   "ctrl": true
+  },
+  {
+   "code": "Numpad0"
+  },
+  {
+   "code": "Digit7",
+   "shift": true
+  },
+  {
+   "code": "F12"
+  },
+  {
+   "code": "F25",
+   "key": "x"
+  },
+  {
+   "code": "IntlRo",
+   "key": "ß"
+  },
+  {
+   "code": "IntlBackslash",
+   "key": " "
+  },
+  {
+   "code": "Unidentified",
+   "key": ""
+  },
+  {
+   "code": "Unidentified"
+  },
+  {
+   "code": "Escape"
+  },
+  {
+   "code": "Space",
+   "ctrl": true
+  },
+  {
+   "code": "KeyA",
+   "key": "q"
+  },
+  {
+   "code": "Numpad5",
+   "key": "Clear"
+  }
+ ]
+}

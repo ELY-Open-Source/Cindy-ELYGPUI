@@ -1,4 +1,5 @@
 mod activation_click;
+mod app_shortcuts;
 mod appearance_settings;
 mod cindy_json;
 mod i18n;
@@ -72,6 +73,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     theme::shell::install(appearance, cx);
     theme::shell::follow_omarchy(&omarchy_dir, cx);
     cx.set_global(layout_tree::LayoutStore::open(&startup.user_data));
+    cx.set_global(app_shortcuts::AppShortcuts::load(&startup.user_data));
     main_window::open(startup.user_data, startup.activation, cx)?;
     cx.activate(true);
     Ok(())

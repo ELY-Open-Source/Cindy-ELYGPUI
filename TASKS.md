@@ -103,7 +103,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
-- [ ] 6.4 App shortcuts: the registry and matching of `shared/appShortcuts.ts`, the user's bindings
+- [x] 6.4 App shortcuts: the registry and matching of `shared/appShortcuts.ts`, the user's bindings
   read as `app-shortcuts/AppShortcutStore.ts` keeps them, dispatch as `useAppShortcut.ts` and
   `lib/appShortcutStore.ts` do; rebinding UI and writes go to chapter 12
 - [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
@@ -168,7 +168,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 12. Settings
 
-- [ ] 12.0 Expand from Cindy's code, with Obsidian theme conversion and the theme import button
+- [ ] 12.0 Expand from Cindy's code, with Obsidian theme conversion and the theme import button,
+  and shortcut rebinding (`AppShortcutStore` writes, `findAppShortcutConflict`, bindable and
+  global checks, Electron accelerators, the recording flag)
 
 ## 13. Account and region
 

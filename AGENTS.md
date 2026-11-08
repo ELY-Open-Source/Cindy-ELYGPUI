@@ -46,6 +46,17 @@ defines scope and what 1:1 means.
   whole window and writes the store once on release; self-heal runs 120ms after width or tree
   settle, never mid-drag. The view follows `LayoutStore` through `observe_global`, which stands in
   for `layout:changed`.
+- App shortcuts: `src/app_shortcuts.rs` ports `shared/appShortcuts.ts` (registry, normalize,
+  effective map, scope overlap); `store.rs` reads `app-shortcuts.v1.json` at startup into the
+  `AppShortcuts` global, normalized from `JSON.parse`-shaped fields (an overflowing flag is
+  `Infinity`, so truthy); `keys.rs` turns a gpui keystroke back into Cindy's `KeyboardEvent.code`.
+  gpui reports the typed key, not the physical one, and drops Shift for a shifted symbol on all
+  three platforms, so a US-layout table restores the code: on AZERTY or Dvorak a shortcut follows
+  the letter. Keypad digits, decimal and Enter reach the app as their main-keyboard twins
+  (`Digit1`, not `Numpad1`): gpui's `keystroke_from_xkb` strips `kp_` and `KeyDownEvent` carries no
+  scancode. Only a gpui change that exposes the physical key closes this; keypad `+` and `-`
+  survive. A shortcut handler sits on the window's root element in `capture_key_down`: the root
+  is on every key's dispatch path, even with nothing focused.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

@@ -165,3 +165,10 @@ effort high, in a Herdr pane.
 - Spread to first callers: registry and per-session collapse to 6.7 (`tabGroupPanes.ts`),
   sidebar collapse and the legacy migration to 6.6 (`MainLayout.tsx`). `clearPanelCollapsedRecord`
   has no caller in Cindy and is not ported.
+
+## 6.4 App shortcuts
+
+- Round 1: FAIL. Overflowing flags lost JSON.parse truthiness; `insert` unmapped; keypad digits
+  read as top-row digits. Fixed the first two; the third is a gpui limit (no keypad marker or
+  scancode reaches the app), written in AGENTS.md.
+- Round 2: PASS.

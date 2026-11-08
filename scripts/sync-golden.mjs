@@ -23,10 +23,11 @@ try {
     "export { convertVsCodeTheme } from './shared/theme-import';",
     "export { normalizeLocalThemeColors } from './renderer/themes/local-themes-normalize';",
     "export * as layoutTree from './shared/layoutTree';",
+    "export * as appShortcuts from './shared/appShortcuts';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error' });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -74,10 +75,37 @@ try {
     groups: layoutTree.TAB_GROUP_IDS.map((g) => [g, layoutTree.tabGroupPanelKind(g)]),
   });
 
+  const keysDir = path.join(fixtures, 'app-shortcuts');
+  const keys = JSON.parse(fs.readFileSync(path.join(keysDir, 'input.json'), 'utf8'));
+  const sc = appShortcuts;
+  write(path.join(keysDir, 'expected.json'), keys.platforms.map((platform) => ({
+    platform,
+    definitions: sc.APP_SHORTCUT_DEFINITIONS.map((d) => ({
+      id: d.id,
+      scope: d.scope,
+      rebindable: d.rebindable,
+      hidden: Boolean(d.hiddenInSettings),
+      available: sc.isAppShortcutAvailableOnPlatform(d.id, platform),
+      defaults: d.getDefaultCombos(platform),
+    })),
+    overrides: keys.overrides.map((c) => {
+      const normalized = sc.normalizeAppShortcutOverrides('text' in c ? JSON.parse(c.text) : c.raw, platform);
+      return {
+        name: c.name,
+        normalized,
+        effective: [...sc.getEffectiveAppShortcuts(normalized, platform)],
+        yielded: [...sc.getEffectiveAppShortcuts(normalized, platform, keys.yieldTo)],
+      };
+    }),
+    formats: keys.formats.map((f) => sc.formatAppShortcutCombo(f, platform)),
+    overlaps: ['app', 'workdir-doc', 'browser', 'composer', 'global'].flatMap((x, _, all) =>
+      all.map((y) => [x, y, sc.appShortcutScopesOverlap(x, y)])),
+  })));
+
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);
   fs.rmSync(path.join(importDir, 'COMMIT'), { force: true });
-  console.log(`golden from ${full}: ${inputs.length} imports, ${cases.length} normalize cases, ${layout.coerce.length + layout.ops.length} layout cases`);
+  console.log(`golden from ${full}: ${inputs.length} imports, ${cases.length} normalize cases, ${layout.coerce.length + layout.ops.length} layout cases, ${keys.overrides.length} shortcut cases`);
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
 }
