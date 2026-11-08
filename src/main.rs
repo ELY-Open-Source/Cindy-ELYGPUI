@@ -2,6 +2,7 @@ mod activation_click;
 mod appearance_settings;
 mod cindy_json;
 mod i18n;
+mod layout_root;
 mod layout_tree;
 mod locale;
 mod logger;

@@ -111,13 +111,6 @@ fn split_mut<'a>(node: &'a mut Node, id: &str) -> Option<&'a mut Split> {
         .find_map(|c| split_mut(&mut c.node, id))
 }
 
-fn contains_kind(node: &Node, kind: &str) -> bool {
-    match node {
-        Node::Pane(pane) => pane.panel_kind == kind,
-        Node::Split(split) => split.children.iter().any(|c| contains_kind(&c.node, kind)),
-    }
-}
-
 fn split_child_by_kind(node: &Node, kind: &str) -> Option<SplitChildRef> {
     let Node::Split(split) = node else {
         return None;
@@ -191,7 +184,7 @@ impl Layout {
             Node::Split(split) if split.direction == Direction::Row => split
                 .children
                 .iter()
-                .position(|c| contains_kind(&c.node, kind)),
+                .position(|c| c.node.contains_kind(kind)),
             _ => None,
         }
     }

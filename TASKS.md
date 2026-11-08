@@ -90,9 +90,17 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   needs it is checked on the Windows runner in task 23.last)
 - [x] 6.2 Layout tree as `shared/layoutTree.ts` (validate, coerce, every operation), matching Cindy's
   own functions on golden fixtures; `layout.v1.json` read and written as `LayoutStore.ts` does
-- [ ] 6.3 The tree on screen: sidebar column, splits with resize handles saved on release, double-click
-  on a divider to equalize its neighbors, fractions, preferred and minimum widths, drag a panel to
-  swap root regions, temporary maximize and restore without changing the tree, unknown kinds hidden
+- [x] 6.3a Layout geometry as `LayoutRoot.tsx` computes it: active share ledger, minimum widths and
+  heights, root pixel widths with preferred widths, `normalizeSubMinFractions`, divider room, the chat
+  shrink relay plan, `alignExpandedPaneFractions`, divider commit (with the `right-tabs` preferred
+  width) and double-click equalize, column dividers
+- [ ] 6.3b The tree on screen: sidebar column slot, content splits, dividers dragged live and saved on
+  release, double-click to equalize, self-heal after a resize settles, unknown kinds hidden, parked
+  panes kept mounted at zero size, every window following `layout:changed`
+- [ ] 6.3c Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
+  zones, swap)
+- [ ] 6.3d Temporary maximize and restore without changing the tree, as `panelMaximize.tsx` and
+  `LayoutRoot.tsx` keep it
 - [ ] 6.4 Panel registry: `session-list`, `chat-main`, `right-tabs` registered, content left to their
   chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the
   legacy `sidebar-collapsed` migration, per session for `right-tabs` under
@@ -103,7 +111,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
   sessions sections as frames that chapters 8 and 14 fill
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
-  place them; edge groups parked on non-chat routes other than settings
+  place them; edge groups parked on non-chat routes other than settings; the window grows and shrinks
+  as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
+  widths)
 - [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,
   hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
   and restores them on exit

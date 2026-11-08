@@ -38,6 +38,10 @@ defines scope and what 1:1 means.
   the operations in `ops.rs`); `store.rs` keeps `layout.v1.json` as `LayoutStore.ts` does, healed on
   read, strict on write. Unknown fields stay as written. `cindy_json::roundtrip` reads JSON as
   `JSON.parse` then `JSON.stringify` would. Cindy's dev-console `__cindyLayout` is not ported.
+- Layout on screen: `src/layout_root/` ports `LayoutRoot.tsx`. `geometry.rs` holds its sizing math
+  (visible-share ledger, floors, root widths, self-heal, divider room and chat relay);
+  `divider.rs` the divider gestures. The view lays panes out itself, so the widths it paints stand
+  in for Cindy's DOM measurements.
 - userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to

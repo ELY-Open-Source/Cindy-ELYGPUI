@@ -165,6 +165,26 @@ impl Layout {
     }
 }
 
+impl Node {
+    pub fn id(&self) -> &str {
+        match self {
+            Node::Pane(pane) => &pane.id,
+            Node::Split(split) => &split.id,
+        }
+    }
+
+    pub fn contains_kind(&self, kind: &str) -> bool {
+        match self {
+            Node::Pane(pane) => pane.panel_kind == kind,
+            Node::Split(split) => split.children.iter().any(|c| c.node.contains_kind(kind)),
+        }
+    }
+
+    pub fn is_pane_of(&self, kind: &str) -> bool {
+        matches!(self, Node::Pane(pane) if pane.panel_kind == kind)
+    }
+}
+
 fn js_numbers(value: &mut Value) {
     match value {
         Value::Number(n) => *value = js_value(n.as_f64().expect("JSON numbers are f64")),

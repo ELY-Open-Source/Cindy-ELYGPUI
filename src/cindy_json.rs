@@ -93,6 +93,11 @@ pub fn js_value(n: f64) -> Value {
     }
 }
 
+/// JavaScript's `Math.round`: halves go up.
+pub fn js_round(value: f64) -> f64 {
+    (value + 0.5).floor()
+}
+
 /// `Number.prototype.toString()`.
 pub fn js_number(n: f64) -> String {
     if n.is_nan() {

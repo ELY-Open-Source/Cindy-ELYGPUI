@@ -133,3 +133,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. `walkPanes` missing (collapsePrefs uses it); `js_number` took Rust's shortest
   digits, not the closest. Fixed: `walk_panes`; closest digits, checked on 200k doubles.
 - Round 2: PASS.
+
+## 6.3a Layout geometry
+
+- Round 1: PASS.

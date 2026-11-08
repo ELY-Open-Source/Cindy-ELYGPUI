@@ -1,3 +1,5 @@
+use crate::cindy_json::js_round;
+
 /// An sRGB color, channels 0..255 as Cindy's `Rgb` keeps them.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Rgb {
@@ -35,11 +37,6 @@ pub fn js_space(c: char) -> bool {
 /// JavaScript's `String.prototype.trim`.
 pub fn js_trim(text: &str) -> &str {
     text.trim_matches(js_space)
-}
-
-/// JavaScript's `Math.round`: halves go up.
-fn js_round(value: f64) -> f64 {
-    (value + 0.5).floor()
 }
 
 fn clamp255(value: f64) -> f64 {
