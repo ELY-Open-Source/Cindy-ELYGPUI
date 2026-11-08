@@ -57,6 +57,8 @@ defines scope and what 1:1 means.
   `view_mode.rs` is `useSidebarCardMode.ts` with `sidebarInstallVintage.ts`: the Pinned mode
   (`sidebar.cardMode`) and the main list's (`sidebar.mainListMode`), kept in memory as Cindy's
   module memo, chosen from the filter menu's Display row and the Pinned header's view style menu.
+  `list_row.rs` is `SessionCard`'s `list` variant (dividers, title line, one preview line from
+  `sessionToCamel`'s `preview`), drawn in list mode; groups inset it `pl-2`.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

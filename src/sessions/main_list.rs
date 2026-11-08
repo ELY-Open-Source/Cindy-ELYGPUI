@@ -12,10 +12,12 @@ use super::{
     filter::Filter,
     fold,
     group::{Entry, Order, Project, Session, aliases},
+    list_row::{self, list_row},
     lists::build,
     paths::PLATFORM,
     pinned,
     row::{ROW_HEIGHT, row},
+    view_mode::{self, Main},
 };
 use ely_gpui_component::primitives::IconName;
 
@@ -80,10 +82,10 @@ fn set_dialogue_collapsed(collapsed: bool, cx: &mut App) -> bool {
     true
 }
 
-/// Where a group draws: its inset (`pl-2` in list mode, none in text mode) and the section
-/// that owns its Show all, as each `SessionEntryList` owns its own.
+/// Where a group draws: in list rows (inset `pl-2`) or text rows, and the section that owns
+/// its Show all, as each `SessionEntryList` owns its own.
 pub(super) struct Place<'a> {
-    pub inset: f32,
+    pub list: bool,
     pub section: &'static str,
     /// Show all keys whose lists are drawn this frame; the rest reset.
     pub drawn: &'a RefCell<Vec<String>>,
@@ -179,7 +181,7 @@ fn show_all(id: SharedString, count: usize, cx: &App) -> gpui::Stateful<gpui::Di
         .child(label)
 }
 
-/// A group: its header and, when open, its first tasks (`pt-0.5 pl-2 gap-0.5`, rows indented),
+/// A group: its header and, when open, its first tasks (`pt-0.5 gap-0.5`, text rows indented),
 /// with its drawn height.
 fn group(
     fold_id: String,
@@ -203,9 +205,15 @@ fn group(
     );
     let rows = visible.len() as f32;
     let footer = hidden > 0;
+    let list = place.list;
+    let row_height = if list {
+        list_row::height(cx)
+    } else {
+        ROW_HEIGHT
+    };
     let height =
-        2.0 + rows * ROW_HEIGHT + (rows - 1.0).max(0.0) * 2.0 + if footer { 26.0 } else { 0.0 };
-    let (id, inset) = (fold_id.clone(), place.inset);
+        2.0 + rows * row_height + (rows - 1.0).max(0.0) * 2.0 + if footer { 26.0 } else { 0.0 };
+    let id = fold_id.clone();
     let shown = show_key.clone();
     let body = || {
         div()
@@ -213,12 +221,14 @@ fn group(
             .flex_col()
             .gap(css(2.0))
             .pt(css(2.0))
-            .pl(css(inset))
-            .children(
-                visible
-                    .iter()
-                    .map(|s| row(s, true, None, now, cx).into_any_element()),
-            )
+            .when(list, |el| el.pl(css(8.0)))
+            .children(visible.iter().enumerate().map(|(i, s)| {
+                if list {
+                    list_row(s, i == 0, None, now, cx)
+                } else {
+                    row(s, true, None, now, cx)
+                }
+            }))
             .when(footer, |el| {
                 el.child(
                     show_all(format!("{id}-show-all").into(), sessions.len(), cx).on_click(
@@ -336,8 +346,9 @@ fn draw(
     window: &mut Window,
     cx: &App,
 ) -> Option<(Option<AnyElement>, gpui::Div)> {
+    let list = view_mode::main(cx) == Main::List;
     let main_place = Place {
-        inset: 8.0,
+        list,
         section: "main",
         drawn,
     };
@@ -392,7 +403,15 @@ fn draw(
                 )
                 .0
             }
-            Entry::Loose(s) => row(s, false, None, now, cx).into_any_element(),
+            // A loose task is its own list, with no top divider.
+            Entry::Loose(s) => {
+                let label = lists.main_labels.get(&s.id).map(String::as_str);
+                if list {
+                    list_row(s, false, label, now, cx)
+                } else {
+                    row(s, false, label, now, cx)
+                }
+            }
         })
         .collect();
     if hidden > 0 {

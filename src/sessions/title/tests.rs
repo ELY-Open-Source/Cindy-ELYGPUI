@@ -28,6 +28,7 @@ fn session(title: &str, source: &str, working_dir: Option<&str>) -> Session {
         cost_amount: 0.0,
         cost_currency: None,
         activity_at: CREATED_MS,
+        preview: None,
     }
 }
 

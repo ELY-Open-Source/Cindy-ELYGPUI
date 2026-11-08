@@ -5,6 +5,7 @@ mod filter;
 mod fold;
 mod group;
 mod header;
+mod list_row;
 mod lists;
 mod main_list;
 mod meta;

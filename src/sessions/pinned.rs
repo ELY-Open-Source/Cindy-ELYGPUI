@@ -1,5 +1,5 @@
-//! `PinnedSection.tsx` in text mode: pinned tasks and projects, folded as one section, with
-//! the `ViewStyleMenu` that picks the section's display mode.
+//! `PinnedSection.tsx` in text and list mode: pinned tasks and projects, folded as one
+//! section, with the `ViewStyleMenu` that picks the section's display mode.
 
 use std::cell::RefCell;
 
@@ -14,6 +14,7 @@ use gpui::{
 
 use super::{
     fold,
+    list_row::{self, list_row},
     lists::{Lists, Pinned},
     main_list::{Place, project, text},
     row::{ROW_HEIGHT, row},
@@ -123,8 +124,9 @@ pub fn section(
     cx: &App,
 ) -> Option<AnyElement> {
     let inner = RefCell::new(Vec::new());
+    let list = view_mode::pinned(cx) == Mode::List;
     let place = Place {
-        inset: 0.0,
+        list,
         section: "pinned",
         drawn: &inner,
     };
@@ -196,13 +198,26 @@ pub fn section(
                 .child(button),
         )
         .child(view_style);
-    let mut height = 6.0;
+    let top = if list { 4.0 } else { 6.0 };
+    let mut height = top;
     let mut rows: Vec<AnyElement> = Vec::new();
     for (i, entry) in lists.pinned.iter().enumerate() {
+        let label = |s: &super::group::Session| lists.labels.get(&s.id).map(String::as_str);
         let (element, h) = match entry {
-            Pinned::Session(s) => {
-                let label = lists.labels.get(&s.id).map(String::as_str);
-                (row(s, false, label, now, cx).into_any_element(), ROW_HEIGHT)
+            Pinned::Session(s) if list => {
+                (list_row(s, i == 0, label(s), now, cx), list_row::height(cx))
+            }
+            Pinned::Session(s) => (row(s, false, label(s), now, cx), ROW_HEIGHT),
+            // `border-b border-[var(--cmd-palette-border)] py-0.5`.
+            Pinned::Project(p) if list => {
+                let (element, h) = project(p, &place, window, cx);
+                let framed = div()
+                    .py(css(2.0))
+                    .border_b(css(1.0))
+                    .border_color(appearance.token("cmd-palette-border"))
+                    .child(element)
+                    .into_any_element();
+                (framed, h + 5.0)
             }
             Pinned::Project(p) => project(p, &place, window, cx),
         };
@@ -215,7 +230,7 @@ pub fn section(
             .flex_col()
             .gap(css(2.0))
             .pl(css(12.0))
-            .pt(css(6.0))
+            .pt(css(top))
             .children(rows)
             .into_any_element()
     };

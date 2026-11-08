@@ -22,6 +22,8 @@ pub struct Lists {
     /// `buildSessionSourceLabelMap` for the pinned tasks.
     pub labels: HashMap<String, String>,
     pub main: Vec<Entry>,
+    /// `dialogueSourceLabelMap` for the main list's loose tasks.
+    pub main_labels: HashMap<String, String>,
 }
 
 /// `sidebarPinnedEntryComparisonKey`.
@@ -153,7 +155,7 @@ pub fn build(
             kept.then(|| unpinned(Project { sessions, ..p }))
         })
         .collect();
-    let labels = labels(&plain.pinned, &known, dialogues_label);
+    let pin_labels = labels(&plain.pinned, &known, dialogues_label);
     let mut pinned: Vec<Pinned> = plain
         .pinned
         .into_iter()
@@ -176,10 +178,22 @@ pub fn build(
         });
     }
     let pick = |list: Vec<Session>| list.into_iter().filter(|s| matches(s)).collect::<Vec<_>>();
-    let main = entries(main_projects, pick(main.dialogues), pick(main.loose), order);
+    let dialogues = pick(main.dialogues);
+    // Flat mode labels project tasks too; drafts never.
+    let labelled: Vec<Session> = if order.flat {
+        let projects = main_projects
+            .iter()
+            .flat_map(|p| p.sessions.iter().cloned());
+        projects.chain(dialogues.iter().cloned()).collect()
+    } else {
+        dialogues.clone()
+    };
+    let main_labels = labels(&labelled, &known, dialogues_label);
+    let main = entries(main_projects, dialogues, pick(main.loose), order);
     Lists {
         pinned,
-        labels,
+        labels: pin_labels,
         main,
+        main_labels,
     }
 }

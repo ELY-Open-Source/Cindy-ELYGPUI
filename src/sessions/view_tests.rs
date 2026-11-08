@@ -48,6 +48,7 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
         cost_amount: 0.0,
         cost_currency: None,
         activity_at: activity,
+        preview: None,
     }
 }
 
@@ -375,5 +376,41 @@ fn the_display_menus_save_both_modes(cx: &mut TestAppContext) {
     assert_eq!(
         modes,
         (super::view_mode::Pinned::Card, super::view_mode::Main::Text)
+    );
+}
+
+#[gpui::test]
+fn list_mode_draws_list_rows_inset_in_groups(cx: &mut TestAppContext) {
+    use super::view_mode::{self, Main, Pinned};
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    let bounds = |cx: &mut VisualTestContext, id: &str| {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        cx.debug_bounds(Box::leak(format!("task-{id}").into_boxed_str()))
+            .unwrap()
+    };
+    // 59.4, snapped to the device pixel grid.
+    let list_height = |h: gpui::Pixels| (f32::from(h) - (42.0 + 1.45 * 12.0)).abs() < 0.2;
+    let list = bounds(cx, "a1");
+    assert!(list_height(list.size.height), "a fresh install lists");
+    cx.update(|_, cx| view_mode::set_main(Main::Text, cx));
+    let text = bounds(cx, "a1");
+    assert_eq!(text.size.height, px(32.0));
+    assert_eq!(
+        list.origin.x - text.origin.x,
+        px(8.0),
+        "pl-2 in list mode only"
+    );
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].pinned_at = Some(1);
+        view_mode::set_pinned(Pinned::List, cx);
+    });
+    assert!(list_height(bounds(cx, "a0").size.height));
+    assert_eq!(
+        bounds(cx, "a1").size.height,
+        px(32.0),
+        "the main list keeps text"
     );
 }

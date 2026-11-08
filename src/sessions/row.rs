@@ -4,8 +4,9 @@ use std::sync::Arc;
 
 use ely_gpui_component::{menus::ContextMenu, primitives::IconName};
 use gpui::{
-    AnyElement, App, ElementId, FontFeatures, InteractiveElement as _, IntoElement, ParentElement,
-    RenderOnce, StatefulInteractiveElement as _, Styled, Window, div, prelude::FluentBuilder as _,
+    AnyElement, App, ClickEvent, ElementId, FontFeatures, InteractiveElement as _, IntoElement,
+    ParentElement, RenderOnce, StatefulInteractiveElement as _, Styled, Window, div,
+    prelude::FluentBuilder as _,
 };
 
 use super::{Sessions, group::Session, meta, rename, task_menu, title};
@@ -58,10 +59,10 @@ fn absolute(at_ms: i64) -> String {
 
 /// `SessionStatusIcon` at rest: the archive box, the Orca lead's people, else the harness mark;
 /// running, attention and drafts come with the agent runtime (10.0).
-fn status_icon(s: &Session, cx: &App) -> AnyElement {
+pub(super) fn status_glyph(s: &Session, cx: &App) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let meta = appearance.token("cmd-palette-item-meta");
-    let icon = if s.status == "archived" {
+    if s.status == "archived" {
         lucide::icon(IconName::Archive.svg(), 12.0, 1.75)
             .text_color(meta)
             .into_any_element()
@@ -91,19 +92,11 @@ fn status_icon(s: &Session, cx: &App) -> AnyElement {
                 .text_color(muted)
                 .into_any_element(),
         }
-    };
-    div()
-        .flex()
-        .flex_none()
-        .w(css(15.0))
-        .items_center()
-        .justify_center()
-        .child(icon)
-        .into_any_element()
+    }
 }
 
 /// `SessionInfoMeta`: the ticked fields, `·` between them, in `text-sidebar-action-icon`.
-fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
+fn info(s: &Session, now: i64, height: f32, cx: &App) -> Option<AnyElement> {
     let translator = cx.global::<Translator>();
     let t = |key: &str, count: i64| translator.t(key, &[("count", Arg::Number(count))]);
     let fields = cx.global::<super::Sessions>().task_info.clone();
@@ -134,7 +127,7 @@ fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
         div()
             .flex()
             .flex_none()
-            .h(css(24.0))
+            .h(css(height))
             .items_center()
             .gap(css(4.0))
             .text_size(css(size))
@@ -147,14 +140,16 @@ fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
 }
 
 /// The hover group of one row.
-const ROW_GROUP: &str = "task-row";
+pub(super) const ROW_GROUP: &str = "task-row";
 
 /// The right slot: the info, which gives way on hover to More (`SessionAction`).
 /// The info slot; a hover, or More holding focus as `group-focus-within/slot`, swaps in More.
 #[derive(IntoElement)]
-struct Slot {
-    session: Session,
-    now: i64,
+pub(super) struct Slot {
+    pub session: Session,
+    pub now: i64,
+    /// 24 in the text row, 22 in the list row's title line.
+    pub height: f32,
 }
 
 impl RenderOnce for Slot {
@@ -174,11 +169,11 @@ impl RenderOnce for Slot {
             .relative()
             .flex()
             .flex_none()
-            .h(css(24.0))
+            .h(css(self.height))
             .ml_auto()
             .items_center()
             .justify_end()
-            .children(info(s, self.now, cx).map(|info| {
+            .children(info(s, self.now, self.height, cx).map(|info| {
                 div()
                     .flex()
                     .overflow_hidden()
@@ -199,7 +194,7 @@ impl RenderOnce for Slot {
                     .top_0()
                     .right_0()
                     .flex()
-                    .h(css(24.0))
+                    .h(css(self.height))
                     .items_center()
                     .gap(css(2.0))
                     .opacity(if focused { 1.0 } else { 0.0 })
@@ -223,8 +218,7 @@ pub(super) fn row(
     cx: &App,
 ) -> AnyElement {
     let appearance = cx.global::<Appearance>();
-    let (title_size, label_size) = (text_size(14.0, cx), text_size(12.0, cx));
-    let meta = appearance.token("cmd-palette-item-meta");
+    let title_size = text_size(14.0, cx);
     let editing = cx
         .global::<Sessions>()
         .editing
@@ -245,15 +239,7 @@ pub(super) fn row(
                 .child(title::display(row, cx.global::<Translator>())),
         )
         .when_some(label, |el, label| {
-            el.child(
-                div()
-                    .min_w_0()
-                    .truncate()
-                    .text_size(css(label_size))
-                    .font_weight(gpui::FontWeight::NORMAL)
-                    .text_color(meta)
-                    .child(label.to_owned()),
-            )
+            el.child(source_label(&row.id, label, cx))
         });
     let selector = format!("task-{}", row.id);
     let id = row.id.clone();
@@ -274,34 +260,71 @@ pub(super) fn row(
         .font_weight(gpui::FontWeight::MEDIUM)
         .text_color(appearance.hsl_token("foreground"))
         .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
-        .on_click(move |event, window, cx| {
-            if event.click_count() != 2 {
-                return;
-            }
-            let found = cx
-                .global::<Sessions>()
-                .loaded
-                .as_ref()
-                .and_then(|l| l.sessions.iter().find(|s| s.id == id).cloned());
-            if let Some(s) = found {
-                rename::start(&s, window, cx);
-            }
-        })
-        .child(status_icon(row, cx));
+        .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .child(
+            div()
+                .flex()
+                .flex_none()
+                .w(css(15.0))
+                .items_center()
+                .justify_center()
+                .child(status_glyph(row, cx)),
+        );
     let body = match editing {
         Some(editing) => body.child(rename::field(editing, cx)),
         None => body.child(title).child(Slot {
             session: row.clone(),
             now,
+            height: ROW_SLOT,
         }),
     };
+    with_menu(row, editing.is_some(), body.into_any_element(), cx)
+}
+
+/// `sourceLabel`, its full text in `title`.
+pub(super) fn source_label(id: &str, label: &str, cx: &App) -> AnyElement {
+    let selector = format!("task-label-{id}");
+    div()
+        .id(gpui::SharedString::from(selector.clone()))
+        .debug_selector(move || selector)
+        .min_w_0()
+        .truncate()
+        .text_size(css(text_size(12.0, cx)))
+        .font_weight(gpui::FontWeight::NORMAL)
+        .text_color(cx.global::<Appearance>().token("cmd-palette-item-meta"))
+        .tooltip(tip(label.to_owned()))
+        .child(label.to_owned())
+        .into_any_element()
+}
+
+/// A right click opens the task menu, except while the title is edited.
+pub(super) fn with_menu(s: &Session, editing: bool, body: AnyElement, cx: &App) -> AnyElement {
+    if editing {
+        return body;
+    }
     ContextMenu::new(
-        ElementId::Name(format!("task-menu-{}", row.id).into()),
-        task_menu::menu(row, cx.global::<Translator>()),
+        ElementId::Name(format!("task-menu-{}", s.id).into()),
+        task_menu::menu(s, cx.global::<Translator>()),
     )
     .w_full()
     .child(body)
     .into_any_element()
 }
 
+/// A double click renames, as `handleDoubleClick` does.
+pub(super) fn rename_on_double(id: &str, event: &ClickEvent, window: &mut Window, cx: &mut App) {
+    if event.click_count() != 2 {
+        return;
+    }
+    let found = cx
+        .global::<Sessions>()
+        .loaded
+        .as_ref()
+        .and_then(|l| l.sessions.iter().find(|s| s.id == id).cloned());
+    if let Some(s) = found {
+        rename::start(&s, window, cx);
+    }
+}
+
 pub(super) const ROW_HEIGHT: f32 = 32.0;
+const ROW_SLOT: f32 = 24.0;

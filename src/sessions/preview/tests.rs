@@ -110,3 +110,34 @@ fn skips_rewound_auto_resume_and_cleared_messages() {
     let (_, items) = query::list(&db, Status::Active).unwrap();
     assert!(items.is_empty(), "nothing after the clear: {items:?}");
 }
+
+#[test]
+fn the_list_reads_its_preview_as_session_to_camel_does() {
+    let db = db();
+    add(&db, "cached", "desktop", "active", 10);
+    add(&db, "fresh", "desktop", "active", 20);
+    add(&db, "none", "desktop", "active", 30);
+    message(&db, "c1", "cached", "assistant", "\"x\"", 1);
+    message(&db, "f1", "fresh", "assistant", "\"Tail \u{e200}ci\"", 1);
+    db.execute(
+        "UPDATE sessions SET list_preview = 'Tail \u{e200}ci' WHERE id = 'cached'",
+        [],
+    )
+    .unwrap();
+    let rows = query::list(&db, Status::Active).unwrap().0;
+    let preview = |id: &str| {
+        let s = rows.iter().find(|s| s.id == id).unwrap();
+        s.preview.clone()
+    };
+    assert_eq!(
+        preview("cached").as_deref(),
+        Some("Tail \u{e200}ci"),
+        "the cache's own role, here none, not the latest message's"
+    );
+    assert_eq!(
+        preview("fresh").as_deref(),
+        Some("Tail"),
+        "an assistant answer"
+    );
+    assert_eq!(preview("none"), None);
+}

@@ -5,7 +5,7 @@ use rusqlite::Connection;
 use super::{
     group::{Recent, Session},
     paths::{comparison_key, grouping},
-    projection,
+    preview, projection,
 };
 
 /// `DESKTOP_TASK_LIST_SESSION_SOURCES`: the visible sources less `review` and `side-chat`;
@@ -70,7 +70,7 @@ pub fn list(
                 coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at),
                 sessions.agent_kind, sessions.orca_role, sessions.total_token_usage,
                 sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency,
-                sessions.notifications_muted, {}
+                sessions.notifications_muted, {}, sessions.list_preview, sessions.list_preview_role
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
         projection::columns(),
@@ -78,6 +78,13 @@ pub fn list(
     );
     let mut statement = db.prepare(&sql)?;
     let rows = statement.query_map([LIMIT], |row| {
+        let (extract, role): (Option<String>, Option<String>) = (row.get(20)?, row.get(21)?);
+        let cached: (Option<String>, Option<String>) = (row.get(24)?, row.get(25)?);
+        // The cached preview with its own role, else the latest message.
+        let preview = match &cached.0 {
+            Some(text) => preview::finalize(Some(text), cached.1.as_deref()),
+            None => preview::finalize(extract.as_deref(), role.as_deref()),
+        };
         let session = Session {
             id: row.get(0)?,
             title: row.get(1)?,
@@ -99,8 +106,8 @@ pub fn list(
             cost_amount: row.get(17)?,
             cost_currency: row.get(18)?,
             muted: row.get(19)?,
+            preview,
         };
-        let (extract, role): (Option<String>, Option<String>) = (row.get(20)?, row.get(21)?);
         let uncached = (row.get(22)?, row.get(23)?);
         let item = projection::item(
             &session.id,

@@ -344,3 +344,10 @@ effort high, in a Herdr pane.
   levels read as malformed. Fixed: a keyed tab stop with a button role; claims parse through
   the `JSON.parse` port.
 - Round 2: PASS.
+
+## 8.5c2b The list row
+
+- Round 1: FAIL. Loose main-list tasks had no source label; the task menu opened over a rename;
+  a cut label had no full text. Fixed in both rows: `dialogueSourceLabelMap` for loose rows, no
+  menu while editing, the label's tooltip.
+- Round 2: PASS.

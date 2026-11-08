@@ -282,18 +282,22 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     `sidebarInstallVintage.ts`'s fixed `legacy` or `fresh`), chosen from `SidebarFilterPopover`'s
     display rows and `PinnedSection`'s `ViewStyleMenu`; Settings → Appearance with chapter 12,
     `setPinnedCardSummaries` with 11.0
-  - [ ] 8.5c2b The list row as `SessionCard.tsx` draws its `list` variant in the main list and the
-    Pinned section's list mode (dividers, the inset active ring, two preview lines, time and
-    hover actions), with `sessionToCamel`'s `preview` and `summary`, `resolveSessionCardBody`
-    and the message count
+  - [x] 8.5c2b The list row as `SessionCard.tsx` draws its `list` variant in the main list and the
+    Pinned section's list mode (dividers, the title line with the info slot that gives way to
+    More, one preview line), with `sessionToCamel`'s `preview`; the active ring with 8.6, live
+    preview text with 10.0
   - [ ] 8.5c2c The card as `SessionCard.tsx` draws its `card` variant in the Pinned section's card
-    mode, laid out by `CardMasonry` and `DraggableCardColumns`
+    mode, laid out by `CardMasonry` and `DraggableCardColumns`, with `sessionToCamel`'s
+    `summary` and `resolveSessionCardBody`
+  - [ ] 8.5c2d `SidebarTitleMarquee`: an overflowing title scrolls once while its row is hovered,
+    in the text and list rows
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
   `useActiveMainView`, and a row click to its session as `handleSessionClick` and
   `resolveSessionRoute` do; the row a Tab stop (`tabIndex=0`) that Enter and Space open, with
-  its task menu on the keyboard's context-menu key
+  its task menu on the keyboard's context-menu key; the active row as `SessionItem` and the list
+  row's inset ring draw it
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles

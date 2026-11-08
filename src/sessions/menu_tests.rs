@@ -221,3 +221,36 @@ fn tab_reaches_the_pinned_view_style_and_space_opens_it(cx: &mut TestAppContext)
         "the menu opened"
     );
 }
+
+#[gpui::test]
+fn a_right_click_while_renaming_opens_no_task_menu(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    press(cx, "task-a0", MouseButton::Left, 2);
+    assert!(editing(cx));
+    press(cx, "task-rename", MouseButton::Right, 1);
+    assert!(cx.debug_bounds("menu-row-Rename").is_none(), "no task menu");
+    assert!(editing(cx), "still renaming");
+}
+
+#[gpui::test]
+fn flat_loose_tasks_carry_their_source_label(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    let label = |cx: &mut VisualTestContext, id: &str| {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        cx.debug_bounds(Box::leak(format!("task-label-{id}").into_boxed_str()))
+            .is_some()
+    };
+    assert!(!label(cx, "a1"), "a project's own rows carry none");
+    cx.update(|_, cx| {
+        let prefs = cx.global_mut::<crate::preferences::Preferences>();
+        prefs
+            .set("cc-agent.sidebar.filter.groupBy", "flat")
+            .unwrap();
+    });
+    assert!(label(cx, "a1"), "flat list row");
+    cx.update(|_, cx| super::view_mode::set_main(super::view_mode::Main::Text, cx));
+    assert!(label(cx, "a1"), "flat text row");
+}
