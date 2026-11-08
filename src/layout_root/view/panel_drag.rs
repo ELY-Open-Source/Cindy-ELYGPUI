@@ -10,7 +10,13 @@ use gpui::{
 
 use super::LayoutRoot;
 use crate::layout_tree::{Layout, LayoutStore, Node};
-use crate::{i18n::Translator, motion, theme::Appearance, toast};
+use crate::{
+    i18n::Translator,
+    motion,
+    theme::Appearance,
+    toast,
+    units::{self, css},
+};
 
 const LONG_PRESS: Duration = Duration::from_millis(600);
 const LONG_PRESS_MOVE_TOLERANCE: f32 = 8.0;
@@ -77,8 +83,9 @@ pub fn origin_recorder(rects: &SharedRects) -> AnyElement {
 }
 
 /// `isDroppableRect`: a collapsed or hidden panel has no body to drop on.
-pub fn is_droppable(bounds: &Bounds<Pixels>) -> bool {
-    bounds.size.width >= px(MIN_DROP_TARGET_SIZE) && bounds.size.height >= px(MIN_DROP_TARGET_SIZE)
+pub fn is_droppable(bounds: &Bounds<Pixels>, zoom: f32) -> bool {
+    let least = px(MIN_DROP_TARGET_SIZE * zoom);
+    bounds.size.width >= least && bounds.size.height >= least
 }
 
 /// `computePanelDropIntent`: a swap when the pointer is over a pane of another root region.
@@ -92,8 +99,8 @@ pub fn is_swap(
 }
 
 /// `computePanelDropZone`: the whole root region, 6px in on every side.
-pub fn drop_zone(root: &Bounds<Pixels>) -> Bounds<Pixels> {
-    let inset = px(DROP_ZONE_INSET);
+pub fn drop_zone(root: &Bounds<Pixels>, zoom: f32) -> Bounds<Pixels> {
+    let inset = px(DROP_ZONE_INSET * zoom);
     let width = (root.size.width - inset * 2.0).max(px(0.0));
     let height = (root.size.height - inset * 2.0).max(px(0.0));
     Bounds {
@@ -118,7 +125,12 @@ fn kinds(node: &Node) -> Vec<&str> {
 }
 
 /// `activateDrag`'s geometry: the source's root index and every pane it may land on.
-pub fn targets(layout: &Layout, source: &str, rects: &Rects) -> Option<(usize, Vec<Target>)> {
+pub fn targets(
+    layout: &Layout,
+    source: &str,
+    rects: &Rects,
+    zoom: f32,
+) -> Option<(usize, Vec<Target>)> {
     let Node::Split(root) = &layout.content else {
         return None;
     };
@@ -135,14 +147,14 @@ pub fn targets(layout: &Layout, source: &str, rects: &Rects) -> Option<(usize, V
             Node::Split(split) => rects.roots.get(&split.id),
             Node::Pane(pane) => rects.panes.get(&pane.panel_kind),
         };
-        let Some(root_rect) = root_rect.filter(|r| is_droppable(r)) else {
+        let Some(root_rect) = root_rect.filter(|r| is_droppable(r, zoom)) else {
             continue;
         };
         for kind in kinds(&child.node) {
             if kind == source || kind.starts_with("tab-group:") {
                 continue;
             }
-            let Some(pane) = rects.panes.get(kind).filter(|r| is_droppable(r)) else {
+            let Some(pane) = rects.panes.get(kind).filter(|r| is_droppable(r, zoom)) else {
                 continue;
             };
             targets.push(Target {
@@ -213,7 +225,8 @@ impl LayoutRoot {
             return;
         };
         let layout = cx.global::<LayoutStore>().layout();
-        let found = targets(layout, &kind, &self.rects.borrow());
+        let zoom = cx.global::<units::Zoom>().0;
+        let found = targets(layout, &kind, &self.rects.borrow(), zoom);
         match found {
             Some((source_root, targets)) if !targets.is_empty() => {
                 log::info!(target: "layout", "panel drag {kind} over {} targets", targets.len());
@@ -240,7 +253,7 @@ impl LayoutRoot {
     pub(super) fn panel_moved(&mut self, at: Point<Pixels>, cx: &mut Context<Self>) {
         match &mut self.gesture {
             Some(Gesture::Pressing { start, .. }) => {
-                let tolerance = px(LONG_PRESS_MOVE_TOLERANCE);
+                let tolerance = units::window_px(LONG_PRESS_MOVE_TOLERANCE, cx);
                 if (at.x - start.x).abs() > tolerance || (at.y - start.y).abs() > tolerance {
                     self.gesture = None;
                 }
@@ -345,7 +358,7 @@ impl LayoutRoot {
         let origin = self.rects.borrow().origin;
         let reduced = cx.global::<motion::ReducedMotion>().0;
         let zone = target.map(|i| {
-            let zone = drop_zone(&targets[i].root);
+            let zone = drop_zone(&targets[i].root, cx.global::<units::Zoom>().0);
             let at = zone.origin - origin;
             div()
                 .debug_selector(|| "panel-drop-zone".into())
@@ -354,8 +367,8 @@ impl LayoutRoot {
                 .top(at.y)
                 .w(zone.size.width)
                 .h(zone.size.height)
-                .rounded(px(RADIUS_XL))
-                .border_1()
+                .rounded(css(RADIUS_XL))
+                .border(css(1.0))
                 .border_color(ring.opacity(0.55))
                 .bg(ring.opacity(0.1))
                 .with_fade_in("panel-drop-zone", 1.0, reduced)
@@ -368,27 +381,32 @@ impl LayoutRoot {
         let bar = |height: f32, width: f32, radius: f32| {
             div()
                 .mx_2()
-                .h(px(height))
+                .h(css(height))
                 .w(relative(width))
-                .rounded(px(radius))
+                .rounded(css(radius))
                 .bg(appearance.token("surface-chip"))
         };
-        let at = *point - origin - gpui::point(px(85.0), px(110.0 * 0.58));
+        let at = *point
+            - origin
+            - gpui::point(
+                units::window_px(85.0, cx),
+                units::window_px(110.0 * 0.58, cx),
+            );
         let card = div()
             .debug_selector(|| "panel-drag-ghost".into())
             .absolute()
             .left(at.x)
             .top(at.y)
-            .w(px(170.0))
-            .h(px(110.0))
-            .rounded(px(RADIUS_XL))
-            .border_1()
+            .w(css(170.0))
+            .h(css(110.0))
+            .rounded(css(RADIUS_XL))
+            .border(css(1.0))
             .border_color(border)
             .bg(appearance.token("surface-elevated"))
-            .shadow(vec![appearance.shadow_token("shadow-menu")])
+            .shadow(vec![appearance.shadow_token("shadow-menu", cx)])
             .child(bar(14.0, 0.7, RADIUS_MD).mt_2())
             .child(bar(10.0, 0.85, RADIUS).mt_2().opacity(0.7))
-            .child(bar(10.0, 0.6, RADIUS).mt(px(6.0)).opacity(0.7))
+            .child(bar(10.0, 0.6, RADIUS).mt(css(6.0)).opacity(0.7))
             .with_fade_in("panel-drag-ghost", 0.92, reduced);
         let layer = deferred(div().children(zone).child(card)).with_priority(1);
         Some(

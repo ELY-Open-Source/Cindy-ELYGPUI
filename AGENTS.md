@@ -88,6 +88,15 @@ defines scope and what 1:1 means.
   spinners. gpui's own `reduce_motion` stays off: Cindy keeps fixed-duration transitions (toasts).
   The macOS and Windows reads are type-checked in a scratch crate (`cargo check --target`); the
   full crate's C build scripts need those systems.
+- Units and zoom: Cindy's sizes are CSS pixels, which Chromium's zoom scales. `units::css(n)` draws
+  them as rems at 16 per rem, and each window's rem size is 16 × `windowZoom` (read and clamped from
+  `appearance-settings.json`), as Ely's `ZoomControl` zooms. Layout math (`layout_root`, sidebar
+  resize) runs in CSS pixels: viewport and pointer positions go through `units::to_css`; checks
+  against painted bounds use `units::window_px`. Native window sizes (bounds, minimum size, traffic
+  lights) stay in window pixels, as Electron's are. New UI code writes lengths with `css`, never
+  `px`, unless the value is a painted bound or a native window measure. gpui's `border_*_1()`
+  helpers are fixed pixels: write `border_b(css(1.0))`. `Appearance::shadow_token(id, cx)` scales
+  shadow lengths by the zoom.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

@@ -16,6 +16,7 @@ use crate::{
     sidebar::Sidebar,
     theme::{Appearance, shell},
     toast::ToastContainer,
+    units::{self, css},
     window_state::{self, WindowState},
 };
 
@@ -76,7 +77,7 @@ impl Render for Root {
                 .absolute()
                 .right_0()
                 .top_0()
-                .h(px(chrome::TOP_ROW))
+                .h(css(chrome::TOP_ROW))
                 .flex()
                 .items_center()
                 .pr_2()
@@ -192,6 +193,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
     };
     let policy = Policy::new(activation.mac_setting, activation.windows_setting);
     cx.open_window(options, |window, cx| {
+        window.set_rem_size(units::rem_size(cx));
         cx.new(|cx| {
             cx.observe_window_appearance(window, shell::follow_os)
                 .detach();

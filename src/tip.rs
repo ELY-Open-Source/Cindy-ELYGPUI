@@ -2,27 +2,28 @@
 
 use gpui::{
     AnyView, App, AppContext, Context, IntoElement, ParentElement, Render, SharedString, Styled,
-    Window, div, px,
+    Window, div,
 };
 
-use crate::{appearance_settings::text_px, theme::Appearance};
+use crate::units::css;
+use crate::{appearance_settings::text_size, theme::Appearance};
 
 struct Tip(SharedString);
 
 impl Render for Tip {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let appearance = cx.global::<Appearance>();
-        let size = text_px(13.0, cx);
+        let size = text_size(13.0, cx);
         div()
-            .max_w(px(420.0))
-            .rounded(px(12.0))
-            .px(px(10.0))
-            .py(px(6.0))
-            .text_size(size)
-            .line_height(size * 1.375)
+            .max_w(css(420.0))
+            .rounded(css(12.0))
+            .px(css(10.0))
+            .py(css(6.0))
+            .text_size(css(size))
+            .line_height(css(size * 1.375))
             .bg(appearance.token("tooltip-bg"))
             .text_color(appearance.token("tooltip-text"))
-            .shadow(vec![appearance.shadow_token("shadow-menu")])
+            .shadow(vec![appearance.shadow_token("shadow-menu", cx)])
             .child(self.0.clone())
     }
 }

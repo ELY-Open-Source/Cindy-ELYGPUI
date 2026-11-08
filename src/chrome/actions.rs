@@ -5,9 +5,10 @@ use std::time::{Duration, Instant};
 use ely_gpui_component::primitives::IconName;
 use gpui::{
     AnyElement, App, Context, Entity, InteractiveElement, IntoElement, ParentElement, Render,
-    SharedString, StatefulInteractiveElement, Styled, Window, canvas, deferred, div, px, svg,
+    SharedString, StatefulInteractiveElement, Styled, Window, canvas, deferred, div, svg,
 };
 
+use crate::units::css;
 use crate::{i18n::Translator, motion::Tween, sidebar::Sidebar, theme::Appearance, tip::tip};
 
 /// `CHROME_ACTIONS_GEOMETRY`.
@@ -66,7 +67,7 @@ impl ChromeActions {
             .flex()
             .items_center()
             .justify_center()
-            .size(px(28.0))
+            .size(css(28.0))
             .rounded_full()
             .hover(|s| s.bg(appearance.hsl_token("titlebar-button-hover")))
             .aria_label(label.clone())
@@ -77,7 +78,7 @@ impl ChromeActions {
             .child(
                 svg()
                     .data(IconName::PanelLeft.svg())
-                    .size(px(15.0))
+                    .size(css(15.0))
                     .text_color(appearance.hsl_token("titlebar-icon")),
             )
             .child(
@@ -95,8 +96,8 @@ impl Render for ChromeActions {
         let cluster = div()
             .absolute()
             .top_0()
-            .left(px(left))
-            .h(px(super::TOP_ROW))
+            .left(css(left))
+            .h(css(super::TOP_ROW))
             .flex()
             .items_center()
             .gap_1()

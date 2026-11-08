@@ -41,6 +41,7 @@ fn open<'a>(
             gpui_agrees: true,
         };
         cx.set_global(crate::motion::ReducedMotion::default());
+        cx.set_global(crate::units::Zoom(1.0));
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
         cx.set_global(crate::toast::Toasts::default());

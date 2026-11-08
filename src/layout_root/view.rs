@@ -6,13 +6,14 @@ use gpui::{
     AnyElement, App, BorrowAppContext, Context, CursorStyle, DispatchPhase, Entity,
     InteractiveElement, IntoElement, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent,
     ParentElement, Pixels, Point, Render, StatefulInteractiveElement, Styled, Task, Window, canvas,
-    div, prelude::FluentBuilder, px,
+    div, prelude::FluentBuilder,
 };
 
 use super::divider::{ColumnDrag, RootDrag, equalize_column, equalize_root};
 use super::geometry::{Entry, Ledger, Presence, Seam, normalize_sub_min_fractions, root_widths};
 use crate::layout_tree::{Direction, Layout, LayoutStore, Node};
 use crate::motion::Tween;
+use crate::units::{self, css};
 
 mod header;
 pub(super) mod panel_drag;
@@ -35,8 +36,9 @@ const PRESENCE: Presence<'static> = Presence {
     parked: &never,
 };
 
-fn f(p: Pixels) -> f64 {
-    f64::from(f32::from(p))
+/// Window pixels in Cindy's CSS pixels, the layout math's unit.
+fn f(p: Pixels, cx: &App) -> f64 {
+    f64::from(units::to_css(p, cx))
 }
 
 /// A divider gesture under way; `start` is the pointer at the press.
@@ -194,7 +196,7 @@ impl LayoutRoot {
                 );
                 self.drag = drag.map(|drag| Drag::Root {
                     drag: Box::new(drag),
-                    start: f(event.position.x),
+                    start: f(event.position.x, cx),
                     delta: 0.0,
                 });
                 None
@@ -209,7 +211,7 @@ impl LayoutRoot {
                         });
                 self.drag = started.map(|drag| Drag::Column {
                     drag,
-                    start: f(event.position.y),
+                    start: f(event.position.y, cx),
                     delta: 0.0,
                 });
                 None
@@ -227,11 +229,11 @@ impl LayoutRoot {
     fn moved(&mut self, position: Point<Pixels>, cx: &mut Context<Self>) {
         self.live = match &mut self.drag {
             Some(Drag::Root { drag, start, delta }) => {
-                *delta = drag.delta(f(position.x) - *start);
+                *delta = drag.delta(f(position.x, cx) - *start);
                 Some(drag.live(*delta))
             }
             Some(Drag::Column { drag, start, delta }) => {
-                *delta = drag.delta(f(position.y) - *start);
+                *delta = drag.delta(f(position.y, cx) - *start);
                 Some(drag.live(*delta))
             }
             None => return,
@@ -296,14 +298,14 @@ impl LayoutRoot {
         let grab = if row {
             grab.top_0()
                 .bottom_0()
-                .left(px(-3.0))
-                .w(px(7.0))
+                .left(css(-3.0))
+                .w(css(7.0))
                 .cursor(CursorStyle::ResizeLeftRight)
         } else {
             grab.left_0()
                 .right_0()
-                .top(px(-3.0))
-                .h(px(7.0))
+                .top(css(-3.0))
+                .h(css(7.0))
                 .cursor(CursorStyle::ResizeUpDown)
         };
         let hover_key = key.clone();
@@ -334,8 +336,8 @@ fn save(layout: Layout, cx: &mut App) {
 impl Render for LayoutRoot {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let viewport = window.viewport_size();
-        self.avail = f(viewport.width) - f64::from((self.sidebar)(cx).width);
-        self.height = f(viewport.height);
+        self.avail = f(viewport.width, cx) - f64::from((self.sidebar)(cx).width);
+        self.height = f(viewport.height, cx);
         let layout = cx.global::<LayoutStore>().layout().clone();
         self.schedule_heal(&layout, cx);
         self.step_header(window, cx);

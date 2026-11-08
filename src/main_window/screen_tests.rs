@@ -3,12 +3,21 @@
 use gpui::{Modifiers, TestAppContext, VisualTestContext, WindowAppearance, px, size};
 
 use crate::{
-    app_shortcuts::AppShortcuts, i18n::Translator, layout_tree::LayoutStore,
-    os_appearance::Initial, preferences::Preferences, theme::Appearance, theme::Mode,
+    app_shortcuts::AppShortcuts,
+    i18n::Translator,
+    layout_tree::{LayoutStore, Node},
+    os_appearance::Initial,
+    preferences::Preferences,
+    theme::Appearance,
+    theme::Mode,
     toast::Toasts,
 };
 
 fn open(cx: &mut TestAppContext, dir: &std::path::Path) -> VisualTestContext {
+    open_zoomed(cx, dir, 1.0)
+}
+
+fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> VisualTestContext {
     cx.update(|cx| {
         ely_gpui_component::init_for_tests(cx);
         let initial = Initial {
@@ -16,6 +25,7 @@ fn open(cx: &mut TestAppContext, dir: &std::path::Path) -> VisualTestContext {
             gpui_agrees: true,
         };
         cx.set_global(crate::motion::ReducedMotion::default());
+        cx.set_global(crate::units::Zoom(zoom));
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
         cx.set_global(Toasts::default());
@@ -282,5 +292,73 @@ fn reduced_motion_shows_the_drawer_without_a_slide(cx: &mut TestAppContext) {
     assert_eq!(
         vcx.debug_bounds("sidebar-peek-drawer").unwrap().origin.x,
         px(0.0)
+    );
+}
+
+#[cfg(not(target_os = "macos"))]
+#[gpui::test]
+fn zoom_scales_every_css_pixel(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mut vcx = open_zoomed(cx, dir.path(), 1.5);
+    assert_eq!(width(&mut vcx, "sidebar"), Some(px(390.0)));
+    let header = vcx.debug_bounds("content-header").unwrap();
+    assert_eq!((header.origin.x, header.size.height), (px(390.0), px(69.0)));
+    let slot = vcx.debug_bounds("content-header-slot").unwrap();
+    assert_eq!(slot.size.height, px(69.0 - 1.5), "the border zooms too");
+    let toggle = vcx.debug_bounds("sidebar-toggle").unwrap();
+    assert_eq!((toggle.origin.x, toggle.size.width), (px(12.0), px(42.0)));
+    let none = Modifiers::none();
+    let edge = gpui::point(px(390.0 - 3.0), px(400.0));
+    vcx.simulate_mouse_down(edge, gpui::MouseButton::Left, none);
+    vcx.simulate_mouse_move(
+        edge + gpui::point(px(150.0), px(0.0)),
+        gpui::MouseButton::Left,
+        none,
+    );
+    vcx.simulate_mouse_up(
+        edge + gpui::point(px(150.0), px(0.0)),
+        gpui::MouseButton::Left,
+        none,
+    );
+    wait(&mut vcx, 0);
+    let saved = Preferences::load(dir.path()).unwrap();
+    assert_eq!(
+        saved.text("sidebar-width").unwrap(),
+        Some("360"),
+        "100 CSS pixels wider"
+    );
+    assert_eq!(width(&mut vcx, "sidebar"), Some(px(540.0)));
+}
+
+#[cfg(not(target_os = "macos"))]
+#[gpui::test]
+fn zoom_keeps_divider_math_in_css_pixels(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mut vcx = open_zoomed(cx, dir.path(), 1.5);
+    let avail = 1600.0 / 1.5 - 260.0;
+    let right = (avail * 0.5) as f32 * 1.5;
+    let seam = gpui::point(px(1600.0 - right - 0.75), px(400.0));
+    let none = Modifiers::none();
+    vcx.simulate_mouse_down(seam, gpui::MouseButton::Left, none);
+    vcx.simulate_mouse_move(
+        seam + gpui::point(px(150.0), px(0.0)),
+        gpui::MouseButton::Left,
+        none,
+    );
+    vcx.simulate_mouse_up(
+        seam + gpui::point(px(150.0), px(0.0)),
+        gpui::MouseButton::Left,
+        none,
+    );
+    wait(&mut vcx, 0);
+    let fraction = vcx.update(|_, cx| {
+        let Node::Split(root) = &cx.global::<LayoutStore>().layout().content else {
+            panic!("row")
+        };
+        root.children[1].fraction
+    });
+    assert!(
+        (fraction - (0.5 - 100.0 / avail)).abs() < 1e-3,
+        "{fraction}"
     );
 }

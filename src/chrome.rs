@@ -9,9 +9,10 @@ use ely_gpui_component::{
 use gpui::{
     AnyElement, App, CursorStyle, Decorations, InteractiveElement, IntoElement, MouseButton,
     ParentElement, ResizeEdge, SharedString, StatefulInteractiveElement, Styled, Window,
-    WindowControlArea, div, prelude::FluentBuilder, px, rgb,
+    WindowControlArea, div, prelude::FluentBuilder, rgb,
 };
 
+use crate::units::css;
 use crate::{i18n::Translator, theme::Appearance};
 
 /// Cindy's 46px top row: traffic lights sit at y 16, centered on it.
@@ -61,7 +62,7 @@ pub fn window_controls(
     ];
     div()
         .flex()
-        .gap(px(2.0))
+        .gap(css(2.0))
         .children(buttons.map(|(control, glyph, area, label)| {
             let is_close = matches!(control, Control::Close);
             let close = close.clone();
@@ -73,7 +74,7 @@ pub fn window_controls(
                 .flex()
                 .items_center()
                 .justify_center()
-                .size(px(28.0))
+                .size(css(28.0))
                 .window_control_area(area)
                 .aria_label(label)
                 .when(is_close, |el| el.hover(|s| s.bg(rgb(0xE81123))))

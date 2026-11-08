@@ -16,7 +16,10 @@ use gpui::{
 };
 
 use super::{Item, Toasts, Variant};
-use crate::{appearance_settings::text_px, i18n::Translator, motion::ease_out, theme::Appearance};
+use crate::units::{self, css};
+use crate::{
+    appearance_settings::text_size, i18n::Translator, motion::ease_out, theme::Appearance,
+};
 
 const FADE: Duration = Duration::from_millis(300);
 
@@ -125,13 +128,13 @@ impl ToastContainer {
         let appearance = cx.global::<Appearance>();
         let (icon, color, role) = meta(item.variant, appearance);
         let held = &self.held[&item.id];
-        let size = text_px(13.0, cx);
+        let size = text_size(13.0, cx);
         let line = size * 1.375;
         let id = item.id;
         let entity = cx.entity();
         let measure = canvas(
             move |bounds: Bounds<Pixels>, _, cx| {
-                let multiline = bounds.size.height > line + px(1.0);
+                let multiline = bounds.size.height > units::window_px(line + 1.0, cx);
                 entity.update(cx, |this, cx| {
                     if let Some(held) = this.held.get_mut(&id).filter(|h| h.multiline != multiline)
                     {
@@ -149,18 +152,18 @@ impl ToastContainer {
             div()
                 .flex_none()
                 .mr_2()
-                .text_size(size)
-                .line_height(line)
+                .text_size(css(size))
+                .line_height(css(line))
                 .font_weight(gpui::FontWeight::MEDIUM)
                 .flex()
                 .items_center()
-                .gap(px(6.0))
+                .gap(css(6.0))
                 .when_some(source.icon.clone(), |el, icon| {
-                    el.child(img(icon).size_4().rounded(px(4.0)))
+                    el.child(img(icon).size_4().rounded(css(4.0)))
                 })
                 .child(
                     div()
-                        .max_w(px(160.0))
+                        .max_w(css(160.0))
                         .truncate()
                         .text_color(tertiary)
                         .child(source.name.clone()),
@@ -170,9 +173,9 @@ impl ToastContainer {
         let message = div()
             .relative()
             .min_w_0()
-            .max_w(px(480.0))
-            .text_size(size)
-            .line_height(line)
+            .max_w(css(480.0))
+            .text_size(css(size))
+            .line_height(css(line))
             .font_weight(gpui::FontWeight::MEDIUM)
             .text_color(appearance.token("cmd-palette-item-text"))
             .child(measure)
@@ -197,7 +200,11 @@ impl ToastContainer {
                 .color(color)
                 .into_any_element(),
         };
-        let radius = if held.multiline { px(12.0) } else { px(9999.0) };
+        let radius = if held.multiline {
+            css(12.0)
+        } else {
+            css(9999.0)
+        };
         div()
             .id(("toast", id as usize))
             .role(role)
@@ -207,11 +214,11 @@ impl ToastContainer {
             .items_center()
             .gap_2()
             .rounded(radius)
-            .border_1()
+            .border(css(1.0))
             .border_color(appearance.token("cmd-palette-border"))
             .bg(appearance.token("cmd-palette-bg"))
             .px_4()
-            .py(px(10.0))
+            .py(css(10.0))
             .on_hover(cx.listener(move |this, hovered: &bool, _, cx| {
                 this.hold(id, Some(*hovered), None, cx)
             }))
@@ -271,11 +278,11 @@ impl Render for ToastContainer {
             .absolute()
             .left_0()
             .right_0()
-            .top(px(20.0))
+            .top(css(20.0))
             .flex()
             .flex_col()
             .items_center()
-            .gap(px(10.0))
+            .gap(css(10.0))
             .children(cards.into_iter().map(|(id, exiting, card)| {
                 let fade = Animation::new(FADE).with_easing(ease_out);
                 let faded = div().child(card);
@@ -296,7 +303,9 @@ impl Render for ToastContainer {
                     tracks: self.tracks.clone(),
                     child: faded,
                 };
-                div().max_w(viewport - px(32.0)).child(slide)
+                div()
+                    .max_w(viewport - units::window_px(32.0, cx))
+                    .child(slide)
             }))
     }
 }

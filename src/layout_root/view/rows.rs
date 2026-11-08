@@ -2,13 +2,14 @@
 
 use gpui::{
     AnyElement, App, Context, InteractiveElement, IntoElement, MouseButton, MouseDownEvent,
-    ParentElement, Styled, Window, div, prelude::FluentBuilder, px, relative,
+    ParentElement, Styled, Window, div, prelude::FluentBuilder, relative,
 };
 
 use super::{CHAT, LayoutRoot, PRESENCE, SeamAt, panel_drag};
 use crate::layout_root::geometry::{CHAT_MIN_PX, Ledger};
 use crate::layout_tree::{Direction, Layout, Node, Pane, Split};
 use crate::theme::Appearance;
+use crate::units::css;
 
 impl LayoutRoot {
     /// A pane: its panel paints here once its chapter lands. Its body is a drag root.
@@ -144,9 +145,9 @@ impl LayoutRoot {
                 Node::Pane(_) => cell,
             };
             let cell = if entry.node.contains_kind(CHAT) {
-                cell.flex_1().min_w(px(CHAT_MIN_PX as f32))
+                cell.flex_1().min_w(css(CHAT_MIN_PX as f32))
             } else {
-                cell.flex_none().min_w_0().w(px(
+                cell.flex_none().min_w_0().w(css(
                     widths.get(entry.node.id()).copied().unwrap_or(0.0) as f32,
                 ))
             };
@@ -203,9 +204,9 @@ pub(super) fn line(row: bool, hovered: bool, cx: &App) -> gpui::Div {
     let appearance = cx.global::<Appearance>();
     let line = div().flex_none().relative();
     let line = if row {
-        line.w(px(1.0)).h_full()
+        line.w(css(1.0)).h_full()
     } else {
-        line.h(px(1.0)).w_full()
+        line.h(css(1.0)).w_full()
     };
     let ink = if hovered {
         appearance.hsl_token("sidebar-action-icon")

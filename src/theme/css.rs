@@ -25,8 +25,8 @@ pub fn color(text: &str) -> Result<Rgba> {
     }
 }
 
-/// One CSS `box-shadow`: x, y, blur, optional spread, then a color.
-pub fn shadow(text: &str) -> Result<gpui::BoxShadow> {
+/// One CSS `box-shadow`: x, y, blur, optional spread, then a color, its lengths times `zoom`.
+pub fn shadow(text: &str, zoom: f32) -> Result<gpui::BoxShadow> {
     let text = text.trim();
     let mut lengths = Vec::new();
     let mut rest = text;
@@ -34,7 +34,7 @@ pub fn shadow(text: &str) -> Result<gpui::BoxShadow> {
         let Ok(length) = part.strip_suffix("px").unwrap_or(part).parse::<f32>() else {
             break;
         };
-        lengths.push(length);
+        lengths.push(length * zoom);
         rest = tail.trim_start();
     }
     let [x, y, blur, spread] = match lengths[..] {

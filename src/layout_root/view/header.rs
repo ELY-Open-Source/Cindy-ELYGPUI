@@ -5,10 +5,11 @@ use std::time::Duration;
 use ely_gpui_component::shell::drag_region;
 use gpui::{
     AnyElement, Context, InteractiveElement, IntoElement, MouseButton, ParentElement, Styled,
-    Window, div, px,
+    Window, div,
 };
 
 use super::LayoutRoot;
+use crate::units::css;
 use crate::{chrome, motion::Tween, theme::Appearance};
 
 const INSET_TRANSITION: Duration = Duration::from_millis(250);
@@ -76,11 +77,11 @@ impl LayoutRoot {
             .flex_none()
             .items_center()
             .w_full()
-            .h(px(chrome::TOP_ROW))
-            .border_b_1()
+            .h(css(chrome::TOP_ROW))
+            .border_b(css(1.0))
             .border_color(border)
-            .pl(px(padding))
-            .child(div().flex_none().h_full().w(px(room)))
+            .pl(css(padding))
+            .child(div().flex_none().h_full().w(css(room)))
             .child(
                 div()
                     .debug_selector(|| "content-header-slot".into())
@@ -90,7 +91,7 @@ impl LayoutRoot {
                     .flex_1()
                     .items_center(),
             )
-            .children(right.map(|width| div().flex_none().h_full().w(px(width))));
+            .children(right.map(|width| div().flex_none().h_full().w(css(width))));
         // The band drags the window; a long press here never drags the panel.
         let held = div()
             .flex_none()

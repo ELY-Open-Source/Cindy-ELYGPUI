@@ -209,3 +209,9 @@ effort high, in a Herdr pane.
 ## 6.9a Reduced motion
 
 - Round 1: PASS.
+
+## 6.9b Window zoom
+
+- Round 1: FAIL. gpui's `border_*_1()` helpers are fixed pixels, so borders did not zoom; shadow
+  lengths did not zoom either.
+- Round 2: PASS. Borders use `css(1.0)`; `shadow_token` scales by the zoom.

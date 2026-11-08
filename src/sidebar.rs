@@ -12,9 +12,10 @@ use std::time::{Duration, Instant};
 use gpui::{
     App, BorrowAppContext, Context, CursorStyle, DispatchPhase, InteractiveElement, IntoElement,
     MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, ParentElement, Render,
-    StatefulInteractiveElement, Styled, Window, canvas, div, prelude::FluentBuilder, px,
+    StatefulInteractiveElement, Styled, Window, canvas, div, prelude::FluentBuilder,
 };
 
+use crate::units::{self, css};
 use crate::{
     chrome,
     cindy_json::js_truthy,
@@ -199,7 +200,7 @@ impl Sidebar {
             return self.apply(effect, cx);
         }
         self.resize
-            .start(f64::from(f32::from(event.position.x)), self.rail);
+            .start(f64::from(units::to_css(event.position.x, cx)), self.rail);
         self.retarget(cx);
     }
 
@@ -242,7 +243,7 @@ impl Render for Sidebar {
             .right_0()
             .top_0()
             .h_full()
-            .w(px(4.0))
+            .w(css(4.0))
             .cursor(CursorStyle::ResizeLeftRight)
             .on_hover(cx.listener(|this, hovered: &bool, _, cx| {
                 this.handle_hovered = *hovered;
@@ -258,7 +259,7 @@ impl Render for Sidebar {
                     .right_0()
                     .top_0()
                     .h_full()
-                    .w(px(1.0))
+                    .w(css(1.0))
                     .bg(line),
             );
         let peeking = self.peek.visible();
@@ -272,13 +273,13 @@ impl Render for Sidebar {
             .flex_col()
             .flex_1()
             .min_h_0()
-            .w(px(content_width))
+            .w(css(content_width))
             .opacity(if peeking { 1.0 } else { opacity })
             .child(
                 ely_gpui_component::shell::drag_region("sidebar-top-row", window, cx)
                     .flex_none()
                     .w_full()
-                    .h(px(chrome::TOP_ROW)),
+                    .h(css(chrome::TOP_ROW)),
             )
             .into_any_element();
         let (column, drawer) = match peeking {
@@ -296,12 +297,12 @@ impl Render for Sidebar {
             .flex()
             .flex_col()
             .h_full()
-            .w(px(width))
+            .w(css(width))
             .when(!peeking, |el| {
                 el.overflow_hidden().bg(appearance.hsl_token("sidebar"))
             })
             .when(!self.collapsed && !peeking, |el| {
-                el.border_r_1()
+                el.border_r(css(1.0))
                     .border_color(appearance.hsl_token("sidebar-border"))
             })
             .when(!peeking, |el| el.child(column))
@@ -317,7 +318,7 @@ impl Render for Sidebar {
                             window.on_mouse_event(move |e: &MouseMoveEvent, phase, _, cx| {
                                 if phase == DispatchPhase::Bubble {
                                     mover.update(cx, |s, cx| {
-                                        s.handle_move(f32::from(e.position.x), cx)
+                                        s.handle_move(units::to_css(e.position.x, cx), cx)
                                     });
                                 }
                             });

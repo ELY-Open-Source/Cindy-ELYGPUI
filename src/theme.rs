@@ -381,10 +381,11 @@ impl Appearance {
         color.unwrap_or_else(|error| panic!("{error:#}")).into()
     }
 
-    /// A `box-shadow` token of the active theme.
-    pub fn shadow_token(&self, id: &str) -> gpui::BoxShadow {
+    /// A `box-shadow` token of the active theme, at the window zoom.
+    pub fn shadow_token(&self, id: &str, cx: &gpui::App) -> gpui::BoxShadow {
+        let zoom = cx.global::<crate::units::Zoom>().0;
         let value = self.themes.value(&self.active.theme, id);
-        let shadow = value.and_then(|v| css::shadow(&v).with_context(|| format!("--{id}")));
+        let shadow = value.and_then(|v| css::shadow(&v, zoom).with_context(|| format!("--{id}")));
         shadow.unwrap_or_else(|error| panic!("{error:#}"))
     }
 

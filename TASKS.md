@@ -123,7 +123,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `enable-animations`, macOS reduce motion, Windows client-area animation), applied as `globals.css`
   does: motion tokens at 0, spinners still, `motion-reduce:` transitions off; other features' rules
   land with them
-- [ ] 6.9b Window zoom from `appearance-settings.json` (`windowZoom`, clamped and stepped as
+- [x] 6.9b Window zoom from `appearance-settings.json` (`windowZoom`, clamped and stepped as
   `appearanceSettings.ts` does), scaling everything as Chromium's zoom factor does: Cindy's CSS
   pixels drawn as rems, the rem size 16 × zoom, layout math in CSS pixels; Chromium's per-URL zoom
   memory, which `restoreWindowZoom` undoes, has no gpui counterpart

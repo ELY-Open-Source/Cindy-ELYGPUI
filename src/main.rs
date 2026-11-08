@@ -18,6 +18,7 @@ mod theme;
 mod theme_import;
 mod tip;
 mod toast;
+mod units;
 mod window_state;
 
 use std::path::PathBuf;
@@ -34,13 +35,13 @@ struct Startup {
     translator: Translator,
     theme_mode: theme::Mode,
     family: Option<String>,
-    fonts: appearance_settings::Fonts,
+    appearance: appearance_settings::Settings,
     activation: main_window::Activation,
     preferences: preferences::Preferences,
 }
 
 /// Cindy's `applyFontSettings` on Ely's theme: UI scale and families.
-fn apply_fonts(fonts: &appearance_settings::Fonts, cx: &mut App) {
+fn apply_fonts(fonts: &appearance_settings::Settings, cx: &mut App) {
     let ui = appearance_settings::first_family(&fonts.ui_family);
     let code = appearance_settings::first_family(&fonts.code_family);
     log::info!(target: "appearance-settings-store", "fonts: ui {ui:?} code {code:?} size {}", fonts.ui_size);
@@ -59,7 +60,8 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     ely_gpui_component::init(cx).context("Ely failed to start")?;
     cx.set_global(motion::ReducedMotion::default());
     motion::refresh_reduced_motion(cx);
-    apply_fonts(&startup.fonts, cx);
+    apply_fonts(&startup.appearance, cx);
+    cx.set_global(units::Zoom(startup.appearance.window_zoom as f32));
     cx.set_global(I18n::new(startup.translator.ely_tag()));
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
@@ -100,7 +102,7 @@ fn startup() -> Result<Startup> {
     Ok(Startup {
         theme_mode: theme::Mode::parse(preferences.text("theme")?),
         family: preferences.text("theme.familyId")?.map(str::to_owned),
-        fonts: appearance_settings::fonts(&user_data),
+        appearance: appearance_settings::read(&user_data),
         activation: main_window::Activation {
             mac_setting: main_window::mac_swallow_setting(&user_data),
             windows_setting: preferences.text("input.swallowActivationClick")? == Some("true"),

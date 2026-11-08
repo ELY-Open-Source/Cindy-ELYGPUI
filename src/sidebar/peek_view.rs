@@ -4,10 +4,11 @@ use std::{cell::Cell, rc::Rc, time::Duration};
 
 use gpui::{
     AnyElement, Bounds, Context, DispatchPhase, InteractiveElement, IntoElement, MouseMoveEvent,
-    ParentElement, Pixels, Styled, Window, canvas, deferred, div, px,
+    ParentElement, Pixels, Styled, Window, canvas, deferred, div,
 };
 
 use super::{Sidebar, now, peek::State};
+use crate::units::{self, css};
 use crate::{motion, theme::Appearance};
 
 const SLIDE: Duration = Duration::from_millis(200);
@@ -39,7 +40,8 @@ impl Sidebar {
 
     fn pointer_moved(&mut self, event: &MouseMoveEvent, cx: &mut Context<Self>) {
         let over_trigger = self.trigger.get().contains(&event.position);
-        let over_drawer = self.peek.visible() && event.position.x < px(self.resize.width as f32);
+        let over_drawer =
+            self.peek.visible() && units::to_css(event.position.x, cx) < self.resize.width as f32;
         self.peek
             .pointer_moved(over_drawer || over_trigger, over_trigger, now(cx));
         self.after_peek(cx);
@@ -116,16 +118,16 @@ impl Sidebar {
             .debug_selector(|| "sidebar-peek-drawer".into())
             .absolute()
             .top_0()
-            .left(px(-width * (1.0 - shown)))
+            .left(css(-width * (1.0 - shown)))
             .h(window.viewport_size().height)
-            .w(px(width))
+            .w(css(width))
             .flex()
             .flex_col()
             .overflow_hidden()
             .bg(appearance.hsl_token("sidebar"))
-            .border_r_1()
+            .border_r(css(1.0))
             .border_color(appearance.hsl_token("sidebar-border"))
-            .shadow(vec![appearance.shadow_token("shadow-menu")])
+            .shadow(vec![appearance.shadow_token("shadow-menu", cx)])
             .opacity(if closing { shown } else { 1.0 })
             .child(column);
         let layer = div().absolute().top_0().left_0().children(listen);

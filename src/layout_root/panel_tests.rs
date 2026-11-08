@@ -17,16 +17,16 @@ fn rect(left: f32, top: f32, width: f32, height: f32) -> Bounds<gpui::Pixels> {
 
 #[test]
 fn drop_rules_match_cindy() {
-    assert!(is_droppable(&rect(0.0, 0.0, 300.0, 800.0)));
+    assert!(is_droppable(&rect(0.0, 0.0, 300.0, 800.0), 1.0));
     for (w, h) in [(0.0, 800.0), (0.0, 0.0), (300.0, 0.0), (20.0, 800.0)] {
-        assert!(!is_droppable(&rect(0.0, 0.0, w, h)));
+        assert!(!is_droppable(&rect(0.0, 0.0, w, h), 1.0));
     }
     let pane = rect(100.0, 100.0, 400.0, 600.0);
     assert!(is_swap(point(px(300.0), px(400.0)), &pane, 0, 1));
     assert!(!is_swap(point(px(300.0), px(400.0)), &pane, 1, 1));
     assert!(!is_swap(point(px(50.0), px(400.0)), &pane, 0, 1));
     assert_eq!(
-        drop_zone(&rect(80.0, 80.0, 440.0, 640.0)),
+        drop_zone(&rect(80.0, 80.0, 440.0, 640.0), 1.0),
         rect(86.0, 86.0, 428.0, 628.0)
     );
 }
