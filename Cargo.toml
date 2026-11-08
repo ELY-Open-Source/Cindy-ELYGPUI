@@ -1,0 +1,17 @@
+[package]
+name = "cindy"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.98"
+license = "Apache-2.0"
+description = "Cindy, ported to Rust on GPUI and Ely GPUI Components."
+repository = "https://github.com/ELY-Open-Source/Cindy-ELYGPUI"
+publish = false
+
+[dependencies]
+anyhow = "1"
+ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components", rev = "e0f355ac1a669c24336244bcaa8131f7f0e4f1b5" }
+env_logger = "0.11"
+gpui = { package = "gpui-pre", version = "=0.3.11" }
+gpui_platform = { package = "gpui-pre-platform", version = "=0.3.11", features = ["font-kit", "wayland", "x11"] }
+log = "0.4"

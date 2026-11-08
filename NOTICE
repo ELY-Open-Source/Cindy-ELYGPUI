@@ -1,0 +1,8 @@
+Cindy-ELYGPUI
+Copyright 2026 ELY Open Source
+
+This product is a Rust port of Cindy (https://github.com/makecindy/cindy),
+Copyright 2026 XD Inc., licensed under the Apache License 2.0.
+
+It uses Ely GPUI Components
+(https://github.com/ELY-Open-Source/Ely-GPUI-Components), licensed under MIT.
