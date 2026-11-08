@@ -12,11 +12,11 @@ use super::LayoutRoot;
 use crate::layout_tree::{Layout, LayoutStore, Node};
 use crate::{os_appearance::Initial, theme::Appearance, theme::Mode};
 
-fn tree(chat: f64, right: f64) -> Layout {
+pub(super) fn tree(chat: f64, right: f64) -> Layout {
     tree_in("row", chat, right)
 }
 
-fn tree_in(direction: &str, chat: f64, right: f64) -> Layout {
+pub(super) fn tree_in(direction: &str, chat: f64, right: f64) -> Layout {
     let raw = json!({
         "schemaVersion": 1,
         "sidebar": { "type": "pane", "id": "sessions", "panelKind": "session-list", "edge": "left" },
@@ -30,11 +30,42 @@ fn tree_in(direction: &str, chat: f64, right: f64) -> Layout {
 }
 
 /// A window `width` wide holding only the content area, over a store in `dir`.
-fn open<'a>(
+pub(super) fn open<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,
     layout: Layout,
     width: f32,
+) -> &'a mut VisualTestContext {
+    open_beside(cx, dir, layout, width, 0.0)
+}
+
+/// The content area right of a `sidebar` wide column, as the main window lays it out.
+struct Row {
+    sidebar: f32,
+    content: gpui::Entity<LayoutRoot>,
+}
+
+impl gpui::Render for Row {
+    fn render(
+        &mut self,
+        _: &mut gpui::Window,
+        _: &mut gpui::Context<Self>,
+    ) -> impl gpui::IntoElement {
+        use gpui::{ParentElement as _, Styled as _};
+        gpui::div()
+            .size_full()
+            .flex()
+            .child(gpui::div().flex_none().w(px(self.sidebar)))
+            .child(self.content.clone())
+    }
+}
+
+pub(super) fn open_beside<'a>(
+    cx: &'a mut TestAppContext,
+    dir: &std::path::Path,
+    layout: Layout,
+    width: f32,
+    sidebar: f32,
 ) -> &'a mut VisualTestContext {
     cx.update(|cx| {
         let initial = Initial {
@@ -42,17 +73,25 @@ fn open<'a>(
             gpui_agrees: true,
         };
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
+        cx.set_global(crate::i18n::Translator::new("en").unwrap());
+        cx.set_global(crate::toast::Toasts::default());
         let mut store = LayoutStore::open(dir);
         store.set(layout).unwrap();
         cx.set_global(store);
     });
-    let (_, vcx) = cx.add_window_view(|_, cx| LayoutRoot::new(0.0, cx));
+    let (_, vcx) = cx.add_window_view(|_, cx| {
+        use gpui::AppContext as _;
+        Row {
+            sidebar,
+            content: cx.new(|cx| LayoutRoot::new(f64::from(sidebar), cx)),
+        }
+    });
     vcx.simulate_resize(size(px(width), px(900.0)));
     vcx.run_until_parked();
     vcx
 }
 
-fn fractions(cx: &mut VisualTestContext) -> (Vec<f64>, Option<f64>) {
+pub(super) fn fractions(cx: &mut VisualTestContext) -> (Vec<f64>, Option<f64>) {
     cx.update(|_, cx| {
         let Node::Split(split) = &cx.global::<LayoutStore>().layout().content else {
             panic!("row")
@@ -67,7 +106,7 @@ fn fractions(cx: &mut VisualTestContext) -> (Vec<f64>, Option<f64>) {
     })
 }
 
-fn saved(dir: &std::path::Path) -> serde_json::Value {
+pub(super) fn saved(dir: &std::path::Path) -> serde_json::Value {
     serde_json::from_str(&std::fs::read_to_string(dir.join("layout.v1.json")).unwrap()).unwrap()
 }
 

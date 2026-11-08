@@ -25,6 +25,32 @@ pub fn color(text: &str) -> Result<Rgba> {
     }
 }
 
+/// One CSS `box-shadow`: x, y, blur, optional spread, then a color.
+pub fn shadow(text: &str) -> Result<gpui::BoxShadow> {
+    let text = text.trim();
+    let mut lengths = Vec::new();
+    let mut rest = text;
+    while let Some((part, tail)) = rest.split_once(' ') {
+        let Ok(length) = part.strip_suffix("px").unwrap_or(part).parse::<f32>() else {
+            break;
+        };
+        lengths.push(length);
+        rest = tail.trim_start();
+    }
+    let [x, y, blur, spread] = match lengths[..] {
+        [x, y, blur] => [x, y, blur, 0.0],
+        [x, y, blur, spread] => [x, y, blur, spread],
+        _ => bail!("unsupported shadow: {text}"),
+    };
+    Ok(gpui::BoxShadow {
+        color: color(rest)?.into(),
+        offset: gpui::point(gpui::px(x), gpui::px(y)),
+        blur_radius: gpui::px(blur),
+        spread_radius: gpui::px(spread),
+        inset: false,
+    })
+}
+
 fn function(text: &str) -> Option<(&str, &str)> {
     let open = text.find('(')?;
     let args = text[open + 1..].strip_suffix(')')?;

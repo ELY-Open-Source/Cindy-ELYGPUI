@@ -101,7 +101,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   info and success, 8s for warning and error, 0 forever, hover pauses, 300ms exit, source and
   action) and `components/ui/toast/Toast.tsx` and `ToastContainer.tsx` draw them, in every window;
   the file transfer toasts in the same container go to chapter 18
-- [ ] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
+- [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
 - [ ] 6.3e Temporary maximize and restore without changing the tree, as `panelMaximize.tsx` and
   `LayoutRoot.tsx` keep it
@@ -122,7 +122,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,
   hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
   and restores them on exit
-- [ ] 6.9 Window zoom and app icon from `appearance-settings.json`; the window material per family as
+- [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
+  from `appearance-settings.json`; the window material per family as
   `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
   `wallpaperId` with the custom URL from `custom-wallpaper.json` (`custom` without one falls back to
   `none`), official images and videos downloaded and cached as `wallpaper-video.ts` does, static and

@@ -149,3 +149,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Hover during the exit fade dropped the exit task; the source header lacked the
   message's text style; a doc comment sat on the wrong function. Fixed all three.
 - Round 2: PASS.
+
+## 6.3d Panel swap
+
+- Round 1: FAIL. `anchored()` fit the ghost and zone inside the window; Cindy's stay at the
+  pointer offset and clip. Fixed: absolute boxes in a deferred layer at the content origin.
+- Round 2: PASS.

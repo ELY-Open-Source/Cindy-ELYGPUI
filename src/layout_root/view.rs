@@ -13,6 +13,7 @@ use super::divider::{ColumnDrag, RootDrag, equalize_column, equalize_root};
 use super::geometry::{Entry, Ledger, Presence, Seam, normalize_sub_min_fractions, root_widths};
 use crate::layout_tree::{Direction, Layout, LayoutStore, Node};
 
+pub(super) mod panel_drag;
 mod rows;
 
 const SELF_HEAL_SETTLE: Duration = Duration::from_millis(120);
@@ -84,6 +85,8 @@ pub struct LayoutRoot {
     hovered: Option<String>,
     heal_key: Option<(f64, Layout)>,
     heal: Option<Task<()>>,
+    gesture: Option<panel_drag::Gesture>,
+    rects: panel_drag::SharedRects,
 }
 
 impl LayoutRoot {
@@ -100,6 +103,8 @@ impl LayoutRoot {
             hovered: None,
             heal_key: None,
             heal: None,
+            gesture: None,
+            rects: Default::default(),
         }
     }
 
@@ -122,7 +127,7 @@ impl LayoutRoot {
     }
 
     fn press(&mut self, at: &SeamAt, event: &MouseDownEvent, cx: &mut Context<Self>) {
-        if self.drag.is_some() {
+        if self.drag.is_some() || self.gesture.is_some() {
             return;
         }
         cx.stop_propagation();
@@ -244,7 +249,7 @@ impl LayoutRoot {
     }
 
     fn self_heal(&mut self, cx: &mut Context<Self>) {
-        if self.drag.is_some() || self.avail <= 0.0 {
+        if self.drag.is_some() || self.panel_dragging() || self.avail <= 0.0 {
             return;
         }
         let layout = cx.global::<LayoutStore>().layout();
@@ -309,18 +314,68 @@ impl Render for LayoutRoot {
         self.height = f(viewport.height);
         let layout = cx.global::<LayoutStore>().layout().clone();
         self.schedule_heal(&layout, cx);
+        {
+            let mut rects = self.rects.borrow_mut();
+            rects.panes.clear();
+            rects.roots.clear();
+        }
         let dragging = self.drag.as_ref().map(|d| match d {
             Drag::Root { .. } => CursorStyle::ResizeLeftRight,
             Drag::Column { .. } => CursorStyle::ResizeUpDown,
         });
         let this: Entity<Self> = cx.entity();
+        let gesture = self
+            .gesture
+            .is_some()
+            .then(|| self.panel_dragging().then_some(CursorStyle::ClosedHand));
+        let held = this.clone();
         div()
             .flex()
             .flex_1()
             .min_w_0()
             .h_full()
             .overflow_hidden()
+            .relative()
+            .child(panel_drag::origin_recorder(&self.rects))
             .children(self.root_row(&layout, cx))
+            .children(self.panel_overlay(cx))
+            .when_some(gesture, |el, cursor| {
+                el.child(
+                    canvas(
+                        |_, _, _| {},
+                        move |_, _, window, _| {
+                            if let Some(cursor) = cursor {
+                                window.set_window_cursor_style(cursor);
+                            }
+                            let mover = held.clone();
+                            window.on_mouse_event(move |event: &MouseMoveEvent, phase, _, cx| {
+                                if phase == DispatchPhase::Bubble {
+                                    mover.update(cx, |root, cx| {
+                                        root.panel_moved(event.position, cx)
+                                    });
+                                }
+                            });
+                            window.on_mouse_event(
+                                move |event: &MouseUpEvent, phase, window, cx| {
+                                    if phase == DispatchPhase::Capture
+                                        && event.button == MouseButton::Left
+                                    {
+                                        let dragging = held.read(cx).panel_dragging();
+                                        held.update(cx, |root, cx| {
+                                            root.panel_finish(true, window, cx)
+                                        });
+                                        if dragging {
+                                            cx.stop_propagation();
+                                        }
+                                    }
+                                },
+                            );
+                        },
+                    )
+                    .absolute()
+                    .size_0(),
+                )
+            })
             .when_some(dragging, |el, cursor| {
                 el.child(
                     canvas(

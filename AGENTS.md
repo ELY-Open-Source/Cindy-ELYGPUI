@@ -52,6 +52,12 @@ defines scope and what 1:1 means.
   slide starts in the frame the new tops are known. `motion::ease_out` is CSS `ease-out`.
 - Cindy's `components/ui` primitives are drawn with Ely's (the toast action is Ely's secondary
   small `Button`); Cindy's `--text-N` is `appearance_settings::text_px`.
+- Panel swap: `layout_root/view/panel_drag.rs` ports `PanelDragController.tsx`. Each pane and split
+  root child records its painted bounds in prepaint (Cindy reads the DOM); a 600ms still press on
+  a pane body starts the drag, Escape cancels through `intercept_keystrokes`, release swaps and
+  toasts. Panel content that must not start a drag stops the mouse-down from bubbling.
+- Box shadows come from tokens through `Appearance::shadow_token`; Cindy's motion tokens are in
+  `motion.rs` (`FAST`, `motion_ease_out`).
 - Channel tokens (`0 0% 64%`) are read through `Appearance::hsl_token`, as Tailwind's `hslVar`
   wraps them in `hsl()`; `token` takes full colors.
 - View tests use gpui's `test-support` (a dev-dependency) and drive real mouse events

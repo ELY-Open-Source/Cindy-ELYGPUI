@@ -72,6 +72,8 @@ fn every_builtin_token_resolves() {
             };
             if colorish(&value) {
                 themes.color(theme, id).unwrap_or_else(|e| panic!("{e:#}"));
+            } else if id.starts_with("shadow-menu") {
+                super::css::shadow(&value).unwrap_or_else(|e| panic!("{} --{id}: {e:#}", theme.id));
             } else if channels.is_match(&value) {
                 themes.hsl(theme, id).unwrap_or_else(|e| panic!("{e:#}"));
             }
@@ -311,4 +313,15 @@ fn omarchy_watcher_fires_on_theme_name_after_a_swap() {
         assert!(std::time::Instant::now() < deadline, "no switch message");
         std::thread::sleep(std::time::Duration::from_millis(10));
     }
+}
+
+#[test]
+fn reads_a_box_shadow() {
+    let shadow = super::css::shadow("0 4px 16px rgba(0, 0, 0, 0.15)").unwrap();
+    assert_eq!(
+        (shadow.offset.y, shadow.blur_radius, shadow.spread_radius),
+        (gpui::px(4.0), gpui::px(16.0), gpui::px(0.0))
+    );
+    assert!((shadow.color.a - 0.15).abs() < 1e-6);
+    assert!(super::css::shadow("0 4px rgba(0, 0, 0, 0.15)").is_err());
 }

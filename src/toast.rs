@@ -2,7 +2,10 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the panel swap in 6.3d is the first caller")
+    expect(
+        dead_code,
+        reason = "loading, info, warning, sources and actions land with their callers"
+    )
 )]
 
 #[cfg(test)]

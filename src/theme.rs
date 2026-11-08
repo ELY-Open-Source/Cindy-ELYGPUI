@@ -381,6 +381,13 @@ impl Appearance {
         color.unwrap_or_else(|error| panic!("{error:#}")).into()
     }
 
+    /// A `box-shadow` token of the active theme.
+    pub fn shadow_token(&self, id: &str) -> gpui::BoxShadow {
+        let value = self.themes.value(&self.active.theme, id);
+        let shadow = value.and_then(|v| css::shadow(&v).with_context(|| format!("--{id}")));
+        shadow.unwrap_or_else(|error| panic!("{error:#}"))
+    }
+
     /// A channel token of the active theme, as `hsl(var(--id))`.
     pub fn hsl_token(&self, id: &str) -> gpui::Hsla {
         let color = self.themes.hsl(&self.active.theme, id);

@@ -1,28 +1,43 @@
 //! The tree as elements: `NodeView`, the flattened root and the divider line.
 
 use gpui::{
-    AnyElement, App, Context, InteractiveElement, IntoElement, ParentElement, Styled, div,
-    prelude::FluentBuilder, px, relative,
+    AnyElement, App, Context, InteractiveElement, IntoElement, MouseButton, MouseDownEvent,
+    ParentElement, Styled, div, prelude::FluentBuilder, px, relative,
 };
 
-use super::{CHAT, LayoutRoot, PRESENCE, SeamAt};
+use super::{CHAT, LayoutRoot, PRESENCE, SeamAt, panel_drag};
 use crate::layout_root::geometry::{CHAT_MIN_PX, Ledger};
-use crate::layout_tree::{Direction, Layout, Node, Split};
+use crate::layout_tree::{Direction, Layout, Node, Pane, Split};
 use crate::theme::Appearance;
 
 impl LayoutRoot {
-    /// A pane: its panel paints here once its chapter lands.
-    fn pane(id: &str) -> AnyElement {
+    /// A pane: its panel paints here once its chapter lands. Its body is a drag root.
+    fn pane(&self, pane: &Pane, cx: &mut Context<Self>) -> AnyElement {
+        let kind = pane.panel_kind.clone();
         div()
-            .id(gpui::ElementId::Name(id.to_owned().into()))
+            .id(gpui::ElementId::Name(pane.id.clone().into()))
+            .relative()
             .size_full()
+            .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))
+            .on_mouse_down(
+                MouseButton::Left,
+                cx.listener(move |this, event: &MouseDownEvent, window, cx| {
+                    this.panel_press(
+                        &kind,
+                        event.position,
+                        window.window_handle().window_id(),
+                        cx,
+                    )
+                }),
+            )
             .into_any_element()
     }
 
     /// `NodeView`: a pane, or a split laid out by visible shares with its dividers.
     fn node(&self, node: &Node, cx: &mut Context<Self>) -> AnyElement {
-        let Node::Split(split) = node else {
-            return Self::pane(node.id());
+        let split = match node {
+            Node::Pane(pane) => return self.pane(pane, cx),
+            Node::Split(split) => split,
         };
         let ledger = Ledger::new(&split.children, &PRESENCE);
         let row = split.direction == Direction::Row;
@@ -107,6 +122,13 @@ impl LayoutRoot {
                 };
                 items.push(self.divider(at, cx));
             }
+            let cell = match entry.node {
+                Node::Split(split) => {
+                    cell.relative()
+                        .child(panel_drag::recorder(&self.rects, false, &split.id))
+                }
+                Node::Pane(_) => cell,
+            };
             let cell = if entry.node.contains_kind(CHAT) {
                 cell.flex_1().min_w(px(CHAT_MIN_PX as f32))
             } else {
