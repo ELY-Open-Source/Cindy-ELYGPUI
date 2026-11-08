@@ -148,14 +148,14 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 9. Chat view
 
 - [ ] 9.0 Expand from Cindy's code
-- [ ] 9.1 Tab groups (from 6.7): `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
-  place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
+- [ ] 9.1 Tab groups (from 6.7): `right-tabs` and the edge groups, as `tabGroups.ts` and
+  `ensureTabGroupPane` place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
   trigger is `TabGroupPanel.tsx`); the pane placement signals panels read (`panePlacement.tsx`:
   at window top, at window left, fill); the panel registry as `panels/registry.ts` keeps it
   (built-in kinds with their collapse memory, tab group kinds registered, unregistered and
-  parked); `right-tabs` collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
-  as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
+  parked); `right-tabs` collapse per session under `right-sidebar-collapsed:<sessionId>`; the window
+  grows and shrinks as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
 - [ ] 9.2 Detached windows (from 6.10): bounds in `right-sidebar-window-state.json` and the shared
   `sidebar-tab-window-state.json`, restored without maximize or fullscreen; which tabs are detached
