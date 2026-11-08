@@ -107,3 +107,24 @@ fn families_pick_variants_with_cindy_fallback() {
     assert_eq!(light.theme.id, "atom-one-light");
     assert_eq!(Themes::family(Some("nope")), "cindy");
 }
+
+#[test]
+fn every_family_maps_to_an_ely_palette() {
+    use crate::os_appearance::Initial;
+    for (family, ..) in super::FAMILIES {
+        for os in [WindowAppearance::Light, WindowAppearance::Dark] {
+            let initial = Initial {
+                os,
+                gpui_agrees: true,
+            };
+            let appearance = super::Appearance::new(Mode::System, Some(family), initial).unwrap();
+            let palette = super::ely::palette(&appearance);
+            assert_eq!(palette.bg, appearance.token("surface"), "{family} {os:?}");
+            assert_eq!(
+                palette.accent,
+                appearance.token("accent-cta-bg"),
+                "{family} {os:?}"
+            );
+        }
+    }
+}

@@ -85,3 +85,7 @@ effort high, in a Herdr pane.
 ## 5.2 Token resolution and families
 
 - Round 1: PASS.
+
+## 5.3 Ely palette
+
+- Round 1: PASS.

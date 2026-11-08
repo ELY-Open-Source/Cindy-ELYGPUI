@@ -70,7 +70,8 @@ fn follow_os(_: &mut Root, window: &mut Window, cx: &mut Context<Root>) {
     }
     log::info!(target: "theme", "OS appearance {os:?}");
     log_theme(appearance);
-    let kind = appearance.kind();
+    let (kind, palette) = (appearance.kind(), theme::ely::palette(appearance));
+    Theme::set_palette(ely_mode(kind), Some(palette), cx);
     Theme::set_mode(ely_mode(kind), cx);
 }
 
@@ -80,7 +81,9 @@ fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String
     cx.set_global(translator);
     let appearance = Appearance::new(theme.0, theme.1.as_deref(), os_appearance::initial(cx))?;
     log_theme(&appearance);
-    Theme::set_mode_now(ely_mode(appearance.kind()), cx);
+    let mode = ely_mode(appearance.kind());
+    Theme::set_palette(mode, Some(theme::ely::palette(&appearance)), cx);
+    Theme::set_mode_now(mode, cx);
     cx.set_global(appearance);
     cx.open_window(WindowOptions::default(), |window, cx| {
         cx.new(|cx| {

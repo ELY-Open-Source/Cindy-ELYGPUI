@@ -59,7 +59,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   theme's type, else for a dark theme the light default; `var(--x)` aliases, `-hsl` triplets); built-in families as `families.ts`; `theme`
   (light, dark, system) and `theme.familyId` read from the port's preferences, with Cindy's
   single-variant fallback; the system mode follows the OS
-- [ ] 5.3 Cindy tokens drive the window: Ely's `Theme::set_palette` gets a palette mapped from the
+- [x] 5.3 Cindy tokens drive the window: Ely's `Theme::set_palette` gets a palette mapped from the
   resolved tokens for each mode, and the resolved tokens stay a global for Cindy's own surfaces
 - [ ] 5.4 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (`-local`
   ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
