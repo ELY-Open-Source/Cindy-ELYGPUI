@@ -119,16 +119,6 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
   its tooltip (`DESIGN.md` §14.6) and hover peek and pin as `useSidebarPeek.ts` does; the
   `ContentHeader` spacer that makes room for the cluster
-- [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
-  place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
-  maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
-  trigger is `TabGroupPanel.tsx`); the pane placement signals panels read (`panePlacement.tsx`:
-  at window top, at window left, fill); the panel registry as `panels/registry.ts` keeps it
-  (built-in kinds with their collapse memory, tab group kinds registered, unregistered and
-  parked); `right-tabs`
-  collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
-  as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
-  widths)
 - [ ] 6.8 Routes: chat and settings with back and forward history; the title bar's menu button
   (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets;
   settings takes over the window, hiding the sidebar (and turning its hover peek off) and non-chat panels and unregistering edge
@@ -142,12 +132,6 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   with their normalization, null meaning and the legacy overlay-to-visibility derivation; zoom read,
   applied and restored across navigation and focus as `appearance-settings-ipc.ts` does; the settings
   UI and its write IPC go to chapter 12
-- [ ] 6.10 Detached windows: bounds in `right-sidebar-window-state.json` and the shared
-  `sidebar-tab-window-state.json`, restored without maximize or fullscreen; which tabs are detached
-  lives only for the process, so restart or crash returns them to the main window; legacy
-  `right-sidebar-window-settings.json` deleted; detach, merge back, close and multi-window cascade as
-  `sidebar-tab-window/controller.ts` does; `swallowActivationClick` for these windows too
-
 ## 7. Mock mode
 
 - [ ] 7.0 Expand from Cindy's code
@@ -164,6 +148,20 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 9. Chat view
 
 - [ ] 9.0 Expand from Cindy's code
+- [ ] 9.1 Tab groups (from 6.7): `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
+  place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
+  maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
+  trigger is `TabGroupPanel.tsx`); the pane placement signals panels read (`panePlacement.tsx`:
+  at window top, at window left, fill); the panel registry as `panels/registry.ts` keeps it
+  (built-in kinds with their collapse memory, tab group kinds registered, unregistered and
+  parked); `right-tabs` collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
+  as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
+  widths)
+- [ ] 9.2 Detached windows (from 6.10): bounds in `right-sidebar-window-state.json` and the shared
+  `sidebar-tab-window-state.json`, restored without maximize or fullscreen; which tabs are detached
+  lives only for the process, so restart or crash returns them to the main window; legacy
+  `right-sidebar-window-settings.json` deleted; detach, merge back, close and multi-window cascade as
+  `sidebar-tab-window/controller.ts` does; `swallowActivationClick` for these windows too
 
 ## 10. Agent runtime
 

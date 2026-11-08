@@ -60,6 +60,12 @@ read from Cindy's code and rule docs for that area.
     tray, setup migration, local agent API.
 23. **Distribution.** Updater, packaging and signing on the six targets.
 
+## Known risks
+
+- Web content. Cindy's browser tab and every `.cindy` plugin panel render web pages in Electron
+  webviews. GPUI has no web view. Chapters 16 and 17 need an embedded one; the choice is made
+  before those chapters, with the user.
+
 ## Out of scope
 
 - Cindy's server, which lives in its own repository.

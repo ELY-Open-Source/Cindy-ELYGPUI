@@ -195,3 +195,8 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. A pin mid-slide left the drawer off screen; a hide during the pin slid the
   column; the toggle lacked aria-expanded. Fixed all three; the first two with regressions.
 - Round 2: PASS.
+
+## 6.7 and 6.10 Tab groups and detached windows
+
+- Moved to 9.1 and 9.2: the right sidebar's tabs live per task, are mostly plugins, and are turned
+  on by the chat view; built in chapter 6 they would host nothing.
