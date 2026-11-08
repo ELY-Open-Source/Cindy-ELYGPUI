@@ -37,6 +37,14 @@ fn apply(cx: &mut App) {
     Theme::set_palette(ely_mode(kind), Some(palette), cx);
     Theme::set_mode(ely_mode(kind), cx);
     crate::dock_icon::apply(cx);
+    for handle in cx.windows() {
+        let applied = handle.update(cx, |_, window, cx| {
+            crate::window_material::apply(window, cx)
+        });
+        if let Err(error) = applied {
+            log::debug!(target: "vibrancyConfig", "window gone before its material: {error:#}");
+        }
+    }
     cx.refresh_windows();
 }
 

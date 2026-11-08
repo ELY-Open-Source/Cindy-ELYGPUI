@@ -103,6 +103,12 @@ defines scope and what 1:1 means.
   keeps its own icon for `default` until another replaced it. Other platforms do nothing, as
   Cindy. The full crate does not cross-compile from Linux; macOS code is checked in a scratch
   crate and by the macOS CI test `every_artwork_is_embedded`.
+- Window material: `src/window_material.rs` ports `vibrancyConfig.ts` (`resolve`, with Cindy's
+  test cases) and the glass CSS (`root`, `sidebar`, `overlay`, `cindy_theme`). `native.rs` ports
+  Electron: macOS `setVibrancy` (an `NSVisualEffectView` behind the content), Windows 11 22H2
+  `setBackgroundMaterial` (frame margins and `DWMWA_SYSTEMBACKDROP_TYPE`), with gpui painting the
+  backing color. It applies when a window opens and on each theme apply. Wallpaper coverage
+  (`covered`) comes with 6.9e. Native code is cross-linted in a scratch crate.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

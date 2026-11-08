@@ -90,7 +90,7 @@ impl Render for Root {
             .relative()
             .size_full()
             .flex()
-            .bg(appearance.hsl_token("content-area"))
+            .bg(crate::window_material::root(cx))
             .text_color(appearance.token("text-primary"))
             .capture_key_down(cx.listener(|this, event: &gpui::KeyDownEvent, _, cx| {
                 if cx.global::<AppShortcuts>().matches("toggle-sidebar", event) {
@@ -194,6 +194,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
     let policy = Policy::new(activation.mac_setting, activation.windows_setting);
     cx.open_window(options, |window, cx| {
         window.set_rem_size(units::rem_size(cx));
+        crate::window_material::apply(window, cx);
         cx.new(|cx| {
             cx.observe_window_appearance(window, shell::follow_os)
                 .detach();

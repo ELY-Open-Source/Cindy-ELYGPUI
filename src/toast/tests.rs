@@ -33,6 +33,7 @@ fn open_with_host(cx: &mut TestAppContext) -> (Entity<Host>, &mut VisualTestCont
         };
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
+        cx.set_global(crate::window_material::Material::load());
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
         cx.set_global(Toasts::default());

@@ -216,7 +216,7 @@ impl ToastContainer {
             .rounded(radius)
             .border(css(1.0))
             .border_color(appearance.token("cmd-palette-border"))
-            .bg(appearance.token("cmd-palette-bg"))
+            .bg(crate::window_material::overlay(cx))
             .px_4()
             .py(css(10.0))
             .on_hover(cx.listener(move |this, hovered: &bool, _, cx| {

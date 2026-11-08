@@ -74,6 +74,7 @@ pub(super) fn open_beside<'a>(
         };
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
+        cx.set_global(crate::window_material::Material::load());
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
         cx.set_global(crate::toast::Toasts::default());

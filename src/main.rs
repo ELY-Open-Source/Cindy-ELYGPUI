@@ -20,6 +20,7 @@ mod theme_import;
 mod tip;
 mod toast;
 mod units;
+mod window_material;
 mod window_state;
 
 use std::path::PathBuf;
@@ -67,6 +68,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
+    cx.set_global(window_material::Material::load());
     let home = dirs::home_dir().context("this user has no home folder")?;
     let sources = theme::Sources {
         local_dir: theme::local::dir(&home),

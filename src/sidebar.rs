@@ -299,7 +299,8 @@ impl Render for Sidebar {
             .h_full()
             .w(css(width))
             .when(!peeking, |el| {
-                el.overflow_hidden().bg(appearance.hsl_token("sidebar"))
+                el.overflow_hidden()
+                    .bg(crate::window_material::sidebar(false, cx))
             })
             .when(!self.collapsed && !peeking, |el| {
                 el.border_r(css(1.0))

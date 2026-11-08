@@ -124,7 +124,7 @@ impl Sidebar {
             .flex()
             .flex_col()
             .overflow_hidden()
-            .bg(appearance.hsl_token("sidebar"))
+            .bg(crate::window_material::sidebar(true, cx))
             .border_r(css(1.0))
             .border_color(appearance.hsl_token("sidebar-border"))
             .shadow(vec![appearance.shadow_token("shadow-menu", cx)])

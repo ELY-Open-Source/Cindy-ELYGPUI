@@ -128,7 +128,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   pixels drawn as rems, the rem size 16 × zoom, layout math in CSS pixels; Chromium's per-URL zoom
   memory, which `restoreWindowZoom` undoes, has no gpui counterpart
 - [x] 6.9c The app icon (`appIcon`) in the macOS Dock as `app-icon.ts` sets it, light and dark
-- [ ] 6.9d The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
+- [x] 6.9d The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
   mica, macOS vibrancy)
 - [ ] 6.9e Wallpaper as Cindy shows it: `wallpaperId` with the custom URL from
   `custom-wallpaper.json` (`custom` without one falls back to `none`), official images and videos

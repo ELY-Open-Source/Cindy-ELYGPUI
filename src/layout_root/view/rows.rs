@@ -24,6 +24,9 @@ impl LayoutRoot {
             .size_full()
             .flex()
             .flex_col()
+            .when(pane.panel_kind == CHAT, |el| {
+                el.bg(cx.global::<Appearance>().hsl_token("content-area"))
+            })
             .children(header)
             .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))
             .on_mouse_down(
@@ -213,10 +216,7 @@ pub(super) fn line(row: bool, hovered: bool, cx: &App) -> gpui::Div {
     } else {
         appearance.token("border-default")
     };
-    let cindy = matches!(
-        appearance.active.theme.id.as_str(),
-        "cindy-light" | "cindy-dark"
-    );
+    let cindy = crate::window_material::cindy_theme(appearance);
     line.when(cindy && !hovered, |l| l.bg(appearance.token("surface")))
         .child(div().absolute().size_full().bg(ink))
 }

@@ -65,6 +65,10 @@ read from Cindy's code and rule docs for that area.
 - Web content. Cindy's browser tab and every `.cindy` plugin panel render web pages in Electron
   webviews. GPUI has no web view. Chapters 16 and 17 need an embedded one; the choice is made
   before those chapters, with the user.
+- In-window blur. Cindy's glass blurs app content behind the sidebar peek drawer (28px) and the
+  Cindy-family overlay cards such as toasts (6px) with CSS `backdrop-filter`. GPUI paints no
+  backdrop blur, so those surfaces show their translucent tint unblurred. Native window materials,
+  which blur the desktop, are unaffected.
 
 ## Out of scope
 

@@ -219,3 +219,7 @@ effort high, in a Herdr pane.
 ## 6.9c Dock icon
 
 - Round 1: PASS.
+
+## 6.9d Window material
+
+- Round 1: PASS.
