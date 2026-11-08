@@ -117,8 +117,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   behavior prompt goes to chapter 22, the in-turn close confirm to chapter 10); the sidebar's 46px
   top row and `ContentHeader`'s 46px band drag the window, with the traffic-light inset and border
 - [ ] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
-  its tooltip and hover peek and pin as `useSidebarPeek.ts` does, the menu button whose items land
-  with their targets (`DESIGN.md` §14.6); the hit holes `chromeActionsGeometry.ts` cuts
+  its tooltip (`DESIGN.md` §14.6) and hover peek and pin as `useSidebarPeek.ts` does; the
+  `ContentHeader` spacer that makes room for the cluster
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
   place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
@@ -129,7 +129,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
   as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
-- [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,
+- [ ] 6.8 Routes: chat and settings with back and forward history; the title bar's menu button
+  (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets; settings takes over the window,
   hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
   and restores them on exit
 - [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
