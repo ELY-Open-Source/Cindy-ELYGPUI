@@ -15,6 +15,7 @@ pub struct Settings {
     pub ui_size: f64,
     pub window_zoom: f64,
     pub app_icon: AppIcon,
+    pub wallpaper: crate::wallpaper::Settings,
 }
 
 /// `APP_ICONS`: the macOS Dock icon choices.
@@ -72,6 +73,7 @@ pub fn read(user_data: &Path) -> Settings {
         ui_size,
         window_zoom: window_zoom(number(fields.get("windowZoom").map(AsRef::as_ref))),
         app_icon: AppIcon::parse(string(fields.get("appIcon").map(AsRef::as_ref)).as_deref()),
+        wallpaper: crate::wallpaper::read(&fields, user_data),
     };
     log::info!(target: "appearance-settings-store", "appearance settings loaded: {settings:?}");
     settings
@@ -104,6 +106,7 @@ mod tests {
             ui_size: 14.0,
             window_zoom: 1.0,
             app_icon: AppIcon::Default,
+            wallpaper: crate::wallpaper::read(&Default::default(), dir.path()),
         };
         assert_eq!(read(dir.path()), defaults);
         std::fs::write(&file, r#"{"uiSize": 30.4, "uiFamily": "  \"IBM Plex Sans\", sans-serif ", "wallpaperVisibility": 0.2}"#).unwrap();

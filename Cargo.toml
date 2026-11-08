@@ -19,6 +19,7 @@ icu_collator = "2"
 icu_decimal = "2"
 icu_locale_core = "2"
 icu_plurals = "2"
+image = { version = "0.25.10", default-features = false, features = ["webp"] }
 jiff = "0.2"
 log = "0.4"
 notify = "8.2.1"

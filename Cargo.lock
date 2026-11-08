@@ -979,6 +979,7 @@ dependencies = [
  "icu_decimal",
  "icu_locale_core",
  "icu_plurals",
+ "image",
  "jiff",
  "log",
  "notify",

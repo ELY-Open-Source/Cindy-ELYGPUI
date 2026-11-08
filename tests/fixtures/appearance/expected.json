@@ -1,0 +1,211 @@
+[
+ {
+  "name": "empty",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "not an object",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "legacy overlay",
+  "wallpaperId": "dune-dawn",
+  "wallpaperOverlay": 0.35,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.31,
+   0.21
+  ]
+ },
+ {
+  "name": "strong overlay",
+  "wallpaperId": "cindy-prism",
+  "wallpaperOverlay": 0.85,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.07875,
+   0.04125
+  ]
+ },
+ {
+  "name": "overlay out of range",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 1,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0,
+   0
+  ]
+ },
+ {
+  "name": "overlay below zero",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.45,
+   0.35
+  ]
+ },
+ {
+  "name": "overlay overflow",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "overlay string",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "explicit visibility",
+  "wallpaperId": "rose-quartz",
+  "wallpaperOverlay": 0.9,
+  "wallpaperVisibility": 0.46,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.46,
+   0.46
+  ]
+ },
+ {
+  "name": "visibility clamps",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": 1,
+  "wallpaperBlur": null,
+  "visibility": [
+   1,
+   1
+  ]
+ },
+ {
+  "name": "visibility null",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.1,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.41,
+   0.31
+  ]
+ },
+ {
+  "name": "visibility overflow",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "blur rounds",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": 8,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "blur clamps",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": 20,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "blur negative half",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": 0,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "blur null",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "retired id",
+  "wallpaperId": "cindy-dream",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "unknown id",
+  "wallpaperId": "none",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ },
+ {
+  "name": "custom id",
+  "wallpaperId": "custom",
+  "wallpaperOverlay": 0.2,
+  "wallpaperVisibility": null,
+  "wallpaperBlur": null,
+  "visibility": [
+   0.37,
+   0.27
+  ]
+ }
+]

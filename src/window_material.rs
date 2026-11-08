@@ -129,15 +129,24 @@ impl Material {
         Self { platform, knobs }
     }
 
-    pub fn config(&self, appearance: &Appearance) -> Config {
+    /// `resolveWindowVibrancyConfig`: the wallpaper canvas covers the window when it is active.
+    pub fn config(&self, cx: &App) -> Config {
+        let appearance = cx.global::<Appearance>();
         let dark = appearance.kind() == Kind::Dark;
-        resolve(&appearance.family, dark, self.platform, false, &self.knobs)
+        let covered = crate::wallpaper::active(cx);
+        resolve(
+            &appearance.family,
+            dark,
+            self.platform,
+            covered,
+            &self.knobs,
+        )
     }
 }
 
 /// `applyWindowVibrancy` for one window.
 pub fn apply(window: &mut Window, cx: &App) {
-    let config = cx.global::<Material>().config(cx.global::<Appearance>());
+    let config = cx.global::<Material>().config(cx);
     native::apply(window, &config);
 }
 
@@ -149,23 +158,30 @@ pub fn cindy_theme(appearance: &Appearance) -> bool {
     )
 }
 
-/// The window root: the backing under Cindy's own themes, `bg-content-area` elsewhere.
+/// The window root: `body` under a wallpaper, the backing under Cindy's own themes, else
+/// `bg-content-area`.
 pub fn root(cx: &App) -> Hsla {
     let appearance = cx.global::<Appearance>();
-    if cindy_theme(appearance) {
-        cx.global::<Material>().config(appearance).background.into()
+    if crate::wallpaper::active(cx) {
+        appearance.token("surface")
+    } else if cindy_theme(appearance) {
+        cx.global::<Material>().config(cx).background.into()
     } else {
         appearance.hsl_token("content-area")
     }
 }
 
-/// `aside.bg-sidebar`: glass under Cindy's own themes; acrylic already tints the docked one.
+/// `aside.bg-sidebar`: glass under Cindy's own themes; a wallpaper or acrylic shows through the
+/// docked one.
 pub fn sidebar(peek: bool, cx: &App) -> Hsla {
     let appearance = cx.global::<Appearance>();
+    if !peek && crate::wallpaper::active(cx) {
+        return gpui::transparent_black();
+    }
     if !cindy_theme(appearance) {
         return appearance.hsl_token("sidebar");
     }
-    let material = cx.global::<Material>().config(appearance).material;
+    let material = cx.global::<Material>().config(cx).material;
     if !peek && material == Some(Backdrop::Acrylic) {
         return gpui::transparent_black();
     }

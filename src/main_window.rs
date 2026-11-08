@@ -84,6 +84,7 @@ impl Render for Root {
                 .child(chrome::window_controls(close, cx))
         });
         let edges = chrome::resize_edges(window, cx);
+        let wallpaper = crate::wallpaper::canvas(window, cx);
         let appearance = cx.global::<Appearance>();
         div()
             .track_focus(&self.focus)
@@ -108,6 +109,7 @@ impl Render for Root {
                     this.press(Input::Up, false, cx);
                 }
             }))
+            .children(wallpaper)
             .child(self.sidebar.clone())
             .child(self.layout.clone())
             .children(controls)

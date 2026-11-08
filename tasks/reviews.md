@@ -223,3 +223,9 @@ effort high, in a Herdr pane.
 ## 6.9d Window material
 
 - Round 1: PASS.
+
+## 6.9e1 Static wallpaper
+
+- Round 1: FAIL. The custom wallpaper URL reached the log through `Debug` and path-bearing
+  error contexts.
+- Round 2: PASS. Settings log `custom: true|false`; custom-media errors carry fixed text.

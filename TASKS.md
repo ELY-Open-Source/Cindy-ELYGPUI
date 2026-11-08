@@ -130,12 +130,20 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.9c The app icon (`appIcon`) in the macOS Dock as `app-icon.ts` sets it, light and dark
 - [x] 6.9d The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
   mica, macOS vibrancy)
-- [ ] 6.9e Wallpaper as Cindy shows it: `wallpaperId` with the custom URL from
-  `custom-wallpaper.json` (`custom` without one falls back to `none`), official images and videos
-  downloaded and cached as `wallpaper-video.ts` does, static and dynamic motion with reduced motion;
-  `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur` with their normalization, null
-  meaning and the legacy overlay-to-visibility derivation; the settings UI and its write IPC go to
-  chapter 12
+- Wallpaper as Cindy shows it; the settings UI, the custom picker and its write IPC go to chapter 12:
+  - [x] 6.9e1 The static wallpaper at startup: `wallpaperId`, `wallpaperOverlay`,
+    `wallpaperVisibility` and `wallpaperBlur` normalized as
+    `appearanceSettings.ts` does (null meaning, the legacy overlay-to-visibility veil), the custom
+    URL from `custom-wallpaper.json` read from `cindy-media/client-wallpaper` with
+    `assertBlobPathContained`'s checks (`custom` without one falls back to `none`), painted as
+    `useWallpaperBackground` and its CSS do: bundled previews for official ids, cover image, veil,
+    blur with overscan, the page surfaces it clears, and the coverage that turns 6.9d's native
+    material off. The change-time crossfade and blur preview come with the settings page (12.0);
+    the glass fills come with the surfaces that carry them
+  - [ ] 6.9e2 Official images and videos downloaded, verified and cached as `wallpaper-video.ts`
+    does, the bundled preview shown until the original is ready
+  - [ ] 6.9e3 Dynamic motion (`wallpaperMotion`): the videos played as `WallpaperVideo.tsx` does, static under reduced
+    motion
 
 ## 7. Mock mode
 

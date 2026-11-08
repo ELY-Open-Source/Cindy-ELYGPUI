@@ -25,7 +25,8 @@ impl LayoutRoot {
             .flex()
             .flex_col()
             .when(pane.panel_kind == CHAT, |el| {
-                el.bg(cx.global::<Appearance>().hsl_token("content-area"))
+                let area = cx.global::<Appearance>().hsl_token("content-area");
+                el.bg(crate::wallpaper::clear(area, cx))
             })
             .children(header)
             .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))
@@ -202,7 +203,8 @@ pub(super) fn static_divider(row: bool, cx: &App) -> AnyElement {
     line(row, false, cx).into_any_element()
 }
 
-/// `.layout-divider-v` / `-h`: on Cindy's own family the ink lies over the surface.
+/// `.layout-divider-v` / `-h`: on Cindy's own family the ink lies over the surface, except over
+/// a wallpaper.
 pub(super) fn line(row: bool, hovered: bool, cx: &App) -> gpui::Div {
     let appearance = cx.global::<Appearance>();
     let line = div().flex_none().relative();
@@ -216,7 +218,7 @@ pub(super) fn line(row: bool, hovered: bool, cx: &App) -> gpui::Div {
     } else {
         appearance.token("border-default")
     };
-    let cindy = crate::window_material::cindy_theme(appearance);
+    let cindy = crate::window_material::cindy_theme(appearance) && !crate::wallpaper::active(cx);
     line.when(cindy && !hovered, |l| l.bg(appearance.token("surface")))
         .child(div().absolute().size_full().bg(ink))
 }

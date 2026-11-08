@@ -24,10 +24,11 @@ try {
     "export { normalizeLocalThemeColors } from './renderer/themes/local-themes-normalize';",
     "export * as layoutTree from './shared/layoutTree';",
     "export * as appShortcuts from './shared/appShortcuts';",
+    "export * as appearance from './shared/appearanceSettings';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error' });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -101,6 +102,20 @@ try {
     overlaps: ['app', 'workdir-doc', 'browser', 'composer', 'global'].flatMap((x, _, all) =>
       all.map((y) => [x, y, sc.appShortcutScopesOverlap(x, y)])),
   })));
+
+  const appearanceDir = path.join(fixtures, 'appearance');
+  const looks = JSON.parse(fs.readFileSync(path.join(appearanceDir, 'input.json'), 'utf8'));
+  write(path.join(appearanceDir, 'expected.json'), looks.map((c) => {
+    const s = appearance.normalizeAppearanceSettings(JSON.parse(c.text));
+    return {
+      name: c.name,
+      wallpaperId: s.wallpaperId,
+      wallpaperOverlay: s.wallpaperOverlay,
+      wallpaperVisibility: s.wallpaperVisibility ?? null,
+      wallpaperBlur: s.wallpaperBlur ?? null,
+      visibility: [false, true].map((dark) => appearance.getWallpaperVisibility(s, dark)),
+    };
+  }));
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

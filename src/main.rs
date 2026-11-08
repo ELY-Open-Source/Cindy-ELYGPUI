@@ -20,6 +20,7 @@ mod theme_import;
 mod tip;
 mod toast;
 mod units;
+mod wallpaper;
 mod window_material;
 mod window_state;
 
@@ -68,6 +69,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
+    wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());
     let home = dirs::home_dir().context("this user has no home folder")?;
     let sources = theme::Sources {

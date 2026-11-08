@@ -108,7 +108,14 @@ defines scope and what 1:1 means.
   Electron: macOS `setVibrancy` (an `NSVisualEffectView` behind the content), Windows 11 22H2
   `setBackgroundMaterial` (frame margins and `DWMWA_SYSTEMBACKDROP_TYPE`), with gpui painting the
   backing color. It applies when a window opens and on each theme apply. Wallpaper coverage
-  (`covered`) comes with 6.9e. Native code is cross-linted in a scratch crate.
+  (`covered`) is the wallpaper's `active`. Native code is cross-linted in a scratch crate.
+- Wallpaper: `src/wallpaper.rs` normalizes the wallpaper keys of `appearance-settings.json` and
+  reads `custom-wallpaper.json` (golden cases in `tests/fixtures/appearance`). `canvas.rs` paints
+  `body::before` behind the main window: surface, cover image, veil; with a blur it blurs off the
+  main thread at source resolution (`media::blurred`) and stretches it over the overscanned box.
+  `clear` empties page surfaces while a wallpaper is active. Custom media is read only through
+  `media::custom_path`, which keeps `assertBlobPathContained`'s checks. Logs name the kind of
+  wallpaper, never the custom URL.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

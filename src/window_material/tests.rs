@@ -134,6 +134,7 @@ fn glass(cx: &mut TestAppContext, family: &str, platform: Platform) {
             platform,
             knobs: Knobs::default(),
         });
+        crate::wallpaper::none_for_tests(cx);
     });
 }
 

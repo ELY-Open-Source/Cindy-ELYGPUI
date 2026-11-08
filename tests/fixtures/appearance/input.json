@@ -1,0 +1,21 @@
+[
+ {"name": "empty", "text": "{}"},
+ {"name": "not an object", "text": "[1]"},
+ {"name": "legacy overlay", "text": "{\"wallpaperId\":\"dune-dawn\",\"wallpaperOverlay\":0.37}"},
+ {"name": "strong overlay", "text": "{\"wallpaperId\":\"cindy-prism\",\"wallpaperOverlay\":0.83}"},
+ {"name": "overlay out of range", "text": "{\"wallpaperOverlay\":1.7}"},
+ {"name": "overlay below zero", "text": "{\"wallpaperOverlay\":-0.2}"},
+ {"name": "overlay overflow", "text": "{\"wallpaperOverlay\":1e400}"},
+ {"name": "overlay string", "text": "{\"wallpaperOverlay\":\"0.5\"}"},
+ {"name": "explicit visibility", "text": "{\"wallpaperId\":\"rose-quartz\",\"wallpaperVisibility\":0.456,\"wallpaperOverlay\":0.9}"},
+ {"name": "visibility clamps", "text": "{\"wallpaperVisibility\":1.2}"},
+ {"name": "visibility null", "text": "{\"wallpaperVisibility\":null,\"wallpaperOverlay\":0.1}"},
+ {"name": "visibility overflow", "text": "{\"wallpaperVisibility\":-1e400}"},
+ {"name": "blur rounds", "text": "{\"wallpaperBlur\":7.5}"},
+ {"name": "blur clamps", "text": "{\"wallpaperBlur\":33}"},
+ {"name": "blur negative half", "text": "{\"wallpaperBlur\":-0.5}"},
+ {"name": "blur null", "text": "{\"wallpaperBlur\":null}"},
+ {"name": "retired id", "text": "{\"wallpaperId\":\"cindy-dream\"}"},
+ {"name": "unknown id", "text": "{\"wallpaperId\":\"Dune-Dawn\"}"},
+ {"name": "custom id", "text": "{\"wallpaperId\":\"custom\"}"}
+]
