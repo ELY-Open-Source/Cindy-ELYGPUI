@@ -1,8 +1,3 @@
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "callers land in tasks 5.5 and 5.6")
-)]
-
 pub mod color;
 pub mod palette;
 pub mod vscode;
@@ -46,12 +41,20 @@ pub fn is_protected(id: &str) -> bool {
 
 /// One converted theme, colors in Cindy's key order.
 pub struct ConvertedTheme {
+    #[cfg_attr(
+        not(test),
+        expect(dead_code, reason = "the import button reads it, chapter 12")
+    )]
     pub name: String,
     pub kind: Kind,
     pub colors: Vec<(String, String)>,
 }
 
 /// Cindy's `ThemeConversionReport`.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the import button reads it, chapter 12")
+)]
 pub struct Report {
     pub resolved_roles: usize,
     pub derived_roles: Vec<String>,
@@ -61,6 +64,10 @@ pub struct Report {
 
 pub struct Conversion {
     pub themes: Vec<ConvertedTheme>,
+    #[cfg_attr(
+        not(test),
+        expect(dead_code, reason = "the import button reads it, chapter 12")
+    )]
     pub report: Report,
 }
 

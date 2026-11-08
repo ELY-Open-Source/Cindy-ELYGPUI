@@ -3,8 +3,9 @@ pub mod ely;
 pub mod local;
 mod normalize;
 mod oklch;
+pub mod omarchy;
 
-use std::{collections::HashMap, path::Path};
+use std::{collections::HashMap, path::PathBuf};
 
 use anyhow::{Context as _, Result, bail};
 use gpui::{Rgba, WindowAppearance};
@@ -121,6 +122,12 @@ impl Mode {
     }
 }
 
+/// Where themes beyond the built-ins come from.
+pub struct Sources {
+    pub local_dir: PathBuf,
+    pub omarchy_dir: PathBuf,
+}
+
 /// The registry and every family: built-in first, then local, as Cindy lists them.
 pub struct Themes {
     defaults: HashMap<String, (Option<String>, Option<String>)>,
@@ -135,8 +142,8 @@ pub struct Active {
 }
 
 impl Themes {
-    /// The built-in themes, plus the local ones when `local_dir` is given.
-    pub fn load(local_dir: Option<&Path>) -> Result<Self> {
+    /// The built-in themes, plus local and Omarchy ones from `sources`.
+    pub fn load(sources: Option<&Sources>, last_omarchy: &mut Option<ThemeData>) -> Result<Self> {
         let registry: Vec<RegistryEntry> =
             serde_json::from_str(REGISTRY).context("themes/registry.json")?;
         let defaults = registry
@@ -167,13 +174,26 @@ impl Themes {
                 })
             })
             .collect::<Result<Vec<_>>>()?;
-        if let Some(dir) = local_dir {
-            match local::load(dir, &defaults) {
-                Ok(loaded) => families.extend(local_families(loaded.themes)),
+        if let Some(sources) = sources {
+            let mut extra = match local::load(&sources.local_dir, &defaults) {
+                Ok(loaded) => loaded.themes,
                 Err(error) => {
-                    log::error!(target: "local-themes", "Failed to scan local themes: {error:#}")
+                    log::error!(target: "local-themes", "Failed to scan local themes: {error:#}");
+                    Vec::new()
+                }
+            };
+            match omarchy::read(&sources.omarchy_dir, &defaults) {
+                Ok(Some(theme)) => {
+                    *last_omarchy = Some(theme.clone());
+                    extra.push(theme);
+                }
+                Ok(None) => {}
+                Err(error) => {
+                    log::warn!(target: "local-themes", "Failed to load Omarchy theme: {error:#}");
+                    extra.extend(last_omarchy.clone());
                 }
             }
+            families.extend(local_families(extra));
         }
         Ok(Self { defaults, families })
     }
@@ -290,6 +310,8 @@ pub struct Appearance {
     pub family: String,
     os: WindowAppearance,
     gpui_agrees: bool,
+    sources: Option<Sources>,
+    last_omarchy: Option<ThemeData>,
     pub active: Active,
 }
 
@@ -300,10 +322,11 @@ impl Appearance {
         mode: Mode,
         family_id: Option<&str>,
         initial: crate::os_appearance::Initial,
-        local_dir: Option<&Path>,
+        sources: Option<Sources>,
     ) -> Result<Self> {
         let os = initial.os;
-        let themes = Themes::load(local_dir)?;
+        let mut last_omarchy = None;
+        let themes = Themes::load(sources.as_ref(), &mut last_omarchy)?;
         let family = themes.family(family_id);
         let active = themes.active(&family, mode, os)?;
         Ok(Self {
@@ -312,6 +335,8 @@ impl Appearance {
             family,
             os,
             gpui_agrees: initial.gpui_agrees,
+            sources,
+            last_omarchy,
             active,
         })
     }
@@ -333,6 +358,14 @@ impl Appearance {
 
     pub fn kind(&self) -> Kind {
         self.active.theme.kind
+    }
+
+    /// Re-reads local and Omarchy themes, as Cindy does on `local-themes:changed`.
+    pub fn reload(&mut self) -> Result<()> {
+        self.themes = Themes::load(self.sources.as_ref(), &mut self.last_omarchy)?;
+        self.family = self.themes.family(Some(&self.family));
+        self.active = self.themes.active(&self.family, self.mode, self.os)?;
+        Ok(())
     }
 
     /// A token of the active theme as a color; tokens are checked by tests.

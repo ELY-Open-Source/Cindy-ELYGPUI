@@ -99,3 +99,7 @@ effort high, in a Herdr pane.
 ## 5.5 Local themes
 
 - Round 1: PASS.
+
+## 5.6 Omarchy live theme
+
+- Round 1: PASS.

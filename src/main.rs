@@ -70,10 +70,42 @@ fn follow_os(_: &mut Root, window: &mut Window, cx: &mut Context<Root>) {
         return;
     }
     log::info!(target: "theme", "OS appearance {os:?}");
+    apply_theme(cx);
+}
+
+/// Hands the active theme to Ely and repaints.
+fn apply_theme(cx: &mut App) {
+    let appearance = cx.global::<Appearance>();
     log_theme(appearance);
     let (kind, palette) = (appearance.kind(), theme::ely::palette(appearance));
     Theme::set_palette(ely_mode(kind), Some(palette), cx);
     Theme::set_mode(ely_mode(kind), cx);
+    cx.refresh_windows();
+}
+
+/// Reloads themes after each Omarchy switch, as Cindy's `local-themes:changed` does.
+fn follow_omarchy(dir: &std::path::Path, cx: &mut App) {
+    let (sender, mut switches) = futures::channel::mpsc::unbounded();
+    let watcher = match theme::omarchy::watch(dir, sender) {
+        Ok(Some(watcher)) => watcher,
+        Ok(None) => return,
+        Err(error) => {
+            return log::error!(target: "theme", "Omarchy theme watcher not started: {error:#}");
+        }
+    };
+    cx.spawn(async move |cx| {
+        let _watcher = watcher;
+        while futures::StreamExt::next(&mut switches).await.is_some() {
+            cx.update(|cx| {
+                log::info!(target: "theme", "Omarchy theme switched; reloading themes");
+                if let Err(error) = cx.global_mut::<Appearance>().reload() {
+                    panic!("themes failed to reload: {error:#}");
+                }
+                apply_theme(cx);
+            });
+        }
+    })
+    .detach();
 }
 
 fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String>)) -> Result<()> {
@@ -81,18 +113,23 @@ fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String
     cx.set_global(I18n::new(translator.ely_tag()));
     cx.set_global(translator);
     let home = dirs::home_dir().context("this user has no home folder")?;
-    let local_dir = theme::local::dir(&home);
+    let sources = theme::Sources {
+        local_dir: theme::local::dir(&home),
+        omarchy_dir: theme::omarchy::state_dir(&home),
+    };
+    let omarchy_dir = sources.omarchy_dir.clone();
     let appearance = Appearance::new(
         theme.0,
         theme.1.as_deref(),
         os_appearance::initial(cx),
-        Some(&local_dir),
+        Some(sources),
     )?;
     log_theme(&appearance);
     let mode = ely_mode(appearance.kind());
     Theme::set_palette(mode, Some(theme::ely::palette(&appearance)), cx);
     Theme::set_mode_now(mode, cx);
     cx.set_global(appearance);
+    follow_omarchy(&omarchy_dir, cx);
     cx.open_window(WindowOptions::default(), |window, cx| {
         cx.new(|cx| {
             cx.observe_window_appearance(window, follow_os).detach();

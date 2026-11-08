@@ -22,6 +22,10 @@ defines scope and what 1:1 means.
 - Local themes: `src/theme/local.rs` reads `~/.cindy/themes/` as Cindy's loader does and
   `src/theme/normalize.rs` applies `normalizeLocalThemeColors`; local families follow the built-in
   ones.
+- Omarchy: `src/theme/omarchy.rs` reads `~/.local/state/omarchy/current/theme/vscode-theme.json`
+  through the VS Code converter as family `omarchy`, never writing Omarchy files. An inotify
+  watcher (`notify`) reloads every theme on each finished `theme.name` write; a read inside
+  Omarchy's folder swap keeps the last good theme.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).

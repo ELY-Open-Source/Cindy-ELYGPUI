@@ -52,7 +52,7 @@ fn filled_button_states_follow_oklch() {
 
 #[test]
 fn every_builtin_token_resolves() {
-    let themes = Themes::load(None).unwrap();
+    let themes = Themes::load(None, &mut None).unwrap();
     let colorish = |v: &str| {
         v.starts_with('#')
             || ["rgb", "hsl", "color-mix", "oklch", "transparent"]
@@ -78,7 +78,7 @@ fn every_builtin_token_resolves() {
 
 #[test]
 fn dark_theme_takes_light_default_when_dark_is_missing() {
-    let themes = Themes::load(None).unwrap();
+    let themes = Themes::load(None, &mut None).unwrap();
     let (id, (light, _)) = themes
         .defaults
         .iter()
@@ -91,7 +91,7 @@ fn dark_theme_takes_light_default_when_dark_is_missing() {
 
 #[test]
 fn families_pick_variants_with_cindy_fallback() {
-    let themes = Themes::load(None).unwrap();
+    let themes = Themes::load(None, &mut None).unwrap();
     let dark_os = WindowAppearance::Dark;
     let cindy = themes
         .active(&themes.family(None), Mode::System, dark_os)
@@ -146,7 +146,7 @@ fn normalize_matches_cindy_output() {
     let read = |name: &str| -> Vec<serde_json::Value> {
         serde_json::from_str(&std::fs::read_to_string(dir.join(name)).unwrap()).unwrap()
     };
-    let themes = Themes::load(None).unwrap();
+    let themes = Themes::load(None, &mut None).unwrap();
     let (inputs, expected) = (
         read("normalize-input.json"),
         read("normalize-expected.json"),
@@ -198,7 +198,7 @@ fn local_themes_load_group_and_report() {
     ] {
         std::fs::write(dir.join(file), body).unwrap();
     }
-    let themes = Themes::load(Some(&dir)).unwrap();
+    let themes = Themes::load(Some(&sources(&dir)), &mut None).unwrap();
     let local: Vec<_> = themes.families[8..].iter().map(|f| f.id.as_str()).collect();
     assert_eq!(local, ["Pair-local", "solo-local"]);
     let pair = &themes.families[8];
@@ -236,4 +236,76 @@ fn legacy_themes_folder_moves_once() {
     let dir = super::local::dir(home.path());
     assert!(dir.join("t.json").exists());
     assert!(!home.path().join(".xdmaker").exists());
+}
+
+fn sources(local_dir: &std::path::Path) -> super::Sources {
+    super::Sources {
+        local_dir: local_dir.to_owned(),
+        omarchy_dir: local_dir.join("no-omarchy"),
+    }
+}
+
+fn omarchy_home(theme_json: &str) -> (tempfile::TempDir, super::Sources) {
+    let home = tempfile::tempdir().unwrap();
+    let state = super::omarchy::state_dir(home.path());
+    std::fs::create_dir_all(state.join("theme")).unwrap();
+    std::fs::write(state.join("theme").join("vscode-theme.json"), theme_json).unwrap();
+    std::fs::write(state.join("theme.name"), "ristretto\n").unwrap();
+    let sources = super::Sources {
+        local_dir: home.path().join("themes"),
+        omarchy_dir: state,
+    };
+    (home, sources)
+}
+
+const RISTRETTO: &str =
+    include_str!("../../tests/fixtures/theme-import/input/omarchy-ristretto.json");
+
+#[test]
+fn omarchy_theme_loads_and_survives_the_swap_gap() {
+    let none = tempfile::tempdir().unwrap();
+    assert!(
+        super::omarchy::read(
+            none.path(),
+            &Themes::load(None, &mut None).unwrap().defaults
+        )
+        .unwrap()
+        .is_none()
+    );
+    let (_home, sources) = omarchy_home(RISTRETTO);
+    let mut last = None;
+    let themes = Themes::load(Some(&sources), &mut last).unwrap();
+    let omarchy = themes.families.iter().find(|f| f.id == "omarchy").unwrap();
+    assert_eq!(omarchy.dark.as_ref().unwrap().colors["surface"], "#2c2525");
+    assert!(omarchy.light.is_none());
+    std::fs::remove_dir_all(sources.omarchy_dir.join("theme")).unwrap();
+    let during_swap = Themes::load(Some(&sources), &mut last).unwrap();
+    assert!(during_swap.families.iter().any(|f| f.id == "omarchy"));
+    std::fs::create_dir_all(sources.omarchy_dir.join("theme")).unwrap();
+    std::fs::write(
+        sources.omarchy_dir.join("theme/vscode-theme.json"),
+        "{\"foo\":1}",
+    )
+    .unwrap();
+    assert!(super::omarchy::read(&sources.omarchy_dir, &themes.defaults).is_err());
+}
+
+#[test]
+fn omarchy_watcher_fires_on_theme_name_after_a_swap() {
+    let (_home, sources) = omarchy_home(RISTRETTO);
+    let (sender, mut switches) = futures::channel::mpsc::unbounded();
+    let _watcher = super::omarchy::watch(&sources.omarchy_dir, sender)
+        .unwrap()
+        .unwrap();
+    let theme = sources.omarchy_dir.join("theme");
+    std::fs::remove_dir_all(&theme).unwrap();
+    std::fs::create_dir_all(&theme).unwrap();
+    assert!(switches.try_recv().is_err(), "no message before theme.name");
+    std::fs::write(sources.omarchy_dir.join("theme.name"), "rose-pine\n").unwrap();
+    // real-wait: inotify delivers on its own thread
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(2);
+    while switches.try_recv().is_err() {
+        assert!(std::time::Instant::now() < deadline, "no switch message");
+        std::thread::sleep(std::time::Duration::from_millis(10));
+    }
 }
