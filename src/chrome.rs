@@ -1,5 +1,7 @@
 //! Cindy's frameless window chrome: `WindowControls.tsx`, drag bands and Linux resize edges.
 
+pub mod actions;
+
 use ely_gpui_component::{
     primitives::{Icon, IconName},
     theme::{ActiveTheme as _, IconSize},

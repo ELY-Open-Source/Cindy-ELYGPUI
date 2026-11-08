@@ -1,6 +1,8 @@
 //! Cindy's left sidebar frame: `Sidebar.tsx`, with the width, rail and hidden state
 //! `MainLayout.tsx` keeps for it.
 
+mod peek;
+mod peek_view;
 mod resize;
 #[cfg(test)]
 mod tests;
@@ -32,6 +34,11 @@ pub struct Sidebar {
     width: Tween,
     fade: Tween,
     handle_hovered: bool,
+    peek: peek::Peek,
+    peek_wake: Option<gpui::Task<()>>,
+    drawer: Tween,
+    trigger: peek_view::TriggerBounds,
+    left_peek: bool,
 }
 
 fn now(cx: &App) -> Instant {
@@ -67,6 +74,11 @@ impl Sidebar {
             width: Tween::still(0.0, at),
             fade: Tween::still(if collapsed { 0.0 } else { 1.0 }, at),
             handle_hovered: false,
+            peek: peek::Peek::new(collapsed),
+            peek_wake: None,
+            drawer: Tween::still(0.0, at),
+            trigger: Default::default(),
+            left_peek: false,
         };
         sidebar.width = Tween::still(sidebar.target(), at);
         sidebar
@@ -99,6 +111,7 @@ impl Sidebar {
         SidebarSeen {
             width: self.width.at(now(cx)).0,
             visible: !self.collapsed && !self.rail,
+            collapsed: self.collapsed,
         }
     }
 
@@ -107,6 +120,10 @@ impl Sidebar {
         self.collapsed = !self.collapsed;
         log::info!(target: "sidebar", "collapsed {}", self.collapsed);
         let collapsed = self.collapsed;
+        let was_peeking = self.peek.visible();
+        self.peek.set_collapsed(collapsed, now(cx));
+        self.after_peek(cx);
+        self.left_peek = was_peeking && !self.peek.visible();
         let saved = cx.update_global::<LayoutStore, _>(|store, _| {
             let id = store.layout().sidebar.id.clone();
             store
@@ -124,7 +141,8 @@ impl Sidebar {
 
     fn retarget(&mut self, cx: &mut Context<Self>) {
         let at = now(cx);
-        let length = if self.resize.dragging {
+        // `justLeftPeek`: the drawer's exit frame takes no transition.
+        let length = if self.resize.dragging || std::mem::take(&mut self.left_peek) {
             Duration::ZERO
         } else {
             WIDTH_TRANSITION
@@ -235,6 +253,31 @@ impl Render for Sidebar {
                     .w(px(1.0))
                     .bg(line),
             );
+        let peeking = self.peek.visible();
+        let content_width = if peeking {
+            self.resize.width as f32
+        } else {
+            self.content_width()
+        };
+        let column = div()
+            .flex()
+            .flex_col()
+            .flex_1()
+            .min_h_0()
+            .w(px(content_width))
+            .opacity(if peeking { 1.0 } else { opacity })
+            .child(
+                ely_gpui_component::shell::drag_region("sidebar-top-row", window, cx)
+                    .flex_none()
+                    .w_full()
+                    .h(px(chrome::TOP_ROW)),
+            )
+            .into_any_element();
+        let (column, drawer) = match peeking {
+            true => (div().into_any_element(), self.drawer(column, window, cx)),
+            false => (column, self.drawer(div().into_any_element(), window, cx)),
+        };
+        let appearance = cx.global::<Appearance>();
         let this = cx.entity();
         let dragging = self.resize.dragging;
         div()
@@ -246,28 +289,16 @@ impl Render for Sidebar {
             .flex_col()
             .h_full()
             .w(px(width))
-            .overflow_hidden()
-            .bg(appearance.hsl_token("sidebar"))
-            .when(!self.collapsed, |el| {
+            .when(!peeking, |el| {
+                el.overflow_hidden().bg(appearance.hsl_token("sidebar"))
+            })
+            .when(!self.collapsed && !peeking, |el| {
                 el.border_r_1()
                     .border_color(appearance.hsl_token("sidebar-border"))
             })
-            .child(
-                div()
-                    .flex()
-                    .flex_col()
-                    .flex_1()
-                    .min_h_0()
-                    .w(px(self.content_width()))
-                    .opacity(opacity)
-                    .child(
-                        ely_gpui_component::shell::drag_region("sidebar-top-row", window, cx)
-                            .flex_none()
-                            .w_full()
-                            .h(px(chrome::TOP_ROW)),
-                    ),
-            )
-            .when(!self.collapsed, |el| el.child(handle))
+            .when(!peeking, |el| el.child(column))
+            .children(drawer)
+            .when(!self.collapsed && !peeking, |el| el.child(handle))
             .when(dragging, |el| {
                 el.child(
                     canvas(

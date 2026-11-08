@@ -85,12 +85,16 @@ pub struct SidebarSeen {
     pub width: f32,
     /// `sidebarVisible`: expanded, neither hidden nor a rail.
     pub visible: bool,
+    /// `isSidebarCollapsed`: hidden by the toggle.
+    pub collapsed: bool,
 }
 
 pub struct LayoutRoot {
     sidebar: Box<dyn Fn(&App) -> SidebarSeen>,
     /// None until the first frame, which takes its inset without a slide.
     header_inset: Option<Tween>,
+    /// The room kept for the chrome cluster while the sidebar is hidden or a rail.
+    header_spacer: Option<Tween>,
     avail: f64,
     height: f64,
     live: Option<HashMap<String, f64>>,
@@ -110,6 +114,7 @@ impl LayoutRoot {
         LayoutRoot {
             sidebar,
             header_inset: None,
+            header_spacer: None,
             avail: 0.0,
             height: 0.0,
             live: None,

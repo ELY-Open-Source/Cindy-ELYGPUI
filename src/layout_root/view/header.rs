@@ -16,6 +16,8 @@ const INSET_TRANSITION: Duration = Duration::from_millis(250);
 const PADDING: f32 = 8.0;
 /// `MAC_RIGHT_TOGGLE_WIDTH`: room for the mac right sidebar toggle.
 const MAC_RIGHT_TOGGLE: f32 = 36.0;
+/// The cluster's width and an 8px gap before the title.
+const CLUSTER_ROOM: f32 = chrome::actions::CLUSTER_WIDTH + 8.0;
 
 impl LayoutRoot {
     /// Moves the traffic-light inset toward where this frame wants it.
@@ -30,7 +32,17 @@ impl LayoutRoot {
         };
         let inset = self.header_inset.get_or_insert(Tween::still(target, now));
         inset.toward(target, now, INSET_TRANSITION);
-        if inset.at(now).1 {
+        let mut moving = inset.at(now).1;
+        let seen = (self.sidebar)(cx);
+        let room = if seen.collapsed || !seen.visible {
+            CLUSTER_ROOM
+        } else {
+            0.0
+        };
+        let spacer = self.header_spacer.get_or_insert(Tween::still(room, now));
+        spacer.toward(room, now, INSET_TRANSITION);
+        moving |= spacer.at(now).1;
+        if moving {
             window.request_animation_frame();
         }
     }
@@ -48,8 +60,10 @@ impl LayoutRoot {
         if mac && sidebar_visible && !right_sidebar_available {
             return None;
         }
-        let inset = self.header_inset.expect("stepped before the panes render");
-        let (padding, _) = inset.at(cx.background_executor().now());
+        let now = cx.background_executor().now();
+        let stepped = "stepped before the panes render";
+        let (padding, _) = self.header_inset.expect(stepped).at(now);
+        let (room, _) = self.header_spacer.expect(stepped).at(now);
         let right = match mac {
             true => right_sidebar_available.then_some(MAC_RIGHT_TOGGLE),
             false => Some(chrome::CONTROLS_WIDTH),
@@ -66,6 +80,7 @@ impl LayoutRoot {
             .border_b_1()
             .border_color(border)
             .pl(px(padding))
+            .child(div().flex_none().h_full().w(px(room)))
             .child(
                 div()
                     .debug_selector(|| "content-header-slot".into())

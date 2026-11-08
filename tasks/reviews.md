@@ -189,3 +189,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Header presses reached the pane's panel long press; the header inset slid in
   from 0 on the first frame. Fixed both, with regressions.
 - Round 2: PASS.
+
+## 6.6b Chrome cluster and sidebar peek
+
+- Round 1: FAIL. A pin mid-slide left the drawer off screen; a hide during the pin slid the
+  column; the toggle lacked aria-expanded. Fixed all three; the first two with regressions.
+- Round 2: PASS.

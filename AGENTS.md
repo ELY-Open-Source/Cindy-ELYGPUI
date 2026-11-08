@@ -73,6 +73,13 @@ defines scope and what 1:1 means.
   Hyprland a floating window's border belongs to the compositor (`resize_on_border`). The sidebar's
   top row and the chat column's `ContentHeader` (`layout_root/view/header.rs`) drag the window
   through Ely's `drag_region`.
+- Chrome cluster: `src/chrome/actions.rs` ports `ChromeActions.tsx` (x 78 by the mac traffic
+  lights, 8 elsewhere; drawn deferred over the sidebar and header). Its sidebar toggle drives the
+  peek: `src/sidebar/peek.rs` is `useSidebarPeek.ts` as a clock-driven state machine (deadlines,
+  `tick`), `peek_view.rs` wakes on its next timer, decides drawer and toggle hits from the pointer
+  position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
+  through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button).
+  Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

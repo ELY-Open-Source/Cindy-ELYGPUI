@@ -33,6 +33,7 @@ pub struct Root {
     /// Held while nothing else is focused, so window-wide keys reach the root.
     focus: FocusHandle,
     toasts: Entity<ToastContainer>,
+    actions: Entity<chrome::actions::ChromeActions>,
 }
 
 impl Root {
@@ -110,6 +111,7 @@ impl Render for Root {
             .child(self.layout.clone())
             .children(controls)
             .children(edges)
+            .child(self.actions.clone())
             .child(self.toasts.clone())
     }
 }
@@ -193,8 +195,12 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
         cx.new(|cx| {
             cx.observe_window_appearance(window, shell::follow_os)
                 .detach();
-            cx.observe_window_activation(window, |root: &mut Root, window, _| {
-                root.activation.activation(window.is_window_active());
+            cx.observe_window_activation(window, |root: &mut Root, window, cx| {
+                let active = window.is_window_active();
+                root.activation.activation(active);
+                if !active {
+                    root.sidebar.update(cx, |sidebar, cx| sidebar.blur(cx));
+                }
             })
             .detach();
             cx.observe_window_bounds(window, |root: &mut Root, window, cx| {
@@ -227,6 +233,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
             })
             .detach();
             let sidebar = cx.new(Sidebar::new);
+            let actions = cx.new(|cx| chrome::actions::ChromeActions::new(sidebar.clone(), cx));
             let painted = sidebar.downgrade();
             let layout = cx.new(|cx| {
                 let seen = move |cx: &App| {
@@ -256,6 +263,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 sidebar,
                 focus,
                 toasts: cx.new(|cx| ToastContainer::new(window, cx)),
+                actions,
             }
         })
     })

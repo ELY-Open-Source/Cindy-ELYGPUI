@@ -16,6 +16,7 @@ mod region;
 mod sidebar;
 mod theme;
 mod theme_import;
+mod tip;
 mod toast;
 mod window_state;
 

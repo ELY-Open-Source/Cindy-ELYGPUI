@@ -32,6 +32,11 @@ pub fn motion_ease_out(x: f32) -> f32 {
     cubic_bezier(0.16, 1.0, 0.3, 1.0, x.clamp(0.0, 1.0))
 }
 
+/// `sidebar-peek-in`'s `cubic-bezier(0.22,1,0.36,1)`.
+pub fn peek_in(x: f32) -> f32 {
+    cubic_bezier(0.22, 1.0, 0.36, 1.0, x.clamp(0.0, 1.0))
+}
+
 /// Cindy's `--motion-ease-move`, the sidebar's width easing.
 pub fn ease_move(x: f32) -> f32 {
     cubic_bezier(0.4, 0.0, 0.2, 1.0, x.clamp(0.0, 1.0))
@@ -49,6 +54,7 @@ pub struct Tween {
     to: f32,
     start: Instant,
     length: Duration,
+    easing: fn(f32) -> f32,
 }
 
 impl Tween {
@@ -58,6 +64,7 @@ impl Tween {
             to: at,
             start: now,
             length: Duration::ZERO,
+            easing: ease_move,
         }
     }
 
@@ -68,17 +75,29 @@ impl Tween {
         } else {
             spent / self.length.as_secs_f32()
         };
-        let value = self.from + (self.to - self.from) * ease_move(t);
+        let value = self.from + (self.to - self.from) * (self.easing)(t);
         (value, t < 1.0)
     }
 
     pub fn toward(&mut self, to: f32, now: Instant, length: Duration) {
+        self.toward_along(to, now, length, ease_move);
+    }
+
+    /// `toward` along another curve.
+    pub fn toward_along(
+        &mut self,
+        to: f32,
+        now: Instant,
+        length: Duration,
+        easing: fn(f32) -> f32,
+    ) {
         if to != self.to || length != self.length {
             *self = Tween {
                 from: self.at(now).0,
                 to,
                 start: now,
                 length,
+                easing,
             };
         }
     }
@@ -93,5 +112,6 @@ mod tests {
         assert!((super::ease_out(0.5) - 0.684_644).abs() < 1e-4);
         assert!((super::motion_ease_out(0.5) - 0.971_779).abs() < 1e-4);
         assert!((super::ease_move(0.5) - 0.775_561).abs() < 1e-4);
+        assert!((super::peek_in(0.5) - 0.961_382).abs() < 1e-4);
     }
 }

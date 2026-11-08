@@ -88,6 +88,7 @@ pub(super) fn open_beside<'a>(
                     Box::new(move |_| SidebarSeen {
                         width: sidebar,
                         visible: sidebar > 0.0,
+                        collapsed: sidebar == 0.0,
                     }),
                     cx,
                 )
