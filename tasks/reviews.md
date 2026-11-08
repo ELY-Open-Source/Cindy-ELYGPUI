@@ -63,3 +63,7 @@ effort high, in a Herdr pane.
 ## 4.2 Locale choice
 
 - Round 1: PASS.
+
+## 4.3 Translator
+
+- Round 1: PASS.

@@ -12,6 +12,9 @@ defines scope and what 1:1 means.
   `runtime_shaders`.
 - Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
+- i18n: `src/i18n.rs` ports Cindy's i18next setup over `locales/`, embedded in the binary. Plurals
+  and number formats come from ICU4X (`icu_plurals`, `icu_decimal`, `icu_locale_core`), as `Intl`
+  gives them to Cindy. Ely's `I18n` global is set to the nearest Ely locale for Ely's own text.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).

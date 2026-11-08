@@ -14,7 +14,9 @@ dirs = "7"
 ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components", rev = "e0f355ac1a669c24336244bcaa8131f7f0e4f1b5" }
 gpui = { package = "gpui-pre", version = "=0.3.11" }
 gpui_platform = { package = "gpui-pre-platform", version = "=0.3.11", features = ["font-kit", "wayland", "x11"] }
+icu_decimal = "2"
 icu_locale_core = "2"
+icu_plurals = "2"
 jiff = "0.2"
 log = "0.4"
 serde_json = "1"

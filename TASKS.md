@@ -39,7 +39,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 4.2 Locale choice: Cindy's 12 locales, OS locale matched as `resolvePreferredSystemLocale`
   does (zh by script then region, pt by region), the saved `language` preference read from the
   port's preferences file; writing it lands with the language setting (chapter 12)
-- [ ] 4.3 Translator with i18next's semantics as Cindy uses them: namespaces `common` (default) and
+- [x] 4.3 Translator with i18next's semantics as Cindy uses them: namespaces `common` (default) and
   `aiRename`; nested keys; `{{name}}` with defaults `appName`, `pronoun` and
   `reservedGhostIdPrefixes`; plural suffixes picked by each locale's CLDR category (`_one`, `_many`,
   `_other` and any other the catalogs hold); `$t()` nesting; fallback classical to modern Chinese to

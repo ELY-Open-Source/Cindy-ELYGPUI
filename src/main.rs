@@ -1,3 +1,4 @@
+mod i18n;
 mod locale;
 mod logger;
 mod preferences;
@@ -6,8 +7,11 @@ mod region;
 use anyhow::{Context as _, Result};
 use ely_gpui_component::{
     Assets,
+    i18n::I18n,
     theme::{ActiveTheme, Mode, Theme},
 };
+
+use crate::i18n::Translator;
 use gpui::{
     App, AppContext, Context, IntoElement, ParentElement, Render, Styled, Window, WindowOptions,
     div,
@@ -18,6 +22,7 @@ struct Root;
 impl Render for Root {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let theme = cx.theme();
+        let waking = cx.global::<Translator>().t("splash.tips.waking", &[]);
         div()
             .size_full()
             .flex()
@@ -25,12 +30,14 @@ impl Render for Root {
             .justify_center()
             .bg(theme.colors.bg)
             .text_color(theme.colors.fg)
-            .child("Cindy")
+            .child(waking)
     }
 }
 
-fn open(cx: &mut App) -> Result<()> {
+fn open(cx: &mut App, translator: Translator) -> Result<()> {
     ely_gpui_component::init(cx).context("Ely failed to start")?;
+    cx.set_global(I18n::new(translator.ely_tag()));
+    cx.set_global(translator);
     Theme::set_mode(Mode::Dark, cx);
     cx.open_window(WindowOptions::default(), |_, cx| cx.new(|_| Root))
         .context("window failed to open")?;
@@ -48,10 +55,12 @@ fn main() {
     let language = preferences
         .text("language")
         .unwrap_or_else(|error| panic!("{error:#}"));
-    log::info!(target: "locale", "locale {}", locale::effective(language));
+    let tag = locale::effective(language);
+    let translator = Translator::new(tag).unwrap_or_else(|error| panic!("{error:#}"));
+    log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());
     gpui_platform::application()
         .with_assets(Assets)
-        .run(|cx: &mut App| {
-            open(cx).unwrap_or_else(|error| panic!("startup failed: {error:#}"));
+        .run(move |cx: &mut App| {
+            open(cx, translator).unwrap_or_else(|error| panic!("startup failed: {error:#}"));
         });
 }
