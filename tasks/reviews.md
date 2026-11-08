@@ -178,3 +178,8 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. A press mid-expand kept the slide running; the tween ignored a new duration.
   Fixed: a new duration restarts it, with a regression test.
 - Round 2: PASS.
+
+## 6.5b and 6.5c Sidebar top nav and sections
+
+- Moved: every top nav row and section needs a route, search, owner key or page that lands later
+  (6.8, 8, 13, 14, 15, 16); built now they would be dead buttons. Placed in 8.0 and 13.0 to 16.0.

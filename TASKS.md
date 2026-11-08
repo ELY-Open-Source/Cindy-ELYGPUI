@@ -111,11 +111,6 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`;
   rail kept in `sidebar-rail`, card snap read from `sidebar.cardMode`; ⌘B through the
   `toggle-sidebar` shortcut; the content area takes the rest of the window
-- [ ] 6.5b Sidebar top nav: New, Automations, Plugins, Search, More with order, top-level or More
-  placement and plugin entries per owner as `SidebarTopNav.tsx`, `sidebarNavigationPrefs.ts` and
-  `SidebarNavigationCustomize.tsx` keep them
-- [ ] 6.5c Sidebar sections: Teammates, Pinned and All sessions as frames that chapters 8 and 14
-  fill (`sidebarSettingsStore.ts` lands with the pinned and hidden data it owns)
 - [ ] 6.6 Title bar: `ContentHeader` drag band, `WindowControls` per platform, `ChromeActions` placed
   by the mac traffic lights and fullscreen, the sidebar toggle with hover peek and pin as
   `useSidebarPeek.ts` does, the menu
@@ -154,7 +149,11 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 8. Sessions
 
 - [ ] 8.0 Expand from Cindy's code, with the title bar's back and forward through the task browse
-  history (`useSessionBrowseHistory`, `SessionHistoryButtons`)
+  history (`useSessionBrowseHistory`, `SessionHistoryButtons`); the sidebar top nav as
+  `SidebarTopNav.tsx` draws it (New, Search, More and its customize view, order and top-level or
+  More placement as `sidebarNavigationPrefs.ts` keeps them, rail tiles) and the Pinned and All
+  sessions sections; the Automations row lands with chapter 15, the Plugins row and plugin entries
+  with chapter 16, owner-scoped storage (`sidebarOwnerStorage.ts`) with chapter 13
 
 ## 9. Chat view
 
@@ -176,20 +175,20 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 13. Account and region
 
-- [ ] 13.0 Expand from Cindy's code, with log upload and redaction, and the database admission in
-  `docs/storage.md` (reader lease, read-only migration check, `cjk_seg`)
+- [ ] 13.0 Expand from Cindy's code, with the sidebar's owner-scoped storage and its legacy claims,
+  log upload and redaction, and the database admission in `docs/storage.md` (reader lease, read-only migration check, `cjk_seg`)
 
 ## 14. Teammates
 
-- [ ] 14.0 Expand from Cindy's code
+- [ ] 14.0 Expand from Cindy's code, with the sidebar's Teammates section
 
 ## 15. Automations
 
-- [ ] 15.0 Expand from Cindy's code
+- [ ] 15.0 Expand from Cindy's code, with the sidebar's Automations row
 
 ## 16. Plugins
 
-- [ ] 16.0 Expand from Cindy's code
+- [ ] 16.0 Expand from Cindy's code, with the sidebar's Plugins row, plugin entries and arrivals
 
 ## 17. Tools and integrations
 
