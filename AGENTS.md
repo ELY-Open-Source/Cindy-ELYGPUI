@@ -55,7 +55,10 @@ defines scope and what 1:1 means.
   `projection.rs` the list's latest-message extract with `scheduleSessionListProjectionBackfill`:
   after a read, one `UPDATE` fills the empty `list_preview` and `list_message_count` columns.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
-  (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). `src/rich_answer.rs` is
+  (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
+  `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
+  parts from micromark: ATX heading text, character classes as micromark reads UTF-16 code
+  units, and laziness at end of file. `src/rich_answer.rs` is
   `richAnswerText`: `cindy-ui` fences split from Markdown, `stream.rs` replays the ops once,
   `values.rs` resolves them, `js.rs` parses them as `JSON.parse` does (`Infinity` apart from
   `null`, no nesting limit: its recursion grows the stack through `stacker`, as V8 nests a
@@ -238,6 +241,6 @@ defines scope and what 1:1 means.
   `docs/storage.md` maps each store to its chapter; never migrate Cindy's database.
 - Colors, sizes and radii come from Ely's `cx.theme()`. Reuse Ely components before writing new UI.
 - Errors surface: no fallback that hides a failure. Log each key step.
-- No file over 500 lines. Comments only where needed, one short line.
+- No file over 500 lines (vendored upstream code apart). Comments only where needed, one short line.
 - `TASKS.md` is progress truth. One task, one review pass, one commit, one push.
 - Update this file when the stack or direction changes.

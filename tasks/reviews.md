@@ -333,3 +333,7 @@ effort high, in a Herdr pane.
   Unicode whitespace as Rust does, and ended a lazy block-quote line before an incomplete tag.
   Fixed: NUL reads as U+FFFD as micromark's preprocess does. The parser defects moved to 8.5c1b.
 - Round 3: PASS.
+
+## 8.5c1b The `markdown` crate parses as micromark does
+
+- Round 1: PASS.

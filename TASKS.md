@@ -270,12 +270,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     `latest_message_extract` and `latest_message_role` as `sessionReadSelection` does, and
     `scheduleSessionListProjectionBackfill` writes `SESSION_LIST_PROJECTION_BACKFILL_SQL` after
     it. Checked against Cindy's own functions through `sync-golden.mjs`
-  - [ ] 8.5c1b The `markdown` crate parses as micromark does where they part, in a vendored copy
-    with the fixes only: an ATX heading keeps hashes before its first text (`# # heading` is
-    `# heading`), Unicode whitespace is JavaScript's `\s` (U+FEFF ends a GFM autolink, U+0085
-    does not; `https://x.com😀_![alt](img)` keeps its image), and a lazy line in a block quote
-    that starts an incomplete tag continues the paragraph (`>a\\` then `<a` is `a <a`). Golden
-    cases from round 2 of 8.5c1's review
+  - [x] 8.5c1b The `markdown` crate parses as micromark does where they part, vendored in
+    `vendor/markdown` with the fixes only: an ATX heading keeps hashes before its first text
+    (`# # heading` is `# heading`), characters are classed as micromark classes UTF-16 code units
+    (JavaScript's `\s`; U+FEFF ends a GFM autolink, U+0085 does not; an emoji is not
+    punctuation), and a lazy last line that starts an incomplete tag continues the paragraph
+    (`>a\\` then `<a` is `a <a`). Golden cases from round 2 of 8.5c1's review
   - [ ] 8.5c2 The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes and
     the main list's display mode, with `sessionToCamel`'s `preview` and `summary`,
     `resolveSessionCardBody` and the message count

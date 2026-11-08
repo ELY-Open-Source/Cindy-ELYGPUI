@@ -24,7 +24,7 @@ jiff = "0.2"
 log = "0.4"
 notify = "8.2.1"
 indexmap = "2"
-markdown = "1"
+markdown = { path = "vendor/markdown" }
 regex = "1"
 rusqlite = { version = "0.41.1", features = ["bundled", "functions"] }
 raw-window-handle = { version = "0.6.2", features = ["std"] }

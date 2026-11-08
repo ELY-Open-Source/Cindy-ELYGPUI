@@ -227,8 +227,44 @@
    "K kelvin"
   ],
   [
+   "https://x.com﻿![alt](img)",
+   "https://x.com alt"
+  ],
+  [
+   "https://x.com![alt](img)",
+   "https://x.com![alt](img)"
+  ],
+  [
+   "https://x.com😀_![alt](img)",
+   "https://x.com😀_alt"
+  ],
+  [
    "www.a.com😀_b",
    "www.a.com😀_b"
+  ],
+  [
+   "# # heading",
+   "# heading"
+  ],
+  [
+   "## ## sub #",
+   "## sub"
+  ],
+  [
+   "# #1 issue",
+   "#1 issue"
+  ],
+  [
+   "# # #",
+   "#"
+  ],
+  [
+   ">a\\\n<a",
+   "a <a"
+  ],
+  [
+   "- a\n<a b",
+   "a <a b"
   ],
   [
    "a\u0000b",

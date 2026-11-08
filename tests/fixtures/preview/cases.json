@@ -58,7 +58,16 @@
   "<ımg src=\"https://a\" alt=\"dotless\">",
   "<IMG SRC=\"HTTPS://a\" ALT=\"caps\">",
   "<img src=\"https://a\" alt=\"K kelvin\">",
+  "https://x.com﻿![alt](img)",
+  "https://x.com![alt](img)",
+  "https://x.com😀_![alt](img)",
   "www.a.com😀_b",
+  "# # heading",
+  "## ## sub #",
+  "# #1 issue",
+  "# # #",
+  ">a\\\n<a",
+  "- a\n<a b",
   "a\u0000b"
  ],
  "finalize": [
