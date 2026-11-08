@@ -75,6 +75,31 @@ pub fn custom_path(user_data: &Path, url: &str) -> Result<PathBuf> {
     Ok(path)
 }
 
+/// The original image of an official wallpaper, as `ensureWallpaperAsset` checks its cache.
+pub fn cached_original(user_data: &Path, id: &str) -> Result<Option<RgbaImage>> {
+    let manifest: serde_json::Value = serde_json::from_str(include_str!(
+        "../../resources/wallpaper-video-manifest.json"
+    ))?;
+    let asset = &manifest[id]["image"];
+    let (Some(sha256), Some(size)) = (asset["sha256"].as_str(), asset["bytes"].as_u64()) else {
+        bail!("{id} has no original image in the manifest");
+    };
+    let path = user_data
+        .join("cindy-media/client-wallpaper")
+        .join(&sha256[..2])
+        .join(format!("{sha256}.webp"));
+    verified(&path, sha256, size)
+        .map(|b| decode(&b))
+        .transpose()
+}
+
+/// `matchesWallpaperVideo` over a bounded no-follow read; anything else is not cached.
+pub fn verified(path: &Path, sha256: &str, size: u64) -> Option<Vec<u8>> {
+    let bytes = crate::bounded_read::read(path, size).ok()??;
+    let digest = format!("{:x}", <sha2::Sha256 as sha2::Digest>::digest(&bytes));
+    (bytes.len() as u64 == size && digest == sha256).then_some(bytes)
+}
+
 pub fn decode(bytes: &[u8]) -> Result<RgbaImage> {
     Ok(image::load_from_memory(bytes)?.into_rgba8())
 }

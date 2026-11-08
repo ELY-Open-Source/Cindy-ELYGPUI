@@ -1,6 +1,7 @@
 mod activation_click;
 mod app_shortcuts;
 mod appearance_settings;
+mod bounded_read;
 mod chrome;
 mod cindy_json;
 mod dock_icon;

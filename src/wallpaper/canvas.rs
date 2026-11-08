@@ -14,7 +14,7 @@ use crate::theme::{Appearance, Kind};
 use crate::units;
 
 /// What `background` holds: an image, or `none` under a custom video.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 enum Background {
     Preview(&'static str),
     Custom(String),
@@ -36,13 +36,16 @@ fn background(settings: &Settings) -> Option<Background> {
 /// A blurred canvas for one overscanned box, in device pixels.
 pub(super) struct Blurred {
     key: (u32, u32, u32),
-    image: Arc<RenderImage>,
+    version: u32,
+    pub(super) image: Arc<RenderImage>,
 }
 
 pub struct Wallpaper {
     pub settings: Settings,
     active: bool,
     source: Option<Arc<RgbaImage>>,
+    /// Counts source images, so a new one blurs again.
+    version: u32,
     pub(super) image: Option<Arc<RenderImage>>,
     pub(super) blurred: Option<Blurred>,
     blurring: Option<(u32, u32, u32)>,
@@ -77,6 +80,7 @@ impl Wallpaper {
             active: background.is_some(),
             settings,
             source: None,
+            version: 0,
             image: None,
             blurred: None,
             blurring: None,
@@ -85,30 +89,58 @@ impl Wallpaper {
             return;
         };
         let user_data = user_data.to_owned();
-        let task = cx
-            .background_executor()
-            .spawn(async move { load(&background, &user_data) });
         cx.spawn(async move |cx| {
-            let loaded = task.await;
-            cx.update(|cx| match loaded {
+            let executor = cx.background_executor().clone();
+            let (first, dir) = (background.clone(), user_data.clone());
+            let loaded = executor.spawn(async move { load(&first, &dir) });
+            let loaded = loaded.await;
+            let shown = cx.update(|cx| match loaded {
                 Ok(source) => {
-                    let wallpaper = cx.global_mut::<Self>();
-                    wallpaper.image = Some(media::render(source.clone()));
-                    wallpaper.source = Some(Arc::new(source));
-                    cx.refresh_windows();
+                    cx.update_global::<Self, _>(|w, cx| w.show(source, cx));
+                    true
                 }
                 Err(error) => {
-                    log::warn!(target: "wallpaper", "wallpaper image not shown: {error:#}")
+                    log::warn!(target: "wallpaper", "wallpaper image not shown: {error:#}");
+                    false
+                }
+            });
+            let Background::Preview(id) = background else { return };
+            if !shown || !cx.update(wants_original) {
+                return;
+            }
+            let original = executor.spawn(async move { media::cached_original(&user_data, id) });
+            let original = original.await;
+            cx.update(|cx| match original {
+                Ok(Some(source)) => {
+                    log::info!(target: "wallpaper-assets", "{id}: original from the cache");
+                    cx.update_global::<Self, _>(|w, cx| w.show(source, cx));
+                }
+                Ok(None) => {
+                    log::info!(target: "wallpaper-assets", "{id}: original not cached; keeping the preview")
+                }
+                Err(error) => {
+                    log::warn!(target: "wallpaper-assets", "{id}: original unreadable; keeping the preview: {error:#}")
                 }
             });
         })
         .detach();
     }
 
+    pub(super) fn show(&mut self, source: RgbaImage, cx: &mut App) {
+        self.image = Some(media::render(source.clone()));
+        self.source = Some(Arc::new(source));
+        self.version += 1;
+        cx.refresh_windows();
+    }
+
     /// The blurred canvas for this box, started off the main thread when it is missing.
     fn blurred_for(&mut self, key: (u32, u32, u32), cx: &mut App) -> Option<Arc<RenderImage>> {
         let image = self.blurred.as_ref().map(|b| b.image.clone());
-        let fresh = self.blurred.as_ref().is_some_and(|b| b.key == key);
+        let version = self.version;
+        let fresh = self
+            .blurred
+            .as_ref()
+            .is_some_and(|b| b.key == key && b.version == version);
         let source = self.source.clone();
         if fresh || self.blurring.is_some() || source.is_none() {
             return image;
@@ -124,13 +156,23 @@ impl Wallpaper {
             cx.update(|cx| {
                 let wallpaper = cx.global_mut::<Self>();
                 wallpaper.blurring = None;
-                wallpaper.blurred = Some(Blurred { key, image });
+                wallpaper.blurred = Some(Blurred {
+                    key,
+                    version,
+                    image,
+                });
                 cx.refresh_windows();
             });
         })
         .detach();
         image
     }
+}
+
+/// `useWallpaperAsset(id, 'image', visibility > 0)`.
+fn wants_original(cx: &mut App) -> bool {
+    let dark = cx.global::<Appearance>().kind() == Kind::Dark;
+    cx.global::<Wallpaper>().settings.visibility(dark) > 0.0
 }
 
 /// `data-wallpaper-active`: a background is set, so the canvas covers the window.

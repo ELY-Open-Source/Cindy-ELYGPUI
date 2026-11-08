@@ -115,7 +115,11 @@ defines scope and what 1:1 means.
   main thread at source resolution (`media::blurred`) and stretches it over the overscanned box.
   `clear` empties page surfaces while a wallpaper is active. Custom media is read only through
   `media::custom_path`, which keeps `assertBlobPathContained`'s checks. Logs name the kind of
-  wallpaper, never the custom URL.
+  wallpaper, never the custom URL. An official wallpaper shows its bundled preview, then the
+  original from Cindy's shared cache when `media::verified` matches the manifest
+  (`resources/wallpaper-video-manifest.json`) in size and sha256. Downloads come with 13.0.
+- Untrusted files: read with `bounded_read::read`, Cindy's `readBoundedFileNoFollow` (no-follow
+  open, regular file, size limit, stable while read).
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

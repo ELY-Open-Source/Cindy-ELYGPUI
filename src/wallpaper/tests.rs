@@ -145,6 +145,38 @@ fn every_official_id_has_its_preview() {
 }
 
 #[test]
+fn a_cached_original_must_match_its_manifest_entry() {
+    let dir = tempfile::tempdir().unwrap();
+    let file = dir.path().join("a.webp");
+    std::fs::write(&file, b"cindy").unwrap();
+    let sha = "e8afcc1fdec8f0d5d5ed1a3ab2bb4ff5e4b8d3b02a85fae4d2b8b9f4f1d5f1ab";
+    let real = format!("{:x}", <sha2::Sha256 as sha2::Digest>::digest(b"cindy"));
+    assert_eq!(
+        media::verified(&file, &real, 5).as_deref(),
+        Some(&b"cindy"[..])
+    );
+    assert_eq!(media::verified(&file, sha, 5), None, "wrong hash");
+    assert_eq!(media::verified(&file, &real, 4), None, "over the size");
+    assert_eq!(media::verified(&file, &real, 6), None, "short of the size");
+    assert_eq!(
+        media::verified(&dir.path().join("b"), &real, 5),
+        None,
+        "missing"
+    );
+    #[cfg(unix)]
+    {
+        let link = dir.path().join("link.webp");
+        std::os::unix::fs::symlink(&file, &link).unwrap();
+        assert_eq!(media::verified(&link, &real, 5), None, "a link");
+    }
+    assert!(
+        media::cached_original(dir.path(), "dune-dawn")
+            .unwrap()
+            .is_none()
+    );
+}
+
+#[test]
 fn blur_crops_the_cover_box_first() {
     let mut image = image::RgbaImage::new(40, 10);
     for (x, _, pixel) in image.enumerate_pixels_mut() {
@@ -234,6 +266,33 @@ fn an_official_wallpaper_covers_the_window(cx: &mut gpui::TestAppContext) {
         assert!(wallpaper.image.is_some(), "the preview decoded");
         assert!(wallpaper.blurred.is_some(), "the blurred canvas is ready");
     });
+}
+
+#[gpui::test]
+fn a_new_source_blurs_again(cx: &mut gpui::TestAppContext) {
+    let mut vcx = paint(cx, r#"{"wallpaperId": "dune-dawn", "wallpaperBlur": 4}"#);
+    let blurred = |vcx: &mut gpui::VisualTestContext| {
+        vcx.update(|_, cx| {
+            cx.global::<super::Wallpaper>()
+                .blurred
+                .as_ref()
+                .unwrap()
+                .image
+                .id
+        })
+    };
+    let first = blurred(&mut vcx);
+    vcx.update(|window, cx| {
+        let source = image::RgbaImage::new(8, 8);
+        gpui::BorrowAppContext::update_global::<super::Wallpaper, _>(cx, |w, cx| {
+            w.show(source, cx)
+        });
+        window.refresh();
+    });
+    vcx.run_until_parked();
+    vcx.update(|window, _| window.refresh());
+    vcx.run_until_parked();
+    assert_ne!(blurred(&mut vcx), first, "the old blur is not reused");
 }
 
 #[gpui::test]

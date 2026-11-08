@@ -229,3 +229,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. The custom wallpaper URL reached the log through `Debug` and path-bearing
   error contexts.
 - Round 2: PASS. Settings log `custom: true|false`; custom-media errors carry fixed text.
+
+## 6.9e2 Cached official original
+
+- Round 1: FAIL. The bounded read compared size and mtime only, not Cindy's full handle
+  version.
+- Round 2: PASS. Identity, mode, size, mtime and ctime from the open handle.

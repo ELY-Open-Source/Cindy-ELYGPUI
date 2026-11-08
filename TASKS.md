@@ -140,10 +140,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     blur with overscan, the page surfaces it clears, and the coverage that turns 6.9d's native
     material off. The change-time crossfade and blur preview come with the settings page (12.0);
     the glass fills come with the surfaces that carry them
-  - [ ] 6.9e2 Official images and videos downloaded, verified and cached as `wallpaper-video.ts`
-    does, the bundled preview shown until the original is ready
-  - [ ] 6.9e3 Dynamic motion (`wallpaperMotion`): the videos played as `WallpaperVideo.tsx` does, static under reduced
-    motion
+  - [x] 6.9e2 The official original image from Cindy's durable cache, read and verified as
+    `wallpaper-video.ts` does before any network (`readBoundedFileNoFollow`, size and sha256),
+    shown once decoded in place of the bundled preview; the download itself needs
+    `cdnBaseUrl` and goes to 13.0
+  - [ ] 6.9e3 Dynamic motion (`wallpaperMotion`): cached official videos and custom videos played
+    as `WallpaperVideo.tsx` does, static under reduced motion
 
 ## 7. Mock mode
 
@@ -196,7 +198,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 13. Account and region
 
-- [ ] 13.0 Expand from Cindy's code, with the sidebar's owner-scoped storage and its legacy claims,
+- [ ] 13.0 Expand from Cindy's code, with official wallpaper downloads (`wallpaper-video.ts`, from
+  6.9e2), the sidebar's owner-scoped storage and its legacy claims,
   log upload and redaction, and the database admission in `docs/storage.md` (reader lease,
   read-only migration check, `cjk_seg`)
 
