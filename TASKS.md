@@ -103,11 +103,15 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
-- [ ] 6.5 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
-  double-click reset; New, Automations, Plugins, Search, More with order, top-level or More placement
-  and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
-  sessions sections as frames that chapters 8 and 14 fill; its collapse kept in the tree as
-  `collapsePrefs.ts` does for `session-list` (global), with the legacy `sidebar-collapsed` migration
+- [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
+  78px and the card-mode snap as `useSidebarResize.ts` and `useHorizontalResize.ts` keep them,
+  double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`,
+  with the legacy `sidebar-collapsed` migration; hover peek and pin as `useSidebarPeek.ts` does
+- [ ] 6.5b Sidebar top nav: New, Automations, Plugins, Search, More with order, top-level or More
+  placement and plugin entries per owner as `SidebarTopNav.tsx`, `sidebarNavigationPrefs.ts` and
+  `SidebarNavigationCustomize.tsx` keep them
+- [ ] 6.5c Sidebar sections: Teammates, Pinned and All sessions as frames that chapters 8 and 14
+  fill (`sidebarSettingsStore.ts` lands with the pinned and hidden data it owns)
 - [ ] 6.6 Title bar: `ContentHeader` drag band, `WindowControls` per platform, `ChromeActions` placed
   by the mac traffic lights and fullscreen, the sidebar toggle with its peek trigger, the menu
   button whose items land with their targets (`DESIGN.md` §14.6); the pane placement signals
