@@ -119,15 +119,21 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
   its tooltip (`DESIGN.md` §14.6) and hover peek and pin as `useSidebarPeek.ts` does; the
   `ContentHeader` spacer that makes room for the cluster
-- [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
-  from `appearance-settings.json`; the window material per family as
-  `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
-  `wallpaperId` with the custom URL from `custom-wallpaper.json` (`custom` without one falls back to
-  `none`), official images and videos downloaded and cached as `wallpaper-video.ts` does, static and
-  dynamic motion with reduced motion; `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur`
-  with their normalization, null meaning and the legacy overlay-to-visibility derivation; zoom read,
-  applied and restored across navigation and focus as `appearance-settings-ipc.ts` does; the settings
-  UI and its write IPC go to chapter 12
+- [ ] 6.9a Reduced motion from the system, as Chromium's `prefers-reduced-motion` reads it (Linux
+  `enable-animations`, macOS reduce motion, Windows client-area animation), applied as `globals.css`
+  does: motion tokens at 0, spinners still, `motion-reduce:` transitions off; other features' rules
+  land with them
+- [ ] 6.9b Window zoom and app icon from `appearance-settings.json`; zoom read, applied and restored
+  across navigation and focus as `appearance-settings-ipc.ts` does
+- [ ] 6.9c The window material per family as `vibrancyConfig.ts` resolves it (Windows acrylic and
+  mica, macOS vibrancy)
+- [ ] 6.9d Wallpaper as Cindy shows it: `wallpaperId` with the custom URL from
+  `custom-wallpaper.json` (`custom` without one falls back to `none`), official images and videos
+  downloaded and cached as `wallpaper-video.ts` does, static and dynamic motion with reduced motion;
+  `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur` with their normalization, null
+  meaning and the legacy overlay-to-visibility derivation; the settings UI and its write IPC go to
+  chapter 12
+
 ## 7. Mock mode
 
 - [ ] 7.0 Expand from Cindy's code
