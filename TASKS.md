@@ -11,6 +11,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 1.3 CI green on all six targets
 - [x] 1.4 CI on self-hosted runners where the org has one: Linux x64 `omarchy-amd64`, macOS arm64
   `macos-arm64`, Windows x64 `windows-amd64` (any idle one of that label)
+- [x] 1.5 CI on manual dispatch only; local checks on Omarchy until the end
 
 ## 2. Logging and diagnostics
 
@@ -27,7 +28,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 3. Configuration and storage
 
-- [ ] 3.0 Expand from Cindy's code
+- [x] 3.0 Expand from Cindy's code into `docs/storage.md`: every store, its Cindy owner, its chapter.
+  Store code lands with its first caller, so the database admission moves to chapter 13.
 
 ## 4. i18n
 
@@ -67,7 +69,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 13. Account and region
 
-- [ ] 13.0 Expand from Cindy's code, with log upload and redaction
+- [ ] 13.0 Expand from Cindy's code, with log upload and redaction, and the database admission in
+  `docs/storage.md` (reader lease, read-only migration check, `cjk_seg`)
 
 ## 14. Teammates
 
@@ -108,3 +111,4 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 23. Distribution
 
 - [ ] 23.0 Expand from Cindy's code
+- [ ] 23.last Dispatch CI and get all six targets green

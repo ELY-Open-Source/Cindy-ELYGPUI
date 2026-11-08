@@ -25,12 +25,15 @@ defines scope and what 1:1 means.
   (`.github/workflows/ci.yml`) runs them and a release build on Linux, macOS and Windows,
   x86_64 and arm64. Linux x64, macOS arm64 and Windows x64 run on the org's self-hosted runners
   (`omarchy-amd64`, `macos-arm64`, `windows-amd64`); the rest on GitHub-hosted ones.
+  CI runs only on manual dispatch (`gh workflow run CI`): day-to-day checks run on the local
+  Omarchy machine; all six targets run once the port is finished.
 
 ## Rules
 
 - Read Cindy's code and rule docs for an area before porting it. Cindy at the PRD's commit is the
   reference; do not guess its behavior.
 - Keep Cindy's persisted formats and wire protocols. Change internal structure freely.
+  `docs/storage.md` maps each store to its chapter; never migrate Cindy's database.
 - Colors, sizes and radii come from Ely's `cx.theme()`. Reuse Ely components before writing new UI.
 - Errors surface: no fallback that hides a failure. Log each key step.
 - No file over 500 lines. Comments only where needed, one short line.

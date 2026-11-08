@@ -32,3 +32,20 @@ effort high, in a Herdr pane.
   (3) fatal aliased to error; (4) invalid config diagnostics could vanish. All fixed.
 - Round 2: FAIL. A non-object log-config.json was read as no override. Fixed: object required.
 - Round 3: PASS.
+
+## 1.5 CI on manual dispatch
+
+- Round 1: PASS.
+
+## 3.0 Storage map
+
+- Round 1: FAIL. Lease, admission and cjk_seg summarized too loosely; inventory incomplete; owners
+  pointed at consumers. Fixed: port those files whole; owners corrected.
+- Round 2: FAIL. Wildcard rows and a deferred-owner escape hatch; blanket temp-rename rule. Fixed:
+  every module gets one chapter; each store keeps its owner's publication and locking.
+- Round 3: FAIL. Search missed stores with computed names. Fixed: added JSON.stringify writers.
+- Round 4: FAIL. Search missed stores written through helpers. Fixed: added helper callers.
+- Round 5: FAIL. Search missed stream writers and a `.json` mention without quotes. Fixed: search
+  widened to any `.json` mention and any stream, append, rename or `write*File` writer; 583 modules.
+  Review limit reached; committed with the round-5 findings fixed and the list marked a superset
+  that each chapter re-checks at expansion.
