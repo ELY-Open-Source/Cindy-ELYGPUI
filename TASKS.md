@@ -200,7 +200,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 8.1 The session owner, read only: `app-session.json`'s `activeMode` normalized as
   `appSessionState.ts` does, `local` giving the `local-v1` owner and its `owners/<key>/` folder,
   `<key>` the first 20 lowercase hex characters of the owner id's SHA-256 (`dataOwnerStorageKey`); `signed-out` and `cloud` wait for chapter 13 and say so
-- [ ] 8.2 The database for that owner, as `docs/storage.md` admits it: `<userData>/cindy-local-v1.db`,
+- [x] 8.2 The database for that owner, as `docs/storage.md` admits it: `<userData>/cindy-local-v1.db`,
   the reader lease, `checkMigrationCompatibility` against the reference commit's migrations, the
   pragmas `openWithPragmas` sets, `cjk_seg` and its TEMP triggers (`registerCjkSeg.ts`,
   `cjkSeg.ts`), file mode `0600`; queries off the main thread, as Cindy's worker does; a refused or
@@ -321,7 +321,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 23. Distribution
 
-- [ ] 23.0 Expand from Cindy's code, with the Linux packages' GStreamer runtime dependencies
+- [ ] 23.0 Expand from Cindy's code, with the local database refusal screen's update views and
+  Check for Updates button (from 8.2), the Linux packages' GStreamer runtime dependencies
   (`gst-plugins-good`, `gst-libav`) for wallpaper video
 - [ ] 23.last Dispatch CI and get all six targets green; run the app on the Windows runner and check
   that maximized windows survive display and DPI changes without Cindy's maximize recovery

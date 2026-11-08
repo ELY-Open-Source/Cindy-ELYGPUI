@@ -29,6 +29,7 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(crate::window_material::Material::load());
         let wallpaper = crate::appearance_settings::read(dir).wallpaper;
         crate::wallpaper::Wallpaper::install(wallpaper, dir, cx);
+        crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
         cx.set_global(Toasts::default());
@@ -364,4 +365,56 @@ fn zoom_keeps_divider_math_in_css_pixels(cx: &mut TestAppContext) {
         (fraction - (0.5 - 100.0 / avail)).abs() < 1e-3,
         "{fraction}"
     );
+}
+
+#[cfg(not(target_os = "macos"))]
+#[gpui::test]
+fn a_refused_database_covers_the_window(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mut vcx = open(cx, dir.path());
+    assert!(vcx.debug_bounds("local-db-fatal").is_none());
+    vcx.update(|window, cx| {
+        let fatal = crate::localdb::Fatal {
+            code: "DB_SCHEMA_LOCKED",
+            message: "busy".into(),
+        };
+        cx.global_mut::<crate::localdb::LocalDb>().state = crate::localdb::State::Failed(fatal);
+        window.refresh();
+    });
+    vcx.run_until_parked();
+    let screen = vcx
+        .debug_bounds("local-db-fatal")
+        .expect("the fatal screen");
+    assert_eq!(screen.size, size(px(1600.0), px(900.0)));
+}
+
+#[cfg(not(target_os = "macos"))]
+#[gpui::test]
+fn a_start_failure_copies_its_details(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mut vcx = open(cx, dir.path());
+    let fail = |vcx: &mut VisualTestContext, code: &'static str| {
+        vcx.update(|window, cx| {
+            let fatal = crate::localdb::Fatal {
+                code,
+                message: "disk full".into(),
+            };
+            cx.global_mut::<crate::localdb::LocalDb>().state = crate::localdb::State::Failed(fatal);
+            window.refresh();
+        });
+        vcx.run_until_parked();
+    };
+    fail(&mut vcx, "DB_SCHEMA_LOCKED");
+    assert!(
+        vcx.debug_bounds("local-db-copy").is_none(),
+        "the lease view has no copy"
+    );
+    fail(&mut vcx, "DB_INIT_FAILED");
+    let copy = vcx
+        .debug_bounds("local-db-copy")
+        .expect("init-failed offers copy");
+    vcx.simulate_click(copy.center(), Modifiers::none());
+    vcx.run_until_parked();
+    let copied = vcx.update(|_, cx| cx.read_from_clipboard().and_then(|item| item.text()));
+    assert_eq!(copied.as_deref(), Some("DB_INIT_FAILED\ndisk full"));
 }

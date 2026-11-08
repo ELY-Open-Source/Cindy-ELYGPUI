@@ -16,6 +16,14 @@ defines scope and what 1:1 means.
   `activeMode`; `local` is the `local-v1` owner with `owners/<first 20 hex of sha256(id)>/`.
   Signed-out and cloud owners need chapter 13. A file that does not parse is removed, as Cindy's
   store does.
+- Local database (`src/localdb.rs`): `cindy-local-v1.db` opens as Cindy's passive instances open
+  a shared database, never created or migrated: the reader lease (`lease.rs`, Cindy's
+  `schemaMigrationLease.ts`; records and the recovery observation stay byte-compatible), the
+  pragmas, `cjk_seg` with its TEMP triggers (`cjk.rs`; character classes in
+  `resources/cjk-classes.json` come from V8 through `scripts/sync-golden.mjs`), sqlite-vec 0.1.9,
+  then `admission.rs` against `resources/migration-manifest.json` (Cindy's 149 migrations, also
+  from `sync-golden.mjs`). The connection and its lease live on one thread (`worker.rs`). Any
+  refusal shows `fatal.rs`, Cindy's `LocalDbFatalScreen`, above everything.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

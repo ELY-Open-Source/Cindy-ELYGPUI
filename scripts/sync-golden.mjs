@@ -1,5 +1,6 @@
 // Usage: node scripts/sync-golden.mjs <cindy checkout with node_modules> <commit>
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import os from 'node:os';
@@ -15,7 +16,7 @@ const write = (file, value) => fs.writeFileSync(file, `${JSON.stringify(value, n
 
 try {
   const src = 'apps/desktop/src';
-  const archive = execFileSync('git', ['-C', cindy, 'archive', commit, src], { maxBuffer: 1 << 30 });
+  const archive = execFileSync('git', ['-C', cindy, 'archive', commit, src, 'apps/desktop/drizzle'], { maxBuffer: 1 << 30 });
   execFileSync('tar', ['-x', '-C', tmp], { input: archive });
   const entry = path.join(tmp, src, 'golden-entry.ts');
   fs.writeFileSync(entry, [
@@ -25,10 +26,11 @@ try {
     "export * as layoutTree from './shared/layoutTree';",
     "export * as appShortcuts from './shared/appShortcuts';",
     "export * as appearance from './shared/appearanceSettings';",
+    "export { cjkSeg } from './main/localDb/cjkSeg';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error' });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -116,6 +118,40 @@ try {
       visibility: [false, true].map((dark) => appearance.getWallpaperVisibility(s, dark)),
     };
   }));
+
+  const drizzle = path.join(tmp, 'apps/desktop/drizzle');
+  const hash = (file) => createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex');
+  const migrations = fs.readdirSync(drizzle).filter((f) => /^\d{4}_.*\.sql$/.test(f)).sort().map((fileName) => {
+    const script = path.join(drizzle, 'scripts', fileName.replace(/\.sql$/, '.ts'));
+    return {
+      seq: parseInt(fileName.slice(0, 4), 10),
+      fileName,
+      sqlHash: hash(path.join(drizzle, fileName)),
+      scriptHash: fs.existsSync(script) ? hash(script) : null,
+    };
+  });
+  fs.writeFileSync(path.join(fixtures, '..', '..', 'resources', 'migration-manifest.json'), `${JSON.stringify(migrations, null, 1)}\n`);
+
+  const ranges = (re) => {
+    const out = [];
+    for (let cp = 0; cp <= 0x10ffff; cp += 1) {
+      if (cp >= 0xd800 && cp <= 0xdfff) continue;
+      if (!re.test(String.fromCodePoint(cp))) continue;
+      const last = out.at(-1);
+      if (last && last[1] === cp - 1) last[1] = cp;
+      else out.push([cp, cp]);
+    }
+    return out;
+  };
+  write(path.join(fixtures, '..', '..', 'resources', 'cjk-classes.json'), {
+    unicode: process.versions.unicode,
+    han: ranges(/\p{Script=Han}/u),
+    letterOrNumber: ranges(/[\p{L}\p{N}]/u),
+    mark: ranges(/\p{M}/u),
+  });
+  const segDir = path.join(fixtures, 'cjk-seg');
+  const segInput = JSON.parse(fs.readFileSync(path.join(segDir, 'input.json'), 'utf8'));
+  write(path.join(segDir, 'expected.json'), segInput.map((text) => cjkSeg(text)));
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

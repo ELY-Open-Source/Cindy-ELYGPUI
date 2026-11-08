@@ -116,6 +116,7 @@ impl Render for Root {
             .children(edges)
             .child(self.actions.clone())
             .child(self.toasts.clone())
+            .children(crate::localdb::screen(cx))
     }
 }
 

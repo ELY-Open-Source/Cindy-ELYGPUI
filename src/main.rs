@@ -9,6 +9,7 @@ mod dock_icon;
 mod i18n;
 mod layout_root;
 mod layout_tree;
+mod localdb;
 mod locale;
 mod logger;
 mod main_window;
@@ -38,6 +39,7 @@ use crate::{i18n::Translator, theme::Appearance};
 /// Everything read before the app starts.
 struct Startup {
     user_data: PathBuf,
+    database: Option<PathBuf>,
     translator: Translator,
     theme_mode: theme::Mode,
     family: Option<String>,
@@ -72,6 +74,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
+    localdb::install(startup.database.clone(), cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());
     let home = dirs::home_dir().context("this user has no home folder")?;
@@ -106,13 +109,16 @@ fn startup() -> Result<Startup> {
     let preferences =
         preferences::Preferences::load(&user_data).context("preferences failed to load")?;
     let mode = session_owner::read_mode(&user_data);
-    if let Some(owner) = session_owner::owner(mode, &user_data) {
+    let owner = session_owner::owner(mode, &user_data);
+    if let Some(owner) = &owner {
         log::info!(target: "appSessionState", "data owner {} in {}", owner.id, owner.dir.display());
     }
+    let database = owner.map(|owner| localdb::path(&user_data, owner.id));
     let tag = locale::effective(preferences.text("language")?);
     let translator = Translator::new(tag)?;
     log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());
     Ok(Startup {
+        database,
         theme_mode: theme::Mode::parse(preferences.text("theme")?),
         family: preferences.text("theme.familyId")?.map(str::to_owned),
         appearance: appearance_settings::read(&user_data),
