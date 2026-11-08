@@ -12,6 +12,7 @@ mod motion;
 mod os_appearance;
 mod preferences;
 mod region;
+mod sidebar;
 mod theme;
 mod theme_import;
 mod toast;
@@ -33,6 +34,7 @@ struct Startup {
     family: Option<String>,
     fonts: appearance_settings::Fonts,
     activation: main_window::Activation,
+    preferences: preferences::Preferences,
 }
 
 /// Cindy's `applyFontSettings` on Ely's theme: UI scale and families.
@@ -56,6 +58,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     apply_fonts(&startup.fonts, cx);
     cx.set_global(I18n::new(startup.translator.ely_tag()));
     cx.set_global(startup.translator);
+    cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
     let home = dirs::home_dir().context("this user has no home folder")?;
     let sources = theme::Sources {
@@ -100,6 +103,7 @@ fn startup() -> Result<Startup> {
         },
         translator,
         user_data,
+        preferences,
     })
 }
 

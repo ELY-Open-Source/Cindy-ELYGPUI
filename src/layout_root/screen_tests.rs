@@ -83,7 +83,7 @@ pub(super) fn open_beside<'a>(
         use gpui::AppContext as _;
         Row {
             sidebar,
-            content: cx.new(|cx| LayoutRoot::new(f64::from(sidebar), cx)),
+            content: cx.new(|cx| LayoutRoot::new(Box::new(move |_| sidebar), cx)),
         }
     });
     vcx.simulate_resize(size(px(width), px(900.0)));

@@ -77,7 +77,7 @@ impl SeamAt {
 }
 
 pub struct LayoutRoot {
-    sidebar_width: f64,
+    sidebar_width: Box<dyn Fn(&App) -> f32>,
     avail: f64,
     height: f64,
     live: Option<HashMap<String, f64>>,
@@ -90,8 +90,8 @@ pub struct LayoutRoot {
 }
 
 impl LayoutRoot {
-    /// `sidebar_width` is the column left of the content.
-    pub fn new(sidebar_width: f64, cx: &mut Context<Self>) -> Self {
+    /// `sidebar_width` paints the column left of the content.
+    pub fn new(sidebar_width: Box<dyn Fn(&App) -> f32>, cx: &mut Context<Self>) -> Self {
         cx.observe_global::<LayoutStore>(|_, cx| cx.notify())
             .detach();
         LayoutRoot {
@@ -116,6 +116,11 @@ impl LayoutRoot {
             &PRESENCE,
             &never,
         )
+    }
+
+    #[cfg(test)]
+    pub fn available(&self) -> f64 {
+        self.avail
     }
 
     /// `preserveChatWidth`: a root pane keeps a width the user chose.
@@ -310,7 +315,7 @@ fn save(layout: Layout, cx: &mut App) {
 impl Render for LayoutRoot {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let viewport = window.viewport_size();
-        self.avail = f(viewport.width) - self.sidebar_width;
+        self.avail = f(viewport.width) - f64::from((self.sidebar_width)(cx));
         self.height = f(viewport.height);
         let layout = cx.global::<LayoutStore>().layout().clone();
         self.schedule_heal(&layout, cx);

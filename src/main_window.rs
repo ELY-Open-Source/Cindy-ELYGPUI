@@ -2,23 +2,23 @@ use std::{path::PathBuf, time::Duration};
 
 use anyhow::{Context as _, Result};
 use gpui::{
-    App, AppContext, Bounds, Context, Entity, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Render, Styled, Task, TitlebarOptions, Window, WindowBounds, WindowOptions, div,
-    point, px, size,
+    App, AppContext, Bounds, Context, Entity, FocusHandle, InteractiveElement, IntoElement,
+    MouseButton, ParentElement, Render, Styled, Task, TitlebarOptions, Window, WindowBounds,
+    WindowOptions, div, point, px, size,
 };
 
 use crate::{
     activation_click::{Input, Policy},
+    app_shortcuts::AppShortcuts,
     layout_root::LayoutRoot,
     region,
+    sidebar::Sidebar,
     theme::{Appearance, shell},
     toast::ToastContainer,
     window_state::{self, WindowState},
 };
 
 const WINDOW_STATE_DELAY: Duration = Duration::from_millis(100);
-/// `useSidebarResize`'s `DEFAULT_WIDTH`.
-const SIDEBAR_WIDTH: f64 = 260.0;
 
 /// The main window's root view.
 pub struct Root {
@@ -28,6 +28,9 @@ pub struct Root {
     activation: Policy,
     first_press_held: bool,
     layout: Entity<LayoutRoot>,
+    sidebar: Entity<Sidebar>,
+    /// Held while nothing else is focused, so window-wide keys reach the root.
+    focus: FocusHandle,
     toasts: Entity<ToastContainer>,
 }
 
@@ -55,11 +58,18 @@ impl Render for Root {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let appearance = cx.global::<Appearance>();
         div()
+            .track_focus(&self.focus)
             .relative()
             .size_full()
             .flex()
             .bg(appearance.hsl_token("content-area"))
             .text_color(appearance.token("text-primary"))
+            .capture_key_down(cx.listener(|this, event: &gpui::KeyDownEvent, _, cx| {
+                if cx.global::<AppShortcuts>().matches("toggle-sidebar", event) {
+                    this.sidebar.update(cx, |sidebar, cx| sidebar.toggle(cx));
+                    cx.stop_propagation();
+                }
+            }))
             .capture_any_mouse_down(cx.listener(|this, event: &gpui::MouseDownEvent, _, cx| {
                 if event.button == MouseButton::Left {
                     this.press(Input::Down, event.first_mouse, cx);
@@ -70,13 +80,7 @@ impl Render for Root {
                     this.press(Input::Up, false, cx);
                 }
             }))
-            .child(
-                div()
-                    .flex_none()
-                    .h_full()
-                    .w(px(SIDEBAR_WIDTH as f32))
-                    .bg(appearance.hsl_token("sidebar")),
-            )
+            .child(self.sidebar.clone())
             .child(self.layout.clone())
             .child(self.toasts.clone())
     }
@@ -190,13 +194,41 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
             if restore_mac_fullscreen {
                 window.on_next_frame(|window, _| window.toggle_fullscreen());
             }
+            let focus = cx.focus_handle();
+            window.focus(&focus, cx);
+            cx.on_focus_lost(window, |root: &mut Root, window, cx| {
+                log::debug!(target: "window", "focus lost; the root takes it");
+                window.focus(&root.focus, cx);
+            })
+            .detach();
+            let sidebar = cx.new(Sidebar::new);
+            let painted = sidebar.downgrade();
+            let layout = cx.new(|cx| {
+                let width = move |cx: &App| {
+                    painted
+                        .upgrade()
+                        .map_or(0.0, |s| s.read(cx).painted_width(cx))
+                };
+                LayoutRoot::new(Box::new(width), cx)
+            });
+            cx.observe(&sidebar, {
+                let layout = layout.downgrade();
+                move |_, _, cx| {
+                    if let Some(layout) = layout.upgrade() {
+                        layout.update(cx, |_, cx| cx.notify());
+                    }
+                }
+            })
+            .detach();
             Root {
                 state,
                 user_data,
                 pending_bounds: None,
                 activation: policy,
                 first_press_held: false,
-                layout: cx.new(|cx| LayoutRoot::new(SIDEBAR_WIDTH, cx)),
+                layout,
+                sidebar,
+                focus,
                 toasts: cx.new(|cx| ToastContainer::new(window, cx)),
             }
         })

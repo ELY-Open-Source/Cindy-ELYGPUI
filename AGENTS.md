@@ -55,8 +55,16 @@ defines scope and what 1:1 means.
   the letter. Keypad digits, decimal and Enter reach the app as their main-keyboard twins
   (`Digit1`, not `Numpad1`): gpui's `keystroke_from_xkb` strips `kp_` and `KeyDownEvent` carries no
   scancode. Only a gpui change that exposes the physical key closes this; keypad `+` and `-`
-  survive. A shortcut handler sits on the window's root element in `capture_key_down`: the root
-  is on every key's dispatch path, even with nothing focused.
+  survive. A shortcut handler sits on the window's root element in `capture_key_down`. The
+  root holds focus while nothing else does (`on_focus_lost` hands it back), so every key's dispatch
+  path runs through it; with nothing focused gpui dispatches to the tree's own root only.
+- Sidebar frame: `src/sidebar.rs` ports `Sidebar.tsx` and the width, rail and hidden state
+  `MainLayout.tsx` keeps; `sidebar/resize.rs` ports `useHorizontalResize.ts` with the sidebar's
+  limits. Width and rail live in the preferences file (`sidebar-width`, `sidebar-rail`), the
+  hidden state in the layout tree. The content area's width is the window less the sidebar's
+  painted width, read every frame of its 250ms width transition.
+- Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
+  `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

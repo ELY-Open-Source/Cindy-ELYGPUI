@@ -2,7 +2,7 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "toggle-sidebar in 6.5a is the first caller")
+    expect(dead_code, reason = "shortcut labels land with the title bar in 6.6")
 )]
 
 mod keys;

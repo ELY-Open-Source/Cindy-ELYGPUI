@@ -106,7 +106,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.4 App shortcuts: the registry and matching of `shared/appShortcuts.ts`, the user's bindings
   read as `app-shortcuts/AppShortcutStore.ts` keeps them, dispatch as `useAppShortcut.ts` and
   `lib/appShortcutStore.ts` do; rebinding UI and writes go to chapter 12
-- [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
+- [x] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
   78px and the card-mode snap as `useSidebarResize.ts` and `useHorizontalResize.ts` keep them,
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`;
   rail kept in `sidebar-rail`, card snap read from `sidebar.cardMode`; ⌘B through the

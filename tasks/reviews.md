@@ -172,3 +172,9 @@ effort high, in a Herdr pane.
   read as top-row digits. Fixed the first two; the third is a gpui limit (no keypad marker or
   scancode reaches the app), written in AGENTS.md.
 - Round 2: PASS.
+
+## 6.5a Left sidebar frame
+
+- Round 1: FAIL. A press mid-expand kept the slide running; the tween ignored a new duration.
+  Fixed: a new duration restarts it, with a regression test.
+- Round 2: PASS.

@@ -82,6 +82,66 @@ fn lift(raw: &RawValue) -> Result<Value> {
     })
 }
 
+/// JavaScript truthiness of a parsed value.
+pub fn js_truthy(value: Option<&Value>) -> bool {
+    match value {
+        None | Some(Value::Null) => false,
+        Some(Value::Bool(b)) => *b,
+        Some(Value::Number(n)) => n.as_f64().is_some_and(|n| n != 0.0),
+        Some(Value::String(s)) => !s.is_empty(),
+        Some(Value::Array(_) | Value::Object(_)) => true,
+    }
+}
+
+/// `Number(text)` for a string.
+pub fn js_to_number(text: &str) -> f64 {
+    let text = crate::theme_import::color::js_trim(text);
+    if text.is_empty() {
+        return 0.0;
+    }
+    let radix = [
+        ("0x", 16),
+        ("0X", 16),
+        ("0o", 8),
+        ("0O", 8),
+        ("0b", 2),
+        ("0B", 2),
+    ];
+    if let Some((digits, radix)) = radix
+        .iter()
+        .find_map(|(p, r)| Some((text.strip_prefix(p)?, *r)))
+    {
+        return match digits.chars().all(|c| c.is_digit(radix)) && !digits.is_empty() {
+            true => digits.chars().fold(0.0, |n, c| {
+                n * f64::from(radix) + f64::from(c.to_digit(radix).unwrap_or(0))
+            }),
+            false => f64::NAN,
+        };
+    }
+    let (sign, body) = match text.as_bytes()[0] {
+        b'-' => (-1.0, &text[1..]),
+        b'+' => (1.0, &text[1..]),
+        _ => (1.0, text),
+    };
+    if body == "Infinity" {
+        return sign * f64::INFINITY;
+    }
+    let (mantissa, exponent) = body.split_once(['e', 'E']).unwrap_or((body, "0"));
+    let exponent = exponent.strip_prefix(['+', '-']).unwrap_or(exponent);
+    let (int, frac) = mantissa.split_once('.').unwrap_or((mantissa, ""));
+    let digits = |s: &str| s.bytes().all(|b| b.is_ascii_digit());
+    let valid = digits(int)
+        && digits(frac)
+        && !(int.is_empty() && frac.is_empty())
+        && !exponent.is_empty()
+        && digits(exponent);
+    if valid {
+        sign * body.parse::<f64>().unwrap_or(f64::NAN)
+    } else {
+        f64::NAN
+    }
+}
+
 /// An f64 as `JSON.stringify` writes it.
 pub fn js_value(n: f64) -> Value {
     if !n.is_finite() {
@@ -202,6 +262,25 @@ mod tests {
         assert_eq!(js_string(parsed.get("a")), ",,2,x");
         assert_eq!(js_string(parsed.get("b")), "[object Object]");
         assert_eq!(js_string(None), "undefined");
+        let cases = [
+            ("", 0.0),
+            (" 300 ", 300.0),
+            ("1e3", 1000.0),
+            (".5", 0.5),
+            ("5.", 5.0),
+            ("-Infinity", f64::NEG_INFINITY),
+            ("0x1F", 31.0),
+            ("+2", 2.0),
+            ("1e400", f64::INFINITY),
+        ];
+        for (text, n) in cases {
+            assert_eq!(super::js_to_number(text), n, "{text:?}");
+        }
+        for text in [
+            "inf", "NaN", "1e", "e3", ".", "12px", "0x", "--1", "1_000", "+-1",
+        ] {
+            assert!(super::js_to_number(text).is_nan(), "{text:?}");
+        }
     }
 
     #[test]

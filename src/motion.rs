@@ -30,6 +30,11 @@ pub fn motion_ease_out(x: f32) -> f32 {
     cubic_bezier(0.16, 1.0, 0.3, 1.0, x.clamp(0.0, 1.0))
 }
 
+/// Cindy's `--motion-ease-move`, the sidebar's width easing.
+pub fn ease_move(x: f32) -> f32 {
+    cubic_bezier(0.4, 0.0, 0.2, 1.0, x.clamp(0.0, 1.0))
+}
+
 /// CSS `ease-out`.
 pub fn ease_out(x: f32) -> f32 {
     cubic_bezier(0.0, 0.0, 0.58, 1.0, x.clamp(0.0, 1.0))
@@ -43,5 +48,6 @@ mod tests {
         assert!((super::ease_out(1.0) - 1.0).abs() < 1e-5);
         assert!((super::ease_out(0.5) - 0.684_644).abs() < 1e-4);
         assert!((super::motion_ease_out(0.5) - 0.971_779).abs() < 1e-4);
+        assert!((super::ease_move(0.5) - 0.775_561).abs() < 1e-4);
     }
 }
