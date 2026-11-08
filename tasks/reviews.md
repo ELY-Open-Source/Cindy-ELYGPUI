@@ -200,3 +200,8 @@ effort high, in a Herdr pane.
 
 - Moved to 9.1 and 9.2: the right sidebar's tabs live per task, are mostly plugins, and are turned
   on by the chat view; built in chapter 6 they would host nothing.
+
+## 6.8 Routes
+
+- Moved: the task routes need the task list (8.0); the settings route hides the sidebar and is left
+  only through the settings page (12.0), so built now it would strand the user on an empty page.

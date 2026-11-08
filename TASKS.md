@@ -119,10 +119,6 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
   its tooltip (`DESIGN.md` §14.6) and hover peek and pin as `useSidebarPeek.ts` does; the
   `ContentHeader` spacer that makes room for the cluster
-- [ ] 6.8 Routes: chat and settings with back and forward history; the title bar's menu button
-  (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets;
-  settings takes over the window, hiding the sidebar (and turning its hover peek off) and non-chat
-  panels without changing the tree, and restores them on exit (edge groups with 9.1)
 - [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
   from `appearance-settings.json`; the window material per family as
   `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
@@ -142,7 +138,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   history (`useSessionBrowseHistory`, `SessionHistoryButtons`); the sidebar top nav as
   `SidebarTopNav.tsx` draws it (New, Search, More and its customize view, order and top-level or
   More placement as `sidebarNavigationPrefs.ts` keeps them, rail tiles) and the Pinned and All
-  sessions sections; the Automations row lands with chapter 15, the Plugins row and plugin entries
+  sessions sections; the router as `router.tsx` declares it (hash history with back and forward,
+  `MainEntryRedirect`, `CCAgentIndexRedirect`, `useActiveMainView`); the Automations row lands
+  with chapter 15, the Plugins row and plugin entries
   with chapter 16, owner-scoped storage (`sidebarOwnerStorage.ts`) with chapter 13
 
 ## 9. Chat view
@@ -173,7 +171,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 12. Settings
 
-- [ ] 12.0 Expand from Cindy's code, with Obsidian theme conversion and the theme import button,
+- [ ] 12.0 Expand from Cindy's code, with the settings route and its takeover (sidebar, chrome
+  cluster, peek and non-chat panels hidden without changing the tree, restored on exit), the title
+  bar's menu button (`MenuButton.tsx`), Obsidian theme conversion and the theme import button,
   and shortcut rebinding (`AppShortcutStore` writes, `findAppShortcutConflict`, bindable and
   global checks, Electron accelerators, the recording flag)
 
