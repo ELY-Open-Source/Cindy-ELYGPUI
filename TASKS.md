@@ -78,13 +78,16 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.0 Expand from Cindy's code (`main/bootstrap-electron.ts` window creation, `shared/layoutTree.ts`,
   `main/layout/LayoutStore.ts`, `renderer/panels/`, `components/layout/`, `components/sidebar/`,
   `docs/dev-rules/architecture-invariants.md` §3, `DESIGN.md`)
-- [ ] 6.1 Main window: app id per region (`com.xd.cindy`, `com.xd.cindycn`, `com.xd.cindydev`) and
-  title; `window-state.json` bounds, maximized and fullscreen restored and saved as Cindy does
-  (bounds rejected off screen keep the saved maximized flag; macOS fullscreen restored after the
-  window shows); Cindy's minimum size; `window-behavior-settings.json` read as its store does, with
-  `swallowActivationClick` and the Windows and Linux first-close choice and close behavior;
-  `window-theme-mode.json` as `window-theme-mode-store.ts` keeps it: read before the window opens to
-  pick the Windows backing, written when the resolved theme changes, stale system mode handled
+- [x] 6.1 Main window: app id per region (`com.xd.cindy`, `com.xd.cindycn`, `com.xd.cindydev`) and
+  title; `window-state.json` as `electron-window-state` and `readPersistedWindowMaximized` keep it
+  (bounds saved only in the normal state, maximized and fullscreen saved on close, off-screen bounds
+  reset to defaults while the raw maximized flag still restores; macOS fullscreen restored after the
+  window shows); 800x600 minimum; `swallowActivationClick` from `window-behavior-settings.json`. The
+  first-close prompt and close behavior go to chapter 22 with the tray they hide to. The
+  `window-theme-mode.json` mirror is not ported: gpui paints the first frame from the resolved theme,
+  and writing the mirror would push the port's theme into Cindy's own Windows startup
+  (Cindy's Windows maximize recovery after display changes works around Electron; whether gpui
+  needs it is checked on the Windows runner in task 23.last)
 - [ ] 6.2 Layout tree as `shared/layoutTree.ts` (validate, coerce, every operation), matching Cindy's
   own functions on golden fixtures; `layout.v1.json` read and written as `LayoutStore.ts` does
 - [ ] 6.3 The tree on screen: sidebar column, splits with resize handles saved on release, double-click
@@ -104,7 +107,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,
   hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
   and restores them on exit
-- [ ] 6.9 Window zoom and app icon from `appearance-settings.json`; wallpaper as Cindy shows it:
+- [ ] 6.9 Window zoom and app icon from `appearance-settings.json`; the window material per family as
+  `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
   `wallpaperId` with the custom URL from `custom-wallpaper.json` (`custom` without one falls back to
   `none`), official images and videos downloaded and cached as `wallpaper-video.ts` does, static and
   dynamic motion with reduced motion; `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur`
@@ -180,9 +184,11 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 22. Desktop extras
 
-- [ ] 22.0 Expand from Cindy's code
+- [ ] 22.0 Expand from Cindy's code, with the Windows and Linux first-close prompt and close behavior
+  (`mainWindowCloseBehavior.ts`, `windowBehavior.ts`), which hide to the tray
 
 ## 23. Distribution
 
 - [ ] 23.0 Expand from Cindy's code
-- [ ] 23.last Dispatch CI and get all six targets green
+- [ ] 23.last Dispatch CI and get all six targets green; run the app on the Windows runner and check
+  that maximized windows survive display and DPI changes without Cindy's maximize recovery

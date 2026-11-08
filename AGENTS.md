@@ -29,6 +29,11 @@ defines scope and what 1:1 means.
 - Fonts: `src/appearance_settings.rs` reads Cindy's shared `appearance-settings.json` (fonts only so
   far) and sets Ely's font scale (`uiSize / 14`) and families; gpui takes one family, so the first
   of Cindy's CSS font list is used.
+- Main window: `src/main_window.rs` opens it as Cindy's `createWindow` does (app id per region from
+  `src/region.rs`, title, 800x600 minimum) and keeps `window-state.json` with `electron-window-state`'s
+  rules (`src/window_state.rs`). `src/activation_click.rs` swallows the activating click per platform
+  as Cindy does. Theme glue for windows lives in `src/theme/shell.rs`. Hyprland 0.56 takes Lua for
+  `hyprctl dispatch` (`hl.dsp.window.close({ window = "address:..." })`).
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).

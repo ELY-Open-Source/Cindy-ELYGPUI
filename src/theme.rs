@@ -4,6 +4,7 @@ pub mod local;
 mod normalize;
 mod oklch;
 pub mod omarchy;
+pub mod shell;
 
 use std::{collections::HashMap, path::PathBuf};
 

@@ -4,6 +4,13 @@ use anyhow::{Context as _, Result};
 
 pub const REGION: &str = env!("CINDY_REGION");
 
+/// Cindy's `brandAppId` for the built region.
+pub const APP_ID: &str = match REGION.as_bytes() {
+    b"cn" => "com.xd.cindycn",
+    b"dev" => "com.xd.cindydev",
+    _ => "com.xd.cindy",
+};
+
 /// Cindy's own folder for this region, shared with it.
 pub fn user_data_dir() -> Result<PathBuf> {
     let name = match REGION {

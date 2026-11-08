@@ -118,3 +118,12 @@ effort high, in a Herdr pane.
 - Round 2: FAIL. Wallpaper veil/visibility/blur, the window-theme-mode mirror, and the zoom owner
   (appearance-settings-ipc.ts) were missing or misplaced. Fixed; storage.md rows corrected.
 - Round 3: PASS.
+
+## 6.1 Main window
+
+- Round 1: FAIL. Minimized windows could overwrite normal bounds; window-state and window-behavior
+  readers rejected a whole file for one number past f64. Fixed: bounds from gpui's windowed
+  placement; shared cindy_json reader with JS number semantics.
+- Round 2: FAIL. macOS reports Windowed while maximized. Fixed: normal needs Windowed and both
+  flags off.
+- Round 3: PASS.

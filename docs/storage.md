@@ -41,13 +41,18 @@ chapter is expanded. Found by the union of:
   `create*` function whose name ends in Json, Store, File, Settings, Vault, Ledger or Journal
   (for example `createOverrideSettingsFile`, `writeFileAtomic`), and `LibraryVault`'s `write`.
 
-Read the module, not this file, for the format. A chapter's expansion re-runs this search over its
+Read the module, not this file, for the format.
+
+Not ported: `window-theme-mode-store.ts` (`window-theme-mode.json`). It lets Electron pick a
+Windows backing before the page knows the theme; gpui paints the first frame from the resolved
+theme, and the port keeps its theme choice apart from Cindy's, so writing the mirror would mislead
+Cindy's own startup. A chapter's expansion re-runs this search over its
 own modules and assigns any new one here before porting.
 
 - **2:** `logger.ts`, `regionUserData.ts`
 - **4:** `i18n.ts`
 - **5:** `appearance-settings-store.ts`, `local-themes/loader.ts`
-- **6:** `agent-island/MacAgentIslandNativeHost.ts`, `agent-island/layoutPreferenceStore.ts`, `appearance-settings-ipc.ts`, `bootstrap-electron.ts`, `custom-wallpaper-settings.ts`, `devCliFlags.ts`, `devStartupStatus.ts`, `layout/LayoutStore.ts`, `layout/index.ts`, `right-sidebar-window/settings-store.ts`, `right-sidebar-window/window.ts`, `sessionDragReleaseNativeHost.ts`, `sidebar-tab-window/window.ts`, `sidebarSettingsStore.ts`, `startup-diagnostics.ts`, `wallpaper-video.ts`, `window-behavior-settings-store.ts`, `window-theme-mode-store.ts`
+- **6:** `agent-island/MacAgentIslandNativeHost.ts`, `agent-island/layoutPreferenceStore.ts`, `appearance-settings-ipc.ts`, `bootstrap-electron.ts`, `custom-wallpaper-settings.ts`, `devCliFlags.ts`, `devStartupStatus.ts`, `layout/LayoutStore.ts`, `layout/index.ts`, `right-sidebar-window/settings-store.ts`, `right-sidebar-window/window.ts`, `sessionDragReleaseNativeHost.ts`, `sidebar-tab-window/window.ts`, `sidebarSettingsStore.ts`, `startup-diagnostics.ts`, `wallpaper-video.ts`, `window-behavior-settings-store.ts`
 - **7:** `localDb/uiMockSeed.ts`
 - **8:** `createProjectFromTaskHost.ts`, `dialogue-workspace-settings.ts`, `localDb/devDbSlimmingRelaunch.ts`, `localDb/ipc/botRemoteEditors.ts`, `localDb/ipc/botRemoteManagement.ts`, `localDb/ipc/botRemoteMemory.ts`, `localDb/ipc/botRemoteSettingsHost.ts`, `localDb/ipc/botRemoteSettingsOps.ts`, `localDb/ipc/botRemoteSettingsResource.ts`, `localDb/ipc/botSkillSettingsIpc.ts`, `localDb/ipc/bots.ts`, `localDb/ipc/sessions.ts`, `localDb/ipc/subagentRuns.ts`, `localDb/maintenanceStore.ts`, `localDb/provisionalSessions.ts`, `projectOrderStore.ts`, `projects-root-settings.ts`, `session-import/executor.ts`, `session-import/sources/codex.ts`, `session-import/sources/gemini.ts`, `session-import/sources/kimi.ts`, `session-import/sources/opencode.ts`, `session-import/sources/pi.ts`, `session-import/sources/workbuddy.ts`, `session-share/migrationTranscriptWriter.ts`, `session-share/sessionShareExport.ts`, `session-share/sessionShareImport.ts`, `session-share/xdtshareFormat.pure.ts`
 - **9:** `cindy-media/chatAttachments.ts`, `cindy-media/generatedImageJournal.ts`, `cindy-media/generatedImageStorage.ts`, `cindy-media/hookOutbox.ts`, `cindy-media/refCompensationJournal.ts`, `cindy-proxy-media/types.ts`, `imageCacheStore.ts`, `maker-ipc/chatDisplayCache.ts`, `maker-ipc/chatHistoryStore.ts`, `maker-ipc/chatLocalHistory.ts`, `maker-ipc/chatMigrationReceipts.ts`, `maker-ipc/chatSendJournal.ts`, `maker-ipc/normalizeAttachments.ts`, `turn-change-set/store.ts`, `workflow-progress/reader.ts`

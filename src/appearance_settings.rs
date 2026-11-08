@@ -1,8 +1,6 @@
-use std::{collections::BTreeMap, fs, path::Path};
+use std::path::Path;
 
-use anyhow::{Context as _, Result, bail};
-use serde_json::value::RawValue;
-
+use crate::cindy_json::{self, Fields, number, string};
 use crate::theme_import::color::js_trim;
 
 const FILE: &str = "appearance-settings.json";
@@ -17,56 +15,28 @@ pub struct Fonts {
     pub ui_size: f64,
 }
 
-/// Top-level fields kept as JSON text, so one odd value cannot spoil the rest.
-type Overrides = BTreeMap<String, Box<RawValue>>;
-
-fn read_overrides(path: &Path) -> Result<Option<Overrides>> {
-    let meta = match fs::metadata(path) {
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-        other => other?,
-    };
-    if meta.len() > MAX_BYTES {
-        bail!("file exceeds {MAX_BYTES} byte limit");
-    }
-    let text = fs::read_to_string(path)?;
-    if !js_trim(&text).starts_with('{') {
-        bail!("settings file root must be an object");
-    }
-    Ok(Some(serde_json::from_str(&text)?))
-}
-
 /// Cindy's `normalizeFamily`: a string, trimmed, at most 256 characters.
-fn family(raw: Option<&RawValue>) -> String {
-    let text: Option<String> = raw.and_then(|r| serde_json::from_str(r.get()).ok());
-    js_trim(text.as_deref().unwrap_or(""))
-        .chars()
-        .take(256)
-        .collect()
-}
-
-/// A JSON number as `JSON.parse` reads it: one too large becomes infinite.
-fn number(raw: Option<&RawValue>) -> Option<f64> {
-    raw?.get().parse().ok()
+fn family(fields: &Fields, key: &str) -> String {
+    let text = string(fields.get(key).map(AsRef::as_ref)).unwrap_or_default();
+    js_trim(&text).chars().take(256).collect()
 }
 
 /// Cindy's appearance store read, fonts only; a bad file means defaults and stays as it is.
 pub fn fonts(user_data: &Path) -> Fonts {
-    let path = user_data.join(FILE);
-    let overrides = match read_overrides(&path).with_context(|| path.display().to_string()) {
-        Ok(overrides) => overrides.unwrap_or_default(),
+    let fields = match cindy_json::read(&user_data.join(FILE), Some(MAX_BYTES)) {
+        Ok(fields) => fields.unwrap_or_default(),
         Err(error) => {
             log::warn!(target: "appearance-settings-store", "appearance settings read failed; falling back to defaults: {error:#}");
-            Overrides::new()
+            Fields::new()
         }
     };
-    let field = |key: &str| overrides.get(key).map(Box::as_ref);
-    let ui_size = match number(field("uiSize")) {
+    let ui_size = match number(fields.get("uiSize").map(AsRef::as_ref)) {
         Some(size) if size.is_finite() => (size + 0.5).floor().clamp(12.0, 24.0),
         _ => DEFAULT_UI_SIZE,
     };
     let fonts = Fonts {
-        ui_family: family(field("uiFamily")),
-        code_family: family(field("codeFamily")),
+        ui_family: family(&fields, "uiFamily"),
+        code_family: family(&fields, "codeFamily"),
         ui_size,
     };
     log::info!(target: "appearance-settings-store", "appearance settings loaded: {fonts:?}");
