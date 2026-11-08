@@ -55,3 +55,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Plural spec named only `_one`/`_other`; namespaces, `reservedGhostIdPrefixes` and
   the `chat.remoteError.*` fallback were missing. Fixed in task 4.3.
 - Round 2: PASS.
+
+## 4.1 Locale files
+
+- Round 1: PASS.

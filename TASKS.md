@@ -34,9 +34,11 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 4. i18n
 
 - [x] 4.0 Expand from Cindy's code (`shared/locale.ts`, `renderer/i18n/index.ts`, `locales/`)
-- [ ] 4.1 Cindy's locale files at the PRD's commit in the repo, compiled into the binary
+- [x] 4.1 Cindy's locale files at the PRD's commit in `locales/`, copied by
+  `scripts/sync-locales.sh`; 4.3 compiles them in
 - [ ] 4.2 Locale choice: Cindy's 12 locales, OS locale matched as `resolvePreferredSystemLocale`
-  does (zh by script then region, pt by region), user choice saved by the port
+  does (zh by script then region, pt by region), the saved `language` preference read from the
+  port's preferences file; writing it lands with the language setting (chapter 12)
 - [ ] 4.3 Translator with i18next's semantics as Cindy uses them: namespaces `common` (default) and
   `aiRename`; nested keys; `{{name}}` with defaults `appName`, `pronoun` and
   `reservedGhostIdPrefixes`; plural suffixes picked by each locale's CLDR category (`_one`, `_many`,
