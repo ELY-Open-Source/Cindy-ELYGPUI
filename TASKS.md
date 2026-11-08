@@ -75,7 +75,47 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 6. Window shell and layout
 
-- [ ] 6.0 Expand from Cindy's code
+- [x] 6.0 Expand from Cindy's code (`main/bootstrap-electron.ts` window creation, `shared/layoutTree.ts`,
+  `main/layout/LayoutStore.ts`, `renderer/panels/`, `components/layout/`, `components/sidebar/`,
+  `docs/dev-rules/architecture-invariants.md` §3, `DESIGN.md`)
+- [ ] 6.1 Main window: app id per region (`com.xd.cindy`, `com.xd.cindycn`, `com.xd.cindydev`) and
+  title; `window-state.json` bounds, maximized and fullscreen restored and saved as Cindy does
+  (bounds rejected off screen keep the saved maximized flag; macOS fullscreen restored after the
+  window shows); Cindy's minimum size; `window-behavior-settings.json` read as its store does, with
+  `swallowActivationClick` and the Windows and Linux first-close choice and close behavior;
+  `window-theme-mode.json` as `window-theme-mode-store.ts` keeps it: read before the window opens to
+  pick the Windows backing, written when the resolved theme changes, stale system mode handled
+- [ ] 6.2 Layout tree as `shared/layoutTree.ts` (validate, coerce, every operation), matching Cindy's
+  own functions on golden fixtures; `layout.v1.json` read and written as `LayoutStore.ts` does
+- [ ] 6.3 The tree on screen: sidebar column, splits with resize handles saved on release, double-click
+  on a divider to equalize its neighbors, fractions, preferred and minimum widths, drag a panel to
+  swap root regions, temporary maximize and restore without changing the tree, unknown kinds hidden
+- [ ] 6.4 Panel registry: `session-list`, `chat-main`, `right-tabs` registered, content left to their
+  chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the
+  legacy `sidebar-collapsed` migration, per session for `right-tabs` under
+  `right-sidebar-collapsed:<sessionId>`, none for `chat-main`
+- [ ] 6.5 Title bar: window controls per platform, sidebar toggle, back and forward (`DESIGN.md` §14.6)
+- [ ] 6.6 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
+  double-click reset; New, Automations, Plugins, Search, More with order, top-level or More placement
+  and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
+  sessions sections as frames that chapters 8 and 14 fill
+- [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
+  place them; edge groups parked on non-chat routes other than settings
+- [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,
+  hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
+  and restores them on exit
+- [ ] 6.9 Window zoom and app icon from `appearance-settings.json`; wallpaper as Cindy shows it:
+  `wallpaperId` with the custom URL from `custom-wallpaper.json` (`custom` without one falls back to
+  `none`), official images and videos downloaded and cached as `wallpaper-video.ts` does, static and
+  dynamic motion with reduced motion; `wallpaperOverlay`, `wallpaperVisibility` and `wallpaperBlur`
+  with their normalization, null meaning and the legacy overlay-to-visibility derivation; zoom read,
+  applied and restored across navigation and focus as `appearance-settings-ipc.ts` does; the settings
+  UI and its write IPC go to chapter 12
+- [ ] 6.10 Detached windows: bounds in `right-sidebar-window-state.json` and the shared
+  `sidebar-tab-window-state.json`, restored without maximize or fullscreen; which tabs are detached
+  lives only for the process, so restart or crash returns them to the main window; legacy
+  `right-sidebar-window-settings.json` deleted; detach, merge back, close and multi-window cascade as
+  `sidebar-tab-window/controller.ts` does; `swallowActivationClick` for these windows too
 
 ## 7. Mock mode
 

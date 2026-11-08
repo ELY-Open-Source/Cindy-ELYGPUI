@@ -109,3 +109,12 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. serde_json rejected a whole file for one number past f64 (1e400) that JSON.parse
   reads as Infinity. Fixed: fields kept raw, uiSize parsed per JS with Number.isFinite.
 - Round 2: PASS.
+
+## 6.0 Window shell plan
+
+- Round 1: FAIL. Plan listed parts, not behavior: maximize/fullscreen restore, window behavior
+  store, collapse scopes, drag/maximize interactions, sidebar states and nav prefs, settings
+  takeover, custom wallpaper, detached-window lifecycle. All added.
+- Round 2: FAIL. Wallpaper veil/visibility/blur, the window-theme-mode mirror, and the zoom owner
+  (appearance-settings-ipc.ts) were missing or misplaced. Fixed; storage.md rows corrected.
+- Round 3: PASS.
