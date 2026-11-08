@@ -190,3 +190,13 @@ fn percent_decode(text: &str) -> Option<String> {
     }
     String::from_utf8(out).ok()
 }
+
+/// `projectKeyComparisonKey` of a stored key: normalized first.
+pub fn compare(raw: &str, platform: &str) -> Option<String> {
+    normalize_key(raw).map(|key| comparison_key(&key, platform))
+}
+
+/// `projectIdentityKeyForSession`, for a task's folder and host.
+pub fn session_key(dir: Option<&str>, remote_host: Option<&str>) -> Option<String> {
+    grouping(dir).map(|dir| identity_key(&dir, remote_host))
+}

@@ -42,6 +42,7 @@ use crate::{i18n::Translator, theme::Appearance};
 struct Startup {
     user_data: PathBuf,
     database: Option<PathBuf>,
+    owner_dir: Option<PathBuf>,
     translator: Translator,
     theme_mode: theme::Mode,
     family: Option<String>,
@@ -76,7 +77,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
-    sessions::install(startup.user_data.clone(), cx);
+    sessions::install(startup.user_data.clone(), startup.owner_dir.clone(), cx);
     localdb::install(startup.database.clone(), cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());
@@ -116,12 +117,16 @@ fn startup() -> Result<Startup> {
     if let Some(owner) = &owner {
         log::info!(target: "appSessionState", "data owner {} in {}", owner.id, owner.dir.display());
     }
-    let database = owner.map(|owner| localdb::path(&user_data, owner.id));
+    let database = owner
+        .as_ref()
+        .map(|owner| localdb::path(&user_data, owner.id));
+    let owner_dir = owner.map(|owner| owner.dir);
     let tag = locale::effective(preferences.text("language")?);
     let translator = Translator::new(tag)?;
     log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());
     Ok(Startup {
         database,
+        owner_dir,
         theme_mode: theme::Mode::parse(preferences.text("theme")?),
         family: preferences.text("theme.familyId")?.map(str::to_owned),
         appearance: appearance_settings::read(&user_data),

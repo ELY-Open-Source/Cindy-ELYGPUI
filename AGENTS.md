@@ -27,10 +27,13 @@ defines scope and what 1:1 means.
 - Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
   first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
   reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher
-  on the database and its WAL reloads, single-flight. `flat.rs` draws the `flat` group-by mode;
-  `main_list.rs` the `project` mode from `group.rs` (`groupSessions` and `buildMainListEntries`,
-  checked against `tests/fixtures/grouping` from `sync-golden.mjs`) and `paths.rs` (project keys).
-  `fold.rs` is `SectionCollapse` and the first-N fold; animations read
+  on the database, its WAL and `owners/<key>/sidebar-settings.json` (`settings.rs`) reloads,
+  single-flight. `lists.rs` builds both lists from one bucket as `CCAgentSidebarUpper.tsx` does:
+  `pinned.rs` draws the Pinned section, `main_list.rs` the main list in `project` or `flat` mode,
+  from `group.rs` (`groupSessions`, `buildMainListEntries`) and `paths.rs` (project keys). All of it
+  is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row.
+  `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed by section and group and
+  resets once its list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
   `background_executor().now()` so tests can advance the clock.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in

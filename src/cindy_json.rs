@@ -231,6 +231,24 @@ pub fn js_string(value: Option<&Value>) -> String {
     }
 }
 
+/// `String(value)` of a `JSON.parse`d value, numbers past f64 included.
+pub fn js_string_raw(raw: &RawValue) -> Result<String> {
+    let text = raw.get();
+    Ok(match text.as_bytes()[0] {
+        b'[' => serde_json::from_str::<Vec<Box<RawValue>>>(text)?
+            .iter()
+            .map(|v| match v.get() {
+                "null" => Ok(String::new()),
+                _ => js_string_raw(v),
+            })
+            .collect::<Result<Vec<_>>>()?
+            .join(","),
+        b'{' => "[object Object]".into(),
+        b'-' | b'0'..=b'9' => js_number(text.parse()?),
+        _ => js_string(Some(&serde_json::from_str(text)?)),
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use serde_json::json;

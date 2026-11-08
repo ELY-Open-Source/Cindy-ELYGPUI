@@ -55,7 +55,7 @@ fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext
         ely_gpui_component::init_for_tests(cx);
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
-        crate::sessions::install(std::path::PathBuf::new(), cx);
+        crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
@@ -64,6 +64,7 @@ fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext
             sessions,
             recent: Vec::new(),
             aliases: Vec::new(),
+            settings: Default::default(),
         });
     });
     let (_, vcx) = cx.add_window_view(|_, _| List);
@@ -142,4 +143,100 @@ fn the_dialogue_fold_keeps_other_keys_cindy_reads(cx: &mut TestAppContext) {
     assert!(shown(cx, "d0"));
     let saved = Preferences::load(dir.path()).unwrap();
     assert_eq!(saved.text(key).unwrap(), Some(r#"["device:x"]"#));
+}
+
+#[gpui::test]
+fn the_pinned_section_folds_and_saves_it(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].pinned_at = Some(1);
+    });
+    assert!(shown(cx, "a0"), "pinned, above the list");
+    let key = "cc-agent.sidebar.pinnedSectionCollapsed";
+    click(cx, "pinned-title");
+    wait(cx, 250);
+    assert!(!shown(cx, "a0"));
+    assert!(shown(cx, "a1"), "the project keeps its other tasks");
+    let saved = |dir: &Path| {
+        Preferences::load(dir)
+            .unwrap()
+            .text(key)
+            .unwrap()
+            .map(str::to_owned)
+    };
+    assert_eq!(saved(dir.path()).as_deref(), Some("true"));
+    click(cx, "pinned-title");
+    wait(cx, 250);
+    assert!(shown(cx, "a0"));
+    assert_eq!(saved(dir.path()), None, "expanding removes the key");
+}
+
+fn settings(cx: &mut VisualTestContext, pinned: &[&str], hidden: &[&str]) {
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.settings.pinned_order = pinned.iter().map(|s| (*s).to_owned()).collect();
+        loaded.settings.hidden = hidden.iter().map(|s| (*s).to_owned()).collect();
+    });
+}
+
+#[gpui::test]
+fn show_all_belongs_to_the_drawn_list(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    click(cx, "project:local:/work/app-show-all");
+    assert!(shown(cx, "a6"));
+    settings(cx, &["project:local:/work/app"], &[]);
+    assert!(
+        shown(cx, "a4") && !shown(cx, "a5"),
+        "pinned, the project starts at five"
+    );
+    settings(cx, &[], &[]);
+    assert!(!shown(cx, "a5"), "back in the main list, five again");
+    click(cx, "project:local:/work/app-show-all");
+    settings(cx, &[], &["local:/work/app"]);
+    assert!(
+        shown(cx, "a0") && !shown(cx, "a6"),
+        "hidden: its tasks read as Chat, five shown"
+    );
+    settings(cx, &[], &[]);
+    assert!(shown(cx, "a4") && !shown(cx, "a5"), "restored at five");
+}
+
+#[gpui::test]
+fn an_unsaved_fold_does_not_turn(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        cx.global_mut::<Sessions>()
+            .loaded
+            .as_mut()
+            .unwrap()
+            .sessions[0]
+            .pinned_at = Some(1);
+    });
+    assert!(shown(cx, "a0") && shown(cx, "d0"));
+    std::fs::remove_dir_all(dir.path()).unwrap();
+    click(cx, "pinned-title");
+    click(cx, "dialogue:all-header");
+    wait(cx, 250);
+    assert!(shown(cx, "a0"), "the pinned section stays open");
+    assert!(shown(cx, "d0"), "the dialogue group stays open");
+}
+
+#[gpui::test]
+fn closing_pinned_resets_its_projects_show_all(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    settings(cx, &["project:local:/work/app"], &[]);
+    assert!(!shown(cx, "a5"), "pinned at five");
+    click(cx, "project:local:/work/app-show-all");
+    assert!(shown(cx, "a6"));
+    click(cx, "pinned-title");
+    wait(cx, 250);
+    assert!(!shown(cx, "a0"));
+    click(cx, "pinned-title");
+    wait(cx, 250);
+    assert!(shown(cx, "a4") && !shown(cx, "a5"), "reopened at five");
 }

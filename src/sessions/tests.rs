@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{flat, fold, group, group::Session, query, sweep};
+use super::{fold, group, query, row, settings, sweep};
 
 /// The columns of Cindy's schema this chapter reads.
 fn db() -> Connection {
@@ -27,7 +27,7 @@ fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
     .unwrap();
 }
 
-fn ids(rows: &[Session]) -> Vec<&str> {
+fn ids(rows: &[group::Session]) -> Vec<&str> {
     rows.iter().map(|r| r.id.as_str()).collect()
 }
 
@@ -90,43 +90,6 @@ fn activity_falls_back_from_activity_to_send_to_update() {
 }
 
 #[test]
-fn the_flat_list_leaves_pins_out_and_sorts_as_asked() {
-    let row = |id: &str, created: i64, activity: i64, pinned: bool| Session {
-        id: id.into(),
-        title: id.into(),
-        status: "active".into(),
-        source: "desktop".into(),
-        dialogue: false,
-        working_dir: None,
-        project_dir: None,
-        remote_host: None,
-        user_send_at: None,
-        pinned_at: pinned.then_some(1),
-        messages: 0,
-        created_at: created,
-        activity_at: activity,
-    };
-    let rows = [
-        row("a", 1, 30, false),
-        row("b", 3, 10, false),
-        row("c", 2, 20, true),
-        row("d", 3, 30, false),
-    ];
-    let order = |sort| {
-        flat::sorted(&rows, sort)
-            .iter()
-            .map(|r| r.id.clone())
-            .collect::<Vec<_>>()
-    };
-    assert_eq!(order(None), ["a", "d", "b"], "recency, ties in list order");
-    assert_eq!(
-        order(Some("created")),
-        ["b", "d", "a"],
-        "created, ties by id"
-    );
-}
-
-#[test]
 fn relative_time_steps_as_cindy_does() {
     let t = |key: &str, count: i64| format!("{}:{count}", key.rsplit('.').next().unwrap());
     let m = 60_000;
@@ -144,7 +107,7 @@ fn relative_time_steps_as_cindy_does() {
     ];
     for (ago, want) in cases {
         assert_eq!(
-            flat::relative(1_000_000_000_000 - ago, 1_000_000_000_000, &t),
+            row::relative(1_000_000_000_000 - ago, 1_000_000_000_000, &t),
             want,
             "{ago}"
         );
@@ -259,4 +222,54 @@ fn folds_keep_the_first_and_the_recently_active() {
     assert_eq!((visible, hidden), (vec![&50, &40, &99], 2));
     assert_eq!(fold::view(&activity, 2, false, None, |a| *a).1, 3);
     assert_eq!(fold::view(&activity, 2, true, None, |a| *a).1, 0);
+}
+
+#[test]
+fn reads_sidebar_settings_as_cindy_normalizes_them() {
+    let dir = tempfile::tempdir().unwrap();
+    let file = dir.path().join(settings::FILE);
+    assert_eq!(
+        settings::read(dir.path(), "linux"),
+        settings::Settings::default(),
+        "no file"
+    );
+    let long = "x".repeat(4097);
+    std::fs::write(
+        &file,
+        format!(
+            r#"{{"pinnedOrder":["a","",7,"a","{long}","project:local:/w/"],"other":1e400,
+               "hiddenProjectKeys":["C:\\W\\App","local:c:/w/app","",3,"/srv/"]}}"#
+        ),
+    )
+    .unwrap();
+    let read = settings::read(dir.path(), "win32");
+    assert_eq!(
+        read.pinned_order,
+        ["a", "project:local:/w/"],
+        "pins keep their spelling"
+    );
+    assert_eq!(
+        read.hidden,
+        ["local:C:/W/App", "local:3", "local:/srv"],
+        "one per comparison key"
+    );
+    std::fs::write(
+        &file,
+        r#"{"hiddenProjectKeys":[["local:/work/app"],null,1e400,false]}"#,
+    )
+    .unwrap();
+    assert_eq!(
+        settings::read(dir.path(), "linux").hidden,
+        ["local:/work/app", "local:Infinity", "local:false"],
+        "String() of every item but null"
+    );
+    for bad in ["[1]", "{", ""] {
+        std::fs::write(&file, bad).unwrap();
+        assert_eq!(
+            settings::read(dir.path(), "linux"),
+            settings::Settings::default(),
+            "{bad:?}"
+        );
+        assert!(file.exists(), "an unreadable file stays for Cindy");
+    }
 }

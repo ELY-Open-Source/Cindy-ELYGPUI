@@ -227,10 +227,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     the per-project limit (5) and top-level limit (20) with Show all; fold state persists with
     13.0's owner-scoped storage, as does `manualProjectOrder` (until then `custom` keeps
     the list's order), companion groups land with chapter 14
-  - [ ] 8.4b The Pinned section in its text mode as `PinnedSection.tsx` draws it: pinned tasks
+  - [x] 8.4b The Pinned section in its text mode as `PinnedSection.tsx` draws it: pinned tasks
     (active first, then `pinned_at`) and pinned projects, ordered by `sidebar-settings.json`'s
-    `pinnedOrder`, its collapse preference, and the same file's `hiddenProjectKeys` taken out of
-    the main list; card and list modes come with 8.5's card
+    `pinnedOrder`, its collapse preference, and the same file's `hiddenProjectKeys` (their tasks
+    read as Chat tasks); the `flat` mode's dialogue group; card and list modes and the view style
+    menu come with 8.5's card; a `pinnedOrder` Cindy has not yet moved out of its renderer
+    storage is not readable here
   - [ ] 8.4c The sidebar filter as `sidebarFilterCore.ts` keeps it and `MainListScopeHeader.tsx`
     and `SidebarFilterPopover` edit it: status, vendor, last activity, group by, dialogue grouping,
     sort and project order; the machine switcher lands with chapter 19, the project and creator

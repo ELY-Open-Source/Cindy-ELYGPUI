@@ -38,8 +38,9 @@ pub enum Entry {
     Loose(Session),
 }
 
-/// `FilterSortBy` and `FilterProjectOrder`, plus the dialogue switch.
+/// `FilterGroupBy`, `FilterSortBy`, `FilterProjectOrder` and the dialogue switch.
 pub struct Order<'a> {
+    pub flat: bool,
     pub created: bool,
     pub custom: bool,
     pub manual: &'a [String],
@@ -171,14 +172,37 @@ pub fn aliases(rows: &[(String, String)], platform: &str) -> HashMap<String, Str
     out
 }
 
-/// `groupSessions` without pins (`recent` = `recent_workdirs` paths, seeded first), then `buildMainListEntries` in project mode.
-pub fn entries(
+/// `groupSessions`' result; projects keep `groupSessions`' order and names.
+pub struct Groups {
+    pub pinned: Vec<Session>,
+    pub dialogues: Vec<Session>,
+    pub loose: Vec<Session>,
+    pub projects: Vec<Project>,
+}
+
+fn status_then_pinned(list: &mut [Session]) {
+    list.sort_by(|a, b| {
+        status_rank(a)
+            .cmp(&status_rank(b))
+            .then(b.pinned_at.unwrap_or(0).cmp(&a.pinned_at.unwrap_or(0)))
+    });
+}
+
+/// `groupSessions` (`recent` = `recent_workdirs` paths, seeded first); `with_pins` is
+/// `includePinnedInProjects`.
+pub fn group(
     sessions: &[Session],
     recent: &[String],
     aliases: &HashMap<String, String>,
     platform: &str,
-    order: &Order,
-) -> Vec<Entry> {
+    with_pins: bool,
+) -> Groups {
+    let mut pinned: Vec<Session> = sessions
+        .iter()
+        .filter(|s| s.pinned_at.is_some())
+        .cloned()
+        .collect();
+    status_then_pinned(&mut pinned);
     let mut representative: HashMap<String, (String, String)> = HashMap::new();
     for project in recent {
         let Some(dir) = grouping(Some(project)) else {
@@ -191,7 +215,10 @@ pub fn entries(
     }
     let (mut dialogues, mut loose) = (Vec::new(), Vec::new());
     let mut groups: Vec<(String, String, Vec<Session>)> = Vec::new();
-    for s in sessions.iter().filter(|s| s.pinned_at.is_none()) {
+    for s in sessions
+        .iter()
+        .filter(|s| with_pins || s.pinned_at.is_none())
+    {
         if s.dialogue {
             dialogues.push(s.clone());
             continue;
@@ -205,7 +232,7 @@ pub fn entries(
         };
         let mut key = identity_key(&dir, s.remote_host.as_deref());
         let mut shown = dir.clone();
-        if s.remote_host.is_none() {
+        if s.remote_host.as_deref().is_none_or(str::is_empty) {
             let compare = comparison_key(&key, platform);
             match representative.get(&compare) {
                 Some((k, d)) => (key, shown) = (k.clone(), d.clone()),
@@ -244,20 +271,59 @@ pub fn entries(
         .map(|(k, d, l)| (k.clone(), d.clone(), earliest(l)))
         .collect();
     let names = names(&dirs, aliases, platform);
-    let mut out: Vec<Entry> = groups
+    let projects = groups
         .into_iter()
         .zip(names)
-        .map(|((key, _, mut list), name)| {
-            by_status_then_time(&mut list);
-            Entry::Project(Project {
+        .map(|((key, _, mut sessions), name)| {
+            by_status_then_time(&mut sessions);
+            Project {
                 key,
                 name,
-                sessions: for_main_list(list, order.created),
-            })
+                sessions,
+            }
         })
         .collect();
     by_status_then_time(&mut dialogues);
     by_status_then_time(&mut loose);
+    Groups {
+        pinned,
+        dialogues,
+        loose,
+        projects,
+    }
+}
+
+/// `buildMainListEntries`: `flat` lays project tasks out as loose entries.
+pub fn entries(
+    projects: Vec<Project>,
+    dialogues: Vec<Session>,
+    loose: Vec<Session>,
+    order: &Order,
+) -> Vec<Entry> {
+    let mut out: Vec<Entry> = Vec::new();
+    if order.flat {
+        let ids: Vec<String> = dialogues.iter().map(|s| s.id.clone()).collect();
+        let all: Vec<Session> = projects
+            .into_iter()
+            .flat_map(|p| p.sessions)
+            .chain(dialogues)
+            .chain(loose)
+            .collect();
+        let (grouped, rest): (Vec<Session>, Vec<Session>) = for_main_list(all, order.created)
+            .into_iter()
+            .partition(|s| order.group_dialogue && ids.contains(&s.id));
+        out.extend(rest.into_iter().map(Entry::Loose));
+        if !grouped.is_empty() {
+            out.push(Entry::Dialogues(for_main_list(grouped, order.created)));
+        }
+        return rank(out, order);
+    }
+    out.extend(projects.into_iter().map(|p| {
+        Entry::Project(Project {
+            sessions: for_main_list(p.sessions, order.created),
+            ..p
+        })
+    }));
     if order.group_dialogue {
         if !dialogues.is_empty() {
             out.push(Entry::Dialogues(for_main_list(dialogues, order.created)));

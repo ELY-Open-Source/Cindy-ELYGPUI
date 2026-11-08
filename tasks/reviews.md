@@ -285,4 +285,13 @@ effort high, in a Herdr pane.
 
 - Round 1: PASS.
 
-- 8.4a project-grouped main list: round 1 FAIL (dialogue-fold keys parsed with serde, dropping keys Cindy keeps) → fixed with cindy_json::roundtrip + regression; round 2 PASS.
+## 8.4a Project-grouped main list
+
+- Round 1: FAIL. Dialogue-fold keys were parsed with serde, which drops keys Cindy keeps. Fixed with `cindy_json::roundtrip` and a regression test.
+- Round 2: PASS.
+
+## 8.4b Pinned section
+
+- Round 1: FAIL. Hidden keys skipped non-strings; Show all kept across unmounts; a fold turned after a failed save. Fixed with JS `String()`, drawn-list pruning and save-first folds, each with a regression.
+- Round 2: FAIL. Pinned projects kept Show all when Pinned closed. Fixed by merging inner keys only while the body is drawn.
+- Round 3: PASS.

@@ -2,7 +2,11 @@
  {
   "name": "projects, dialogues, drafts and loose tasks",
   "pinned": [
-   "pin"
+   {
+    "kind": "session",
+    "session": "pin",
+    "label": "app"
+   }
   ],
   "entries": [
    {
@@ -220,6 +224,129 @@
     "sessions": [
      "here"
     ]
+   }
+  ]
+ },
+ {
+  "name": "pinned tasks and projects in their saved order",
+  "pinned": [
+   {
+    "kind": "project",
+    "key": "local:/work/site",
+    "name": "site",
+    "sessions": [
+     "w1"
+    ]
+   },
+   {
+    "kind": "session",
+    "session": "p2",
+    "label": "Chat"
+   },
+   {
+    "kind": "session",
+    "session": "w2",
+    "label": "site"
+   },
+   {
+    "kind": "session",
+    "session": "p1",
+    "label": "app"
+   },
+   {
+    "kind": "session",
+    "session": "solo",
+    "label": "solo"
+   },
+   {
+    "kind": "session",
+    "session": "p3",
+    "label": "app"
+   }
+  ],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "a1"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/solo",
+    "name": "solo",
+    "sessions": []
+   }
+  ]
+ },
+ {
+  "name": "hidden projects read as Chat tasks",
+  "pinned": [
+   {
+    "kind": "session",
+    "session": "h1",
+    "label": "Chat"
+   }
+  ],
+  "entries": [
+   {
+    "kind": "dialogue-group",
+    "sessions": [
+     "h2"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/kept",
+    "name": "kept",
+    "sessions": [
+     "k1"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "flat mode groups dialogues and leaves pinned projects out",
+  "pinned": [
+   {
+    "kind": "project",
+    "key": "local:/work/site",
+    "name": "site",
+    "sessions": [
+     "f3"
+    ]
+   }
+  ],
+  "entries": [
+   {
+    "kind": "dialogue-group",
+    "sessions": [
+     "f2"
+    ]
+   },
+   {
+    "kind": "session",
+    "session": "f1"
+   },
+   {
+    "kind": "session",
+    "session": "f4"
+   }
+  ]
+ },
+ {
+  "name": "flat mode without the dialogue group",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "session",
+    "session": "g2"
+   },
+   {
+    "kind": "session",
+    "session": "g1"
    }
   ]
  }

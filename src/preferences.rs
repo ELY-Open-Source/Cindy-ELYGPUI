@@ -48,6 +48,23 @@ impl Preferences {
     pub fn set(&mut self, key: &str, value: &str) -> Result<()> {
         let mut next = self.values.clone();
         next.insert(key.into(), value.into());
+        self.save(next)?;
+        log::debug!(target: "preferences", "{key} = {value}");
+        Ok(())
+    }
+
+    /// `localStorage.removeItem`.
+    pub fn remove(&mut self, key: &str) -> Result<()> {
+        let mut next = self.values.clone();
+        if next.remove(key).is_none() {
+            return Ok(());
+        }
+        self.save(next)?;
+        log::debug!(target: "preferences", "{key} removed");
+        Ok(())
+    }
+
+    fn save(&mut self, next: Map<String, Value>) -> Result<()> {
         let text = serde_json::to_string_pretty(&Value::Object(next.clone()))?;
         let tmp = self.path.with_extension("json.tmp");
         if let Err(error) = fs::write(&tmp, text).and_then(|()| fs::rename(&tmp, &self.path)) {
@@ -56,7 +73,6 @@ impl Preferences {
             return Err(error).with_context(|| format!("write {}", self.path.display()));
         }
         self.values = next;
-        log::debug!(target: "preferences", "{key} = {value}");
         Ok(())
     }
 }

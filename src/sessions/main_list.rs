@@ -1,4 +1,6 @@
-//! `ProjectsSection.tsx` in `project` group-by mode: project and dialogue groups, loose tasks.
+//! `ProjectsSection.tsx`: project and dialogue groups and loose tasks, under the Pinned section.
+
+use std::cell::RefCell;
 
 use gpui::{
     AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _, SharedString,
@@ -6,11 +8,12 @@ use gpui::{
 };
 
 use super::{
-    Sessions,
-    flat::{ROW_HEIGHT, SORT_BY_KEY, row, scroll},
-    fold,
-    group::{Entry, Order, Session, aliases, entries},
+    Sessions, fold,
+    group::{Entry, Order, Project, Session, aliases},
+    lists::build,
     paths::PLATFORM,
+    pinned,
+    row::{ROW_HEIGHT, row},
 };
 use ely_gpui_component::primitives::IconName;
 
@@ -23,6 +26,8 @@ use crate::{
     units::css,
 };
 
+const GROUP_BY_KEY: &str = "cc-agent.sidebar.filter.groupBy";
+const SORT_BY_KEY: &str = "cc-agent.sidebar.filter.sortBy";
 const PROJECT_ORDER_KEY: &str = "cc-agent.sidebar.filter.projectOrder";
 const GROUP_DIALOGUE_KEY: &str = "cc-agent.sidebar.filter.groupDialogue";
 const DIALOGUE_COLLAPSED_KEY: &str = "cc-agent.sidebar.dialogueGroupCollapsed";
@@ -32,7 +37,7 @@ const PROJECT_LIMIT_KEY: &str = "sidebar.collapse.projectLimit";
 const DIALOGUE_ALL: &str = "all";
 const DIALOGUE_FOLD: &str = "dialogue:all";
 
-fn text<'a>(prefs: &'a Preferences, key: &str) -> Option<&'a str> {
+pub(super) fn text<'a>(prefs: &'a Preferences, key: &str) -> Option<&'a str> {
     prefs.text(key).ok().flatten()
 }
 
@@ -59,8 +64,8 @@ fn dialogue_collapsed(prefs: &Preferences) -> bool {
     dialogue_keys(prefs).iter().any(|k| k == DIALOGUE_ALL)
 }
 
-/// `persistDialogueGroupCollapsedKeys`, keeping other groups' keys.
-fn set_dialogue_collapsed(collapsed: bool, cx: &mut App) {
+/// `persistDialogueGroupCollapsedKeys`, keeping other groups' keys; false when unsaved.
+fn set_dialogue_collapsed(collapsed: bool, cx: &mut App) -> bool {
     let mut keys = dialogue_keys(cx.global::<Preferences>());
     keys.retain(|k| k != DIALOGUE_ALL);
     if collapsed {
@@ -72,11 +77,22 @@ fn set_dialogue_collapsed(collapsed: bool, cx: &mut App) {
         .set(DIALOGUE_COLLAPSED_KEY, &value)
     {
         log::error!(target: "sessions", "dialogue fold not saved: {error:#}");
+        return false;
     }
+    true
+}
+
+/// Where a group draws: its inset (`pl-2` in list mode, none in text mode) and the section
+/// that owns its Show all, as each `SessionEntryList` owns its own.
+pub(super) struct Place<'a> {
+    pub inset: f32,
+    pub section: &'static str,
+    /// Show all keys whose lists are drawn this frame; the rest reset.
+    pub drawn: &'a RefCell<Vec<String>>,
 }
 
 /// `ProjectNode` and `SessionGroupNode`'s header: icon, name, hover chevron.
-fn header(
+pub(super) fn header(
     id: SharedString,
     glyph: &[u8],
     name: String,
@@ -165,18 +181,21 @@ fn show_all(id: SharedString, count: usize, cx: &App) -> gpui::Stateful<gpui::Di
         .child(label)
 }
 
-/// A group: its header and, when open, its first tasks (`pt-0.5 pl-2 gap-0.5`, rows indented).
+/// A group: its header and, when open, its first tasks (`pt-0.5 pl-2 gap-0.5`, rows indented),
+/// with its drawn height.
 fn group(
     fold_id: String,
     header: gpui::Stateful<gpui::Div>,
     sessions: &[Session],
     collapsed: bool,
-    now: i64,
+    place: &Place,
     window: &mut Window,
     cx: &App,
-) -> AnyElement {
+) -> (AnyElement, f32) {
+    let now = jiff::Timestamp::now().as_millisecond();
     let limit = fold::limit(text(cx.global::<Preferences>(), SESSION_LIMIT_KEY), 5);
-    let expanded = cx.global::<Sessions>().show_all.contains(&fold_id);
+    let show_key = format!("{}/{fold_id}", place.section);
+    let expanded = cx.global::<Sessions>().show_all.contains(&show_key);
     let (visible, hidden) = fold::view(
         sessions,
         limit,
@@ -188,24 +207,25 @@ fn group(
     let footer = hidden > 0;
     let height =
         2.0 + rows * ROW_HEIGHT + (rows - 1.0).max(0.0) * 2.0 + if footer { 26.0 } else { 0.0 };
-    let id = fold_id.clone();
+    let (id, inset) = (fold_id.clone(), place.inset);
+    let shown = show_key.clone();
     let body = || {
         div()
             .flex()
             .flex_col()
             .gap(css(2.0))
             .pt(css(2.0))
-            .pl(css(8.0))
+            .pl(css(inset))
             .children(
                 visible
                     .iter()
-                    .map(|s| row(s, true, now, cx).into_any_element()),
+                    .map(|s| row(s, true, None, now, cx).into_any_element()),
             )
             .when(footer, |el| {
                 el.child(
                     show_all(format!("{id}-show-all").into(), sessions.len(), cx).on_click(
                         move |_, _, cx| {
-                            cx.global_mut::<Sessions>().show_all.insert(id.clone());
+                            cx.global_mut::<Sessions>().show_all.insert(shown.clone());
                             cx.refresh_windows();
                         },
                     ),
@@ -218,7 +238,9 @@ fn group(
         let now_collapsed = !collapsed;
         log::info!(target: "sessions", "{toggle} {}", if now_collapsed { "folded" } else { "unfolded" });
         if toggle == DIALOGUE_FOLD {
-            set_dialogue_collapsed(now_collapsed, cx);
+            if !set_dialogue_collapsed(now_collapsed, cx) {
+                return;
+            }
         } else if now_collapsed {
             cx.global_mut::<Sessions>().collapsed.insert(toggle.clone());
         } else {
@@ -227,22 +249,72 @@ fn group(
         fold::toggle(&toggle, now_collapsed, cx);
         cx.refresh_windows();
     });
-    div()
+    let open = fold::openness(&fold_id, collapsed, cx);
+    let body = fold::section(&fold_id, collapsed, height, body, window, cx);
+    if body.is_some() {
+        place.drawn.borrow_mut().push(show_key);
+    }
+    let element = div()
         .relative()
         .flex()
         .flex_col()
         .w_full()
         .child(header)
-        .children(fold::section(&fold_id, collapsed, height, body, window, cx))
-        .into_any_element()
+        .children(body)
+        .into_any_element();
+    (element, 32.0 + height * open)
 }
 
-/// The main list unless the filter groups it flat; 8.4c draws the scope header above it.
-pub fn list(window: &mut Window, cx: &App) -> Option<AnyElement> {
+/// `ProjectNode`, folded per project key.
+pub(super) fn project(
+    p: &Project,
+    place: &Place,
+    window: &mut Window,
+    cx: &App,
+) -> (AnyElement, f32) {
+    let fold_id = format!("project:{}", p.key);
+    let collapsed = cx.global::<Sessions>().collapsed.contains(&fold_id);
+    let glyph = if collapsed {
+        IconName::Folder
+    } else {
+        IconName::FolderOpen
+    };
+    let head = header(
+        SharedString::from(format!("{fold_id}-header")),
+        glyph.svg(),
+        p.name.clone(),
+        collapsed,
+        cx,
+    );
+    group(fold_id, head, &p.sessions, collapsed, place, window, cx)
+}
+
+/// `CCAgentSidebarUpper`'s scroll body: the Pinned section above the main list; 8.4c draws the
+/// scope header between them. Show all resets for lists no longer drawn.
+pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
+    let drawn = RefCell::new(Vec::new());
+    let list = draw(&drawn, window, cx);
+    let drawn = drawn.into_inner();
+    let store = cx.global_mut::<Sessions>();
+    let before = store.show_all.len();
+    store.show_all.retain(|k| drawn.contains(k));
+    if store.show_all.len() < before {
+        log::debug!(target: "sessions", "Show all reset for {} undrawn lists", before - store.show_all.len());
+    }
+    list
+}
+
+fn draw(drawn: &RefCell<Vec<String>>, window: &mut Window, cx: &App) -> Option<AnyElement> {
+    let main_place = Place {
+        inset: 8.0,
+        section: "main",
+        drawn,
+    };
     let prefs = cx.global::<Preferences>();
     let store = cx.global::<Sessions>();
     let loaded = store.loaded.as_ref()?;
     let order = Order {
+        flat: text(prefs, GROUP_BY_KEY) == Some("flat"),
         created: text(prefs, SORT_BY_KEY) == Some("created"),
         custom: match text(prefs, PROJECT_ORDER_KEY) {
             Some("custom") => true,
@@ -252,56 +324,50 @@ pub fn list(window: &mut Window, cx: &App) -> Option<AnyElement> {
         manual: &[],
         group_dialogue: text(prefs, GROUP_DIALOGUE_KEY) != Some("false"),
     };
-    let all = entries(
+    let translator = cx.global::<Translator>();
+    let dialogues = translator.t("ccAgent.sidebar.dialogues", &[]);
+    let lists = build(
         &loaded.sessions,
         &loaded.recent,
         &aliases(&loaded.aliases, PLATFORM),
+        &loaded.settings,
         PLATFORM,
         &order,
+        &dialogues,
     );
     let limit = fold::limit(text(prefs, PROJECT_LIMIT_KEY), 20);
-    let (visible, hidden) = fold::view(&all, limit, store.show_all_entries, None, |_| 0);
+    let (visible, hidden) = fold::view(&lists.main, limit, store.show_all_entries, None, |_| 0);
     let now = jiff::Timestamp::now().as_millisecond();
     let mut children: Vec<AnyElement> = visible
         .into_iter()
         .map(|entry| match entry {
-            Entry::Project(p) => {
-                let fold_id = format!("project:{}", p.key);
-                let collapsed = store.collapsed.contains(&fold_id);
-                let glyph = if collapsed {
-                    IconName::Folder
-                } else {
-                    IconName::FolderOpen
-                };
-                let head = header(
-                    SharedString::from(format!("{fold_id}-header")),
-                    glyph.svg(),
-                    p.name.clone(),
-                    collapsed,
-                    cx,
-                );
-                group(fold_id, head, &p.sessions, collapsed, now, window, cx)
-            }
+            Entry::Project(p) => project(p, &main_place, window, cx).0,
             Entry::Dialogues(list) => {
                 let collapsed = dialogue_collapsed(prefs);
-                let name = cx
-                    .global::<Translator>()
-                    .t("ccAgent.sidebar.dialogues", &[]);
                 let head = header(
                     format!("{DIALOGUE_FOLD}-header").into(),
                     MESSAGES_SQUARE,
-                    name,
+                    dialogues.clone(),
                     collapsed,
                     cx,
                 );
-                group(DIALOGUE_FOLD.into(), head, list, collapsed, now, window, cx)
+                group(
+                    DIALOGUE_FOLD.into(),
+                    head,
+                    list,
+                    collapsed,
+                    &main_place,
+                    window,
+                    cx,
+                )
+                .0
             }
-            Entry::Loose(s) => row(s, false, now, cx).into_any_element(),
+            Entry::Loose(s) => row(s, false, None, now, cx).into_any_element(),
         })
         .collect();
     if hidden > 0 {
         children.push(
-            show_all("main-list-show-all".into(), all.len(), cx)
+            show_all("main-list-show-all".into(), lists.main.len(), cx)
                 .on_click(|_, _, cx| {
                     cx.global_mut::<Sessions>().show_all_entries = true;
                     cx.refresh_windows();
@@ -309,5 +375,26 @@ pub fn list(window: &mut Window, cx: &App) -> Option<AnyElement> {
                 .into_any_element(),
         );
     }
-    Some(scroll("main-list", children))
+    let main = div()
+        .flex()
+        .flex_col()
+        .gap(css(4.0))
+        .pt(css(4.0))
+        .pl(css(12.0))
+        .children(children);
+    Some(
+        div()
+            .id("main-list")
+            .debug_selector(|| "main-list".into())
+            .flex()
+            .flex_col()
+            .flex_1()
+            .min_h_0()
+            .gap(css(8.0))
+            .pb(css(16.0))
+            .overflow_y_scroll()
+            .children(pinned::section(&lists, now, drawn, window, cx))
+            .child(main)
+            .into_any_element(),
+    )
 }

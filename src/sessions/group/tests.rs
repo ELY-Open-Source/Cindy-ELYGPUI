@@ -1,6 +1,10 @@
 use serde_json::{Value, json};
 
-use super::{Entry, Order, Session, aliases, entries};
+use super::{Entry, Order, Session, aliases};
+use crate::sessions::{
+    lists::{Pinned, build},
+    settings::Settings,
+};
 
 /// `YYYY-MM-DDTHH:MM:SS.mmmZ` to ms, as the fixtures write it.
 fn ms(v: &Value) -> Option<i64> {
@@ -84,22 +88,50 @@ fn matches_cindys_grouping_and_main_list() {
             .as_array()
             .map(|a| a.iter().filter_map(text).collect())
             .unwrap_or_default();
+        let list = |key: &str| -> Vec<String> {
+            case[key]
+                .as_array()
+                .map(|a| a.iter().filter_map(text).collect())
+                .unwrap_or_default()
+        };
+        let settings = Settings {
+            pinned_order: list("pinnedOrder"),
+            hidden: list("hiddenProjectKeys"),
+        };
         let order = Order {
+            flat: case["groupBy"] == "flat",
             created: case["sortBy"] == "created",
             custom: case["projectOrder"] == "custom",
             manual: &manual,
             group_dialogue: case["groupDialogue"] != false,
         };
-        let got: Vec<Value> = entries(
+        let lists = build(
             &sessions,
             &recent,
             &aliases(&rows, platform),
+            &settings,
             platform,
             &order,
-        )
-        .iter()
-        .map(shown)
-        .collect();
+            "Chat",
+        );
+        let got: Vec<Value> = lists.main.iter().map(shown).collect();
+        let pinned: Vec<Value> = lists
+            .pinned
+            .iter()
+            .map(|p| match p {
+                Pinned::Session(s) => {
+                    json!({ "kind": "session", "session": s.id, "label": lists.labels.get(&s.id) })
+                }
+                Pinned::Project(p) => json!({ "kind": "project", "key": p.key, "name": p.name,
+                    "sessions": p.sessions.iter().map(|s| &s.id).collect::<Vec<_>>() }),
+            })
+            .collect();
+        assert_eq!(
+            Value::Array(pinned),
+            want["pinned"],
+            "pinned: {}",
+            case["name"]
+        );
         assert_eq!(Value::Array(got), want["entries"], "{}", case["name"]);
     }
 }

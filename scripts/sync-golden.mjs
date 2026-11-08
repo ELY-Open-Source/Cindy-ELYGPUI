@@ -38,6 +38,9 @@ try {
     "export { cjkSeg } from './main/localDb/cjkSeg';",
     "export * as projectGrouping from './renderer/features/cc-agent/lib/projectGrouping';",
     "export * as mainListModel from './renderer/features/cc-agent/lib/mainListModel';",
+    "export * as visibility from './renderer/features/cc-agent/lib/sidebarProjectVisibility';",
+    "export * as pinnedOrder from './renderer/features/cc-agent/lib/pinnedSidebarOrder';",
+    "export * as sourceLabel from './renderer/features/cc-agent/lib/sessionSourceLabel';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({
@@ -46,7 +49,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer') },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -171,23 +174,56 @@ try {
 
   const groupDir = path.join(fixtures, 'grouping');
   const groupCases = JSON.parse(fs.readFileSync(path.join(groupDir, 'input.json'), 'utf8'));
+  // CCAgentSidebarUpper's composition, local tasks, no filters beyond status.
+  const ids = (list) => list.map((x) => x.id);
+  const shown = (e) => e.kind === 'project'
+    ? { kind: e.kind, key: e.project.projectKey, name: e.project.displayName, sessions: ids(e.project.sessions) }
+    : e.kind === 'session' ? { kind: e.kind, session: e.session.id }
+    : { kind: e.kind, sessions: ids(e.sessions) };
   write(path.join(groupDir, 'expected.json'), groupCases.map((c) => {
-    const persistent = projectGrouping.buildPersistentLocalProjects(c.recentWorkdirs ?? [], c.sessions, c.platform ?? 'linux');
-    const groups = projectGrouping.groupSessions(c.sessions, {
-      projectAliases: c.aliases ?? {}, persistentLocalProjects: persistent, localPlatform: c.platform ?? 'linux',
+    const platform = c.platform ?? 'linux';
+    const sortBy = c.sortBy ?? 'recency';
+    const hidden = new Set(c.hiddenProjectKeys ?? []);
+    const order = c.pinnedOrder ?? [];
+    const persistent = projectGrouping.buildPersistentLocalProjects(c.recentWorkdirs ?? [], c.sessions, platform);
+    const options = (pins) => ({
+      projectAliases: c.aliases ?? {}, persistentLocalProjects: persistent, localPlatform: platform,
+      includePinnedInProjects: pins,
     });
+    const sidebar = visibility.sidebarSessionsWithHiddenProjectsAsDialogues(c.sessions, hidden, platform);
+    const plain = projectGrouping.groupSessions(sidebar, options(false));
+    const withPins = projectGrouping.groupSessions(sidebar, options(true));
+    const universe = visibility.visibleSidebarProjects(projectGrouping.groupSessions(c.sessions, options(true)).projects, hidden, platform);
+    const pinnedKeys = visibility.buildProjectKeyComparisonSet(
+      order.map(pinnedOrder.projectKeyFromPinnedEntryId).filter(Boolean), platform);
+    const unpinned = (p) => ({ ...p, sessions: p.sessions.filter((s) => s.pinnedAt == null) });
+    const notHidden = visibility.visibleSidebarProjects(withPins.projects, hidden, platform);
+    const pinnedProjects = notHidden.filter((p) => visibility.projectKeyComparisonSetHas(pinnedKeys, p.projectKey, platform));
+    let pinned = [
+      ...plain.pinned.map((s) => ({ kind: 'session', id: s.id, session: s })),
+      ...pinnedProjects.map((p) => ({ kind: 'project', id: pinnedOrder.pinnedProjectEntryId(p.projectKey), project: p,
+        displaySessions: mainListModel.sortSessionsForMainList(unpinned(p).sessions, sortBy) })),
+    ];
+    if (order.length > 0) {
+      const rank = pinnedOrder.buildPinnedSidebarRank(order, platform);
+      const at = (e) => rank.get(pinnedOrder.pinnedSidebarEntryComparisonKey(e.id, platform)) ?? Number.MAX_SAFE_INTEGER;
+      pinned = pinned.sort((x, y) => at(x) - at(y));
+    }
+    const labels = sourceLabel.buildSessionSourceLabelMap(plain.pinned, universe, 'Chat');
+    const mainProjects = notHidden
+      .filter((p) => !visibility.projectKeyComparisonSetHas(pinnedKeys, p.projectKey, platform))
+      .map(unpinned);
     const entries = mainListModel.buildMainListEntries({
-      projects: groups.projects, dialogues: groups.dialogues, unclassified: groups.unclassified,
-      groupBy: 'project', groupDialogue: c.groupDialogue ?? true, sortBy: c.sortBy ?? 'recency',
+      projects: mainProjects, dialogues: plain.dialogues, unclassified: plain.unclassified,
+      groupBy: c.groupBy ?? 'project', groupDialogue: c.groupDialogue ?? true, sortBy,
       projectOrder: c.projectOrder ?? 'activity', manualProjectOrder: c.manualProjectOrder ?? [],
     });
     return {
       name: c.name,
-      pinned: groups.pinned.map((s) => s.id),
-      entries: entries.map((e) => e.kind === 'project'
-        ? { kind: e.kind, key: e.project.projectKey, name: e.project.displayName, sessions: e.project.sessions.map((s) => s.id) }
-        : e.kind === 'session' ? { kind: e.kind, session: e.session.id }
-        : { kind: e.kind, sessions: e.sessions.map((s) => s.id) }),
+      pinned: pinned.map((e) => e.kind === 'session'
+        ? { kind: 'session', session: e.session.id, label: labels.get(e.session.id) ?? null }
+        : { kind: 'project', key: e.project.projectKey, name: e.project.displayName, sessions: ids(e.displaySessions) }),
+      entries: entries.map(shown),
     };
   }));
 

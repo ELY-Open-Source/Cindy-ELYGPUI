@@ -1,12 +1,15 @@
 //! Cindy's `sessionsStore.ts` for this window's bucket: the task list, read from the local
 //! database and read again whenever that database changes on disk.
 
-mod flat;
 mod fold;
 mod group;
+mod lists;
 mod main_list;
 mod paths;
+mod pinned;
 mod query;
+mod row;
+mod settings;
 mod sweep;
 
 use std::{
@@ -14,7 +17,7 @@ use std::{
     path::PathBuf,
 };
 
-use gpui::{AnyElement, App, Window};
+use gpui::App;
 
 use crate::localdb::{Db, LocalDb, State};
 use group::Session;
@@ -28,6 +31,7 @@ pub struct Loaded {
     sessions: Vec<Session>,
     recent: Vec<String>,
     aliases: Vec<(String, String)>,
+    settings: settings::Settings,
 }
 
 pub struct Sessions {
@@ -42,13 +46,15 @@ pub struct Sessions {
     /// The database handle the sweep has run for; a new open sweeps again.
     swept_for: Option<Db>,
     user_data: PathBuf,
+    /// `owners/<key>`, where `sidebar-settings.json` lives.
+    owner_dir: Option<PathBuf>,
     _watcher: Option<notify::RecommendedWatcher>,
 }
 
 impl gpui::Global for Sessions {}
 
 /// Reads the list whenever the database opens, and after each change Cindy writes.
-pub fn install(user_data: PathBuf, cx: &mut App) {
+pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
     cx.set_global(Sessions {
         loaded: None,
         collapsed: HashSet::new(),
@@ -59,6 +65,7 @@ pub fn install(user_data: PathBuf, cx: &mut App) {
         dirty: false,
         swept_for: None,
         user_data,
+        owner_dir,
         _watcher: None,
     });
     cx.observe_global::<LocalDb>(|cx| {
@@ -70,22 +77,25 @@ pub fn install(user_data: PathBuf, cx: &mut App) {
     .detach();
 }
 
-/// Cindy's push events reach Cindy's own windows only; here the database file and its WAL
-/// changing on disk stand for them.
+/// Cindy's push events reach Cindy's own windows only; here the database, its WAL and the
+/// sidebar settings changing on disk stand for them.
 fn watch(cx: &mut App) {
     use notify::{RecursiveMode, Watcher as _};
     let Some(path) = cx.global::<LocalDb>().path().map(PathBuf::from) else {
         return;
     };
     let (changed, mut changes) = futures::channel::mpsc::unbounded();
-    let names = [
+    let owner_dir = cx.global::<Sessions>().owner_dir.clone();
+    let mut names = vec![
         path.clone(),
         PathBuf::from(format!("{}-wal", path.display())),
     ];
+    names.extend(owner_dir.iter().map(|dir| dir.join(settings::FILE)));
     let watcher =
         notify::recommended_watcher(move |event: notify::Result<notify::Event>| match event {
             Ok(event)
-                if event.kind.is_modify() && event.paths.iter().any(|p| names.contains(p)) =>
+                if (event.kind.is_modify() || event.kind.is_create())
+                    && event.paths.iter().any(|p| names.contains(p)) =>
             {
                 let _ = changed.unbounded_send(());
             }
@@ -97,6 +107,11 @@ fn watch(cx: &mut App) {
             path.parent().expect("a database has a folder"),
             RecursiveMode::NonRecursive,
         )?;
+        if let Some(dir) = &owner_dir
+            && let Err(error) = w.watch(dir, RecursiveMode::NonRecursive)
+        {
+            log::warn!(target: "sessions", "sidebar settings unwatched in {}: {error}", dir.display());
+        }
         Ok(w)
     });
     match watched {
@@ -134,6 +149,7 @@ pub fn reload(cx: &mut App) {
     let sweep = store.swept_for.as_ref() != Some(&db);
     store.swept_for = Some(db.clone());
     let user_data = store.user_data.clone();
+    let owner_dir = store.owner_dir.clone();
     let read = db.call(move |conn| {
         if sweep {
             let now = jiff::Timestamp::now().as_millisecond();
@@ -143,6 +159,9 @@ pub fn reload(cx: &mut App) {
             sessions: query::list(conn, status)?,
             recent: query::recent(conn)?,
             aliases: query::aliases(conn)?,
+            settings: owner_dir
+                .map(|dir| settings::read(&dir, paths::PLATFORM))
+                .unwrap_or_default(),
         })
     });
     cx.spawn(async move |cx| {
@@ -152,8 +171,9 @@ pub fn reload(cx: &mut App) {
             store.loading = false;
             match rows {
                 Ok(Ok(loaded)) => {
-                    log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases",
-                        loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len());
+                    log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases, {} pins ordered, {} hidden projects",
+                        loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len(),
+                        loaded.settings.pinned_order.len(), loaded.settings.hidden.len());
                     store.loaded = Some(loaded);
                 }
                 Ok(Err(error)) => log::error!(target: "sessions", "task list read failed: {error}"),
@@ -168,10 +188,7 @@ pub fn reload(cx: &mut App) {
     .detach();
 }
 
-/// The main list: flat when the filter says so, else grouped by project.
-pub fn list(window: &mut Window, cx: &App) -> Option<AnyElement> {
-    flat::list(cx).or_else(|| main_list::list(window, cx))
-}
+pub use main_list::list;
 
 #[cfg(test)]
 mod tests;

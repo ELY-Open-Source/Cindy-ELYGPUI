@@ -59,33 +59,26 @@ pub fn limit(raw: Option<&str>, fallback: usize) -> usize {
     }
 }
 
-/// Turns a group's fold, animating from where it is; Show all resets once it has closed.
+/// Turns a group's fold, animating from where it is.
 pub fn toggle(id: &str, collapsed: bool, cx: &mut App) {
     let now = cx.background_executor().now();
     let span = length(BASE, cx);
-    let store = cx.global_mut::<Sessions>();
     let from = if collapsed { 1.0 } else { 0.0 };
-    let tween = store
+    let tween = cx
+        .global_mut::<Sessions>()
         .folds
         .entry(id.to_owned())
         .or_insert_with(|| Tween::still(from, now));
     tween.toward(if collapsed { 0.0 } else { 1.0 }, now, span);
-    if !collapsed {
-        return;
+}
+
+/// How open a fold is now, 0 to 1.
+pub fn openness(id: &str, collapsed: bool, cx: &App) -> f32 {
+    match cx.global::<Sessions>().folds.get(id) {
+        Some(tween) => tween.at(cx.background_executor().now()).0,
+        None if collapsed => 0.0,
+        None => 1.0,
     }
-    let id = id.to_owned();
-    cx.spawn(async move |cx| {
-        cx.background_executor().timer(span).await;
-        cx.update(|cx| {
-            let now = cx.background_executor().now();
-            let store = cx.global_mut::<Sessions>();
-            if store.folds.get(&id).is_some_and(|t| t.at(now).0 <= 0.0) {
-                store.show_all.remove(&id);
-                cx.refresh_windows();
-            }
-        });
-    })
-    .detach();
 }
 
 /// `SectionCollapse`: the body's height and opacity follow the fold; closed, it unmounts.
