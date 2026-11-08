@@ -59,6 +59,7 @@ fn every_builtin_token_resolves() {
                 .iter()
                 .any(|p| v.starts_with(p))
     };
+    let channels = regex::Regex::new(r"^[\d.]+ [\d.]+% [\d.]+%( / [\d.]+)?$").unwrap();
     let all = themes
         .families
         .iter()
@@ -71,6 +72,8 @@ fn every_builtin_token_resolves() {
             };
             if colorish(&value) {
                 themes.color(theme, id).unwrap_or_else(|e| panic!("{e:#}"));
+            } else if channels.is_match(&value) {
+                themes.hsl(theme, id).unwrap_or_else(|e| panic!("{e:#}"));
             }
         }
     }

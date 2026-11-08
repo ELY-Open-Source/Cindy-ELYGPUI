@@ -183,6 +183,17 @@ impl Node {
     pub fn is_pane_of(&self, kind: &str) -> bool {
         matches!(self, Node::Pane(pane) if pane.panel_kind == kind)
     }
+
+    /// The split with `id` in this subtree.
+    pub fn split(&self, id: &str) -> Option<&Split> {
+        let Node::Split(split) = self else {
+            return None;
+        };
+        if split.id == id {
+            return Some(split);
+        }
+        split.children.iter().find_map(|c| c.node.split(id))
+    }
 }
 
 fn js_numbers(value: &mut Value) {

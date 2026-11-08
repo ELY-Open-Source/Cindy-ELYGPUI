@@ -94,7 +94,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   heights, root pixel widths with preferred widths, `normalizeSubMinFractions`, divider room, the chat
   shrink relay plan, `alignExpandedPaneFractions`, divider commit (with the `right-tabs` preferred
   width) and double-click equalize, column dividers
-- [ ] 6.3b The tree on screen: sidebar column slot, content splits, dividers dragged live and saved on
+- [x] 6.3b The tree on screen: sidebar column slot, content splits, dividers dragged live and saved on
   release, double-click to equalize, self-heal after a resize settles, unknown kinds hidden, parked
   panes kept mounted at zero size, every window following `layout:changed`
 - [ ] 6.3c Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
@@ -105,7 +105,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the
   legacy `sidebar-collapsed` migration, per session for `right-tabs` under
   `right-sidebar-collapsed:<sessionId>`, none for `chat-main`
-- [ ] 6.5 Title bar: window controls per platform, sidebar toggle, back and forward (`DESIGN.md` §14.6)
+- [ ] 6.5 Title bar: window controls per platform, sidebar toggle, back and forward (`DESIGN.md` §14.6);
+  the pane placement signals panels read (`panePlacement.tsx`: at window top, at window left, fill)
 - [ ] 6.6 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
   double-click reset; New, Automations, Plugins, Search, More with order, top-level or More placement
   and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All

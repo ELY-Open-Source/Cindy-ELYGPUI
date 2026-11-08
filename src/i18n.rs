@@ -1,3 +1,8 @@
+#![cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the first UI text lands in 6.5")
+)]
+
 mod catalogs;
 
 use std::{cell::RefCell, collections::HashSet};
@@ -20,10 +25,6 @@ const INTERNAL: &str = "ipcError.INTERNAL";
 
 /// A value passed into a message.
 #[derive(Clone, Copy)]
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "first caller lands in chapter 6")
-)]
 pub enum Arg<'a> {
     Text(&'a str),
     Number(i64),

@@ -272,6 +272,12 @@ impl Themes {
         let value = self.value(theme, id)?;
         css::color(&value).with_context(|| format!("--{id} in {}", theme.id))
     }
+
+    /// A channel token as Tailwind's `hslVar` reads it: `hsl(var(--id))`.
+    pub fn hsl(&self, theme: &ThemeData, id: &str) -> Result<Rgba> {
+        let value = self.value(theme, id)?;
+        css::color(&format!("hsl({value})")).with_context(|| format!("--{id} in {}", theme.id))
+    }
 }
 
 /// Cindy's `buildLocalFamilies`: grouped by `family` key, first of each type kept.
@@ -371,12 +377,14 @@ impl Appearance {
 
     /// A token of the active theme as a color; tokens are checked by tests.
     pub fn token(&self, id: &str) -> gpui::Hsla {
-        let theme = &self.active.theme;
-        let color = self
-            .themes
-            .color(theme, id)
-            .unwrap_or_else(|error| panic!("{error:#}"));
-        color.into()
+        let color = self.themes.color(&self.active.theme, id);
+        color.unwrap_or_else(|error| panic!("{error:#}")).into()
+    }
+
+    /// A channel token of the active theme, as `hsl(var(--id))`.
+    pub fn hsl_token(&self, id: &str) -> gpui::Hsla {
+        let color = self.themes.hsl(&self.active.theme, id);
+        color.unwrap_or_else(|error| panic!("{error:#}")).into()
     }
 }
 

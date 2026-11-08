@@ -2,20 +2,22 @@ use std::{path::PathBuf, time::Duration};
 
 use anyhow::{Context as _, Result};
 use gpui::{
-    App, AppContext, Bounds, Context, InteractiveElement, IntoElement, MouseButton, ParentElement,
-    Render, Styled, Task, TitlebarOptions, Window, WindowBounds, WindowOptions, div, point, px,
-    size,
+    App, AppContext, Bounds, Context, Entity, InteractiveElement, IntoElement, MouseButton,
+    ParentElement, Render, Styled, Task, TitlebarOptions, Window, WindowBounds, WindowOptions, div,
+    point, px, size,
 };
 
 use crate::{
     activation_click::{Input, Policy},
-    i18n::Translator,
+    layout_root::LayoutRoot,
     region,
     theme::{Appearance, shell},
     window_state::{self, WindowState},
 };
 
 const WINDOW_STATE_DELAY: Duration = Duration::from_millis(100);
+/// `useSidebarResize`'s `DEFAULT_WIDTH`.
+const SIDEBAR_WIDTH: f64 = 260.0;
 
 /// The main window's root view.
 pub struct Root {
@@ -24,6 +26,7 @@ pub struct Root {
     pending_bounds: Option<Task<()>>,
     activation: Policy,
     first_press_held: bool,
+    layout: Entity<LayoutRoot>,
 }
 
 impl Root {
@@ -49,13 +52,10 @@ impl Root {
 impl Render for Root {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let appearance = cx.global::<Appearance>();
-        let waking = cx.global::<Translator>().t("splash.tips.waking", &[]);
         div()
             .size_full()
             .flex()
-            .items_center()
-            .justify_center()
-            .bg(appearance.token("surface"))
+            .bg(appearance.hsl_token("content-area"))
             .text_color(appearance.token("text-primary"))
             .capture_any_mouse_down(cx.listener(|this, event: &gpui::MouseDownEvent, _, cx| {
                 if event.button == MouseButton::Left {
@@ -67,7 +67,14 @@ impl Render for Root {
                     this.press(Input::Up, false, cx);
                 }
             }))
-            .child(waking)
+            .child(
+                div()
+                    .flex_none()
+                    .h_full()
+                    .w(px(SIDEBAR_WIDTH as f32))
+                    .bg(appearance.hsl_token("sidebar")),
+            )
+            .child(self.layout.clone())
     }
 }
 
@@ -185,6 +192,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 pending_bounds: None,
                 activation: policy,
                 first_press_held: false,
+                layout: cx.new(|cx| LayoutRoot::new(SIDEBAR_WIDTH, cx)),
             }
         })
     })

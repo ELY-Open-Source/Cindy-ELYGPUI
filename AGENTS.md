@@ -40,8 +40,17 @@ defines scope and what 1:1 means.
   `JSON.parse` then `JSON.stringify` would. Cindy's dev-console `__cindyLayout` is not ported.
 - Layout on screen: `src/layout_root/` ports `LayoutRoot.tsx`. `geometry.rs` holds its sizing math
   (visible-share ledger, floors, root widths, self-heal, divider room and chat relay);
-  `divider.rs` the divider gestures. The view lays panes out itself, so the widths it paints stand
-  in for Cindy's DOM measurements.
+  `divider.rs` the divider gestures; `view.rs` the `LayoutRoot` view. The view lays panes out
+  itself, so the widths it paints stand in for Cindy's DOM measurements. Its width is the window
+  less the sidebar column, so the first frame is already right. A divider drag listens on the
+  whole window and writes the store once on release; self-heal runs 120ms after width or tree
+  settle, never mid-drag. The view follows `LayoutStore` through `observe_global`, which stands in
+  for `layout:changed`.
+- Channel tokens (`0 0% 64%`) are read through `Appearance::hsl_token`, as Tailwind's `hslVar`
+  wraps them in `hsl()`; `token` takes full colors.
+- View tests use gpui's `test-support` (a dev-dependency) and drive real mouse events
+  (`src/layout_root/screen_tests.rs`). Live checks on Hyprland: `hl.dsp.cursor.move({ x, y })`,
+  `hl.dsp.window.float/resize/move({ window = "address:..", x, y })`; a click needs a uinput device.
 - userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to

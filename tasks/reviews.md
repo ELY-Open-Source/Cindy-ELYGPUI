@@ -137,3 +137,9 @@ effort high, in a Herdr pane.
 ## 6.3a Layout geometry
 
 - Round 1: PASS.
+
+## 6.3b The tree on screen
+
+- Round 1: FAIL. A non-row root got draggable dividers; Cindy keeps them still. Fixed: flattened
+  root with still dividers; still dividers share the family surface underlay.
+- Round 2: PASS.
