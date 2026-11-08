@@ -103,8 +103,6 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
-- [ ] 6.3e Temporary maximize and restore without changing the tree, as `panelMaximize.tsx` and
-  `LayoutRoot.tsx` keep it
 - [ ] 6.4 Panel registry: `session-list`, `chat-main`, `right-tabs` registered, content left to their
   chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the
   legacy `sidebar-collapsed` migration, per session for `right-tabs` under
@@ -116,7 +114,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
   sessions sections as frames that chapters 8 and 14 fill
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
-  place them; edge groups parked on non-chat routes other than settings; the window grows and shrinks
+  place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
+  maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
+  trigger is `TabGroupPanel.tsx`); the window grows and shrinks
   as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
 - [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,

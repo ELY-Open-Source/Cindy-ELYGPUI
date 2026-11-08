@@ -155,3 +155,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. `anchored()` fit the ghost and zone inside the window; Cindy's stay at the
   pointer offset and clip. Fixed: absolute boxes in a deferred layer at the content origin.
 - Round 2: PASS.
+
+## 6.3e Temporary maximize
+
+- Moved into 6.7: its only trigger is `TabGroupPanel.tsx`; built alone it would be dead code.
