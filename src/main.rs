@@ -1,17 +1,22 @@
 mod i18n;
 mod locale;
 mod logger;
+mod os_appearance;
 mod preferences;
 mod region;
+mod theme;
 
 use anyhow::{Context as _, Result};
 use ely_gpui_component::{
     Assets,
     i18n::I18n,
-    theme::{ActiveTheme, Mode, Theme},
+    theme::{Mode as ElyMode, Theme},
 };
 
-use crate::i18n::Translator;
+use crate::{
+    i18n::Translator,
+    theme::{Appearance, Kind},
+};
 use gpui::{
     App, AppContext, Context, IntoElement, ParentElement, Render, Styled, Window, WindowOptions,
     div,
@@ -21,26 +26,69 @@ struct Root;
 
 impl Render for Root {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let theme = cx.theme();
+        let appearance = cx.global::<Appearance>();
         let waking = cx.global::<Translator>().t("splash.tips.waking", &[]);
         div()
             .size_full()
             .flex()
             .items_center()
             .justify_center()
-            .bg(theme.colors.bg)
-            .text_color(theme.colors.fg)
+            .bg(appearance.token("surface"))
+            .text_color(appearance.token("text-primary"))
             .child(waking)
     }
 }
 
-fn open(cx: &mut App, translator: Translator) -> Result<()> {
+fn ely_mode(kind: Kind) -> ElyMode {
+    match kind {
+        Kind::Light => ElyMode::Light,
+        Kind::Dark => ElyMode::Dark,
+    }
+}
+
+fn log_theme(appearance: &Appearance) {
+    let active = &appearance.active;
+    log::info!(
+        target: "theme",
+        "theme {} (family {}, mode {:?}{})",
+        active.theme.id,
+        active.family,
+        appearance.mode,
+        if active.fallback { ", other type stands in" } else { "" }
+    );
+}
+
+/// Re-resolves the theme when the OS turns light or dark.
+fn follow_os(_: &mut Root, window: &mut Window, cx: &mut Context<Root>) {
+    let os = window.appearance();
+    let appearance = cx.global_mut::<Appearance>();
+    let changed = appearance
+        .follow(os)
+        .unwrap_or_else(|error| panic!("theme failed to follow the OS: {error:#}"));
+    if !changed {
+        return;
+    }
+    log::info!(target: "theme", "OS appearance {os:?}");
+    log_theme(appearance);
+    let kind = appearance.kind();
+    Theme::set_mode(ely_mode(kind), cx);
+}
+
+fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String>)) -> Result<()> {
     ely_gpui_component::init(cx).context("Ely failed to start")?;
     cx.set_global(I18n::new(translator.ely_tag()));
     cx.set_global(translator);
-    Theme::set_mode(Mode::Dark, cx);
-    cx.open_window(WindowOptions::default(), |_, cx| cx.new(|_| Root))
-        .context("window failed to open")?;
+    let appearance = Appearance::new(theme.0, theme.1.as_deref(), os_appearance::initial(cx))?;
+    log_theme(&appearance);
+    Theme::set_mode_now(ely_mode(appearance.kind()), cx);
+    cx.set_global(appearance);
+    cx.open_window(WindowOptions::default(), |window, cx| {
+        cx.new(|cx| {
+            cx.observe_window_appearance(window, follow_os).detach();
+            Root
+        })
+    })
+    .context("window failed to open")?;
     cx.activate(true);
     log::info!("main window opened");
     Ok(())
@@ -55,12 +103,22 @@ fn main() {
     let language = preferences
         .text("language")
         .unwrap_or_else(|error| panic!("{error:#}"));
+    let theme_mode = theme::Mode::parse(
+        preferences
+            .text("theme")
+            .unwrap_or_else(|error| panic!("{error:#}")),
+    );
+    let family = preferences
+        .text("theme.familyId")
+        .unwrap_or_else(|error| panic!("{error:#}"))
+        .map(str::to_owned);
     let tag = locale::effective(language);
     let translator = Translator::new(tag).unwrap_or_else(|error| panic!("{error:#}"));
     log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());
     gpui_platform::application()
         .with_assets(Assets)
         .run(move |cx: &mut App| {
-            open(cx, translator).unwrap_or_else(|error| panic!("startup failed: {error:#}"));
+            open(cx, translator, (theme_mode, family))
+                .unwrap_or_else(|error| panic!("startup failed: {error:#}"));
         });
 }

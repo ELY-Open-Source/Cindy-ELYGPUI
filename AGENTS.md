@@ -15,6 +15,10 @@ defines scope and what 1:1 means.
 - i18n: `src/i18n.rs` ports Cindy's i18next setup over `locales/`, embedded in the binary. Plurals
   and number formats come from ICU4X (`icu_plurals`, `icu_decimal`, `icu_locale_core`), as `Intl`
   gives them to Cindy. Ely's `I18n` global is set to the nearest Ely locale for Ely's own text.
+- Themes: `src/theme.rs` resolves Cindy's tokens from `themes/` as `theme-service.ts` does;
+  `src/theme/css.rs` evaluates their CSS colors (hex, rgb, hsl, `color-mix`, relative `oklch`). On
+  Linux, `src/os_appearance.rs` reads the portal's color scheme before the window opens, since gpui
+  learns it only later; gpui's reports count once they agree with it.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).

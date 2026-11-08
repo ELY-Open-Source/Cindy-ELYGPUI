@@ -860,9 +860,11 @@ dependencies = [
  "jiff",
  "log",
  "regex",
+ "serde",
  "serde_json",
  "sys-locale",
  "tempfile",
+ "zbus",
 ]
 
 [[package]]
