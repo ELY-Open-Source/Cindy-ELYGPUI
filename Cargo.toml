@@ -27,6 +27,7 @@ serde_json = { version = "1", features = ["raw_value"] }
 sys-locale = "0.3"
 
 [dev-dependencies]
+ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components", rev = "e0f355ac1a669c24336244bcaa8131f7f0e4f1b5", features = ["test-support"] }
 gpui = { package = "gpui-pre", version = "=0.3.11", features = ["test-support"] }
 regex = "1"
 tempfile = "3"

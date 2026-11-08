@@ -12,6 +12,7 @@ use crate::{
     layout_root::LayoutRoot,
     region,
     theme::{Appearance, shell},
+    toast::ToastContainer,
     window_state::{self, WindowState},
 };
 
@@ -27,6 +28,7 @@ pub struct Root {
     activation: Policy,
     first_press_held: bool,
     layout: Entity<LayoutRoot>,
+    toasts: Entity<ToastContainer>,
 }
 
 impl Root {
@@ -53,6 +55,7 @@ impl Render for Root {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let appearance = cx.global::<Appearance>();
         div()
+            .relative()
             .size_full()
             .flex()
             .bg(appearance.hsl_token("content-area"))
@@ -75,6 +78,7 @@ impl Render for Root {
                     .bg(appearance.hsl_token("sidebar")),
             )
             .child(self.layout.clone())
+            .child(self.toasts.clone())
     }
 }
 
@@ -193,6 +197,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 activation: policy,
                 first_press_held: false,
                 layout: cx.new(|cx| LayoutRoot::new(SIDEBAR_WIDTH, cx)),
+                toasts: cx.new(|cx| ToastContainer::new(window, cx)),
             }
         })
     })

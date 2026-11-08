@@ -46,6 +46,12 @@ defines scope and what 1:1 means.
   whole window and writes the store once on release; self-heal runs 120ms after width or tree
   settle, never mid-drag. The view follows `LayoutStore` through `observe_global`, which stands in
   for `layout:changed`.
+- Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
+  each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
+  `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the
+  slide starts in the frame the new tops are known. `motion::ease_out` is CSS `ease-out`.
+- Cindy's `components/ui` primitives are drawn with Ely's (the toast action is Ely's secondary
+  small `Button`); Cindy's `--text-N` is `appearance_settings::text_px`.
 - Channel tokens (`0 0% 64%`) are read through `Appearance::hsl_token`, as Tailwind's `hslVar`
   wraps them in `hsl()`; `token` takes full colors.
 - View tests use gpui's `test-support` (a dev-dependency) and drive real mouse events

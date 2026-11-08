@@ -7,11 +7,13 @@ mod layout_tree;
 mod locale;
 mod logger;
 mod main_window;
+mod motion;
 mod os_appearance;
 mod preferences;
 mod region;
 mod theme;
 mod theme_import;
+mod toast;
 mod window_state;
 
 use std::path::PathBuf;
@@ -53,6 +55,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     apply_fonts(&startup.fonts, cx);
     cx.set_global(I18n::new(startup.translator.ely_tag()));
     cx.set_global(startup.translator);
+    cx.set_global(toast::Toasts::default());
     let home = dirs::home_dir().context("this user has no home folder")?;
     let sources = theme::Sources {
         local_dir: theme::local::dir(&home),

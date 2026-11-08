@@ -97,9 +97,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.3b The tree on screen: sidebar column slot, content splits, dividers dragged live and saved on
   release, double-click to equalize, self-heal after a resize settles, unknown kinds hidden, parked
   panes kept mounted at zero size, every window following `layout:changed`
-- [ ] 6.3c Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
-  zones, swap)
-- [ ] 6.3d Temporary maximize and restore without changing the tree, as `panelMaximize.tsx` and
+- [x] 6.3c Toasts as `lib/toast.ts` keeps them (at most 3 shown, the rest queued in order, 1.2s for
+  info and success, 8s for warning and error, 0 forever, hover pauses, 300ms exit, source and
+  action) and `components/ui/toast/Toast.tsx` and `ToastContainer.tsx` draw them, in every window;
+  the file transfer toasts in the same container go to chapter 18
+- [ ] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
+  zones, swap, saved or failed toast)
+- [ ] 6.3e Temporary maximize and restore without changing the tree, as `panelMaximize.tsx` and
   `LayoutRoot.tsx` keep it
 - [ ] 6.4 Panel registry: `session-list`, `chat-main`, `right-tabs` registered, content left to their
   chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the

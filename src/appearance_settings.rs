@@ -43,6 +43,12 @@ pub fn fonts(user_data: &Path) -> Fonts {
     fonts
 }
 
+/// `--text-N` as `applyFontSettings` scales it: `round(N * uiSize / 14)` px.
+pub fn text_px(size: f32, cx: &gpui::App) -> gpui::Pixels {
+    use ely_gpui_component::theme::ActiveTheme as _;
+    gpui::px(crate::cindy_json::js_round(f64::from(size * cx.theme().font_scale)) as f32)
+}
+
 /// The first family of a CSS font list; gpui takes one family.
 pub fn first_family(list: &str) -> Option<String> {
     let first = js_trim(list.split(',').next()?);
