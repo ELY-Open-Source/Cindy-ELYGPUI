@@ -77,3 +77,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Token count was 568 (call sites); Cindy has 576 with two loops. Dark-to-light
   default fallback missing. Both fixed.
 - Round 2: PASS.
+
+## 5.1 Theme data
+
+- Round 1: PASS.

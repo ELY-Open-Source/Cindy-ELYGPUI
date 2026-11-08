@@ -1,0 +1,8 @@
+{
+ "id": "default-light",
+ "name": "Default Light",
+ "type": "light",
+ "colors": {
+  "perm-auto-selected-text": "#417CDD"
+ }
+}

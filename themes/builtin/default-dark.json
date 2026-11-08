@@ -1,0 +1,8 @@
+{
+ "id": "default-dark",
+ "name": "Default Dark",
+ "type": "dark",
+ "colors": {
+  "perm-auto-selected-text": "#417CDD"
+ }
+}

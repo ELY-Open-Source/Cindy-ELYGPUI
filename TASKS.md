@@ -52,7 +52,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 - [x] 5.0 Expand from Cindy's code (`renderer/themes/`, `hooks/useTheme.ts`, `hooks/useFontSettings.ts`,
   `main/appearance-settings-store.ts`, `main/local-themes/`, `shared/theme-import/`)
-- [ ] 5.1 Cindy's 576 color tokens (566 direct registrations plus the `effort-tier-*` and
+- [x] 5.1 Cindy's 576 color tokens (566 direct registrations plus the `effort-tier-*` and
   `price-tier-*` loops) and 11 built-in themes at the PRD's commit in `themes/`, written as JSON by
   `scripts/sync-themes.mjs`, which runs Cindy's own `colors.ts` and `builtin/` and reads the registry
 - [ ] 5.2 Token resolution as `theme-service.ts` does it (theme value, else registry default for the
