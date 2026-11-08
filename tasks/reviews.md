@@ -246,3 +246,8 @@ effort high, in a Herdr pane.
 ## 6.9e3b Wallpaper video, macOS
 
 - Round 1: PASS. Not run on a Mac; the macOS CI leg runs the decode test.
+
+## 6.9e3c Wallpaper video, Windows
+
+- Round 1: FAIL. COM and Media Foundation started per decoder thread, never shut down.
+- Round 2: PASS. Drop guards undo each successful start in reverse order.

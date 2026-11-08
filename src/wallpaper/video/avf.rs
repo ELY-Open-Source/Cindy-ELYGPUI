@@ -1,11 +1,6 @@
 //! A looping, muted video decoded by AVFoundation into BGRA frames.
 
-use std::{
-    io::Write as _,
-    path::Path,
-    sync::{Arc, Condvar, Mutex},
-    time::{Duration, Instant},
-};
+use std::{io::Write as _, path::Path};
 
 use anyhow::{Context as _, Result, bail};
 use objc2::{rc::Retained, runtime::AnyObject};
@@ -23,20 +18,15 @@ use objc2_core_video::{
 };
 use objc2_foundation::{NSArray, NSDictionary, NSError, NSNumber, NSString, NSURL};
 
-use super::{Event, Fit, Frame};
+pub use super::paced::Player;
+use super::{Event, Fit, paced::Decoder};
 
-struct State {
-    playing: bool,
-    fit: Fit,
-    refit: bool,
-    stop: bool,
-}
-
-type Control = Arc<(Mutex<State>, Condvar)>;
-
-pub struct Player {
-    control: Control,
-    thread: Option<std::thread::JoinHandle<()>>,
+/// The checked bytes in a private temp file, read by one `AVAssetReader` at a time.
+struct Reader {
+    _dir: tempfile::TempDir,
+    asset: Retained<AVURLAsset>,
+    track: Retained<AVAssetTrack>,
+    open: Option<(Retained<AVAssetReader>, Retained<AVAssetReaderTrackOutput>)>,
 }
 
 /// An NSError by domain and code; its text can name files.
@@ -153,119 +143,48 @@ fn next(
     Ok(Some((at, image)))
 }
 
-/// The decode loop: paced by frame times, paused on request, restarted at the end.
-fn run(file: &Path, control: &Control, send: &dyn Fn(Event)) -> Result<()> {
-    let path = NSString::from_str(file.to_str().context("temp path is not UTF-8")?);
-    // SAFETY: a file URL and no options.
-    let asset =
-        unsafe { AVURLAsset::URLAssetWithURL_options(&NSURL::fileURLWithPath(&path), None) };
-    let track = track(&asset)?;
-    let (mut native, mut from) = (None, 0.0);
-    loop {
-        let fit = control.0.lock().expect("state lock").fit;
-        let (reader, output) = reader(&asset, &track, native.map(|n| fit.scaled(n)), from)?;
-        let mut clock: Option<(Instant, f64)> = None;
-        loop {
-            let frame = objc2::rc::autoreleasepool(|_| next(&reader, &output))?;
-            let Some((at, image)) = frame else {
-                from = 0.0;
-                break;
-            };
-            let dims = image.dimensions();
-            let first = native.is_none();
-            native.get_or_insert(dims);
-            let image = if fit.sigma > 0.0 {
-                image::imageops::fast_blur(&image, fit.frame_sigma(dims.0, native.expect("set")))
-            } else {
-                image
-            };
-            let (state, wake) = &**control;
-            let mut state = state.lock().expect("state lock");
-            let (start, zero) = *clock.get_or_insert((Instant::now(), at));
-            let due = start + Duration::from_secs_f64((at - zero).max(0.0));
-            while !state.stop && !state.refit && state.playing && Instant::now() < due {
-                state = wake
-                    .wait_timeout(state, due - Instant::now())
-                    .expect("state lock")
-                    .0;
-            }
-            if state.stop {
-                return Ok(());
-            }
-            send(Event::Frame(Frame(image)));
-            let paused = !state.playing;
-            while !state.stop && !state.refit && !state.playing {
-                state = wake.wait(state).expect("state lock");
-            }
-            if paused {
-                clock = Some((Instant::now(), at));
-            }
-            if state.stop {
-                return Ok(());
-            }
-            if first || std::mem::take(&mut state.refit) {
-                from = at;
-                break;
-            }
-        }
-        // SAFETY: a reader this loop created.
-        unsafe { reader.cancelReading() };
+impl Reader {
+    fn new(dir: tempfile::TempDir, file: &Path) -> Result<Self> {
+        let path = NSString::from_str(file.to_str().context("temp path is not UTF-8")?);
+        let url = NSURL::fileURLWithPath(&path);
+        // SAFETY: a file URL and no options.
+        let asset = unsafe { AVURLAsset::URLAssetWithURL_options(&url, None) };
+        let track = track(&asset)?;
+        Ok(Self {
+            _dir: dir,
+            asset,
+            track,
+            open: None,
+        })
     }
 }
 
-impl Player {
-    pub fn open(
-        bytes: &[u8],
-        fit: Fit,
-        send: impl Fn(Event) + Send + Sync + 'static,
-    ) -> Result<Self> {
-        let dir = tempfile::Builder::new()
-            .prefix("cindy-wallpaper-")
-            .tempdir()?;
-        let file = dir.path().join("video.mp4");
-        std::fs::File::create_new(&file)?.write_all(bytes)?;
-        let state = State {
-            playing: false,
-            fit,
-            refit: false,
-            stop: false,
-        };
-        let control: Control = Arc::new((Mutex::new(state), Condvar::new()));
-        let shared = control.clone();
-        let thread = std::thread::spawn(move || {
-            if let Err(error) = run(&file, &shared, &send) {
-                send(Event::Failed(format!("{error:#}")));
-            }
-            drop(dir);
-        });
-        Ok(Self {
-            control,
-            thread: Some(thread),
-        })
-    }
-
-    pub fn play(&self, playing: bool) -> Result<()> {
-        self.control.0.lock().expect("state lock").playing = playing;
-        self.control.1.notify_all();
+impl Decoder for Reader {
+    fn start(&mut self, size: Option<(u32, u32)>, from: f64) -> Result<()> {
+        if let Some((reader, _)) = self.open.take() {
+            // SAFETY: a reader this decoder started.
+            unsafe { reader.cancelReading() };
+        }
+        self.open = Some(reader(&self.asset, &self.track, size, from)?);
         Ok(())
     }
 
-    pub fn fit(&self, fit: Fit) {
-        let mut state = self.control.0.lock().expect("state lock");
-        if state.fit != fit {
-            state.fit = fit;
-            state.refit = true;
-            self.control.1.notify_all();
-        }
+    fn next(&mut self) -> Result<Option<(f64, image::RgbaImage)>> {
+        let (reader, output) = self.open.as_ref().expect("started");
+        objc2::rc::autoreleasepool(|_| next(reader, output))
     }
 }
 
-impl Drop for Player {
-    fn drop(&mut self) {
-        self.control.0.lock().expect("state lock").stop = true;
-        self.control.1.notify_all();
-        if let Some(thread) = self.thread.take() {
-            thread.join().expect("decoder thread panicked");
-        }
-    }
+/// AVFoundation reads a URL, so the checked bytes go to a private temp directory.
+pub fn open(
+    bytes: &[u8],
+    fit: Fit,
+    send: impl Fn(Event) + Send + Sync + 'static,
+) -> Result<Player> {
+    let dir = tempfile::Builder::new()
+        .prefix("cindy-wallpaper-")
+        .tempdir()?;
+    let file = dir.path().join("video.mp4");
+    std::fs::File::create_new(&file)?.write_all(bytes)?;
+    Ok(Player::spawn(fit, send, move || Reader::new(dir, &file)))
 }

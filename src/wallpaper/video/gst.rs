@@ -82,94 +82,90 @@ fn reason(error: &glib::Error) -> String {
     format!("{} {}", error.domain().as_str(), error.code())
 }
 
-impl Player {
-    pub fn open(
-        bytes: &[u8],
-        fit: Fit,
-        send: impl Fn(Event) + Send + Sync + 'static,
-    ) -> Result<Self> {
-        gst::init()?;
-        let memory = sealed(bytes)?;
-        let description = "fdsrc name=src ! decodebin ! videoconvert ! videoscale \
-                           ! capsfilter name=size ! appsink name=sink sync=true max-buffers=1 drop=true";
-        let pipeline = gst::parse::launch(description)?
-            .downcast::<gst::Pipeline>()
-            .map_err(|_| anyhow!("not a pipeline"))?;
-        let by_name = |name| pipeline.by_name(name).with_context(|| format!("no {name}"));
-        by_name("src")?.set_property("fd", memory.as_raw_fd());
-        let size = by_name("size")?;
-        size.set_property("caps", caps(None));
-        let fit = Arc::new(Mutex::new(fit));
-        let native = Arc::new(Mutex::new(None));
-        let send = Arc::new(send);
-        let sink = by_name("sink")?
-            .downcast::<AppSink>()
-            .map_err(|_| anyhow!("not an appsink"))?;
-        let deliver = {
-            let (fit, native, send, size) =
-                (fit.clone(), native.clone(), send.clone(), size.clone());
-            move |sample: gst::Sample| {
-                let current = *fit.lock().expect("fit lock");
-                let known = *native.lock().expect("native lock");
-                match frame(&sample, &current, known) {
-                    Ok(frame) => {
-                        if known.is_none() {
-                            let dims = frame.0.dimensions();
-                            *native.lock().expect("native lock") = Some(dims);
-                            size.set_property("caps", caps(Some(current.scaled(dims))));
-                        }
-                        send(Event::Frame(frame));
-                        Ok(gst::FlowSuccess::Ok)
+/// The checked bytes, decoded from a sealed memory file.
+pub fn open(
+    bytes: &[u8],
+    fit: Fit,
+    send: impl Fn(Event) + Send + Sync + 'static,
+) -> Result<Player> {
+    gst::init()?;
+    let memory = sealed(bytes)?;
+    let description = "fdsrc name=src ! decodebin ! videoconvert ! videoscale \
+                       ! capsfilter name=size ! appsink name=sink sync=true max-buffers=1 drop=true";
+    let pipeline = gst::parse::launch(description)?
+        .downcast::<gst::Pipeline>()
+        .map_err(|_| anyhow!("not a pipeline"))?;
+    let by_name = |name| pipeline.by_name(name).with_context(|| format!("no {name}"));
+    by_name("src")?.set_property("fd", memory.as_raw_fd());
+    let size = by_name("size")?;
+    size.set_property("caps", caps(None));
+    let fit = Arc::new(Mutex::new(fit));
+    let native = Arc::new(Mutex::new(None));
+    let send = Arc::new(send);
+    let sink = by_name("sink")?
+        .downcast::<AppSink>()
+        .map_err(|_| anyhow!("not an appsink"))?;
+    let deliver = {
+        let (fit, native, send, size) = (fit.clone(), native.clone(), send.clone(), size.clone());
+        move |sample: gst::Sample| {
+            let current = *fit.lock().expect("fit lock");
+            let known = *native.lock().expect("native lock");
+            match frame(&sample, &current, known) {
+                Ok(frame) => {
+                    if known.is_none() {
+                        let dims = frame.0.dimensions();
+                        *native.lock().expect("native lock") = Some(dims);
+                        size.set_property("caps", caps(Some(current.scaled(dims))));
                     }
-                    Err(error) => {
-                        send(Event::Failed(format!("{error:#}")));
-                        Err(gst::FlowError::Error)
-                    }
+                    send(Event::Frame(frame));
+                    Ok(gst::FlowSuccess::Ok)
+                }
+                Err(error) => {
+                    send(Event::Failed(format!("{error:#}")));
+                    Err(gst::FlowError::Error)
                 }
             }
-        };
-        let preroll = deliver.clone();
-        sink.set_callbacks(
-            AppSinkCallbacks::builder()
-                .new_preroll(move |sink| {
-                    preroll(sink.pull_preroll().map_err(|_| gst::FlowError::Eos)?)
-                })
-                .new_sample(move |sink| {
-                    deliver(sink.pull_sample().map_err(|_| gst::FlowError::Eos)?)
-                })
-                .build(),
-        );
-        let bus = pipeline.bus().context("pipeline without bus")?;
-        let looping = pipeline.downgrade();
-        let watcher = std::thread::spawn(move || {
-            use gst::MessageView;
-            for message in bus.iter_timed(gst::ClockTime::NONE) {
-                match message.view() {
-                    MessageView::Eos(_) => {
-                        let Some(pipeline) = looping.upgrade() else {
-                            return;
-                        };
-                        let flags = gst::SeekFlags::FLUSH | gst::SeekFlags::KEY_UNIT;
-                        if pipeline.seek_simple(flags, gst::ClockTime::ZERO).is_err() {
-                            send(Event::Failed("loop seek failed".into()));
-                        }
+        }
+    };
+    let preroll = deliver.clone();
+    sink.set_callbacks(
+        AppSinkCallbacks::builder()
+            .new_preroll(move |sink| preroll(sink.pull_preroll().map_err(|_| gst::FlowError::Eos)?))
+            .new_sample(move |sink| deliver(sink.pull_sample().map_err(|_| gst::FlowError::Eos)?))
+            .build(),
+    );
+    let bus = pipeline.bus().context("pipeline without bus")?;
+    let looping = pipeline.downgrade();
+    let watcher = std::thread::spawn(move || {
+        use gst::MessageView;
+        for message in bus.iter_timed(gst::ClockTime::NONE) {
+            match message.view() {
+                MessageView::Eos(_) => {
+                    let Some(pipeline) = looping.upgrade() else {
+                        return;
+                    };
+                    let flags = gst::SeekFlags::FLUSH | gst::SeekFlags::KEY_UNIT;
+                    if pipeline.seek_simple(flags, gst::ClockTime::ZERO).is_err() {
+                        send(Event::Failed("loop seek failed".into()));
                     }
-                    MessageView::Error(error) => send(Event::Failed(reason(&error.error()))),
-                    MessageView::Application(_) => return,
-                    _ => {}
                 }
+                MessageView::Error(error) => send(Event::Failed(reason(&error.error()))),
+                MessageView::Application(_) => return,
+                _ => {}
             }
-        });
-        Ok(Self {
-            pipeline,
-            _memory: memory,
-            size,
-            fit,
-            native,
-            bus: Some(watcher),
-        })
-    }
+        }
+    });
+    Ok(Player {
+        pipeline,
+        _memory: memory,
+        size,
+        fit,
+        native,
+        bus: Some(watcher),
+    })
+}
 
+impl Player {
     /// `play()` or `pause()`; a paused video still shows its current frame.
     pub fn play(&self, playing: bool) -> Result<()> {
         let state = if playing {

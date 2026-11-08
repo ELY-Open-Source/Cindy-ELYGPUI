@@ -1,17 +1,20 @@
 //! `WallpaperVideo.tsx`: one muted, looping decoder behind the window, under the veil.
 
-#[cfg(target_os = "linux")]
-mod gst;
-#[cfg(target_os = "linux")]
-use gst::Player;
 #[cfg(target_os = "macos")]
 mod avf;
+#[cfg(target_os = "linux")]
+mod gst;
+#[cfg(target_os = "windows")]
+mod mf;
+#[cfg(not(target_os = "linux"))]
+mod paced;
 #[cfg(target_os = "macos")]
-use avf::Player;
+use avf as platform;
+#[cfg(target_os = "linux")]
+use gst as platform;
 #[cfg(target_os = "windows")]
-mod none;
-#[cfg(target_os = "windows")]
-use none::Player;
+use mf as platform;
+use platform::Player;
 
 use std::{sync::Arc, time::Instant};
 
@@ -137,7 +140,7 @@ fn open(source: &Source, fit: Fit, generation: u32, cx: &mut App) -> Result<Play
         Source::Official(bytes) => (bytes, "official"),
     };
     let (send, mut events) = futures::channel::mpsc::unbounded();
-    let player = Player::open(bytes, fit, move |event| {
+    let player = platform::open(bytes, fit, move |event| {
         let _ = send.unbounded_send(event);
     })
     .with_context(|| format!("{kind} wallpaper video"))?;

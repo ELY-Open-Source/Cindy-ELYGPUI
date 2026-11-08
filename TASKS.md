@@ -149,7 +149,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     video element, so each platform decodes with its own system media framework:
     - [x] 6.9e3a The playback and its layer, decoded on Linux with GStreamer
     - [x] 6.9e3b Decoded on macOS with AVFoundation
-    - [ ] 6.9e3c Decoded on Windows with Media Foundation
+    - [x] 6.9e3c Decoded on Windows with Media Foundation
 
 ## 7. Mock mode
 

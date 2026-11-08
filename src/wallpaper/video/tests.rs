@@ -61,14 +61,13 @@ fn a_dropped_players_frames_are_ignored(cx: &mut gpui::TestAppContext) {
     });
 }
 
-#[cfg(any(target_os = "linux", target_os = "macos"))]
 fn first_event(bytes: &[u8]) -> Event {
     let (send, events) = std::sync::mpsc::channel();
     let fit = Fit {
         target: (32, 20),
         sigma: 0.0,
     };
-    let player = super::Player::open(bytes, fit, move |event| {
+    let player = super::platform::open(bytes, fit, move |event| {
         let _ = send.send(event);
     })
     .unwrap();
@@ -80,7 +79,6 @@ fn first_event(bytes: &[u8]) -> Event {
     event
 }
 
-#[cfg(any(target_os = "linux", target_os = "macos"))]
 #[test]
 fn the_decoder_plays_the_bytes_that_were_checked() {
     let fixture = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/fixtures/video/tiny.mp4");
