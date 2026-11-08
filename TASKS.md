@@ -130,9 +130,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
 - [ ] 6.8 Routes: chat and settings with back and forward history; the title bar's menu button
-  (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets; settings takes over the window,
-  hiding the sidebar and non-chat panels and unregistering edge groups without changing the tree,
-  and restores them on exit
+  (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets;
+  settings takes over the window, hiding the sidebar and non-chat panels and unregistering edge
+  groups without changing the tree, and restores them on exit
 - [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
   from `appearance-settings.json`; the window material per family as
   `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
