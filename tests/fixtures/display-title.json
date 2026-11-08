@@ -1,0 +1,1682 @@
+[
+ [
+  "New Maker",
+  "desktop",
+  null,
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "desktop",
+  "/repo",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "desktop",
+  "/x/worktrees/a_b",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "scheduler",
+  null,
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "scheduler",
+  "/repo",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "cindy-make",
+  null,
+  "Cindy Make personal build"
+ ],
+ [
+  "New Maker",
+  "cindy-make",
+  "/repo",
+  "Cindy Make personal build"
+ ],
+ [
+  "New Maker",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Cindy Make personal build"
+ ],
+ [
+  "New Maker",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Cindy Make personal build"
+ ],
+ [
+  "New Maker",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "Cindy Make personal build"
+ ],
+ [
+  "New Maker",
+  "cindy-make-merge",
+  null,
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "cindy-make-merge",
+  "/repo",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Untitled session"
+ ],
+ [
+  "New Maker",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "Untitled session"
+ ],
+ [
+  "new maker",
+  "desktop",
+  null,
+  "new maker"
+ ],
+ [
+  "new maker",
+  "desktop",
+  "/repo",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "desktop",
+  "/x/worktrees/a_b",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "scheduler",
+  null,
+  "new maker"
+ ],
+ [
+  "new maker",
+  "scheduler",
+  "/repo",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make",
+  null,
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make",
+  "/repo",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make-merge",
+  null,
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make-merge",
+  "/repo",
+  "new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] new maker"
+ ],
+ [
+  "new maker",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "new maker"
+ ],
+ [
+  "[Schedule] nightly",
+  "desktop",
+  null,
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "desktop",
+  "/repo",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "desktop",
+  "/x/worktrees/a_b",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "scheduler",
+  null,
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "scheduler",
+  "/repo",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make",
+  null,
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make",
+  "/repo",
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] [Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] [Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make-merge",
+  null,
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make-merge",
+  "/repo",
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] [Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] [Schedule] nightly"
+ ],
+ [
+  "[Schedule] nightly",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "[Schedule] nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "desktop",
+  null,
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "desktop",
+  "/repo",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "scheduler",
+  null,
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "scheduler",
+  "/repo",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make",
+  null,
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make",
+  "/repo",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] [Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] [Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make-merge",
+  null,
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make-merge",
+  "/repo",
+  "[Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] [Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] [Schedule]nightly"
+ ],
+ [
+  "[Schedule]nightly",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "[Schedule]nightly"
+ ],
+ [
+  "Fix login",
+  "desktop",
+  null,
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "desktop",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "desktop",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "scheduler",
+  null,
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "scheduler",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make",
+  null,
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make-merge",
+  null,
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make-merge",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "Fix login",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "desktop",
+  null,
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "desktop",
+  "/repo",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "scheduler",
+  null,
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "scheduler",
+  "/repo",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[Cindy Make] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make",
+  null,
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make-merge",
+  null,
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make-merge",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[Cindy Make] Fix login",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "desktop",
+  null,
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "desktop",
+  "/repo",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "scheduler",
+  null,
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "scheduler",
+  "/repo",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[cindy-make]   Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make",
+  null,
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make-merge",
+  null,
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make-merge",
+  "/repo",
+  "Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[cindy-make]   Fix login",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "desktop",
+  null,
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "desktop",
+  "/repo",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "scheduler",
+  null,
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "scheduler",
+  "/repo",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make",
+  null,
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make",
+  "/repo",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make-merge",
+  null,
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make-merge",
+  "/repo",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12] Fix login",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "[ab12] Fix login"
+ ],
+ [
+  "[ab12]",
+  "desktop",
+  null,
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "desktop",
+  "/repo",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "scheduler",
+  null,
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "scheduler",
+  "/repo",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make",
+  null,
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make",
+  "/repo",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make-merge",
+  null,
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make-merge",
+  "/repo",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12]"
+ ],
+ [
+  "[ab12]",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "[ab12]"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "desktop",
+  null,
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "desktop",
+  "/repo",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "desktop",
+  "/x/worktrees/a_b",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "scheduler",
+  null,
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "scheduler",
+  "/repo",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make",
+  null,
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make",
+  "/repo",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make-merge",
+  null,
+  "03-04 05:06 Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make-merge",
+  "/repo",
+  "03-04 05:06 Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 03-04 05:06 Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 03-04 05:06 Resolve Integration Conflicts"
+ ],
+ [
+  "Resolve Integration Conflicts",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "03-04 05:06 Resolve Integration Conflicts"
+ ],
+ [
+  "处理源码更新冲突",
+  "desktop",
+  null,
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "desktop",
+  "/repo",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "desktop",
+  "/x/worktrees/a_b",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "scheduler",
+  null,
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "scheduler",
+  "/repo",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make",
+  null,
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make",
+  "/repo",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "处理源码更新冲突"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make-merge",
+  null,
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make-merge",
+  "/repo",
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "处理源码更新冲突",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "desktop",
+  null,
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "desktop",
+  "/repo",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "scheduler",
+  null,
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "scheduler",
+  "/repo",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[Cindy-Make] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make",
+  null,
+  "処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make",
+  "/repo",
+  "処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make-merge",
+  null,
+  "処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make-merge",
+  "/repo",
+  "処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 処理"
+ ],
+ [
+  "[Cindy-Make] 処理",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "処理"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "desktop",
+  null,
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "desktop",
+  "/repo",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "desktop",
+  "/x/worktrees/a_b",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "scheduler",
+  null,
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "scheduler",
+  "/repo",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make",
+  null,
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make",
+  "/repo",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "cindyMake.merge.taskTitle"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make-merge",
+  null,
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make-merge",
+  "/repo",
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "cindyMake.merge.taskTitle",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "desktop",
+  null,
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "desktop",
+  "/repo",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "desktop",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "desktop",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "desktop",
+  "/x/worktrees/a_b",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "scheduler",
+  null,
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "scheduler",
+  "/repo",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "scheduler",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "scheduler",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "scheduler",
+  "/x/worktrees/a_b",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make",
+  null,
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make",
+  "/repo",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make",
+  "/x/worktrees/a_b",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make-merge",
+  null,
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make-merge",
+  "/repo",
+  "[ab12] Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make-merge",
+  "/home/u/.cindy/worktrees/ab12cd34",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make-merge",
+  "C:\\x\\Merge-Worktrees\\ab12-z\\",
+  "[ab12] 03-04 05:06 Resolve Source Update Conflicts"
+ ],
+ [
+  "[ab12] Resolve Source Update Conflicts",
+  "cindy-make-merge",
+  "/x/worktrees/a_b",
+  "[ab12] Resolve Source Update Conflicts"
+ ]
+]

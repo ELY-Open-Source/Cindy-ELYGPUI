@@ -39,8 +39,11 @@ try {
     "export * as projectGrouping from './renderer/features/cc-agent/lib/projectGrouping';",
     "export * as mainListModel from './renderer/features/cc-agent/lib/mainListModel';",
     "export * as visibility from './renderer/features/cc-agent/lib/sidebarProjectVisibility';",
+    "export * as usage from './renderer/lib/usageFormat';",
+    "export { formatCompactTokens } from '@cindy/maker-shared/usage-format';",
     "export * as pinnedOrder from './renderer/features/cc-agent/lib/pinnedSidebarOrder';",
     "export * as sourceLabel from './renderer/features/cc-agent/lib/sessionSourceLabel';",
+    "export { getSessionDisplayTitle } from './renderer/features/cc-agent/lib/sessionDisplayTitle';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({
@@ -49,7 +52,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer') },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -237,6 +240,30 @@ try {
       entries: entries.map(shown),
     };
   }));
+
+  // SessionInfoMeta's token and money text.
+  const tokens = [0, 999, 1000, 1049, 1050, 999_949, 999_950, 1_234_567, 999_950_000, 2e12];
+  const amounts = [0.004, 0.125, 1.005, 9.995, 10, 12.5, 999.5, 1000, 12_345.6];
+  write(path.join(fixtures, 'meta.json'), {
+    tokens: tokens.map((n) => [n, formatCompactTokens(n)]),
+    money: ['USD', 'CNY'].flatMap((currency) =>
+      amounts.map((amount) => [currency, amount, usage.formatMoney({ amount, currency, approximate: false, kind: 'actual-cost' })])),
+  });
+
+  // SessionItem's display title, with English text and UTC times.
+  process.env.TZ = 'UTC';
+  const en = JSON.parse(fs.readFileSync(path.join(tmp, src, 'renderer/i18n/locales/en/common.json'), 'utf8'));
+  const english = (key) => key.split('.').reduce((node, part) => node?.[part], en);
+  const titles = ['New Maker', 'new maker', '[Schedule] nightly', '[Schedule]nightly', 'Fix login', '[Cindy Make] Fix login',
+    '[cindy-make]   Fix login', '[ab12] Fix login', '[ab12]', 'Resolve Integration Conflicts', '处理源码更新冲突',
+    '[Cindy-Make] 処理', 'cindyMake.merge.taskTitle', '[ab12] Resolve Source Update Conflicts'];
+  const sources = ['desktop', 'scheduler', 'cindy-make', 'cindy-make-merge'];
+  const dirs = [null, '/repo', '/home/u/.cindy/worktrees/ab12cd34', 'C:\\x\\Merge-Worktrees\\ab12-z\\', '/x/worktrees/a_b'];
+  write(path.join(fixtures, 'display-title.json'), titles.flatMap((title) => sources.flatMap((source) => dirs.map((workingDir) => {
+    const session = { title, source, workingDir, createdAt: '2026-03-04T05:06:07.000Z' };
+    const unnamed = english(source === 'cindy-make' ? 'cindyMake.code.taskName' : 'ccAgent.common.unnamedSession');
+    return [title, source, workingDir, getSessionDisplayTitle(session, unnamed, english)];
+  }))));
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

@@ -5,7 +5,7 @@
 
 mod catalogs;
 
-use std::{cell::RefCell, collections::HashSet};
+use std::{cell::RefCell, collections::HashSet, sync::OnceLock};
 
 use anyhow::{Context as _, Result, bail};
 use icu_decimal::{DecimalFormatter, input::Decimal};
@@ -218,6 +218,41 @@ impl Translator {
 }
 
 impl gpui::Global for Translator {}
+
+/// The keys of Cindy's `crossLocaleStrings.generated.json` the port reads.
+const CROSS_LOCALE_KEYS: [&str; 3] = [
+    "cindyMake.merge.taskTitle",
+    "cindyMake.history.mergeTaskTitle",
+    "cindyMake.history.revertTaskTitle",
+];
+
+/// `getCrossLocaleString` over every locale: the texts each catalog holds for `key`.
+pub fn cross_locale(key: &str) -> &'static [String] {
+    static TABLE: OnceLock<Vec<(&str, Vec<String>)>> = OnceLock::new();
+    let table = TABLE.get_or_init(|| {
+        let catalogs: Vec<Value> = CATALOGS
+            .iter()
+            .map(|(tag, common, _)| {
+                serde_json::from_str(common).unwrap_or_else(|e| panic!("{tag}/common.json: {e}"))
+            })
+            .collect();
+        CROSS_LOCALE_KEYS
+            .iter()
+            .map(|k| {
+                let texts = catalogs
+                    .iter()
+                    .filter_map(|root| Some(walk(root, k)?.as_str()?.to_owned()))
+                    .collect();
+                (*k, texts)
+            })
+            .collect()
+    });
+    table
+        .iter()
+        .find(|(k, _)| *k == key)
+        .map(|(_, texts)| texts.as_slice())
+        .unwrap_or_else(|| panic!("{key} is not in the cross-locale table"))
+}
 
 #[cfg(test)]
 mod tests;

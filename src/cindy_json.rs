@@ -231,6 +231,41 @@ pub fn js_string(value: Option<&Value>) -> String {
     }
 }
 
+/// `Number.prototype.toFixed`: a tie rounds away from zero.
+pub fn js_to_fixed(n: f64, digits: usize) -> String {
+    if !n.is_finite() || n.abs() >= 1e21 {
+        return js_number(n);
+    }
+    // The f64's exact decimal expansion, so only a true tie rounds up.
+    let exact = format!("{:.1100}", n.abs());
+    let (int, frac) = exact.split_once('.').expect("a precision prints a point");
+    let mut kept: Vec<u8> = format!("{int}{}", &frac[..digits]).into_bytes();
+    if frac.as_bytes()[digits] >= b'5' {
+        let mut i = kept.len();
+        loop {
+            if i == 0 {
+                kept.insert(0, b'1');
+                break;
+            }
+            i -= 1;
+            if kept[i] == b'9' {
+                kept[i] = b'0';
+            } else {
+                kept[i] += 1;
+                break;
+            }
+        }
+    }
+    let text = String::from_utf8(kept).expect("digits are ASCII");
+    let (int, frac) = text.split_at(text.len() - digits);
+    let body = if digits == 0 {
+        int.to_owned()
+    } else {
+        format!("{int}.{frac}")
+    };
+    if n < 0.0 { format!("-{body}") } else { body }
+}
+
 /// `String(value)` of a `JSON.parse`d value, numbers past f64 included.
 pub fn js_string_raw(raw: &RawValue) -> Result<String> {
     let text = raw.get();
@@ -254,6 +289,31 @@ mod tests {
     use serde_json::json;
 
     use super::{boolean, js_number, js_string, number, object, roundtrip, truthy};
+
+    #[test]
+    fn fixes_decimals_as_javascript_does() {
+        use super::js_to_fixed;
+        let cases = [
+            (0.125, 2, "0.13"),
+            (2.5, 0, "3"),
+            (1.005, 2, "1.00"),
+            (9.995, 2, "9.99"),
+            (999.95, 1, "1000.0"),
+            (0.0, 2, "0.00"),
+            (99.996, 2, "100.00"),
+            (-0.004, 2, "-0.00"),
+            (-0.1, 0, "-0"),
+            (-0.0, 2, "0.00"),
+            (-1.005, 2, "-1.00"),
+            (f64::INFINITY, 1, "Infinity"),
+            (f64::NEG_INFINITY, 1, "-Infinity"),
+            (f64::NAN, 2, "NaN"),
+            (1e21, 2, "1e+21"),
+        ];
+        for (n, d, want) in cases {
+            assert_eq!(js_to_fixed(n, d), want, "{n}");
+        }
+    }
 
     #[test]
     fn writes_numbers_and_strings_as_javascript_does() {

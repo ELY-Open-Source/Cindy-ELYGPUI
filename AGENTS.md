@@ -31,7 +31,9 @@ defines scope and what 1:1 means.
   single-flight. `lists.rs` builds both lists from one bucket as `CCAgentSidebarUpper.tsx` does:
   `pinned.rs` draws the Pinned section, `main_list.rs` the main list in `project` or `flat` mode,
   from `group.rs` (`groupSessions`, `buildMainListEntries`) and `paths.rs` (project keys). All of it
-  is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row.
+  is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row,
+  with `title.rs` (`getSessionDisplayTitle`, golden `display-title.json`) and `meta.rs`
+  (`SessionInfoMeta`, golden `meta.json`; task info read once, as Cindy caches it).
   `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
   the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
   choice, and lacks some lucide icons; the nearest Ely icon stands in.

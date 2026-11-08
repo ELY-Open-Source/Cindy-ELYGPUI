@@ -35,6 +35,8 @@ fn open_with_host(cx: &mut TestAppContext) -> (Entity<Host>, &mut VisualTestCont
         cx.set_global(crate::units::Zoom(1.0));
         cx.set_global(crate::window_material::Material::load());
         crate::wallpaper::none_for_tests(cx);
+        let dir = tempfile::tempdir().unwrap();
+        cx.set_global(crate::preferences::Preferences::load(dir.path()).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());

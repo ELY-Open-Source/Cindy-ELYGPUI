@@ -12,7 +12,7 @@ const PROJECT_ENTRY: &str = "project:";
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Pinned {
-    Session(Session),
+    Session(Box<Session>),
     /// The project with its tasks not pinned on their own.
     Project(Project),
 }
@@ -154,7 +154,11 @@ pub fn build(
         })
         .collect();
     let labels = labels(&plain.pinned, &known, dialogues_label);
-    let mut pinned: Vec<Pinned> = plain.pinned.into_iter().map(Pinned::Session).collect();
+    let mut pinned: Vec<Pinned> = plain
+        .pinned
+        .into_iter()
+        .map(|s| Pinned::Session(Box::new(s)))
+        .collect();
     pinned.extend(pinned_side);
     if !settings.pinned_order.is_empty() {
         let mut rank: HashMap<String, usize> = HashMap::new();

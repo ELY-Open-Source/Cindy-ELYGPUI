@@ -23,6 +23,7 @@ image = { version = "0.25.10", default-features = false, features = ["webp"] }
 jiff = "0.2"
 log = "0.4"
 notify = "8.2.1"
+regex = "1"
 rusqlite = { version = "0.41.1", features = ["bundled", "functions"] }
 raw-window-handle = { version = "0.6.2", features = ["std"] }
 serde = { version = "1", features = ["derive"] }
@@ -35,7 +36,6 @@ uuid = { version = "1.29.1", features = ["v4"] }
 [dev-dependencies]
 ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components", rev = "e0f355ac1a669c24336244bcaa8131f7f0e4f1b5", features = ["test-support"] }
 gpui = { package = "gpui-pre", version = "=0.3.11", features = ["test-support"] }
-regex = "1"
 tempfile = "3"
 
 [target.'cfg(target_os = "macos")'.dependencies]

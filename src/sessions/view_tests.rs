@@ -37,6 +37,11 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
         messages: 1,
         created_at: activity,
         agent_kind: "cc".into(),
+        orca_lead: false,
+        tokens: 0,
+        cost_usd: 0.0,
+        cost_amount: 0.0,
+        cost_currency: None,
         activity_at: activity,
     }
 }
@@ -56,11 +61,11 @@ fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext
         ely_gpui_component::init_for_tests(cx);
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
+        cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
-        cx.set_global(Preferences::load(dir).unwrap());
         cx.global_mut::<Sessions>().loaded = Some(Loaded {
             sessions,
             recent: Vec::new(),
@@ -299,5 +304,35 @@ fn the_scope_header_stands_before_the_list_loads(cx: &mut TestAppContext) {
     assert_eq!(
         saved.text("cc-agent.sidebar.filter.groupDialogue").unwrap(),
         Some("false")
+    );
+}
+
+#[gpui::test]
+fn task_info_follows_the_menu(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        let s = &mut cx
+            .global_mut::<Sessions>()
+            .loaded
+            .as_mut()
+            .unwrap()
+            .sessions[0];
+        (s.tokens, s.cost_usd) = (1_500, 0.5);
+    });
+    let has = |cx: &mut VisualTestContext, field: &str| {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        cx.debug_bounds(Box::leak(format!("task-{field}-a0").into_boxed_str()))
+            .is_some()
+    };
+    assert!(has(cx, "time") && !has(cx, "tokens"));
+    pick(cx, &["Session info", "Tokens"]);
+    pick(cx, &["Session info", "Time"]);
+    assert!(has(cx, "tokens") && !has(cx, "time"));
+    let saved = Preferences::load(dir.path()).unwrap();
+    assert_eq!(
+        saved.text(super::meta::TASK_INFO).unwrap(),
+        Some(r#"{"version":1,"fields":["tokens"]}"#)
     );
 }

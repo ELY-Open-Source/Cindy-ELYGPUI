@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{filter::Filter, fold, group, query, row, settings, sweep};
+use super::{filter::Filter, fold, group, meta, query, row, settings, sweep};
 
 /// The columns of Cindy's schema this chapter reads.
 fn db() -> Connection {
@@ -11,7 +11,8 @@ fn db() -> Connection {
            pinned_at integer, hidden_at integer, user_send_at integer, last_activity_at integer,
            created_at integer NOT NULL, updated_at integer NOT NULL, workspace_kind text DEFAULT 'project',
            working_dir text, project_dir text, remote_host_id text, list_message_count integer,
-           agent_kind text NOT NULL DEFAULT 'cc', orca_role text);
+           agent_kind text NOT NULL DEFAULT 'cc', orca_role text, total_token_usage integer NOT NULL DEFAULT 0,
+           total_cost_usd real NOT NULL DEFAULT 0, total_cost_amount real NOT NULL DEFAULT 0, total_cost_currency text);
          CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
@@ -330,4 +331,75 @@ fn reads_the_filter_as_use_sidebar_filter_loads_it() {
         (plain.cutoff(1), plain.active_count(), set.active_count()),
         (None, 0, 2)
     );
+}
+
+#[test]
+fn formats_tokens_and_money_as_cindy_does() {
+    let path = format!("{}/tests/fixtures/meta.json", env!("CARGO_MANIFEST_DIR"));
+    let golden: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
+    for case in golden["tokens"].as_array().unwrap() {
+        let n = case[0].as_f64().unwrap() as i64;
+        assert_eq!(meta::compact_tokens(n), case[1], "{n}");
+    }
+    for case in golden["money"].as_array().unwrap() {
+        let (currency, amount) = (case[0].as_str().unwrap(), case[1].as_f64().unwrap());
+        assert_eq!(
+            meta::format_money((currency, amount)),
+            case[2],
+            "{currency} {amount}"
+        );
+    }
+}
+
+#[test]
+fn joins_money_as_session_to_camel_does() {
+    let db = db();
+    add(&db, "s", "desktop", "active", 1);
+    let mut s = query::list(&db, query::Status::Active).unwrap().remove(0);
+    let at = |s: &group::Session| meta::money(s);
+    assert_eq!(at(&s), None, "nothing spent");
+    s.cost_usd = 2.0;
+    assert_eq!(at(&s), Some(("USD", 2.0)), "legacy only");
+    (s.cost_amount, s.cost_currency) = (3.0, Some("USD".into()));
+    assert_eq!(at(&s), Some(("USD", 5.0)), "both USD add up");
+    s.cost_currency = Some("CNY".into());
+    assert_eq!(at(&s), Some(("CNY", 3.0)), "another currency wins");
+    s.cost_currency = Some("EUR".into());
+    assert_eq!(at(&s), Some(("USD", 2.0)), "an unknown currency is dropped");
+    (s.cost_amount, s.cost_currency) = (f64::INFINITY, Some("CNY".into()));
+    assert_eq!(at(&s), Some(("USD", 2.0)), "an infinite amount is dropped");
+    (s.cost_usd, s.cost_amount, s.cost_currency) = (1e308, 1e308, Some("USD".into()));
+    let sum = at(&s).unwrap();
+    assert_eq!(meta::format_money(sum), "$Infinityk", "the sum overflows");
+}
+
+#[test]
+fn reads_task_info_as_load_task_info_fields_does() {
+    let dir = tempfile::tempdir().unwrap();
+    let file = dir.path().join(crate::preferences::FILE);
+    let read = |raw: Option<&str>| {
+        let prefs = match raw {
+            Some(raw) => serde_json::json!({ meta::TASK_INFO: raw }).to_string(),
+            None => "{}".into(),
+        };
+        std::fs::write(&file, prefs).unwrap();
+        meta::fields(&crate::preferences::Preferences::load(dir.path()).unwrap())
+    };
+    assert_eq!(read(None), ["time"]);
+    assert_eq!(
+        read(Some(r#"["cost","tags","time","cost",1]"#)),
+        ["cost", "time"],
+        "legacy array"
+    );
+    assert_eq!(
+        read(Some(r#"{"version":1,"fields":["tokens"]}"#)),
+        ["tokens"]
+    );
+    assert!(
+        read(Some(r#"{"version":1,"fields":[]}"#)).is_empty(),
+        "none is allowed"
+    );
+    assert_eq!(read(Some(r#"{"version":2,"fields":[]}"#)), ["time"]);
+    assert_eq!(read(Some("{")), ["time"]);
 }

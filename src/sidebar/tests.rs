@@ -45,13 +45,13 @@ fn open<'a>(
         cx.set_global(crate::units::Zoom(1.0));
         cx.set_global(crate::window_material::Material::load());
         crate::wallpaper::none_for_tests(cx);
+        cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
         cx.set_global(crate::toast::Toasts::default());
         cx.set_global(LayoutStore::open(dir));
-        cx.set_global(Preferences::load(dir).unwrap());
     });
     let (row, vcx) = cx.add_window_view(|_, cx| {
         let sidebar = cx.new(Sidebar::new);

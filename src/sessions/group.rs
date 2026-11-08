@@ -21,6 +21,12 @@ pub struct Session {
     pub messages: i64,
     pub created_at: i64,
     pub agent_kind: String,
+    pub orca_lead: bool,
+    pub tokens: i64,
+    /// `total_cost_usd`, the legacy USD total.
+    pub cost_usd: f64,
+    pub cost_amount: f64,
+    pub cost_currency: Option<String>,
     /// `getSessionListActivityAt`, in ms.
     pub activity_at: i64,
 }
@@ -45,7 +51,7 @@ pub struct Recent {
 pub enum Entry {
     Project(Project),
     Dialogues(Vec<Session>),
-    Loose(Session),
+    Loose(Box<Session>),
 }
 
 /// `FilterGroupBy`, `FilterSortBy`, `FilterProjectOrder` and the dialogue switch.
@@ -333,7 +339,7 @@ pub fn entries(
         let (grouped, rest): (Vec<Session>, Vec<Session>) = for_main_list(all, order.created)
             .into_iter()
             .partition(|s| order.group_dialogue && ids.contains(&s.id));
-        out.extend(rest.into_iter().map(Entry::Loose));
+        out.extend(rest.into_iter().map(|s| Entry::Loose(Box::new(s))));
         if !grouped.is_empty() {
             out.push(Entry::Dialogues(for_main_list(grouped, order.created)));
         }
@@ -353,13 +359,13 @@ pub fn entries(
         out.extend(
             for_main_list(dialogues, order.created)
                 .into_iter()
-                .map(Entry::Loose),
+                .map(|s| Entry::Loose(Box::new(s))),
         );
     }
     out.extend(
         for_main_list(loose, order.created)
             .into_iter()
-            .map(Entry::Loose),
+            .map(|s| Entry::Loose(Box::new(s))),
     );
     rank(out, order)
 }
@@ -368,7 +374,7 @@ pub fn entry_sessions(entry: &Entry) -> &[Session] {
     match entry {
         Entry::Project(p) => &p.sessions,
         Entry::Dialogues(list) => list,
-        Entry::Loose(s) => std::slice::from_ref(s),
+        Entry::Loose(s) => std::slice::from_ref(&**s),
     }
 }
 

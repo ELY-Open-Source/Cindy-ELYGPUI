@@ -29,6 +29,7 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(crate::window_material::Material::load());
         let wallpaper = crate::appearance_settings::read(dir).wallpaper;
         crate::wallpaper::Wallpaper::install(wallpaper, dir, cx);
+        cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
@@ -36,7 +37,6 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(Toasts::default());
         cx.set_global(LayoutStore::open(dir));
         cx.set_global(AppShortcuts::load(dir));
-        cx.set_global(Preferences::load(dir).unwrap());
         let activation = super::Activation {
             mac_setting: false,
             windows_setting: false,

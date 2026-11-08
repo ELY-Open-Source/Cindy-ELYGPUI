@@ -1,14 +1,18 @@
 //! A task row as `SessionItem.tsx` draws it in text mode.
 
+use std::sync::Arc;
+
+use ely_gpui_component::primitives::IconName;
 use gpui::{
-    App, InteractiveElement as _, ParentElement, StatefulInteractiveElement as _, Styled, div,
-    prelude::FluentBuilder as _,
+    AnyElement, App, FontFeatures, InteractiveElement as _, IntoElement as _, ParentElement,
+    StatefulInteractiveElement as _, Styled, div, prelude::FluentBuilder as _,
 };
 
-use super::group::Session;
+use super::{group::Session, meta, title};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
+    lucide,
     theme::Appearance,
     tip::tip,
     units::css,
@@ -52,8 +56,99 @@ fn absolute(at_ms: i64) -> String {
         .unwrap_or_default()
 }
 
-/// A 32 px pill: the title, the pinned task's source label, the relative time; `indented`
-/// inside a group.
+/// `SessionStatusIcon` at rest: the archive box, the Orca lead's people, else the harness mark;
+/// running, attention and drafts come with the agent runtime (10.0).
+fn status_icon(s: &Session, cx: &App) -> AnyElement {
+    let appearance = cx.global::<Appearance>();
+    let meta = appearance.token("cmd-palette-item-meta");
+    let icon = if s.status == "archived" {
+        lucide::icon(IconName::Archive.svg(), 12.0, 1.75)
+            .text_color(meta)
+            .into_any_element()
+    } else if s.orca_lead {
+        lucide::icon(lucide::users_round().as_bytes(), 13.0, 1.75)
+            .text_color(meta)
+            .into_any_element()
+    } else {
+        // `VendorIcon`: Claude Code at 13 px, Codex and Pi at 12.
+        let muted = appearance.hsl_token("sidebar-muted");
+        match s.agent_kind.as_str() {
+            "codex" => lucide::mark(&lucide::codex_mark(12.0), 12.0)
+                .text_color(muted)
+                .into_any_element(),
+            "pi" => div()
+                .flex()
+                .size(css(12.0))
+                .items_center()
+                .justify_center()
+                .text_size(css(12.0 * 0.86))
+                .line_height(css(12.0))
+                .font_weight(gpui::FontWeight::SEMIBOLD)
+                .text_color(muted)
+                .child("π")
+                .into_any_element(),
+            _ => lucide::mark(&lucide::claude_mark(), 13.0)
+                .text_color(muted)
+                .into_any_element(),
+        }
+    };
+    div()
+        .flex()
+        .flex_none()
+        .w(css(15.0))
+        .items_center()
+        .justify_center()
+        .child(icon)
+        .into_any_element()
+}
+
+/// `SessionInfoMeta`: the ticked fields, `·` between them, in `text-sidebar-action-icon`.
+fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
+    let translator = cx.global::<Translator>();
+    let t = |key: &str, count: i64| translator.t(key, &[("count", Arg::Number(count))]);
+    let fields = cx.global::<super::Sessions>().task_info.clone();
+    let pieces = meta::pieces(
+        s,
+        &fields,
+        |at| (relative(at, now, &t), absolute(at)),
+        |key| translator.t(key, &[]),
+    );
+    if pieces.is_empty() {
+        return None;
+    }
+    let size = text_size(12.0, cx);
+    let children = pieces.into_iter().enumerate().map(|(i, piece)| {
+        let selector = format!("task-{}-{}", piece.field, s.id);
+        div()
+            .id(gpui::SharedString::from(selector.clone()))
+            .debug_selector(move || selector)
+            .flex()
+            .flex_none()
+            .items_center()
+            .gap(css(4.0))
+            .tooltip(tip(piece.tip))
+            .when(i > 0, |el| el.child(div().opacity(0.5).child("·")))
+            .child(piece.text)
+    });
+    Some(
+        div()
+            .flex()
+            .flex_none()
+            .h(css(24.0))
+            .ml_auto()
+            .items_center()
+            .gap(css(4.0))
+            .text_size(css(size))
+            .font_weight(gpui::FontWeight::MEDIUM)
+            .font_features(FontFeatures(Arc::new(vec![("tnum".into(), 1)])))
+            .text_color(cx.global::<Appearance>().hsl_token("sidebar-action-icon"))
+            .children(children)
+            .into_any_element(),
+    )
+}
+
+/// A 32 px pill: the status icon, the title, a pinned task's source label, the info slot;
+/// `indented` inside a group.
 pub(super) fn row(
     row: &Session,
     indented: bool,
@@ -62,18 +157,8 @@ pub(super) fn row(
     cx: &App,
 ) -> gpui::Stateful<gpui::Div> {
     let appearance = cx.global::<Appearance>();
-    let translator = cx.global::<Translator>();
-    let t = |key: &str, count: i64| translator.t(key, &[("count", Arg::Number(count))]);
-    let (title_size, time_size) = (text_size(14.0, cx), text_size(12.0, cx));
+    let (title_size, label_size) = (text_size(14.0, cx), text_size(12.0, cx));
     let meta = appearance.token("cmd-palette-item-meta");
-    let time = div()
-        .id(gpui::SharedString::from(format!("task-time-{}", row.id)))
-        .flex_none()
-        .ml_auto()
-        .text_size(css(time_size))
-        .text_color(meta)
-        .tooltip(tip(absolute(row.activity_at)))
-        .child(relative(row.activity_at, now, &t));
     let title = div()
         .flex()
         .min_w_0()
@@ -86,14 +171,14 @@ pub(super) fn row(
                 .max_w_full()
                 .flex_shrink(1.0)
                 .truncate()
-                .child(row.title.clone()),
+                .child(title::display(row, cx.global::<Translator>())),
         )
         .when_some(label, |el, label| {
             el.child(
                 div()
                     .min_w_0()
                     .truncate()
-                    .text_size(css(time_size))
+                    .text_size(css(label_size))
                     .font_weight(gpui::FontWeight::NORMAL)
                     .text_color(meta)
                     .child(label.to_owned()),
@@ -116,8 +201,9 @@ pub(super) fn row(
         .font_weight(gpui::FontWeight::MEDIUM)
         .text_color(appearance.hsl_token("foreground"))
         .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
+        .child(status_icon(row, cx))
         .child(title)
-        .child(time)
+        .children(info(row, now, cx))
 }
 
 pub(super) const ROW_HEIGHT: f32 = 32.0;

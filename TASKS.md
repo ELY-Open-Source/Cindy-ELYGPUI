@@ -1,7 +1,7 @@
 # Tasks
 
 Progress truth, in `docs/PRD.md` chapter order. A task is ticked after review passes, then committed
-and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
+and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 ## 1. Foundation
 
@@ -240,11 +240,19 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     `Menu`, so rows carry no value summary or tip and a choice closes the menu; the machine
     switcher and host project orders land with chapter 19, the project and creator filters and
     the fold-all button with 13.0's owner-scoped storage, the display mode and task info with 8.5
-- [ ] 8.5 A session row as `SessionItem.tsx` and `SessionInfoMeta` show it (status icon and
-  attention dot, title, the chosen meta fields, hover archive) and the card as `SessionCard.tsx`;
-  rename by double click, archive (which unpins), delete (soft, `status = deleted`), pin and the
-  `SessionTaskMenu`, written as `sessionService.ts` patches them; with the card, the preview
-  (`sessionToCamel`, `markdownPreviewText`) and message count of `projectSessionReadResult`
+- A session row, its actions and its card, as the sidebar shows them:
+  - [x] 8.5a The row as `SessionItem.tsx` and `SessionInfoMeta` draw it in text mode: the
+    status icon at rest (`SessionStatusIcon`: archive box, Orca lead, harness mark), title, the
+    chosen task info fields (`cc-agent.sidebar.filter.taskInfo`: time, tokens, cost; PR and
+    worktree pieces come with chapter 18), and the task info submenu of the filter menu. The
+    right status (error, awaiting, running, done dots) goes to 10.0: its only database source,
+    a pending interruption, needs the owning host's boot time (`getSessionInterruptionBootAt`)
+  - [ ] 8.5b The actions, written as `sessionService.ts` patches them: rename by double click,
+    archive (which unpins), delete (soft, `status = deleted`), pin, the hover slot (More, the
+    two-step Archive confirm, Undo) and the `SessionTaskMenu`
+  - [ ] 8.5c The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes,
+    the main list's display mode, with the preview (`sessionToCamel`, `markdownPreviewText`) and
+    message count of `projectSessionReadResult`
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
@@ -281,7 +289,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 10. Agent runtime
 
 - [ ] 10.0 Expand from Cindy's code, with the agent and session `ndjson` log streams and the
-  interrupted-task continue from 8.8
+  interrupted-task continue from 8.8, and the task row's running icon, draft pencil and right
+  status (`SidebarRightStatusIndicator`, from 8.5a)
 
 ## 11. Models and providers
 

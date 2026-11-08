@@ -39,6 +39,11 @@ fn session(v: &Value) -> Session {
         messages: v["_count"]["messages"].as_i64().unwrap(),
         created_at: ms(&v["createdAt"]).unwrap_or(0),
         agent_kind: text(&v["agentKind"]).unwrap_or_else(|| "cc".into()),
+        orca_lead: false,
+        tokens: 0,
+        cost_usd: 0.0,
+        cost_amount: 0.0,
+        cost_currency: None,
         activity_at: ms(&v["lastActivityAt"])
             .or(ms(&v["userSendAt"]))
             .or(ms(&v["updatedAt"]))

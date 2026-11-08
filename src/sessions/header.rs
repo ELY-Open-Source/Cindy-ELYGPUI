@@ -14,6 +14,7 @@ use gpui::{
 use super::filter::{
     self, Filter, GROUP_BY, GROUP_DIALOGUE, LAST_ACTIVITY, PROJECT_ORDER, SORT_BY, STATUS, VENDOR,
 };
+use super::meta;
 use crate::{
     appearance_settings::text_size, i18n::Translator, lucide::icon, preferences::Preferences,
     theme::Appearance, tip::tip, units::css,
@@ -115,8 +116,8 @@ fn choose(t: &Translator, key: &'static str, choices: &[Choice], current: &str) 
 }
 
 /// The menu as `SidebarFilterPopover` lays it out, without the project and creator filters
-/// (13.0), the main view mode and task info (8.5).
-pub fn menu(f: &Filter, t: &Translator) -> Menu {
+/// (13.0) and the main view mode (8.5c).
+pub fn menu(f: &Filter, info: &[&'static str], t: &Translator) -> Menu {
     let (flat, group_dialogue) = (f.flat, f.group_dialogue);
     let group_by = Menu::new()
         .item(
@@ -195,6 +196,36 @@ pub fn menu(f: &Filter, t: &Translator) -> Menu {
             MenuItem::submenu(t.t("ccAgent.sidebar.filterHeading", &[]), narrow)
                 .icon(IconName::Filter),
         )
+        .separator()
+        .item(
+            MenuItem::submenu(
+                t.t("ccAgent.sidebar.taskInfoHeading", &[]),
+                task_info(info, t),
+            )
+            .icon(IconName::Info),
+        )
+}
+
+/// `TASK_INFO_OPTIONS`: checks in a fixed order; ticking appends, so the row shows them in
+/// the order they were ticked.
+fn task_info(ticked: &[&'static str], t: &Translator) -> Menu {
+    let glyph = |field| match field {
+        "time" => IconName::Clock,
+        "pr" => IconName::GitPullRequest,
+        "worktree" => IconName::Folder,
+        "tokens" => IconName::Hash,
+        _ => IconName::Wallet,
+    };
+    meta::FIELDS.iter().fold(Menu::new(), |menu, &field| {
+        menu.item(
+            MenuItem::check(
+                t.t(&format!("ccAgent.sidebar.taskInfo.{field}"), &[]),
+                ticked.contains(&field),
+            )
+            .icon(glyph(field))
+            .on_click(move |_, cx| meta::toggle(field, cx)),
+        )
+    })
 }
 
 /// `group/sidebar-header flex h-6 justify-between pl-6`: the scope title, and the settings
@@ -202,7 +233,8 @@ pub fn menu(f: &Filter, t: &Translator) -> Menu {
 pub fn header(window: &mut Window, cx: &mut App) -> AnyElement {
     let f = Filter::read(cx.global::<Preferences>());
     let translator = cx.global::<Translator>();
-    let menu = menu(&f, translator);
+    let info = cx.global::<super::Sessions>().task_info.clone();
+    let menu = menu(&f, &info, translator);
     let (title, label) = (
         translator.t("ccAgent.sidebar.allSessions", &[]),
         translator.t("ccAgent.sidebar.organizeSidebar", &[]),

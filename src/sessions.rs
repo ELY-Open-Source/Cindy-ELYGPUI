@@ -7,12 +7,14 @@ mod group;
 mod header;
 mod lists;
 mod main_list;
+mod meta;
 mod paths;
 mod pinned;
 mod query;
 mod row;
 mod settings;
 mod sweep;
+mod title;
 
 use std::{
     collections::{HashMap, HashSet},
@@ -43,6 +45,8 @@ pub struct Sessions {
     folds: HashMap<String, crate::motion::Tween>,
     show_all: HashSet<String>,
     show_all_entries: bool,
+    /// `useTaskInfoFields`' memory copy.
+    task_info: Vec<&'static str>,
     loading: bool,
     dirty: bool,
     /// The database handle the sweep has run for; a new open sweeps again.
@@ -63,6 +67,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         folds: HashMap::new(),
         show_all: HashSet::new(),
         show_all_entries: false,
+        task_info: meta::fields(cx.global::<crate::preferences::Preferences>()),
         loading: false,
         dirty: false,
         swept_for: None,

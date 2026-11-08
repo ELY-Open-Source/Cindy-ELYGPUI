@@ -300,3 +300,9 @@ effort high, in a Herdr pane.
 
 - Round 1: FAIL. The scope header waited for the first load. Fixed: it always draws; regression with nothing loaded.
 - Round 2: PASS.
+
+## 8.5a Task row
+
+- Round 1: FAIL. toFixed panicked on an overflowed cost and dropped the sign of negatives; the
+  row skipped `getSessionDisplayTitle`; task info read failures went unlogged.
+- Round 2: PASS.
