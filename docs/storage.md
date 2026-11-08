@@ -15,8 +15,9 @@ Cindy paths are at the PRD's reference commit.
 
 ## SQLite: `cindy-<userId>.db`
 
-Owner: `apps/desktop/src/main/localDb/`. One file per signed-in account, so it opens after sign-in
-(chapter 13). Port these files whole, not a summary of them:
+Owner: `apps/desktop/src/main/localDb/`. One file per data owner: `cindy-local-v1.db` for the
+account-free owner opens in chapter 8, `cindy-<userId>.db` after sign-in in chapter 13. Port these
+files whole, not a summary of them:
 
 1. Reader lease: `localDb/schemaMigrationLease.ts`, including `withLeaseTransition`'s per-database
    transition gate and its stale and corrupt lock recovery. Hold it until the database closes.

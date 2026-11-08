@@ -62,6 +62,9 @@ read from Cindy's code and rule docs for that area.
 
 ## Known risks
 
+- No database of its own. The port never runs Cindy's migrations (`docs/storage.md`), so it reads
+  and writes only a `cindy-<owner>.db` that Cindy created at the reference commit's schema. A
+  profile Cindy never opened has no database, and the port says so instead of creating one.
 - Web content. Cindy's browser tab and every `.cindy` plugin panel render web pages in Electron
   webviews. GPUI has no web view. Chapters 16 and 17 need an embedded one; the choice is made
   before those chapters, with the user.

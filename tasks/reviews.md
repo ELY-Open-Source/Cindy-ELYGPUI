@@ -263,3 +263,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Missing paths with `..` were not folded as `path.resolve` does; the
   official-profile refusal panicked instead of the FATAL line and exit 1.
 - Round 2: PASS.
+
+## 8.0 Sessions plan
+
+- Round 1: FAIL. Missing interrupted-task resume and the provisional sweep; paging lacked the
+  id tie-break; owner key truncation unstated.
+- Round 2: PASS.

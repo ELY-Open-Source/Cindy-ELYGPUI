@@ -178,7 +178,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 8. Sessions
 
-- [ ] 8.0 Expand from Cindy's code, with the title bar's back and forward through the task browse
+- [x] 8.0 Expand from Cindy's code, with the title bar's back and forward through the task browse
   history (`useSessionBrowseHistory`, `SessionHistoryButtons`); the sidebar top nav as
   `SidebarTopNav.tsx` draws it (New, Search, More and its customize view, order and top-level or
   More placement as `sidebarNavigationPrefs.ts` keeps them, rail tiles) and the Pinned and All
@@ -187,7 +187,57 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   with chapter 15, the Plugins row and plugin entries
   with chapter 16, owner-scoped storage (`sidebarOwnerStorage.ts`) with chapter 13; the database
   migration's official shared-profile flag (from 7.1)
-
+  - 8.0 plan, from `localDb/` (`index.ts`, `betterSqliteFactory.ts`, `migrationRunner.ts`,
+    `schemaMigrationLease.ts`, `registerCjkSeg.ts`, `cjkSeg.ts`, `schema.ts`, `sessionQueries.ts`,
+    `ipc/sessions.ts`), `appSessionState.ts`, `sidebarSettingsStore.ts`, `lib/sessionsStore.ts`,
+    `lib/sessionService.ts`, `features/cc-agent/CCAgentSidebarUpper.tsx` and `sidebar/`,
+    `components/sidebar/`, `router.tsx`. The session list's first caller is this chapter, so the
+    database admission and opening move here from 13.0 for the owner that needs no sign-in: the
+    account-free `local-v1` owner of `app-session.json`'s `local` mode (`cindy-local-v1.db`);
+    `cloud` owners (`cindy-<userId>.db`) need chapter 13's account and open with it. The port never
+    runs Cindy's 149 migrations, so a profile without that database file shows why (Cindy creates
+    it) instead of a list
+- [ ] 8.1 The session owner, read only: `app-session.json`'s `activeMode` normalized as
+  `appSessionState.ts` does, `local` giving the `local-v1` owner and its `owners/<key>/` folder,
+  `<key>` the first 20 lowercase hex characters of the owner id's SHA-256 (`dataOwnerStorageKey`); `signed-out` and `cloud` wait for chapter 13 and say so
+- [ ] 8.2 The database for that owner, as `docs/storage.md` admits it: `<userData>/cindy-local-v1.db`,
+  the reader lease, `checkMigrationCompatibility` against the reference commit's migrations, the
+  pragmas `openWithPragmas` sets, `cjk_seg` and its TEMP triggers (`registerCjkSeg.ts`,
+  `cjkSeg.ts`), file mode `0600`; queries off the main thread, as Cindy's worker does; a refused or
+  missing database is shown, never repaired
+- [ ] 8.3 The list as `local-db:sessions:list` serves it: first, once per owner, the sweep of
+  leftover provisional tasks (`sweepLeftoverProvisionalSessions` with `provisional-sessions.json`:
+  hard-delete only unsent rows with no messages, keep other owners' entries, remove only an empty
+  Cindy-managed dialogue folder; creating and marking provisional tasks lands with chapter 9);
+  then `selectSessionListRows` (`updated_at DESC, id DESC`, the `before {updatedAt, id}` keyset,
+  `ordinaryTaskListFilter`, preview and message count from
+  `projectSessionReadResult`), the `active`, `archived` and `all` buckets of `sessionsStore.ts`, and
+  rows written by Cindy while both run, picked up as its push events would
+- [ ] 8.4 The Pinned section as `PinnedSection.tsx` draws it (`pinned_at`, the pinned order of
+  `owners/<key>/sidebar-settings.json`, drag reorder, text, card and list views) and the main list
+  as `ProjectsSection.tsx`, `ProjectNode.tsx`, `DialogueSection.tsx`, `UnclassifiedSection.tsx` and
+  `MainListScopeHeader.tsx` group it (by `project_dir` then `working_dir`, `project_aliases`,
+  hidden projects, dialogues, unclassified), with the filter prefs of `sidebarFilterCore.ts`
+  (group by, sort, status, vendor, last activity, project order)
+- [ ] 8.5 A session row as `SessionItem.tsx` and `SessionInfoMeta` show it (status icon and
+  attention dot, title, the chosen meta fields, hover archive) and the card as `SessionCard.tsx`;
+  rename by double click, archive (which unpins), delete (soft, `status = deleted`), pin and the
+  `SessionTaskMenu`, written as `sessionService.ts` patches them
+- [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
+  `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
+  `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
+  `useActiveMainView`, and a row click to its session as `handleSessionClick` and
+  `resolveSessionRoute` do
+- [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
+  list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
+  order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles
+- [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
+  `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
+  `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the
+  still-interrupted recheck before continuing); the continue itself dispatches a turn, which
+  lands with the agent runtime (10.0)
+- [ ] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most
+  50 in memory, cleared on owner change, ⌘[ / ⌘]) with `SessionHistoryButtons`
 ## 9. Chat view
 
 - [ ] 9.0 Expand from Cindy's code
@@ -208,7 +258,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 10. Agent runtime
 
-- [ ] 10.0 Expand from Cindy's code, with the agent and session `ndjson` log streams
+- [ ] 10.0 Expand from Cindy's code, with the agent and session `ndjson` log streams and the
+  interrupted-task continue from 8.8
 
 ## 11. Models and providers
 
@@ -226,7 +277,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 - [ ] 13.0 Expand from Cindy's code, with official wallpaper downloads (`wallpaper-video.ts`, from
   6.9e2), the mock mode's gate, account-free start and seed (from 7.0), the dev keychain identity
-  marker, isolated device id and `--endpoints-cdn` (from 7.1), the sidebar's owner-scoped storage and its legacy claims,
+  marker, `cloud` owners' database (8.2 admits only `local-v1`), isolated device id and `--endpoints-cdn` (from 7.1), the sidebar's owner-scoped storage and its legacy claims,
   log upload and redaction, and the database admission in `docs/storage.md` (reader lease,
   read-only migration check, `cjk_seg`)
 
