@@ -80,6 +80,14 @@ defines scope and what 1:1 means.
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
   through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button).
   Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`.
+- Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for
+  `prefers-reduced-motion` (Linux portal `org.gnome.desktop.interface enable-animations`, macOS
+  `accessibilityDisplayShouldReduceMotion`, Windows `SPI_GETCLIENTAREAANIMATION`), at start and on
+  every window activation. `motion::ReducedMotion` zeroes Cindy's motion tokens and
+  `motion-reduce:` transitions through `motion::length`; Ely's `Theme.reduced_motion` stills its
+  spinners. gpui's own `reduce_motion` stays off: Cindy keeps fixed-duration transitions (toasts).
+  The macOS and Windows reads are type-checked in a scratch crate (`cargo check --target`); the
+  full crate's C build scripts need those systems.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

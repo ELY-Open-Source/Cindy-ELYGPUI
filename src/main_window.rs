@@ -197,6 +197,9 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 .detach();
             cx.observe_window_activation(window, |root: &mut Root, window, cx| {
                 let active = window.is_window_active();
+                if active {
+                    crate::motion::refresh_reduced_motion(cx);
+                }
                 root.activation.activation(active);
                 if !active {
                     root.sidebar.update(cx, |sidebar, cx| sidebar.blur(cx));

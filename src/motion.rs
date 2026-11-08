@@ -24,6 +24,42 @@ fn cubic_bezier(x1: f32, y1: f32, x2: f32, y2: f32, x: f32) -> f32 {
     at(y1, y2, t)
 }
 
+/// `prefers-reduced-motion`: Cindy's motion tokens and `motion-reduce:` transitions drop to 0.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct ReducedMotion(pub bool);
+
+impl gpui::Global for ReducedMotion {}
+
+/// A transition's length, none under reduced motion.
+pub fn length(base: std::time::Duration, cx: &gpui::App) -> std::time::Duration {
+    if cx.global::<ReducedMotion>().0 {
+        std::time::Duration::ZERO
+    } else {
+        base
+    }
+}
+
+/// Reads the system setting again; a change reaches Ely and repaints every window.
+pub fn refresh_reduced_motion(cx: &mut gpui::App) {
+    let reduced = match crate::os_appearance::reduced_motion() {
+        Ok(reduced) => reduced,
+        Err(error) => {
+            log::warn!(target: "theme", "reduced motion unread ({error:#}); keeping {:?}", cx.try_global::<ReducedMotion>());
+            return;
+        }
+    };
+    if cx
+        .try_global::<ReducedMotion>()
+        .is_some_and(|r| r.0 == reduced)
+    {
+        return;
+    }
+    log::info!(target: "theme", "reduced motion {reduced}");
+    cx.set_global(ReducedMotion(reduced));
+    ely_gpui_component::theme::Theme::update(cx, |theme| theme.reduced_motion = reduced);
+    cx.refresh_windows();
+}
+
 /// Cindy's `--motion-fast`.
 pub const FAST: std::time::Duration = std::time::Duration::from_millis(150);
 

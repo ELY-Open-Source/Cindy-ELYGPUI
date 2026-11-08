@@ -16,8 +16,13 @@ use gpui::{
 };
 
 use crate::{
-    chrome, cindy_json::js_truthy, layout_root::SidebarSeen, layout_tree::LayoutStore,
-    motion::Tween, preferences::Preferences, theme::Appearance,
+    chrome,
+    cindy_json::js_truthy,
+    layout_root::SidebarSeen,
+    layout_tree::LayoutStore,
+    motion::{self, Tween},
+    preferences::Preferences,
+    theme::Appearance,
 };
 use resize::{RAIL_WIDTH, Resize, WIDTH_KEY};
 
@@ -145,11 +150,14 @@ impl Sidebar {
         let length = if self.resize.dragging || std::mem::take(&mut self.left_peek) {
             Duration::ZERO
         } else {
-            WIDTH_TRANSITION
+            motion::length(WIDTH_TRANSITION, cx)
         };
         self.width.toward(self.target(), at, length);
-        self.fade
-            .toward(if self.collapsed { 0.0 } else { 1.0 }, at, FADE);
+        self.fade.toward(
+            if self.collapsed { 0.0 } else { 1.0 },
+            at,
+            motion::length(FADE, cx),
+        );
         cx.notify();
     }
 

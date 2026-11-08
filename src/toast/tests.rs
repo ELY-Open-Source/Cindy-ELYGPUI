@@ -31,6 +31,7 @@ fn open_with_host(cx: &mut TestAppContext) -> (Entity<Host>, &mut VisualTestCont
             os: WindowAppearance::Light,
             gpui_agrees: true,
         };
+        cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
         cx.set_global(Toasts::default());

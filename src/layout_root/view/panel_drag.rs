@@ -30,6 +30,20 @@ pub struct Rects {
 
 pub type SharedRects = Rc<RefCell<Rects>>;
 
+/// `animate-fade-in` on `--motion-fast`, which reduced motion sets to 0.
+trait FadeIn: Styled + IntoElement + 'static {
+    fn with_fade_in(self, id: &'static str, to: f32, reduced: bool) -> AnyElement {
+        if reduced {
+            return self.opacity(to).into_any_element();
+        }
+        let fade = Animation::new(motion::FAST).with_easing(motion::motion_ease_out);
+        self.with_animation(id, fade, move |el, d| el.opacity(d * to))
+            .into_any_element()
+    }
+}
+
+impl FadeIn for gpui::Div {}
+
 /// Records the bounds its parent paints at.
 pub fn recorder(rects: &SharedRects, pane: bool, key: &str) -> AnyElement {
     let (rects, key) = (rects.clone(), key.to_owned());
@@ -329,7 +343,7 @@ impl LayoutRoot {
         let appearance = cx.global::<Appearance>();
         let ring = appearance.token("focus-ring");
         let origin = self.rects.borrow().origin;
-        let fade = || Animation::new(motion::FAST).with_easing(motion::motion_ease_out);
+        let reduced = cx.global::<motion::ReducedMotion>().0;
         let zone = target.map(|i| {
             let zone = drop_zone(&targets[i].root);
             let at = zone.origin - origin;
@@ -344,7 +358,7 @@ impl LayoutRoot {
                 .border_1()
                 .border_color(ring.opacity(0.55))
                 .bg(ring.opacity(0.1))
-                .with_animation("panel-drop-zone", fade(), |el, d| el.opacity(d))
+                .with_fade_in("panel-drop-zone", 1.0, reduced)
         });
         let border = if target.is_some() {
             ring
@@ -375,7 +389,7 @@ impl LayoutRoot {
             .child(bar(14.0, 0.7, RADIUS_MD).mt_2())
             .child(bar(10.0, 0.85, RADIUS).mt_2().opacity(0.7))
             .child(bar(10.0, 0.6, RADIUS).mt(px(6.0)).opacity(0.7))
-            .with_animation("panel-drag-ghost", fade(), |el, d| el.opacity(d * 0.92));
+            .with_fade_in("panel-drag-ghost", 0.92, reduced);
         let layer = deferred(div().children(zone).child(card)).with_priority(1);
         Some(
             div()

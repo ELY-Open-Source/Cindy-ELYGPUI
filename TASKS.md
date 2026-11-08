@@ -119,7 +119,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 6.6b `ChromeActions`: placed by the mac traffic lights and fullscreen, the sidebar toggle with
   its tooltip (`DESIGN.md` §14.6) and hover peek and pin as `useSidebarPeek.ts` does; the
   `ContentHeader` spacer that makes room for the cluster
-- [ ] 6.9a Reduced motion from the system, as Chromium's `prefers-reduced-motion` reads it (Linux
+- [x] 6.9a Reduced motion from the system, as Chromium's `prefers-reduced-motion` reads it (Linux
   `enable-animations`, macOS reduce motion, Windows client-area animation), applied as `globals.css`
   does: motion tokens at 0, spinners still, `motion-reduce:` transitions off; other features' rules
   land with them

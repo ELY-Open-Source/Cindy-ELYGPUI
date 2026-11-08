@@ -15,6 +15,7 @@ fn open(cx: &mut TestAppContext, dir: &std::path::Path) -> VisualTestContext {
             os: WindowAppearance::Dark,
             gpui_agrees: true,
         };
+        cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
         cx.set_global(Toasts::default());
@@ -262,4 +263,24 @@ fn hiding_during_the_pin_drops_the_column_at_once(cx: &mut TestAppContext) {
     wait(&mut vcx, 0);
     assert_eq!(width(&mut vcx, "sidebar"), Some(px(0.0)));
     assert!(vcx.debug_bounds("sidebar-peek-drawer").is_none());
+}
+
+#[cfg(not(target_os = "macos"))]
+#[gpui::test]
+fn reduced_motion_shows_the_drawer_without_a_slide(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mut vcx = open(cx, dir.path());
+    vcx.update(|_, cx| cx.set_global(crate::motion::ReducedMotion(true)));
+    let toggle = vcx.debug_bounds("sidebar-toggle").unwrap().center();
+    vcx.simulate_keystrokes("ctrl-b");
+    wait(&mut vcx, 0);
+    assert_eq!(width(&mut vcx, "sidebar"), Some(px(0.0)));
+    let none = Modifiers::none();
+    vcx.simulate_mouse_move(gpui::point(px(900.0), px(400.0)), None, none);
+    vcx.simulate_mouse_move(toggle, None, none);
+    wait(&mut vcx, 120);
+    assert_eq!(
+        vcx.debug_bounds("sidebar-peek-drawer").unwrap().origin.x,
+        px(0.0)
+    );
 }

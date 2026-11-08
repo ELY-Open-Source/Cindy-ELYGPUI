@@ -57,6 +57,8 @@ fn apply_fonts(fonts: &appearance_settings::Fonts, cx: &mut App) {
 
 fn open(startup: Startup, cx: &mut App) -> Result<()> {
     ely_gpui_component::init(cx).context("Ely failed to start")?;
+    cx.set_global(motion::ReducedMotion::default());
+    motion::refresh_reduced_motion(cx);
     apply_fonts(&startup.fonts, cx);
     cx.set_global(I18n::new(startup.translator.ely_tag()));
     cx.set_global(startup.translator);

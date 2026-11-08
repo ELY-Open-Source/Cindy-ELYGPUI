@@ -51,8 +51,11 @@ impl Sidebar {
         let before = self.peek.state;
         self.peek.tick(at);
         match self.peek.state {
-            State::Peeking => self.drawer.toward_along(1.0, at, SLIDE, motion::peek_in),
-            State::PeekClosing => self.drawer.toward(0.0, at, SLIDE),
+            State::Peeking => {
+                let slide = motion::length(SLIDE, cx);
+                self.drawer.toward_along(1.0, at, slide, motion::peek_in)
+            }
+            State::PeekClosing => self.drawer.toward(0.0, at, motion::length(SLIDE, cx)),
             State::Pinning => {
                 self.drawer = motion::Tween::still(1.0, at);
                 if self.rail {

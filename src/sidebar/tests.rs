@@ -40,6 +40,7 @@ fn open<'a>(
             os: WindowAppearance::Dark,
             gpui_agrees: true,
         };
+        cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
         cx.set_global(crate::toast::Toasts::default());
@@ -179,4 +180,15 @@ fn a_press_mid_expand_stops_the_slide(cx: &mut TestAppContext) {
     assert!(mid > 0.0 && mid < 260.0, "{mid}");
     handle(cx, mid, 1);
     assert_eq!(widths(&row, cx).0, 260.0, "the drag owns the width at once");
+}
+
+#[gpui::test]
+fn reduced_motion_hides_without_a_slide(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let (row, cx) = open(cx, dir.path(), "{}");
+    cx.update(|_, cx| cx.set_global(crate::motion::ReducedMotion(true)));
+    let sidebar = cx.update(|_, cx| row.read(cx).sidebar.clone());
+    cx.update(|_, cx| sidebar.update(cx, |s, cx| s.toggle(cx)));
+    wait(cx, 0);
+    assert_eq!(widths(&row, cx), (0.0, 1600.0));
 }

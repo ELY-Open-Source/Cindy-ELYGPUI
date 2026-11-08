@@ -205,3 +205,7 @@ effort high, in a Herdr pane.
 
 - Moved: the task routes need the task list (8.0); the settings route hides the sidebar and is left
   only through the settings page (12.0), so built now it would strand the user on an empty page.
+
+## 6.9a Reduced motion
+
+- Round 1: PASS.
