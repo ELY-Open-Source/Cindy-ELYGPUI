@@ -103,6 +103,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
+- [ ] 6.4 App shortcuts: the registry and matching of `shared/appShortcuts.ts`, the user's bindings
+  read as `app-shortcuts/AppShortcutStore.ts` keeps them, dispatch as `useAppShortcut.ts` and
+  `lib/appShortcutStore.ts` do; rebinding UI and writes go to chapter 12
 - [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
   78px and the card-mode snap as `useSidebarResize.ts` and `useHorizontalResize.ts` keep them,
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`,
