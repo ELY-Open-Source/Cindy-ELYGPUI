@@ -34,6 +34,11 @@ defines scope and what 1:1 means.
   rules (`src/window_state.rs`). `src/activation_click.rs` swallows the activating click per platform
   as Cindy does. Theme glue for windows lives in `src/theme/shell.rs`. Hyprland 0.56 takes Lua for
   `hyprctl dispatch` (`hl.dsp.window.close({ window = "address:..." })`).
+- Layout: `src/layout_tree.rs` ports `shared/layoutTree.ts` (tree, `validateLayout`, `coerceLayout`,
+  the operations in `ops.rs`); `store.rs` keeps `layout.v1.json` as `LayoutStore.ts` does, healed on
+  read, strict on write. Unknown fields stay as written. `cindy_json::roundtrip` reads JSON as
+  `JSON.parse` then `JSON.stringify` would. Cindy's dev-console `__cindyLayout` is not ported.
+- userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).
@@ -48,9 +53,9 @@ defines scope and what 1:1 means.
 - `node scripts/sync-themes.mjs <cindy checkout with node_modules> <commit>` runs Cindy's
   `colors.ts` and built-in themes through Cindy's esbuild and writes `themes/` (registry, built-ins,
   logos, `COMMIT`). Never edit `themes/` by hand.
-- `node scripts/sync-golden.mjs <cindy checkout> <commit>` runs Cindy's own
-  `convertVsCodeTheme` and `normalizeLocalThemeColors` on the inputs under `tests/fixtures/` and
-  writes the expected outputs; the Rust ports must match them.
+- `node scripts/sync-golden.mjs <cindy checkout> <commit>` runs Cindy's own `convertVsCodeTheme`,
+  `normalizeLocalThemeColors` and `layoutTree` on the inputs under `tests/fixtures/` and writes the
+  expected outputs; the Rust ports must match them.
 - `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`. CI
   (`.github/workflows/ci.yml`) runs them and a release build on Linux, macOS and Windows,
   x86_64 and arm64. Linux x64, macOS arm64 and Windows x64 run on the org's self-hosted runners

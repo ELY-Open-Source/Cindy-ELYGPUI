@@ -64,3 +64,4 @@ read from Cindy's code and rule docs for that area.
 
 - Cindy's server, which lives in its own repository.
 - Cindy's mobile app.
+- Dev-build console helpers on `window`, such as `__cindyLayout`: Rust has no DevTools console.

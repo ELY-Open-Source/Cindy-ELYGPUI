@@ -22,10 +22,11 @@ try {
     "import './renderer/themes/colors';",
     "export { convertVsCodeTheme } from './shared/theme-import';",
     "export { normalizeLocalThemeColors } from './renderer/themes/local-themes-normalize';",
+    "export * as layoutTree from './shared/layoutTree';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
   await esbuild.build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error' });
-  const { convertVsCodeTheme, normalizeLocalThemeColors } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -53,10 +54,30 @@ try {
     colors: normalizeLocalThemeColors(c.colors, c.type),
   })));
 
+  const layoutDir = path.join(fixtures, 'layout');
+  const layout = JSON.parse(fs.readFileSync(path.join(layoutDir, 'input.json'), 'utf8'));
+  const num = (a) => ({ NaN, Infinity }[a] ?? a);
+  write(path.join(layoutDir, 'expected.json'), {
+    coerce: layout.coerce.map((c) => {
+      let raw = null;
+      try {
+        raw = 'text' in c ? JSON.parse(c.text) : c.raw;
+      } catch {}
+      return { name: c.name, ...layoutTree.coerceLayout(raw) };
+    }),
+    ops: layout.ops.map((c) => {
+      const result = layoutTree[c.op](layout.bases[c.base], ...c.args.map(num));
+      const panes = c.op === 'walkPanes' && result.map((p) => ({ id: p.id, panelKind: p.panelKind, collapsed: p.collapsed ?? null }));
+      return { name: c.name, result: panes || (result ?? null) };
+    }),
+    kinds: layout.kinds.map((k) => layoutTree.tabGroupIdFromPanelKind(k)),
+    groups: layoutTree.TAB_GROUP_IDS.map((g) => [g, layoutTree.tabGroupPanelKind(g)]),
+  });
+
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);
   fs.rmSync(path.join(importDir, 'COMMIT'), { force: true });
-  console.log(`golden from ${full}: ${inputs.length} imports, ${cases.length} normalize cases`);
+  console.log(`golden from ${full}: ${inputs.length} imports, ${cases.length} normalize cases, ${layout.coerce.length + layout.ops.length} layout cases`);
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
 }

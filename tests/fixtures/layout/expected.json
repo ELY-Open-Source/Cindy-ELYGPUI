@@ -1,0 +1,6884 @@
+{
+ "coerce": [
+  {
+   "name": "default",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "three",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left",
+     "collapsed": "yes",
+     "minWidth": "wide"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.3,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs",
+        "edge": "x"
+       },
+       "pin": true
+      },
+      {
+       "fraction": 0.2,
+       "node": {
+        "type": "split",
+        "id": "ghost-col",
+        "direction": "column",
+        "children": [
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "ghost-a",
+           "panelKind": "ghost:a"
+          }
+         },
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "ghost-b",
+           "panelKind": "ghost:b",
+           "collapsed": true
+          }
+         }
+        ]
+       }
+      }
+     ],
+     "dock": "keep"
+    },
+    "float": [],
+    "note": "keep"
+   },
+   "fallback": false
+  },
+  {
+   "name": "null",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "array",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "string",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "number",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "schema 2",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "schemaVersion must be 1"
+  },
+  {
+   "name": "schema string",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "schemaVersion must be 1"
+  },
+  {
+   "name": "schema 1.0 text",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "float missing",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "float must be an empty array in v1"
+  },
+  {
+   "name": "float full",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "float must be an empty array in v1"
+  },
+  {
+   "name": "sidebar missing",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar must be a pane"
+  },
+  {
+   "name": "sidebar split",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar must be a pane"
+  },
+  {
+   "name": "sidebar kind",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar must be session-list"
+  },
+  {
+   "name": "sidebar edge",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar edge must be 'left' in v1"
+  },
+  {
+   "name": "sidebar id empty",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar id invalid"
+  },
+  {
+   "name": "sidebar id long",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar id invalid"
+  },
+  {
+   "name": "id 64 emoji",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "id 65 emoji",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "sidebar id invalid"
+  },
+  {
+   "name": "content missing",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "node is not an object"
+  },
+  {
+   "name": "depth 8",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "s6",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "split",
+        "id": "s5",
+        "direction": "row",
+        "children": [
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "split",
+           "id": "s4",
+           "direction": "row",
+           "children": [
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "split",
+              "id": "s3",
+              "direction": "row",
+              "children": [
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "split",
+                 "id": "s2",
+                 "direction": "row",
+                 "children": [
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "split",
+                    "id": "s1",
+                    "direction": "row",
+                    "children": [
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "split",
+                       "id": "s0",
+                       "direction": "row",
+                       "children": [
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "pane",
+                          "id": "leaf",
+                          "panelKind": "chat-main"
+                         }
+                        },
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "pane",
+                          "id": "p0",
+                          "panelKind": "ghost:p"
+                         }
+                        }
+                       ]
+                      }
+                     },
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "pane",
+                       "id": "p1",
+                       "panelKind": "ghost:p"
+                      }
+                     }
+                    ]
+                   }
+                  },
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "pane",
+                    "id": "p2",
+                    "panelKind": "ghost:p"
+                   }
+                  }
+                 ]
+                }
+               },
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "pane",
+                 "id": "p3",
+                 "panelKind": "ghost:p"
+                }
+               }
+              ]
+             }
+            },
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "pane",
+              "id": "p4",
+              "panelKind": "ghost:p"
+             }
+            }
+           ]
+          }
+         },
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "p5",
+           "panelKind": "ghost:p"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "p6",
+        "panelKind": "ghost:p"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "depth 9",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "tree deeper than 8"
+  },
+  {
+   "name": "duplicate sidebar id",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "duplicate node id: sessions"
+  },
+  {
+   "name": "duplicate id",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "duplicate node id: chat"
+  },
+  {
+   "name": "no panelKind",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "panelKind invalid"
+  },
+  {
+   "name": "panelKind long",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "panelKind invalid"
+  },
+  {
+   "name": "collapsed string",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "collapsed must be boolean"
+  },
+  {
+   "name": "collapsed null",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "collapsed must be boolean"
+  },
+  {
+   "name": "minWidth 0",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "minWidth must be a positive finite number"
+  },
+  {
+   "name": "minWidth string",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "minWidth must be a positive finite number"
+  },
+  {
+   "name": "minWidth null",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "minWidth must be a positive finite number"
+  },
+  {
+   "name": "minWidth tiny",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 0.5
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "preferred 119",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "preferredWidth must be between 120 and 16000"
+  },
+  {
+   "name": "preferred 120",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 120
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "preferred 16000",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 16000
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "preferred 16001",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "preferredWidth must be between 120 and 16000"
+  },
+  {
+   "name": "direction",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split direction invalid"
+  },
+  {
+   "name": "one child",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split needs at least 2 children"
+  },
+  {
+   "name": "children object",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split needs at least 2 children"
+  },
+  {
+   "name": "child null",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split child is not an object"
+  },
+  {
+   "name": "fraction 0",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "child fraction must be a positive finite number"
+  },
+  {
+   "name": "fraction string",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "child fraction must be a positive finite number"
+  },
+  {
+   "name": "sum 0.98",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split fractions must sum to ~1, got 0.98"
+  },
+  {
+   "name": "sum 1.009",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.509,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "sum thirds",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "split fractions must sum to ~1, got 0.8"
+  },
+  {
+   "name": "type tab",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: tab"
+  },
+  {
+   "name": "type missing",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: undefined"
+  },
+  {
+   "name": "type number",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: 3.5"
+  },
+  {
+   "name": "type array",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: 1,,a,2"
+  },
+  {
+   "name": "type object",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: [object Object]"
+  },
+  {
+   "name": "type big",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: 1e+21"
+  },
+  {
+   "name": "type tie",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "unknown node type: 137839762462415.62"
+  },
+  {
+   "name": "no chat",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "content must contain exactly one chat-main (got 0)"
+  },
+  {
+   "name": "two chats",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "content must contain exactly one chat-main (got 2)"
+  },
+  {
+   "name": "chat collapsed",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "chat-main must not be collapsed"
+  },
+  {
+   "name": "chat open",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "collapsed": false
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": false
+  },
+  {
+   "name": "session list inside",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "session-list must stay outside the content tree"
+  },
+  {
+   "name": "empty text",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "broken text",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "trailing text",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "not an object"
+  },
+  {
+   "name": "schema huge",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "schemaVersion must be 1"
+  },
+  {
+   "name": "extra huge",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": [],
+    "huge": [
+     null,
+     null,
+     12345678901234567000
+    ]
+   },
+   "fallback": false
+  },
+  {
+   "name": "fraction huge",
+   "layout": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   },
+   "fallback": true,
+   "reason": "child fraction must be a positive finite number"
+  }
+ ],
+ "ops": [
+  {
+   "name": "collapse right",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "collapsed": true
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "collapse sidebar",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": true,
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "collapse chat",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "setPaneCollapsed rejected: chat-main must not be collapsed"
+   }
+  },
+  {
+   "name": "collapse missing",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "pane not found: nope"
+   }
+  },
+  {
+   "name": "open ghost",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": false
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "collapse single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400,
+      "collapsed": false
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "fraction root",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.7,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "fraction three",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6428571428571429,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.1,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2571428571428572,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "fraction column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.75,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.25,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "fraction tiny",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.24750000000000003,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.37125,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.37125,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.010000000000000002,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "fraction 0",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "fraction must be between 0 and 1 (exclusive)"
+   }
+  },
+  {
+   "name": "fraction 1",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "fraction must be between 0 and 1 (exclusive)"
+   }
+  },
+  {
+   "name": "fraction NaN",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "fraction must be between 0 and 1 (exclusive)"
+   }
+  },
+  {
+   "name": "fraction missing split",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "split not found: nope"
+   }
+  },
+  {
+   "name": "fraction range",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "child index out of range: 5"
+   }
+  },
+  {
+   "name": "fraction pane split",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "split not found: chat"
+   }
+  },
+  {
+   "name": "swap",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "swap column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "swap same",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": false,
+    "reason": "cannot swap within the same root child"
+   }
+  },
+  {
+   "name": "swap missing a",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "pane kind not found: nope"
+   }
+  },
+  {
+   "name": "swap missing b",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "pane kind not found: nope"
+   }
+  },
+  {
+   "name": "swap single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content is not a split"
+   }
+  },
+  {
+   "name": "swap nonrow",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "column",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "pane kind not found: chat-main"
+   }
+  },
+  {
+   "name": "edge right",
+   "result": "right"
+  },
+  {
+   "name": "edge ghost",
+   "result": "right"
+  },
+  {
+   "name": "edge top",
+   "result": "top"
+  },
+  {
+   "name": "edge left",
+   "result": "left"
+  },
+  {
+   "name": "edge bottom",
+   "result": "bottom"
+  },
+  {
+   "name": "edge missing",
+   "result": null
+  },
+  {
+   "name": "edge chat",
+   "result": null
+  },
+  {
+   "name": "edge sidebar",
+   "result": null
+  },
+  {
+   "name": "child ghost",
+   "result": {
+    "splitId": "ghost-col",
+    "childIndex": 0,
+    "fraction": 0.5
+   }
+  },
+  {
+   "name": "child chat",
+   "result": {
+    "splitId": "root",
+    "childIndex": 0,
+    "fraction": 0.5
+   }
+  },
+  {
+   "name": "child sidebar",
+   "result": null
+  },
+  {
+   "name": "child single",
+   "result": null
+  },
+  {
+   "name": "ensure left default",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.25,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left"
+        }
+       },
+       {
+        "fraction": 0.375,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.375,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure left three",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.25,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left"
+        }
+       },
+       {
+        "fraction": 0.375,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.22499999999999998,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.15000000000000002,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure left column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.25,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left"
+        }
+       },
+       {
+        "fraction": 0.44999999999999996,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.30000000000000004,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure left relay",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: left"
+   }
+  },
+  {
+   "name": "ensure left single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure left nonrow",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "column",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure left rowchat",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.25,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left"
+        }
+       },
+       {
+        "fraction": 0.44999999999999996,
+        "node": {
+         "type": "split",
+         "id": "wrap",
+         "direction": "row",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "x",
+            "panelKind": "ghost:x"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.30000000000000004,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure right default",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure right three",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure right column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure right relay",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure right single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure right nonrow",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "column",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure right rowchat",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "wrap",
+         "direction": "row",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "x",
+            "panelKind": "ghost:x"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: right"
+   }
+  },
+  {
+   "name": "ensure top default",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure top three",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure top column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "tab group already present: top"
+   }
+  },
+  {
+   "name": "ensure top relay",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure top single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure top nonrow",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "column",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure top rowchat",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "wrap",
+         "direction": "row",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "x",
+            "panelKind": "ghost:x"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "chat container must be a column split"
+   }
+  },
+  {
+   "name": "ensure bottom default",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-bottom",
+            "panelKind": "tab-group:bottom"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure bottom three",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-bottom",
+            "panelKind": "tab-group:bottom"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure bottom column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.22749999999999998,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-top",
+            "panelKind": "tab-group:top"
+           }
+          },
+          {
+           "fraction": 0.42250000000000004,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-bottom",
+            "panelKind": "tab-group:bottom"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure bottom relay",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "split",
+         "id": "chat-column",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.65,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.35,
+           "node": {
+            "type": "pane",
+            "id": "tab-group-bottom",
+            "panelKind": "tab-group:bottom"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "ensure bottom single",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "pane",
+      "id": "chat",
+      "panelKind": "chat-main",
+      "minWidth": 400
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure bottom nonrow",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "column",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "content root must be a row split"
+   }
+  },
+  {
+   "name": "ensure bottom rowchat",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "split",
+         "id": "wrap",
+         "direction": "row",
+         "children": [
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "chat",
+            "panelKind": "chat-main",
+            "minWidth": 400
+           }
+          },
+          {
+           "fraction": 0.5,
+           "node": {
+            "type": "pane",
+            "id": "x",
+            "panelKind": "ghost:x"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "chat container must be a column split"
+   }
+  },
+  {
+   "name": "ensure taken",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "chat-column",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "ensureTabGroupPane rejected: duplicate node id: chat-column"
+   }
+  },
+  {
+   "name": "ensure taken left",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "insertRootSplitPane rejected: duplicate node id: tab-group-left"
+   }
+  },
+  {
+   "name": "transfer",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "transfer to floor",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.95,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.04999999999999999,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "transfer past floor",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "transfer would shrink a child below 0.05"
+   }
+  },
+  {
+   "name": "transfer negative",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.7,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "transfer edge",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.04999999999999999,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.95,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "transfer 0",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "amount must be a non-zero finite number"
+   }
+  },
+  {
+   "name": "transfer NaN",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "amount must be a non-zero finite number"
+   }
+  },
+  {
+   "name": "transfer inf",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "amount must be a non-zero finite number"
+   }
+  },
+  {
+   "name": "transfer same",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "invalid child indices"
+   }
+  },
+  {
+   "name": "transfer missing",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "split not found: nope"
+   }
+  },
+  {
+   "name": "transfer range",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "child index out of range"
+   }
+  },
+  {
+   "name": "transfer column",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left",
+      "collapsed": "yes",
+      "minWidth": "wide"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs",
+         "edge": "x"
+        },
+        "pin": true
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "split",
+         "id": "ghost-col",
+         "direction": "column",
+         "children": [
+          {
+           "fraction": 0.8,
+           "node": {
+            "type": "pane",
+            "id": "ghost-a",
+            "panelKind": "ghost:a"
+           }
+          },
+          {
+           "fraction": 0.2,
+           "node": {
+            "type": "pane",
+            "id": "ghost-b",
+            "panelKind": "ghost:b",
+            "collapsed": true
+           }
+          }
+         ]
+        }
+       }
+      ],
+      "dock": "keep"
+     },
+     "float": [],
+     "note": "keep"
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "relay",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.04999999900000002,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.6,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.050000001000000016,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "relay one",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.1,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.4,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "relay short",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "sources cannot cover the transfer, short by 0.149999999"
+   }
+  },
+  {
+   "name": "relay skip",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.05000000000000002,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.44999999999999996,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "relay exact",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.04999999900000002,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.5999999998,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.05000000120000003,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": true
+   }
+  },
+  {
+   "name": "relay empty",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "sources must be a non-empty array"
+   }
+  },
+  {
+   "name": "relay to in sources",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "toIndex must not appear in sources"
+   }
+  },
+  {
+   "name": "relay duplicate",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "duplicate source index: 0"
+   }
+  },
+  {
+   "name": "relay 0",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "amount must be a positive finite number"
+   }
+  },
+  {
+   "name": "relay negative",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "amount must be a positive finite number"
+   }
+  },
+  {
+   "name": "relay range",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "child index out of range"
+   }
+  },
+  {
+   "name": "relay to range",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "child index out of range"
+   }
+  },
+  {
+   "name": "relay missing",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "split not found: nope"
+   }
+  },
+  {
+   "name": "relay drained",
+   "result": {
+    "layout": {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "tab-group-left",
+         "panelKind": "tab-group:left",
+         "collapsed": true
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.3,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       },
+       {
+        "fraction": 0.2,
+        "node": {
+         "type": "pane",
+         "id": "x",
+         "panelKind": "ghost:x"
+        }
+       }
+      ]
+     },
+     "float": []
+    },
+    "applied": false,
+    "reason": "sources cannot cover the transfer, short by 0.09999999800000003"
+   }
+  },
+  {
+   "name": "walk default",
+   "result": [
+    {
+     "id": "sessions",
+     "panelKind": "session-list",
+     "collapsed": null
+    },
+    {
+     "id": "chat",
+     "panelKind": "chat-main",
+     "collapsed": null
+    },
+    {
+     "id": "right",
+     "panelKind": "right-tabs",
+     "collapsed": null
+    }
+   ]
+  },
+  {
+   "name": "walk three",
+   "result": [
+    {
+     "id": "sessions",
+     "panelKind": "session-list",
+     "collapsed": "yes"
+    },
+    {
+     "id": "chat",
+     "panelKind": "chat-main",
+     "collapsed": null
+    },
+    {
+     "id": "right",
+     "panelKind": "right-tabs",
+     "collapsed": null
+    },
+    {
+     "id": "ghost-a",
+     "panelKind": "ghost:a",
+     "collapsed": null
+    },
+    {
+     "id": "ghost-b",
+     "panelKind": "ghost:b",
+     "collapsed": true
+    }
+   ]
+  },
+  {
+   "name": "walk column",
+   "result": [
+    {
+     "id": "sessions",
+     "panelKind": "session-list",
+     "collapsed": null
+    },
+    {
+     "id": "tab-group-top",
+     "panelKind": "tab-group:top",
+     "collapsed": null
+    },
+    {
+     "id": "chat",
+     "panelKind": "chat-main",
+     "collapsed": null
+    },
+    {
+     "id": "right",
+     "panelKind": "right-tabs",
+     "collapsed": null
+    }
+   ]
+  },
+  {
+   "name": "walk relay",
+   "result": [
+    {
+     "id": "sessions",
+     "panelKind": "session-list",
+     "collapsed": null
+    },
+    {
+     "id": "tab-group-left",
+     "panelKind": "tab-group:left",
+     "collapsed": true
+    },
+    {
+     "id": "chat",
+     "panelKind": "chat-main",
+     "collapsed": null
+    },
+    {
+     "id": "right",
+     "panelKind": "right-tabs",
+     "collapsed": null
+    },
+    {
+     "id": "x",
+     "panelKind": "ghost:x",
+     "collapsed": null
+    }
+   ]
+  },
+  {
+   "name": "walk single",
+   "result": [
+    {
+     "id": "sessions",
+     "panelKind": "session-list",
+     "collapsed": null
+    },
+    {
+     "id": "chat",
+     "panelKind": "chat-main",
+     "collapsed": null
+    }
+   ]
+  }
+ ],
+ "kinds": [
+  "right",
+  "left",
+  null,
+  "top",
+  "bottom",
+  null,
+  null,
+  null,
+  null
+ ],
+ "groups": [
+  [
+   "left",
+   "tab-group:left"
+  ],
+  [
+   "right",
+   "right-tabs"
+  ],
+  [
+   "top",
+   "tab-group:top"
+  ],
+  [
+   "bottom",
+   "tab-group:bottom"
+  ]
+ ]
+}

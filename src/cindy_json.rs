@@ -1,7 +1,7 @@
 use std::{collections::BTreeMap, fs, io::ErrorKind, path::Path};
 
 use anyhow::{Context as _, Result, bail};
-use serde_json::value::RawValue;
+use serde_json::{Value, value::RawValue};
 
 /// A JSON object's fields kept as text, so one value `JSON.parse` takes but serde cannot
 /// hold (such as `1e400`) never spoils its siblings.
@@ -55,9 +55,149 @@ pub fn truthy(raw: Option<&RawValue>) -> bool {
     }
 }
 
+/// What `JSON.parse` then `JSON.stringify` keeps: numbers past f64 become null, and whole
+/// numbers are integers.
+pub fn roundtrip(text: &str) -> Result<Value> {
+    let raw: Box<RawValue> = serde_json::from_str(text)?;
+    lift(&raw)
+}
+
+fn lift(raw: &RawValue) -> Result<Value> {
+    let text = raw.get();
+    Ok(match text.as_bytes()[0] {
+        b'{' => Value::Object(
+            serde_json::from_str::<BTreeMap<String, Box<RawValue>>>(text)?
+                .iter()
+                .map(|(k, v)| Ok((k.clone(), lift(v)?)))
+                .collect::<Result<_>>()?,
+        ),
+        b'[' => Value::Array(
+            serde_json::from_str::<Vec<Box<RawValue>>>(text)?
+                .iter()
+                .map(|v| lift(v))
+                .collect::<Result<_>>()?,
+        ),
+        b'-' | b'0'..=b'9' => js_value(text.parse()?),
+        _ => serde_json::from_str(text)?,
+    })
+}
+
+/// An f64 as `JSON.stringify` writes it.
+pub fn js_value(n: f64) -> Value {
+    if !n.is_finite() {
+        Value::Null
+    } else if n.fract() == 0.0 && n.abs() < 9e15 {
+        Value::from(n as i64)
+    } else {
+        Value::from(n)
+    }
+}
+
+/// `Number.prototype.toString()`.
+pub fn js_number(n: f64) -> String {
+    if n.is_nan() {
+        return "NaN".into();
+    }
+    if n.is_infinite() {
+        return if n > 0.0 { "Infinity" } else { "-Infinity" }.into();
+    }
+    if n == 0.0 {
+        return "0".into();
+    }
+    let shortest = format!("{:e}", n.abs());
+    let k = shortest
+        .split_once('e')
+        .expect("{:e} has an exponent")
+        .0
+        .replace('.', "")
+        .len();
+    let closest = format!("{:.*e}", k - 1, n.abs());
+    let sci = if closest.parse() == Ok(n.abs()) {
+        closest
+    } else {
+        shortest
+    };
+    let (mantissa, exp) = sci.split_once('e').expect("{:e} has an exponent");
+    let digits = mantissa.replace('.', "");
+    let k = digits.len() as i32;
+    let point = exp.parse::<i32>().expect("{:e} exponent") + 1;
+    let body = if k <= point && point <= 21 {
+        format!("{digits}{}", "0".repeat((point - k) as usize))
+    } else if 0 < point && point <= 21 {
+        format!(
+            "{}.{}",
+            &digits[..point as usize],
+            &digits[point as usize..]
+        )
+    } else if -6 < point && point <= 0 {
+        format!("0.{}{digits}", "0".repeat(-point as usize))
+    } else {
+        let sign = if point > 0 { "+" } else { "-" };
+        let tail = if k > 1 {
+            format!(".{}", &digits[1..])
+        } else {
+            String::new()
+        };
+        format!("{}{tail}e{sign}{}", &digits[..1], (point - 1).abs())
+    };
+    if n < 0.0 { format!("-{body}") } else { body }
+}
+
+/// `String(value)`; none is `undefined`.
+pub fn js_string(value: Option<&Value>) -> String {
+    match value {
+        None => "undefined".into(),
+        Some(Value::Null) => "null".into(),
+        Some(Value::Bool(b)) => b.to_string(),
+        Some(Value::Number(n)) => js_number(n.as_f64().expect("JSON numbers are f64")),
+        Some(Value::String(s)) => s.clone(),
+        Some(Value::Array(items)) => items
+            .iter()
+            .map(|v| {
+                if v.is_null() {
+                    String::new()
+                } else {
+                    js_string(Some(v))
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(","),
+        Some(Value::Object(_)) => "[object Object]".into(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{boolean, number, object, truthy};
+    use serde_json::json;
+
+    use super::{boolean, js_number, js_string, number, object, roundtrip, truthy};
+
+    #[test]
+    fn writes_numbers_and_strings_as_javascript_does() {
+        let cases = [
+            (0.1 + 0.2, "0.30000000000000004"),
+            (1e21, "1e+21"),
+            (123456789012345680000.0, "123456789012345680000"),
+            (1e-7, "1e-7"),
+            (0.000001, "0.000001"),
+            (-2.5e-10, "-2.5e-10"),
+            (-0.0, "0"),
+            (400.0, "400"),
+            (137839762462415.62, "137839762462415.62"),
+            (f64::NAN, "NaN"),
+        ];
+        for (n, text) in cases {
+            assert_eq!(js_number(n), text);
+        }
+        let parsed = roundtrip(r#"{"a":[1e400,null,[2,"x"]],"b":{},"c":1.0}"#).unwrap();
+        assert_eq!(
+            parsed,
+            json!({"a": [null, null, [2, "x"]], "b": {}, "c": 1})
+        );
+        assert_eq!(js_string(parsed.get("a")), ",,2,x");
+        assert_eq!(js_string(parsed.get("b")), "[object Object]");
+        assert_eq!(js_string(None), "undefined");
+    }
 
     #[test]
     fn reads_fields_as_javascript_does() {

@@ -1,0 +1,3573 @@
+{
+ "bases": {
+  "default": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "three": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left",
+    "collapsed": "yes",
+    "minWidth": "wide"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.3,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs",
+       "edge": "x"
+      },
+      "pin": true
+     },
+     {
+      "fraction": 0.2,
+      "node": {
+       "type": "split",
+       "id": "ghost-col",
+       "direction": "column",
+       "children": [
+        {
+         "fraction": 0.5,
+         "node": {
+          "type": "pane",
+          "id": "ghost-a",
+          "panelKind": "ghost:a"
+         }
+        },
+        {
+         "fraction": 0.5,
+         "node": {
+          "type": "pane",
+          "id": "ghost-b",
+          "panelKind": "ghost:b",
+          "collapsed": true
+         }
+        }
+       ]
+      }
+     }
+    ],
+    "dock": "keep"
+   },
+   "float": [],
+   "note": "keep"
+  },
+  "column": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.6,
+      "node": {
+       "type": "split",
+       "id": "chat-column",
+       "direction": "column",
+       "children": [
+        {
+         "fraction": 0.35,
+         "node": {
+          "type": "pane",
+          "id": "tab-group-top",
+          "panelKind": "tab-group:top"
+         }
+        },
+        {
+         "fraction": 0.65,
+         "node": {
+          "type": "pane",
+          "id": "chat",
+          "panelKind": "chat-main",
+          "minWidth": 400
+         }
+        }
+       ]
+      }
+     },
+     {
+      "fraction": 0.4,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "relay": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.2,
+      "node": {
+       "type": "pane",
+       "id": "tab-group-left",
+       "panelKind": "tab-group:left",
+       "collapsed": true
+      }
+     },
+     {
+      "fraction": 0.3,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.3,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     },
+     {
+      "fraction": 0.2,
+      "node": {
+       "type": "pane",
+       "id": "x",
+       "panelKind": "ghost:x"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "nonrow": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "column",
+    "children": [
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "single": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "pane",
+    "id": "chat",
+    "panelKind": "chat-main",
+    "minWidth": 400
+   },
+   "float": []
+  },
+  "rowchat": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.6,
+      "node": {
+       "type": "split",
+       "id": "wrap",
+       "direction": "row",
+       "children": [
+        {
+         "fraction": 0.5,
+         "node": {
+          "type": "pane",
+          "id": "chat",
+          "panelKind": "chat-main",
+          "minWidth": 400
+         }
+        },
+        {
+         "fraction": 0.5,
+         "node": {
+          "type": "pane",
+          "id": "x",
+          "panelKind": "ghost:x"
+         }
+        }
+       ]
+      }
+     },
+     {
+      "fraction": 0.4,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "taken": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.3,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     },
+     {
+      "fraction": 0.2,
+      "node": {
+       "type": "pane",
+       "id": "chat-column",
+       "panelKind": "ghost:x"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "takenleft": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.5,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.3,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     },
+     {
+      "fraction": 0.2,
+      "node": {
+       "type": "pane",
+       "id": "tab-group-left",
+       "panelKind": "ghost:x"
+      }
+     }
+    ]
+   },
+   "float": []
+  },
+  "edge": {
+   "schemaVersion": 1,
+   "sidebar": {
+    "type": "pane",
+    "id": "sessions",
+    "panelKind": "session-list",
+    "edge": "left"
+   },
+   "content": {
+    "type": "split",
+    "id": "root",
+    "direction": "row",
+    "children": [
+     {
+      "fraction": 0.4589135021784424,
+      "node": {
+       "type": "pane",
+       "id": "chat",
+       "panelKind": "chat-main",
+       "minWidth": 400
+      }
+     },
+     {
+      "fraction": 0.5410864978215576,
+      "node": {
+       "type": "pane",
+       "id": "right",
+       "panelKind": "right-tabs"
+      }
+     }
+    ]
+   },
+   "float": []
+  }
+ },
+ "coerce": [
+  {
+   "name": "default",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "three",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left",
+     "collapsed": "yes",
+     "minWidth": "wide"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.3,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs",
+        "edge": "x"
+       },
+       "pin": true
+      },
+      {
+       "fraction": 0.2,
+       "node": {
+        "type": "split",
+        "id": "ghost-col",
+        "direction": "column",
+        "children": [
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "ghost-a",
+           "panelKind": "ghost:a"
+          }
+         },
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "ghost-b",
+           "panelKind": "ghost:b",
+           "collapsed": true
+          }
+         }
+        ]
+       }
+      }
+     ],
+     "dock": "keep"
+    },
+    "float": [],
+    "note": "keep"
+   }
+  },
+  {
+   "name": "null",
+   "raw": null
+  },
+  {
+   "name": "array",
+   "raw": [
+    {
+     "schemaVersion": 1,
+     "sidebar": {
+      "type": "pane",
+      "id": "sessions",
+      "panelKind": "session-list",
+      "edge": "left"
+     },
+     "content": {
+      "type": "split",
+      "id": "root",
+      "direction": "row",
+      "children": [
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "chat",
+         "panelKind": "chat-main",
+         "minWidth": 400
+        }
+       },
+       {
+        "fraction": 0.5,
+        "node": {
+         "type": "pane",
+         "id": "right",
+         "panelKind": "right-tabs"
+        }
+       }
+      ]
+     },
+     "float": []
+    }
+   ]
+  },
+  {
+   "name": "string",
+   "raw": "x"
+  },
+  {
+   "name": "number",
+   "raw": 1
+  },
+  {
+   "name": "schema 2",
+   "raw": {
+    "schemaVersion": 2,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "schema string",
+   "raw": {
+    "schemaVersion": "1",
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "schema 1.0 text",
+   "text": "{\"schemaVersion\": 1.0, \"sidebar\": {\"type\": \"pane\", \"id\": \"sessions\", \"panelKind\": \"session-list\", \"edge\": \"left\"}, \"content\": {\"type\": \"split\", \"id\": \"root\", \"direction\": \"row\", \"children\": [{\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"chat\", \"panelKind\": \"chat-main\", \"minWidth\": 400}}, {\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"right\", \"panelKind\": \"right-tabs\"}}]}, \"float\": []}"
+  },
+  {
+   "name": "float missing",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "float full",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": [
+     1
+    ]
+   }
+  },
+  {
+   "name": "sidebar missing",
+   "raw": {
+    "schemaVersion": 1,
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sidebar split",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "split",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sidebar kind",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "chat-main",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sidebar edge",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "right"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sidebar id empty",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sidebar id long",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "id 64 emoji",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "id 65 emoji",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "content missing",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "depth 8",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "s6",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "split",
+        "id": "s5",
+        "direction": "row",
+        "children": [
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "split",
+           "id": "s4",
+           "direction": "row",
+           "children": [
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "split",
+              "id": "s3",
+              "direction": "row",
+              "children": [
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "split",
+                 "id": "s2",
+                 "direction": "row",
+                 "children": [
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "split",
+                    "id": "s1",
+                    "direction": "row",
+                    "children": [
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "split",
+                       "id": "s0",
+                       "direction": "row",
+                       "children": [
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "pane",
+                          "id": "leaf",
+                          "panelKind": "chat-main"
+                         }
+                        },
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "pane",
+                          "id": "p0",
+                          "panelKind": "ghost:p"
+                         }
+                        }
+                       ]
+                      }
+                     },
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "pane",
+                       "id": "p1",
+                       "panelKind": "ghost:p"
+                      }
+                     }
+                    ]
+                   }
+                  },
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "pane",
+                    "id": "p2",
+                    "panelKind": "ghost:p"
+                   }
+                  }
+                 ]
+                }
+               },
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "pane",
+                 "id": "p3",
+                 "panelKind": "ghost:p"
+                }
+               }
+              ]
+             }
+            },
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "pane",
+              "id": "p4",
+              "panelKind": "ghost:p"
+             }
+            }
+           ]
+          }
+         },
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "p5",
+           "panelKind": "ghost:p"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "p6",
+        "panelKind": "ghost:p"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "depth 9",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "s7",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "split",
+        "id": "s6",
+        "direction": "row",
+        "children": [
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "split",
+           "id": "s5",
+           "direction": "row",
+           "children": [
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "split",
+              "id": "s4",
+              "direction": "row",
+              "children": [
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "split",
+                 "id": "s3",
+                 "direction": "row",
+                 "children": [
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "split",
+                    "id": "s2",
+                    "direction": "row",
+                    "children": [
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "split",
+                       "id": "s1",
+                       "direction": "row",
+                       "children": [
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "split",
+                          "id": "s0",
+                          "direction": "row",
+                          "children": [
+                           {
+                            "fraction": 0.5,
+                            "node": {
+                             "type": "pane",
+                             "id": "leaf",
+                             "panelKind": "chat-main"
+                            }
+                           },
+                           {
+                            "fraction": 0.5,
+                            "node": {
+                             "type": "pane",
+                             "id": "p0",
+                             "panelKind": "ghost:p"
+                            }
+                           }
+                          ]
+                         }
+                        },
+                        {
+                         "fraction": 0.5,
+                         "node": {
+                          "type": "pane",
+                          "id": "p1",
+                          "panelKind": "ghost:p"
+                         }
+                        }
+                       ]
+                      }
+                     },
+                     {
+                      "fraction": 0.5,
+                      "node": {
+                       "type": "pane",
+                       "id": "p2",
+                       "panelKind": "ghost:p"
+                      }
+                     }
+                    ]
+                   }
+                  },
+                  {
+                   "fraction": 0.5,
+                   "node": {
+                    "type": "pane",
+                    "id": "p3",
+                    "panelKind": "ghost:p"
+                   }
+                  }
+                 ]
+                }
+               },
+               {
+                "fraction": 0.5,
+                "node": {
+                 "type": "pane",
+                 "id": "p4",
+                 "panelKind": "ghost:p"
+                }
+               }
+              ]
+             }
+            },
+            {
+             "fraction": 0.5,
+             "node": {
+              "type": "pane",
+              "id": "p5",
+              "panelKind": "ghost:p"
+             }
+            }
+           ]
+          }
+         },
+         {
+          "fraction": 0.5,
+          "node": {
+           "type": "pane",
+           "id": "p6",
+           "panelKind": "ghost:p"
+          }
+         }
+        ]
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "p7",
+        "panelKind": "ghost:p"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "duplicate sidebar id",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "sessions",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "duplicate id",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "chat",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "no panelKind",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "panelKind long",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "collapsed string",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "collapsed": "true"
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "collapsed null",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "collapsed": null
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "minWidth 0",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 0
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "minWidth string",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": "400"
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "minWidth null",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": null
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "minWidth tiny",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 0.5
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "preferred 119",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 119
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "preferred 120",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 120
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "preferred 16000",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 16000
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "preferred 16001",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "preferredWidth": 16001
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "direction",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "diag",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "one child",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "children object",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": {}
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "child null",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      },
+      null
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "fraction 0",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "fraction string",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": "0.5",
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sum 0.98",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.48,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sum 1.009",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.509,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "sum thirds",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.30000000000000004,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type tab",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "tab",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type missing",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type number",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": 3.5,
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type array",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": [
+         1,
+         null,
+         "a",
+         [
+          2
+         ]
+        ],
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type object",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": {},
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type big",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": 1e+21,
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "type tie",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": 137839762462415.62,
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "no chat",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "ghost:x",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "two chats",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "chat-main"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "chat collapsed",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "collapsed": true
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "chat open",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400,
+        "collapsed": false
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "right-tabs"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "session list inside",
+   "raw": {
+    "schemaVersion": 1,
+    "sidebar": {
+     "type": "pane",
+     "id": "sessions",
+     "panelKind": "session-list",
+     "edge": "left"
+    },
+    "content": {
+     "type": "split",
+     "id": "root",
+     "direction": "row",
+     "children": [
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "chat",
+        "panelKind": "chat-main",
+        "minWidth": 400
+       }
+      },
+      {
+       "fraction": 0.5,
+       "node": {
+        "type": "pane",
+        "id": "right",
+        "panelKind": "session-list"
+       }
+      }
+     ]
+    },
+    "float": []
+   }
+  },
+  {
+   "name": "empty text",
+   "text": ""
+  },
+  {
+   "name": "broken text",
+   "text": "{"
+  },
+  {
+   "name": "trailing text",
+   "text": "{\"schemaVersion\": 1, \"sidebar\": {\"type\": \"pane\", \"id\": \"sessions\", \"panelKind\": \"session-list\", \"edge\": \"left\"}, \"content\": {\"type\": \"split\", \"id\": \"root\", \"direction\": \"row\", \"children\": [{\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"chat\", \"panelKind\": \"chat-main\", \"minWidth\": 400}}, {\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"right\", \"panelKind\": \"right-tabs\"}}]}, \"float\": []}x"
+  },
+  {
+   "name": "schema huge",
+   "text": "{\"schemaVersion\": 1e400, \"sidebar\": {\"type\": \"pane\", \"id\": \"sessions\", \"panelKind\": \"session-list\", \"edge\": \"left\"}, \"content\": {\"type\": \"split\", \"id\": \"root\", \"direction\": \"row\", \"children\": [{\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"chat\", \"panelKind\": \"chat-main\", \"minWidth\": 400}}, {\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"right\", \"panelKind\": \"right-tabs\"}}]}, \"float\": []}"
+  },
+  {
+   "name": "extra huge",
+   "text": "{\"schemaVersion\": 1, \"sidebar\": {\"type\": \"pane\", \"id\": \"sessions\", \"panelKind\": \"session-list\", \"edge\": \"left\"}, \"content\": {\"type\": \"split\", \"id\": \"root\", \"direction\": \"row\", \"children\": [{\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"chat\", \"panelKind\": \"chat-main\", \"minWidth\": 400}}, {\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"right\", \"panelKind\": \"right-tabs\"}}]}, \"float\": [], \"huge\": [1e400, -1e999, 12345678901234567890]}"
+  },
+  {
+   "name": "fraction huge",
+   "text": "{\"schemaVersion\": 1, \"sidebar\": {\"type\": \"pane\", \"id\": \"sessions\", \"panelKind\": \"session-list\", \"edge\": \"left\"}, \"content\": {\"type\": \"split\", \"id\": \"root\", \"direction\": \"row\", \"children\": [{\"fraction\": 1e400, \"node\": {\"type\": \"pane\", \"id\": \"chat\", \"panelKind\": \"chat-main\", \"minWidth\": 400}}, {\"fraction\": 0.5, \"node\": {\"type\": \"pane\", \"id\": \"right\", \"panelKind\": \"right-tabs\"}}]}, \"float\": []}"
+  }
+ ],
+ "ops": [
+  {
+   "name": "collapse right",
+   "base": "default",
+   "op": "setPaneCollapsed",
+   "args": [
+    "right",
+    true
+   ]
+  },
+  {
+   "name": "collapse sidebar",
+   "base": "three",
+   "op": "setPaneCollapsed",
+   "args": [
+    "sessions",
+    true
+   ]
+  },
+  {
+   "name": "collapse chat",
+   "base": "default",
+   "op": "setPaneCollapsed",
+   "args": [
+    "chat",
+    true
+   ]
+  },
+  {
+   "name": "collapse missing",
+   "base": "default",
+   "op": "setPaneCollapsed",
+   "args": [
+    "nope",
+    true
+   ]
+  },
+  {
+   "name": "open ghost",
+   "base": "three",
+   "op": "setPaneCollapsed",
+   "args": [
+    "ghost-b",
+    false
+   ]
+  },
+  {
+   "name": "collapse single",
+   "base": "single",
+   "op": "setPaneCollapsed",
+   "args": [
+    "chat",
+    false
+   ]
+  },
+  {
+   "name": "fraction root",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    0,
+    0.3
+   ]
+  },
+  {
+   "name": "fraction three",
+   "base": "three",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "fraction column",
+   "base": "three",
+   "op": "setSplitChildFraction",
+   "args": [
+    "ghost-col",
+    0,
+    0.75
+   ]
+  },
+  {
+   "name": "fraction tiny",
+   "base": "relay",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    3,
+    0.01
+   ]
+  },
+  {
+   "name": "fraction 0",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    0,
+    0
+   ]
+  },
+  {
+   "name": "fraction 1",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    0,
+    1
+   ]
+  },
+  {
+   "name": "fraction NaN",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    0,
+    "NaN"
+   ]
+  },
+  {
+   "name": "fraction missing split",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "nope",
+    0,
+    0.3
+   ]
+  },
+  {
+   "name": "fraction range",
+   "base": "default",
+   "op": "setSplitChildFraction",
+   "args": [
+    "root",
+    5,
+    0.3
+   ]
+  },
+  {
+   "name": "fraction pane split",
+   "base": "single",
+   "op": "setSplitChildFraction",
+   "args": [
+    "chat",
+    0,
+    0.3
+   ]
+  },
+  {
+   "name": "swap",
+   "base": "default",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "chat-main",
+    "right-tabs"
+   ]
+  },
+  {
+   "name": "swap column",
+   "base": "three",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "ghost:b",
+    "chat-main"
+   ]
+  },
+  {
+   "name": "swap same",
+   "base": "three",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "ghost:a",
+    "ghost:b"
+   ]
+  },
+  {
+   "name": "swap missing a",
+   "base": "default",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "nope",
+    "chat-main"
+   ]
+  },
+  {
+   "name": "swap missing b",
+   "base": "default",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "chat-main",
+    "nope"
+   ]
+  },
+  {
+   "name": "swap single",
+   "base": "single",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "chat-main",
+    "right-tabs"
+   ]
+  },
+  {
+   "name": "swap nonrow",
+   "base": "nonrow",
+   "op": "swapRootSplitChildrenByKind",
+   "args": [
+    "chat-main",
+    "right-tabs"
+   ]
+  },
+  {
+   "name": "edge right",
+   "base": "three",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "right-tabs"
+   ]
+  },
+  {
+   "name": "edge ghost",
+   "base": "three",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "ghost:a"
+   ]
+  },
+  {
+   "name": "edge top",
+   "base": "column",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "tab-group:top"
+   ]
+  },
+  {
+   "name": "edge left",
+   "base": "relay",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "tab-group:left"
+   ]
+  },
+  {
+   "name": "edge bottom",
+   "base": "nonrow",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "right-tabs"
+   ]
+  },
+  {
+   "name": "edge missing",
+   "base": "default",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "nope"
+   ]
+  },
+  {
+   "name": "edge chat",
+   "base": "default",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "chat-main"
+   ]
+  },
+  {
+   "name": "edge sidebar",
+   "base": "default",
+   "op": "paneEdgeRelativeToChat",
+   "args": [
+    "session-list"
+   ]
+  },
+  {
+   "name": "child ghost",
+   "base": "three",
+   "op": "findSplitChildByPanelKind",
+   "args": [
+    "ghost:a"
+   ]
+  },
+  {
+   "name": "child chat",
+   "base": "default",
+   "op": "findSplitChildByPanelKind",
+   "args": [
+    "chat-main"
+   ]
+  },
+  {
+   "name": "child sidebar",
+   "base": "default",
+   "op": "findSplitChildByPanelKind",
+   "args": [
+    "session-list"
+   ]
+  },
+  {
+   "name": "child single",
+   "base": "single",
+   "op": "findSplitChildByPanelKind",
+   "args": [
+    "chat-main"
+   ]
+  },
+  {
+   "name": "ensure left default",
+   "base": "default",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left three",
+   "base": "three",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left column",
+   "base": "column",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left relay",
+   "base": "relay",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left single",
+   "base": "single",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left nonrow",
+   "base": "nonrow",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure left rowchat",
+   "base": "rowchat",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "ensure right default",
+   "base": "default",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right three",
+   "base": "three",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right column",
+   "base": "column",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right relay",
+   "base": "relay",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right single",
+   "base": "single",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right nonrow",
+   "base": "nonrow",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure right rowchat",
+   "base": "rowchat",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "right"
+   ]
+  },
+  {
+   "name": "ensure top default",
+   "base": "default",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top three",
+   "base": "three",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top column",
+   "base": "column",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top relay",
+   "base": "relay",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top single",
+   "base": "single",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top nonrow",
+   "base": "nonrow",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure top rowchat",
+   "base": "rowchat",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure bottom default",
+   "base": "default",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom three",
+   "base": "three",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom column",
+   "base": "column",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom relay",
+   "base": "relay",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom single",
+   "base": "single",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom nonrow",
+   "base": "nonrow",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure bottom rowchat",
+   "base": "rowchat",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "bottom"
+   ]
+  },
+  {
+   "name": "ensure taken",
+   "base": "taken",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "top"
+   ]
+  },
+  {
+   "name": "ensure taken left",
+   "base": "takenleft",
+   "op": "ensureTabGroupPane",
+   "args": [
+    "left"
+   ]
+  },
+  {
+   "name": "transfer",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "transfer to floor",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    1,
+    0,
+    0.45
+   ]
+  },
+  {
+   "name": "transfer past floor",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    1,
+    0,
+    0.4500001
+   ]
+  },
+  {
+   "name": "transfer negative",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    -0.2
+   ]
+  },
+  {
+   "name": "transfer edge",
+   "base": "edge",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    0.4089135021784424
+   ]
+  },
+  {
+   "name": "transfer 0",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "name": "transfer NaN",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    "NaN"
+   ]
+  },
+  {
+   "name": "transfer inf",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    1,
+    "Infinity"
+   ]
+  },
+  {
+   "name": "transfer same",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    1,
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "transfer missing",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "nope",
+    0,
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "transfer range",
+   "base": "default",
+   "op": "transferSplitFraction",
+   "args": [
+    "root",
+    0,
+    2,
+    0.1
+   ]
+  },
+  {
+   "name": "transfer column",
+   "base": "three",
+   "op": "transferSplitFraction",
+   "args": [
+    "ghost-col",
+    1,
+    0,
+    0.3
+   ]
+  },
+  {
+   "name": "relay",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     3
+    ],
+    1,
+    0.3
+   ]
+  },
+  {
+   "name": "relay one",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0
+    ],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay short",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0
+    ],
+    1,
+    0.3
+   ]
+  },
+  {
+   "name": "relay skip",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     3,
+     2
+    ],
+    1,
+    0.15
+   ]
+  },
+  {
+   "name": "relay exact",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     3
+    ],
+    1,
+    0.2999999998
+   ]
+  },
+  {
+   "name": "relay empty",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay to in sources",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     1
+    ],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay duplicate",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     3,
+     0
+    ],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay 0",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0
+    ],
+    1,
+    0
+   ]
+  },
+  {
+   "name": "relay negative",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0
+    ],
+    1,
+    -0.1
+   ]
+  },
+  {
+   "name": "relay range",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     9
+    ],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay to range",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0
+    ],
+    9,
+    0.1
+   ]
+  },
+  {
+   "name": "relay missing",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "nope",
+    [
+     0
+    ],
+    1,
+    0.1
+   ]
+  },
+  {
+   "name": "relay drained",
+   "base": "relay",
+   "op": "transferSplitFractionRelay",
+   "args": [
+    "root",
+    [
+     0,
+     3
+    ],
+    1,
+    0.4
+   ]
+  },
+  {
+   "name": "walk default",
+   "base": "default",
+   "op": "walkPanes",
+   "args": []
+  },
+  {
+   "name": "walk three",
+   "base": "three",
+   "op": "walkPanes",
+   "args": []
+  },
+  {
+   "name": "walk column",
+   "base": "column",
+   "op": "walkPanes",
+   "args": []
+  },
+  {
+   "name": "walk relay",
+   "base": "relay",
+   "op": "walkPanes",
+   "args": []
+  },
+  {
+   "name": "walk single",
+   "base": "single",
+   "op": "walkPanes",
+   "args": []
+  }
+ ],
+ "kinds": [
+  "right-tabs",
+  "tab-group:left",
+  "tab-group:right",
+  "tab-group:top",
+  "tab-group:bottom",
+  "tab-group:",
+  "ghost:x",
+  "tab-group:diag",
+  "chat-main"
+ ]
+}

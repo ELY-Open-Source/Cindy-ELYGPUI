@@ -36,17 +36,8 @@ fn bounds_of(fields: &Fields) -> Option<Bounds<Pixels>> {
     })
 }
 
-/// A number as JavaScript prints it: whole numbers without a fraction.
-fn num(value: f64) -> Value {
-    if value.fract() == 0.0 && value.abs() < 9e15 {
-        json!(value as i64)
-    } else {
-        json!(value)
-    }
-}
-
 fn bounds_json(b: Bounds<Pixels>) -> Value {
-    let n = |p: Pixels| num(f64::from(f32::from(p)));
+    let n = |p: Pixels| cindy_json::js_value(f64::from(f32::from(p)));
     json!({ "x": n(b.origin.x), "y": n(b.origin.y), "width": n(b.size.width), "height": n(b.size.height) })
 }
 
@@ -164,11 +155,11 @@ impl WindowState {
     /// `saveState`: `jsonfile` writes compact JSON and a newline.
     pub fn save(&self, user_data: &Path) -> Result<()> {
         let mut map = Map::new();
-        map.insert("width".into(), num(self.width));
-        map.insert("height".into(), num(self.height));
+        map.insert("width".into(), cindy_json::js_value(self.width));
+        map.insert("height".into(), cindy_json::js_value(self.height));
         if let (Some(x), Some(y)) = (self.x, self.y) {
-            map.insert("x".into(), num(x));
-            map.insert("y".into(), num(y));
+            map.insert("x".into(), cindy_json::js_value(x));
+            map.insert("y".into(), cindy_json::js_value(y));
         }
         map.insert("isMaximized".into(), json!(self.is_maximized));
         map.insert("isFullScreen".into(), json!(self.is_full_screen));
@@ -176,7 +167,6 @@ impl WindowState {
             map.insert("displayBounds".into(), bounds_json(display));
         }
         let path = user_data.join(FILE);
-        fs::create_dir_all(user_data)?;
         fs::write(&path, format!("{}\n", Value::Object(map)))
             .with_context(|| format!("write {}", path.display()))?;
         log::info!(target: "window-state", "saved {self:?}");

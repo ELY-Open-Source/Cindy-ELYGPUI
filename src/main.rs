@@ -2,6 +2,7 @@ mod activation_click;
 mod appearance_settings;
 mod cindy_json;
 mod i18n;
+mod layout_tree;
 mod locale;
 mod logger;
 mod main_window;
@@ -66,6 +67,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     )?;
     theme::shell::install(appearance, cx);
     theme::shell::follow_omarchy(&omarchy_dir, cx);
+    cx.set_global(layout_tree::LayoutStore::open(&startup.user_data));
     main_window::open(startup.user_data, startup.activation, cx)?;
     cx.activate(true);
     Ok(())
@@ -73,6 +75,8 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
 
 fn startup() -> Result<Startup> {
     let user_data = region::user_data_dir()?;
+    std::fs::create_dir_all(&user_data)
+        .with_context(|| format!("create {}", user_data.display()))?;
     logger::init(&user_data).context("logger failed to start")?;
     log::info!("region {} userData {}", region::REGION, user_data.display());
     let preferences =

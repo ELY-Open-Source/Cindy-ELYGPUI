@@ -88,7 +88,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   and writing the mirror would push the port's theme into Cindy's own Windows startup
   (Cindy's Windows maximize recovery after display changes works around Electron; whether gpui
   needs it is checked on the Windows runner in task 23.last)
-- [ ] 6.2 Layout tree as `shared/layoutTree.ts` (validate, coerce, every operation), matching Cindy's
+- [x] 6.2 Layout tree as `shared/layoutTree.ts` (validate, coerce, every operation), matching Cindy's
   own functions on golden fixtures; `layout.v1.json` read and written as `LayoutStore.ts` does
 - [ ] 6.3 The tree on screen: sidebar column, splits with resize handles saved on release, double-click
   on a divider to equalize its neighbors, fractions, preferred and minimum widths, drag a panel to

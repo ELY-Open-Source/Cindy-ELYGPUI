@@ -127,3 +127,9 @@ effort high, in a Herdr pane.
 - Round 2: FAIL. macOS reports Windowed while maximized. Fixed: normal needs Windowed and both
   flags off.
 - Round 3: PASS.
+
+## 6.2 Layout tree
+
+- Round 1: FAIL. `walkPanes` missing (collapsePrefs uses it); `js_number` took Rust's shortest
+  digits, not the closest. Fixed: `walk_panes`; closest digits, checked on 200k doubles.
+- Round 2: PASS.
