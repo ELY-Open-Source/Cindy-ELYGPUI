@@ -6,3 +6,7 @@ effort high, in a Herdr pane.
 ## 1.1 Crate, window, docs
 
 - Round 1: PASS. No findings.
+
+## 1.2 CI workflow
+
+- Round 1: PASS. No findings.

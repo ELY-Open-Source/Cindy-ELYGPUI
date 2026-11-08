@@ -7,7 +7,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 - [x] 1.1 Crate, Ely window, env logging, license, notice, `AGENTS.md`, PRD, this file; public repo
   `ELY-Open-Source/Cindy-ELYGPUI`, first push
-- [ ] 1.2 CI: fmt, clippy, test and build on Linux, macOS, Windows, x86_64 and arm64
+- [x] 1.2 CI: fmt, clippy, test and build on Linux, macOS, Windows, x86_64 and arm64
 - [ ] 1.3 CI green on all six targets
 
 ## 2. Logging and diagnostics

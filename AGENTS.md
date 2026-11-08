@@ -17,7 +17,9 @@ defines scope and what 1:1 means.
 ## Commands
 
 - `cargo run` opens the app.
-- `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`.
+- `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`. CI
+  (`.github/workflows/ci.yml`) runs them and a release build on Linux, macOS and Windows,
+  x86_64 and arm64.
 
 ## Rules
 
