@@ -121,8 +121,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `ContentHeader` spacer that makes room for the cluster
 - [ ] 6.8 Routes: chat and settings with back and forward history; the title bar's menu button
   (`MenuButton.tsx`) with Settings and mac's Exit Full Screen, its other items with their targets;
-  settings takes over the window, hiding the sidebar (and turning its hover peek off) and non-chat panels and unregistering edge
-  groups without changing the tree, and restores them on exit
+  settings takes over the window, hiding the sidebar (and turning its hover peek off) and non-chat
+  panels without changing the tree, and restores them on exit (edge groups with 9.1)
 - [ ] 6.9 Reduced motion zeroing every motion token, as `globals.css` does; window zoom and app icon
   from `appearance-settings.json`; the window material per family as
   `vibrancyConfig.ts` resolves it (Windows acrylic and mica, macOS vibrancy); wallpaper as Cindy shows it:
