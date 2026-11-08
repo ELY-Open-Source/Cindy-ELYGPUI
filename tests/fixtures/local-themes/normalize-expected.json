@@ -1,0 +1,243 @@
+[
+ {
+  "name": "fixture-external-import-missing-switch",
+  "colors": {
+   "surface": "#ffffff",
+   "surface-elevated": "#ffffff",
+   "surface-card-ivory": "#ffffff",
+   "surface-hover": "#f8f8f8",
+   "surface-hover-soft": "#ffffff",
+   "surface-on-card": "#ffffff",
+   "text-secondary": "#f0f0f0",
+   "text-placeholder": "#c4c4c4",
+   "border-default": "#dddddd",
+   "switch-track-off": "#8b8b8b",
+   "switch-thumb-off": "#ffffff"
+  }
+ },
+ {
+  "name": "fixture-legacy-placeholder",
+  "colors": {
+   "surface": "#fafafa",
+   "text-primary": "#111111",
+   "text-placeholder": "#c4c4c4"
+  }
+ },
+ {
+  "name": "fixture-unknown-colors",
+  "colors": {
+   "surface": "#101010",
+   "text-primary": "#eeeeee",
+   "my-plugin-accent": "#112233",
+   "future-slot-xyz": "var(--text-secondary)"
+  }
+ },
+ {
+  "name": "fixture-unknown-toplevel",
+  "colors": {
+   "surface": "#ffffff"
+  }
+ },
+ {
+  "name": "accent-hover-only",
+  "colors": {
+   "accent-hover": "#6a5acd",
+   "button-cta-hover": "var(--accent-hover)",
+   "button-cta-pressed": "oklch(from var(--button-cta-hover) calc(l - 0.04) c h)",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l - 0.04) c h)"
+  }
+ },
+ {
+  "name": "accent-hover-light-default",
+  "colors": {
+   "accent-hover": "#555555",
+   "button-cta-hover": "var(--accent-hover)",
+   "button-cta-pressed": "oklch(from var(--button-cta-hover) calc(l + 0.04) c h)",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l + 0.04) c h)"
+  }
+ },
+ {
+  "name": "accent-hover-near-black",
+  "colors": {
+   "accent-cta-bg-pure": "#202020",
+   "accent-hover": "#050505",
+   "button-cta-hover": "var(--accent-hover)",
+   "button-cta-pressed": "oklch(from var(--button-cta-hover) calc(l - 0.04) c h)",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l - 0.04) c h)"
+  }
+ },
+ {
+  "name": "accent-hover-lighter",
+  "colors": {
+   "accent-cta-bg-pure": "#202020",
+   "accent-hover": "#404040",
+   "button-cta-hover": "var(--accent-hover)",
+   "button-cta-pressed": "oklch(from var(--button-cta-hover) calc(l + 0.04) c h)",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l + 0.04) c h)"
+  }
+ },
+ {
+  "name": "accent-hover-aliased",
+  "colors": {
+   "accent-cta-bg-pure": "var(--text-primary)",
+   "accent-hover": "#555555",
+   "button-cta-hover": "var(--accent-hover)",
+   "button-cta-pressed": "oklch(from var(--button-cta-hover) calc(l + 0.04) c h)",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l + 0.04) c h)"
+  }
+ },
+ {
+  "name": "explicit-states",
+  "colors": {
+   "accent-hover": "#6a5acd",
+   "button-cta-hover": "#111111",
+   "button-cta-pressed": "#222222",
+   "confirm-btn-primary-hover": "var(--accent-hover)",
+   "confirm-btn-primary-pressed": "oklch(from var(--confirm-btn-primary-hover) calc(l - 0.04) c h)"
+  }
+ },
+ {
+  "name": "base-only",
+  "colors": {
+   "accent-cta-bg-pure": "#6a5acd"
+  }
+ },
+ {
+  "name": "connected-badge-legacy",
+  "colors": {
+   "settings-badge-connected": "var(--card-status-done)",
+   "settings-badge-connected-text": "var(--text-primary)"
+  }
+ },
+ {
+  "name": "connected-badge-migrated",
+  "colors": {
+   "settings-badge-connected": "var(--card-status-done)",
+   "settings-badge-connected-text": "var(--text-primary)"
+  }
+ },
+ {
+  "name": "connected-badge-custom",
+  "colors": {
+   "settings-badge-connected": "#123456"
+  }
+ },
+ {
+  "name": "placeholder-from-settings",
+  "colors": {
+   "surface": "#ffffff",
+   "text-placeholder": "#aaaaaa"
+  }
+ },
+ {
+  "name": "placeholder-from-chat",
+  "colors": {
+   "text-placeholder": "#bbbbbb"
+  }
+ },
+ {
+  "name": "placeholder-present",
+  "colors": {
+   "text-placeholder": "#999999",
+   "chat-input-placeholder": "#bbbbbb"
+  }
+ },
+ {
+  "name": "switch-light",
+  "colors": {
+   "surface": "#ffffff",
+   "surface-elevated": "#ffffff",
+   "surface-card-ivory": "#ffffff",
+   "surface-hover": "#f8f8f8",
+   "surface-hover-soft": "#ffffff",
+   "surface-on-card": "#ffffff",
+   "text-secondary": "#f0f0f0",
+   "text-placeholder": "#c4c4c4",
+   "switch-track-off": "#8b8b8b",
+   "switch-thumb-off": "#ffffff"
+  }
+ },
+ {
+  "name": "switch-dark",
+  "colors": {
+   "surface": "#000000",
+   "surface-elevated": "#050505",
+   "surface-card-ivory": "#050505",
+   "surface-hover": "#0a0a0a",
+   "surface-hover-soft": "#0a0a0a",
+   "surface-on-card": "#000000",
+   "text-secondary": "#101010",
+   "text-placeholder": "#666666",
+   "switch-track-off": "#626262",
+   "switch-thumb-off": "#000000"
+  }
+ },
+ {
+  "name": "switch-explicit",
+  "colors": {
+   "switch-track-off": "#777777",
+   "switch-thumb-off": "#ffffff",
+   "text-secondary": "#f0f0f0"
+  }
+ },
+ {
+  "name": "switch-incomplete",
+  "colors": {
+   "surface": "#ffffff",
+   "surface-on-card": "var(--surface-elevated)",
+   "text-secondary": "#f0f0f0"
+  }
+ },
+ {
+  "name": "switch-unsolvable",
+  "colors": {
+   "surface": "#000000",
+   "surface-elevated": "#ffffff",
+   "surface-card-ivory": "#ffffff",
+   "surface-hover": "#777777",
+   "surface-hover-soft": "#777777",
+   "surface-on-card": "#ffffff",
+   "border-default": "#555555",
+   "text-secondary": "#777777",
+   "switch-track-off": "#555555",
+   "switch-thumb-off": "#000000"
+  }
+ },
+ {
+  "name": "login-snapshot-light",
+  "colors": {
+   "surface": "#111111",
+   "login-control-bg": "#123456"
+  }
+ },
+ {
+  "name": "login-older-dark",
+  "colors": {}
+ },
+ {
+  "name": "login-rgba-spelling",
+  "colors": {}
+ },
+ {
+  "name": "login-cross-mode",
+  "colors": {
+   "login-panel-bg": "#FBFBFB"
+  }
+ },
+ {
+  "name": "login-sparse",
+  "colors": {
+   "login-panel-bg": "#FBFBFB",
+   "login-secondary-text": "#6F6F6F"
+  }
+ },
+ {
+  "name": "login-rgba-trailing-zero",
+  "colors": {}
+ }
+]

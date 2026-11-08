@@ -60,6 +60,8 @@ try {
     fs.writeFileSync(path.join(out, 'builtin', `${theme.id}.json`), `${JSON.stringify(theme, null, 1)}\n`);
   }
   for (const [name, from] of pngs) fs.copyFileSync(from, path.join(out, 'assets', name));
+  const legacy = JSON.parse(fs.readFileSync(path.join(themesDir, 'loginLegacyDefaults.json'), 'utf8'));
+  fs.writeFileSync(path.join(out, 'login-legacy-defaults.json'), `${JSON.stringify(legacy.defaults, null, 1)}\n`);
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(out, 'COMMIT'), `${full}\n`);
   console.log(`themes from ${full}: ${registry.length} tokens, ${themes.length} built-ins, ${pngs.size} assets`);

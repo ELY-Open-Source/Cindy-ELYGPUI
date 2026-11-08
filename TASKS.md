@@ -64,7 +64,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 5.4 `shared/theme-import/` color, palette, protected-token and VS Code conversion as pure
   functions, with the cases of Cindy's tests for them (moved ahead of local themes, which normalize
   through it; Obsidian conversion goes to chapter 12 with the import button, its only caller)
-- [ ] 5.5 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (legacy
+- [x] 5.5 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (legacy
   `~/.xdmaker/themes` move, `-local` ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
 - [ ] 5.6 The Omarchy live theme as `main/local-themes/omarchy.ts` does it: family `omarchy` from the
   current Omarchy theme through 5.4's VS Code converter, retinted on each switch

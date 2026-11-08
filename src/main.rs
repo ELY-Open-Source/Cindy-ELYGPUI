@@ -80,7 +80,14 @@ fn open(cx: &mut App, translator: Translator, theme: (theme::Mode, Option<String
     ely_gpui_component::init(cx).context("Ely failed to start")?;
     cx.set_global(I18n::new(translator.ely_tag()));
     cx.set_global(translator);
-    let appearance = Appearance::new(theme.0, theme.1.as_deref(), os_appearance::initial(cx))?;
+    let home = dirs::home_dir().context("this user has no home folder")?;
+    let local_dir = theme::local::dir(&home);
+    let appearance = Appearance::new(
+        theme.0,
+        theme.1.as_deref(),
+        os_appearance::initial(cx),
+        Some(&local_dir),
+    )?;
     log_theme(&appearance);
     let mode = ely_mode(appearance.kind());
     Theme::set_palette(mode, Some(theme::ely::palette(&appearance)), cx);

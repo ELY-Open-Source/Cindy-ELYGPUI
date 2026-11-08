@@ -1,8 +1,10 @@
 mod css;
 pub mod ely;
+pub mod local;
+mod normalize;
 mod oklch;
 
-use std::collections::HashMap;
+use std::{collections::HashMap, path::Path};
 
 use anyhow::{Context as _, Result, bail};
 use gpui::{Rgba, WindowAppearance};
@@ -21,7 +23,16 @@ pub struct ThemeData {
     pub id: String,
     #[serde(rename = "type")]
     pub kind: Kind,
+    #[serde(default)]
+    pub family: Option<String>,
     pub colors: HashMap<String, String>,
+}
+
+/// Cindy's `ThemeFamily`: at most one light and one dark variant.
+pub struct Family {
+    pub id: String,
+    pub light: Option<ThemeData>,
+    pub dark: Option<ThemeData>,
 }
 
 #[derive(Deserialize)]
@@ -110,76 +121,94 @@ impl Mode {
     }
 }
 
-/// The registry and the built-in themes.
+/// The registry and every family: built-in first, then local, as Cindy lists them.
 pub struct Themes {
     defaults: HashMap<String, (Option<String>, Option<String>)>,
-    builtins: Vec<ThemeData>,
+    families: Vec<Family>,
 }
 
 /// The theme on screen: its family, and whether it stood in for the other type.
 pub struct Active {
-    pub family: &'static str,
+    pub family: String,
     pub theme: ThemeData,
     pub fallback: bool,
 }
 
 impl Themes {
-    pub fn load() -> Result<Self> {
+    /// The built-in themes, plus the local ones when `local_dir` is given.
+    pub fn load(local_dir: Option<&Path>) -> Result<Self> {
         let registry: Vec<RegistryEntry> =
             serde_json::from_str(REGISTRY).context("themes/registry.json")?;
+        let defaults = registry
+            .into_iter()
+            .map(|d| (d.id, (d.light, d.dark)))
+            .collect();
         let builtins = BUILTINS
             .iter()
             .map(|raw| serde_json::from_str(raw).context("themes/builtin"))
             .collect::<Result<Vec<ThemeData>>>()?;
-        Ok(Self {
-            defaults: registry
-                .into_iter()
-                .map(|d| (d.id, (d.light, d.dark)))
-                .collect(),
-            builtins,
-        })
-    }
-
-    fn builtin(&self, id: &str) -> Result<&ThemeData> {
-        self.builtins
+        let builtin = |id: Option<&str>| -> Result<Option<ThemeData>> {
+            id.map(|id| {
+                builtins
+                    .iter()
+                    .find(|t| t.id == id)
+                    .cloned()
+                    .with_context(|| format!("no built-in theme {id}"))
+            })
+            .transpose()
+        };
+        let mut families = FAMILIES
             .iter()
-            .find(|t| t.id == id)
-            .with_context(|| format!("no built-in theme {id}"))
+            .map(|&(id, _, light, dark)| {
+                Ok(Family {
+                    id: id.to_owned(),
+                    light: builtin(light)?,
+                    dark: builtin(dark)?,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        if let Some(dir) = local_dir {
+            match local::load(dir, &defaults) {
+                Ok(loaded) => families.extend(local_families(loaded.themes)),
+                Err(error) => {
+                    log::error!(target: "local-themes", "Failed to scan local themes: {error:#}")
+                }
+            }
+        }
+        Ok(Self { defaults, families })
     }
 
     /// The family for a saved id; an unknown one falls back to the default.
-    pub fn family(family_id: Option<&str>) -> &'static str {
+    pub fn family(&self, family_id: Option<&str>) -> String {
         let Some(id) = family_id else {
-            return DEFAULT_FAMILY;
+            return DEFAULT_FAMILY.to_owned();
         };
-        match FAMILIES.iter().find(|f| f.0 == id) {
-            Some(found) => found.0,
-            None => {
-                log::warn!(target: "theme", "ignored unknown theme family {id:?}");
-                DEFAULT_FAMILY
-            }
+        if self.families.iter().any(|f| f.id == id) {
+            return id.to_owned();
         }
+        log::warn!(target: "theme", "ignored unknown theme family {id:?}");
+        DEFAULT_FAMILY.to_owned()
     }
 
     /// Cindy's `resolveFamilyVariant`.
-    pub fn active(&self, family: &'static str, mode: Mode, os: WindowAppearance) -> Result<Active> {
-        let &(id, _, light, dark) = FAMILIES
+    pub fn active(&self, family: &str, mode: Mode, os: WindowAppearance) -> Result<Active> {
+        let found = self
+            .families
             .iter()
-            .find(|f| f.0 == family)
+            .find(|f| f.id == family)
             .with_context(|| format!("no theme family {family}"))?;
-        let wanted = mode.kind(os);
-        let (preferred, other) = match wanted {
-            Kind::Light => (light, dark),
-            Kind::Dark => (dark, light),
+        let (preferred, other) = match mode.kind(os) {
+            Kind::Light => (&found.light, &found.dark),
+            Kind::Dark => (&found.dark, &found.light),
         };
-        let (theme_id, fallback) = match (preferred, other) {
+        let (theme, fallback) = match (preferred, other) {
             (Some(theme), _) => (theme, false),
             (None, Some(theme)) => (theme, true),
-            (None, None) => bail!("theme family {id} has no variants"),
+            (None, None) => bail!("theme family {family} has no variants"),
         };
         Ok(Active {
-            family: id,
-            theme: self.builtin(theme_id)?.clone(),
+            family: found.id.clone(),
+            theme: theme.clone(),
             fallback,
         })
     }
@@ -224,11 +253,41 @@ impl Themes {
     }
 }
 
+/// Cindy's `buildLocalFamilies`: grouped by `family` key, first of each type kept.
+fn local_families(themes: Vec<ThemeData>) -> Vec<Family> {
+    let mut families: Vec<Family> = Vec::new();
+    for theme in themes {
+        let key = match &theme.family {
+            Some(family) => format!("{family}{}", local::SUFFIX),
+            None => theme.id.clone(),
+        };
+        let index = match families.iter().position(|f| f.id == key) {
+            Some(index) => index,
+            None => {
+                families.push(Family {
+                    id: key,
+                    light: None,
+                    dark: None,
+                });
+                families.len() - 1
+            }
+        };
+        let slot = match theme.kind {
+            Kind::Light => &mut families[index].light,
+            Kind::Dark => &mut families[index].dark,
+        };
+        if slot.is_none() {
+            *slot = Some(theme);
+        }
+    }
+    families
+}
+
 /// The theme preferences and what they resolve to now.
 pub struct Appearance {
     pub themes: Themes,
     pub mode: Mode,
-    pub family: &'static str,
+    pub family: String,
     os: WindowAppearance,
     gpui_agrees: bool,
     pub active: Active,
@@ -241,11 +300,12 @@ impl Appearance {
         mode: Mode,
         family_id: Option<&str>,
         initial: crate::os_appearance::Initial,
+        local_dir: Option<&Path>,
     ) -> Result<Self> {
         let os = initial.os;
-        let themes = Themes::load()?;
-        let family = Themes::family(family_id);
-        let active = themes.active(family, mode, os)?;
+        let themes = Themes::load(local_dir)?;
+        let family = themes.family(family_id);
+        let active = themes.active(&family, mode, os)?;
         Ok(Self {
             themes,
             mode,
@@ -267,7 +327,7 @@ impl Appearance {
             return Ok(false);
         }
         self.os = os;
-        self.active = self.themes.active(self.family, self.mode, os)?;
+        self.active = self.themes.active(&self.family, self.mode, os)?;
         Ok(true)
     }
 

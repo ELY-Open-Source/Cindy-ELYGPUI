@@ -95,3 +95,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Whitespace was ASCII-only; Cindy splits and trims with ECMAScript whitespace.
   Fixed with js_space/js_trim; cases checked against Cindy's parseCssColor.
 - Round 2: PASS.
+
+## 5.5 Local themes
+
+- Round 1: PASS.
