@@ -153,7 +153,28 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 7. Mock mode
 
-- [ ] 7.0 Expand from Cindy's code
+- [x] 7.0 Expand from Cindy's code (`docs/dev-rules/ui-mock-data.md`, `main/index.ts` startup,
+  `main/devCliFlags.ts`, `main/localDb/uiMockSeed.ts`, `maker-shared/uiMock.ts`,
+  `uiMockShowcase.ts`). Cindy's mock mode is a source run in an isolated sandbox
+  (`XDT_UI_MOCK=1` with `--isolated=ui-mock`, set by its restart script). A profile with no saved
+  mode starts account-free (`startFreshProfileInLocalMode`); any saved choice wins. Each time the
+  local database is ready for the account-free owner (`LOCAL_DATA_OWNER_ID`) with the gate on, the
+  seed runs and never blocks startup (`uiMockSeed.ts`): demo project files under
+  `ui-mock/projects/` are written only where absent, missing catalog tasks are inserted
+  (`onConflictDoNothing`), so a deleted one returns and renamed or archived ones stay, messages go
+  only to new tasks and to catalog tasks with no message row at all (an interrupted seed), so a
+  deleted message's tombstone stays deleted. That needs chapter 8's database and chapter 13's
+  local mode, so the gate, the local start and the seed go to 13.0; the restart script is Cindy's
+  dev tooling, not the app. Mobile's mock is out of scope
+- [ ] 7.1 Dev profiles as `devCliFlags.ts` resolves them, in debug builds only (a source run;
+  release builds keep the region folder): `--isolated` / `--isolated=<name>` and `XDT_ISOLATED` /
+  `XDT_ISOLATED_NAME` (names `[A-Za-z0-9_-]{1,32}`; a bad name warns and uses the default
+  sandbox), the `<userData>-dev2[-<name>]` sandbox, `XDT_USER_DATA_DIR` with
+  `XDT_USER_DATA_DIR_EPOCH`, the profile kind (production-shared, isolated-sandbox, custom) by
+  canonical path, case-insensitive volumes included, and the refusal to run `--isolated` on an
+  official profile; the keychain identity marker, device id override and `--endpoints-cdn` go to
+  13.0, `--passive` to 15.0, the profile-kind flags to the stores that read them (8.0 database,
+  13.0 auth, 21.0 IM)
 
 ## 8. Sessions
 
@@ -164,7 +185,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   sessions sections; the router as `router.tsx` declares it (hash history with back and forward,
   `MainEntryRedirect`, `CCAgentIndexRedirect`, `useActiveMainView`); the Automations row lands
   with chapter 15, the Plugins row and plugin entries
-  with chapter 16, owner-scoped storage (`sidebarOwnerStorage.ts`) with chapter 13
+  with chapter 16, owner-scoped storage (`sidebarOwnerStorage.ts`) with chapter 13; the database
+  migration's official shared-profile flag (from 7.1)
 
 ## 9. Chat view
 
@@ -203,7 +225,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 13. Account and region
 
 - [ ] 13.0 Expand from Cindy's code, with official wallpaper downloads (`wallpaper-video.ts`, from
-  6.9e2), the sidebar's owner-scoped storage and its legacy claims,
+  6.9e2), the mock mode's gate, account-free start and seed (from 7.0), the dev keychain identity
+  marker, isolated device id and `--endpoints-cdn` (from 7.1), the sidebar's owner-scoped storage and its legacy claims,
   log upload and redaction, and the database admission in `docs/storage.md` (reader lease,
   read-only migration check, `cjk_seg`)
 
@@ -213,7 +236,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 15. Automations
 
-- [ ] 15.0 Expand from Cindy's code, with the sidebar's Automations row
+- [ ] 15.0 Expand from Cindy's code, with the sidebar's Automations row and the dev `--passive`
+  scheduler with its shared-profile flag (from 7.1)
 
 ## 16. Plugins
 
@@ -237,7 +261,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 21. IM channels
 
-- [ ] 21.0 Expand from Cindy's code
+- [ ] 21.0 Expand from Cindy's code, with the passive dev profile's IM announcement gate (from 7.1)
 
 ## 22. Desktop extras
 

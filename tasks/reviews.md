@@ -251,3 +251,9 @@ effort high, in a Herdr pane.
 
 - Round 1: FAIL. COM and Media Foundation started per decoder thread, never shut down.
 - Round 2: PASS. Drop guards undo each successful start in reverse order.
+
+## 7.0 Mock mode plan
+
+- Round 1: FAIL. The moved seed lacked the fresh-profile local start, the owner gate and the
+  repeat, missing-only seed rules.
+- Round 2: PASS.
