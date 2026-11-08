@@ -854,10 +854,12 @@ dependencies = [
  "ely-gpui-component",
  "gpui-pre",
  "gpui-pre-platform",
+ "icu_locale_core",
  "jiff",
  "log",
  "regex",
  "serde_json",
+ "sys-locale",
  "tempfile",
 ]
 

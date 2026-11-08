@@ -59,3 +59,7 @@ effort high, in a Herdr pane.
 ## 4.1 Locale files
 
 - Round 1: PASS.
+
+## 4.2 Locale choice
+
+- Round 1: PASS.
