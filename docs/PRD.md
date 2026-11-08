@@ -66,3 +66,4 @@ read from Cindy's code and rule docs for that area.
 - Cindy's mobile app.
 - Dev-build console helpers on `window`, such as `__cindyLayout`: Rust has no DevTools console.
 - Code Cindy's app never imports, such as `layout/PanelDragPrototype.tsx`.
+- Cindy exports no production code calls, such as `clearPanelCollapsedRecord`.

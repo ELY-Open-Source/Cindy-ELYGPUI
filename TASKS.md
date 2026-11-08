@@ -103,20 +103,19 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
-- [ ] 6.4 Panel registry: `session-list`, `chat-main`, `right-tabs` registered, content left to their
-  chapters; collapse scopes as `layout/collapsePrefs.ts`: global for the sidebar in the tree with the
-  legacy `sidebar-collapsed` migration, per session for `right-tabs` under
-  `right-sidebar-collapsed:<sessionId>`, none for `chat-main`
 - [ ] 6.5 Title bar: window controls per platform, sidebar toggle, back and forward (`DESIGN.md` §14.6);
   the pane placement signals panels read (`panePlacement.tsx`: at window top, at window left, fill)
 - [ ] 6.6 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
   double-click reset; New, Automations, Plugins, Search, More with order, top-level or More placement
   and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
-  sessions sections as frames that chapters 8 and 14 fill
+  sessions sections as frames that chapters 8 and 14 fill; its collapse kept in the tree as
+  `collapsePrefs.ts` does for `session-list` (global), with the legacy `sidebar-collapsed` migration
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
   place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
-  trigger is `TabGroupPanel.tsx`); the window grows and shrinks
+  trigger is `TabGroupPanel.tsx`); the panel registry as `panels/registry.ts` keeps it (built-in
+  kinds with their collapse memory, tab group kinds registered, unregistered and parked); `right-tabs`
+  collapse per session under `right-sidebar-collapsed:<sessionId>`; the window grows and shrinks
   as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
 - [ ] 6.8 Routes: chat and settings with back and forward history; settings takes over the window,

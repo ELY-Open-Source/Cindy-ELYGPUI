@@ -159,3 +159,9 @@ effort high, in a Herdr pane.
 ## 6.3e Temporary maximize
 
 - Moved into 6.7: its only trigger is `TabGroupPanel.tsx`; built alone it would be dead code.
+
+## 6.4 Panel registry
+
+- Spread to first callers: registry and per-session collapse to 6.7 (`tabGroupPanes.ts`),
+  sidebar collapse and the legacy migration to 6.6 (`MainLayout.tsx`). `clearPanelCollapsedRecord`
+  has no caller in Cindy and is not ported.
