@@ -36,6 +36,7 @@ fn apply(cx: &mut App) {
     let (kind, palette) = (appearance.kind(), ely::palette(appearance));
     Theme::set_palette(ely_mode(kind), Some(palette), cx);
     Theme::set_mode(ely_mode(kind), cx);
+    crate::dock_icon::apply(cx);
     cx.refresh_windows();
 }
 

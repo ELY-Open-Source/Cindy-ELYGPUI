@@ -14,6 +14,28 @@ pub struct Settings {
     pub code_family: String,
     pub ui_size: f64,
     pub window_zoom: f64,
+    pub app_icon: AppIcon,
+}
+
+/// `APP_ICONS`: the macOS Dock icon choices.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AppIcon {
+    Default,
+    Cat,
+    Wordmark,
+    Mark,
+}
+
+impl AppIcon {
+    /// `isAppIcon`, else the default.
+    fn parse(value: Option<&str>) -> Self {
+        match value {
+            Some("cat") => Self::Cat,
+            Some("wordmark") => Self::Wordmark,
+            Some("mark") => Self::Mark,
+            _ => Self::Default,
+        }
+    }
 }
 
 /// `clampAppearanceWindowZoom`: 0.5 to 3 in steps of 0.1, rounded to two places.
@@ -49,6 +71,7 @@ pub fn read(user_data: &Path) -> Settings {
         code_family: family(&fields, "codeFamily"),
         ui_size,
         window_zoom: window_zoom(number(fields.get("windowZoom").map(AsRef::as_ref))),
+        app_icon: AppIcon::parse(string(fields.get("appIcon").map(AsRef::as_ref)).as_deref()),
     };
     log::info!(target: "appearance-settings-store", "appearance settings loaded: {settings:?}");
     settings
@@ -69,7 +92,7 @@ pub fn first_family(list: &str) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{Settings, first_family, read, window_zoom};
+    use super::{AppIcon, Settings, first_family, read, window_zoom};
 
     #[test]
     fn reads_cindy_overrides_and_survives_bad_files() {
@@ -80,6 +103,7 @@ mod tests {
             code_family: String::new(),
             ui_size: 14.0,
             window_zoom: 1.0,
+            app_icon: AppIcon::Default,
         };
         assert_eq!(read(dir.path()), defaults);
         std::fs::write(&file, r#"{"uiSize": 30.4, "uiFamily": "  \"IBM Plex Sans\", sans-serif ", "wallpaperVisibility": 0.2}"#).unwrap();
@@ -112,6 +136,10 @@ mod tests {
         assert_eq!(first_family("  "), None);
         std::fs::write(&file, r#"{"windowZoom": 1.25}"#).unwrap();
         assert_eq!(read(dir.path()).window_zoom, 1.3);
+        std::fs::write(&file, r#"{"appIcon": "mark"}"#).unwrap();
+        assert_eq!(read(dir.path()).app_icon, AppIcon::Mark);
+        std::fs::write(&file, r#"{"appIcon": "Mark"}"#).unwrap();
+        assert_eq!(read(dir.path()).app_icon, AppIcon::Default);
     }
 
     /// Values from Cindy's `clampAppearanceWindowZoom`, run in node.

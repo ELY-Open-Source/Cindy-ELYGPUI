@@ -97,6 +97,12 @@ defines scope and what 1:1 means.
   `px`, unless the value is a painted bound or a native window measure. gpui's `border_*_1()`
   helpers are fixed pixels: write `border_b(css(1.0))`. `Appearance::shadow_token(id, cx)` scales
   shadow lengths by the zoom.
+- Dock icon: `src/dock_icon.rs` ports `app-icon.ts`. `appIcon` from `appearance-settings.json`
+  picks artwork under `resources/` (Cindy's files) for the active theme's light or dark, set
+  through `NSApplication.setApplicationIconImage` at startup and on each theme apply. A bundle
+  keeps its own icon for `default` until another replaced it. Other platforms do nothing, as
+  Cindy. The full crate does not cross-compile from Linux; macOS code is checked in a scratch
+  crate and by the macOS CI test `every_artwork_is_embedded`.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

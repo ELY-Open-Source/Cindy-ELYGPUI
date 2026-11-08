@@ -3,6 +3,7 @@ mod app_shortcuts;
 mod appearance_settings;
 mod chrome;
 mod cindy_json;
+mod dock_icon;
 mod i18n;
 mod layout_root;
 mod layout_tree;
@@ -80,6 +81,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
         Some(sources),
     )?;
     theme::shell::install(appearance, cx);
+    dock_icon::install(startup.appearance.app_icon, cx);
     theme::shell::follow_omarchy(&omarchy_dir, cx);
     cx.set_global(layout_tree::LayoutStore::open(&startup.user_data));
     cx.set_global(app_shortcuts::AppShortcuts::load(&startup.user_data));

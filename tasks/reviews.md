@@ -215,3 +215,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. gpui's `border_*_1()` helpers are fixed pixels, so borders did not zoom; shadow
   lengths did not zoom either.
 - Round 2: PASS. Borders use `css(1.0)`; `shadow_token` scales by the zoom.
+
+## 6.9c Dock icon
+
+- Round 1: PASS.
