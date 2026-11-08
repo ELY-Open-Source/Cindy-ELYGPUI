@@ -205,14 +205,17 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   pragmas `openWithPragmas` sets, `cjk_seg` and its TEMP triggers (`registerCjkSeg.ts`,
   `cjkSeg.ts`), file mode `0600`; queries off the main thread, as Cindy's worker does; a refused or
   missing database is shown, never repaired
-- [ ] 8.3 The list as `local-db:sessions:list` serves it: first, once per owner, the sweep of
+- [x] 8.3 The list as `local-db:sessions:list` serves it: first, once per owner, the sweep of
   leftover provisional tasks (`sweepLeftoverProvisionalSessions` with `provisional-sessions.json`:
   hard-delete only unsent rows with no messages, keep other owners' entries, remove only an empty
   Cindy-managed dialogue folder; creating and marking provisional tasks lands with chapter 9);
-  then `selectSessionListRows` (`updated_at DESC, id DESC`, the `before {updatedAt, id}` keyset,
-  `ordinaryTaskListFilter`, preview and message count from
-  `projectSessionReadResult`), the `active`, `archived` and `all` buckets of `sessionsStore.ts`, and
-  rows written by Cindy while both run, picked up as its push events would
+  then `selectSessionListRows` (`updated_at DESC, id DESC`, `ordinaryTaskListFilter`; the
+  `before {updatedAt, id}` keyset waits for a caller, since the sidebar store reads its first 1000),
+  the `active`, `archived` and `all` buckets of `sessionsStore.ts`, and
+  rows written by Cindy while both run, picked up as its push events would, shown
+  in the main list's `flat` group-by mode (`sidebarFilterCore.ts`) with a row's title and time, so
+  the data has its first reader here; the list projection backfill and pinned-summary backfill are
+  Cindy's write-side caches and stay Cindy's
 - [ ] 8.4 The Pinned section as `PinnedSection.tsx` draws it (`pinned_at`, the pinned order of
   `owners/<key>/sidebar-settings.json`, drag reorder, text, card and list views) and the main list
   as `ProjectsSection.tsx`, `ProjectNode.tsx`, `DialogueSection.tsx`, `UnclassifiedSection.tsx` and
@@ -222,7 +225,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [ ] 8.5 A session row as `SessionItem.tsx` and `SessionInfoMeta` show it (status icon and
   attention dot, title, the chosen meta fields, hover archive) and the card as `SessionCard.tsx`;
   rename by double click, archive (which unpins), delete (soft, `status = deleted`), pin and the
-  `SessionTaskMenu`, written as `sessionService.ts` patches them
+  `SessionTaskMenu`, written as `sessionService.ts` patches them; with the card, the preview
+  (`sessionToCamel`, `markdownPreviewText`) and message count of `projectSessionReadResult`
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),

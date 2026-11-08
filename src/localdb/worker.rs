@@ -17,7 +17,15 @@ type Job = Box<dyn FnOnce(&Connection) + Send>;
 /// A handle to the database thread; dropping the last one closes the connection and the lease.
 #[derive(Clone)]
 pub struct Db {
-    _jobs: mpsc::Sender<Job>,
+    jobs: mpsc::Sender<Job>,
+    /// Which open this is, so a reopened database is told apart.
+    open: u64,
+}
+
+impl PartialEq for Db {
+    fn eq(&self, other: &Self) -> bool {
+        self.open == other.open
+    }
 }
 
 /// `runOptimize`: failures only log.
@@ -56,6 +64,23 @@ impl Db {
                 }
                 log::info!(target: "localDb", "local database closed");
             })?;
-        Ok(Self { _jobs: jobs })
+        static OPENS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+        let open = OPENS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        Ok(Self { jobs, open })
+    }
+
+    /// Runs `job` on the database thread; the answer is dropped if the thread has stopped.
+    pub fn call<R: Send + 'static>(
+        &self,
+        job: impl FnOnce(&Connection) -> R + Send + 'static,
+    ) -> futures::channel::oneshot::Receiver<R> {
+        let (reply, answer) = futures::channel::oneshot::channel();
+        let job = Box::new(move |db: &Connection| {
+            let _ = reply.send(job(db));
+        });
+        if self.jobs.send(job).is_err() {
+            log::error!(target: "localDb", "the database thread has stopped");
+        }
+        answer
     }
 }

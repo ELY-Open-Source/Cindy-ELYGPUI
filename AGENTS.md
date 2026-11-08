@@ -24,6 +24,10 @@ defines scope and what 1:1 means.
   then `admission.rs` against `resources/migration-manifest.json` (Cindy's 149 migrations, also
   from `sync-golden.mjs`). The connection and its lease live on one thread (`worker.rs`). Any
   refusal shows `fatal.rs`, Cindy's `LocalDbFatalScreen`, above everything.
+- Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
+  first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
+  reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher
+  on the database and its WAL reloads, single-flight. `flat.rs` draws the `flat` group-by mode.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

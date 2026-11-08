@@ -22,9 +22,7 @@ pub enum State {
     /// No owner this chapter can open (signed out or cloud, chapter 13).
     NoOwner,
     Opening,
-    Ready {
-        _db: Db,
-    },
+    Ready(Db),
     Failed(Fatal),
 }
 
@@ -35,6 +33,13 @@ pub struct LocalDb {
 }
 
 impl gpui::Global for LocalDb {}
+
+impl LocalDb {
+    /// The database this window's owner opens, if it has one here.
+    pub fn path(&self) -> Option<&Path> {
+        self.path.as_deref()
+    }
+}
 
 /// `ownerDatabasePath`: `<userData>/cindy-<ownerId>.db`.
 pub fn path(user_data: &Path, owner_id: &str) -> PathBuf {
@@ -74,7 +79,7 @@ pub fn ensure_ready(cx: &mut App) {
         let opened = task.await;
         cx.update(|cx| {
             cx.global_mut::<LocalDb>().state = match opened {
-                Ok(db) => State::Ready { _db: db },
+                Ok(db) => State::Ready(db),
                 Err(fatal) => State::Failed(fatal),
             };
             cx.refresh_windows();

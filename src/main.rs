@@ -18,6 +18,7 @@ mod os_appearance;
 mod preferences;
 mod region;
 mod session_owner;
+mod sessions;
 mod sidebar;
 mod theme;
 mod theme_import;
@@ -74,6 +75,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
+    sessions::install(startup.user_data.clone(), cx);
     localdb::install(startup.database.clone(), cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());

@@ -280,3 +280,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Lease owners were parsed stricter than JSON.parse; the init-failed view lacked
   the copy action.
 - Round 2: PASS.
+
+## 8.3 Task list
+
+- Round 1: PASS.

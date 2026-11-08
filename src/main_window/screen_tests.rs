@@ -29,6 +29,7 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(crate::window_material::Material::load());
         let wallpaper = crate::appearance_settings::read(dir).wallpaper;
         crate::wallpaper::Wallpaper::install(wallpaper, dir, cx);
+        crate::sessions::install(std::path::PathBuf::new(), cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
