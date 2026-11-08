@@ -109,14 +109,16 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
   78px and the card-mode snap as `useSidebarResize.ts` and `useHorizontalResize.ts` keep them,
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`,
-  with the legacy `sidebar-collapsed` migration; hover peek and pin as `useSidebarPeek.ts` does
+  with the legacy `sidebar-collapsed` migration; rail kept in `sidebar-rail`; ⌘B through the
+  `toggle-sidebar` shortcut
 - [ ] 6.5b Sidebar top nav: New, Automations, Plugins, Search, More with order, top-level or More
   placement and plugin entries per owner as `SidebarTopNav.tsx`, `sidebarNavigationPrefs.ts` and
   `SidebarNavigationCustomize.tsx` keep them
 - [ ] 6.5c Sidebar sections: Teammates, Pinned and All sessions as frames that chapters 8 and 14
   fill (`sidebarSettingsStore.ts` lands with the pinned and hidden data it owns)
 - [ ] 6.6 Title bar: `ContentHeader` drag band, `WindowControls` per platform, `ChromeActions` placed
-  by the mac traffic lights and fullscreen, the sidebar toggle with its peek trigger, the menu
+  by the mac traffic lights and fullscreen, the sidebar toggle with hover peek and pin as
+  `useSidebarPeek.ts` does, the menu
   button whose items land with their targets (`DESIGN.md` §14.6); the pane placement signals
   panels read (`panePlacement.tsx`: at window top, at window left, fill)
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
