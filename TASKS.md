@@ -197,7 +197,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     `cloud` owners (`cindy-<userId>.db`) need chapter 13's account and open with it. The port never
     runs Cindy's 149 migrations, so a profile without that database file shows why (Cindy creates
     it) instead of a list
-- [ ] 8.1 The session owner, read only: `app-session.json`'s `activeMode` normalized as
+- [x] 8.1 The session owner, read only: `app-session.json`'s `activeMode` normalized as
   `appSessionState.ts` does, `local` giving the `local-v1` owner and its `owners/<key>/` folder,
   `<key>` the first 20 lowercase hex characters of the owner id's SHA-256 (`dataOwnerStorageKey`); `signed-out` and `cloud` wait for chapter 13 and say so
 - [ ] 8.2 The database for that owner, as `docs/storage.md` admits it: `<userData>/cindy-local-v1.db`,

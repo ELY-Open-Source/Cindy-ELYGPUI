@@ -12,6 +12,10 @@ defines scope and what 1:1 means.
   `runtime_shaders`.
 - Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
+- Data owner (`src/session_owner.rs`, Cindy's `appSessionState.ts` read only): `app-session.json`'s
+  `activeMode`; `local` is the `local-v1` owner with `owners/<first 20 hex of sha256(id)>/`.
+  Signed-out and cloud owners need chapter 13. A file that does not parse is removed, as Cindy's
+  store does.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

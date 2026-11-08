@@ -16,6 +16,7 @@ mod motion;
 mod os_appearance;
 mod preferences;
 mod region;
+mod session_owner;
 mod sidebar;
 mod theme;
 mod theme_import;
@@ -104,6 +105,10 @@ fn startup() -> Result<Startup> {
     log::info!("region {} userData {}", region::REGION, user_data.display());
     let preferences =
         preferences::Preferences::load(&user_data).context("preferences failed to load")?;
+    let mode = session_owner::read_mode(&user_data);
+    if let Some(owner) = session_owner::owner(mode, &user_data) {
+        log::info!(target: "appSessionState", "data owner {} in {}", owner.id, owner.dir.display());
+    }
     let tag = locale::effective(preferences.text("language")?);
     let translator = Translator::new(tag)?;
     log::info!(target: "locale", "locale {tag}, Ely components in {}", translator.ely_tag());

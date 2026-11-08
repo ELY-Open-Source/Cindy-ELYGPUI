@@ -269,3 +269,8 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Missing interrupted-task resume and the provisional sweep; paging lacked the
   id tie-break; owner key truncation unstated.
 - Round 2: PASS.
+
+## 8.1 Session owner
+
+- Round 1: FAIL. serde_json rejected numbers JSON.parse accepts, so a valid file was removed.
+- Round 2: PASS.
