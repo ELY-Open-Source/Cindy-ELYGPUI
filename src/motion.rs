@@ -1,4 +1,6 @@
-//! CSS timing functions gpui lacks.
+//! CSS timing functions gpui lacks, and a value moving along one.
+
+use std::time::{Duration, Instant};
 
 /// CSS `cubic-bezier(x1, y1, x2, y2)` at progress `x`.
 fn cubic_bezier(x1: f32, y1: f32, x2: f32, y2: f32, x: f32) -> f32 {
@@ -38,6 +40,48 @@ pub fn ease_move(x: f32) -> f32 {
 /// CSS `ease-out`.
 pub fn ease_out(x: f32) -> f32 {
     cubic_bezier(0.0, 0.0, 0.58, 1.0, x.clamp(0.0, 1.0))
+}
+
+/// A value on its way to another along `--motion-ease-move`.
+#[derive(Clone, Copy, Debug)]
+pub struct Tween {
+    from: f32,
+    to: f32,
+    start: Instant,
+    length: Duration,
+}
+
+impl Tween {
+    pub fn still(at: f32, now: Instant) -> Self {
+        Tween {
+            from: at,
+            to: at,
+            start: now,
+            length: Duration::ZERO,
+        }
+    }
+
+    pub fn at(&self, now: Instant) -> (f32, bool) {
+        let spent = now.saturating_duration_since(self.start).as_secs_f32();
+        let t = if self.length.is_zero() {
+            1.0
+        } else {
+            spent / self.length.as_secs_f32()
+        };
+        let value = self.from + (self.to - self.from) * ease_move(t);
+        (value, t < 1.0)
+    }
+
+    pub fn toward(&mut self, to: f32, now: Instant, length: Duration) {
+        if to != self.to || length != self.length {
+            *self = Tween {
+                from: self.at(now).0,
+                to,
+                start: now,
+                length,
+            };
+        }
+    }
 }
 
 #[cfg(test)]

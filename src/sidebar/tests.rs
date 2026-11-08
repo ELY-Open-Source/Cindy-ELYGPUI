@@ -49,8 +49,8 @@ fn open<'a>(
     let (row, vcx) = cx.add_window_view(|_, cx| {
         let sidebar = cx.new(Sidebar::new);
         let painted = sidebar.clone();
-        let content = cx
-            .new(|cx| LayoutRoot::new(Box::new(move |cx| painted.read(cx).painted_width(cx)), cx));
+        let content =
+            cx.new(|cx| LayoutRoot::new(Box::new(move |cx| painted.read(cx).seen(cx)), cx));
         let notify = content.downgrade();
         cx.observe(&sidebar, move |_, _, cx| {
             notify.update(cx, |_, cx| cx.notify()).ok();

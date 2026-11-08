@@ -8,7 +8,7 @@ use gpui::{
 };
 use serde_json::json;
 
-use super::LayoutRoot;
+use super::{LayoutRoot, SidebarSeen};
 use crate::layout_tree::{Layout, LayoutStore, Node};
 use crate::{os_appearance::Initial, theme::Appearance, theme::Mode};
 
@@ -83,7 +83,15 @@ pub(super) fn open_beside<'a>(
         use gpui::AppContext as _;
         Row {
             sidebar,
-            content: cx.new(|cx| LayoutRoot::new(Box::new(move |_| sidebar), cx)),
+            content: cx.new(|cx| {
+                LayoutRoot::new(
+                    Box::new(move |_| SidebarSeen {
+                        width: sidebar,
+                        visible: sidebar > 0.0,
+                    }),
+                    cx,
+                )
+            }),
         }
     });
     vcx.simulate_resize(size(px(width), px(900.0)));

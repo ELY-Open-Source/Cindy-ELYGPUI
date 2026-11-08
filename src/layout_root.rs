@@ -10,4 +10,4 @@ mod screen_tests;
 mod tests;
 pub(super) mod view;
 
-pub use view::LayoutRoot;
+pub use view::{LayoutRoot, SidebarSeen};

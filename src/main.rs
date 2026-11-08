@@ -1,6 +1,7 @@
 mod activation_click;
 mod app_shortcuts;
 mod appearance_settings;
+mod chrome;
 mod cindy_json;
 mod i18n;
 mod layout_root;

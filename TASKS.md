@@ -111,7 +111,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`;
   rail kept in `sidebar-rail`, card snap read from `sidebar.cardMode`; ⌘B through the
   `toggle-sidebar` shortcut; the content area takes the rest of the window
-- [ ] 6.6a Window chrome: frameless per platform as `bootstrap-electron.ts` opens it (macOS hidden
+- [x] 6.6a Window chrome: frameless per platform as `bootstrap-electron.ts` opens it (macOS hidden
   title bar with the traffic lights at 12,16; Windows and Linux without a frame, Linux resizing from
   its edges); `WindowControls` on Windows and Linux (minimize, maximize or restore, close; the close
   behavior prompt goes to chapter 22, the in-turn close confirm to chapter 10); the sidebar's 46px

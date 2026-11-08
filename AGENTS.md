@@ -65,6 +65,14 @@ defines scope and what 1:1 means.
   painted width, read every frame of its 250ms width transition.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
+- Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic
+  lights at 12,16; Windows hides the caption (`appears_transparent`); Linux asks for client
+  decorations. `src/chrome.rs` draws Cindy's `WindowControls` on Windows and Linux with gpui's
+  `WindowControlArea`, as Ely's caption buttons do; their close runs the same window-state save as a
+  system close. Linux resizes from bare edge grips (Ely's `window_inset`, no drawn frame); on
+  Hyprland a floating window's border belongs to the compositor (`resize_on_border`). The sidebar's
+  top row and the chat column's `ContentHeader` (`layout_root/view/header.rs`) drag the window
+  through Ely's `drag_region`.
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the

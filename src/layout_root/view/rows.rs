@@ -2,7 +2,7 @@
 
 use gpui::{
     AnyElement, App, Context, InteractiveElement, IntoElement, MouseButton, MouseDownEvent,
-    ParentElement, Styled, div, prelude::FluentBuilder, px, relative,
+    ParentElement, Styled, Window, div, prelude::FluentBuilder, px, relative,
 };
 
 use super::{CHAT, LayoutRoot, PRESENCE, SeamAt, panel_drag};
@@ -12,12 +12,18 @@ use crate::theme::Appearance;
 
 impl LayoutRoot {
     /// A pane: its panel paints here once its chapter lands. Its body is a drag root.
-    fn pane(&self, pane: &Pane, cx: &mut Context<Self>) -> AnyElement {
+    fn pane(&self, pane: &Pane, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
         let kind = pane.panel_kind.clone();
+        let header = (pane.panel_kind == CHAT)
+            .then(|| self.content_header(window, cx))
+            .flatten();
         div()
             .id(gpui::ElementId::Name(pane.id.clone().into()))
             .relative()
             .size_full()
+            .flex()
+            .flex_col()
+            .children(header)
             .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))
             .on_mouse_down(
                 MouseButton::Left,
@@ -34,9 +40,9 @@ impl LayoutRoot {
     }
 
     /// `NodeView`: a pane, or a split laid out by visible shares with its dividers.
-    fn node(&self, node: &Node, cx: &mut Context<Self>) -> AnyElement {
+    fn node(&self, node: &Node, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
         let split = match node {
-            Node::Pane(pane) => return self.pane(pane, cx),
+            Node::Pane(pane) => return self.pane(pane, window, cx),
             Node::Split(split) => split,
         };
         let ledger = Ledger::new(&split.children, &PRESENCE);
@@ -76,7 +82,10 @@ impl LayoutRoot {
                 (false, true) => cell.h_full().flex_basis(relative(share as f32)),
                 (false, false) => cell.w_full().flex_basis(relative(share as f32)),
             };
-            items.push(cell.child(self.node(entry.node, cx)).into_any_element());
+            items.push(
+                cell.child(self.node(entry.node, window, cx))
+                    .into_any_element(),
+            );
             if !entry.parked {
                 previous = Some(entry.tree_index);
             }
@@ -89,12 +98,17 @@ impl LayoutRoot {
 
     /// The root split, flattened into the content area. A row's chat flexes and the rest take
     /// their widths; any other root keeps still dividers and lets its panes size themselves.
-    pub(super) fn root_row(&self, layout: &Layout, cx: &mut Context<Self>) -> Vec<AnyElement> {
+    pub(super) fn root_row(
+        &self,
+        layout: &Layout,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> Vec<AnyElement> {
         let Node::Split(root) = &layout.content else {
-            return vec![self.node(&layout.content, cx)];
+            return vec![self.node(&layout.content, window, cx)];
         };
         let Some(ledger) = Ledger::root(layout, &PRESENCE) else {
-            return self.root_other(root, cx);
+            return self.root_other(root, window, cx);
         };
         let widths = self.widths(layout, true);
         let split_id = layout.content.id().to_owned();
@@ -107,7 +121,7 @@ impl LayoutRoot {
                     cell.flex_none()
                         .w_0()
                         .min_w_0()
-                        .child(self.node(entry.node, cx))
+                        .child(self.node(entry.node, window, cx))
                         .into_any_element(),
                 );
                 continue;
@@ -136,13 +150,21 @@ impl LayoutRoot {
                     widths.get(entry.node.id()).copied().unwrap_or(0.0) as f32,
                 ))
             };
-            items.push(cell.child(self.node(entry.node, cx)).into_any_element());
+            items.push(
+                cell.child(self.node(entry.node, window, cx))
+                    .into_any_element(),
+            );
             previous = Some(entry.tree_index);
         }
         items
     }
 
-    fn root_other(&self, root: &Split, cx: &mut Context<Self>) -> Vec<AnyElement> {
+    fn root_other(
+        &self,
+        root: &Split,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> Vec<AnyElement> {
         let ledger = Ledger::new(&root.children, &PRESENCE);
         let mut items = Vec::new();
         let mut previous = false;
@@ -155,13 +177,16 @@ impl LayoutRoot {
                     .w_0()
                     .min_w_0()
                     .overflow_hidden();
-                items.push(cell.child(self.node(entry.node, cx)).into_any_element());
+                items.push(
+                    cell.child(self.node(entry.node, window, cx))
+                        .into_any_element(),
+                );
                 continue;
             }
             if previous {
                 items.push(static_divider(root.direction == Direction::Row, cx));
             }
-            items.push(self.node(entry.node, cx));
+            items.push(self.node(entry.node, window, cx));
             previous = true;
         }
         items

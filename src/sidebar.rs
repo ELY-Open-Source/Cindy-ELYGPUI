@@ -14,8 +14,8 @@ use gpui::{
 };
 
 use crate::{
-    cindy_json::js_truthy, layout_tree::LayoutStore, motion, preferences::Preferences,
-    theme::Appearance,
+    chrome, cindy_json::js_truthy, layout_root::SidebarSeen, layout_tree::LayoutStore,
+    motion::Tween, preferences::Preferences, theme::Appearance,
 };
 use resize::{RAIL_WIDTH, Resize, WIDTH_KEY};
 
@@ -23,50 +23,7 @@ const RAIL_KEY: &str = "sidebar-rail";
 const CARD_MODE_KEY: &str = "sidebar.cardMode";
 const WIDTH_TRANSITION: Duration = Duration::from_millis(250);
 const FADE: Duration = Duration::from_millis(200);
-const TOP_ROW: f32 = 46.0;
 const SESSION_LIST: &str = "session-list";
-
-/// A width or opacity on its way from one value to another.
-#[derive(Clone, Copy, Debug)]
-struct Tween {
-    from: f32,
-    to: f32,
-    start: Instant,
-    length: Duration,
-}
-
-impl Tween {
-    fn still(at: f32, now: Instant) -> Self {
-        Tween {
-            from: at,
-            to: at,
-            start: now,
-            length: Duration::ZERO,
-        }
-    }
-
-    fn at(&self, now: Instant) -> (f32, bool) {
-        let spent = now.saturating_duration_since(self.start).as_secs_f32();
-        let t = if self.length.is_zero() {
-            1.0
-        } else {
-            spent / self.length.as_secs_f32()
-        };
-        let value = self.from + (self.to - self.from) * motion::ease_move(t);
-        (value, t < 1.0)
-    }
-
-    fn toward(&mut self, to: f32, now: Instant, length: Duration) {
-        if to != self.to || length != self.length {
-            *self = Tween {
-                from: self.at(now).0,
-                to,
-                start: now,
-                length,
-            };
-        }
-    }
-}
 
 pub struct Sidebar {
     resize: Resize,
@@ -136,9 +93,13 @@ impl Sidebar {
         width as f32
     }
 
-    /// The width painted now; the content area takes the rest.
-    pub fn painted_width(&self, cx: &App) -> f32 {
-        self.width.at(now(cx)).0
+    /// The painted width, which the content area leaves, and `sidebarVisible`
+    /// (`!isSidebarCollapsed && !isRailMode`).
+    pub fn seen(&self, cx: &App) -> SidebarSeen {
+        SidebarSeen {
+            width: self.width.at(now(cx)).0,
+            visible: !self.collapsed && !self.rail,
+        }
     }
 
     /// `handleToggleSidebar`: the tree keeps the hidden state.
@@ -299,7 +260,12 @@ impl Render for Sidebar {
                     .min_h_0()
                     .w(px(self.content_width()))
                     .opacity(opacity)
-                    .child(div().flex_none().w_full().h(px(TOP_ROW))),
+                    .child(
+                        ely_gpui_component::shell::drag_region("sidebar-top-row", window, cx)
+                            .flex_none()
+                            .w_full()
+                            .h(px(chrome::TOP_ROW)),
+                    ),
             )
             .when(!self.collapsed, |el| el.child(handle))
             .when(dragging, |el| {

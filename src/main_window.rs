@@ -4,12 +4,13 @@ use anyhow::{Context as _, Result};
 use gpui::{
     App, AppContext, Bounds, Context, Entity, FocusHandle, InteractiveElement, IntoElement,
     MouseButton, ParentElement, Render, Styled, Task, TitlebarOptions, Window, WindowBounds,
-    WindowOptions, div, point, px, size,
+    WindowDecorations, WindowOptions, div, point, px, size,
 };
 
 use crate::{
     activation_click::{Input, Policy},
     app_shortcuts::AppShortcuts,
+    chrome,
     layout_root::LayoutRoot,
     region,
     sidebar::Sidebar,
@@ -43,6 +44,14 @@ impl Root {
         self.state.update(normal, maximized, full_screen, display);
     }
 
+    /// The `close` event's save, for system and drawn closes alike.
+    fn save_state(&mut self, window: &Window, cx: &App) {
+        self.record(window, cx);
+        if let Err(error) = self.state.save(&self.user_data) {
+            log::warn!(target: "window-state", "{error:#}");
+        }
+    }
+
     fn press(&mut self, input: Input, first_mouse: bool, cx: &mut Context<Self>) {
         if self
             .activation
@@ -55,7 +64,24 @@ impl Root {
 }
 
 impl Render for Root {
-    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let controls = (!cfg!(target_os = "macos")).then(|| {
+            let close = cx.listener(|root, (), window, cx| {
+                log::info!(target: "window", "close requested");
+                root.save_state(window, cx);
+                window.remove_window();
+            });
+            div()
+                .absolute()
+                .right_0()
+                .top_0()
+                .h(px(chrome::TOP_ROW))
+                .flex()
+                .items_center()
+                .pr_2()
+                .child(chrome::window_controls(close, cx))
+        });
+        let edges = chrome::resize_edges(window, cx);
         let appearance = cx.global::<Appearance>();
         div()
             .track_focus(&self.focus)
@@ -82,6 +108,8 @@ impl Render for Root {
             }))
             .child(self.sidebar.clone())
             .child(self.layout.clone())
+            .children(controls)
+            .children(edges)
             .child(self.toasts.clone())
     }
 }
@@ -152,8 +180,10 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
         window_bounds: Some(window_bounds),
         titlebar: Some(TitlebarOptions {
             title: Some("Cindy".into()),
-            ..Default::default()
+            appears_transparent: true,
+            traffic_light_position: Some(point(px(12.0), px(16.0))),
         }),
+        window_decorations: Some(WindowDecorations::Client),
         app_id: Some(region::APP_ID.to_owned()),
         window_min_size: Some(size(px(800.0), px(600.0))),
         ..Default::default()
@@ -180,20 +210,15 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
             let root = cx.entity().downgrade();
             window.on_window_should_close(cx, move |window, cx| {
                 log::info!(target: "window", "close requested");
-                let saved = root.update(cx, |root, cx| {
-                    root.record(window, cx);
-                    root.state.save(&root.user_data)
-                });
-                match saved {
-                    Ok(Ok(())) => {}
-                    Ok(Err(error)) => log::warn!(target: "window-state", "{error:#}"),
-                    Err(error) => log::warn!(target: "window-state", "root gone at close: {error}"),
+                if let Err(error) = root.update(cx, |root, cx| root.save_state(window, cx)) {
+                    log::warn!(target: "window-state", "root gone at close: {error}");
                 }
                 true
             });
             if restore_mac_fullscreen {
                 window.on_next_frame(|window, _| window.toggle_fullscreen());
             }
+            log::info!(target: "window", "decorations {:?}", window.window_decorations());
             let focus = cx.focus_handle();
             window.focus(&focus, cx);
             cx.on_focus_lost(window, |root: &mut Root, window, cx| {
@@ -204,12 +229,13 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
             let sidebar = cx.new(Sidebar::new);
             let painted = sidebar.downgrade();
             let layout = cx.new(|cx| {
-                let width = move |cx: &App| {
-                    painted
+                let seen = move |cx: &App| {
+                    let sidebar = painted
                         .upgrade()
-                        .map_or(0.0, |s| s.read(cx).painted_width(cx))
+                        .expect("the sidebar lives with the window");
+                    sidebar.read(cx).seen(cx)
                 };
-                LayoutRoot::new(Box::new(width), cx)
+                LayoutRoot::new(Box::new(seen), cx)
             });
             cx.observe(&sidebar, {
                 let layout = layout.downgrade();
@@ -237,6 +263,9 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
     log::info!(target: "window", "main window opened as {}", region::APP_ID);
     Ok(())
 }
+
+#[cfg(test)]
+mod screen_tests;
 
 #[cfg(test)]
 mod tests {

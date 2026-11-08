@@ -12,7 +12,9 @@ use gpui::{
 use super::divider::{ColumnDrag, RootDrag, equalize_column, equalize_root};
 use super::geometry::{Entry, Ledger, Presence, Seam, normalize_sub_min_fractions, root_widths};
 use crate::layout_tree::{Direction, Layout, LayoutStore, Node};
+use crate::motion::Tween;
 
+mod header;
 pub(super) mod panel_drag;
 mod rows;
 
@@ -76,8 +78,19 @@ impl SeamAt {
     }
 }
 
+/// What the content area needs of the sidebar beside it.
+#[derive(Clone, Copy, Debug)]
+pub struct SidebarSeen {
+    /// The painted width, moving with its transition.
+    pub width: f32,
+    /// `sidebarVisible`: expanded, neither hidden nor a rail.
+    pub visible: bool,
+}
+
 pub struct LayoutRoot {
-    sidebar_width: Box<dyn Fn(&App) -> f32>,
+    sidebar: Box<dyn Fn(&App) -> SidebarSeen>,
+    /// None until the first frame, which takes its inset without a slide.
+    header_inset: Option<Tween>,
     avail: f64,
     height: f64,
     live: Option<HashMap<String, f64>>,
@@ -90,12 +103,13 @@ pub struct LayoutRoot {
 }
 
 impl LayoutRoot {
-    /// `sidebar_width` paints the column left of the content.
-    pub fn new(sidebar_width: Box<dyn Fn(&App) -> f32>, cx: &mut Context<Self>) -> Self {
+    /// `sidebar` reads the column left of the content.
+    pub fn new(sidebar: Box<dyn Fn(&App) -> SidebarSeen>, cx: &mut Context<Self>) -> Self {
         cx.observe_global::<LayoutStore>(|_, cx| cx.notify())
             .detach();
         LayoutRoot {
-            sidebar_width,
+            sidebar,
+            header_inset: None,
             avail: 0.0,
             height: 0.0,
             live: None,
@@ -315,10 +329,11 @@ fn save(layout: Layout, cx: &mut App) {
 impl Render for LayoutRoot {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let viewport = window.viewport_size();
-        self.avail = f(viewport.width) - f64::from((self.sidebar_width)(cx));
+        self.avail = f(viewport.width) - f64::from((self.sidebar)(cx).width);
         self.height = f(viewport.height);
         let layout = cx.global::<LayoutStore>().layout().clone();
         self.schedule_heal(&layout, cx);
+        self.step_header(window, cx);
         {
             let mut rects = self.rects.borrow_mut();
             rects.panes.clear();
@@ -342,7 +357,7 @@ impl Render for LayoutRoot {
             .overflow_hidden()
             .relative()
             .child(panel_drag::origin_recorder(&self.rects))
-            .children(self.root_row(&layout, cx))
+            .children(self.root_row(&layout, window, cx))
             .children(self.panel_overlay(cx))
             .when_some(gesture, |el, cursor| {
                 el.child(

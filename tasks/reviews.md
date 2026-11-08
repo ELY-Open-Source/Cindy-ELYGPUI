@@ -183,3 +183,9 @@ effort high, in a Herdr pane.
 
 - Moved: every top nav row and section needs a route, search, owner key or page that lands later
   (6.8, 8, 13, 14, 15, 16); built now they would be dead buttons. Placed in 8.0 and 13.0 to 16.0.
+
+## 6.6a Window chrome
+
+- Round 1: FAIL. Header presses reached the pane's panel long press; the header inset slid in
+  from 0 on the first frame. Fixed both, with regressions.
+- Round 2: PASS.
