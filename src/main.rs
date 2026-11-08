@@ -5,6 +5,7 @@ mod os_appearance;
 mod preferences;
 mod region;
 mod theme;
+mod theme_import;
 
 use anyhow::{Context as _, Result};
 use ely_gpui_component::{

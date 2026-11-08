@@ -61,12 +61,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   single-variant fallback; the system mode follows the OS
 - [x] 5.3 Cindy tokens drive the window: Ely's `Theme::set_palette` gets a palette mapped from the
   resolved tokens for each mode, and the resolved tokens stay a global for Cindy's own surfaces
-- [ ] 5.4 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (`-local`
-  ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
-- [ ] 5.5 VS Code and Obsidian theme conversion as `shared/theme-import/` does it, pure functions
-  with Cindy's tests' cases
+- [x] 5.4 `shared/theme-import/` color, palette, protected-token and VS Code conversion as pure
+  functions, with the cases of Cindy's tests for them (moved ahead of local themes, which normalize
+  through it; Obsidian conversion goes to chapter 12 with the import button, its only caller)
+- [ ] 5.5 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (legacy
+  `~/.xdmaker/themes` move, `-local` ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
 - [ ] 5.6 The Omarchy live theme as `main/local-themes/omarchy.ts` does it: family `omarchy` from the
-  current Omarchy theme through 5.5's VS Code converter, retinted on each switch
+  current Omarchy theme through 5.4's VS Code converter, retinted on each switch
 - [ ] 5.7 `appearance-settings.json` read as `main/appearance-settings-store.ts` does (UI, code and
   terminal font sizes and families, wallpaper fields), applied to Ely's font scale and families
 
@@ -96,7 +97,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 12. Settings
 
-- [ ] 12.0 Expand from Cindy's code
+- [ ] 12.0 Expand from Cindy's code, with Obsidian theme conversion and the theme import button
 
 ## 13. Account and region
 

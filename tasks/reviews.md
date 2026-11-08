@@ -89,3 +89,9 @@ effort high, in a Herdr pane.
 ## 5.3 Ely palette
 
 - Round 1: PASS.
+
+## 5.4 Theme import (VS Code)
+
+- Round 1: FAIL. Whitespace was ASCII-only; Cindy splits and trims with ECMAScript whitespace.
+  Fixed with js_space/js_trim; cases checked against Cindy's parseCssColor.
+- Round 2: PASS.

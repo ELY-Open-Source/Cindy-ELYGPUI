@@ -1,0 +1,24 @@
+﻿{
+  // light theme with translucent and functional colors
+  "name": "  Edge Light  ",
+  "colors": {
+    "editor.background": "#fdf6e3",
+    "editor.foreground": "rgb(40%, 50%, 60%)",
+    "sideBar.background": "hsl(0.125turn 30% 90%)",
+    "list.hoverBackground": "#0000001a",
+    "list.activeSelectionBackground": "rgba(0, 0, 0, 12%)",
+    "panel.border": "not-a-color",
+    "editorGroup.border": "#00000033",
+    "editorLineNumber.foreground": "hsla(200grad, 10%, 60%, 0.5)",
+    "button.background": "#268bd2",
+    "editorHint.foreground": "#93a1a1",
+  },
+  "tokenColors": [
+    { "scope": "markup", "settings": { "foreground": "#111111" } },
+    { "scope": "comment.line", "settings": { "foreground": "#586e75" } },
+    { "scope": "comment", "settings": { "foreground": "bad" } },
+    { "scope": "markup", "settings": { "foreground": "#cb4b16" } },
+    { "scope": "markup.bold, markup.italic", "settings": { "foreground": "#b58900cc" } },
+    7,
+  ],
+}

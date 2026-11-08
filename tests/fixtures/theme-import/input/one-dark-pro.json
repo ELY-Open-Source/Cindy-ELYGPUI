@@ -1,0 +1,38 @@
+{
+ "name": "One Dark Pro",
+ "type": "dark",
+ "colors": {
+  "editor.background": "#282c34",
+  "editor.foreground": "#abb2bf",
+  "sideBar.background": "#21252b",
+  "list.hoverBackground": "#2c313a",
+  "list.activeSelectionBackground": "#2c313a",
+  "panel.border": "#3e4452",
+  "editorLineNumber.foreground": "#495162",
+  "button.background": "#61afef"
+ },
+ "tokenColors": [
+  {
+   "scope": "comment",
+   "settings": {
+    "foreground": "#7f848e",
+    "fontStyle": "italic"
+   }
+  },
+  {
+   "scope": [
+    "markup.heading",
+    "entity.name.section"
+   ],
+   "settings": {
+    "foreground": "#e06c75"
+   }
+  },
+  {
+   "scope": "markup.bold",
+   "settings": {
+    "foreground": "#d19a66"
+   }
+  }
+ ]
+}

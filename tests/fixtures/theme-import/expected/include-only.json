@@ -1,0 +1,12 @@
+{
+ "themes": [],
+ "report": {
+  "source": "vscode",
+  "resolvedRoles": 0,
+  "derivedRoles": [],
+  "unresolved": [
+   "include:./base.json"
+  ],
+  "skippedProtected": 0
+ }
+}

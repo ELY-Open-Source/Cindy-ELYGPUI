@@ -33,6 +33,9 @@ defines scope and what 1:1 means.
 - `node scripts/sync-themes.mjs <cindy checkout with node_modules> <commit>` runs Cindy's
   `colors.ts` and built-in themes through Cindy's esbuild and writes `themes/` (registry, built-ins,
   logos, `COMMIT`). Never edit `themes/` by hand.
+- `node scripts/sync-theme-import-golden.mjs <cindy checkout> <commit>` runs Cindy's own
+  `convertVsCodeTheme` on `tests/fixtures/theme-import/input/` and writes `expected/`; the Rust
+  port in `src/theme_import/` must match it byte for byte.
 - `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`. CI
   (`.github/workflows/ci.yml`) runs them and a release build on Linux, macOS and Windows,
   x86_64 and arm64. Linux x64, macOS arm64 and Windows x64 run on the org's self-hosted runners
