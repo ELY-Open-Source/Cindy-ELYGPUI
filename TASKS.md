@@ -176,7 +176,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 ## 13. Account and region
 
 - [ ] 13.0 Expand from Cindy's code, with the sidebar's owner-scoped storage and its legacy claims,
-  log upload and redaction, and the database admission in `docs/storage.md` (reader lease, read-only migration check, `cjk_seg`)
+  log upload and redaction, and the database admission in `docs/storage.md` (reader lease,
+  read-only migration check, `cjk_seg`)
 
 ## 14. Teammates
 
