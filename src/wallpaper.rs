@@ -2,12 +2,20 @@
 
 mod canvas;
 mod media;
+mod video;
 
 use std::path::Path;
 
 use crate::cindy_json::{self, Fields, js_round, number, string};
 
 pub use canvas::{Wallpaper, active, canvas, clear};
+
+/// A hidden window renders nothing, so its video pauses here.
+pub fn visibility_changed(window: &mut gpui::Window, cx: &mut gpui::App) {
+    if active(cx) {
+        video::sync(window, None, cx);
+    }
+}
 
 const CUSTOM_FILE: &str = "custom-wallpaper.json";
 const CUSTOM_MAX_BYTES: u64 = 4096;
@@ -34,6 +42,12 @@ const IDS: [&str; 18] = [
     "cindy-dream",
 ];
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Motion {
+    Static,
+    Dynamic,
+}
+
 /// The wallpaper half of `AppearanceSettings`, with `customWallpaperUrl`.
 #[derive(Clone, PartialEq)]
 pub struct Settings {
@@ -42,6 +56,7 @@ pub struct Settings {
     /// Absent for legacy preferences: the theme's old veil decides.
     pub visibility: Option<f64>,
     pub blur: Option<f64>,
+    pub motion: Motion,
     pub custom_url: String,
 }
 
@@ -53,6 +68,7 @@ impl std::fmt::Debug for Settings {
             .field("overlay", &self.overlay)
             .field("visibility", &self.visibility)
             .field("blur", &self.blur)
+            .field("motion", &self.motion)
             .field("custom", &!self.custom_url.is_empty())
             .finish()
     }
@@ -139,6 +155,11 @@ pub fn read(fields: &Fields, user_data: &Path) -> Settings {
         blur: number(raw("wallpaperBlur"))
             .filter(|v| v.is_finite())
             .map(blur),
+        motion: if string(raw("wallpaperMotion")).as_deref() == Some("dynamic") {
+            Motion::Dynamic
+        } else {
+            Motion::Static
+        },
         custom_url,
     }
 }

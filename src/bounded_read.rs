@@ -8,12 +8,15 @@ use std::{
 
 use anyhow::{Result, bail};
 
-/// Opens the last path part itself, never what a link points to.
-fn open_no_follow(path: &Path) -> io::Result<File> {
+/// Opens the last path part itself, never what a link points to; a FIFO never blocks.
+pub fn open_no_follow(path: &Path) -> io::Result<File> {
     let mut options = OpenOptions::new();
     options.read(true);
     #[cfg(unix)]
-    std::os::unix::fs::OpenOptionsExt::custom_flags(&mut options, libc::O_NOFOLLOW);
+    std::os::unix::fs::OpenOptionsExt::custom_flags(
+        &mut options,
+        libc::O_NOFOLLOW | libc::O_NONBLOCK,
+    );
     #[cfg(windows)]
     std::os::windows::fs::OpenOptionsExt::custom_flags(
         &mut options,
@@ -76,9 +79,39 @@ fn version(file: &File) -> io::Result<[i64; 6]> {
     ])
 }
 
+/// `sameFileIdentity`: the device and file the handle names.
+pub fn identity(file: &File) -> io::Result<[i64; 2]> {
+    let [device, file, ..] = version(file)?;
+    Ok([device, file])
+}
+
+/// `fs.lstat`'s identity of the regular file at `path`; Unix never opens it.
+pub fn path_identity(path: &Path) -> Result<[i64; 2]> {
+    #[cfg(unix)]
+    let (meta, id) = {
+        use std::os::unix::fs::MetadataExt;
+        let meta = std::fs::symlink_metadata(path)?;
+        let id = [meta.dev() as i64, meta.ino() as i64];
+        (meta, id)
+    };
+    #[cfg(windows)]
+    let (meta, id) = {
+        let file = open_no_follow(path)?;
+        (file.metadata()?, identity(&file)?)
+    };
+    if meta.file_type().is_symlink() || !meta.is_file() {
+        bail!("not a regular file");
+    }
+    Ok(id)
+}
+
 /// The file's bytes, or `None` for a link, a non-file or one over `max_bytes`.
 pub fn read(path: &Path, max_bytes: u64) -> Result<Option<Vec<u8>>> {
-    let mut file = open_no_follow(path)?;
+    read_file(open_no_follow(path)?, max_bytes)
+}
+
+/// `read` on a handle already open.
+pub fn read_file(mut file: File, max_bytes: u64) -> Result<Option<Vec<u8>>> {
     let meta = file.metadata()?;
     if meta.file_type().is_symlink() || !meta.is_file() || meta.len() > max_bytes {
         return Ok(None);

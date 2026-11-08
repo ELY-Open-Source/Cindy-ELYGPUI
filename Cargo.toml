@@ -47,4 +47,7 @@ windows = { version = "0.62.2", features = ["Win32_UI_WindowsAndMessaging", "Win
 libc = "0.2.191"
 
 [target.'cfg(target_os = "linux")'.dependencies]
+gstreamer = "0.25.4"
+gstreamer-app = "0.25.2"
+gstreamer-video = "0.25.4"
 zbus = { version = "5.19", default-features = false, features = ["blocking-api", "async-io"] }

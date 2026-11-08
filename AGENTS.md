@@ -118,6 +118,15 @@ defines scope and what 1:1 means.
   wallpaper, never the custom URL. An official wallpaper shows its bundled preview, then the
   original from Cindy's shared cache when `media::verified` matches the manifest
   (`resources/wallpaper-video-manifest.json`) in size and sha256. Downloads come with 13.0.
+- Wallpaper video: `wallpaper/video.rs` ports `WallpaperVideo.tsx` (`wanted` decides; `sync`
+  opens, pauses or drops one decoder; `layer` paints it over the veil and drops retired frames).
+  The decoder plays the bytes that were read and checked, never a path reopened later; errors
+  log GStreamer's domain and code, not its text. Each platform decodes with its system
+  framework: Linux GStreamer (`video/gst.rs`, from a sealed memfd, needs
+  `gst-plugins-good` and `gst-libav` at run time); macOS and Windows come with 6.9e3b/c. A hidden
+  window pauses through gpui's `WindowVisibility`; Hyprland 0.56 sends no `suspended` state for a
+  window on another workspace, so there it keeps playing. Decoder threads wake gpui from outside,
+  so tests drive the real decoder only outside the gpui test scheduler.
 - Untrusted files: read with `bounded_read::read`, Cindy's `readBoundedFileNoFollow` (no-follow
   open, regular file, size limit, stable while read).
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as

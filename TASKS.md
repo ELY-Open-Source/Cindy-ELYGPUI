@@ -144,8 +144,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     `wallpaper-video.ts` does before any network (`readBoundedFileNoFollow`, size and sha256),
     shown once decoded in place of the bundled preview; the download itself needs
     `cdnBaseUrl` and goes to 13.0
-  - [ ] 6.9e3 Dynamic motion (`wallpaperMotion`): cached official videos and custom videos played
-    as `WallpaperVideo.tsx` does, static under reduced motion
+  - Dynamic motion (`wallpaperMotion`): cached official videos and custom videos played as
+    `WallpaperVideo.tsx` does, paused when hidden or static, none under reduced motion; GPUI has no
+    video element, so each platform decodes with its own system media framework:
+    - [x] 6.9e3a The playback and its layer, decoded on Linux with GStreamer
+    - [ ] 6.9e3b Decoded on macOS with AVFoundation
+    - [ ] 6.9e3c Decoded on Windows with Media Foundation
 
 ## 7. Mock mode
 
@@ -242,6 +246,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 23. Distribution
 
-- [ ] 23.0 Expand from Cindy's code
+- [ ] 23.0 Expand from Cindy's code, with the Linux packages' GStreamer runtime dependencies
+  (`gst-plugins-good`, `gst-libav`) for wallpaper video
 - [ ] 23.last Dispatch CI and get all six targets green; run the app on the Windows runner and check
   that maximized windows survive display and DPI changes without Cindy's maximize recovery

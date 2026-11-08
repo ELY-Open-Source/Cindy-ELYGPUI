@@ -2,14 +2,14 @@
 
 use std::{path::Path, sync::Arc};
 
-use anyhow::{Context as _, Result};
+use anyhow::Result;
 use gpui::{
     AnyElement, App, BorrowAppContext as _, Hsla, InteractiveElement as _, IntoElement, ObjectFit,
     ParentElement, RenderImage, Styled, StyledImage as _, Window, div, img,
 };
 use image::RgbaImage;
 
-use super::{Settings, media};
+use super::{Motion, Settings, media, video};
 use crate::theme::{Appearance, Kind};
 use crate::units;
 
@@ -56,11 +56,7 @@ impl gpui::Global for Wallpaper {}
 fn load(background: &Background, user_data: &Path) -> Result<RgbaImage> {
     match background {
         Background::Preview(id) => media::decode(media::preview(id).expect("checked")),
-        Background::Custom(url) => {
-            let path = media::custom_path(user_data, url)?;
-            let bytes = std::fs::read(&path).context("custom wallpaper unreadable")?;
-            media::decode(&bytes)
-        }
+        Background::Custom(url) => media::decode(&media::custom_media(user_data, url)?),
         Background::Video => unreachable!("a video has no image"),
     }
 }
@@ -85,6 +81,8 @@ impl Wallpaper {
             blurred: None,
             blurring: None,
         });
+        cx.set_global(video::Video::new());
+        install_video(&background, user_data, cx);
         let Some(background) = background.filter(|b| *b != Background::Video) else {
             return;
         };
@@ -169,6 +167,45 @@ impl Wallpaper {
     }
 }
 
+/// The video `<WallpaperVideo>` may play: the custom one, or a scene wallpaper's cached video
+/// when the motion is dynamic. Found off the main thread.
+fn install_video(background: &Option<Background>, user_data: &Path, cx: &mut App) {
+    let settings = &cx.global::<Wallpaper>().settings;
+    let official =
+        matches!(background, Some(Background::Preview(_))) && settings.motion == Motion::Dynamic;
+    if background != &Some(Background::Video) && !official {
+        return;
+    }
+    let (id, url, user_data) = (
+        settings.id,
+        settings.custom_url.clone(),
+        user_data.to_owned(),
+    );
+    let task = cx.background_executor().spawn(async move {
+        anyhow::Ok(if id == "custom" {
+            let bytes = media::custom_media(&user_data, &url)?;
+            Some(video::Source::Custom(Arc::new(bytes)))
+        } else {
+            let bytes = media::cached_video(&user_data, id);
+            bytes.map(|b| video::Source::Official(Arc::new(b)))
+        })
+    });
+    cx.spawn(async move |cx| {
+        let found = task.await;
+        cx.update(|cx| match found {
+            Ok(Some(source)) => {
+                cx.global_mut::<video::Video>().source = Some(source);
+                cx.refresh_windows();
+            }
+            Ok(None) => log::info!(target: "wallpaper-assets", "{id}: video not cached"),
+            Err(error) => {
+                log::warn!(target: "wallpaper-video", "Wallpaper media failed: {error:#}")
+            }
+        });
+    })
+    .detach();
+}
+
 /// `useWallpaperAsset(id, 'image', visibility > 0)`.
 fn wants_original(cx: &mut App) -> bool {
     let dark = cx.global::<Appearance>().kind() == Kind::Dark;
@@ -189,8 +226,9 @@ pub fn clear(color: Hsla, cx: &App) -> Hsla {
     }
 }
 
-/// `body::before`: the surface, the cover image (blurred with overscan), then the veil.
-pub fn canvas(window: &Window, cx: &mut App) -> Option<AnyElement> {
+/// `body::before` and `.app-wallpaper-video`: the surface, the cover image, the veil, then the
+/// video. A blur overscans the box by three radii, as the CSS does.
+pub fn canvas(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     if !active(cx) {
         return None;
     }
@@ -200,38 +238,39 @@ pub fn canvas(window: &Window, cx: &mut App) -> Option<AnyElement> {
     let wallpaper = cx.global::<Wallpaper>();
     let visibility = wallpaper.settings.visibility(dark);
     let blur = wallpaper.settings.blur.unwrap_or(0.0) as f32;
+    let blurred = blur > 0.0 && visibility > 0.0;
     let sharp = wallpaper.image.clone();
+    let overscan = units::window_px(if blurred { 3.0 * blur } else { 0.0 }, cx);
+    let viewport = window.viewport_size();
+    let (w, h) = (
+        viewport.width + overscan * 2.0,
+        viewport.height + overscan * 2.0,
+    );
+    let device = |len: gpui::Pixels| (f32::from(len) * window.scale_factor()).ceil() as u32;
+    let sigma = if blurred {
+        f32::from(units::window_px(blur, cx)) * window.scale_factor()
+    } else {
+        0.0
+    };
+    let fit = video::Fit {
+        target: (device(w), device(h)),
+        sigma,
+    };
+    video::sync(window, Some(fit), cx);
+    let place = move |image: gpui::Img, fit: ObjectFit| {
+        let placed = image.absolute().left(-overscan).top(-overscan).w(w).h(h);
+        placed.object_fit(fit).into_any_element()
+    };
+    let image = if blurred {
+        let key = (fit.target.0, fit.target.1, (sigma * 100.0).round() as u32);
+        let image = cx.update_global::<Wallpaper, _>(|w, cx| w.blurred_for(key, cx));
+        image.map(|image| place(img(image), ObjectFit::Fill))
+    } else {
+        sharp.map(|image| place(img(image), ObjectFit::Cover))
+    };
     let veil = surface.opacity(1.0 - visibility as f32);
     let layer = || div().absolute().top_0().left_0().size_full();
-    let image = if blur > 0.0 && visibility > 0.0 {
-        let viewport = window.viewport_size();
-        let overscan = units::window_px(3.0 * blur, cx);
-        let device = |len: gpui::Pixels| (f32::from(len) * window.scale_factor()).ceil() as u32;
-        let sigma = f32::from(units::window_px(blur, cx)) * window.scale_factor();
-        let key = (
-            device(viewport.width + overscan * 2.0),
-            device(viewport.height + overscan * 2.0),
-            (sigma * 100.0).round() as u32,
-        );
-        let blurred = cx.update_global::<Wallpaper, _>(|w, cx| w.blurred_for(key, cx));
-        blurred.map(|image| {
-            img(image)
-                .absolute()
-                .left(-overscan)
-                .top(-overscan)
-                .w(viewport.width + overscan * 2.0)
-                .h(viewport.height + overscan * 2.0)
-                .object_fit(ObjectFit::Fill)
-                .into_any_element()
-        })
-    } else {
-        sharp.map(|image| {
-            img(image)
-                .size_full()
-                .object_fit(ObjectFit::Cover)
-                .into_any_element()
-        })
-    };
+    let moving = video::layer(window, |picture| place(picture, ObjectFit::Cover), cx);
     Some(
         layer()
             .debug_selector(|| "wallpaper-canvas".into())
@@ -239,6 +278,7 @@ pub fn canvas(window: &Window, cx: &mut App) -> Option<AnyElement> {
             .bg(surface)
             .children(image)
             .child(layer().bg(veil))
+            .children(moving)
             .into_any_element(),
     )
 }

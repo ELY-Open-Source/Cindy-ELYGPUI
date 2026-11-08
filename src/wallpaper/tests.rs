@@ -134,6 +134,51 @@ fn custom_media_must_stay_inside_the_store() {
     }
 }
 
+#[cfg(unix)]
+#[test]
+fn a_bucket_swapped_before_the_open_is_caught() {
+    let dir = tempfile::tempdir().unwrap();
+    let url = format!("cindy-media://client-wallpaper/{HASH}.webp");
+    let bucket = dir.path().join("cindy-media/client-wallpaper/01");
+    std::fs::create_dir_all(&bucket).unwrap();
+    std::fs::write(bucket.join(format!("{HASH}.webp")), b"inside").unwrap();
+    assert_eq!(media::custom_media(dir.path(), &url).unwrap(), b"inside");
+    let outside = tempfile::tempdir().unwrap();
+    std::fs::write(outside.path().join(format!("{HASH}.webp")), b"outside").unwrap();
+    let swap = || {
+        std::fs::rename(&bucket, dir.path().join("kept")).unwrap();
+        std::os::unix::fs::symlink(outside.path(), &bucket).unwrap();
+    };
+    let error = media::read_contained(dir.path(), &url, swap).unwrap_err();
+    assert!(format!("{error:#}").contains("symlink"), "{error:#}");
+}
+
+#[cfg(unix)]
+#[test]
+fn a_fifo_swapped_in_fails_without_blocking() {
+    let dir = tempfile::tempdir().unwrap();
+    let url = format!("cindy-media://client-wallpaper/{HASH}.webp");
+    let bucket = dir.path().join("cindy-media/client-wallpaper/01");
+    std::fs::create_dir_all(&bucket).unwrap();
+    let file = bucket.join(format!("{HASH}.webp"));
+    std::fs::write(&file, b"inside").unwrap();
+    let fifo = std::ffi::CString::new(file.to_str().unwrap()).unwrap();
+    let swap = move || {
+        std::fs::remove_file(&file).unwrap();
+        // SAFETY: a NUL-terminated path.
+        assert_eq!(unsafe { libc::mkfifo(fifo.as_ptr(), 0o600) }, 0);
+    };
+    let (done, finished) = std::sync::mpsc::channel();
+    let user_data = dir.path().to_owned();
+    std::thread::spawn(move || {
+        let _ = done.send(media::read_contained(&user_data, &url, swap).is_err());
+    });
+    let failed = finished.recv_timeout(std::time::Duration::from_secs(2));
+    assert_eq!(failed, Ok(true), "rejected, not stuck on the FIFO");
+    let named = crate::bounded_read::path_identity(&bucket.join(format!("{HASH}.webp")));
+    assert!(named.is_err(), "lstat sees no regular file");
+}
+
 #[test]
 fn every_official_id_has_its_preview() {
     for id in super::IDS {

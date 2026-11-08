@@ -197,6 +197,12 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
     cx.open_window(options, |window, cx| {
         window.set_rem_size(units::rem_size(cx));
         crate::window_material::apply(window, cx);
+        window
+            .observe_window_visibility(|visibility, window, cx| {
+                log::info!(target: "main-window", "window {visibility:?}");
+                crate::wallpaper::visibility_changed(window, cx)
+            })
+            .detach();
         cx.new(|cx| {
             cx.observe_window_appearance(window, shell::follow_os)
                 .detach();

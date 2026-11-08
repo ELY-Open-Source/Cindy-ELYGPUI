@@ -235,3 +235,10 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. The bounded read compared size and mtime only, not Cindy's full handle
   version.
 - Round 2: PASS. Identity, mode, size, mtime and ctime from the open handle.
+
+## 6.9e3a Wallpaper video, Linux
+
+- Round 1: FAIL. GStreamer error text named the custom file; filesrc reopened a verified path.
+- Round 2: FAIL. Custom video containment was checked apart from its open.
+- Round 3: FAIL. The identity checks opened the path, which blocks on a FIFO.
+- Round 4: PASS. lstat identities, a non-blocking no-follow open, sealed verified bytes.

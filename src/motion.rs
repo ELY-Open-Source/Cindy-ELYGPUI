@@ -62,6 +62,8 @@ pub fn refresh_reduced_motion(cx: &mut gpui::App) {
 
 /// Cindy's `--motion-fast`.
 pub const FAST: std::time::Duration = std::time::Duration::from_millis(150);
+/// `--motion-base`.
+pub const BASE: std::time::Duration = std::time::Duration::from_millis(200);
 
 /// Cindy's `--motion-ease-out`, the `ease-out` of Tailwind animations.
 pub fn motion_ease_out(x: f32) -> f32 {
