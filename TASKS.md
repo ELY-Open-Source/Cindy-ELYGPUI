@@ -12,6 +12,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 - [x] 1.4 CI on self-hosted runners where the org has one: Linux x64 `omarchy-amd64`, macOS arm64
   `macos-arm64`, Windows x64 `windows-amd64` (any idle one of that label)
 - [x] 1.5 CI on manual dispatch only; local checks on Omarchy until the end
+- [x] 1.6 Reference moves to Cindy `1ac47f3`, which adds the Omarchy live theme; locales re-synced
 
 ## 2. Logging and diagnostics
 
@@ -49,7 +50,25 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 5. Themes and appearance
 
-- [ ] 5.0 Expand from Cindy's code
+- [x] 5.0 Expand from Cindy's code (`renderer/themes/`, `hooks/useTheme.ts`, `hooks/useFontSettings.ts`,
+  `main/appearance-settings-store.ts`, `main/local-themes/`, `shared/theme-import/`)
+- [ ] 5.1 Cindy's 576 color tokens (566 direct registrations plus the `effort-tier-*` and
+  `price-tier-*` loops) and 11 built-in themes at the PRD's commit in `themes/`, written as JSON by
+  `scripts/sync-themes.mjs`, which runs Cindy's own `colors.ts` and `builtin/` and reads the registry
+- [ ] 5.2 Token resolution as `theme-service.ts` does it (theme value, else registry default for the
+  theme's type, else for a dark theme the light default; `var(--x)` aliases, `-hsl` triplets); built-in families as `families.ts`; `theme`
+  (light, dark, system) and `theme.familyId` read from the port's preferences, with Cindy's
+  single-variant fallback; the system mode follows the OS
+- [ ] 5.3 Cindy tokens drive the window: Ely's `Theme::set_palette` gets a palette mapped from the
+  resolved tokens for each mode, and the resolved tokens stay a global for Cindy's own surfaces
+- [ ] 5.4 Local themes from `~/.cindy/themes/` as `main/local-themes/loader.ts` reads them (`-local`
+  ids, `family` grouping, `normalizeLocalThemeColors`, diagnostics)
+- [ ] 5.5 VS Code and Obsidian theme conversion as `shared/theme-import/` does it, pure functions
+  with Cindy's tests' cases
+- [ ] 5.6 The Omarchy live theme as `main/local-themes/omarchy.ts` does it: family `omarchy` from the
+  current Omarchy theme through 5.5's VS Code converter, retinted on each switch
+- [ ] 5.7 `appearance-settings.json` read as `main/appearance-settings-store.ts` does (UI, code and
+  terminal font sizes and families, wallpaper fields), applied to Ely's font scale and families
 
 ## 6. Window shell and layout
 

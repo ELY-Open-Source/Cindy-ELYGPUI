@@ -67,3 +67,13 @@ effort high, in a Herdr pane.
 ## 4.3 Translator
 
 - Round 1: PASS.
+
+## 1.6 Reference commit 1ac47f3
+
+- Round 1: PASS.
+
+## 5.0 Themes plan
+
+- Round 1: FAIL. Token count was 568 (call sites); Cindy has 576 with two loops. Dark-to-light
+  default fallback missing. Both fixed.
+- Round 2: PASS.

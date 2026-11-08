@@ -1,8 +1,8 @@
 # Cindy-ELYGPUI PRD
 
 Cindy-ELYGPUI is Cindy's desktop client rebuilt in Rust on GPUI and Ely GPUI Components.
-The reference is Cindy at `makecindy/cindy` commit `4b11aa5de9eed001c501467ea8e0adc8ed8b8a92`
-(2026-11-08). Where this file and Cindy disagree, Cindy's code wins, and this file is corrected.
+The reference is Cindy at `makecindy/cindy` commit `1ac47f30aeca5c766d4cd7f2add01e77e666de08`
+(2026-11-08, the merge of the Omarchy live theme). Where this file and Cindy disagree, Cindy's code wins, and this file is corrected.
 
 ## What 1:1 means
 
