@@ -11,10 +11,13 @@ mod meta;
 mod paths;
 mod pinned;
 mod query;
+mod rename;
 mod row;
 mod settings;
 mod sweep;
+mod task_menu;
 mod title;
+mod write;
 
 use std::{
     collections::{HashMap, HashSet},
@@ -47,6 +50,11 @@ pub struct Sessions {
     show_all_entries: bool,
     /// `useTaskInfoFields`' memory copy.
     task_info: Vec<&'static str>,
+    /// The row whose title is being edited.
+    editing: Option<rename::Editing>,
+    /// Writes started, and each task's latest mute write, as `latestWriteSeq` keeps them.
+    writes: u64,
+    latest_mute: HashMap<String, u64>,
     loading: bool,
     dirty: bool,
     /// The database handle the sweep has run for; a new open sweeps again.
@@ -68,6 +76,9 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         show_all: HashSet::new(),
         show_all_entries: false,
         task_info: meta::fields(cx.global::<crate::preferences::Preferences>()),
+        editing: None,
+        writes: 0,
+        latest_mute: HashMap::new(),
         loading: false,
         dirty: false,
         swept_for: None,
@@ -181,7 +192,7 @@ pub fn reload(cx: &mut App) {
                     log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases, {} pins ordered, {} hidden projects",
                         loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len(),
                         loaded.settings.pinned_order.len(), loaded.settings.hidden.len());
-                    store.loaded = Some(loaded);
+                    store.show(loaded);
                 }
                 Ok(Err(error)) => log::error!(target: "sessions", "task list read failed: {error}"),
                 Err(_) => log::error!(target: "sessions", "the database closed during the read"),
@@ -195,8 +206,23 @@ pub fn reload(cx: &mut App) {
     .detach();
 }
 
+impl Sessions {
+    /// A read's rows replace the list; an edit whose task left it ends, as its row unmounts.
+    fn show(&mut self, loaded: Loaded) {
+        if let Some(editing) = &self.editing
+            && !loaded.sessions.iter().any(|s| s.id == editing.id)
+        {
+            log::info!(target: "sessions", "rename {} dropped: the task left the list", editing.id);
+            self.editing = None;
+        }
+        self.loaded = Some(loaded);
+    }
+}
+
 pub use main_list::list;
 
+#[cfg(test)]
+mod menu_tests;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]

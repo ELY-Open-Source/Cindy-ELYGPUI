@@ -40,6 +40,7 @@ fn session(v: &Value) -> Session {
         created_at: ms(&v["createdAt"]).unwrap_or(0),
         agent_kind: text(&v["agentKind"]).unwrap_or_else(|| "cc".into()),
         orca_lead: false,
+        muted: false,
         tokens: 0,
         cost_usd: 0.0,
         cost_amount: 0.0,

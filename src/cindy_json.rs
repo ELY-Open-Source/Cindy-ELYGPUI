@@ -266,6 +266,19 @@ pub fn js_to_fixed(n: f64, digits: usize) -> String {
     if n < 0.0 { format!("-{body}") } else { body }
 }
 
+/// `encodeURIComponent`: UTF-8 bytes outside its unreserved set as `%XX`.
+pub fn encode_uri_component(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    for byte in text.bytes() {
+        if byte.is_ascii_alphanumeric() || b"-_.!~*'()".contains(&byte) {
+            out.push(byte as char);
+        } else {
+            out.push_str(&format!("%{byte:02X}"));
+        }
+    }
+    out
+}
+
 /// `String(value)` of a `JSON.parse`d value, numbers past f64 included.
 pub fn js_string_raw(raw: &RawValue) -> Result<String> {
     let text = raw.get();
@@ -289,6 +302,19 @@ mod tests {
     use serde_json::json;
 
     use super::{boolean, js_number, js_string, number, object, roundtrip, truthy};
+
+    #[test]
+    fn encodes_uri_components_as_javascript_does() {
+        let cases = [
+            ("abc-_.!~*'()", "abc-_.!~*'()"),
+            ("a b/c?d#e&f=g", "a%20b%2Fc%3Fd%23e%26f%3Dg"),
+            ("任务", "%E4%BB%BB%E5%8A%A1"),
+            ("%", "%25"),
+        ];
+        for (text, want) in cases {
+            assert_eq!(super::encode_uri_component(text), want);
+        }
+    }
 
     #[test]
     fn fixes_decimals_as_javascript_does() {

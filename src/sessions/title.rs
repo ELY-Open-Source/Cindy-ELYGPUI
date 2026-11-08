@@ -5,7 +5,10 @@ use std::sync::LazyLock;
 use regex::Regex;
 
 use super::group::Session;
-use crate::i18n::{Translator, cross_locale};
+use crate::{
+    i18n::{Translator, cross_locale},
+    theme_import::color::js_space,
+};
 
 /// `DEFAULT_DRAFT_SESSION_TITLE`, the untitled sentinel.
 const DRAFT: &str = "New Maker";
@@ -22,13 +25,12 @@ static WORKTREE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)(?:^|[\\/])(?:merge-)?worktrees[\\/]([A-Za-z0-9-]{1,64})[\\/]?$")
         .expect("valid pattern")
 });
-static MAKE_TAG: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)^\[Cindy(?:-| )Make\][\s\x{FEFF}]*").expect("valid pattern"));
+static MAKE_TAG: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(r"(?i)^\[Cindy(?:-| )Make\]{JS_SPACE}*")).expect("valid pattern")
+});
 
-/// JavaScript's `trimStart`.
-fn trim_start(text: &str) -> &str {
-    text.trim_start_matches(|c: char| c.is_whitespace() || c == '\u{feff}')
-}
+/// JavaScript's `\s`; Rust's also matches U+0085.
+const JS_SPACE: &str = r"[\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}]";
 
 /// `cindyMakeWorktreeName`.
 fn worktree_name(working_dir: Option<&str>) -> Option<&str> {
@@ -45,7 +47,7 @@ fn make_title(title: &str, worktree: Option<&str>) -> String {
     };
     let tag = format!("[{}]", &worktree[..worktree.len().min(4)]);
     let body = match text.strip_prefix(&tag) {
-        Some(rest) => trim_start(rest),
+        Some(rest) => rest.trim_start_matches(js_space),
         None => &text,
     };
     if body.is_empty() {
@@ -102,6 +104,22 @@ pub fn display(s: &Session, t: &Translator) -> String {
         .strip_prefix(SCHEDULE_PREFIX)
         .unwrap_or(&s.title)
         .to_owned()
+}
+
+/// `toStoredSessionTitle`: an edited display title back to what the row stores.
+pub fn stored(s: &Session, edited: &str) -> String {
+    if s.source == MAKE || s.source == MAKE_MERGE {
+        return make_title(edited, worktree_name(s.working_dir.as_deref()));
+    }
+    if !s.title.starts_with(SCHEDULE_PREFIX) || edited.starts_with(SCHEDULE_PREFIX) {
+        return edited.to_owned();
+    }
+    format!("{SCHEDULE_PREFIX}{edited}")
+}
+
+/// `isEmptyDraftSession`.
+pub fn empty_draft(s: &Session) -> bool {
+    s.title == DRAFT && s.messages == 0
 }
 
 #[cfg(test)]

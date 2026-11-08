@@ -1,6 +1,7 @@
 use std::{path::PathBuf, time::Duration};
 
 use anyhow::{Context as _, Result};
+use ely_gpui_component::primitives::FocusScope;
 use gpui::{
     App, AppContext, Bounds, Context, Entity, FocusHandle, InteractiveElement, IntoElement,
     MouseButton, ParentElement, Render, Styled, Task, TitlebarOptions, Window, WindowBounds,
@@ -33,6 +34,8 @@ pub struct Root {
     sidebar: Entity<Sidebar>,
     /// Held while nothing else is focused, so window-wide keys reach the root.
     focus: FocusHandle,
+    /// Ely's Tab and Shift-Tab scope around the root.
+    tab_scope: FocusHandle,
     toasts: Entity<ToastContainer>,
     actions: Entity<chrome::actions::ChromeActions>,
 }
@@ -86,7 +89,7 @@ impl Render for Root {
         let edges = chrome::resize_edges(window, cx);
         let wallpaper = crate::wallpaper::canvas(window, cx);
         let appearance = cx.global::<Appearance>();
-        div()
+        let root = div()
             .track_focus(&self.focus)
             .relative()
             .size_full()
@@ -116,7 +119,8 @@ impl Render for Root {
             .children(edges)
             .child(self.actions.clone())
             .child(self.toasts.clone())
-            .children(crate::localdb::screen(cx))
+            .children(crate::localdb::screen(cx));
+        FocusScope::new(&self.tab_scope).size_full().child(root)
     }
 }
 
@@ -277,6 +281,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 layout,
                 sidebar,
                 focus,
+                tab_scope: cx.focus_handle(),
                 toasts: cx.new(|cx| ToastContainer::new(window, cx)),
                 actions,
             }

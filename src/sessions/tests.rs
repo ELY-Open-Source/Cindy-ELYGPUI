@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{filter::Filter, fold, group, meta, query, row, settings, sweep};
+use super::{filter::Filter, fold, group, meta, query, row, settings, sweep, write};
 
 /// The columns of Cindy's schema this chapter reads.
 fn db() -> Connection {
@@ -12,7 +12,8 @@ fn db() -> Connection {
            created_at integer NOT NULL, updated_at integer NOT NULL, workspace_kind text DEFAULT 'project',
            working_dir text, project_dir text, remote_host_id text, list_message_count integer,
            agent_kind text NOT NULL DEFAULT 'cc', orca_role text, total_token_usage integer NOT NULL DEFAULT 0,
-           total_cost_usd real NOT NULL DEFAULT 0, total_cost_amount real NOT NULL DEFAULT 0, total_cost_currency text);
+           total_cost_usd real NOT NULL DEFAULT 0, total_cost_amount real NOT NULL DEFAULT 0, total_cost_currency text,
+           notifications_muted integer DEFAULT false NOT NULL);
          CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
@@ -402,4 +403,37 @@ fn reads_task_info_as_load_task_info_fields_does() {
     );
     assert_eq!(read(Some(r#"{"version":2,"fields":[]}"#)), ["time"]);
     assert_eq!(read(Some("{")), ["time"]);
+}
+
+#[test]
+fn patches_metadata_as_update_session_in_db_does() {
+    let db = db();
+    add(&db, "s", "desktop", "active", 5);
+    let read = |db: &Connection| {
+        db.query_row(
+            "SELECT title, notifications_muted, updated_at FROM sessions WHERE id = 's'",
+            [],
+            |r| {
+                Ok((
+                    r.get::<_, String>(0)?,
+                    r.get::<_, bool>(1)?,
+                    r.get::<_, i64>(2)?,
+                ))
+            },
+        )
+        .unwrap()
+    };
+    let before = read(&db).2;
+    write::patch(&db, "s", &write::Meta::Title("Renamed".into())).unwrap();
+    write::patch(&db, "s", &write::Meta::Muted(true)).unwrap();
+    assert_eq!(
+        read(&db),
+        ("Renamed".into(), true, before),
+        "no updatedAt bump"
+    );
+    assert!(write::patch(&db, "gone", &write::Meta::Muted(true)).is_err());
+    assert_eq!(
+        write::deep_link("a b/任"),
+        "cindy://session/a%20b%2F%E4%BB%BB"
+    );
 }

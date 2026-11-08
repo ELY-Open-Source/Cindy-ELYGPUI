@@ -2,13 +2,13 @@
 
 use std::sync::Arc;
 
-use ely_gpui_component::primitives::IconName;
+use ely_gpui_component::{menus::ContextMenu, primitives::IconName};
 use gpui::{
-    AnyElement, App, FontFeatures, InteractiveElement as _, IntoElement as _, ParentElement,
-    StatefulInteractiveElement as _, Styled, div, prelude::FluentBuilder as _,
+    AnyElement, App, ElementId, FontFeatures, InteractiveElement as _, IntoElement, ParentElement,
+    RenderOnce, StatefulInteractiveElement as _, Styled, Window, div, prelude::FluentBuilder as _,
 };
 
-use super::{group::Session, meta, title};
+use super::{Sessions, group::Session, meta, rename, task_menu, title};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -135,7 +135,6 @@ fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
             .flex()
             .flex_none()
             .h(css(24.0))
-            .ml_auto()
             .items_center()
             .gap(css(4.0))
             .text_size(css(size))
@@ -147,18 +146,90 @@ fn info(s: &Session, now: i64, cx: &App) -> Option<AnyElement> {
     )
 }
 
-/// A 32 px pill: the status icon, the title, a pinned task's source label, the info slot;
-/// `indented` inside a group.
+/// The hover group of one row.
+const ROW_GROUP: &str = "task-row";
+
+/// The right slot: the info, which gives way on hover to More (`SessionAction`).
+/// The info slot; a hover, or More holding focus as `group-focus-within/slot`, swaps in More.
+#[derive(IntoElement)]
+struct Slot {
+    session: Session,
+    now: i64,
+}
+
+impl RenderOnce for Slot {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let s = &self.session;
+        let focus = window
+            .use_keyed_state(
+                ElementId::Name(format!("task-more-focus-{}", s.id).into()),
+                cx,
+                |_, cx| cx.focus_handle().tab_stop(true),
+            )
+            .read(cx)
+            .clone();
+        let focused = focus.is_focused(window);
+        let menu = task_menu::menu(s, cx.global::<Translator>());
+        div()
+            .relative()
+            .flex()
+            .flex_none()
+            .h(css(24.0))
+            .ml_auto()
+            .items_center()
+            .justify_end()
+            .children(info(s, self.now, cx).map(|info| {
+                div()
+                    .flex()
+                    .overflow_hidden()
+                    .when(focused, |el| el.w(css(0.0)).opacity(0.0))
+                    .group_hover(ROW_GROUP, |st| st.w(css(0.0)).opacity(0.0))
+                    .child(info)
+            }))
+            .child(
+                div()
+                    .hidden()
+                    .size(css(20.0))
+                    .when(focused, |el| el.flex())
+                    .group_hover(ROW_GROUP, |st| st.flex()),
+            )
+            .child(
+                div()
+                    .absolute()
+                    .top_0()
+                    .right_0()
+                    .flex()
+                    .h(css(24.0))
+                    .items_center()
+                    .gap(css(2.0))
+                    .opacity(if focused { 1.0 } else { 0.0 })
+                    .group_hover(ROW_GROUP, |st| st.opacity(1.0))
+                    .child(task_menu::More {
+                        id: s.id.clone(),
+                        menu,
+                        focus,
+                    }),
+            )
+    }
+}
+
+/// A 32 px pill: the status icon, the title, a pinned task's source label, the info slot, or
+/// the rename field; `indented` inside a group. A right click opens the task menu.
 pub(super) fn row(
     row: &Session,
     indented: bool,
     label: Option<&str>,
     now: i64,
     cx: &App,
-) -> gpui::Stateful<gpui::Div> {
+) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let (title_size, label_size) = (text_size(14.0, cx), text_size(12.0, cx));
     let meta = appearance.token("cmd-palette-item-meta");
+    let editing = cx
+        .global::<Sessions>()
+        .editing
+        .as_ref()
+        .filter(|e| e.id == row.id);
     let title = div()
         .flex()
         .min_w_0()
@@ -185,9 +256,11 @@ pub(super) fn row(
             )
         });
     let selector = format!("task-{}", row.id);
-    div()
+    let id = row.id.clone();
+    let body = div()
         .id(gpui::SharedString::from(selector.clone()))
         .debug_selector(move || selector)
+        .group(ROW_GROUP)
         .flex()
         .items_center()
         .gap(css(10.0))
@@ -196,14 +269,39 @@ pub(super) fn row(
         .pl(css(if indented { 20.0 } else { 12.0 }))
         .pr(css(8.0))
         .rounded(css(9999.0))
-        .cursor_pointer()
+        .when(editing.is_none(), |el| el.cursor_pointer())
         .text_size(css(title_size))
         .font_weight(gpui::FontWeight::MEDIUM)
         .text_color(appearance.hsl_token("foreground"))
         .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
-        .child(status_icon(row, cx))
-        .child(title)
-        .children(info(row, now, cx))
+        .on_click(move |event, window, cx| {
+            if event.click_count() != 2 {
+                return;
+            }
+            let found = cx
+                .global::<Sessions>()
+                .loaded
+                .as_ref()
+                .and_then(|l| l.sessions.iter().find(|s| s.id == id).cloned());
+            if let Some(s) = found {
+                rename::start(&s, window, cx);
+            }
+        })
+        .child(status_icon(row, cx));
+    let body = match editing {
+        Some(editing) => body.child(rename::field(editing, cx)),
+        None => body.child(title).child(Slot {
+            session: row.clone(),
+            now,
+        }),
+    };
+    ContextMenu::new(
+        ElementId::Name(format!("task-menu-{}", row.id).into()),
+        task_menu::menu(row, cx.global::<Translator>()),
+    )
+    .w_full()
+    .child(body)
+    .into_any_element()
 }
 
 pub(super) const ROW_HEIGHT: f32 = 32.0;

@@ -34,6 +34,10 @@ defines scope and what 1:1 means.
   is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row,
   with `title.rs` (`getSessionDisplayTitle`, golden `display-title.json`) and `meta.rs`
   (`SessionInfoMeta`, golden `meta.json`; task info read once, as Cindy caches it).
+  `task_menu.rs` is the row's `SessionTaskMenu` (Ely `ContextMenu` on a right click, `menu_under`
+  on the hover More), `rename.rs` the `SessionRenameInput` on Ely's `TextInput`, and `write.rs`
+  `patchMeta`: the row patched first, the `UPDATE` on the database worker, rolled back with a
+  toast on failure. The port writes Cindy's database the way Cindy's own main process does.
   `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
   the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
   choice, and lacks some lucide icons; the nearest Ely icon stands in.
@@ -90,7 +94,8 @@ defines scope and what 1:1 means.
   scancode. Only a gpui change that exposes the physical key closes this; keypad `+` and `-`
   survive. A shortcut handler sits on the window's root element in `capture_key_down`. The
   root holds focus while nothing else does (`on_focus_lost` hands it back), so every key's dispatch
-  path runs through it; with nothing focused gpui dispatches to the tree's own root only.
+  path runs through it; with nothing focused gpui dispatches to the tree's own root only. Ely's
+  `FocusScope` wraps the root on its own handle, so Tab and Shift-Tab walk gpui's tab stops.
 - Sidebar frame: `src/sidebar.rs` ports `Sidebar.tsx` and the width, rail and hidden state
   `MainLayout.tsx` keeps; `sidebar/resize.rs` ports `useHorizontalResize.ts` with the sidebar's
   limits. Width and rail live in the preferences file (`sidebar-width`, `sidebar-rail`), the

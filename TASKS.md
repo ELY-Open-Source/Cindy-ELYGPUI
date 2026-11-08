@@ -247,9 +247,18 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     worktree pieces come with chapter 18), and the task info submenu of the filter menu. The
     right status (error, awaiting, running, done dots) goes to 10.0: its only database source,
     a pending interruption, needs the owning host's boot time (`getSessionInterruptionBootAt`)
-  - [ ] 8.5b The actions, written as `sessionService.ts` patches them: rename by double click,
-    archive (which unpins), delete (soft, `status = deleted`), pin, the hover slot (More, the
-    two-step Archive confirm, Undo) and the `SessionTaskMenu`
+  - [x] 8.5b1 The row's `SessionTaskMenu` (right click and the hover More button) with Rename,
+    Mute notifications and Copy task link; rename by double click in `SessionRenameInput`;
+    `title` and `notificationsMuted` written as `updateSessionInDb` patches them (no
+    `updatedAt` bump; `toStoredSessionTitle` keeps the `[Schedule] ` prefix). The input's AI
+    rename button needs a model and goes to 11.0. Archive, Unarchive, Delete and the two-step
+    archive button go to 18.0: their status write takes the worktree locks and recycle records
+    (`withStatusWriteLock`). Tags, Move, Share, Export and Open in new window go with the
+    chapters that own them
+  - [ ] 8.5b2 Pin and Unpin as `handleTogglePin` does: `pinnedAt` written, the summary cleared
+    on unpin, and a pin promoted in `pinnedOrder` through `sidebarSettingsStore.ts`'s
+    `savePinnedOrder`, `override-settings-file.ts`'s `updateAtomic` and the advisory tier of
+    `device-link/crossProcessLock.ts` (moved here from chapters 10 and 20, their first writer)
   - [ ] 8.5c The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes,
     the main list's display mode, with the preview (`sessionToCamel`, `markdownPreviewText`) and
     message count of `projectSessionReadResult`
@@ -257,7 +266,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
   `useActiveMainView`, and a row click to its session as `handleSessionClick` and
-  `resolveSessionRoute` do
+  `resolveSessionRoute` do; the row a Tab stop (`tabIndex=0`) that Enter and Space open, with
+  its task menu on the keyboard's context-menu key
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles
@@ -294,7 +304,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 ## 11. Models and providers
 
-- [ ] 11.0 Expand from Cindy's code
+- [ ] 11.0 Expand from Cindy's code, with the rename input's AI rename button (from 8.5b1)
 
 ## 12. Settings
 
@@ -331,7 +341,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 ## 18. Files and git
 
-- [ ] 18.0 Expand from Cindy's code
+- [ ] 18.0 Expand from Cindy's code, with the task row's Archive, Unarchive and Delete and the
+  two-step archive button (from 8.5b1)
 
 ## 19. Remote
 

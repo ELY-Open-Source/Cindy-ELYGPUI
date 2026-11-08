@@ -306,3 +306,11 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. toFixed panicked on an overflowed cost and dropped the sign of negatives; the
   row skipped `getSessionDisplayTitle`; task info read failures went unlogged.
 - Round 2: PASS.
+
+## 8.5b1 Task menu and rename
+
+- Round 1: FAIL. An edit whose task left the list blocked every later rename; title trims used
+  Rust's whitespace (U+0085); More took no keyboard focus. Fixed: the read ends a stale edit and
+  a new rename replaces it; JavaScript's whitespace class; More is a Tab stop under Ely's
+  `FocusScope` around the window root.
+- Round 2: PASS.

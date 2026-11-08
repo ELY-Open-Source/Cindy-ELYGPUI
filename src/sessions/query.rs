@@ -64,7 +64,8 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
                 sessions.pinned_at, {MESSAGES}, sessions.created_at,
                 coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at),
                 sessions.agent_kind, sessions.orca_role, sessions.total_token_usage,
-                sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency
+                sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency,
+                sessions.notifications_muted
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
         status.sql()
@@ -91,6 +92,7 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
             cost_usd: row.get(16)?,
             cost_amount: row.get(17)?,
             cost_currency: row.get(18)?,
+            muted: row.get(19)?,
         })
     })?;
     rows.collect()

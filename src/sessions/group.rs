@@ -22,6 +22,8 @@ pub struct Session {
     pub created_at: i64,
     pub agent_kind: String,
     pub orca_lead: bool,
+    /// `notifications_muted`.
+    pub muted: bool,
     pub tokens: i64,
     /// `total_cost_usd`, the legacy USD total.
     pub cost_usd: f64,

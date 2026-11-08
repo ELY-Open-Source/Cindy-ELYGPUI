@@ -2,23 +2,27 @@
 
 use std::{path::Path, time::Duration};
 
+use ely_gpui_component::primitives::FocusScope;
 use gpui::{
-    Context, IntoElement, Modifiers, ParentElement as _, Render, Styled as _, TestAppContext,
-    VisualTestContext, Window, WindowAppearance, div, px, size,
+    Context, FocusHandle, IntoElement, Modifiers, ParentElement as _, Render, Styled as _,
+    TestAppContext, VisualTestContext, Window, WindowAppearance, div, px, size,
 };
 
 use super::{Loaded, Sessions, group::Session};
 use crate::{os_appearance::Initial, preferences::Preferences, theme::Appearance, theme::Mode};
 
-struct List;
+/// The list inside Ely's Tab scope, as the main window holds it.
+struct List(FocusHandle);
 
 impl Render for List {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        div()
-            .size_full()
-            .flex()
-            .flex_col()
-            .children(super::list(window, cx))
+        FocusScope::new(&self.0).size_full().child(
+            div()
+                .size_full()
+                .flex()
+                .flex_col()
+                .children(super::list(window, cx)),
+        )
     }
 }
 
@@ -38,6 +42,7 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
         created_at: activity,
         agent_kind: "cc".into(),
         orca_lead: false,
+        muted: false,
         tokens: 0,
         cost_usd: 0.0,
         cost_amount: 0.0,
@@ -46,7 +51,7 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
     }
 }
 
-fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext {
+pub(super) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext {
     let week = 7 * 24 * 60 * 60 * 1000;
     let old = jiff::Timestamp::now().as_millisecond() - week;
     let mut sessions: Vec<Session> = (0..7)
@@ -66,6 +71,7 @@ fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
+        cx.set_global(crate::toast::Toasts::default());
         cx.global_mut::<Sessions>().loaded = Some(Loaded {
             sessions,
             recent: Vec::new(),
@@ -73,7 +79,8 @@ fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext
             settings: Default::default(),
         });
     });
-    let (_, vcx) = cx.add_window_view(|_, _| List);
+    let (view, vcx) = cx.add_window_view(|_, cx| List(cx.focus_handle()));
+    vcx.update(|window, cx| window.focus(&view.read(cx).0.clone(), cx));
     vcx.simulate_resize(size(px(400.0), px(900.0)));
     vcx.run_until_parked();
     vcx
@@ -86,7 +93,7 @@ fn shown(cx: &mut VisualTestContext, id: &str) -> bool {
         .is_some()
 }
 
-fn click(cx: &mut VisualTestContext, selector: &'static str) {
+pub(super) fn click(cx: &mut VisualTestContext, selector: &'static str) {
     let bounds = cx
         .debug_bounds(selector)
         .unwrap_or_else(|| panic!("{selector} not drawn"));
