@@ -1,7 +1,7 @@
 //! `richAnswer.ts`'s `richAnswerText`: an answer's `cindy-ui` blocks written out as Markdown
 //! text, for readers without the component renderer.
 
-mod js;
+pub(crate) mod js;
 mod stream;
 mod values;
 

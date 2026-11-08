@@ -20,6 +20,7 @@ mod settings;
 mod sweep;
 mod task_menu;
 mod title;
+mod view_mode;
 mod write;
 
 use std::{
@@ -95,6 +96,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         watcher: None,
         owner_watched: false,
     });
+    view_mode::install(cx);
     cx.observe_global::<LocalDb>(|cx| {
         if matches!(cx.global::<LocalDb>().state, State::Ready(_)) {
             watch(cx);

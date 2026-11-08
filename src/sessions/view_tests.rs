@@ -343,3 +343,37 @@ fn task_info_follows_the_menu(cx: &mut TestAppContext) {
         Some(r#"{"version":1,"fields":["tokens"]}"#)
     );
 }
+
+#[gpui::test]
+fn the_display_menus_save_both_modes(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    let saved = |dir: &Path, key: &str| {
+        Preferences::load(dir)
+            .unwrap()
+            .text(key)
+            .unwrap()
+            .map(str::to_owned)
+    };
+    pick(cx, &["Display", "Text"]);
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].pinned_at = Some(1);
+    });
+    cx.update(|window, _| window.refresh());
+    assert_eq!(
+        saved(dir.path(), "sidebar.mainListMode").as_deref(),
+        Some("text")
+    );
+    click(cx, "pinned-view-style-button");
+    click(cx, "menu-row-Cards");
+    assert_eq!(
+        saved(dir.path(), "sidebar.cardMode").as_deref(),
+        Some("card")
+    );
+    let modes = cx.update(|_, cx| (super::view_mode::pinned(cx), super::view_mode::main(cx)));
+    assert_eq!(
+        modes,
+        (super::view_mode::Pinned::Card, super::view_mode::Main::Text)
+    );
+}

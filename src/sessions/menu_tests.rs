@@ -203,3 +203,21 @@ fn a_failed_order_save_puts_the_order_back(cx: &mut TestAppContext) {
     assert!(order.is_empty(), "no owner, so the save failed");
     assert_eq!(toasts(cx), ["Operation failed", "Operation failed"]);
 }
+
+#[gpui::test]
+fn tab_reaches_the_pinned_view_style_and_space_opens_it(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|window, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].pinned_at = Some(1);
+        window.refresh();
+    });
+    cx.run_until_parked();
+    key(cx, "tab");
+    key(cx, "space");
+    assert!(
+        cx.debug_bounds("menu-row-Cards").is_some(),
+        "the menu opened"
+    );
+}

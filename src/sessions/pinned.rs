@@ -1,10 +1,14 @@
-//! `PinnedSection.tsx` in text mode: pinned tasks and projects, folded as one section.
+//! `PinnedSection.tsx` in text mode: pinned tasks and projects, folded as one section, with
+//! the `ViewStyleMenu` that picks the section's display mode.
 
 use std::cell::RefCell;
 
-use ely_gpui_component::primitives::IconName;
+use ely_gpui_component::{
+    menus::{Menu, MenuItem, menu_under},
+    primitives::IconName,
+};
 use gpui::{
-    AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _,
+    AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _, Role,
     StatefulInteractiveElement as _, Styled as _, Window, div,
 };
 
@@ -13,6 +17,7 @@ use super::{
     lists::{Lists, Pinned},
     main_list::{Place, project, text},
     row::{ROW_HEIGHT, row},
+    view_mode::{self, Pinned as Mode},
 };
 use crate::{
     appearance_settings::text_size, i18n::Translator, lucide::icon, preferences::Preferences,
@@ -38,9 +43,80 @@ fn toggle(collapsed: bool, cx: &mut App) {
     cx.refresh_windows();
 }
 
-/// The section, none without pins; the view style menu comes with 8.5's card.
+/// `VIEW_STYLE_OPTIONS`; Ely has no `LayoutList`, so `List` stands in.
+fn style(mode: Mode) -> (&'static str, IconName) {
+    match mode {
+        Mode::Text => ("ccAgent.sidebar.viewStyleList", IconName::AlignJustify),
+        Mode::Card => ("ccAgent.sidebar.viewStyleCard", IconName::LayoutGrid),
+        Mode::List => ("ccAgent.sidebar.viewStyleListWide", IconName::List),
+    }
+}
+
+/// The header's right-hand trigger, showing the current mode's icon, and its menu.
+pub fn view_style(window: &mut Window, cx: &mut App) -> AnyElement {
+    let current = view_mode::pinned(cx);
+    let translator = cx.global::<Translator>();
+    let menu = Mode::ALL.iter().fold(Menu::new(), |menu, &mode| {
+        let (label, glyph) = style(mode);
+        menu.item(
+            MenuItem::radio(translator.t(label, &[]), mode == current)
+                .icon(glyph)
+                .on_click(move |_, cx| view_mode::set_pinned(mode, cx)),
+        )
+    });
+    let label = translator.t("ccAgent.sidebar.viewStyle", &[]);
+    let appearance = cx.global::<Appearance>();
+    let (muted, hover) = (
+        appearance.token("sidebar-list-muted"),
+        appearance.token("sidebar-nav-text"),
+    );
+    let glyph = style(current).1;
+    let focus = window
+        .use_keyed_state("pinned-view-style-focus", cx, |_, cx| {
+            cx.focus_handle().tab_stop(true)
+        })
+        .read(cx)
+        .clone();
+    let focused = focus.is_focused(window);
+    menu_under(
+        "pinned-view-style".into(),
+        &menu,
+        move |click| {
+            div()
+                .id("pinned-view-style-button")
+                .debug_selector(|| "pinned-view-style-button".into())
+                .track_focus(&focus)
+                .role(Role::Button)
+                .aria_label(label.clone())
+                .flex()
+                .flex_none()
+                .size(css(20.0))
+                .items_center()
+                .justify_center()
+                .rounded(css(6.0))
+                .cursor_pointer()
+                .opacity(if focused { 1.0 } else { 0.0 })
+                .group_hover("pinned-header", |s| s.opacity(1.0))
+                .tooltip(tip(label))
+                .group("pinned-view-style")
+                .child(
+                    icon(glyph.svg(), 13.0, 2.0)
+                        .text_color(muted)
+                        .group_hover("pinned-view-style", |s| s.text_color(hover)),
+                )
+                .on_click(move |event, window, cx| click(event, window, cx))
+                .into_any_element()
+        },
+        window,
+        cx,
+    )
+    .into_any_element()
+}
+
+/// The section, none without pins.
 pub fn section(
     lists: &Lists,
+    view_style: AnyElement,
     now: i64,
     drawn: &RefCell<Vec<String>>,
     window: &mut Window,
@@ -107,6 +183,7 @@ pub fn section(
         .flex()
         .h(css(24.0))
         .items_center()
+        .justify_between()
         .pr(css(12.0))
         .pl(css(24.0))
         .child(
@@ -117,7 +194,8 @@ pub fn section(
                 .gap(css(4.0))
                 .child(title)
                 .child(button),
-        );
+        )
+        .child(view_style);
     let mut height = 6.0;
     let mut rows: Vec<AnyElement> = Vec::new();
     for (i, entry) in lists.pinned.iter().enumerate() {

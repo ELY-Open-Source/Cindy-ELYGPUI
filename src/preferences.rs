@@ -44,6 +44,11 @@ impl Preferences {
         }
     }
 
+    /// `localStorage.key(i)` for every `i`.
+    pub fn keys(&self) -> impl Iterator<Item = &str> {
+        self.values.keys().map(String::as_str)
+    }
+
     /// `localStorage.setItem`: written beside the file, then renamed over it.
     pub fn set(&mut self, key: &str, value: &str) -> Result<()> {
         let mut next = self.values.clone();

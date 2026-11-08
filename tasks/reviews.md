@@ -337,3 +337,10 @@ effort high, in a Herdr pane.
 ## 8.5c1b The `markdown` crate parses as micromark does
 
 - Round 1: PASS.
+
+## 8.5c2a The display modes
+
+- Round 1: FAIL. The Pinned view style trigger took no Tab or key; a claim nested past 128
+  levels read as malformed. Fixed: a keyed tab stop with a button role; claims parse through
+  the `JSON.parse` port.
+- Round 2: PASS.

@@ -15,6 +15,7 @@ use super::filter::{
     self, Filter, GROUP_BY, GROUP_DIALOGUE, LAST_ACTIVITY, PROJECT_ORDER, SORT_BY, STATUS, VENDOR,
 };
 use super::meta;
+use super::view_mode::{self, Main};
 use crate::{
     appearance_settings::text_size, i18n::Translator, lucide::icon, preferences::Preferences,
     theme::Appearance, tip::tip, units::css,
@@ -115,9 +116,33 @@ fn choose(t: &Translator, key: &'static str, choices: &[Choice], current: &str) 
         })
 }
 
+/// `MAIN_VIEW_OPTIONS`; Ely has no `LayoutList`, so `List` stands in.
+fn main_icon(mode: Main) -> IconName {
+    match mode {
+        Main::Text => IconName::AlignJustify,
+        Main::List => IconName::List,
+    }
+}
+
+/// The Display row: its icon is the current mode's.
+fn display(current: Main, t: &Translator) -> MenuItem {
+    let modes = Main::ALL.iter().fold(Menu::new(), |menu, &mode| {
+        let label = match mode {
+            Main::Text => "ccAgent.sidebar.viewStyleList",
+            Main::List => "ccAgent.sidebar.viewStyleListWide",
+        };
+        menu.item(
+            MenuItem::radio(t.t(label, &[]), mode == current)
+                .icon(main_icon(mode))
+                .on_click(move |_, cx| view_mode::set_main(mode, cx)),
+        )
+    });
+    MenuItem::submenu(t.t("ccAgent.sidebar.displayHeading", &[]), modes).icon(main_icon(current))
+}
+
 /// The menu as `SidebarFilterPopover` lays it out, without the project and creator filters
-/// (13.0) and the main view mode (8.5c).
-pub fn menu(f: &Filter, info: &[&'static str], t: &Translator) -> Menu {
+/// (13.0).
+pub fn menu(f: &Filter, main: Main, info: &[&'static str], t: &Translator) -> Menu {
     let (flat, group_dialogue) = (f.flat, f.group_dialogue);
     let group_by = Menu::new()
         .item(
@@ -197,6 +222,7 @@ pub fn menu(f: &Filter, info: &[&'static str], t: &Translator) -> Menu {
                 .icon(IconName::Filter),
         )
         .separator()
+        .item(display(main, t))
         .item(
             MenuItem::submenu(
                 t.t("ccAgent.sidebar.taskInfoHeading", &[]),
@@ -234,7 +260,7 @@ pub fn header(window: &mut Window, cx: &mut App) -> AnyElement {
     let f = Filter::read(cx.global::<Preferences>());
     let translator = cx.global::<Translator>();
     let info = cx.global::<super::Sessions>().task_info.clone();
-    let menu = menu(&f, &info, translator);
+    let menu = menu(&f, view_mode::main(cx), &info, translator);
     let (title, label) = (
         translator.t("ccAgent.sidebar.allSessions", &[]),
         translator.t("ccAgent.sidebar.organizeSidebar", &[]),

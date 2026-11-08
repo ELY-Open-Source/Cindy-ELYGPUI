@@ -54,6 +54,9 @@ defines scope and what 1:1 means.
   `preview.rs` is `finalizePlainPreview` (its LRU cache, `stripInternalWebCitations`) and
   `projection.rs` the list's latest-message extract with `scheduleSessionListProjectionBackfill`:
   after a read, one `UPDATE` fills the empty `list_preview` and `list_message_count` columns.
+  `view_mode.rs` is `useSidebarCardMode.ts` with `sidebarInstallVintage.ts`: the Pinned mode
+  (`sidebar.cardMode`) and the main list's (`sidebar.mainListMode`), kept in memory as Cindy's
+  module memo, chosen from the filter menu's Display row and the Pinned header's view style menu.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

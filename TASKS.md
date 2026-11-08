@@ -276,9 +276,18 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     (JavaScript's `\s`; U+FEFF ends a GFM autolink, U+0085 does not; an emoji is not
     punctuation), and a lazy last line that starts an incomplete tag continues the paragraph
     (`>a\\` then `<a` is `a <a`). Golden cases from round 2 of 8.5c1's review
-  - [ ] 8.5c2 The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes and
-    the main list's display mode, with `sessionToCamel`'s `preview` and `summary`,
-    `resolveSessionCardBody` and the message count
+  - [x] 8.5c2a The display modes as `useSidebarCardMode.ts` keeps them: the Pinned section's
+    `text`, `card` or `list` in `sidebar.cardMode` (old `true`/`false` read as card/text), the
+    main list's `text` or `list` in `sidebar.mainListMode` (migrated from the pinned value, else
+    `sidebarInstallVintage.ts`'s fixed `legacy` or `fresh`), chosen from `SidebarFilterPopover`'s
+    display rows and `PinnedSection`'s `ViewStyleMenu`; Settings → Appearance with chapter 12,
+    `setPinnedCardSummaries` with 11.0
+  - [ ] 8.5c2b The list row as `SessionCard.tsx` draws its `list` variant in the main list and the
+    Pinned section's list mode (dividers, the inset active ring, two preview lines, time and
+    hover actions), with `sessionToCamel`'s `preview` and `summary`, `resolveSessionCardBody`
+    and the message count
+  - [ ] 8.5c2c The card as `SessionCard.tsx` draws its `card` variant in the Pinned section's card
+    mode, laid out by `CardMasonry` and `DraggableCardColumns`
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
@@ -321,7 +330,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 ## 11. Models and providers
 
-- [ ] 11.0 Expand from Cindy's code, with the rename input's AI rename button (from 8.5b1) and the task summary a pin starts (from 8.5b2)
+- [ ] 11.0 Expand from Cindy's code, with the rename input's AI rename button (from 8.5b1), the task summary a pin starts (from 8.5b2) and `setPinnedCardSummaries` (from 8.5c2a)
 
 ## 12. Settings
 

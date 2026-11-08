@@ -291,8 +291,9 @@ pub(super) fn project(
 /// scope header between them. Show all resets for lists no longer drawn.
 pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     let drawn = RefCell::new(Vec::new());
+    let view_style = pinned::view_style(window, cx);
     // The header stays while the list loads or fails, as `MainListScopeHeader` does.
-    let (pinned, main) = match draw(&drawn, window, cx) {
+    let (pinned, main) = match draw(&drawn, view_style, window, cx) {
         Some((pinned, main)) => (pinned, Some(main)),
         None => (None, None),
     };
@@ -331,6 +332,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
 /// The Pinned section and the main list's body.
 fn draw(
     drawn: &RefCell<Vec<String>>,
+    view_style: AnyElement,
     window: &mut Window,
     cx: &App,
 ) -> Option<(Option<AnyElement>, gpui::Div)> {
@@ -410,5 +412,8 @@ fn draw(
         .pt(css(4.0))
         .pl(css(12.0))
         .children(children);
-    Some((pinned::section(&lists, now, drawn, window, cx), main))
+    Some((
+        pinned::section(&lists, view_style, now, drawn, window, cx),
+        main,
+    ))
 }
