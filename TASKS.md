@@ -33,7 +33,17 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 4. i18n
 
-- [ ] 4.0 Expand from Cindy's code
+- [x] 4.0 Expand from Cindy's code (`shared/locale.ts`, `renderer/i18n/index.ts`, `locales/`)
+- [ ] 4.1 Cindy's locale files at the PRD's commit in the repo, compiled into the binary
+- [ ] 4.2 Locale choice: Cindy's 12 locales, OS locale matched as `resolvePreferredSystemLocale`
+  does (zh by script then region, pt by region), user choice saved by the port
+- [ ] 4.3 Translator with i18next's semantics as Cindy uses them: namespaces `common` (default) and
+  `aiRename`; nested keys; `{{name}}` with defaults `appName`, `pronoun` and
+  `reservedGhostIdPrefixes`; plural suffixes picked by each locale's CLDR category (`_one`, `_many`,
+  `_other` and any other the catalogs hold); `$t()` nesting; fallback classical to modern Chinese to
+  English; a missing `ipcError.*` or `chat.remoteError.*` key (not `ipcError.INTERNAL`) shows
+  `ipcError.INTERNAL`; `DEV_WRITE_BLOCKED`; Ely's `I18n` set to the nearest Ely locale for its
+  components
 
 ## 5. Themes and appearance
 

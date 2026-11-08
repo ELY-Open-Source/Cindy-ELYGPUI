@@ -68,6 +68,8 @@ own modules and assigns any new one here before porting.
 
 ## Renderer localStorage
 
-Cindy's renderer keeps preferences (theme family and mode, fonts, sidebar modes and more) in
-Chromium's `Local Storage/leveldb`, which Electron holds locked while Cindy runs. The chapter that
-ports each preference reads it from there and states how the port writes it back.
+Cindy's renderer keeps preferences (locale, theme family and mode, fonts, sidebar modes and more) in
+Chromium's `Local Storage/leveldb`: an internal Chromium format, locked while Cindy runs. The port
+does not read or write it. It keeps these preferences in its own `cindy-elygpui-preferences.json`
+in userData, one key per Cindy localStorage key, under Cindy's key names. Each preference lands with
+the chapter that first uses it; locale is the first (chapter 4).

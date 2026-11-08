@@ -49,3 +49,9 @@ effort high, in a Herdr pane.
   widened to any `.json` mention and any stream, append, rename or `write*File` writer; 583 modules.
   Review limit reached; committed with the round-5 findings fixed and the list marked a superset
   that each chapter re-checks at expansion.
+
+## 4.0 i18n plan
+
+- Round 1: FAIL. Plural spec named only `_one`/`_other`; namespaces, `reservedGhostIdPrefixes` and
+  the `chat.remoteError.*` fallback were missing. Fixed in task 4.3.
+- Round 2: PASS.
