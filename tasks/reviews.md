@@ -295,3 +295,8 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Hidden keys skipped non-strings; Show all kept across unmounts; a fold turned after a failed save. Fixed with JS `String()`, drawn-list pruning and save-first folds, each with a regression.
 - Round 2: FAIL. Pinned projects kept Show all when Pinned closed. Fixed by merging inner keys only while the body is drawn.
 - Round 3: PASS.
+
+## 8.4c Sidebar filter
+
+- Round 1: FAIL. The scope header waited for the first load. Fixed: it always draws; regression with nothing loaded.
+- Round 2: PASS.

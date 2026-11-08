@@ -36,6 +36,7 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
         pinned_at: None,
         messages: 1,
         created_at: activity,
+        agent_kind: "cc".into(),
         activity_at: activity,
     }
 }
@@ -239,4 +240,64 @@ fn closing_pinned_resets_its_projects_show_all(cx: &mut TestAppContext) {
     click(cx, "pinned-title");
     wait(cx, 250);
     assert!(shown(cx, "a4") && !shown(cx, "a5"), "reopened at five");
+}
+
+fn pick(cx: &mut VisualTestContext, rows: &[&str]) {
+    click(cx, "sidebar-filter-button");
+    for row in rows {
+        click(cx, Box::leak(format!("menu-row-{row}").into_boxed_str()));
+    }
+}
+
+#[gpui::test]
+fn the_filter_menu_writes_what_the_list_reads(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[1].agent_kind = "codex".into();
+    });
+    let saved = |dir: &Path, key: &str| {
+        Preferences::load(dir)
+            .unwrap()
+            .text(key)
+            .unwrap()
+            .map(str::to_owned)
+    };
+    pick(cx, &["Filters", "Harness", "Codex"]);
+    assert_eq!(
+        saved(dir.path(), "cc-agent.sidebar.filter.vendor").as_deref(),
+        Some("codex")
+    );
+    assert!(
+        shown(cx, "a1") && !shown(cx, "a0") && !shown(cx, "d0"),
+        "only the Codex task"
+    );
+    pick(cx, &["Filters", "Reset filters"]);
+    assert!(shown(cx, "a0") && shown(cx, "d0"));
+    pick(cx, &["Group by", "Project"]);
+    assert_eq!(
+        saved(dir.path(), "cc-agent.sidebar.filter.groupBy").as_deref(),
+        Some("flat")
+    );
+    assert!(shown(cx, "a6"), "flat: every task, past the project's five");
+    pick(cx, &["Group by", "Chat"]);
+    assert_eq!(
+        saved(dir.path(), "cc-agent.sidebar.filter.groupDialogue").as_deref(),
+        Some("false")
+    );
+}
+
+#[gpui::test]
+fn the_scope_header_stands_before_the_list_loads(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| cx.global_mut::<Sessions>().loaded = None);
+    assert!(!shown(cx, "a0"));
+    pick(cx, &["Group by", "Chat"]);
+    let saved = Preferences::load(dir.path()).unwrap();
+    assert_eq!(
+        saved.text("cc-agent.sidebar.filter.groupDialogue").unwrap(),
+        Some("false")
+    );
 }

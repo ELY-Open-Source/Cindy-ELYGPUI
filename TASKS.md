@@ -233,10 +233,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
     read as Chat tasks); the `flat` mode's dialogue group; card and list modes and the view style
     menu come with 8.5's card; a `pinnedOrder` Cindy has not yet moved out of its renderer
     storage is not readable here
-  - [ ] 8.4c The sidebar filter as `sidebarFilterCore.ts` keeps it and `MainListScopeHeader.tsx`
+  - [x] 8.4c The sidebar filter as `sidebarFilterCore.ts` keeps it and `MainListScopeHeader.tsx`
     and `SidebarFilterPopover` edit it: status, vendor, last activity, group by, dialogue grouping,
-    sort and project order; the machine switcher lands with chapter 19, the project and creator
-    filters with 13.0's owner-scoped storage
+    sort and project order, with the harness and last-activity windows applied as
+    `CCAgentSidebarUpper.tsx` applies them (pins exempt, `recent_workdirs` kinds); built on Ely's
+    `Menu`, so rows carry no value summary or tip and a choice closes the menu; the machine
+    switcher and host project orders land with chapter 19, the project and creator filters and
+    the fold-all button with 13.0's owner-scoped storage, the display mode and task info with 8.5
 - [ ] 8.5 A session row as `SessionItem.tsx` and `SessionInfoMeta` show it (status icon and
   attention dot, title, the chosen meta fields, hover archive) and the card as `SessionCard.tsx`;
   rename by double click, archive (which unpins), delete (soft, `status = deleted`), pin and the

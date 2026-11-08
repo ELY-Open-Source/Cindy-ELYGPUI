@@ -928,5 +928,275 @@
     }
    }
   ]
+ },
+ {
+  "name": "harness filter keeps pins and known-kind projects",
+  "vendor": "codex",
+  "recentWorkdirs": [
+   {
+    "path": "/work/empty",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z"
+   },
+   {
+    "path": "/work/cconly",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z",
+    "knownAgentKinds": [
+     "cc"
+    ]
+   },
+   {
+    "path": "/work/codexdir",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z",
+    "knownAgentKinds": [
+     "codex"
+    ]
+   },
+   {
+    "path": "/work/mixed",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z"
+   }
+  ],
+  "sessions": [
+   {
+    "id": "x1",
+    "title": "x1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T10:00:00.000Z",
+    "lastActivityAt": "2026-11-03T10:00:00.000Z",
+    "updatedAt": "2026-11-03T10:00:00.000Z",
+    "createdAt": "2026-11-03T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "codex"
+   },
+   {
+    "id": "x2",
+    "title": "x2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T10:00:00.000Z",
+    "lastActivityAt": "2026-11-04T10:00:00.000Z",
+    "updatedAt": "2026-11-04T10:00:00.000Z",
+    "createdAt": "2026-11-04T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "x3",
+    "title": "x3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/site",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T10:00:00.000Z",
+    "lastActivityAt": "2026-11-05T10:00:00.000Z",
+    "updatedAt": "2026-11-05T10:00:00.000Z",
+    "createdAt": "2026-11-05T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "x4",
+    "title": "x4",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "dialogue",
+    "workingDir": null,
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-06T10:00:00.000Z",
+    "lastActivityAt": "2026-11-06T10:00:00.000Z",
+    "updatedAt": "2026-11-06T10:00:00.000Z",
+    "createdAt": "2026-11-06T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "codex"
+   },
+   {
+    "id": "x5",
+    "title": "x5",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": null,
+    "lastActivityAt": null,
+    "updatedAt": "2026-11-07T10:00:00.000Z",
+    "createdAt": "2026-11-07T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 0
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "x6",
+    "title": "x6",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/site",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-02T10:00:00.000Z",
+    "lastActivityAt": "2026-11-02T10:00:00.000Z",
+    "updatedAt": "2026-11-02T10:00:00.000Z",
+    "createdAt": "2026-11-02T10:00:00.000Z",
+    "pinnedAt": "2026-11-08T12:00:00.000Z",
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "x7",
+    "title": "x7",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/mixed",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   }
+  ]
+ },
+ {
+  "name": "last activity window",
+  "lastActivityCutoff": "2026-11-04T00:00:00.000Z",
+  "recentWorkdirs": [
+   {
+    "path": "/work/empty",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z"
+   }
+  ],
+  "sessions": [
+   {
+    "id": "y1",
+    "title": "y1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T10:00:00.000Z",
+    "lastActivityAt": "2026-11-05T10:00:00.000Z",
+    "updatedAt": "2026-11-05T10:00:00.000Z",
+    "createdAt": "2026-11-05T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "y2",
+    "title": "y2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-02T10:00:00.000Z",
+    "lastActivityAt": "2026-11-02T10:00:00.000Z",
+    "updatedAt": "2026-11-02T10:00:00.000Z",
+    "createdAt": "2026-11-02T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "y3",
+    "title": "y3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/old",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "y4",
+    "title": "y4",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "dialogue",
+    "workingDir": null,
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-06T10:00:00.000Z",
+    "lastActivityAt": "2026-11-06T10:00:00.000Z",
+    "updatedAt": "2026-11-06T10:00:00.000Z",
+    "createdAt": "2026-11-06T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   },
+   {
+    "id": "y5",
+    "title": "y5",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/old",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T10:00:00.000Z",
+    "lastActivityAt": "2026-11-03T10:00:00.000Z",
+    "updatedAt": "2026-11-03T10:00:00.000Z",
+    "createdAt": "2026-11-03T10:00:00.000Z",
+    "pinnedAt": "2026-11-09T12:00:00.000Z",
+    "_count": {
+     "messages": 1
+    },
+    "agentKind": "cc"
+   }
+  ]
  }
 ]

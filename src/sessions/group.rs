@@ -20,6 +20,7 @@ pub struct Session {
     pub pinned_at: Option<i64>,
     pub messages: i64,
     pub created_at: i64,
+    pub agent_kind: String,
     /// `getSessionListActivityAt`, in ms.
     pub activity_at: i64,
 }
@@ -29,6 +30,15 @@ pub struct Project {
     pub key: String,
     pub name: String,
     pub sessions: Vec<Session>,
+    /// A `recent_workdirs` project's known agent kinds; none for others.
+    pub persistent: Option<Vec<String>>,
+}
+
+/// A `recent_workdirs` row with `knownAgentKinds`.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Recent {
+    pub path: String,
+    pub kinds: Vec<String>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -45,6 +55,10 @@ pub struct Order<'a> {
     pub custom: bool,
     pub manual: &'a [String],
     pub group_dialogue: bool,
+    /// The harness filter; none is `all`.
+    pub vendor: Option<&'a str>,
+    /// The last-activity cutoff in ms; none is `all`.
+    pub cutoff: Option<i64>,
 }
 
 fn status_rank(s: &Session) -> u8 {
@@ -188,11 +202,10 @@ fn status_then_pinned(list: &mut [Session]) {
     });
 }
 
-/// `groupSessions` (`recent` = `recent_workdirs` paths, seeded first); `with_pins` is
-/// `includePinnedInProjects`.
+/// `groupSessions` (`recent` seeded first); `with_pins` is `includePinnedInProjects`.
 pub fn group(
     sessions: &[Session],
-    recent: &[String],
+    recent: &[Recent],
     aliases: &HashMap<String, String>,
     platform: &str,
     with_pins: bool,
@@ -205,7 +218,7 @@ pub fn group(
     status_then_pinned(&mut pinned);
     let mut representative: HashMap<String, (String, String)> = HashMap::new();
     for project in recent {
-        let Some(dir) = grouping(Some(project)) else {
+        let Some(dir) = grouping(Some(&project.path)) else {
             continue;
         };
         let key = format!("local:{dir}");
@@ -246,18 +259,25 @@ pub fn group(
             None => groups.push((key, shown, vec![s.clone()])),
         }
     }
+    let mut kinds: HashMap<String, Vec<String>> = HashMap::new();
     for project in recent {
-        let Some(dir) = grouping(Some(project)) else {
+        let Some(dir) = grouping(Some(&project.path)) else {
             continue;
         };
         let seed = format!("local:{dir}");
         let compare = comparison_key(&seed, platform);
         let known = groups
             .iter()
-            .find(|(k, ..)| comparison_key(k, platform) == compare);
-        if known.is_none() {
-            groups.push((seed, dir, Vec::new()));
-        }
+            .find(|(k, ..)| comparison_key(k, platform) == compare)
+            .map(|(k, ..)| k.clone());
+        let key = known.unwrap_or_else(|| {
+            groups.push((seed.clone(), dir, Vec::new()));
+            seed
+        });
+        let set = kinds.entry(key).or_default();
+        set.extend(project.kinds.iter().cloned());
+        set.sort();
+        set.dedup();
     }
     let earliest = |list: &[Session]| {
         list.iter()
@@ -277,6 +297,7 @@ pub fn group(
         .map(|((key, _, mut sessions), name)| {
             by_status_then_time(&mut sessions);
             Project {
+                persistent: kinds.remove(&key),
                 key,
                 name,
                 sessions,

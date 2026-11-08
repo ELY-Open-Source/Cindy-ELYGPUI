@@ -1,8 +1,10 @@
 //! Cindy's `sessionsStore.ts` for this window's bucket: the task list, read from the local
 //! database and read again whenever that database changes on disk.
 
+mod filter;
 mod fold;
 mod group;
+mod header;
 mod lists;
 mod main_list;
 mod paths;
@@ -29,7 +31,7 @@ const STATUS_KEY: &str = "cc-agent.sidebar.filter.status";
 /// What one read brings: the bucket's tasks and what grouping them needs.
 pub struct Loaded {
     sessions: Vec<Session>,
-    recent: Vec<String>,
+    recent: Vec<group::Recent>,
     aliases: Vec<(String, String)>,
     settings: settings::Settings,
 }
@@ -157,7 +159,7 @@ pub fn reload(cx: &mut App) {
         }
         Ok::<_, rusqlite::Error>(Loaded {
             sessions: query::list(conn, status)?,
-            recent: query::recent(conn)?,
+            recent: query::recent(conn, paths::PLATFORM)?,
             aliases: query::aliases(conn)?,
             settings: owner_dir
                 .map(|dir| settings::read(&dir, paths::PLATFORM))

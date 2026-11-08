@@ -95,7 +95,12 @@ pub fn section(
         .opacity(0.0)
         .group_hover("pinned-header", |s| s.opacity(1.0))
         .tooltip(tip(translator.t(label, &[])))
-        .child(icon(chevron.svg(), 13.0, 2.0))
+        .group("pinned-toggle")
+        .child(
+            icon(chevron.svg(), 13.0, 2.0)
+                .text_color(muted)
+                .group_hover("pinned-toggle", |s| s.text_color(hover)),
+        )
         .on_click(move |_, _, cx| toggle(!collapsed, cx));
     let header = div()
         .group("pinned-header")

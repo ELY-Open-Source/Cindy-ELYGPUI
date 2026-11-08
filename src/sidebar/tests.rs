@@ -40,6 +40,7 @@ fn open<'a>(
             os: WindowAppearance::Dark,
             gpui_agrees: true,
         };
+        ely_gpui_component::init_for_tests(cx);
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
         cx.set_global(crate::window_material::Material::load());

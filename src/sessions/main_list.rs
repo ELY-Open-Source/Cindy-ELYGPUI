@@ -8,7 +8,9 @@ use gpui::{
 };
 
 use super::{
-    Sessions, fold,
+    Sessions,
+    filter::Filter,
+    fold,
     group::{Entry, Order, Project, Session, aliases},
     lists::build,
     paths::PLATFORM,
@@ -26,10 +28,6 @@ use crate::{
     units::css,
 };
 
-const GROUP_BY_KEY: &str = "cc-agent.sidebar.filter.groupBy";
-const SORT_BY_KEY: &str = "cc-agent.sidebar.filter.sortBy";
-const PROJECT_ORDER_KEY: &str = "cc-agent.sidebar.filter.projectOrder";
-const GROUP_DIALOGUE_KEY: &str = "cc-agent.sidebar.filter.groupDialogue";
 const DIALOGUE_COLLAPSED_KEY: &str = "cc-agent.sidebar.dialogueGroupCollapsed";
 const SESSION_LIMIT_KEY: &str = "sidebar.collapse.projectSessionLimit";
 const PROJECT_LIMIT_KEY: &str = "sidebar.collapse.projectLimit";
@@ -293,7 +291,11 @@ pub(super) fn project(
 /// scope header between them. Show all resets for lists no longer drawn.
 pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     let drawn = RefCell::new(Vec::new());
-    let list = draw(&drawn, window, cx);
+    // The header stays while the list loads or fails, as `MainListScopeHeader` does.
+    let (pinned, main) = match draw(&drawn, window, cx) {
+        Some((pinned, main)) => (pinned, Some(main)),
+        None => (None, None),
+    };
     let drawn = drawn.into_inner();
     let store = cx.global_mut::<Sessions>();
     let before = store.show_all.len();
@@ -301,10 +303,37 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     if store.show_all.len() < before {
         log::debug!(target: "sessions", "Show all reset for {} undrawn lists", before - store.show_all.len());
     }
-    list
+    // `ProjectsSection`'s root: the scope header over the list body.
+    let section = div()
+        .flex()
+        .flex_col()
+        .w_full()
+        .gap(css(2.0))
+        .child(super::header::header(window, cx))
+        .children(main);
+    Some(
+        div()
+            .id("main-list")
+            .debug_selector(|| "main-list".into())
+            .flex()
+            .flex_col()
+            .flex_1()
+            .min_h_0()
+            .gap(css(8.0))
+            .pb(css(16.0))
+            .overflow_y_scroll()
+            .children(pinned)
+            .child(section)
+            .into_any_element(),
+    )
 }
 
-fn draw(drawn: &RefCell<Vec<String>>, window: &mut Window, cx: &App) -> Option<AnyElement> {
+/// The Pinned section and the main list's body.
+fn draw(
+    drawn: &RefCell<Vec<String>>,
+    window: &mut Window,
+    cx: &App,
+) -> Option<(Option<AnyElement>, gpui::Div)> {
     let main_place = Place {
         inset: 8.0,
         section: "main",
@@ -313,16 +342,15 @@ fn draw(drawn: &RefCell<Vec<String>>, window: &mut Window, cx: &App) -> Option<A
     let prefs = cx.global::<Preferences>();
     let store = cx.global::<Sessions>();
     let loaded = store.loaded.as_ref()?;
+    let filter = Filter::read(prefs);
     let order = Order {
-        flat: text(prefs, GROUP_BY_KEY) == Some("flat"),
-        created: text(prefs, SORT_BY_KEY) == Some("created"),
-        custom: match text(prefs, PROJECT_ORDER_KEY) {
-            Some("custom") => true,
-            Some("activity") => false,
-            _ => text(prefs, SORT_BY_KEY) == Some("manual"),
-        },
+        flat: filter.flat,
+        created: filter.sort_by == "created",
+        custom: filter.project_order == "custom",
         manual: &[],
-        group_dialogue: text(prefs, GROUP_DIALOGUE_KEY) != Some("false"),
+        group_dialogue: filter.group_dialogue,
+        vendor: (filter.vendor != "all").then_some(filter.vendor),
+        cutoff: filter.cutoff(jiff::Timestamp::now().as_millisecond()),
     };
     let translator = cx.global::<Translator>();
     let dialogues = translator.t("ccAgent.sidebar.dialogues", &[]);
@@ -382,19 +410,5 @@ fn draw(drawn: &RefCell<Vec<String>>, window: &mut Window, cx: &App) -> Option<A
         .pt(css(4.0))
         .pl(css(12.0))
         .children(children);
-    Some(
-        div()
-            .id("main-list")
-            .debug_selector(|| "main-list".into())
-            .flex()
-            .flex_col()
-            .flex_1()
-            .min_h_0()
-            .gap(css(8.0))
-            .pb(css(16.0))
-            .overflow_y_scroll()
-            .children(pinned::section(&lists, now, drawn, window, cx))
-            .child(main)
-            .into_any_element(),
-    )
+    Some((pinned::section(&lists, now, drawn, window, cx), main))
 }

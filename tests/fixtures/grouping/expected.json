@@ -349,5 +349,69 @@
     "session": "g1"
    }
   ]
+ },
+ {
+  "name": "harness filter keeps pins and known-kind projects",
+  "pinned": [
+   {
+    "kind": "session",
+    "session": "x6",
+    "label": "site"
+   }
+  ],
+  "entries": [
+   {
+    "kind": "dialogue-group",
+    "sessions": [
+     "x4"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "x1"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/empty",
+    "name": "empty",
+    "sessions": []
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/codexdir",
+    "name": "codexdir",
+    "sessions": []
+   }
+  ]
+ },
+ {
+  "name": "last activity window",
+  "pinned": [
+   {
+    "kind": "session",
+    "session": "y5",
+    "label": "old"
+   }
+  ],
+  "entries": [
+   {
+    "kind": "dialogue-group",
+    "sessions": [
+     "y4"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "y1"
+    ]
+   }
+  ]
  }
 ]

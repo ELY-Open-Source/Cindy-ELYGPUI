@@ -2,7 +2,10 @@
 
 use rusqlite::Connection;
 
-use super::group::Session;
+use super::{
+    group::{Recent, Session},
+    paths::{comparison_key, grouping},
+};
 
 /// `DESKTOP_TASK_LIST_SESSION_SOURCES`: the visible sources less `review` and `side-chat`;
 /// `CINDY_MAKE_ENABLED` is off at the reference commit.
@@ -59,7 +62,8 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
         "SELECT sessions.id, sessions.title, sessions.status, sessions.source, sessions.workspace_kind,
                 sessions.working_dir, sessions.project_dir, sessions.remote_host_id, sessions.user_send_at,
                 sessions.pinned_at, {MESSAGES}, sessions.created_at,
-                coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at)
+                coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at),
+                sessions.agent_kind
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
         status.sql()
@@ -80,17 +84,55 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
             messages: row.get(10)?,
             created_at: row.get(11)?,
             activity_at: row.get(12)?,
+            agent_kind: row.get(13)?,
         })
     })?;
     rows.collect()
 }
 
-/// `listRecentWorkdirs`' paths, last used first.
-pub fn recent(db: &Connection) -> rusqlite::Result<Vec<String>> {
+/// `listRecentWorkdirs`: paths last used first, with the agent kinds of their local tasks.
+pub fn recent(db: &Connection, platform: &str) -> rusqlite::Result<Vec<Recent>> {
     let mut statement =
         db.prepare("SELECT path FROM recent_workdirs ORDER BY last_used_at DESC")?;
-    let rows = statement.query_map([], |row| row.get(0))?;
-    rows.collect()
+    let paths: Vec<String> = statement
+        .query_map([], |row| row.get(0))?
+        .collect::<Result<_, _>>()?;
+    let mut statement = db.prepare(
+        "SELECT DISTINCT working_dir, project_dir, agent_kind FROM sessions
+         WHERE workspace_kind = 'project' AND remote_host_id IS NULL AND working_dir IS NOT NULL
+           AND (orca_role IS NULL OR orca_role <> 'worker')",
+    )?;
+    let tasks: Vec<(Option<String>, String)> = statement
+        .query_map([], |row| {
+            let (working, project): (Option<String>, Option<String>) = (row.get(0)?, row.get(1)?);
+            Ok((project.or(working), row.get(2)?))
+        })?
+        .collect::<Result<_, _>>()?;
+    Ok(with_kinds(paths, &tasks, platform))
+}
+
+/// `recentWorkdirProjectIdentity` matched against each task's folder.
+pub fn with_kinds(
+    paths: Vec<String>,
+    tasks: &[(Option<String>, String)],
+    platform: &str,
+) -> Vec<Recent> {
+    let identity =
+        |dir: &str| grouping(Some(dir)).map(|d| comparison_key(&format!("local:{d}"), platform));
+    paths
+        .into_iter()
+        .map(|path| {
+            let own = identity(&path);
+            let mut kinds: Vec<String> = tasks
+                .iter()
+                .filter(|(dir, _)| own.is_some() && dir.as_deref().and_then(identity) == own)
+                .map(|(_, kind)| kind.clone())
+                .collect();
+            kinds.sort();
+            kinds.dedup();
+            Recent { path, kinds }
+        })
+        .collect()
 }
 
 /// `listProjectAliases`: key and alias, newest first.

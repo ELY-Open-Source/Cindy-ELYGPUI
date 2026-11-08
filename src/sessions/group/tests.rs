@@ -1,8 +1,9 @@
 use serde_json::{Value, json};
 
-use super::{Entry, Order, Session, aliases};
+use super::{Entry, Order, Recent, Session, aliases};
 use crate::sessions::{
     lists::{Pinned, build},
+    query,
     settings::Settings,
 };
 
@@ -37,6 +38,7 @@ fn session(v: &Value) -> Session {
         pinned_at: ms(&v["pinnedAt"]),
         messages: v["_count"]["messages"].as_i64().unwrap(),
         created_at: ms(&v["createdAt"]).unwrap_or(0),
+        agent_kind: text(&v["agentKind"]).unwrap_or_else(|| "cc".into()),
         activity_at: ms(&v["lastActivityAt"])
             .or(ms(&v["userSendAt"]))
             .or(ms(&v["updatedAt"]))
@@ -71,11 +73,37 @@ fn matches_cindys_grouping_and_main_list() {
             .iter()
             .map(session)
             .collect();
-        let recent: Vec<String> = case["recentWorkdirs"]
-            .as_array()
-            .map(|rows| rows.iter().filter_map(|r| text(&r["path"])).collect())
-            .unwrap_or_default();
         let platform = case["platform"].as_str().unwrap_or("linux");
+        // What `query::recent` reads of the sessions table, joined to each entry's own kinds.
+        let tasks: Vec<(Option<String>, String)> = sessions
+            .iter()
+            .filter(|s| !s.dialogue && s.remote_host.is_none() && s.working_dir.is_some())
+            .map(|s| {
+                (
+                    s.project_dir.clone().or(s.working_dir.clone()),
+                    s.agent_kind.clone(),
+                )
+            })
+            .collect();
+        let rows = case["recentWorkdirs"]
+            .as_array()
+            .cloned()
+            .unwrap_or_default();
+        let paths = rows.iter().filter_map(|r| text(&r["path"])).collect();
+        let recent: Vec<Recent> = query::with_kinds(paths, &tasks, platform)
+            .into_iter()
+            .zip(&rows)
+            .map(|(mut r, row)| {
+                let own = row["knownAgentKinds"]
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default();
+                r.kinds.extend(own.iter().filter_map(text));
+                r.kinds.sort();
+                r.kinds.dedup();
+                r
+            })
+            .collect();
         let rows: Vec<(String, String)> = case["aliases"]
             .as_object()
             .map(|m| {
@@ -104,6 +132,8 @@ fn matches_cindys_grouping_and_main_list() {
             custom: case["projectOrder"] == "custom",
             manual: &manual,
             group_dialogue: case["groupDialogue"] != false,
+            vendor: case["vendor"].as_str(),
+            cutoff: ms(&case["lastActivityCutoff"]),
         };
         let lists = build(
             &sessions,

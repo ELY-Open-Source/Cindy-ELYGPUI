@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{fold, group, query, row, settings, sweep};
+use super::{filter::Filter, fold, group, query, row, settings, sweep};
 
 /// The columns of Cindy's schema this chapter reads.
 fn db() -> Connection {
@@ -10,7 +10,8 @@ fn db() -> Connection {
            status text NOT NULL DEFAULT 'active', source text NOT NULL DEFAULT 'desktop',
            pinned_at integer, hidden_at integer, user_send_at integer, last_activity_at integer,
            created_at integer NOT NULL, updated_at integer NOT NULL, workspace_kind text DEFAULT 'project',
-           working_dir text, project_dir text, remote_host_id text, list_message_count integer);
+           working_dir text, project_dir text, remote_host_id text, list_message_count integer,
+           agent_kind text NOT NULL DEFAULT 'cc', orca_role text);
          CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
@@ -195,7 +196,21 @@ fn reads_what_grouping_needs() {
     );
     assert_eq!(rows[1].working_dir.as_deref(), Some("/w/app"));
     assert_eq!(rows[1].remote_host.as_deref(), Some("h"));
-    assert_eq!(query::recent(&db).unwrap(), ["/new", "/old"]);
+    db.execute_batch(
+        "INSERT INTO recent_workdirs VALUES ('/w/app/', 0);
+         INSERT INTO sessions (id, created_at, updated_at, working_dir, agent_kind)
+           VALUES ('c', 1, 1, '/w/app/.worktrees/x', 'codex'), ('w', 1, 1, '/w/app', 'pi');
+         UPDATE sessions SET orca_role = 'worker' WHERE id = 'w';",
+    )
+    .unwrap();
+    let recent = query::recent(&db, "linux").unwrap();
+    let paths: Vec<&str> = recent.iter().map(|r| r.path.as_str()).collect();
+    assert_eq!(paths, ["/new", "/old", "/w/app/"]);
+    assert_eq!(
+        recent[2].kinds,
+        ["codex"],
+        "worktrees count, Orca workers and remote tasks do not"
+    );
     let aliases = group::aliases(&query::aliases(&db).unwrap(), "linux");
     assert_eq!(
         aliases["local:/a"], "newer",
@@ -272,4 +287,47 @@ fn reads_sidebar_settings_as_cindy_normalizes_them() {
         );
         assert!(file.exists(), "an unreadable file stays for Cindy");
     }
+}
+
+#[test]
+fn reads_the_filter_as_use_sidebar_filter_loads_it() {
+    let dir = tempfile::tempdir().unwrap();
+    let file = dir.path().join(crate::preferences::FILE);
+    let read = |json: &str| {
+        std::fs::write(&file, json).unwrap();
+        Filter::read(&crate::preferences::Preferences::load(dir.path()).unwrap())
+    };
+    let plain = read("{}");
+    assert_eq!(
+        (
+            plain.status,
+            plain.vendor,
+            plain.last_activity,
+            plain.sort_by,
+            plain.project_order
+        ),
+        ("active", "all", "all", "recency", "activity")
+    );
+    assert!(!plain.flat && plain.group_dialogue);
+    let legacy =
+        read(r#"{"cc-agent.sidebar.filter.sortBy":"manual","cc-agent.sidebar.filter.status":"x"}"#);
+    assert_eq!(
+        (legacy.sort_by, legacy.project_order, legacy.status),
+        ("recency", "custom", "active")
+    );
+    let set = read(
+        r#"{"cc-agent.sidebar.filter.sortBy":"manual","cc-agent.sidebar.filter.projectOrder":"activity",
+            "cc-agent.sidebar.filter.lastActivity":"3d","cc-agent.sidebar.filter.vendor":"pi",
+            "cc-agent.sidebar.filter.groupBy":"flat","cc-agent.sidebar.filter.groupDialogue":"false"}"#,
+    );
+    assert_eq!(
+        set.project_order, "activity",
+        "a stored order wins over the old sort"
+    );
+    assert!(set.flat && !set.group_dialogue);
+    assert_eq!(set.cutoff(10 * 86_400_000), Some(7 * 86_400_000));
+    assert_eq!(
+        (plain.cutoff(1), plain.active_count(), set.active_count()),
+        (None, 0, 2)
+    );
 }

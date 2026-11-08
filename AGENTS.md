@@ -32,6 +32,9 @@ defines scope and what 1:1 means.
   `pinned.rs` draws the Pinned section, `main_list.rs` the main list in `project` or `flat` mode,
   from `group.rs` (`groupSessions`, `buildMainListEntries`) and `paths.rs` (project keys). All of it
   is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row.
+  `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
+  the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
+  choice, and lacks some lucide icons; the nearest Ely icon stands in.
   `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed by section and group and
   resets once its list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
   `background_executor().now()` so tests can advance the clock.
@@ -108,7 +111,7 @@ defines scope and what 1:1 means.
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
   through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button).
   Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon`
-  also swaps in Cindy's `strokeWidth`.
+  also swaps in Cindy's `strokeWidth`. An `svg` takes no inherited color: set `text_color` on it.
 - Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for
   `prefers-reduced-motion` (Linux portal `org.gnome.desktop.interface enable-animations`, macOS
   `accessibilityDisplayShouldReduceMotion`, Windows `SPI_GETCLIENTAREAANIMATION`), at start and on

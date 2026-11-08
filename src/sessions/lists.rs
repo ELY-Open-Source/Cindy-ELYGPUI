@@ -3,7 +3,7 @@
 use std::collections::HashMap;
 
 use super::{
-    group::{Entry, Order, Project, Session, entries, for_main_list, group},
+    group::{Entry, Order, Project, Recent, Session, entries, for_main_list, group},
     paths::{compare, grouping, session_key},
     settings::Settings,
 };
@@ -74,7 +74,7 @@ fn labels(pinned: &[Session], known: &[Project], dialogues: &str) -> HashMap<Str
 /// Pins never follow the filter; hidden projects' tasks show as Chat tasks.
 pub fn build(
     bucket: &[Session],
-    recent: &[String],
+    recent: &[Recent],
     aliases: &HashMap<String, String>,
     settings: &Settings,
     platform: &str,
@@ -102,8 +102,17 @@ pub fn build(
             }
         })
         .collect();
+    // Pins and labels see the whole bucket; the main list sees the last-activity window.
     let plain = group(&sidebar, recent, aliases, platform, false);
-    let with_pins = group(&sidebar, recent, aliases, platform, true);
+    let all_projects = group(&sidebar, recent, aliases, platform, true).projects;
+    let recent_main: &[Recent] = if order.cutoff.is_some() { &[] } else { recent };
+    let windowed: Vec<Session> = sidebar
+        .iter()
+        .filter(|s| order.cutoff.is_none_or(|cutoff| s.activity_at >= cutoff))
+        .cloned()
+        .collect();
+    let main = group(&windowed, recent_main, aliases, platform, false);
+    let main_with_pins = group(&windowed, recent_main, aliases, platform, true).projects;
     let universe = group(bucket, recent, aliases, platform, true).projects;
     let known: Vec<Project> = universe
         .into_iter()
@@ -117,23 +126,33 @@ pub fn build(
             .collect(),
         ..p
     };
-    let (mut pinned_side, mut main_projects) = (Vec::new(), Vec::new());
-    for project in with_pins
-        .projects
+    let shown = |p: &Project| !in_set(&hidden, &p.key, platform);
+    let pinned_side: Vec<Pinned> = all_projects
         .into_iter()
-        .filter(|p| !in_set(&hidden, &p.key, platform))
-    {
-        if in_set(&pinned_projects, &project.key, platform) {
-            let project = unpinned(project);
-            let sessions = for_main_list(project.sessions, order.created);
-            pinned_side.push(Pinned::Project(Project {
-                sessions,
-                ..project
-            }));
-        } else {
-            main_projects.push(unpinned(project));
-        }
-    }
+        .filter(|p| shown(p) && in_set(&pinned_projects, &p.key, platform))
+        .map(|p| {
+            let p = unpinned(p);
+            let sessions = for_main_list(p.sessions, order.created);
+            Pinned::Project(Project { sessions, ..p })
+        })
+        .collect();
+    let matches = |s: &Session| order.vendor.is_none_or(|v| s.agent_kind == v);
+    let main_projects: Vec<Project> = main_with_pins
+        .into_iter()
+        .filter(|p| shown(p) && !in_set(&pinned_projects, &p.key, platform))
+        .filter_map(|p| {
+            let sessions: Vec<Session> =
+                p.sessions.iter().filter(|s| matches(s)).cloned().collect();
+            // `persistentProjectMatchesVendor`: no known kind matches any harness.
+            let kept = match (&p.persistent, order.vendor) {
+                _ if !sessions.is_empty() => true,
+                (None, _) => false,
+                (Some(_), None) => true,
+                (Some(kinds), Some(v)) => kinds.is_empty() || kinds.iter().any(|k| k == v),
+            };
+            kept.then(|| unpinned(Project { sessions, ..p }))
+        })
+        .collect();
     let labels = labels(&plain.pinned, &known, dialogues_label);
     let mut pinned: Vec<Pinned> = plain.pinned.into_iter().map(Pinned::Session).collect();
     pinned.extend(pinned_side);
@@ -152,7 +171,8 @@ pub fn build(
                 .unwrap_or(usize::MAX)
         });
     }
-    let main = entries(main_projects, plain.dialogues, plain.loose, order);
+    let pick = |list: Vec<Session>| list.into_iter().filter(|s| matches(s)).collect::<Vec<_>>();
+    let main = entries(main_projects, pick(main.dialogues), pick(main.loose), order);
     Lists {
         pinned,
         labels,

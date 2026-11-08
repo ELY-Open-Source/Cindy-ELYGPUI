@@ -191,14 +191,19 @@ try {
       includePinnedInProjects: pins,
     });
     const sidebar = visibility.sidebarSessionsWithHiddenProjectsAsDialogues(c.sessions, hidden, platform);
+    const cutoff = c.lastActivityCutoff ? Date.parse(c.lastActivityCutoff) : null;
+    const windowed = cutoff === null ? sidebar : sidebar.filter((s) => Date.parse(s.lastActivityAt ?? s.userSendAt ?? s.updatedAt) >= cutoff);
+    const windowOptions = (pins) => ({ ...options(pins), persistentLocalProjects: cutoff === null ? persistent : [] });
     const plain = projectGrouping.groupSessions(sidebar, options(false));
     const withPins = projectGrouping.groupSessions(sidebar, options(true));
+    const main = projectGrouping.groupSessions(windowed, windowOptions(false));
+    const mainWithPins = projectGrouping.groupSessions(windowed, windowOptions(true));
     const universe = visibility.visibleSidebarProjects(projectGrouping.groupSessions(c.sessions, options(true)).projects, hidden, platform);
     const pinnedKeys = visibility.buildProjectKeyComparisonSet(
       order.map(pinnedOrder.projectKeyFromPinnedEntryId).filter(Boolean), platform);
     const unpinned = (p) => ({ ...p, sessions: p.sessions.filter((s) => s.pinnedAt == null) });
-    const notHidden = visibility.visibleSidebarProjects(withPins.projects, hidden, platform);
-    const pinnedProjects = notHidden.filter((p) => visibility.projectKeyComparisonSetHas(pinnedKeys, p.projectKey, platform));
+    const pinnedProjects = visibility.visibleSidebarProjects(withPins.projects, hidden, platform)
+      .filter((p) => visibility.projectKeyComparisonSetHas(pinnedKeys, p.projectKey, platform));
     let pinned = [
       ...plain.pinned.map((s) => ({ kind: 'session', id: s.id, session: s })),
       ...pinnedProjects.map((p) => ({ kind: 'project', id: pinnedOrder.pinnedProjectEntryId(p.projectKey), project: p,
@@ -210,11 +215,17 @@ try {
       pinned = pinned.sort((x, y) => at(x) - at(y));
     }
     const labels = sourceLabel.buildSessionSourceLabelMap(plain.pinned, universe, 'Chat');
-    const mainProjects = notHidden
+    const vendor = c.vendor ?? 'all';
+    const matches = (s) => vendor === 'all' || (s.agentKind ?? 'cc') === vendor;
+    const mainProjects = visibility.visibleSidebarProjects(mainWithPins.projects, hidden, platform)
       .filter((p) => !visibility.projectKeyComparisonSetHas(pinnedKeys, p.projectKey, platform))
-      .map(unpinned);
+      .flatMap((p) => {
+        const matching = p.sessions.filter(matches);
+        if (matching.length === 0 && (!p.isPersistentLocal || (vendor !== 'all' && !projectGrouping.persistentProjectMatchesVendor(p, vendor)))) return [];
+        return [{ ...p, sessions: matching.filter((s) => s.pinnedAt == null) }];
+      });
     const entries = mainListModel.buildMainListEntries({
-      projects: mainProjects, dialogues: plain.dialogues, unclassified: plain.unclassified,
+      projects: mainProjects, dialogues: main.dialogues.filter(matches), unclassified: main.unclassified.filter(matches),
       groupBy: c.groupBy ?? 'project', groupDialogue: c.groupDialogue ?? true, sortBy,
       projectOrder: c.projectOrder ?? 'activity', manualProjectOrder: c.manualProjectOrder ?? [],
     });
