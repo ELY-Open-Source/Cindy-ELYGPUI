@@ -103,13 +103,15 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   the file transfer toasts in the same container go to chapter 18
 - [x] 6.3d Drag a panel to swap root regions as `PanelDragController.tsx` does (long press, drop
   zones, swap, saved or failed toast)
-- [ ] 6.5 Title bar: window controls per platform, sidebar toggle, back and forward (`DESIGN.md` §14.6);
-  the pane placement signals panels read (`panePlacement.tsx`: at window top, at window left, fill)
-- [ ] 6.6 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
+- [ ] 6.5 Left sidebar shell: expanded, 78px rail and hidden states, hover peek and pin, resize with
   double-click reset; New, Automations, Plugins, Search, More with order, top-level or More placement
   and plugin entries per owner as `sidebarNavigationPrefs.ts` keeps them; Teammates, Pinned and All
   sessions sections as frames that chapters 8 and 14 fill; its collapse kept in the tree as
   `collapsePrefs.ts` does for `session-list` (global), with the legacy `sidebar-collapsed` migration
+- [ ] 6.6 Title bar: `ContentHeader` drag band, `WindowControls` per platform, `ChromeActions` placed
+  by the mac traffic lights and fullscreen, the sidebar toggle with its peek trigger, the menu
+  button whose items land with their targets (`DESIGN.md` §14.6); the pane placement signals
+  panels read (`panePlacement.tsx`: at window top, at window left, fill)
 - [ ] 6.7 Tab groups: `right-tabs` and the edge groups, as `tabGroups.ts` and `ensureTabGroupPane`
   place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
@@ -142,7 +144,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 8. Sessions
 
-- [ ] 8.0 Expand from Cindy's code
+- [ ] 8.0 Expand from Cindy's code, with the title bar's back and forward through the task browse
+  history (`useSessionBrowseHistory`, `SessionHistoryButtons`)
 
 ## 9. Chat view
 
