@@ -13,8 +13,10 @@ defines scope and what 1:1 means.
 - Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
-- Logging: `log`, written by `env_logger` to stderr. `RUST_LOG` sets the filter; default
-  `warn,cindy=info`.
+- Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
+  `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).
+  Level: `LOG_LEVEL`, then `log-config.json`, else `trace` in debug and `info` in release; other
+  crates log at `warn` and above. A log's `target` is its Cindy scope.
 
 ## Commands
 

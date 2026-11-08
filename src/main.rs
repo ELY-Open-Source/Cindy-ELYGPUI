@@ -1,3 +1,4 @@
+mod logger;
 mod region;
 
 use anyhow::{Context as _, Result};
@@ -37,10 +38,8 @@ fn open(cx: &mut App) -> Result<()> {
 }
 
 fn main() {
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("warn,cindy=info"))
-        .init();
-    log::info!("cindy {} starting", env!("CARGO_PKG_VERSION"));
     let user_data = region::user_data_dir().unwrap_or_else(|error| panic!("{error:#}"));
+    logger::init(&user_data).unwrap_or_else(|error| panic!("logger failed to start: {error:#}"));
     log::info!("region {} userData {}", region::REGION, user_data.display());
     gpui_platform::application()
         .with_assets(Assets)

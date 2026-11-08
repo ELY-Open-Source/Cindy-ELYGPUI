@@ -12,7 +12,12 @@ publish = false
 anyhow = "1"
 dirs = "7"
 ely-gpui-component = { git = "https://github.com/ELY-Open-Source/Ely-GPUI-Components", rev = "e0f355ac1a669c24336244bcaa8131f7f0e4f1b5" }
-env_logger = "0.11"
 gpui = { package = "gpui-pre", version = "=0.3.11" }
 gpui_platform = { package = "gpui-pre-platform", version = "=0.3.11", features = ["font-kit", "wayland", "x11"] }
+jiff = "0.2"
 log = "0.4"
+serde_json = "1"
+
+[dev-dependencies]
+regex = "1"
+tempfile = "3"
