@@ -67,3 +67,5 @@ read from Cindy's code and rule docs for that area.
 - Dev-build console helpers on `window`, such as `__cindyLayout`: Rust has no DevTools console.
 - Code Cindy's app never imports, such as `layout/PanelDragPrototype.tsx`.
 - Exports no production code in Cindy calls, such as `clearPanelCollapsedRecord`.
+- Migrations from Cindy's renderer localStorage, such as `migrateLegacySidebarCollapsed`: the port never
+  reads Chromium's localStorage (`docs/storage.md`), so they have no input.

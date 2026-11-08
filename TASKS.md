@@ -108,9 +108,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `lib/appShortcutStore.ts` do; rebinding UI and writes go to chapter 12
 - [ ] 6.5a Left sidebar frame: width from `sidebar-width` with resize, limits, rail below 120px at
   78px and the card-mode snap as `useSidebarResize.ts` and `useHorizontalResize.ts` keep them,
-  double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`,
-  with the legacy `sidebar-collapsed` migration; rail kept in `sidebar-rail`; ⌘B through the
-  `toggle-sidebar` shortcut
+  double-click reset; hidden state kept in the tree as `collapsePrefs.ts` does for `session-list`;
+  rail kept in `sidebar-rail`, card snap read from `sidebar.cardMode`; ⌘B through the
+  `toggle-sidebar` shortcut; the content area takes the rest of the window
 - [ ] 6.5b Sidebar top nav: New, Automations, Plugins, Search, More with order, top-level or More
   placement and plugin entries per owner as `SidebarTopNav.tsx`, `sidebarNavigationPrefs.ts` and
   `SidebarNavigationCustomize.tsx` keep them
