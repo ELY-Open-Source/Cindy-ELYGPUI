@@ -4,6 +4,7 @@ mod appearance_settings;
 mod bounded_read;
 mod chrome;
 mod cindy_json;
+mod dev_profile;
 mod dock_icon;
 mod i18n;
 mod layout_root;
@@ -96,7 +97,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
 }
 
 fn startup() -> Result<Startup> {
-    let user_data = region::user_data_dir()?;
+    let user_data = dev_profile::user_data_dir(region::user_data_dir()?)?;
     std::fs::create_dir_all(&user_data)
         .with_context(|| format!("create {}", user_data.display()))?;
     logger::init(&user_data).context("logger failed to start")?;

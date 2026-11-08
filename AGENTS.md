@@ -12,6 +12,11 @@ defines scope and what 1:1 means.
   `runtime_shaders`.
 - Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
+- Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
+  source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
+  `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with
+  `XDT_USER_DATA_DIR_EPOCH=1`); `--isolated` on an official profile stops startup. Paths compare
+  through `dev_profile::canonical::path`. Release builds always use the region folder.
 - i18n: `src/i18n.rs` ports Cindy's i18next setup over `locales/`, embedded in the binary. Plurals
   and number formats come from ICU4X (`icu_plurals`, `icu_decimal`, `icu_locale_core`), as `Intl`
   gives them to Cindy. Ely's `I18n` global is set to the nearest Ely locale for Ely's own text.

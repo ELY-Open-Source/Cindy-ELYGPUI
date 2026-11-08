@@ -166,7 +166,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   deleted message's tombstone stays deleted. That needs chapter 8's database and chapter 13's
   local mode, so the gate, the local start and the seed go to 13.0; the restart script is Cindy's
   dev tooling, not the app. Mobile's mock is out of scope
-- [ ] 7.1 Dev profiles as `devCliFlags.ts` resolves them, in debug builds only (a source run;
+- [x] 7.1 Dev profiles as `devCliFlags.ts` resolves them, in debug builds only (a source run;
   release builds keep the region folder): `--isolated` / `--isolated=<name>` and `XDT_ISOLATED` /
   `XDT_ISOLATED_NAME` (names `[A-Za-z0-9_-]{1,32}`; a bad name warns and uses the default
   sandbox), the `<userData>-dev2[-<name>]` sandbox, `XDT_USER_DATA_DIR` with

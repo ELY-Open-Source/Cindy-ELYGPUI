@@ -257,3 +257,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. The moved seed lacked the fresh-profile local start, the owner gate and the
   repeat, missing-only seed rules.
 - Round 2: PASS.
+
+## 7.1 Dev profiles
+
+- Round 1: FAIL. Missing paths with `..` were not folded as `path.resolve` does; the
+  official-profile refusal panicked instead of the FATAL line and exit 1.
+- Round 2: PASS.
