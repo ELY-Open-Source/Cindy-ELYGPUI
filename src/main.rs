@@ -4,6 +4,7 @@ mod appearance_settings;
 mod bounded_read;
 mod chrome;
 mod cindy_json;
+mod cross_process_lock;
 mod dev_profile;
 mod dock_icon;
 mod i18n;
@@ -141,6 +142,7 @@ fn startup() -> Result<Startup> {
 }
 
 fn main() {
+    cross_process_lock::note_process_start();
     let startup = startup().unwrap_or_else(|error| panic!("startup failed: {error:#}"));
     gpui_platform::application()
         .with_assets(Assets)

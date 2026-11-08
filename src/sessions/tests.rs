@@ -3,7 +3,7 @@ use rusqlite::Connection;
 use super::{filter::Filter, fold, group, meta, query, row, settings, sweep, write};
 
 /// The columns of Cindy's schema this chapter reads.
-fn db() -> Connection {
+pub(super) fn db() -> Connection {
     let db = Connection::open_in_memory().unwrap();
     db.execute_batch(
         "CREATE TABLE sessions (id text PRIMARY KEY, title text NOT NULL DEFAULT 'New Maker',
@@ -13,7 +13,7 @@ fn db() -> Connection {
            working_dir text, project_dir text, remote_host_id text, list_message_count integer,
            agent_kind text NOT NULL DEFAULT 'cc', orca_role text, total_token_usage integer NOT NULL DEFAULT 0,
            total_cost_usd real NOT NULL DEFAULT 0, total_cost_amount real NOT NULL DEFAULT 0, total_cost_currency text,
-           notifications_muted integer DEFAULT false NOT NULL);
+           notifications_muted integer DEFAULT false NOT NULL, summary text);
          CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
@@ -22,7 +22,7 @@ fn db() -> Connection {
     db
 }
 
-fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
+pub(super) fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
     db.execute(
         "INSERT INTO sessions (id, title, status, source, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
         (id, format!("task {id}"), status, source, updated, updated),

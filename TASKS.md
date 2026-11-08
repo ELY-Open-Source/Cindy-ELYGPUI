@@ -255,10 +255,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     archive button go to 18.0: their status write takes the worktree locks and recycle records
     (`withStatusWriteLock`). Tags, Move, Share, Export and Open in new window go with the
     chapters that own them
-  - [ ] 8.5b2 Pin and Unpin as `handleTogglePin` does: `pinnedAt` written, the summary cleared
+  - [x] 8.5b2 Pin and Unpin as `handleTogglePin` does: `pinnedAt` written, the summary cleared
     on unpin, and a pin promoted in `pinnedOrder` through `sidebarSettingsStore.ts`'s
     `savePinnedOrder`, `override-settings-file.ts`'s `updateAtomic` and the advisory tier of
-    `device-link/crossProcessLock.ts` (moved here from chapters 10 and 20, their first writer)
+    `device-link/crossProcessLock.ts` (moved here from chapters 10 and 20, their first writer).
+    The task summary a pin starts (`maybeGenerateSessionTaskSummary`) needs a model and goes
+    to 11.0; the input-device task slots go with their chapter. Pins still in Cindy's renderer
+    storage stay unread, as 8.4b records, so a pin here makes the scoped order authoritative
   - [ ] 8.5c The card as `SessionCard.tsx` draws it, the Pinned section's card and list modes,
     the main list's display mode, with the preview (`sessionToCamel`, `markdownPreviewText`) and
     message count of `projectSessionReadResult`
@@ -304,7 +307,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 ## 11. Models and providers
 
-- [ ] 11.0 Expand from Cindy's code, with the rename input's AI rename button (from 8.5b1)
+- [ ] 11.0 Expand from Cindy's code, with the rename input's AI rename button (from 8.5b1) and the task summary a pin starts (from 8.5b2)
 
 ## 12. Settings
 

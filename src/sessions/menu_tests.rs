@@ -164,3 +164,42 @@ fn tab_reaches_more_and_enter_opens_its_menu(cx: &mut TestAppContext) {
         "the menu opened"
     );
 }
+
+#[gpui::test]
+fn pin_promotes_the_order_and_a_failed_write_rolls_back(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    let owner = dir.path().join("owner");
+    cx.update(|_, cx| cx.global_mut::<Sessions>().owner_dir = Some(owner.clone()));
+    press(cx, "task-a0", MouseButton::Right, 1);
+    click(cx, "menu-row-Pin");
+    cx.executor().run_until_parked();
+    let pinned = cx.update(|_, cx| {
+        let loaded = cx.global::<Sessions>().loaded.as_ref().unwrap();
+        let row = loaded.sessions.iter().find(|s| s.id == "a0").unwrap();
+        (row.pinned_at, loaded.settings.pinned_order.clone())
+    });
+    assert_eq!(
+        pinned,
+        (None, vec!["a0".to_string()]),
+        "pinnedAt rolled back, the order kept"
+    );
+    let saved = std::fs::read_to_string(owner.join(super::settings::FILE)).unwrap();
+    assert!(saved.contains("\"a0\""), "{saved}");
+    assert_eq!(toasts(cx), ["Operation failed"]);
+}
+
+#[gpui::test]
+fn a_failed_order_save_puts_the_order_back(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    press(cx, "task-a0", MouseButton::Right, 1);
+    click(cx, "menu-row-Pin");
+    cx.executor().run_until_parked();
+    let order = cx.update(|_, cx| {
+        let loaded = cx.global::<Sessions>().loaded.as_ref().unwrap();
+        loaded.settings.pinned_order.clone()
+    });
+    assert!(order.is_empty(), "no owner, so the save failed");
+    assert_eq!(toasts(cx), ["Operation failed", "Operation failed"]);
+}

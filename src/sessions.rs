@@ -9,6 +9,7 @@ mod lists;
 mod main_list;
 mod meta;
 mod paths;
+mod pin;
 mod pinned;
 mod query;
 mod rename;
@@ -62,7 +63,11 @@ pub struct Sessions {
     user_data: PathBuf,
     /// `owners/<key>`, where `sidebar-settings.json` lives.
     owner_dir: Option<PathBuf>,
-    _watcher: Option<notify::RecommendedWatcher>,
+    /// Pinned-order saves in flight, one at a time.
+    pins: pin::Writes,
+    watcher: Option<notify::RecommendedWatcher>,
+    /// Whether the watcher sees `owner_dir`, which the first pin may create.
+    owner_watched: bool,
 }
 
 impl gpui::Global for Sessions {}
@@ -84,7 +89,9 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         swept_for: None,
         user_data,
         owner_dir,
-        _watcher: None,
+        pins: pin::Writes::default(),
+        watcher: None,
+        owner_watched: false,
     });
     cx.observe_global::<LocalDb>(|cx| {
         if matches!(cx.global::<LocalDb>().state, State::Ready(_)) {
@@ -125,25 +132,41 @@ fn watch(cx: &mut App) {
             path.parent().expect("a database has a folder"),
             RecursiveMode::NonRecursive,
         )?;
-        if let Some(dir) = &owner_dir
-            && let Err(error) = w.watch(dir, RecursiveMode::NonRecursive)
-        {
-            log::warn!(target: "sessions", "sidebar settings unwatched in {}: {error}", dir.display());
-        }
         Ok(w)
     });
     match watched {
-        Ok(watcher) => cx.global_mut::<Sessions>()._watcher = Some(watcher),
+        Ok(watcher) => cx.global_mut::<Sessions>().watcher = Some(watcher),
         Err(error) => {
             return log::error!(target: "sessions", "database watcher not started: {error}");
         }
     }
+    watch_owner(cx);
     cx.spawn(async move |cx| {
         while futures::StreamExt::next(&mut changes).await.is_some() {
             cx.update(reload);
         }
     })
     .detach();
+}
+
+/// Adds `owner_dir` to the watcher once it exists.
+fn watch_owner(cx: &mut App) {
+    use notify::{RecursiveMode, Watcher as _};
+    let store = cx.global_mut::<Sessions>();
+    let (Some(watcher), Some(dir), false) =
+        (&mut store.watcher, &store.owner_dir, store.owner_watched)
+    else {
+        return;
+    };
+    match watcher.watch(dir, RecursiveMode::NonRecursive) {
+        Ok(()) => {
+            log::info!(target: "sessions", "sidebar settings watched in {}", dir.display());
+            store.owner_watched = true;
+        }
+        Err(error) => {
+            log::warn!(target: "sessions", "sidebar settings unwatched in {}: {error}", dir.display());
+        }
+    }
 }
 
 /// `forceRefresh` with Cindy's single flight: a change during a read reads once more after.
@@ -215,6 +238,13 @@ impl Sessions {
             log::info!(target: "sessions", "rename {} dropped: the task left the list", editing.id);
             self.editing = None;
         }
+        let mut loaded = loaded;
+        if let Some(current) = &self.loaded {
+            self.pins.read(
+                &mut loaded.settings.pinned_order,
+                &current.settings.pinned_order,
+            );
+        }
         self.loaded = Some(loaded);
     }
 }
@@ -223,6 +253,8 @@ pub use main_list::list;
 
 #[cfg(test)]
 mod menu_tests;
+#[cfg(test)]
+mod pin_tests;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]

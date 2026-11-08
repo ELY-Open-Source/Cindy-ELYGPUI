@@ -314,3 +314,12 @@ effort high, in a Herdr pane.
   a new rename replaces it; JavaScript's whitespace class; More is a Tab stop under Ely's
   `FocusScope` around the window root.
 - Round 2: PASS.
+
+## 8.5b2 Pin and Unpin
+
+- Round 1: FAIL. Lock records parsed with serde (a `1e400` field made a live lock look
+  malformed); gate listing dropped entry errors; Windows stat opened files for reading;
+  overlapping failed pins rolled back to an unsaved order; the owner folder the first pin made
+  was never watched. Fixed: `cindy_json` parsing, an entry error fails closed, attribute-only
+  stat, a durable baseline and a serial save queue, `watch_owner` after each save.
+- Round 2: PASS.

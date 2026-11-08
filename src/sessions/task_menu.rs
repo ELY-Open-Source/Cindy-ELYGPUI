@@ -10,7 +10,7 @@ use gpui::{
     div,
 };
 
-use super::{Sessions, group::Session, rename, title, write};
+use super::{Sessions, group::Session, pin, rename, title, write};
 use crate::{i18n::Translator, lucide::icon, theme::Appearance, tip::tip, units::css};
 
 fn session(id: &str, cx: &App) -> Option<Session> {
@@ -18,8 +18,8 @@ fn session(id: &str, cx: &App) -> Option<Session> {
     loaded.sessions.iter().find(|s| s.id == id).cloned()
 }
 
-/// Pin comes with 8.5b2; tags, move, share, export, a new window, archive and delete with
-/// the chapters that own them.
+/// Tags, move, share, export, a new window, archive and delete come with the chapters that
+/// own them.
 pub fn menu(s: &Session, t: &Translator) -> Menu {
     let item = |key: &str| MenuItem::new(t.t(&format!("ccAgent.sidebar.sessionMenu.{key}"), &[]));
     let id = s.id.clone();
@@ -27,7 +27,14 @@ pub fn menu(s: &Session, t: &Translator) -> Menu {
         Some(s) => rename::start(&s, window, cx),
         None => log::warn!(target: "sessions", "rename {id}: the task left the list"),
     });
-    let mut menu = Menu::new().item(rename);
+    let mut menu = Menu::new();
+    if s.status != "archived" && !title::empty_draft(s) {
+        let (id, pinned) = (s.id.clone(), s.pinned_at.is_some());
+        let key = if pinned { "unpin" } else { "pin" };
+        menu =
+            menu.item(item(key).on_click(move |window, cx| pin::toggle(&id, pinned, window, cx)));
+    }
+    menu = menu.item(rename);
     if s.status != "archived" && !title::empty_draft(s) {
         let (id, muted) = (s.id.clone(), s.muted);
         let key = if muted {

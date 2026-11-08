@@ -1,15 +1,21 @@
 //! `sidebarSettingsStore.ts`'s read of `owners/<key>/sidebar-settings.json`.
 
-use std::path::Path;
+use std::{io::ErrorKind, path::Path, time::Duration};
 
-use serde_json::{Value, value::RawValue};
+use anyhow::{Context as _, Result, bail};
+use serde_json::{Map, Value, value::RawValue};
 
-use super::paths::{compare, normalize_key};
+use super::{
+    lists::entry_identity,
+    paths::{compare, normalize_key},
+};
 
 pub const FILE: &str = "sidebar-settings.json";
 const MAX_BYTES: u64 = 4 * 1024 * 1024;
 const MAX_ENTRIES: usize = 10_000;
 const MAX_LENGTH: usize = 4_096;
+/// `updateAtomic`'s wait for another process.
+const LOCK_WAIT: Duration = Duration::from_secs(12);
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Settings {
@@ -95,4 +101,72 @@ pub fn read(owner_dir: &Path, platform: &str) -> Settings {
             Settings::default()
         }
     }
+}
+
+/// `applyPinnedMutation`'s `promote`: the entry first, its other spellings dropped.
+pub fn promoted(current: &[String], entry: &str, platform: &str) -> Vec<String> {
+    let identity = entry_identity(entry, platform);
+    let first = current
+        .first()
+        .filter(|c| entry_identity(c, platform) == identity);
+    let rest: Vec<String> = current
+        .iter()
+        .filter(|c| entry_identity(c, platform) != identity)
+        .cloned()
+        .collect();
+    if first.is_some() && rest.len() + 1 == current.len() {
+        return current.to_vec();
+    }
+    let head = first.cloned().unwrap_or_else(|| entry.to_owned());
+    std::iter::once(head).chain(rest).collect()
+}
+
+/// `sidebarPathState` for a local owner: a regular file or none; a left `.bak` blocks.
+fn writable(path: &Path) -> Result<()> {
+    match std::fs::symlink_metadata(path) {
+        Ok(meta) if meta.is_file() => return Ok(()),
+        Ok(_) => bail!("sidebar settings migration is pending"),
+        Err(error) if error.kind() == ErrorKind::NotFound => {}
+        Err(error) => bail!("sidebar settings migration is pending: {error}"),
+    }
+    match std::fs::symlink_metadata(crate::cross_process_lock::append_suffix(path, ".bak")) {
+        Err(error) if error.kind() == ErrorKind::NotFound => Ok(()),
+        _ => bail!("sidebar settings migration is pending: a backup is left"),
+    }
+}
+
+/// `savePinnedOrder` with `promote`, through `updateAtomic`: the owner's order with `entry` first.
+pub fn promote(owner_dir: &Path, entry: &str, platform: &str) -> Result<Vec<String>> {
+    if entry.is_empty() || js_len(entry) > MAX_LENGTH {
+        bail!("invalid sidebar pinned entry");
+    }
+    let path = owner_dir.join(FILE);
+    writable(&path)?;
+    std::fs::create_dir_all(owner_dir)?;
+    let lock = crate::cross_process_lock::append_suffix(&path, ".lock");
+    crate::cross_process_lock::with_lock(&lock, "sidebar-settings", LOCK_WAIT, |status| {
+        if status != crate::cross_process_lock::Status::Held {
+            bail!("sidebar settings are busy in another process");
+        }
+        writable(&path)?;
+        let fields = crate::cindy_json::read(&path, Some(MAX_BYTES))
+            .context("sidebar settings file is unreadable; refusing to overwrite it")?
+            .unwrap_or_default();
+        let current = pinned_order(strings(fields.get("pinnedOrder").map(|v| &**v)));
+        let next = pinned_order(promoted(&current, entry, platform));
+        let mut overrides = Map::new();
+        for (key, raw) in &fields {
+            overrides.insert(key.clone(), crate::cindy_json::roundtrip(raw.get())?);
+        }
+        overrides.insert("pinnedOrder".into(), Value::from(next.clone()));
+        let text = serde_json::to_string_pretty(&Value::Object(overrides))?;
+        if text.len() as u64 > MAX_BYTES {
+            bail!("file exceeds {MAX_BYTES} byte limit");
+        }
+        let tmp = crate::cross_process_lock::append_suffix(&path, ".tmp");
+        std::fs::write(&tmp, text).context("sidebar settings temp write")?;
+        std::fs::rename(&tmp, &path).context("sidebar settings rename")?;
+        log::info!(target: "sidebar-settings", "pinned order saved: {} entries, changed {}", next.len(), next != current);
+        Ok(next)
+    })
 }

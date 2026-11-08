@@ -25,7 +25,7 @@ pub struct Lists {
 }
 
 /// `sidebarPinnedEntryComparisonKey`.
-fn entry_identity(id: &str, platform: &str) -> String {
+pub(super) fn entry_identity(id: &str, platform: &str) -> String {
     match id.strip_prefix(PROJECT_ENTRY) {
         Some(key) => {
             compare(key, platform).map_or(id.to_owned(), |k| format!("{PROJECT_ENTRY}{k}"))

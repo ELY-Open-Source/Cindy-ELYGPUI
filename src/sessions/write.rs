@@ -12,11 +12,13 @@ use crate::{
     toast,
 };
 
-/// The fields the row menu edits; both are `SETTINGS_ONLY_FIELDS`, so `updatedAt` stays.
+/// The fields the row menu edits; all are `SETTINGS_ONLY_FIELDS`, so `updatedAt` stays.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Meta {
     Title(String),
     Muted(bool),
+    /// `pinnedAt` in unix ms; none unpins.
+    Pinned(Option<i64>),
 }
 
 impl Meta {
@@ -24,6 +26,7 @@ impl Meta {
         match self {
             Meta::Title(_) => "title",
             Meta::Muted(_) => "notificationsMuted",
+            Meta::Pinned(_) => "pinnedAt",
         }
     }
 }
@@ -39,6 +42,12 @@ pub fn patch(db: &Connection, id: &str, meta: &Meta) -> rusqlite::Result<()> {
             "UPDATE sessions SET notifications_muted = ?1 WHERE id = ?2",
             params![muted, id],
         )?,
+        // An unpinned task's summary has nowhere to show, so it goes too.
+        Meta::Pinned(at) => db.execute(
+            "UPDATE sessions SET pinned_at = ?1,
+               summary = CASE WHEN ?1 IS NULL THEN NULL ELSE summary END WHERE id = ?2",
+            params![at, id],
+        )?,
     };
     if changed == 0 {
         return Err(rusqlite::Error::QueryReturnedNoRows);
@@ -53,6 +62,7 @@ fn set_local(id: &str, meta: &Meta, cx: &mut App) -> Option<Meta> {
     Some(match meta {
         Meta::Title(title) => Meta::Title(std::mem::replace(&mut row.title, title.clone())),
         Meta::Muted(muted) => Meta::Muted(std::mem::replace(&mut row.muted, *muted)),
+        Meta::Pinned(at) => Meta::Pinned(std::mem::replace(&mut row.pinned_at, *at)),
     })
 }
 
@@ -80,6 +90,7 @@ impl Undo {
         log::error!(target: "sessions", "patch {} {} failed: {error}", self.id, self.meta.name());
         let (key, undo) = match &self.meta {
             Meta::Title(_) => ("ccAgent.sidebar.renameFailed", true),
+            Meta::Pinned(_) => ("ccAgent.sidebar.pinFailed", true),
             Meta::Muted(muted) => (
                 "ccAgent.sidebar.muteNotificationsFailed",
                 cx.global::<Sessions>().latest_mute.get(&self.id) == Some(&self.seq)
@@ -94,7 +105,8 @@ impl Undo {
     }
 }
 
-/// `handleRename` and `setSessionNotificationsMuted`: the row first, then the write.
+/// `handleRename`, `handleTogglePin` and `setSessionNotificationsMuted`: the row first, then
+/// the write.
 pub fn apply(id: &str, meta: Meta, window: &Window, cx: &mut App) {
     let previous = set_local(id, &meta, cx);
     let store = cx.global_mut::<Sessions>();

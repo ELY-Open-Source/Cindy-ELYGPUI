@@ -38,6 +38,13 @@ defines scope and what 1:1 means.
   on the hover More), `rename.rs` the `SessionRenameInput` on Ely's `TextInput`, and `write.rs`
   `patchMeta`: the row patched first, the `UPDATE` on the database worker, rolled back with a
   toast on failure. The port writes Cindy's database the way Cindy's own main process does.
+  `pin.rs` is `handleTogglePin`: `pinnedAt` through `write.rs`, and a pin promoted in
+  `sidebar-settings.json`'s `pinnedOrder` by `settings::promote` (`savePinnedOrder` and
+  `updateAtomic`: under the lock, an unreadable file refused, tmp then rename).
+  `src/cross_process_lock.rs` is the advisory tier of Cindy's `crossProcessLock.ts`: the
+  `{pid, startedAt, nonce}` file, a 2 s heartbeat, nonce-bound release, and stale takeover
+  under the `.reclaim.d` gate, with owner liveness from `kill(pid, 0)` and `ps` (PowerShell,
+  then WMIC, on Windows). It blocks, so callers run it on the background executor.
   `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
   the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
   choice, and lacks some lucide icons; the nearest Ely icon stands in.
