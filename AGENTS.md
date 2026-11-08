@@ -27,7 +27,11 @@ defines scope and what 1:1 means.
 - Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
   first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
   reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher
-  on the database and its WAL reloads, single-flight. `flat.rs` draws the `flat` group-by mode.
+  on the database and its WAL reloads, single-flight. `flat.rs` draws the `flat` group-by mode;
+  `main_list.rs` the `project` mode from `group.rs` (`groupSessions` and `buildMainListEntries`,
+  checked against `tests/fixtures/grouping` from `sync-golden.mjs`) and `paths.rs` (project keys).
+  `fold.rs` is `SectionCollapse` and the first-N fold; animations read
+  `background_executor().now()` so tests can advance the clock.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with
@@ -100,7 +104,8 @@ defines scope and what 1:1 means.
   `tick`), `peek_view.rs` wakes on its next timer, decides drawer and toggle hits from the pointer
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
   through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button).
-  Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`.
+  Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon`
+  also swaps in Cindy's `strokeWidth`.
 - Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for
   `prefers-reduced-motion` (Linux portal `org.gnome.desktop.interface enable-animations`, macOS
   `accessibilityDisplayShouldReduceMotion`, Windows `SPI_GETCLIENTAREAANIMATION`), at start and on

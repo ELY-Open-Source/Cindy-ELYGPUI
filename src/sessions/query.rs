@@ -2,6 +2,8 @@
 
 use rusqlite::Connection;
 
+use super::group::Session;
+
 /// `DESKTOP_TASK_LIST_SESSION_SOURCES`: the visible sources less `review` and `side-chat`;
 /// `CINDY_MAKE_ENABLED` is off at the reference commit.
 const TASK_SOURCES: &str = "'desktop', 'feishu', 'slack', 'telegram', 'x', 'discord', 'wechat', \
@@ -42,25 +44,21 @@ impl Status {
     }
 }
 
-/// A list row with what this chapter shows of it.
-#[derive(Clone, Debug, PartialEq)]
-pub struct Row {
-    pub id: String,
-    pub title: String,
-    pub pinned: bool,
-    pub created_at: i64,
-    /// `getSessionListActivityAt`: last activity, else the last send, else the update.
-    pub activity_at: i64,
-}
-
 /// `DEFAULT_LIMIT`, the store's fetch size, within `MAX_LIMIT`.
 pub const LIMIT: i64 = 1000;
 
+/// `SESSION_MESSAGE_COUNT_SQL`: the cached count, else a count of the messages.
+const MESSAGES: &str =
+    "CASE WHEN sessions.list_message_count IS NOT NULL THEN sessions.list_message_count
+    ELSE (SELECT count(*) FROM messages m WHERE m.session_id = sessions.id) END";
+
 /// Newest `updated_at` first, ties by `id`, as the list's CTE picks them.
-pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Row>> {
+pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Session>> {
     let filter = ORDINARY.replace("TASK_SOURCES", TASK_SOURCES);
     let sql = format!(
-        "SELECT sessions.id, sessions.title, sessions.pinned_at, sessions.created_at,
+        "SELECT sessions.id, sessions.title, sessions.status, sessions.source, sessions.workspace_kind,
+                sessions.working_dir, sessions.project_dir, sessions.remote_host_id, sessions.user_send_at,
+                sessions.pinned_at, {MESSAGES}, sessions.created_at,
                 coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at)
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
@@ -68,13 +66,37 @@ pub fn list(db: &Connection, status: Status) -> rusqlite::Result<Vec<Row>> {
     );
     let mut statement = db.prepare(&sql)?;
     let rows = statement.query_map([LIMIT], |row| {
-        Ok(Row {
+        Ok(Session {
             id: row.get(0)?,
             title: row.get(1)?,
-            pinned: row.get::<_, Option<i64>>(2)?.is_some(),
-            created_at: row.get(3)?,
-            activity_at: row.get(4)?,
+            status: row.get(2)?,
+            source: row.get(3)?,
+            dialogue: row.get::<_, Option<String>>(4)?.as_deref() == Some("dialogue"),
+            working_dir: row.get(5)?,
+            project_dir: row.get(6)?,
+            remote_host: row.get(7)?,
+            user_send_at: row.get(8)?,
+            pinned_at: row.get(9)?,
+            messages: row.get(10)?,
+            created_at: row.get(11)?,
+            activity_at: row.get(12)?,
         })
     })?;
+    rows.collect()
+}
+
+/// `listRecentWorkdirs`' paths, last used first.
+pub fn recent(db: &Connection) -> rusqlite::Result<Vec<String>> {
+    let mut statement =
+        db.prepare("SELECT path FROM recent_workdirs ORDER BY last_used_at DESC")?;
+    let rows = statement.query_map([], |row| row.get(0))?;
+    rows.collect()
+}
+
+/// `listProjectAliases`: key and alias, newest first.
+pub fn aliases(db: &Connection) -> rusqlite::Result<Vec<(String, String)>> {
+    let mut statement =
+        db.prepare("SELECT project_key, alias FROM project_aliases ORDER BY updated_at DESC")?;
+    let rows = statement.query_map([], |row| Ok((row.get(0)?, row.get(1)?)))?;
     rows.collect()
 }

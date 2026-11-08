@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{flat, query, sweep};
+use super::{flat, fold, group, group::Session, query, sweep};
 
 /// The columns of Cindy's schema this chapter reads.
 fn db() -> Connection {
@@ -9,7 +9,8 @@ fn db() -> Connection {
         "CREATE TABLE sessions (id text PRIMARY KEY, title text NOT NULL DEFAULT 'New Maker',
            status text NOT NULL DEFAULT 'active', source text NOT NULL DEFAULT 'desktop',
            pinned_at integer, hidden_at integer, user_send_at integer, last_activity_at integer,
-           created_at integer NOT NULL, updated_at integer NOT NULL);
+           created_at integer NOT NULL, updated_at integer NOT NULL, workspace_kind text DEFAULT 'project',
+           working_dir text, project_dir text, remote_host_id text, list_message_count integer);
          CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL);
          CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL, hidden_at integer);
          CREATE TABLE bot_session_links (session_id text, bot_id text, role text);",
@@ -26,7 +27,7 @@ fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
     .unwrap();
 }
 
-fn ids(rows: &[query::Row]) -> Vec<&str> {
+fn ids(rows: &[Session]) -> Vec<&str> {
     rows.iter().map(|r| r.id.as_str()).collect()
 }
 
@@ -90,10 +91,18 @@ fn activity_falls_back_from_activity_to_send_to_update() {
 
 #[test]
 fn the_flat_list_leaves_pins_out_and_sorts_as_asked() {
-    let row = |id: &str, created: i64, activity: i64, pinned: bool| query::Row {
+    let row = |id: &str, created: i64, activity: i64, pinned: bool| Session {
         id: id.into(),
         title: id.into(),
-        pinned,
+        status: "active".into(),
+        source: "desktop".into(),
+        dialogue: false,
+        working_dir: None,
+        project_dir: None,
+        remote_host: None,
+        user_send_at: None,
+        pinned_at: pinned.then_some(1),
+        messages: 0,
         created_at: created,
         activity_at: activity,
     };
@@ -193,4 +202,61 @@ fn the_sweep_removes_only_unsent_empty_leftovers() {
     .unwrap();
     sweep::sweep(&db, dir.path(), now);
     assert!(!file.exists(), "no entries, no file");
+}
+
+#[test]
+fn reads_what_grouping_needs() {
+    let db = db();
+    add(&db, "cached", "desktop", "active", 2);
+    add(&db, "counted", "desktop", "active", 1);
+    db.execute_batch(
+        "UPDATE sessions SET list_message_count = 7, workspace_kind = 'dialogue' WHERE id = 'cached';
+         UPDATE sessions SET working_dir = '/w/app', remote_host_id = 'h' WHERE id = 'counted';
+         INSERT INTO messages VALUES ('m1', 'counted'), ('m2', 'counted');
+         CREATE TABLE recent_workdirs (path text PRIMARY KEY, last_used_at integer NOT NULL);
+         INSERT INTO recent_workdirs VALUES ('/old', 1), ('/new', 2);
+         CREATE TABLE project_aliases (project_key text PRIMARY KEY, alias text NOT NULL, updated_at integer NOT NULL);
+         INSERT INTO project_aliases VALUES ('local:/a', 'older', 1), ('local:/a/', 'newer', 2);",
+    )
+    .unwrap();
+    let rows = query::list(&db, query::Status::Active).unwrap();
+    assert_eq!(
+        (rows[0].messages, rows[0].dialogue),
+        (7, true),
+        "the cached count wins"
+    );
+    assert_eq!(
+        (rows[1].messages, rows[1].dialogue),
+        (2, false),
+        "else the messages are counted"
+    );
+    assert_eq!(rows[1].working_dir.as_deref(), Some("/w/app"));
+    assert_eq!(rows[1].remote_host.as_deref(), Some("h"));
+    assert_eq!(query::recent(&db).unwrap(), ["/new", "/old"]);
+    let aliases = group::aliases(&query::aliases(&db).unwrap(), "linux");
+    assert_eq!(
+        aliases["local:/a"], "newer",
+        "one alias per project, newest first"
+    );
+}
+
+#[test]
+fn folds_keep_the_first_and_the_recently_active() {
+    for (raw, want) in [
+        (None, 5),
+        (Some("3"), 3),
+        (Some(" 2px"), 2),
+        (Some("+4"), 4),
+        (Some("0"), 0),
+        (Some("-0"), 0),
+        (Some("-1"), 5),
+        (Some("x"), 5),
+    ] {
+        assert_eq!(fold::limit(raw, 5), want, "{raw:?}");
+    }
+    let activity = [50, 40, 30, 99, 10];
+    let (visible, hidden) = fold::view(&activity, 2, false, Some(90), |a| *a);
+    assert_eq!((visible, hidden), (vec![&50, &40, &99], 2));
+    assert_eq!(fold::view(&activity, 2, false, None, |a| *a).1, 3);
+    assert_eq!(fold::view(&activity, 2, true, None, |a| *a).1, 0);
 }

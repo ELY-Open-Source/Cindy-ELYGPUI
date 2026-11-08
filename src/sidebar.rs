@@ -281,7 +281,7 @@ impl Render for Sidebar {
                     .w_full()
                     .h(css(chrome::TOP_ROW)),
             )
-            .children(crate::sessions::list(cx))
+            .children(crate::sessions::list(window, cx))
             .into_any_element();
         let (column, drawer) = match peeking {
             true => (div().into_any_element(), self.drawer(column, window, cx)),

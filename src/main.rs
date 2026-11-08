@@ -12,6 +12,7 @@ mod layout_tree;
 mod localdb;
 mod locale;
 mod logger;
+mod lucide;
 mod main_window;
 mod motion;
 mod os_appearance;

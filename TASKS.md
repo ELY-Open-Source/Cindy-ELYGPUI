@@ -216,12 +216,25 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   in the main list's `flat` group-by mode (`sidebarFilterCore.ts`) with a row's title and time, so
   the data has its first reader here; the list projection backfill and pinned-summary backfill are
   Cindy's write-side caches and stay Cindy's
-- [ ] 8.4 The Pinned section as `PinnedSection.tsx` draws it (`pinned_at`, the pinned order of
-  `owners/<key>/sidebar-settings.json`, drag reorder, text, card and list views) and the main list
-  as `ProjectsSection.tsx`, `ProjectNode.tsx`, `DialogueSection.tsx`, `UnclassifiedSection.tsx` and
-  `MainListScopeHeader.tsx` group it (by `project_dir` then `working_dir`, `project_aliases`,
-  hidden projects, dialogues, unclassified), with the filter prefs of `sidebarFilterCore.ts`
-  (group by, sort, status, vendor, last activity, project order)
+- The Pinned section and the project-grouped main list, as `CCAgentSidebarUpper.tsx` builds them:
+  - [x] 8.4a The main list in its default `project` group-by mode: project keys as
+    `projectKeys.ts` and `workingDir.ts` form them (`projectDir ?? workingDir`, storage
+    normalization, worktree folders collapsed, `local:`, `remote:` and `device:` keys, Windows
+    comparison keys), `groupSessions`' dialogues and unclassified tasks, display names
+    (`project_aliases`, then unique basenames), `recent_workdirs` projects kept without tasks,
+    the one ranking of `mainListModel.ts` under `sortBy` and `projectOrder` (`activity`, `custom`
+    with `manualProjectOrder`), `ProjectNode.tsx` headers and indented rows, the dialogue group,
+    the per-project limit (5) and top-level limit (20) with Show all; fold state persists with
+    13.0's owner-scoped storage, as does `manualProjectOrder` (until then `custom` keeps
+    the list's order), companion groups land with chapter 14
+  - [ ] 8.4b The Pinned section in its text mode as `PinnedSection.tsx` draws it: pinned tasks
+    (active first, then `pinned_at`) and pinned projects, ordered by `sidebar-settings.json`'s
+    `pinnedOrder`, its collapse preference, and the same file's `hiddenProjectKeys` taken out of
+    the main list; card and list modes come with 8.5's card
+  - [ ] 8.4c The sidebar filter as `sidebarFilterCore.ts` keeps it and `MainListScopeHeader.tsx`
+    and `SidebarFilterPopover` edit it: status, vendor, last activity, group by, dialogue grouping,
+    sort and project order; the machine switcher lands with chapter 19, the project and creator
+    filters with 13.0's owner-scoped storage
 - [ ] 8.5 A session row as `SessionItem.tsx` and `SessionInfoMeta` show it (status icon and
   attention dot, title, the chosen meta fields, hover archive) and the card as `SessionCard.tsx`;
   rename by double click, archive (which unpins), delete (soft, `status = deleted`), pin and the

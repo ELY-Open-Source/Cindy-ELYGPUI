@@ -2,22 +2,41 @@
 //! database and read again whenever that database changes on disk.
 
 mod flat;
+mod fold;
+mod group;
+mod main_list;
+mod paths;
 mod query;
 mod sweep;
 
-use std::path::PathBuf;
+use std::{
+    collections::{HashMap, HashSet},
+    path::PathBuf,
+};
 
-use gpui::App;
+use gpui::{AnyElement, App, Window};
 
 use crate::localdb::{Db, LocalDb, State};
-pub use flat::list;
-use query::{Row, Status};
+use group::Session;
+use query::Status;
 
 /// The sidebar filter's status preference.
 const STATUS_KEY: &str = "cc-agent.sidebar.filter.status";
 
+/// What one read brings: the bucket's tasks and what grouping them needs.
+pub struct Loaded {
+    sessions: Vec<Session>,
+    recent: Vec<String>,
+    aliases: Vec<(String, String)>,
+}
+
 pub struct Sessions {
-    rows: Option<Vec<Row>>,
+    loaded: Option<Loaded>,
+    /// Folded project groups; 13.0 keeps them in owner-scoped storage.
+    collapsed: HashSet<String>,
+    folds: HashMap<String, crate::motion::Tween>,
+    show_all: HashSet<String>,
+    show_all_entries: bool,
     loading: bool,
     dirty: bool,
     /// The database handle the sweep has run for; a new open sweeps again.
@@ -31,7 +50,11 @@ impl gpui::Global for Sessions {}
 /// Reads the list whenever the database opens, and after each change Cindy writes.
 pub fn install(user_data: PathBuf, cx: &mut App) {
     cx.set_global(Sessions {
-        rows: None,
+        loaded: None,
+        collapsed: HashSet::new(),
+        folds: HashMap::new(),
+        show_all: HashSet::new(),
+        show_all_entries: false,
         loading: false,
         dirty: false,
         swept_for: None,
@@ -116,7 +139,11 @@ pub fn reload(cx: &mut App) {
             let now = jiff::Timestamp::now().as_millisecond();
             sweep::sweep(conn, &user_data, now);
         }
-        query::list(conn, status)
+        Ok::<_, rusqlite::Error>(Loaded {
+            sessions: query::list(conn, status)?,
+            recent: query::recent(conn)?,
+            aliases: query::aliases(conn)?,
+        })
     });
     cx.spawn(async move |cx| {
         let rows = read.await;
@@ -124,9 +151,10 @@ pub fn reload(cx: &mut App) {
             let store = cx.global_mut::<Sessions>();
             store.loading = false;
             match rows {
-                Ok(Ok(rows)) => {
-                    log::info!(target: "sessions", "{} {status:?} tasks", rows.len());
-                    store.rows = Some(rows);
+                Ok(Ok(loaded)) => {
+                    log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases",
+                        loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len());
+                    store.loaded = Some(loaded);
                 }
                 Ok(Err(error)) => log::error!(target: "sessions", "task list read failed: {error}"),
                 Err(_) => log::error!(target: "sessions", "the database closed during the read"),
@@ -140,5 +168,12 @@ pub fn reload(cx: &mut App) {
     .detach();
 }
 
+/// The main list: flat when the filter says so, else grouped by project.
+pub fn list(window: &mut Window, cx: &App) -> Option<AnyElement> {
+    flat::list(cx).or_else(|| main_list::list(window, cx))
+}
+
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod view_tests;

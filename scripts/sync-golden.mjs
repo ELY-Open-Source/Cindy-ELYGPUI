@@ -16,8 +16,17 @@ const write = (file, value) => fs.writeFileSync(file, `${JSON.stringify(value, n
 
 try {
   const src = 'apps/desktop/src';
-  const archive = execFileSync('git', ['-C', cindy, 'archive', commit, src, 'apps/desktop/drizzle'], { maxBuffer: 1 << 30 });
+  const archive = execFileSync('git', ['-C', cindy, 'archive', commit, src, 'apps/desktop/drizzle', 'packages'], { maxBuffer: 1 << 30 });
   execFileSync('tar', ['-x', '-C', tmp], { input: archive });
+  const links = path.join(tmp, 'node_modules');
+  for (const dir of fs.readdirSync(path.join(tmp, 'packages'))) {
+    const manifest = path.join(tmp, 'packages', dir, 'package.json');
+    if (!fs.existsSync(manifest)) continue;
+    const { name } = JSON.parse(fs.readFileSync(manifest, 'utf8'));
+    if (!name?.startsWith('@cindy/')) continue;
+    fs.mkdirSync(path.join(links, '@cindy'), { recursive: true });
+    fs.symlinkSync(path.join(tmp, 'packages', dir), path.join(links, name));
+  }
   const entry = path.join(tmp, src, 'golden-entry.ts');
   fs.writeFileSync(entry, [
     "import './renderer/themes/colors';",
@@ -27,10 +36,17 @@ try {
     "export * as appShortcuts from './shared/appShortcuts';",
     "export * as appearance from './shared/appearanceSettings';",
     "export { cjkSeg } from './main/localDb/cjkSeg';",
+    "export * as projectGrouping from './renderer/features/cc-agent/lib/projectGrouping';",
+    "export * as mainListModel from './renderer/features/cc-agent/lib/mainListModel';",
   ].join('\n'));
   const bundle = path.join(tmp, 'bundle.mjs');
-  await esbuild.build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error' });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg } = await import(pathToFileURL(bundle).href);
+  await esbuild.build({
+    entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
+    nodePaths: [links, path.join(path.resolve(cindy), 'node_modules')],
+    alias: { '@': path.join(tmp, src, 'renderer') },
+    define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
+  });
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -152,6 +168,28 @@ try {
   const segDir = path.join(fixtures, 'cjk-seg');
   const segInput = JSON.parse(fs.readFileSync(path.join(segDir, 'input.json'), 'utf8'));
   write(path.join(segDir, 'expected.json'), segInput.map((text) => cjkSeg(text)));
+
+  const groupDir = path.join(fixtures, 'grouping');
+  const groupCases = JSON.parse(fs.readFileSync(path.join(groupDir, 'input.json'), 'utf8'));
+  write(path.join(groupDir, 'expected.json'), groupCases.map((c) => {
+    const persistent = projectGrouping.buildPersistentLocalProjects(c.recentWorkdirs ?? [], c.sessions, c.platform ?? 'linux');
+    const groups = projectGrouping.groupSessions(c.sessions, {
+      projectAliases: c.aliases ?? {}, persistentLocalProjects: persistent, localPlatform: c.platform ?? 'linux',
+    });
+    const entries = mainListModel.buildMainListEntries({
+      projects: groups.projects, dialogues: groups.dialogues, unclassified: groups.unclassified,
+      groupBy: 'project', groupDialogue: c.groupDialogue ?? true, sortBy: c.sortBy ?? 'recency',
+      projectOrder: c.projectOrder ?? 'activity', manualProjectOrder: c.manualProjectOrder ?? [],
+    });
+    return {
+      name: c.name,
+      pinned: groups.pinned.map((s) => s.id),
+      entries: entries.map((e) => e.kind === 'project'
+        ? { kind: e.kind, key: e.project.projectKey, name: e.project.displayName, sessions: e.project.sessions.map((s) => s.id) }
+        : e.kind === 'session' ? { kind: e.kind, session: e.session.id }
+        : { kind: e.kind, sessions: e.sessions.map((s) => s.id) }),
+    };
+  }));
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

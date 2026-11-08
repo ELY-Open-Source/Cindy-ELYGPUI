@@ -284,3 +284,5 @@ effort high, in a Herdr pane.
 ## 8.3 Task list
 
 - Round 1: PASS.
+
+- 8.4a project-grouped main list: round 1 FAIL (dialogue-fold keys parsed with serde, dropping keys Cindy keeps) → fixed with cindy_json::roundtrip + regression; round 2 PASS.

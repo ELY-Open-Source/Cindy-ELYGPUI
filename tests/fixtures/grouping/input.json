@@ -1,0 +1,604 @@
+[
+ {
+  "name": "projects, dialogues, drafts and loose tasks",
+  "sessions": [
+   {
+    "id": "a1",
+    "title": "a1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T10:00:00.000Z",
+    "lastActivityAt": "2026-11-05T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "a2",
+    "title": "a2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T10:00:00.000Z",
+    "lastActivityAt": "2026-11-03T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b1",
+    "title": "b1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/site",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T10:00:00.000Z",
+    "lastActivityAt": "2026-11-04T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "d1",
+    "title": "d1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "dialogue",
+    "workingDir": "/home/u/.cindy/dialogues/d1",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-06T10:00:00.000Z",
+    "lastActivityAt": "2026-11-06T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "loose",
+    "title": "loose",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": null,
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-02T10:00:00.000Z",
+    "lastActivityAt": "2026-11-02T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "draft",
+    "title": "draft",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": null,
+    "lastActivityAt": null,
+    "updatedAt": "2026-11-07T10:00:00.000Z",
+    "createdAt": "2026-11-07T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 0
+    }
+   },
+   {
+    "id": "sched",
+    "title": "sched",
+    "status": "active",
+    "source": "scheduler",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": null,
+    "lastActivityAt": null,
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 0
+    }
+   },
+   {
+    "id": "pin",
+    "title": "pin",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-08T10:00:00.000Z",
+    "lastActivityAt": "2026-11-08T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-08T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "same basename, oldest keeps it",
+  "sessions": [
+   {
+    "id": "x",
+    "title": "x",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/a/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T01:00:00.000Z",
+    "lastActivityAt": "2026-11-05T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-03T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "y",
+    "title": "y",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/b/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-06T01:00:00.000Z",
+    "lastActivityAt": "2026-11-06T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "z",
+    "title": "z",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/c/x/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T01:00:00.000Z",
+    "lastActivityAt": "2026-11-04T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-02T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "worktrees fold into their repo",
+  "sessions": [
+   {
+    "id": "w1",
+    "title": "w1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/repo/.worktrees/feat",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T01:00:00.000Z",
+    "lastActivityAt": "2026-11-05T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "w2",
+    "title": "w2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/repo/.cindy-worktrees/fix",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T01:00:00.000Z",
+    "lastActivityAt": "2026-11-04T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "w3",
+    "title": "w3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/repo/",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T01:00:00.000Z",
+    "lastActivityAt": "2026-11-03T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "w4",
+    "title": "w4",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/other/.claude/worktrees/x",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-02T01:00:00.000Z",
+    "lastActivityAt": "2026-11-02T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "w5",
+    "title": "w5",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/project-dir/sub",
+    "projectDir": "/project-dir",
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T01:00:00.000Z",
+    "lastActivityAt": "2026-11-01T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "windows paths compare without case",
+  "platform": "win32",
+  "sessions": [
+   {
+    "id": "p1",
+    "title": "p1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "C:\\Users\\Me\\Proj",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T01:00:00.000Z",
+    "lastActivityAt": "2026-11-05T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "p2",
+    "title": "p2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "c:/users/me/proj/",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T01:00:00.000Z",
+    "lastActivityAt": "2026-11-04T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "p3",
+    "title": "p3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "\\\\?\\C:\\Users\\Me\\Other",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T01:00:00.000Z",
+    "lastActivityAt": "2026-11-03T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "aliases, remote hosts and empty recent projects",
+  "aliases": {
+   "local:/work/app": "My App",
+   "remote:host-1:/srv/app": "Server"
+  },
+  "recentWorkdirs": [
+   {
+    "path": "/empty/project",
+    "lastUsedAt": "2026-11-09T01:00:00.000Z"
+   },
+   {
+    "path": "/work/app",
+    "lastUsedAt": "2026-11-01T01:00:00.000Z"
+   }
+  ],
+  "sessions": [
+   {
+    "id": "r1",
+    "title": "r1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/srv/app",
+    "projectDir": null,
+    "remoteHostId": "host-1",
+    "userSendAt": "2026-11-05T01:00:00.000Z",
+    "lastActivityAt": "2026-11-05T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "l1",
+    "title": "l1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T01:00:00.000Z",
+    "lastActivityAt": "2026-11-04T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "created order and custom project order",
+  "sortBy": "created",
+  "projectOrder": "custom",
+  "manualProjectOrder": [
+   "local:/work/site",
+   "local:/missing"
+  ],
+  "sessions": [
+   {
+    "id": "c1",
+    "title": "c1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T01:00:00.000Z",
+    "lastActivityAt": "2026-11-01T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-05T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "c2",
+    "title": "c2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/site",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-09T01:00:00.000Z",
+    "lastActivityAt": "2026-11-09T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-02T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "c3",
+    "title": "c3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": null,
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-06T01:00:00.000Z",
+    "lastActivityAt": null,
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-06T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "c4",
+    "title": "c4",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-02T01:00:00.000Z",
+    "lastActivityAt": "2026-11-02T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-05T01:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "dialogues ungrouped",
+  "groupDialogue": false,
+  "sessions": [
+   {
+    "id": "g1",
+    "title": "g1",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "dialogue",
+    "workingDir": "/d/g1",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-05T01:00:00.000Z",
+    "lastActivityAt": "2026-11-05T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "g2",
+    "title": "g2",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-04T01:00:00.000Z",
+    "lastActivityAt": "2026-11-04T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "g3",
+    "title": "g3",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "dialogue",
+    "workingDir": "/d/g3",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-03T01:00:00.000Z",
+    "lastActivityAt": "2026-11-03T01:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "one path on this computer and a remote host",
+  "sessions": [
+   {
+    "id": "here",
+    "title": "here",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/srv/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "there",
+    "title": "there",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/srv/app",
+    "projectDir": null,
+    "remoteHostId": "host-1",
+    "userSendAt": "2026-11-02T10:00:00.000Z",
+    "lastActivityAt": "2026-11-02T10:00:00.000Z",
+    "updatedAt": "2026-11-02T10:00:00.000Z",
+    "createdAt": "2026-11-02T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ]
+ }
+]

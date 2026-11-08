@@ -1,0 +1,226 @@
+[
+ {
+  "name": "projects, dialogues, drafts and loose tasks",
+  "pinned": [
+   "pin"
+  ],
+  "entries": [
+   {
+    "kind": "session",
+    "session": "draft"
+   },
+   {
+    "kind": "dialogue-group",
+    "sessions": [
+     "d1"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "a1",
+     "a2",
+     "sched"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/site",
+    "name": "site",
+    "sessions": [
+     "b1"
+    ]
+   },
+   {
+    "kind": "session",
+    "session": "loose"
+   }
+  ]
+ },
+ {
+  "name": "same basename, oldest keeps it",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "local:/b/app",
+    "name": "app",
+    "sessions": [
+     "y"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/a/app",
+    "name": "a/app",
+    "sessions": [
+     "x"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/c/x/app",
+    "name": "x/app",
+    "sessions": [
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "worktrees fold into their repo",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "local:/repo",
+    "name": "repo",
+    "sessions": [
+     "w1",
+     "w2",
+     "w3"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/other",
+    "name": "other",
+    "sessions": [
+     "w4"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/project-dir",
+    "name": "project-dir",
+    "sessions": [
+     "w5"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "windows paths compare without case",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "local:C:/Users/Me/Proj",
+    "name": "Proj",
+    "sessions": [
+     "p1",
+     "p2"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:C:/Users/Me/Other",
+    "name": "Other",
+    "sessions": [
+     "p3"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "aliases, remote hosts and empty recent projects",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "remote:host-1:/srv/app",
+    "name": "Server",
+    "sessions": [
+     "r1"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "My App",
+    "sessions": [
+     "l1"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/empty/project",
+    "name": "project",
+    "sessions": []
+   }
+  ]
+ },
+ {
+  "name": "created order and custom project order",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "local:/work/site",
+    "name": "site",
+    "sessions": [
+     "c2"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "c1",
+     "c4"
+    ]
+   },
+   {
+    "kind": "session",
+    "session": "c3"
+   }
+  ]
+ },
+ {
+  "name": "dialogues ungrouped",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "session",
+    "session": "g1"
+   },
+   {
+    "kind": "project",
+    "key": "local:/work/app",
+    "name": "app",
+    "sessions": [
+     "g2"
+    ]
+   },
+   {
+    "kind": "session",
+    "session": "g3"
+   }
+  ]
+ },
+ {
+  "name": "one path on this computer and a remote host",
+  "pinned": [],
+  "entries": [
+   {
+    "kind": "project",
+    "key": "remote:host-1:/srv/app",
+    "name": "srv/app",
+    "sessions": [
+     "there"
+    ]
+   },
+   {
+    "kind": "project",
+    "key": "local:/srv/app",
+    "name": "app",
+    "sessions": [
+     "here"
+    ]
+   }
+  ]
+ }
+]
