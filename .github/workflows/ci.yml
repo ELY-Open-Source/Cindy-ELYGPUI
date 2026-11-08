@@ -10,14 +10,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-24.04
-          - ubuntu-24.04-arm
-          - macos-15
-          - macos-15-intel
-          - windows-2025
-          - windows-11-arm
-    runs-on: ${{ matrix.os }}
+        include:
+          - target: linux-x64
+            runner: [self-hosted, omarchy-amd64]
+          - target: linux-arm64
+            runner: ubuntu-24.04-arm
+            apt: true
+          - target: macos-arm64
+            runner: [self-hosted, macos-arm64]
+          - target: macos-x64
+            runner: macos-15-intel
+          - target: windows-x64
+            runner: [self-hosted, windows-amd64]
+          - target: windows-arm64
+            runner: windows-11-arm
+    name: check (${{ matrix.target }})
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@master
@@ -25,7 +33,7 @@ jobs:
           toolchain: "1.98"
           components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
-      - if: runner.os == 'Linux'
+      - if: matrix.apt
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-x11-dev libfontconfig-dev
       - run: cargo fmt --check
       - run: cargo clippy --all-targets -- -D warnings

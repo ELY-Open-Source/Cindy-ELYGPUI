@@ -9,6 +9,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
   `ELY-Open-Source/Cindy-ELYGPUI`, first push
 - [x] 1.2 CI: fmt, clippy, test and build on Linux, macOS, Windows, x86_64 and arm64
 - [x] 1.3 CI green on all six targets
+- [ ] 1.4 CI on self-hosted runners where the org has one: Linux x64 `omarchy-amd64`, macOS arm64
+  `macos-arm64`, Windows x64 `windows-amd64` (any idle one of that label)
 
 ## 2. Logging and diagnostics
 

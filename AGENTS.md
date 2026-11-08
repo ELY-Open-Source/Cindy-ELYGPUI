@@ -21,7 +21,8 @@ defines scope and what 1:1 means.
 - `cargo run` opens the app.
 - `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`. CI
   (`.github/workflows/ci.yml`) runs them and a release build on Linux, macOS and Windows,
-  x86_64 and arm64.
+  x86_64 and arm64. Linux x64, macOS arm64 and Windows x64 run on the org's self-hosted runners
+  (`omarchy-amd64`, `macos-arm64`, `windows-amd64`); the rest on GitHub-hosted ones.
 
 ## Rules
 
