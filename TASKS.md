@@ -12,7 +12,16 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 2. Logging and diagnostics
 
-- [ ] 2.0 Expand from Cindy's code
+- [x] 2.0 Expand from Cindy's code (`main/logger.ts`, `shared/mainLogRecordFormat.ts`,
+  `main/regionUserData.ts`, `maker-shared/brandIdentity.ts`)
+- [x] 2.1 Region from `CINDY_AUTH_REGION` at build (`cn`, `global`, `dev`; default `global`; other
+  values fail the build) and the userData folder `Cindy`, `CindyGlobal` or `CindyDev` under the OS
+  app-data folder, shared with Cindy
+- [ ] 2.2 Main log: `main-YYYY-MM-DD.log` in `<userData>/logs` (debug builds: `logs/` in the
+  checkout), Cindy's line format and continuation escaping, format sentinel on each file open, level
+  from `LOG_LEVEL` then `log-config.json`, daily switch, 30-day retention, terminal mirror in debug
+  builds
+- Agent and session `ndjson` streams move to chapter 10; log upload and redaction to chapter 13.
 
 ## 3. Configuration and storage
 
@@ -44,7 +53,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 10. Agent runtime
 
-- [ ] 10.0 Expand from Cindy's code
+- [ ] 10.0 Expand from Cindy's code, with the agent and session `ndjson` log streams
 
 ## 11. Models and providers
 
@@ -56,7 +65,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most five rounds per task.
 
 ## 13. Account and region
 
-- [ ] 13.0 Expand from Cindy's code
+- [ ] 13.0 Expand from Cindy's code, with log upload and redaction
 
 ## 14. Teammates
 

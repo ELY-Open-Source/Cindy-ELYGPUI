@@ -10,6 +10,8 @@ defines scope and what 1:1 means.
 - gpui and gpui_platform as `gpui-pre` and `gpui-pre-platform` `=0.3.11`, Ely's pin.
   gpui_platform takes `font-kit`, `wayland` and `x11`. Ely's default feature turns on
   `runtime_shaders`.
+- Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
+  `build.rs`. The app shares Cindy's userData folder for that region (user decision).
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Logging: `log`, written by `env_logger` to stderr. `RUST_LOG` sets the filter; default
   `warn,cindy=info`.
