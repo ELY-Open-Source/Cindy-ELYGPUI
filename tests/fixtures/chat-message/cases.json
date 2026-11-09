@@ -3949,6 +3949,36 @@
   ]
  },
  {
+  "name": "rows without a client id",
+  "rows": [
+   {
+    "id": "m166",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:06.000Z",
+    "rowid": 166
+   },
+   {
+    "id": "m167",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {}
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:07.000Z",
+    "rowid": 167
+   }
+  ]
+ },
+ {
   "name": "timeline not a total order",
   "rows": [
    {

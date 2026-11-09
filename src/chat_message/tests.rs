@@ -14,12 +14,24 @@ fn every_case_matches_cindy() {
         let case = case.obj().unwrap();
         let name = case["name"].str().unwrap();
         let got = match map_server_messages(case["rows"].arr().unwrap()) {
-            Ok(rows) => js::stringify(&Js::Arr(rows), " "),
+            Ok(rows) => {
+                let json = Js::Arr(rows.iter().map(super::Out::json).collect());
+                let undefined = Js::Arr(rows.iter().map(super::Out::undefined_keys).collect());
+                format!(
+                    "{}\n{}",
+                    js::stringify(&json, " "),
+                    js::stringify(&undefined, "")
+                )
+            }
             Err(error) => format!("error: {error}"),
         };
         let want = match case.get("error") {
             Some(error) => format!("error: {}", error.str().unwrap()),
-            None => js::stringify(&case["result"], " "),
+            None => format!(
+                "{}\n{}",
+                js::stringify(&case["result"], " "),
+                js::stringify(&case["undefinedKeys"], "")
+            ),
         };
         if got != want {
             failures.push(format!("{name}\n got: {got}\nwant: {want}"));

@@ -61,76 +61,76 @@ pub fn other(row: &Obj, meta: Option<&Obj>) -> Result<Out, String> {
         other => js::stringify(other, ""),
     };
     let mut out = base(row, &row["role"], Js::Str(content));
-    let mut put = |key: &str, value: Js| {
-        out.insert(key.into(), value);
-    };
-    if assistant && let Some(group) = source::group(meta) {
-        put("sourceGroup", group);
+    if assistant {
+        out.set("sourceGroup", source::group(meta));
     }
+    let mut put = |key: &str, value: Option<Js>| out.set(key, value);
     if assistant && let Some(phase @ Js::Str(_)) = field("assistantPhase") {
-        put("assistantPhase", phase.clone());
+        put("assistantPhase", Some(phase.clone()));
     }
     if assistant && js::truthy(field("failedSamplingAttempt")) {
-        put("failedSamplingAttempt", Js::Bool(true));
+        put("failedSamplingAttempt", Some(Js::Bool(true)));
     }
     if assistant && field("explicitDelivery") == Some(&Js::Bool(true)) {
-        put("explicitDelivery", Js::Bool(true));
+        put("explicitDelivery", Some(Js::Bool(true)));
     }
     let options = match assistant {
         true => bot::starter_options(field("botStarterOptions")),
         false => Vec::new(),
     };
     if !options.is_empty() {
-        put("botStarterOptions", Js::Arr(options));
+        put("botStarterOptions", Some(Js::Arr(options)));
     }
-    if assistant && let Some(learning) = field("botLearning") {
-        put("botLearning", learning.clone());
+    if assistant {
+        put("botLearning", field("botLearning").cloned());
     }
     if field("botPrivateReply") == Some(&Js::Bool(true)) {
-        put("botPrivateReply", Js::Bool(true));
+        put("botPrivateReply", Some(Js::Bool(true)));
     }
     if assistant
         && let Some(reply @ Js::Str(r)) = field("replyToClientId")
         && !r.is_empty()
     {
-        put("replyToClientId", reply.clone());
+        put("replyToClientId", Some(reply.clone()));
     }
     if assistant && field("turnCompleted") == Some(&Js::Bool(true)) {
         put(
             "botTaskResults",
-            Js::Arr(bot::task_results(field("botTaskResults"))),
+            Some(Js::Arr(bot::task_results(field("botTaskResults")))),
         );
     }
     if role == "tool_result"
         && let Some(id @ Js::Str(i)) = row.get("toolUseId")
         && !i.is_empty()
     {
-        put("toolUseId", id.clone());
+        put("toolUseId", Some(id.clone()));
     }
     if let Some(completed) = completed {
-        put("turnCompleted", Js::Bool(completed));
+        put("turnCompleted", Some(Js::Bool(completed)));
     }
     if let Some(details) = details {
-        put("turnUsageDetails", Js::Obj(details));
+        put("turnUsageDetails", Some(Js::Obj(details)));
     }
     if let (Some(m), Some(user_money)) = (meta, user_money) {
-        put("userTurnMoney", Js::Obj(user_money));
+        put("userTurnMoney", Some(Js::Obj(user_money)));
         if let Some(usd) = positive(m.get("userTurnCostUsd")) {
-            put("userTurnCostUsd", Js::Num(usd));
+            put("userTurnCostUsd", Some(Js::Num(usd)));
         }
         let estimate = m.get("userTurnCostIsEstimate") == Some(&Js::Bool(true));
-        put("userTurnCostIsEstimate", Js::Bool(estimate));
+        put("userTurnCostIsEstimate", Some(Js::Bool(estimate)));
     }
     if let (Some(m), Some(cost)) = (meta, turn_money.filter(|c| money::amount_of(c) > 0.0)) {
         let usd = cost.get("currency") == Some(&Js::Str("USD".into()));
         let amount = money::amount_of(&cost);
-        put("turnMoney", Js::Obj(cost));
+        put("turnMoney", Some(Js::Obj(cost)));
         if usd {
-            put("turnCostUsd", Js::Num(amount));
+            put("turnCostUsd", Some(Js::Num(amount)));
         }
         put(
             "turnCostIsEstimate",
-            Js::Bool(m.get("turnCostIsEstimate") == Some(&Js::Bool(true))),
+            Some(Js::Bool(
+                m.get("turnCostIsEstimate") == Some(&Js::Bool(true)),
+            )),
         );
     }
     let mismatch = field("modelMismatch");
@@ -142,7 +142,7 @@ pub fn other(row: &Obj, meta: Option<&Obj>) -> Result<Out, String> {
             .is_some_and(|s| !s.is_empty())
     };
     if assistant && named("selected") && named("actual") {
-        put("modelMismatch", mismatch.expect("checked").clone());
+        put("modelMismatch", Some(mismatch.expect("checked").clone()));
     }
     subagent(meta, &mut out);
     out.insert("isStreaming".into(), Js::Bool(false));

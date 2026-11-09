@@ -133,22 +133,22 @@ defines scope and what 1:1 means.
   subagent bodies as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
   `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order. `rows.rs` is
   `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
-  `messageToCamelWithRowid` (`localdb/camel.rs`, shared with search); `outline.rs` the outline SQL, as
-  Cindy's drizzle renders it; `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048). `reader.rs` is
-  `createHistoryViewReader` over `Deps` (`db.rs` the database's; turns and live rows come with 10.0):
-  `page`, `details` and the detail cache. Its tests port Cindy's on a fake. Reads run one at a time on
-  the database worker: no in-flight share to join. `controller.rs` is `HistoryViewController` (network,
-  disk cache, intents: 20.0) in JS promise order (`settled`). `src/chat_message.rs` is
-  `mapServerMessages` (golden `chat-message`): Cindy's throws as `Err` with V8's text (`js::try_string`
-  is `String()` where it throws). `merge.rs` is `mergeMessages` and `confirmRemoteUsers` on `Rc` rows
-  (`===` is `Rc::ptr_eq`, `None` a key set to `undefined`; golden `merge-messages`). `src/js_sort.rs`
-  is V8's sort (`array-sort.tq`: TimSort, insertion under 8 items), for non-total comparators.
-  `src/js_date.rs` is V8's `Date.parse` (`parser.rs` ports `dateparser*`; local times in the host zone
-  through jiff, as ICU's `FORMER`) and `toISOString`. Goldens `js-sort` and `js-date`, the latter from
-  Cindy's Electron in three zones (31-bit Smis). `src/command_output.rs` is `commandOutputPaths.ts`:
-  `js_re` turns JS regex sources into Rust's, lookarounds scanned by hand; offsets in bytes, the 240/80
-  windows in UTF-16 units (a cut pair's half is U+FFFD). Golden `history-view` records Cindy's tests
-  less two (a lease, `import.meta.env`); `history-artifacts` adds `cases.json`.
+  `messageToCamelWithRowid`; `outline.rs` the outline SQL, as Cindy's drizzle renders it;
+  `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048). `reader.rs` is `createHistoryViewReader`
+  over `Deps` (`db.rs` the database's; turns and live rows come with 10.0): `page`, `details`, the
+  detail cache; tests ported on a fake. Reads run one at a time on the database worker (no in-flight
+  share). `controller.rs` is `HistoryViewController` (network, disk cache, intents: 20.0) in JS promise
+  order. `src/chat_message.rs` is `mapServerMessages` (`Out` keeps keys set to `undefined`; golden
+  `chat-message`): Cindy's throws as `Err` with V8's text (`js::try_string` is `String()` where it
+  throws). `merge.rs` is `mergeMessages` and `confirmRemoteUsers` on `Rc` rows (`===` is `Rc::ptr_eq`,
+  `None` a key set to `undefined`; golden `merge-messages`). `transport.rs` is the view's local `page`
+  and `details` (a `Reader` per database open). `src/js_sort.rs` is V8's sort (`array-sort.tq`:
+  TimSort, insertion under 8 items), for non-total comparators. `src/js_date.rs` is V8's `Date.parse`
+  (`parser.rs` ports `dateparser*`; local times in the host zone through jiff, as ICU's `FORMER`) and
+  `toISOString`. Goldens `js-sort` and `js-date`, `js-date` from Cindy's Electron, three zones.
+  `src/command_output.rs` is `commandOutputPaths.ts` (`js_re`: JS regex to Rust's, lookarounds by
+  hand); offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's half is U+FFFD). Golden
+  `history-view` is Cindy's tests less a lease and `import.meta.env`; `history-artifacts` adds cases.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

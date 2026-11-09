@@ -165,13 +165,15 @@ pub fn user(row: &Obj, meta: Option<&Obj>) -> Out {
     }
     let parsed = user_content::parse(&row["content"]);
     let mut out = Out::new();
-    if let Some(name) = meta::shared_author_name(meta) {
-        out.insert("sharedAuthorName".into(), Js::Str(name));
-    }
-    if let Some(member) = meta::shared_author_member(meta) {
-        out.insert("sharedAuthorMemberId".into(), Js::Str(member));
-    }
-    out.extend(base(row, &row["role"], Js::Str(parsed.text.clone())));
+    out.set(
+        "sharedAuthorName",
+        meta::shared_author_name(meta).map(Js::Str),
+    );
+    out.set(
+        "sharedAuthorMemberId",
+        meta::shared_author_member(meta).map(Js::Str),
+    );
+    out.append(base(row, &row["role"], Js::Str(parsed.text.clone())));
     out.insert("isStreaming".into(), Js::Bool(false));
     let client = row["clientId"].str().unwrap_or("");
     if meta::voice_call_task(

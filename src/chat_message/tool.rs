@@ -63,9 +63,7 @@ pub fn tool_use(row: &Obj, meta: Option<&Obj>) -> Result<Out, String> {
         &row["role"],
         Js::Str(summary(&tool.tool_name, &tool.input)?),
     );
-    if let Some(id) = tool.tool_use_id {
-        out.insert("toolUseId".into(), Js::Str(id));
-    }
+    out.set("toolUseId", tool.tool_use_id.map(Js::Str));
     out.insert("toolName".into(), Js::Str(tool.tool_name.clone()));
     out.insert("toolInput".into(), tool.input);
     if let Some(status) = meta
@@ -154,9 +152,8 @@ pub fn ask_user(row: &Obj, c: &Js) -> Result<Out, String> {
     let mut out = base(row, &row["role"], Js::Str(display));
     out.insert("isStreaming".into(), Js::Bool(false));
     out.insert("askUserStatus".into(), Js::Str(status.into()));
-    if let Some(id @ Js::Str(_)) = get("requestId") {
-        out.insert("askUserRequestId".into(), id.clone());
-    }
+    let request = get("requestId").filter(|id| matches!(id, Js::Str(_)));
+    out.set("askUserRequestId", request.cloned());
     out.insert("askUserReply".into(), reply);
     for (key, value) in [
         ("askUserQuestions", questions),
@@ -167,9 +164,7 @@ pub fn ask_user(row: &Obj, c: &Js) -> Result<Out, String> {
             get("pageIndicator").filter(|p| matches!(p, Js::Str(_))),
         ),
     ] {
-        if let Some(value) = value {
-            out.insert(key.into(), value.clone());
-        }
+        out.set(key, value.cloned());
     }
     Ok(out)
 }
@@ -208,9 +203,10 @@ pub fn plan_review(row: &Obj, c: &Js) -> Out {
     let mut out = base(row, &row["role"], Js::Str(String::new()));
     out.insert("isStreaming".into(), Js::Bool(false));
     out.insert("planReviewStatus".into(), Js::Str(status.into()));
-    if let Some(id) = get("requestId") {
-        out.insert("planReviewRequestId".into(), Js::Str(id.into()));
-    }
+    out.set(
+        "planReviewRequestId",
+        get("requestId").map(|id| Js::Str(id.into())),
+    );
     out.insert(
         "planReviewPlan".into(),
         Js::Str(get("plan").unwrap_or("").into()),
@@ -219,9 +215,10 @@ pub fn plan_review(row: &Obj, c: &Js) -> Out {
         "planReviewFilePath".into(),
         Js::Str(get("planFilePath").unwrap_or("").into()),
     );
-    if let Some(feedback) = get("feedback") {
-        out.insert("planReviewFeedback".into(), Js::Str(feedback.into()));
-    }
+    out.set(
+        "planReviewFeedback",
+        get("feedback").map(|f| Js::Str(f.into())),
+    );
     out
 }
 

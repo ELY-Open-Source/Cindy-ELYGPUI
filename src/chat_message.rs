@@ -1,10 +1,12 @@
 //! `makerChatStore.ts`'s `mapServerMessages`: stored rows as the chat's `ChatMessage`s.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the store slice reads it in 9.2d")
+    expect(dead_code, reason = "the store slice reads it in 9.2e")
 )]
 
 use std::collections::HashMap;
+
+use indexmap::IndexMap;
 
 use crate::{
     message_rows,
@@ -21,12 +23,62 @@ mod money;
 mod references;
 mod source;
 mod tool;
+mod transport;
 mod usage;
 mod user;
 mod user_content;
 
-/// A `ChatMessage` as JavaScript would serialize it.
-type Out = Obj;
+/// A `ChatMessage`: `None` is a key Cindy's literal sets to `undefined`.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Out(IndexMap<String, Option<Js>>);
+
+impl Out {
+    fn new() -> Self {
+        Out::default()
+    }
+
+    fn insert(&mut self, key: String, value: Js) {
+        self.0.insert(key, Some(value));
+    }
+
+    /// `key: value`, where `None` is `undefined`.
+    fn set(&mut self, key: &str, value: Option<Js>) {
+        self.0.insert(key.into(), value);
+    }
+
+    fn get(&self, key: &str) -> Option<&Js> {
+        self.0.get(key)?.as_ref()
+    }
+
+    fn extend(&mut self, fields: impl IntoIterator<Item = (String, Js)>) {
+        self.0.extend(fields.into_iter().map(|(k, v)| (k, Some(v))));
+    }
+
+    fn append(&mut self, other: Out) {
+        self.0.extend(other.0);
+    }
+
+    pub fn into_fields(self) -> IndexMap<String, Option<Js>> {
+        self.0
+    }
+
+    /// The keys set to `undefined`, as a JSON array.
+    #[cfg(test)]
+    pub fn undefined_keys(&self) -> Js {
+        let keys = self.0.iter().filter(|(_, v)| v.is_none());
+        Js::Arr(keys.map(|(k, _)| Js::Str(k.clone())).collect())
+    }
+
+    /// The object `JSON.stringify` sees: `undefined` keys left out.
+    #[cfg(test)]
+    pub fn json(&self) -> Js {
+        let fields = self
+            .0
+            .iter()
+            .filter_map(|(k, v)| Some((k.clone(), v.clone()?)));
+        Js::Obj(fields.collect())
+    }
+}
 
 fn str_of<'a>(o: &'a Obj, key: &str) -> Option<&'a str> {
     o.get(key)?.str()
@@ -35,9 +87,7 @@ fn str_of<'a>(o: &'a Obj, key: &str) -> Option<&'a str> {
 /// `clientId`, `role` and `content`, the head of every branch.
 fn base(row: &Obj, role: &Js, content: Js) -> Out {
     let mut out = Out::new();
-    if let Some(id) = row.get("clientId") {
-        out.insert("clientId".into(), id.clone());
-    }
+    out.set("clientId", row.get("clientId").cloned());
     out.insert("role".into(), role.clone());
     out.insert("content".into(), content);
     out
@@ -238,7 +288,7 @@ fn created_at(out: &Out, raw: Option<&Js>) -> Result<Option<String>, String> {
 }
 
 /// `mapServerMessages`: hidden thinking left out, the timeline ordered, each row mapped.
-pub fn map_server_messages(rows: &[Js]) -> Result<Vec<Js>, String> {
+pub fn map_server_messages(rows: &[Js]) -> Result<Vec<Out>, String> {
     let rows: Vec<&Obj> = rows.iter().filter_map(Js::obj).collect();
     let mut by_client: HashMap<Option<&str>, &Obj> = HashMap::new();
     for row in &rows {
@@ -288,7 +338,7 @@ pub fn map_server_messages(rows: &[Js]) -> Result<Vec<Js>, String> {
                 cm.insert(key.into(), Js::Bool(true));
             }
         }
-        out.push(Js::Obj(cm));
+        out.push(cm);
     }
     Ok(out)
 }

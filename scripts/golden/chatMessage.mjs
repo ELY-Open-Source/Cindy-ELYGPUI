@@ -29,7 +29,9 @@ export async function chatMessage({ esbuild, tmp, nodePaths, alias, fixtures, wr
   const cases = JSON.parse(fs.readFileSync(path.join(dir, 'cases.json'), 'utf8'));
   const expected = cases.map(({ name, rows }) => {
     try {
-      return { name, rows, result: wellFormed(JSON.parse(JSON.stringify(mapServerMessages(structuredClone(rows))))) };
+      const mapped = mapServerMessages(structuredClone(rows));
+      const undefinedKeys = mapped.map((row) => Object.keys(row).filter((key) => row[key] === undefined));
+      return { name, rows, result: wellFormed(JSON.parse(JSON.stringify(mapped))), undefinedKeys };
     } catch (error) {
       return { name, rows, error: error.message };
     }

@@ -51,3 +51,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: FAIL. The stack bound is accepted as a runtime limit; `String::kMaxLength` is fixed: 90M NULs encode to 540,000,002 units and V8 throws.
 - Fixed: a field whose encoding passes `(1 << 29) - 24` counts 0; test on the reviewer's input.
 - Round 3: PASS.
+
+## 9.2d History view local transport
+- Round 1: FAIL. `mapServerMessages` dropped the keys Cindy's literals set to `undefined` (ask, plan review, `toolUseId`, `sharedAuthor*`, `sourceGroup`, `botLearning`, `clientId`), so a merge kept stale ask fields.
+- Fixed: the mapper builds `Out`, whose `None` is such a key, in Cindy's place; store rows carry it. Golden `chat-message` records each row's `undefined` keys (a row without a client id added); the reviewer's ask merge is a test.
+- Round 2: PASS.

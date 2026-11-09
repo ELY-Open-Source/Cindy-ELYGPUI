@@ -92,6 +92,11 @@ impl Db {
         }
     }
 
+    /// Which open this is; the history reader keys its epoch on it.
+    pub fn open(&self) -> u64 {
+        self.open
+    }
+
     /// Runs `job` on the database thread; the answer is dropped if the thread has stopped.
     pub fn call<R: Send + 'static>(
         &self,

@@ -25,6 +25,12 @@
     "id": "m1",
     "rowid": 1
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -206,6 +212,12 @@
     "id": "m2",
     "rowid": 2
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -327,6 +339,20 @@
     "id": "m5",
     "rowid": 5
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -411,6 +437,12 @@
     "id": "m6",
     "rowid": 6
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -569,6 +601,36 @@
     "id": "m13",
     "rowid": 13
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -779,6 +841,25 @@
     "id": "m18",
     "rowid": 18
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -850,6 +931,16 @@
     "id": "m20",
     "rowid": 20
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -1045,6 +1136,18 @@
     "id": "m27",
     "rowid": 27
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [],
+   []
   ]
  },
  {
@@ -1142,6 +1245,11 @@
     "id": "m30",
     "rowid": 30
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
   ]
  },
  {
@@ -1205,6 +1313,12 @@
     "id": "m31",
     "rowid": 31
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -1369,6 +1483,12 @@
     "id": "m32",
     "rowid": 32
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -1654,6 +1774,29 @@
     "id": "m41",
     "rowid": 41
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [
+    "toolUseId"
+   ],
+   [
+    "toolUseId"
+   ],
+   [
+    "toolUseId"
+   ],
+   [
+    "toolUseId"
+   ],
+   [
+    "toolUseId"
+   ],
+   [],
+   [
+    "toolUseId"
+   ]
   ]
  },
  {
@@ -1781,6 +1924,22 @@
     "id": "m44",
     "rowid": 44
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [
+    "askUserRequestId",
+    "askUserQuestions",
+    "askUserAnswers",
+    "askUserOptions",
+    "askUserPageIndicator"
+   ],
+   [
+    "askUserRequestId",
+    "askUserQuestions",
+    "askUserOptions",
+    "askUserPageIndicator"
+   ]
   ]
  },
  {
@@ -1961,6 +2120,12 @@
     "id": "m52",
     "rowid": 52
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   []
   ]
  },
  {
@@ -2048,6 +2213,13 @@
     "id": "m55",
     "rowid": 55
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [
+    "planReviewRequestId",
+    "planReviewFeedback"
+   ]
   ]
  },
  {
@@ -2229,6 +2401,14 @@
     "id": "m61",
     "rowid": 61
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
   ]
  },
  {
@@ -2883,6 +3063,30 @@
     "id": "m80",
     "rowid": 80
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ]
   ]
  },
  {
@@ -3629,6 +3833,34 @@
     "id": "m91",
     "rowid": 91
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [],
+   [],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ]
   ]
  },
  {
@@ -4102,6 +4334,31 @@
     "id": "m99",
     "rowid": 99
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [],
+   []
   ]
  },
  {
@@ -4392,6 +4649,37 @@
     "id": "m108",
     "rowid": 108
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ]
   ]
  },
  {
@@ -4503,6 +4791,28 @@
     "id": "m113",
     "rowid": 4
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -4605,6 +4915,28 @@
     "content": "r",
     "isStreaming": false
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -4780,6 +5112,12 @@
     "id": "m121",
     "rowid": 121
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -4866,6 +5204,12 @@
     "id": "m122",
     "rowid": 122
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -5374,6 +5718,42 @@
     "id": "m133",
     "rowid": 133
    }
+  ],
+  "undefinedKeys": [
+   [],
+   [
+    "toolUseId"
+   ],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   []
   ]
  },
  {
@@ -5509,6 +5889,21 @@
     "id": "m137",
     "rowid": 137
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sourceGroup",
+    "botLearning"
+   ],
+   [],
+   [
+    "sourceGroup",
+    "botLearning"
+   ]
   ]
  },
  {
@@ -5542,6 +5937,16 @@
     "isStreaming": false,
     "rowid": 7
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -5614,6 +6019,15 @@
     "id": "m139",
     "rowid": 139
    }
+  ],
+  "undefinedKeys": [
+   [
+    "toolUseId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -5696,6 +6110,14 @@
     "id": "m142",
     "rowid": 142
    }
+  ],
+  "undefinedKeys": [
+   [
+    "toolUseId"
+   ],
+   [
+    "toolUseId"
+   ]
   ]
  },
  {
@@ -5759,6 +6181,10 @@
     "id": "m144",
     "rowid": 144
    }
+  ],
+  "undefinedKeys": [
+   [],
+   []
   ]
  },
  {
@@ -5830,6 +6256,10 @@
     "id": "m146",
     "rowid": 146
    }
+  ],
+  "undefinedKeys": [
+   [],
+   []
   ]
  },
  {
@@ -5909,6 +6339,10 @@
     "id": "m148",
     "rowid": 148
    }
+  ],
+  "undefinedKeys": [
+   [],
+   []
   ]
  },
  {
@@ -5944,6 +6378,9 @@
     "id": "m149",
     "rowid": 149
    }
+  ],
+  "undefinedKeys": [
+   []
   ]
  },
  {
@@ -5979,6 +6416,9 @@
     "id": "m150",
     "rowid": 150
    }
+  ],
+  "undefinedKeys": [
+   []
   ]
  },
  {
@@ -6014,6 +6454,9 @@
     "id": "m151",
     "rowid": 151
    }
+  ],
+  "undefinedKeys": [
+   []
   ]
  },
  {
@@ -6048,6 +6491,9 @@
     "id": "m152",
     "rowid": 152
    }
+  ],
+  "undefinedKeys": [
+   []
   ]
  },
  {
@@ -6217,6 +6663,11 @@
     "id": "m158",
     "rowid": 158
    }
+  ],
+  "undefinedKeys": [
+   [
+    "toolUseId"
+   ]
   ]
  },
  {
@@ -6364,6 +6815,13 @@
     "id": "m162",
     "rowid": 162
    }
+  ],
+  "undefinedKeys": [
+   [
+    "askUserRequestId",
+    "askUserOptions",
+    "askUserPageIndicator"
+   ]
   ]
  },
  {
@@ -6444,6 +6902,67 @@
    }
   ],
   "error": "Cannot convert object to primitive value"
+ },
+ {
+  "name": "rows without a client id",
+  "rows": [
+   {
+    "id": "m166",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:06.000Z",
+    "rowid": 166
+   },
+   {
+    "id": "m167",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {}
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:07.000Z",
+    "rowid": 167
+   }
+  ],
+  "result": [
+   {
+    "role": "assistant",
+    "content": "answer",
+    "isStreaming": false,
+    "createdAt": "2023-11-14T22:16:07.000Z",
+    "id": "m167",
+    "rowid": 167
+   },
+   {
+    "role": "tool_use",
+    "content": "Bash()",
+    "toolName": "Bash",
+    "toolInput": {},
+    "isStreaming": false,
+    "createdAt": "2023-11-14T22:16:07.000Z",
+    "id": "m167",
+    "rowid": 167
+   }
+  ],
+  "undefinedKeys": [
+   [
+    "clientId",
+    "sourceGroup",
+    "botLearning"
+   ],
+   [
+    "clientId",
+    "toolUseId"
+   ]
+  ]
  },
  {
   "name": "timeline not a total order",
@@ -6928,6 +7447,104 @@
     "id": "23",
     "rowid": 39
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -7036,6 +7653,28 @@
     "createdAt": "2023-11-14T22:13:20.000Z",
     "id": "3"
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -7441,6 +8080,88 @@
     "createdAt": "2023-11-14T22:13:20.000Z",
     "id": "19"
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -8054,6 +8775,128 @@
     "createdAt": "2023-11-14T22:13:20.000Z",
     "id": "29"
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -9057,6 +9900,208 @@
     "createdAt": "2023-11-14T22:13:20.000Z",
     "id": "48"
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  },
  {
@@ -10468,6 +11513,288 @@
     "createdAt": "2023-11-14T22:13:20.000Z",
     "id": "69"
    }
+  ],
+  "undefinedKeys": [
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ],
+   [
+    "sharedAuthorName",
+    "sharedAuthorMemberId"
+   ]
   ]
  }
 ]

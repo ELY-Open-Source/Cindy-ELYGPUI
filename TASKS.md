@@ -65,7 +65,7 @@ listed in `tasks/done.md`.
   - [x] 9.2c `mergeMessages` with `hydratePersistedMessage`, `sortMessagesChronologically` and
     `collapseConsecutiveAutoResumeRows`, and `remoteUserHandoff.ts`'s `confirmRemoteUsers`;
     golden from Cindy's functions, exported in the bundle only
-  - [ ] 9.2d `createRemoteHistoryView`'s local transport: one reader per database on its
+  - [x] 9.2d `createRemoteHistoryView`'s local transport: one reader per database on its
     worker (`local-db:messages:view` with `lazyDetails`, `work-details`), rows mapped by
     `mapServerMessages` into `HistoryChatMessage` (`mapHistoryViewMessages`), a thrown map an
     error of the read
