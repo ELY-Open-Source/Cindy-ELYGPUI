@@ -91,8 +91,8 @@ defines scope and what 1:1 means.
   tasks whose turn started before this process (`cross_process_lock::started_ms`, Cindy's
   `bootAtMs`) and never ended, companion tasks through the send path's guards and the owner's
   `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each
-  with its turn's last message time and `tool_use`. `load` runs once per owner when the database
-  is ready. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
+  with its turn's last message time and its last `tool_use` as `activity`. `load` runs once
+  per owner when the database is ready. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
 - Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
   `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.
@@ -101,6 +101,9 @@ defines scope and what 1:1 means.
   `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`,
   `humanizeToolToken`, `parseMessageToolUse`'s gateway unwrap), kept to the fields the row
   label reads; golden `tests/fixtures/tool-use` projects Cindy's descriptor to them.
+  `src/tool_row.rs` is `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs
+  from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
+  checked in every locale against `activity.json`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

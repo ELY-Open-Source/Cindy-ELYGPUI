@@ -288,3 +288,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 8.8b2 The tool descriptor
 - Round 1: PASS.
+
+## 8.8b3 The activity line
+- Round 1: PASS.

@@ -21,12 +21,35 @@ pub struct ToolUse {
     pub input: Option<Js>,
 }
 
+/// A row of `listInterruptedResumeCandidateRows`.
 #[derive(Debug, PartialEq)]
-pub struct Candidate {
+pub struct Pending {
     pub session_id: String,
     /// The turn's last stored message, else its start.
     pub interrupted_at: i64,
     pub tool: Option<ToolUse>,
+}
+
+/// What `interrupted-resume-candidates` gives the dialog.
+#[derive(Debug, PartialEq)]
+pub struct Candidate {
+    pub session_id: String,
+    pub interrupted_at: i64,
+    /// The last tool call's island line, else its name.
+    pub activity: Option<String>,
+}
+
+impl Candidate {
+    fn new(pending: Pending, t: &crate::i18n::Translator) -> Self {
+        let activity = pending
+            .tool
+            .map(|tool| crate::tool_row::activity(t, &tool.name, tool.input.as_ref()));
+        Self {
+            session_id: pending.session_id,
+            interrupted_at: pending.interrupted_at,
+            activity,
+        }
+    }
 }
 
 /// The window's load, keyed by owner, as the dialog's `_load` singleton is.
@@ -63,7 +86,7 @@ pub fn candidates(
     db: &Connection,
     boot_at: i64,
     shadowed: &[String],
-) -> rusqlite::Result<Vec<Candidate>> {
+) -> rusqlite::Result<Vec<Pending>> {
     let sql = format!(
         "SELECT sessions.id, sessions.source, sessions.active_turn_started_at,
                 bot_session_links.bot_id, bot_session_links.role, bot_profiles.status
@@ -120,7 +143,7 @@ pub fn candidates(
         }
         let at: Option<i64> = last.query_row((&id, started), |r| r.get(0)).optional()?;
         let content: Option<String> = tool.query_row((&id, started), |r| r.get(0)).optional()?;
-        out.push(Candidate {
+        out.push(Pending {
             interrupted_at: at.unwrap_or(started),
             tool: tool_use(content.as_deref()),
             session_id: id,
@@ -191,7 +214,11 @@ pub fn load(cx: &mut App) {
             cx.background_executor().timer(wait).await;
         }
         log::info!(target: "interrupted-tasks-resume", "found {} interrupted task(s)", found.len());
-        cx.update(|cx| cx.default_global::<Interrupted>().candidates = Some(found));
+        cx.update(|cx| {
+            let t = cx.global::<crate::i18n::Translator>();
+            let found = found.into_iter().map(|p| Candidate::new(p, t)).collect();
+            cx.default_global::<Interrupted>().candidates = Some(found);
+        });
     })
     .detach();
 }

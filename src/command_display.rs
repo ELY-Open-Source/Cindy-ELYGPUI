@@ -1,8 +1,4 @@
 //! `commandDisplay.ts`: the command inside a known shell launcher, for display only.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the activity line reads it in 8.8b3")
-)]
 
 use crate::theme_import::color::{js_space, js_trim};
 

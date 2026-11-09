@@ -56,6 +56,9 @@ try {
     "export * as commandIntent from '../../../packages/maker-shared/src/commandIntent';",
     "export { normalizeDisplayCommand } from '@cindy/maker-shared/command-display';",
     "export * as toolUse from '@cindy/maker-shared/tool-use-descriptor';",
+    "export { formatIslandToolDetail } from './main/agent-island/toolDetail';",
+    "export { createLocalizedToolRowWording } from './main/agent-island/toolWording';",
+    "export { setMainLocale } from './main/i18n';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -67,7 +70,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -366,6 +369,14 @@ try {
     truncate: toolCases.truncateToolText.map(([text, max]) => [text, max, toolUse.truncateToolText(text, max).toWellFormed()]),
     humanize: toolCases.humanizeToolToken.map(([token]) => [token, toolUse.humanizeToolToken(token)]),
   });
+  // The interrupted dialog's activity, as `interrupted-resume-candidates` builds it, per locale.
+  const portLocales = fs.readdirSync(path.join(fixtures, '..', '..', 'locales')).filter((l) => l !== 'COMMIT').sort();
+  write(path.join(toolDir, 'activity.json'), portLocales.map((locale) => {
+    setMainLocale(locale);
+    const wording = createLocalizedToolRowWording();
+    return [locale, toolCases.island.map(([name, input]) =>
+      (formatIslandToolDetail(name, input ?? undefined, { wording }) ?? name).toWellFormed())];
+  }));
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

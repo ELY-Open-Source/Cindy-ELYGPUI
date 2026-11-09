@@ -1,8 +1,4 @@
 //! `commandIntent.ts`: a shell command's intent, only for shapes without side effects.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the activity line reads it in 8.8b3")
-)]
 
 mod git;
 mod rules;

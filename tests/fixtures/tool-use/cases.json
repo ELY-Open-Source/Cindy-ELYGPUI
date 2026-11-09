@@ -842,5 +842,1073 @@
   [
    "_a"
   ]
+ ],
+ "island": [
+  [
+   "Bash",
+   {
+    "command": "git status",
+    "description": "查看工作区状态"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "ls"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "ls",
+    "description": 42
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "ls",
+    "description": null
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "ls",
+    "description": "   "
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "pwsh -c \"git status\"",
+    "displayCommand": "git status",
+    "cwd": "/repo"
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "ls -la"
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "/bin/zsh -lc 'git status'"
+   }
+  ],
+  [
+   "Bash",
+   null
+  ],
+  [
+   "exec",
+   "oops"
+  ],
+  [
+   "Bash",
+   [
+    1,
+    2
+   ]
+  ],
+  [
+   "exec",
+   {
+    "command": "grep -n foo src/",
+    "commandActions": [
+     {
+      "type": "search",
+      "command": "grep -n foo src/",
+      "query": "foo",
+      "path": "src/"
+     }
+    ]
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "pnpm test",
+    "commandActions": [
+     {
+      "type": "unknown",
+      "command": "pnpm test"
+     }
+    ]
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "/bin/zsh -lc 'cat README.md | tee important.conf'",
+    "displayCommand": "cat README.md | tee important.conf",
+    "commandActions": [
+     {
+      "type": "read",
+      "command": "cat README.md",
+      "name": "README.md",
+      "path": "/repo/README.md"
+     }
+    ]
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "ls src",
+    "description": "看看源码目录"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "docker ps"
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "rm -rf build"
+   }
+  ],
+  [
+   "Read",
+   {
+    "file_path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   "Edit",
+   {
+    "file_path": "/repo/a.ts"
+   }
+  ],
+  [
+   "MultiEdit",
+   {
+    "file_path": "/repo/a.ts"
+   }
+  ],
+  [
+   "Write",
+   {
+    "file_path": "/repo/a.ts"
+   }
+  ],
+  [
+   "Read",
+   {
+    "file_path": "C:\\repo\\src\\app.ts"
+   }
+  ],
+  [
+   "Read",
+   {
+    "path": "/repo/b.ts"
+   }
+  ],
+  [
+   "Read",
+   {}
+  ],
+  [
+   "bash",
+   {
+    "command": "git status"
+   }
+  ],
+  [
+   "bash",
+   {
+    "command": "docker ps"
+   }
+  ],
+  [
+   "read",
+   {
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   "edit",
+   {
+    "path": "/repo/a.ts",
+    "edits": [
+     {
+      "oldText": "a",
+      "newText": "b"
+     }
+    ]
+   }
+  ],
+  [
+   "write",
+   {
+    "path": "/repo/new.ts",
+    "content": "x"
+   }
+  ],
+  [
+   "ls",
+   {
+    "path": "/repo/src"
+   }
+  ],
+  [
+   "ls",
+   {}
+  ],
+  [
+   "edit",
+   {
+    "path": "/repo/a.ts",
+    "oldText": "x",
+    "newText": "y"
+   }
+  ],
+  [
+   "grep",
+   {
+    "pattern": "TODO",
+    "path": "src/",
+    "glob": "*.ts"
+   }
+  ],
+  [
+   "find",
+   {
+    "pattern": "**/*.spec.ts"
+   }
+  ],
+  [
+   "grep",
+   {}
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/src/new.ts",
+      "kind": {
+       "type": "add"
+      },
+      "diff": "+++ b/src/new.ts\n+hello"
+     },
+     {
+      "path": "/repo/src/app.ts",
+      "kind": {
+       "type": "update"
+      },
+      "diff": "-old\n+new"
+     },
+     {
+      "path": "/repo/src/old.ts",
+      "kind": {
+       "type": "delete"
+      },
+      "diff": "-gone"
+     },
+     {
+      "path": "/repo/src/before.ts",
+      "kind": {
+       "type": "update",
+       "move_path": "/repo/src/after.ts"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "C:\\repo\\a.ts",
+      "kind": {
+       "type": "update",
+       "movePath": "C:\\repo\\b.ts"
+      },
+      "diff": ""
+     },
+     {
+      "path": "/repo/custom.bin",
+      "kind": {
+       "type": "chmod"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": []
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/a.ts",
+      "kind": {
+       "type": "update"
+      }
+     }
+    ]
+   }
+  ],
+  [
+   "Grep",
+   {
+    "pattern": "foo",
+    "path": "src",
+    "glob": "*.ts"
+   }
+  ],
+  [
+   "Glob",
+   {
+    "pattern": "**/*.md"
+   }
+  ],
+  [
+   "Grep",
+   {}
+  ],
+  [
+   "WebFetch",
+   {
+    "url": "https://x.dev"
+   }
+  ],
+  [
+   "WebSearch",
+   {
+    "query": "electron ipc"
+   }
+  ],
+  [
+   "web_search",
+   {
+    "query": "codex"
+   }
+  ],
+  [
+   "WebFetch",
+   {}
+  ],
+  [
+   "TodoWrite",
+   {
+    "todos": []
+   }
+  ],
+  [
+   "update_plan",
+   null
+  ],
+  [
+   "Task",
+   {
+    "description": "搜索代码",
+    "subagent_type": "Explore",
+    "prompt": "..."
+   }
+  ],
+  [
+   "Task",
+   {}
+  ],
+  [
+   "mcp__feishu__read_by_url",
+   {
+    "url": "https://f.cn/doc"
+   }
+  ],
+  [
+   "mcp:jira:query_issues",
+   {
+    "query": "bug",
+    "description": "查询未关闭缺陷"
+   }
+  ],
+  [
+   "mcp__s__t",
+   null
+  ],
+  [
+   "dynamic:ns:do_thing",
+   {
+    "query": "q"
+   }
+  ],
+  [
+   "collab:wait",
+   null
+  ],
+  [
+   "SomethingNew",
+   {
+    "description": "做点什么"
+   }
+  ],
+  [
+   "mcp__cindy_docs__make_pptx",
+   {
+    "slides": [
+     {
+      "layout": "cover",
+      "title": "Q3"
+     }
+    ],
+    "outPath": "documents/Q3.pptx"
+   }
+  ],
+  [
+   "mcp__cindy_docs__read_sheet",
+   {
+    "path": "data.xlsx"
+   }
+  ],
+  [
+   "Write",
+   {
+    "file_path": "/tmp/a.txt"
+   }
+  ],
+  [
+   "Edit",
+   {
+    "file_path": "/tmp/a.txt"
+   }
+  ],
+  [
+   "mcp__cindy_docs__render_pdf",
+   {
+    "htmlPath": "tmp/design.html",
+    "outPath": "documents/report.pdf"
+   }
+  ],
+  [
+   "mcp__cindy_docs__render_pdf",
+   {
+    "html": "<html>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</html>",
+    "outPath": "documents/report.pdf"
+   }
+  ],
+  [
+   "mcp__helper__call_tool",
+   {}
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": "docs",
+    "tool": "make_pptx",
+    "args": {
+     "outPath": "/a.pptx",
+     "title": "Q3"
+    }
+   }
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": " docs ",
+    "tool": "x"
+   }
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": "docs",
+    "tool": "x",
+    "args": [
+     1
+    ]
+   }
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": "",
+    "tool": "x",
+    "args": {}
+   }
+  ],
+  [
+   " Bash ",
+   {
+    "command": " ls -la ",
+    "description": "  "
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "rm -rf build"
+   }
+  ],
+  [
+   "Bash",
+   "ls"
+  ],
+  [
+   "exec",
+   {
+    "command": "/bin/zsh -lc 'git status'"
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "x",
+    "displayCommand": "cat a.txt",
+    "commandActions": [
+     {
+      "type": "read",
+      "command": "cat a.txt",
+      "name": "a.txt",
+      "path": "/r/a.txt"
+     }
+    ]
+   }
+  ],
+  [
+   "exec",
+   {
+    "command": "cat a | tee b",
+    "commandActions": [
+     {
+      "type": "read",
+      "command": "cat a",
+      "name": "a"
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/r/a.ts",
+      "kind": {
+       "type": "update"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/r/a.ts",
+      "kind": {
+       "type": "update",
+       "move_path": "/r/b.ts"
+      },
+      "diff": "d"
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/r/a.ts",
+      "kind": {
+       "type": "weird"
+      },
+      "diff": "d"
+     },
+     {
+      "path": "b",
+      "kind": {
+       "type": "add"
+      },
+      "diff": "x"
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/r/a.ts",
+      "kind": {
+       "type": "add"
+      }
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": []
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/r/",
+      "kind": {
+       "type": "delete"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "Read",
+   {
+    "file_path": "  ",
+    "path": "C:\\\\x\\\\y.txt"
+   }
+  ],
+  [
+   "ls",
+   {}
+  ],
+  [
+   "Glob",
+   {
+    "pattern": "**/*.rs",
+    "path": "src"
+   }
+  ],
+  [
+   "find",
+   {
+    "pattern": " "
+   }
+  ],
+  [
+   "WebFetch",
+   {
+    "url": "https://x.dev"
+   }
+  ],
+  [
+   "web_search",
+   {
+    "query": "rust gpui"
+   }
+  ],
+  [
+   "update_plan",
+   []
+  ],
+  [
+   "Agent",
+   {
+    "description": " review ",
+    "subagent_type": "Explore"
+   }
+  ],
+  [
+   "mcp__orca_worker_bridge__send__now",
+   {}
+  ],
+  [
+   "mcp__x",
+   {}
+  ],
+  [
+   "mcp__x__",
+   {}
+  ],
+  [
+   "mcp:a:b:c",
+   {
+    "query": "q"
+   }
+  ],
+  [
+   "dynamic:ns:do_it",
+   {}
+  ],
+  [
+   "dynamic:do_it",
+   {}
+  ],
+  [
+   "dynamic:",
+   {}
+  ],
+  [
+   "collab:spawn_agent",
+   {}
+  ],
+  [
+   "collab:",
+   {}
+  ],
+  [
+   "Custom",
+   {
+    "prompt": "p"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "pnpm test",
+    "description": "Run tests"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "pnpm test",
+    "description": "Run tests: pnpm test"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "pnpm test",
+    "description": "pnpm test"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "  ",
+    "description": " Only words "
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "rm -rf dist"
+   }
+  ],
+  [
+   "Bash",
+   {}
+  ],
+  [
+   "exec",
+   {
+    "command": "bash -lc \"pnpm build\"",
+    "displayCommand": "pnpm build"
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/a.ts",
+      "kind": {
+       "type": "update"
+      },
+      "diff": "-a\n+b"
+     },
+     {
+      "path": "/repo/b.ts",
+      "kind": {
+       "type": "add"
+      },
+      "diff": "+b"
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/a.ts",
+      "kind": {
+       "type": "delete"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/a.ts",
+      "kind": {
+       "type": "weird"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "file_change",
+   {
+    "changes": [
+     {
+      "path": "/repo/a.ts",
+      "kind": {
+       "type": "add"
+      },
+      "diff": ""
+     }
+    ]
+   }
+  ],
+  [
+   "mcp:lizi_feishu",
+   {
+    "serverName": "lizi_feishu",
+    "message": "允许写入?",
+    "toolTitle": "写入文档"
+   }
+  ],
+  [
+   "mcp:lizi_feishu",
+   {
+    "serverName": "lizi_feishu",
+    "toolTitle": "写入文档"
+   }
+  ],
+  [
+   "permissions",
+   {
+    "permissions": [
+     "network"
+    ]
+   }
+  ],
+  [
+   "Task",
+   {
+    "description": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "prompt": "ignored"
+   }
+  ],
+  [
+   "Task",
+   {}
+  ],
+  [
+   "mcp:server:tool",
+   {
+    "toolTitle": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+   }
+  ],
+  [
+   "SomeUnknownTool",
+   {
+    "anything": true
+   }
+  ],
+  [
+   "SomeUnknownTool",
+   {
+    "query": "find usages",
+    "message": " a message "
+   }
+  ],
+  [
+   "dynamic:tools:x",
+   {
+    "message": "m",
+    "toolDescription": "d"
+   }
+  ],
+  [
+   "some_tool",
+   {
+    "questions": [
+     {
+      "question": "Continue?"
+     },
+     {
+      "question": "Second"
+     }
+    ]
+   }
+  ],
+  [
+   "some_tool",
+   {
+    "questions": [
+     null,
+     [],
+     {
+      "header": " H "
+     }
+    ]
+   }
+  ],
+  [
+   "some_tool",
+   {
+    "questions": [
+     {
+      "question": " "
+     }
+    ]
+   }
+  ],
+  [
+   "some_tool",
+   {
+    "questions": []
+   }
+  ],
+  [
+   "CustomTool",
+   null
+  ],
+  [
+   "Grep",
+   {
+    "pattern": "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+   }
+  ],
+  [
+   "WebSearch",
+   {
+    "query": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "cat aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.txt"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "git status && git diff"
+   }
+  ],
+  [
+   "mcp__lizi_feishu__read_by_url",
+   {
+    "toolTitle": "读取飞书文档"
+   }
+  ],
+  [
+   "mcp__lizi_feishu__read_by_url",
+   {}
+  ],
+  [
+   "mcp__lizi_feishu__read_by_url",
+   null
+  ],
+  [
+   "mcp:lizi_feishu:read_by_url",
+   {
+    "toolTitle": "读取飞书文档"
+   }
+  ],
+  [
+   "mcp:lizi_feishu:read_by_url",
+   {}
+  ],
+  [
+   "mcp:lizi_feishu:read_by_url",
+   null
+  ],
+  [
+   "dynamic:tools:read_by_url",
+   {
+    "toolTitle": "读取飞书文档"
+   }
+  ],
+  [
+   "dynamic:tools:read_by_url",
+   {}
+  ],
+  [
+   "dynamic:tools:read_by_url",
+   null
+  ],
+  [
+   "collab:wait",
+   {
+    "toolTitle": "读取飞书文档"
+   }
+  ],
+  [
+   "collab:wait",
+   {}
+  ],
+  [
+   "collab:wait",
+   null
+  ],
+  [
+   "SomeUnknownTool",
+   {
+    "toolTitle": "读取飞书文档"
+   }
+  ],
+  [
+   "SomeUnknownTool",
+   {}
+  ],
+  [
+   "SomeUnknownTool",
+   null
+  ],
+  [
+   "mcp:a:b",
+   {
+    "message": "m"
+   }
+  ],
+  [
+   "dynamic:a:b",
+   {
+    "message": "m"
+   }
+  ],
+  [
+   "collab:x",
+   {
+    "message": "m"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "npm install lodash"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "pnpm install"
+   }
+  ],
+  [
+   "Bash",
+   {
+    "command": "npx vitest run"
+   }
+  ]
  ]
 }

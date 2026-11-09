@@ -1,8 +1,4 @@
 //! `toolUseDescriptor.ts`'s `describeToolUse`, kept to what the row label reads.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the activity line reads it in 8.8b3")
-)]
 
 use crate::{
     command_display,

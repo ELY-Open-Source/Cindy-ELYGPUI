@@ -249,7 +249,7 @@ listed in `tasks/done.md`.
       in the owner's `companion-cloud/shadowed.json` (the live homes come with 14.0); then each
       turn's last message time and last `tool_use` (`parseToolUse`); loaded once per owner when
       the database is ready, 5 tries `2000 * attempt` ms apart
-    - [ ] 8.8b The activity line: `formatIslandToolDetail` over `describeToolUse` and
+    - [x] 8.8b The activity line: `formatIslandToolDetail` over `describeToolUse` and
       `formatToolRowText` with `createLocalizedToolRowWording`, golden from Cindy's functions
         - [x] 8.8b1 `commandIntent.ts`: `commandIntentFromCommand` and `commandIntentFromActions`
           over `commandDisplay.ts`'s `normalizeDisplayCommand`
@@ -257,8 +257,9 @@ listed in `tasks/done.md`.
           `humanizeToolToken` and `parseMessageToolUse`'s gateway unwrap; the descriptor keeps
           the fields the row label reads (details, paths, diffs and created paths come with
           the chat view, 9.0)
-        - [ ] 8.8b3 `formatToolRowText`, `formatIslandToolDetail` and the localized wording
-          (`agentActionVerbKeys.ts`); the candidates' `activity` as the IPC makes it
+        - [x] 8.8b3 `formatToolRowText`, `formatIslandToolDetail` and the localized wording
+          (`agentActionVerbKeys.ts`); the candidates' `activity` as the IPC makes it. The row
+          text keeps the labels the island shows (details come with the chat view, 9.0)
     - [ ] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the load, the
       tasks (`getMany`, companion names) newest first with their checkbox, vendor icon,
       title and source label or companion name, activity and time; select all; Continue

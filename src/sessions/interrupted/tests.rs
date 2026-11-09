@@ -1,6 +1,6 @@
 use rusqlite::Connection;
 
-use super::{Candidate, Interrupted, ToolUse, candidates, shadowed, tool_use};
+use super::{Interrupted, Pending, ToolUse, candidates, shadowed, tool_use};
 use crate::rich_answer::js::Js;
 
 const BOOT: i64 = 10_000;
@@ -77,7 +77,7 @@ fn a_turn_from_before_boot_carries_its_last_message_and_tool() {
     let input = crate::rich_answer::js::parse(r#"{"b":1,"a":2}"#).unwrap();
     assert_eq!(
         got,
-        [Candidate {
+        [Pending {
             session_id: "t".into(),
             interrupted_at: 1_400,
             tool: Some(ToolUse {
@@ -187,6 +187,9 @@ fn the_owners_load_runs_once_when_the_database_is_ready(cx: &mut gpui::TestAppCo
     crate::sessions::view_tests::install(cx, dir.path());
     let db = db();
     task(&db, "t", "desktop", 1_000);
+    let call = r#"{"toolName":"Bash","input":{"command":"pnpm test"}}"#;
+    say(&db, "t", "tool_use", call, 1_100);
+    task(&db, "quiet", "desktop", 1_000);
     cx.update(|cx| {
         cx.global_mut::<crate::sessions::Sessions>().owner_dir = Some(dir.path().to_owned());
         crate::localdb::serve(db, cx);
@@ -195,9 +198,21 @@ fn the_owners_load_runs_once_when_the_database_is_ready(cx: &mut gpui::TestAppCo
     cx.run_until_parked();
     let found = cx.update(|cx| {
         let store = cx.global::<Interrupted>();
-        store.candidates.as_ref().map(|c| c.len())
+        let mut lines: Vec<_> = store
+            .candidates
+            .as_ref()
+            .unwrap()
+            .iter()
+            .map(|c| c.activity.clone())
+            .collect();
+        lines.sort();
+        lines
     });
-    assert_eq!(found, Some(1));
+    assert_eq!(
+        found,
+        [None, Some("Ran tests".to_owned())],
+        "the island's line, in English"
+    );
     cx.update(|cx| {
         cx.global_mut::<Interrupted>().candidates = None;
         super::load(cx);

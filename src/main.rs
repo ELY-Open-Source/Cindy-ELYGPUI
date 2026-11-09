@@ -32,6 +32,7 @@ mod theme;
 mod theme_import;
 mod tip;
 mod toast;
+mod tool_row;
 mod tool_use;
 mod units;
 mod wallpaper;
