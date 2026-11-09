@@ -130,6 +130,8 @@ defines scope and what 1:1 means.
   stays built under `display: none`, so gpui skips its prepaint and its rows leave the selection,
   as Cindy's hidden rows do. Its hitbox joins the search surface. `marks.rs` draws title and
   keyword marks as text highlights, which have no padding or radius.
+  `search/scroll.rs` is the sidebar's layout effect: the list's offset is kept while it shows,
+  each search starts at the top, and a clear puts the offset back once the pointer lifts.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

@@ -441,3 +441,7 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 ## 8.7c2b1 SearchResultsBody
 
 - Round 1: PASS. No findings.
+
+## 8.7c2b2 the list scroll under the search
+
+- Round 1: PASS. No findings.

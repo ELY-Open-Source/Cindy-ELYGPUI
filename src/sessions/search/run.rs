@@ -38,8 +38,8 @@ pub enum Status {
 
 /// The effect's dependencies.
 #[derive(Debug, Clone, PartialEq)]
-struct Key {
-    query: String,
+pub(super) struct Key {
+    pub(super) query: String,
     sort: &'static str,
     status: &'static str,
     agent: &'static str,
@@ -78,7 +78,7 @@ pub fn state(cx: &App) -> (Status, Option<&Response>) {
     (run.status, run.response.as_ref())
 }
 
-fn key(cx: &App) -> Key {
+pub(super) fn key(cx: &App) -> Key {
     let o = &cx.global::<Search>().options;
     Key {
         query: trimmed(cx).to_owned(),

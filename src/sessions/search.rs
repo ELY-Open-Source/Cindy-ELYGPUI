@@ -21,6 +21,7 @@ mod marks;
 mod options;
 pub mod results;
 pub mod run;
+pub mod scroll;
 
 pub use options::Options;
 
@@ -33,6 +34,7 @@ pub struct Search {
     run: run::Run,
     /// The results' hitbox this frame, part of the search surface.
     surface: Option<gpui::Hitbox>,
+    scroll: scroll::Scroll,
 }
 
 struct Field {
@@ -53,6 +55,7 @@ pub fn install(cx: &mut App) {
         chosen: false,
         run: run::Run::default(),
         surface: None,
+        scroll: scroll::Scroll::default(),
     });
 }
 

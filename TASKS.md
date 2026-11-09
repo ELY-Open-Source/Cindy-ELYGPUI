@@ -353,7 +353,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
               list, which stays built and hidden: the searching, failed and no-result lines,
               title marks, the kind chip, the meta line, three hits then More, keyword marks and
               tips; the empty line lands with the rail popover, teammate hits with companions
-            - [ ] 8.7c2b2 The list's scroll under the search: top on each search, the list's
+            - [x] 8.7c2b2 The list's scroll under the search: top on each search, the list's
               place back once the query clears, after the pointer lifts
             - [ ] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
               message jump (`searchJump`) lands with the chat view (chapter 9)
@@ -373,7 +373,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
   50 in memory, cleared on owner change, ⌘[ / ⌘]) with `SessionHistoryButtons`
 - [ ] 8.10 The project header's actions as `ProjectNode.tsx` draws them: the hover More and New
   in this folder buttons and its menu, by More or a right click (Rename, Search in this project
-  with the search's locked project chip, Show files, Open in the file manager, Copy deep link,
+  with the search's locked project chip and the list's scroll freeze on that open, Show files, Open in the file manager, Copy deep link,
   Import, Remove from sidebar), and the dialogue group's Search; actions whose feature lands in a
   later chapter come with it
 - [ ] 8.11 A right click on the list's blank space opens the filter menu at the pointer, as
