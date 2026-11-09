@@ -1,0 +1,832 @@
+{
+ "command": [
+  "sed -n --in-place '1,10p' f.ts",
+  "sed -n --in-place=.bak '1,10p' f.ts",
+  "sed -n -f p input.txt",
+  "cat /repo/src/app.ts",
+  "head -n 50 README.md",
+  "cat -n src/index.ts",
+  "sed -n '120,180p' src/main.ts",
+  "nl -ba src/main.ts",
+  "nl -ba src/main.ts | sed -n '20,40p'",
+  "nl -ba src/main.ts | sed -n '20,40p' other.ts",
+  "nl src/main.ts | sed -n '1w report.txt'",
+  "sed -i '' 's/a/b/' f.ts",
+  "ls -la apps/desktop",
+  "grep -nE \"logger\\.|refin\" apps/desktop -r",
+  "rg -A 3 useMemo src/renderer",
+  "grep -e pattern file.txt",
+  "find src -name \"*.test.ts\"",
+  "find apps/desktop -type f",
+  "find . -name \"*.tmp\" -exec rm {} \\;",
+  "find . -name \"*.log\" -delete",
+  "pnpm install",
+  "npm i lodash",
+  "pnpm add -D vitest",
+  "pnpm --filter desktop test -- src/x.test.ts",
+  "npm run build",
+  "pnpm test:migration-replay",
+  "npx vitest run",
+  "pnpm lint",
+  "tsc --noEmit",
+  "cargo clippy",
+  "go test ./...",
+  "pnpm restart:desktop:remote",
+  "pnpm run restart:desktop:remote",
+  "pnpm --version",
+  "pnpm exec prettier --check .",
+  "pnpm exec prettier --write .",
+  "pnpm publish",
+  "npm set registry https://example.com",
+  "node scripts/release.mjs",
+  "node --check src/index.js",
+  "node --version",
+  "node -e \"console.log(1)\"",
+  "node <<'NODE'\nconsole.log(1)\nNODE",
+  "python3 scripts/audit.py --days 7",
+  "python3 -c \"print(1)\"",
+  "perl -0ne 'print' input.txt",
+  "perl -I lib -c scripts/check.pl",
+  "swiftc -typecheck native/helper.swift",
+  "swiftc native/helper.swift -O -o /tmp/helper",
+  "xcrun swift -e 'print(1)'",
+  "jq '.name' package.json",
+  "jq --help",
+  "wc -l src/index.ts",
+  "wc --help",
+  "pwd -P",
+  "date '+%Y-%m-%d %H:%M'",
+  "date -s tomorrow",
+  "command -v pnpm",
+  "which -a node pnpm",
+  "ps aux",
+  "pgrep -fl Cindy",
+  "lsof -i :3333",
+  "stat -f \"%Sm %N\" package.json",
+  "file -C -m custom.magic",
+  "plutil -p /Applications/Cindy.app/Contents/Info.plist",
+  "defaults read com.example.Cindy",
+  "xcrun simctl list devices available",
+  "sqlite3 -readonly data.db 'select count(*) from messages'",
+  "sqlite3 -readonly -header -column data.db '.tables'",
+  "sqlite3 'file:data.db?mode=ro' 'select 1'",
+  "sqlite3 data.db 'select count(*) from messages'",
+  "sqlite3 -readonly data.db '.shell rm -rf build'",
+  "sqlite3 -readonly data.db 'delete from messages'",
+  "sqlite3 -readonly data.db \"select load_extension('/tmp/x')\"",
+  "sqlite3 -readonly -cmd '.shell touch pwned' data.db 'select 1'",
+  "curl -s https://api.github.com/repos/x",
+  "curl -X DELETE https://api.example/items/1",
+  "curl -XPOST https://api.example/items",
+  "curl -o app.ts https://example.com/app.ts",
+  "curl -d '{\"a\":1}' https://api.example/items",
+  "curl -sO https://example.com/app.ts",
+  "curl -LO https://example.com/app.ts",
+  "curl -fsSLO https://example.com/app.ts",
+  "curl -fsSL https://example.com/api",
+  "wget https://example.com/app.ts",
+  "wget --output-document=x.bin https://example.com/x",
+  "wget --post-data a=1 https://example.com/x",
+  "git status --short",
+  "git -C /repo --no-pager diff --stat",
+  "git log -5 --oneline",
+  "git show HEAD:README.md",
+  "git add src/app.ts",
+  "git commit -m \"fix: parser\"",
+  "git fetch origin --prune",
+  "git pull --ff-only",
+  "git push origin feature",
+  "git rebase origin/main",
+  "git merge --no-ff feature",
+  "git cherry-pick --abort",
+  "git stash list",
+  "git restore src/app.ts",
+  "git submodule update --init --recursive",
+  "git remote -v",
+  "git rev-parse --show-toplevel",
+  "git branch --show-current",
+  "git grep TODO -- src",
+  "git merge-base main HEAD",
+  "git ls-files src",
+  "git rev-list --count main..HEAD",
+  "git ls-remote origin HEAD",
+  "git worktree list --porcelain",
+  "git worktree add ../preview feature",
+  "git worktree remove ../preview",
+  "git worktree move ../old ../new",
+  "git worktree prune",
+  "git diff --output=changes.patch",
+  "git log --output history.txt",
+  "git commit --amend --no-edit",
+  "git push --force-with-lease origin feature",
+  "git push origin --delete old-branch",
+  "git rebase --exec 'rm -rf /tmp/generated' origin/main",
+  "git rebase --exec='rm -rf /tmp/generated' origin/main",
+  "git rebase -x 'rm -rf /tmp/generated' origin/main",
+  "git rebase -x'rm -rf /tmp/generated' origin/main",
+  "git submodule foreach 'git reset --hard'",
+  "git submodule --quiet foreach --recursive 'rm -rf build'",
+  "git reset --hard HEAD~1",
+  "git branch new-feature",
+  "git branch -D old-feature",
+  "git branch -Dold-feature",
+  "git remote set-url origin git@example.com:x/y.git",
+  "git ls-remote --upload-pack=touch origin",
+  "git grep -Ovim TODO",
+  "gh pr list --limit 20",
+  "gh pr view 123 --json title",
+  "gh --repo makecindy/cindy pr checks 123",
+  "gh pr status",
+  "gh pr diff 123",
+  "gh pr create --title fix",
+  "gh pr edit 123 --add-label bug",
+  "gh pr comment 123 --body fixed",
+  "gh pr review 123 --approve",
+  "gh pr merge 123 --squash",
+  "gh pr close 123",
+  "gh pr reopen 123",
+  "gh pr checkout 123",
+  "gh issue list",
+  "gh issue view 7",
+  "gh issue status",
+  "gh issue create --title bug",
+  "gh issue edit 7 --add-label bug",
+  "gh issue comment 7 --body fixed",
+  "gh issue close 7",
+  "gh issue reopen 7",
+  "gh auth status",
+  "gh auth login",
+  "gh auth logout",
+  "gh auth refresh",
+  "gh auth switch",
+  "gh run list --limit 10",
+  "gh run view 123 --log",
+  "gh run watch 123",
+  "gh repo list makecindy",
+  "gh pr ready 123",
+  "gh repo delete owner/repo",
+  "gh repo view owner/repo",
+  "gh search prs \"is:open review-requested:@me\"",
+  "gh run delete 123",
+  "gh api repos/makecindy/cindy/pulls/123",
+  "gh api --method GET repos/x/y/issues -f per_page=100",
+  "gh api repos/x/y/issues -f title=bug",
+  "gh api repos/x/y/issues/1 -X PATCH -f state=closed",
+  "gh api graphql -f query='query { viewer { login } }'",
+  "gh api graphql -f query='mutation { addComment(input: {}) { clientMutationId } }'",
+  "gh api graphql --input request.json",
+  "gh api graphql --input request.json -X POST",
+  "gh api -f title=bug",
+  "gh api repos/x/y -X OPTIONS",
+  "cat secret.txt >&leak.txt",
+  "cat a.txt 1>&out",
+  "cat a.txt >& leak.txt",
+  "pnpm test 2>&1",
+  "tree src -o report.txt",
+  "tree -aR src",
+  "tree src",
+  "cd repo > touched && cat README.md",
+  "rg TODO =(rm -rf build)",
+  "rg \"=(\" src",
+  "sed -n '1w out.txt' in.txt",
+  "sed -n 's/a/b/p' in.txt",
+  "fd '*.tmp' . -x rm {}",
+  "fd '*.tmp' . --exec-batch rm",
+  "rg --pre=rm TODO src",
+  "cat <> created.txt",
+  "cat secret.txt >& leak.txt",
+  "cat secret.txt 1>&out",
+  "pnpm test 2>&1 | tail -5",
+  "cat a.txt 2>&-",
+  "tree -L 2 src",
+  "ls -R src",
+  "cd /repo && pnpm test",
+  "cat < =(rm -rf build)",
+  "cat README.md>\"important.conf\"",
+  "grep foo src>\"report.txt\"",
+  "LOG=x>secret.txt cat README.md",
+  "rg \">\" src",
+  "NODE_ENV=test pnpm vitest run",
+  "curl -#O https://example.com/a.tgz",
+  "curl -# https://example.com/api",
+  "rg --regexp=TODO src",
+  "grep -eTODO file.txt",
+  "curl --trace trace.log https://example.com",
+  "curl --trace-ascii t.log https://example.com",
+  "curl --stderr err.log https://example.com",
+  "grep -f patterns.txt file.txt",
+  "rg -f patterns.txt src",
+  "fd '*.tmp' . -xrm {}",
+  "grep -fpatterns.txt file.txt",
+  "rg -fpatterns.txt src",
+  "grep -rf patterns.txt dir",
+  "rg -F literal src",
+  "grep -efoo file.txt",
+  "eslint --fix src",
+  "pnpm eslint --fix src",
+  "eslint --fix-dry-run src",
+  "eslint src",
+  "tsc --init",
+  "tsc -p .",
+  "npx tsc --noEmit",
+  "npx vitest run -u",
+  "pnpm jest --updateSnapshot",
+  "curl --etag-save etag.txt https://example.com",
+  "npm test -- --updateSnapshot",
+  "pnpm run lint -- --fix",
+  "pnpm lint -- --fix",
+  "pnpm run lint",
+  "cargo clippy --fix",
+  "cat README.md | less --LOG-FILE=copy.txt",
+  "cat README.md | less -Ocopy.txt",
+  "cat README.md | less",
+  "curl --libcurl client.c https://example.com",
+  "less '+!touch pwned' README.md",
+  "less README.md",
+  "go test -c -o pkg.test ./...",
+  "curl --hsts cache.txt https://example.com",
+  "curl --alt-svc as.txt https://example.com",
+  "curl -w '%output{report.txt}ok' https://example.com",
+  "rg --files src | head -20",
+  "cargo test --no-run",
+  "cat README.md >\"&2\"",
+  "cat README.md > \"&2\"",
+  "eslint --fix=true src",
+  "pnpm run lint -- --fix=true",
+  "tsc --noEmit false a.ts",
+  "npx tsc --noEmit false",
+  "curl -K opts https://example.com",
+  "curl --config opts https://example.com",
+  "make test clean",
+  "make test deploy",
+  "make test",
+  "make",
+  "cat <(rm -rf build)",
+  "diff <(sort a.txt) <(sort b.txt)",
+  "cat < <(rm -rf build)",
+  "grep foo < <(rm -rf build)",
+  "rg \"<(\" src",
+  "find . -name '*.log' -fprint report.txt",
+  "find . -name '*.log' -fls listing.txt",
+  "env -u NODE_DEBUG PATH=/opt/node/bin:$PATH node --version",
+  "grep -n foo src/a.ts | head -20",
+  "rg -n turnCostUsd src | cut -d: -f1 | sort -u",
+  "ps aux | rg Cindy",
+  "ps aux | rg --pre=touch Cindy",
+  "ps aux | rg Cindy process.txt",
+  "cat a.txt | cut -d: -f1 b.txt",
+  "find ~/Code -maxdepth 5 \\( -iname '*cindy*' -o -iname '*maker*' \\) -print",
+  "sed -n '1,80p' src/register.ts && sed -n '80,160p' src/register.ts",
+  "sed -n '1,80p' src/a.ts && sed -n '1,80p' src/b.ts",
+  "rg -n send src && sed -n '1,80p' src/register.ts",
+  "rg -n send src && rg -n receive src",
+  "git status --short && git diff --stat",
+  "pnpm typecheck && pnpm test",
+  "node --version && pnpm --version && which pnpm",
+  "pwd && git status --short",
+  "pgrep -fl Cindy || true",
+  "test -d node_modules && echo present || echo missing",
+  "nl -ba README.md | sed -n '1,20p'; printf '\\n--- package ---\\n'; nl -ba package.json | sed -n '1,20p'",
+  "cd /repo && sed -n '1,80p' src/a.ts && sed -n '1,80p' src/b.ts",
+  "rg TODO src && rm -rf build",
+  "git add . && git commit -m done",
+  "git cherry-pick --abort && git status --short --branch && git merge --no-ff feature",
+  "git status --short; rm -rf build",
+  "rg TODO src; printf -v result '%s' ok",
+  "cat a.txt > out.txt && cat b.txt",
+  "git add xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "cat README.md > important.conf",
+  "grep foo src > report",
+  "cat a.txt >> log.txt",
+  "cat README.md>important.conf",
+  "grep foo src>report",
+  "rg \"=>\" src",
+  "cat foo.txt & rm -rf bar",
+  "cat README.md | head -5 > important.conf",
+  "grep foo src | tee report.txt",
+  "cat README.md | sort -o important.conf",
+  "cat README.md | uniq dup.txt out.txt",
+  "grep foo src | sort | head -5",
+  "grep -n foo src/a.ts | head -20 2>/dev/null",
+  "cat a.txt 2>/dev/null",
+  "pnpm build && pnpm test",
+  "pnpm test || echo failed",
+  "pnpm test 2>&1; pnpm lint 2>/dev/null",
+  "pnpm test &>/dev/null; pnpm lint",
+  "pnpm test &>test.log; pnpm lint",
+  "pnpm test || rm -rf build",
+  "echo $(date)",
+  "cat <<EOF\nhi\nEOF",
+  "grep \"a && b\" src",
+  "grep \"unterminated",
+  "docker ps",
+  "rm -rf node_modules",
+  "",
+  "/bin/zsh -lc 'git status --short'",
+  "/usr/bin/bash -c \"gh pr checks 123\"",
+  "/usr/bin/env zsh -lc 'pnpm test'",
+  "/bin/zsh -lc pwd",
+  "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"pnpm test\"",
+  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -c Get-Location",
+  "cmd.exe /c \"git status --short\"",
+  "cmd /C pnpm test",
+  "git add src/file-0.ts src/file-1.ts src/file-2.ts src/file-3.ts src/file-4.ts src/file-5.ts src/file-6.ts src/file-7.ts src/file-8.ts src/file-9.ts src/file-10.ts src/file-11.ts src/file-12.ts src/file-13.ts src/file-14.ts src/file-15.ts src/file-16.ts src/file-17.ts src/file-18.ts src/file-19.ts src/file-20.ts src/file-21.ts src/file-22.ts src/file-23.ts src/file-24.ts src/file-25.ts src/file-26.ts src/file-27.ts src/file-28.ts src/file-29.ts src/file-30.ts src/file-31.ts src/file-32.ts src/file-33.ts src/file-34.ts src/file-35.ts src/file-36.ts src/file-37.ts src/file-38.ts src/file-39.ts src/file-40.ts src/file-41.ts src/file-42.ts src/file-43.ts src/file-44.ts src/file-45.ts src/file-46.ts src/file-47.ts src/file-48.ts src/file-49.ts src/file-50.ts src/file-51.ts src/file-52.ts src/file-53.ts src/file-54.ts src/file-55.ts src/file-56.ts src/file-57.ts src/file-58.ts src/file-59.ts src/file-60.ts src/file-61.ts src/file-62.ts src/file-63.ts src/file-64.ts src/file-65.ts src/file-66.ts src/file-67.ts src/file-68.ts src/file-69.ts src/file-70.ts src/file-71.ts src/file-72.ts src/file-73.ts src/file-74.ts src/file-75.ts src/file-76.ts src/file-77.ts src/file-78.ts src/file-79.ts src/file-80.ts src/file-81.ts src/file-82.ts src/file-83.ts src/file-84.ts src/file-85.ts src/file-86.ts src/file-87.ts src/file-88.ts src/file-89.ts src/file-90.ts src/file-91.ts src/file-92.ts src/file-93.ts src/file-94.ts src/file-95.ts src/file-96.ts src/file-97.ts src/file-98.ts src/file-99.ts src/file-100.ts src/file-101.ts src/file-102.ts src/file-103.ts src/file-104.ts src/file-105.ts src/file-106.ts src/file-107.ts src/file-108.ts src/file-109.ts src/file-110.ts src/file-111.ts src/file-112.ts src/file-113.ts src/file-114.ts src/file-115.ts src/file-116.ts src/file-117.ts src/file-118.ts src/file-119.ts src/file-120.ts src/file-121.ts src/file-122.ts src/file-123.ts src/file-124.ts src/file-125.ts src/file-126.ts src/file-127.ts src/file-128.ts src/file-129.ts src/file-130.ts src/file-131.ts src/file-132.ts src/file-133.ts src/file-134.ts src/file-135.ts src/file-136.ts src/file-137.ts src/file-138.ts src/file-139.ts src/file-140.ts src/file-141.ts src/file-142.ts src/file-143.ts src/file-144.ts src/file-145.ts src/file-146.ts src/file-147.ts src/file-148.ts src/file-149.ts src/file-150.ts src/file-151.ts src/file-152.ts src/file-153.ts src/file-154.ts src/file-155.ts src/file-156.ts src/file-157.ts src/file-158.ts src/file-159.ts src/file-160.ts src/file-161.ts src/file-162.ts src/file-163.ts src/file-164.ts src/file-165.ts src/file-166.ts src/file-167.ts src/file-168.ts src/file-169.ts src/file-170.ts src/file-171.ts src/file-172.ts src/file-173.ts src/file-174.ts src/file-175.ts src/file-176.ts src/file-177.ts src/file-178.ts src/file-179.ts src/file-180.ts src/file-181.ts src/file-182.ts src/file-183.ts src/file-184.ts src/file-185.ts src/file-186.ts src/file-187.ts src/file-188.ts src/file-189.ts src/file-190.ts src/file-191.ts src/file-192.ts src/file-193.ts src/file-194.ts src/file-195.ts src/file-196.ts src/file-197.ts src/file-198.ts src/file-199.ts src/file-200.ts src/file-201.ts src/file-202.ts src/file-203.ts src/file-204.ts src/file-205.ts src/file-206.ts src/file-207.ts src/file-208.ts src/file-209.ts src/file-210.ts src/file-211.ts src/file-212.ts src/file-213.ts src/file-214.ts src/file-215.ts src/file-216.ts src/file-217.ts src/file-218.ts src/file-219.ts",
+  "gh api graphql -f query='query { repository(owner: \"x\", name: \"y\") { issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues  } }'",
+  "﻿cat a.txt",
+  "cata.txt",
+  "cat a.txt ",
+  "git status",
+  "GIT STATUS",
+  "/usr/bin/GREP foo src",
+  "C:\\\\tools\\\\rg.exe foo",
+  "rg -i Ünïcode src",
+  "grep -rf x src",
+  "sed -n 1,5p a.txt",
+  "sed -n -e 5p a.txt b.txt",
+  "cat a | sed -n 5p",
+  "cat a | sed -n 5p b",
+  "tree -L 2",
+  "tree -o x",
+  "fd -Hx rm",
+  "find . -name x -delete",
+  "less +F a",
+  "npx vitest run",
+  "pnpm exec eslint --fix .",
+  "yarn lint:fix",
+  "bun run build",
+  "cargo test --no-run",
+  "cargo clippy --fix",
+  "tsc --noEmit FALSE",
+  "prettier -c .",
+  "node -e 1",
+  "python3 -c 1",
+  "git -C repo status",
+  "git --no-pager log --oneline",
+  "git push --force-with-lease",
+  "gh pr view 12 -R a/b",
+  "gh api repos/a/b -X post",
+  "gh api graphql -f query='mutation { x }'",
+  "gh repo view a/b",
+  "env -i FOO=1 cat a",
+  "sudo cat /etc/hosts",
+  "FOO=x>out cat a",
+  "cat <(rm x)",
+  "cat <> f",
+  "cat < a.txt",
+  "echo hi >&2",
+  "cat a >&b",
+  "cat a 2>&-"
+ ],
+ "actions": [
+  [
+   {
+    "type": "read",
+    "command": "cat src/app.ts",
+    "name": "app.ts",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "cat x",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   {
+    "type": "listFiles",
+    "command": "ls src",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "listFiles",
+    "command": "ls"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "rg foo src",
+    "query": "foo",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "rg",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "unknown",
+    "command": "ps aux"
+   },
+   {
+    "type": "search",
+    "command": "grep node",
+    "query": "node"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "/bin/rm -rf build",
+    "name": "rm",
+    "path": "/bin/rm"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "name": "app.ts",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "sed -i '' 's/a/b/' f.ts",
+    "name": "f.ts",
+    "path": "/repo/f.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "sed 's/a/b/' f.ts",
+    "name": "f.ts",
+    "path": "/repo/f.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "sed -n '1,10p' f.ts",
+    "name": "f.ts",
+    "path": "/repo/f.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "sed -n --in-place '1,10p' f.ts",
+    "name": "f.ts",
+    "path": "/repo/f.ts"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "cd repo && find . -name '*.log' -delete",
+    "query": "*.log",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "cd repo && sed -i \"s/a/b/\" f.ts",
+    "name": "f.ts",
+    "path": "/r/f.ts"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "cd repo && cat README.md",
+    "name": "README.md",
+    "path": "/r/README.md"
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "sed -n -f p input.txt",
+    "name": "input.txt",
+    "path": "/r/input.txt"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "find . -name \"*.log\" -delete",
+    "query": "*.log",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "find . -name \"*.tmp\" -exec rm {} ;",
+    "query": "*.tmp"
+   }
+  ],
+  [
+   {
+    "type": "listFiles",
+    "command": "find . -delete",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "find src -name \"*.ts\"",
+    "query": "*.ts",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "unknown",
+    "command": "foo"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "rg"
+   }
+  ],
+  [
+   null,
+   "x",
+   42,
+   [
+    "y"
+   ],
+   {
+    "type": "read"
+   }
+  ],
+  "not-an-array",
+  [
+   {
+    "type": "read",
+    "command": "sed -n '1w out.txt' in.txt",
+    "name": "in.txt",
+    "path": "/r/in.txt"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "fd '*.tmp' . -x rm {}",
+    "query": "*.tmp",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "rg --pre=rm TODO src",
+    "query": "TODO",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "listFiles",
+    "command": "tree -o report.txt",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "listFiles",
+    "command": "tree src",
+    "path": "src"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "fd '*.tmp' . -xrm {}",
+    "query": "*.tmp",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "less '+!touch pwned' README.md",
+    "name": "README.md",
+    "path": "/r/README.md"
+   }
+  ],
+  [
+   {
+    "type": "search",
+    "command": "find . -name '*.log' -fprint report.txt",
+    "query": "*.log",
+    "path": "."
+   }
+  ],
+  [
+   {
+    "type": "read",
+    "command": "cat <(rm -rf build)",
+    "name": "build",
+    "path": "/x/build"
+   }
+  ],
+  null
+ ],
+ "intents": [
+  [
+   "not-an-array"
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat src/a.ts",
+     "name": "a.ts",
+     "path": "/repo/src/a.ts"
+    },
+    {
+     "type": "search",
+     "command": "rg TODO src",
+     "query": "TODO",
+     "path": "src"
+    },
+    {
+     "type": "listFiles",
+     "command": "ls tests",
+     "path": "tests"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat src/a.ts",
+     "name": "a.ts",
+     "path": "/repo/src/a.ts"
+    },
+    {
+     "type": "search",
+     "command": "rg TODO src",
+     "query": "TODO",
+     "path": "src"
+    },
+    {
+     "type": "listFiles",
+     "command": "ls tests",
+     "path": "tests"
+    }
+   ],
+   "cat src/a.ts && rg TODO src; ls tests"
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat src/a.ts",
+     "name": "a.ts",
+     "path": "/repo/src/a.ts"
+    }
+   ],
+   "cat src/a.ts && rm -rf build"
+  ]
+ ],
+ "display": [
+  "git status --short",
+  "git -C /repo --no-pager diff --stat",
+  "git log -5 --oneline",
+  "git show HEAD:README.md",
+  "git add src/app.ts",
+  "git commit -m \"fix: parser\"",
+  "git fetch origin --prune",
+  "git pull --ff-only",
+  "git push origin feature",
+  "git rebase origin/main",
+  "git merge --no-ff feature",
+  "git cherry-pick --abort",
+  "git stash list",
+  "git restore src/app.ts",
+  "git submodule update --init --recursive",
+  "git remote -v",
+  "git rev-parse --show-toplevel",
+  "git branch --show-current",
+  "git grep TODO -- src",
+  "git merge-base main HEAD",
+  "git ls-files src",
+  "git rev-list --count main..HEAD",
+  "git ls-remote origin HEAD",
+  "git worktree list --porcelain",
+  "git worktree add ../preview feature",
+  "git worktree remove ../preview",
+  "git worktree move ../old ../new",
+  "git worktree prune",
+  "gh pr list --limit 20",
+  "gh pr view 123 --json title",
+  "gh --repo makecindy/cindy pr checks 123",
+  "gh pr status",
+  "gh pr diff 123",
+  "gh pr create --title fix",
+  "gh pr edit 123 --add-label bug",
+  "gh pr comment 123 --body fixed",
+  "gh pr review 123 --approve",
+  "gh pr merge 123 --squash",
+  "gh pr close 123",
+  "gh pr reopen 123",
+  "gh pr checkout 123",
+  "gh issue list",
+  "gh issue view 7",
+  "gh issue status",
+  "gh issue create --title bug",
+  "gh issue edit 7 --add-label bug",
+  "gh issue comment 7 --body fixed",
+  "gh issue close 7",
+  "gh issue reopen 7",
+  "gh auth status",
+  "gh auth login",
+  "gh auth logout",
+  "gh auth refresh",
+  "gh auth switch",
+  "gh run list --limit 10",
+  "gh run view 123 --log",
+  "gh run watch 123",
+  "gh repo list makecindy",
+  "/bin/zsh -lc 'git status --short'",
+  "/usr/bin/bash -c \"gh pr checks 123\"",
+  "/usr/bin/env zsh -lc 'pnpm test'",
+  "/bin/zsh -lc pwd",
+  "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"pnpm test\"",
+  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -c Get-Location",
+  "cmd.exe /c \"git status --short\"",
+  "cmd /C pnpm test",
+  "git status",
+  "/bin/zsh -lc 'git status' extra",
+  "/bin/zsh -lc 'git status",
+  "/tmp/zsh -lc 'git status'",
+  "/bin/zsh -lc git\\ status",
+  "/bin/zsh -lc echo;rm",
+  "pwsh -Command \"pnpm test\"",
+  "cmd.exe /k git status",
+  "﻿cat a.txt",
+  "cata.txt",
+  "cat a.txt ",
+  "git status",
+  "GIT STATUS",
+  "/usr/bin/GREP foo src",
+  "C:\\\\tools\\\\rg.exe foo",
+  "rg -i Ünïcode src",
+  "grep -rf x src",
+  "sed -n 1,5p a.txt",
+  "sed -n -e 5p a.txt b.txt",
+  "cat a | sed -n 5p",
+  "cat a | sed -n 5p b",
+  "tree -L 2",
+  "tree -o x",
+  "fd -Hx rm",
+  "find . -name x -delete",
+  "less +F a",
+  "npx vitest run",
+  "pnpm exec eslint --fix .",
+  "yarn lint:fix",
+  "bun run build",
+  "cargo test --no-run",
+  "cargo clippy --fix",
+  "tsc --noEmit FALSE",
+  "prettier -c .",
+  "node -e 1",
+  "python3 -c 1",
+  "git -C repo status",
+  "git --no-pager log --oneline",
+  "git push --force-with-lease",
+  "gh pr view 12 -R a/b",
+  "gh api repos/a/b -X post",
+  "gh api graphql -f query='mutation { x }'",
+  "gh repo view a/b",
+  "env -i FOO=1 cat a",
+  "sudo cat /etc/hosts",
+  "FOO=x>out cat a",
+  "cat <(rm x)",
+  "cat <> f",
+  "cat < a.txt",
+  "echo hi >&2",
+  "cat a >&b",
+  "cat a 2>&-",
+  "/bin/zsh -lc 'can'\\''t'",
+  "/bin/bash -c \"a \\\"b\\\" \\$x\"",
+  "\"C:\\\\pwsh.exe\" -c 'x''y'",
+  "\\\\\\\\srv\\\\pwsh.exe -NoProfile -Command git status",
+  "cmd /c \"a\" b",
+  "/usr/bin/env bash -lc 'ls'",
+  "   ",
+  "/bin/zsh -lc ''",
+  "bash -c \\😀'echo hi'",
+  "bash -c \\é'echo hi'",
+  "bash -c '\\😀echo hi'",
+  "bash -c \\😀",
+  "bash -c 'a'\\😀"
+ ]
+}

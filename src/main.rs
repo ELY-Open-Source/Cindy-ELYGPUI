@@ -5,6 +5,8 @@ mod atomic_file;
 mod bounded_read;
 mod chrome;
 mod cindy_json;
+mod command_display;
+mod command_intent;
 mod cross_process_lock;
 mod dev_profile;
 mod dock_icon;

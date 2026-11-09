@@ -93,6 +93,11 @@ defines scope and what 1:1 means.
   `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each
   with its turn's last message time and `tool_use`. `load` runs once per owner when the database
   is ready. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
+- Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
+  `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
+  `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.
+  Golden `tests/fixtures/command-intent` holds the literal inputs of Cindy's own tests, run
+  through Cindy's functions by `sync-golden.mjs`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

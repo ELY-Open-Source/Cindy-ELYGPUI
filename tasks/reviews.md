@@ -278,3 +278,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 1: FAIL. The `atomic_file::read` doc comment ran two lines.
 - Fixed: one line; no other comment in the task runs past one.
 - Round 2: PASS.
+
+## 8.8b1 The command classifier
+- Round 1: FAIL. `normalizeDisplayCommand`'s bare backslash took a whole scalar; Cindy's takes one
+  UTF-16 unit, so `bash -c \😀'echo hi'` kept its wrapper there and unwrapped here.
+- Fixed: an escaped astral character marks the word as having an unquoted literal; five
+  surrogate cases join the display golden.
+- Round 2: PASS.

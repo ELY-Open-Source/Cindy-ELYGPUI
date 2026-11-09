@@ -251,7 +251,7 @@ listed in `tasks/done.md`.
       the database is ready, 5 tries `2000 * attempt` ms apart
     - [ ] 8.8b The activity line: `formatIslandToolDetail` over `describeToolUse` and
       `formatToolRowText` with `createLocalizedToolRowWording`, golden from Cindy's functions
-        - [ ] 8.8b1 `commandIntent.ts`: `commandIntentFromCommand` and `commandIntentFromActions`
+        - [x] 8.8b1 `commandIntent.ts`: `commandIntentFromCommand` and `commandIntentFromActions`
           over `commandDisplay.ts`'s `normalizeDisplayCommand`
         - [ ] 8.8b2 `describeToolUse` with `parseToolName`, `truncateToolText` and the file
           paths it reads (`basenameRemotePath`, `parseMessageToolUse`)

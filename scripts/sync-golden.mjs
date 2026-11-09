@@ -53,6 +53,8 @@ try {
     "export * as conversationSearch from './main/localDb/conversationSearch.pure';",
     "export * as chatHistoryPure from './main/localDb/chatHistorySearch.pure';",
     "export { projectMcpAppContent } from '@cindy/maker-shared/mcp-apps';",
+    "export * as commandIntent from '../../../packages/maker-shared/src/commandIntent';",
+    "export { normalizeDisplayCommand } from '@cindy/maker-shared/command-display';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -64,7 +66,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -331,6 +333,17 @@ try {
     mcpApp: search.mcpApp.map(([content, marked]) => projectMcpAppContent(content, marked) ?? null),
     merge: search.merge.map((c) => Object.fromEntries(['relevance', 'activityDesc', 'activityAsc'].map((sortBy) =>
       [sortBy, cs.mergeConversationSearchResults({ ...structuredClone(c), sortBy }).map(item)]))),
+  });
+
+  // commandIntent and normalizeDisplayCommand on the inputs of Cindy's own tests.
+  const commandDir = path.join(fixtures, 'command-intent');
+  const commandCases = JSON.parse(fs.readFileSync(path.join(commandDir, 'cases.json'), 'utf8'));
+  const ci = commandIntent;
+  write(path.join(commandDir, 'expected.json'), {
+    command: commandCases.command.map((c) => [c, ci.commandIntentFromCommand(c) ?? null]),
+    actions: commandCases.actions.map((a) => [a, ci.commandIntentFromActions(a) ?? null]),
+    intents: commandCases.intents.map((args) => [args, ci.commandIntentsFromActions(...args)]),
+    display: commandCases.display.map((c) => [c, normalizeDisplayCommand(c)]),
   });
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();

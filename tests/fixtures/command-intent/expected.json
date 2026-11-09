@@ -1,0 +1,3060 @@
+{
+ "command": [
+  [
+   "sed -n --in-place '1,10p' f.ts",
+   null
+  ],
+  [
+   "sed -n --in-place=.bak '1,10p' f.ts",
+   null
+  ],
+  [
+   "sed -n -f p input.txt",
+   null
+  ],
+  [
+   "cat /repo/src/app.ts",
+   {
+    "action": "read",
+    "target": "app.ts",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   "head -n 50 README.md",
+   {
+    "action": "read",
+    "target": "README.md",
+    "path": "README.md"
+   }
+  ],
+  [
+   "cat -n src/index.ts",
+   {
+    "action": "read",
+    "target": "index.ts",
+    "path": "src/index.ts"
+   }
+  ],
+  [
+   "sed -n '120,180p' src/main.ts",
+   {
+    "action": "read",
+    "target": "main.ts",
+    "path": "src/main.ts"
+   }
+  ],
+  [
+   "nl -ba src/main.ts",
+   {
+    "action": "read",
+    "target": "main.ts",
+    "path": "src/main.ts"
+   }
+  ],
+  [
+   "nl -ba src/main.ts | sed -n '20,40p'",
+   {
+    "action": "read",
+    "target": "main.ts",
+    "path": "src/main.ts"
+   }
+  ],
+  [
+   "nl -ba src/main.ts | sed -n '20,40p' other.ts",
+   null
+  ],
+  [
+   "nl src/main.ts | sed -n '1w report.txt'",
+   null
+  ],
+  [
+   "sed -i '' 's/a/b/' f.ts",
+   null
+  ],
+  [
+   "ls -la apps/desktop",
+   {
+    "action": "list",
+    "target": "apps/desktop"
+   }
+  ],
+  [
+   "grep -nE \"logger\\.|refin\" apps/desktop -r",
+   {
+    "action": "search",
+    "target": "logger\\.|refin",
+    "path": "apps/desktop"
+   }
+  ],
+  [
+   "rg -A 3 useMemo src/renderer",
+   {
+    "action": "search",
+    "target": "useMemo",
+    "path": "src/renderer"
+   }
+  ],
+  [
+   "grep -e pattern file.txt",
+   {
+    "action": "search",
+    "target": "pattern",
+    "path": "file.txt"
+   }
+  ],
+  [
+   "find src -name \"*.test.ts\"",
+   {
+    "action": "search",
+    "target": "*.test.ts",
+    "path": "src"
+   }
+  ],
+  [
+   "find apps/desktop -type f",
+   {
+    "action": "list",
+    "target": "apps/desktop"
+   }
+  ],
+  [
+   "find . -name \"*.tmp\" -exec rm {} \\;",
+   null
+  ],
+  [
+   "find . -name \"*.log\" -delete",
+   null
+  ],
+  [
+   "pnpm install",
+   {
+    "action": "install"
+   }
+  ],
+  [
+   "npm i lodash",
+   {
+    "action": "install",
+    "target": "lodash"
+   }
+  ],
+  [
+   "pnpm add -D vitest",
+   {
+    "action": "install",
+    "target": "vitest"
+   }
+  ],
+  [
+   "pnpm --filter desktop test -- src/x.test.ts",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "npm run build",
+   {
+    "action": "build"
+   }
+  ],
+  [
+   "pnpm test:migration-replay",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "npx vitest run",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "pnpm lint",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "tsc --noEmit",
+   {
+    "action": "typecheck"
+   }
+  ],
+  [
+   "cargo clippy",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "go test ./...",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "pnpm restart:desktop:remote",
+   {
+    "action": "runScript",
+    "target": "restart:desktop:remote"
+   }
+  ],
+  [
+   "pnpm run restart:desktop:remote",
+   {
+    "action": "runScript",
+    "target": "restart:desktop:remote"
+   }
+  ],
+  [
+   "pnpm --version",
+   {
+    "action": "showVersion",
+    "target": "pnpm"
+   }
+  ],
+  [
+   "pnpm exec prettier --check .",
+   {
+    "action": "checkFormatting"
+   }
+  ],
+  [
+   "pnpm exec prettier --write .",
+   null
+  ],
+  [
+   "pnpm publish",
+   null
+  ],
+  [
+   "npm set registry https://example.com",
+   null
+  ],
+  [
+   "node scripts/release.mjs",
+   {
+    "action": "runScript",
+    "target": "release.mjs"
+   }
+  ],
+  [
+   "node --check src/index.js",
+   {
+    "action": "checkSyntax",
+    "target": "index.js"
+   }
+  ],
+  [
+   "node --version",
+   {
+    "action": "showVersion",
+    "target": "Node.js"
+   }
+  ],
+  [
+   "node -e \"console.log(1)\"",
+   {
+    "action": "runNodeScript"
+   }
+  ],
+  [
+   "node <<'NODE'\nconsole.log(1)\nNODE",
+   null
+  ],
+  [
+   "python3 scripts/audit.py --days 7",
+   {
+    "action": "runScript",
+    "target": "audit.py"
+   }
+  ],
+  [
+   "python3 -c \"print(1)\"",
+   {
+    "action": "runPythonScript"
+   }
+  ],
+  [
+   "perl -0ne 'print' input.txt",
+   {
+    "action": "runPerlScript"
+   }
+  ],
+  [
+   "perl -I lib -c scripts/check.pl",
+   {
+    "action": "checkSyntax",
+    "target": "check.pl"
+   }
+  ],
+  [
+   "swiftc -typecheck native/helper.swift",
+   {
+    "action": "typecheck",
+    "target": "helper.swift"
+   }
+  ],
+  [
+   "swiftc native/helper.swift -O -o /tmp/helper",
+   {
+    "action": "build",
+    "target": "helper.swift"
+   }
+  ],
+  [
+   "xcrun swift -e 'print(1)'",
+   {
+    "action": "runSwiftScript"
+   }
+  ],
+  [
+   "jq '.name' package.json",
+   {
+    "action": "parseJson",
+    "target": "package.json"
+   }
+  ],
+  [
+   "jq --help",
+   null
+  ],
+  [
+   "wc -l src/index.ts",
+   {
+    "action": "count",
+    "target": "index.ts"
+   }
+  ],
+  [
+   "wc --help",
+   null
+  ],
+  [
+   "pwd -P",
+   {
+    "action": "showCurrentDirectory"
+   }
+  ],
+  [
+   "date '+%Y-%m-%d %H:%M'",
+   {
+    "action": "showDateTime"
+   }
+  ],
+  [
+   "date -s tomorrow",
+   null
+  ],
+  [
+   "command -v pnpm",
+   {
+    "action": "locateCommand",
+    "target": "pnpm"
+   }
+  ],
+  [
+   "which -a node pnpm",
+   {
+    "action": "locateCommand",
+    "target": "node pnpm"
+   }
+  ],
+  [
+   "ps aux",
+   {
+    "action": "inspectProcesses"
+   }
+  ],
+  [
+   "pgrep -fl Cindy",
+   {
+    "action": "inspectProcesses"
+   }
+  ],
+  [
+   "lsof -i :3333",
+   {
+    "action": "inspectPorts",
+    "target": ":3333"
+   }
+  ],
+  [
+   "stat -f \"%Sm %N\" package.json",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "file -C -m custom.magic",
+   null
+  ],
+  [
+   "plutil -p /Applications/Cindy.app/Contents/Info.plist",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "defaults read com.example.Cindy",
+   {
+    "action": "inspectEnvironment"
+   }
+  ],
+  [
+   "xcrun simctl list devices available",
+   {
+    "action": "inspectEnvironment"
+   }
+  ],
+  [
+   "sqlite3 -readonly data.db 'select count(*) from messages'",
+   {
+    "action": "queryDatabase",
+    "target": "data.db"
+   }
+  ],
+  [
+   "sqlite3 -readonly -header -column data.db '.tables'",
+   {
+    "action": "queryDatabase",
+    "target": "data.db"
+   }
+  ],
+  [
+   "sqlite3 'file:data.db?mode=ro' 'select 1'",
+   {
+    "action": "queryDatabase",
+    "target": "file:data.db?mode=ro"
+   }
+  ],
+  [
+   "sqlite3 data.db 'select count(*) from messages'",
+   null
+  ],
+  [
+   "sqlite3 -readonly data.db '.shell rm -rf build'",
+   null
+  ],
+  [
+   "sqlite3 -readonly data.db 'delete from messages'",
+   null
+  ],
+  [
+   "sqlite3 -readonly data.db \"select load_extension('/tmp/x')\"",
+   null
+  ],
+  [
+   "sqlite3 -readonly -cmd '.shell touch pwned' data.db 'select 1'",
+   null
+  ],
+  [
+   "curl -s https://api.github.com/repos/x",
+   {
+    "action": "fetch",
+    "target": "https://api.github.com/repos/x"
+   }
+  ],
+  [
+   "curl -X DELETE https://api.example/items/1",
+   null
+  ],
+  [
+   "curl -XPOST https://api.example/items",
+   null
+  ],
+  [
+   "curl -o app.ts https://example.com/app.ts",
+   null
+  ],
+  [
+   "curl -d '{\"a\":1}' https://api.example/items",
+   null
+  ],
+  [
+   "curl -sO https://example.com/app.ts",
+   null
+  ],
+  [
+   "curl -LO https://example.com/app.ts",
+   null
+  ],
+  [
+   "curl -fsSLO https://example.com/app.ts",
+   null
+  ],
+  [
+   "curl -fsSL https://example.com/api",
+   {
+    "action": "fetch",
+    "target": "https://example.com/api"
+   }
+  ],
+  [
+   "wget https://example.com/app.ts",
+   null
+  ],
+  [
+   "wget --output-document=x.bin https://example.com/x",
+   null
+  ],
+  [
+   "wget --post-data a=1 https://example.com/x",
+   null
+  ],
+  [
+   "git status --short",
+   {
+    "action": "gitStatus"
+   }
+  ],
+  [
+   "git -C /repo --no-pager diff --stat",
+   {
+    "action": "gitDiff"
+   }
+  ],
+  [
+   "git log -5 --oneline",
+   {
+    "action": "gitLog"
+   }
+  ],
+  [
+   "git show HEAD:README.md",
+   {
+    "action": "gitShow"
+   }
+  ],
+  [
+   "git add src/app.ts",
+   {
+    "action": "gitAdd"
+   }
+  ],
+  [
+   "git commit -m \"fix: parser\"",
+   {
+    "action": "gitCommit"
+   }
+  ],
+  [
+   "git fetch origin --prune",
+   {
+    "action": "gitFetch"
+   }
+  ],
+  [
+   "git pull --ff-only",
+   {
+    "action": "gitPull"
+   }
+  ],
+  [
+   "git push origin feature",
+   {
+    "action": "gitPush"
+   }
+  ],
+  [
+   "git rebase origin/main",
+   {
+    "action": "gitRebase"
+   }
+  ],
+  [
+   "git merge --no-ff feature",
+   {
+    "action": "gitMerge"
+   }
+  ],
+  [
+   "git cherry-pick --abort",
+   {
+    "action": "gitCherryPick"
+   }
+  ],
+  [
+   "git stash list",
+   {
+    "action": "gitStash"
+   }
+  ],
+  [
+   "git restore src/app.ts",
+   {
+    "action": "gitRestore"
+   }
+  ],
+  [
+   "git submodule update --init --recursive",
+   {
+    "action": "gitSubmodule"
+   }
+  ],
+  [
+   "git remote -v",
+   {
+    "action": "gitRemote"
+   }
+  ],
+  [
+   "git rev-parse --show-toplevel",
+   {
+    "action": "gitRevParse"
+   }
+  ],
+  [
+   "git branch --show-current",
+   {
+    "action": "gitBranch"
+   }
+  ],
+  [
+   "git grep TODO -- src",
+   {
+    "action": "gitGrep"
+   }
+  ],
+  [
+   "git merge-base main HEAD",
+   {
+    "action": "gitMergeBase"
+   }
+  ],
+  [
+   "git ls-files src",
+   {
+    "action": "gitLsFiles"
+   }
+  ],
+  [
+   "git rev-list --count main..HEAD",
+   {
+    "action": "gitRevList"
+   }
+  ],
+  [
+   "git ls-remote origin HEAD",
+   {
+    "action": "gitLsRemote"
+   }
+  ],
+  [
+   "git worktree list --porcelain",
+   {
+    "action": "gitWorktreeList"
+   }
+  ],
+  [
+   "git worktree add ../preview feature",
+   {
+    "action": "gitWorktreeAdd"
+   }
+  ],
+  [
+   "git worktree remove ../preview",
+   {
+    "action": "gitWorktreeRemove"
+   }
+  ],
+  [
+   "git worktree move ../old ../new",
+   {
+    "action": "gitWorktreeMove"
+   }
+  ],
+  [
+   "git worktree prune",
+   {
+    "action": "gitWorktreePrune"
+   }
+  ],
+  [
+   "git diff --output=changes.patch",
+   null
+  ],
+  [
+   "git log --output history.txt",
+   null
+  ],
+  [
+   "git commit --amend --no-edit",
+   null
+  ],
+  [
+   "git push --force-with-lease origin feature",
+   null
+  ],
+  [
+   "git push origin --delete old-branch",
+   null
+  ],
+  [
+   "git rebase --exec 'rm -rf /tmp/generated' origin/main",
+   null
+  ],
+  [
+   "git rebase --exec='rm -rf /tmp/generated' origin/main",
+   null
+  ],
+  [
+   "git rebase -x 'rm -rf /tmp/generated' origin/main",
+   null
+  ],
+  [
+   "git rebase -x'rm -rf /tmp/generated' origin/main",
+   null
+  ],
+  [
+   "git submodule foreach 'git reset --hard'",
+   null
+  ],
+  [
+   "git submodule --quiet foreach --recursive 'rm -rf build'",
+   null
+  ],
+  [
+   "git reset --hard HEAD~1",
+   null
+  ],
+  [
+   "git branch new-feature",
+   null
+  ],
+  [
+   "git branch -D old-feature",
+   null
+  ],
+  [
+   "git branch -Dold-feature",
+   null
+  ],
+  [
+   "git remote set-url origin git@example.com:x/y.git",
+   null
+  ],
+  [
+   "git ls-remote --upload-pack=touch origin",
+   null
+  ],
+  [
+   "git grep -Ovim TODO",
+   null
+  ],
+  [
+   "gh pr list --limit 20",
+   {
+    "action": "ghPrList"
+   }
+  ],
+  [
+   "gh pr view 123 --json title",
+   {
+    "action": "ghPrView"
+   }
+  ],
+  [
+   "gh --repo makecindy/cindy pr checks 123",
+   {
+    "action": "ghPrChecks"
+   }
+  ],
+  [
+   "gh pr status",
+   {
+    "action": "ghPrStatus"
+   }
+  ],
+  [
+   "gh pr diff 123",
+   {
+    "action": "ghPrDiff"
+   }
+  ],
+  [
+   "gh pr create --title fix",
+   {
+    "action": "ghPrCreate"
+   }
+  ],
+  [
+   "gh pr edit 123 --add-label bug",
+   {
+    "action": "ghPrEdit"
+   }
+  ],
+  [
+   "gh pr comment 123 --body fixed",
+   {
+    "action": "ghPrComment"
+   }
+  ],
+  [
+   "gh pr review 123 --approve",
+   {
+    "action": "ghPrReview"
+   }
+  ],
+  [
+   "gh pr merge 123 --squash",
+   {
+    "action": "ghPrMerge"
+   }
+  ],
+  [
+   "gh pr close 123",
+   {
+    "action": "ghPrClose"
+   }
+  ],
+  [
+   "gh pr reopen 123",
+   {
+    "action": "ghPrReopen"
+   }
+  ],
+  [
+   "gh pr checkout 123",
+   {
+    "action": "ghPrCheckout"
+   }
+  ],
+  [
+   "gh issue list",
+   {
+    "action": "ghIssueList"
+   }
+  ],
+  [
+   "gh issue view 7",
+   {
+    "action": "ghIssueView"
+   }
+  ],
+  [
+   "gh issue status",
+   {
+    "action": "ghIssueStatus"
+   }
+  ],
+  [
+   "gh issue create --title bug",
+   {
+    "action": "ghIssueCreate"
+   }
+  ],
+  [
+   "gh issue edit 7 --add-label bug",
+   {
+    "action": "ghIssueEdit"
+   }
+  ],
+  [
+   "gh issue comment 7 --body fixed",
+   {
+    "action": "ghIssueComment"
+   }
+  ],
+  [
+   "gh issue close 7",
+   {
+    "action": "ghIssueClose"
+   }
+  ],
+  [
+   "gh issue reopen 7",
+   {
+    "action": "ghIssueReopen"
+   }
+  ],
+  [
+   "gh auth status",
+   {
+    "action": "ghAuthStatus"
+   }
+  ],
+  [
+   "gh auth login",
+   {
+    "action": "ghAuthLogin"
+   }
+  ],
+  [
+   "gh auth logout",
+   {
+    "action": "ghAuthLogout"
+   }
+  ],
+  [
+   "gh auth refresh",
+   {
+    "action": "ghAuthRefresh"
+   }
+  ],
+  [
+   "gh auth switch",
+   {
+    "action": "ghAuthSwitch"
+   }
+  ],
+  [
+   "gh run list --limit 10",
+   {
+    "action": "ghRunList"
+   }
+  ],
+  [
+   "gh run view 123 --log",
+   {
+    "action": "ghRunView"
+   }
+  ],
+  [
+   "gh run watch 123",
+   {
+    "action": "ghRunWatch"
+   }
+  ],
+  [
+   "gh repo list makecindy",
+   {
+    "action": "ghRepoList"
+   }
+  ],
+  [
+   "gh pr ready 123",
+   null
+  ],
+  [
+   "gh repo delete owner/repo",
+   null
+  ],
+  [
+   "gh repo view owner/repo",
+   {
+    "action": "ghRepoView",
+    "target": "owner/repo"
+   }
+  ],
+  [
+   "gh search prs \"is:open review-requested:@me\"",
+   {
+    "action": "ghSearch"
+   }
+  ],
+  [
+   "gh run delete 123",
+   null
+  ],
+  [
+   "gh api repos/makecindy/cindy/pulls/123",
+   {
+    "action": "ghApiQuery"
+   }
+  ],
+  [
+   "gh api --method GET repos/x/y/issues -f per_page=100",
+   {
+    "action": "ghApiQuery"
+   }
+  ],
+  [
+   "gh api repos/x/y/issues -f title=bug",
+   {
+    "action": "ghApiMutation"
+   }
+  ],
+  [
+   "gh api repos/x/y/issues/1 -X PATCH -f state=closed",
+   {
+    "action": "ghApiMutation"
+   }
+  ],
+  [
+   "gh api graphql -f query='query { viewer { login } }'",
+   {
+    "action": "ghApiQuery"
+   }
+  ],
+  [
+   "gh api graphql -f query='mutation { addComment(input: {}) { clientMutationId } }'",
+   {
+    "action": "ghApiMutation"
+   }
+  ],
+  [
+   "gh api graphql --input request.json",
+   {
+    "action": "ghApiCall"
+   }
+  ],
+  [
+   "gh api graphql --input request.json -X POST",
+   {
+    "action": "ghApiCall"
+   }
+  ],
+  [
+   "gh api -f title=bug",
+   {
+    "action": "ghApiCall"
+   }
+  ],
+  [
+   "gh api repos/x/y -X OPTIONS",
+   {
+    "action": "ghApiCall"
+   }
+  ],
+  [
+   "cat secret.txt >&leak.txt",
+   null
+  ],
+  [
+   "cat a.txt 1>&out",
+   null
+  ],
+  [
+   "cat a.txt >& leak.txt",
+   null
+  ],
+  [
+   "pnpm test 2>&1",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "tree src -o report.txt",
+   null
+  ],
+  [
+   "tree -aR src",
+   null
+  ],
+  [
+   "tree src",
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   "cd repo > touched && cat README.md",
+   null
+  ],
+  [
+   "rg TODO =(rm -rf build)",
+   null
+  ],
+  [
+   "rg \"=(\" src",
+   {
+    "action": "search",
+    "target": "=(",
+    "path": "src"
+   }
+  ],
+  [
+   "sed -n '1w out.txt' in.txt",
+   null
+  ],
+  [
+   "sed -n 's/a/b/p' in.txt",
+   null
+  ],
+  [
+   "fd '*.tmp' . -x rm {}",
+   null
+  ],
+  [
+   "fd '*.tmp' . --exec-batch rm",
+   null
+  ],
+  [
+   "rg --pre=rm TODO src",
+   null
+  ],
+  [
+   "cat <> created.txt",
+   null
+  ],
+  [
+   "cat secret.txt >& leak.txt",
+   null
+  ],
+  [
+   "cat secret.txt 1>&out",
+   null
+  ],
+  [
+   "pnpm test 2>&1 | tail -5",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "cat a.txt 2>&-",
+   {
+    "action": "read",
+    "target": "a.txt",
+    "path": "a.txt"
+   }
+  ],
+  [
+   "tree -L 2 src",
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   "ls -R src",
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   "cd /repo && pnpm test",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "cat < =(rm -rf build)",
+   null
+  ],
+  [
+   "cat README.md>\"important.conf\"",
+   null
+  ],
+  [
+   "grep foo src>\"report.txt\"",
+   null
+  ],
+  [
+   "LOG=x>secret.txt cat README.md",
+   null
+  ],
+  [
+   "rg \">\" src",
+   {
+    "action": "search",
+    "target": ">",
+    "path": "src"
+   }
+  ],
+  [
+   "NODE_ENV=test pnpm vitest run",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "curl -#O https://example.com/a.tgz",
+   null
+  ],
+  [
+   "curl -# https://example.com/api",
+   {
+    "action": "fetch",
+    "target": "https://example.com/api"
+   }
+  ],
+  [
+   "rg --regexp=TODO src",
+   {
+    "action": "search",
+    "target": "TODO",
+    "path": "src"
+   }
+  ],
+  [
+   "grep -eTODO file.txt",
+   {
+    "action": "search",
+    "target": "TODO",
+    "path": "file.txt"
+   }
+  ],
+  [
+   "curl --trace trace.log https://example.com",
+   null
+  ],
+  [
+   "curl --trace-ascii t.log https://example.com",
+   null
+  ],
+  [
+   "curl --stderr err.log https://example.com",
+   null
+  ],
+  [
+   "grep -f patterns.txt file.txt",
+   null
+  ],
+  [
+   "rg -f patterns.txt src",
+   null
+  ],
+  [
+   "fd '*.tmp' . -xrm {}",
+   null
+  ],
+  [
+   "grep -fpatterns.txt file.txt",
+   null
+  ],
+  [
+   "rg -fpatterns.txt src",
+   null
+  ],
+  [
+   "grep -rf patterns.txt dir",
+   null
+  ],
+  [
+   "rg -F literal src",
+   {
+    "action": "search",
+    "target": "literal",
+    "path": "src"
+   }
+  ],
+  [
+   "grep -efoo file.txt",
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "file.txt"
+   }
+  ],
+  [
+   "eslint --fix src",
+   null
+  ],
+  [
+   "pnpm eslint --fix src",
+   null
+  ],
+  [
+   "eslint --fix-dry-run src",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "eslint src",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "tsc --init",
+   null
+  ],
+  [
+   "tsc -p .",
+   null
+  ],
+  [
+   "npx tsc --noEmit",
+   {
+    "action": "typecheck"
+   }
+  ],
+  [
+   "npx vitest run -u",
+   null
+  ],
+  [
+   "pnpm jest --updateSnapshot",
+   null
+  ],
+  [
+   "curl --etag-save etag.txt https://example.com",
+   null
+  ],
+  [
+   "npm test -- --updateSnapshot",
+   null
+  ],
+  [
+   "pnpm run lint -- --fix",
+   null
+  ],
+  [
+   "pnpm lint -- --fix",
+   null
+  ],
+  [
+   "pnpm run lint",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "cargo clippy --fix",
+   null
+  ],
+  [
+   "cat README.md | less --LOG-FILE=copy.txt",
+   null
+  ],
+  [
+   "cat README.md | less -Ocopy.txt",
+   null
+  ],
+  [
+   "cat README.md | less",
+   {
+    "action": "read",
+    "target": "README.md",
+    "path": "README.md"
+   }
+  ],
+  [
+   "curl --libcurl client.c https://example.com",
+   null
+  ],
+  [
+   "less '+!touch pwned' README.md",
+   null
+  ],
+  [
+   "less README.md",
+   {
+    "action": "read",
+    "target": "README.md",
+    "path": "README.md"
+   }
+  ],
+  [
+   "go test -c -o pkg.test ./...",
+   null
+  ],
+  [
+   "curl --hsts cache.txt https://example.com",
+   null
+  ],
+  [
+   "curl --alt-svc as.txt https://example.com",
+   null
+  ],
+  [
+   "curl -w '%output{report.txt}ok' https://example.com",
+   null
+  ],
+  [
+   "rg --files src | head -20",
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   "cargo test --no-run",
+   null
+  ],
+  [
+   "cat README.md >\"&2\"",
+   null
+  ],
+  [
+   "cat README.md > \"&2\"",
+   null
+  ],
+  [
+   "eslint --fix=true src",
+   null
+  ],
+  [
+   "pnpm run lint -- --fix=true",
+   null
+  ],
+  [
+   "tsc --noEmit false a.ts",
+   null
+  ],
+  [
+   "npx tsc --noEmit false",
+   null
+  ],
+  [
+   "curl -K opts https://example.com",
+   null
+  ],
+  [
+   "curl --config opts https://example.com",
+   null
+  ],
+  [
+   "make test clean",
+   null
+  ],
+  [
+   "make test deploy",
+   null
+  ],
+  [
+   "make test",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "make",
+   {
+    "action": "build"
+   }
+  ],
+  [
+   "cat <(rm -rf build)",
+   null
+  ],
+  [
+   "diff <(sort a.txt) <(sort b.txt)",
+   null
+  ],
+  [
+   "cat < <(rm -rf build)",
+   null
+  ],
+  [
+   "grep foo < <(rm -rf build)",
+   null
+  ],
+  [
+   "rg \"<(\" src",
+   {
+    "action": "search",
+    "target": "<(",
+    "path": "src"
+   }
+  ],
+  [
+   "find . -name '*.log' -fprint report.txt",
+   null
+  ],
+  [
+   "find . -name '*.log' -fls listing.txt",
+   null
+  ],
+  [
+   "env -u NODE_DEBUG PATH=/opt/node/bin:$PATH node --version",
+   {
+    "action": "showVersion",
+    "target": "Node.js"
+   }
+  ],
+  [
+   "grep -n foo src/a.ts | head -20",
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "src/a.ts"
+   }
+  ],
+  [
+   "rg -n turnCostUsd src | cut -d: -f1 | sort -u",
+   {
+    "action": "search",
+    "target": "turnCostUsd",
+    "path": "src"
+   }
+  ],
+  [
+   "ps aux | rg Cindy",
+   {
+    "action": "inspectProcesses"
+   }
+  ],
+  [
+   "ps aux | rg --pre=touch Cindy",
+   null
+  ],
+  [
+   "ps aux | rg Cindy process.txt",
+   null
+  ],
+  [
+   "cat a.txt | cut -d: -f1 b.txt",
+   null
+  ],
+  [
+   "find ~/Code -maxdepth 5 \\( -iname '*cindy*' -o -iname '*maker*' \\) -print",
+   {
+    "action": "search",
+    "target": "*cindy*",
+    "path": "~/Code"
+   }
+  ],
+  [
+   "sed -n '1,80p' src/register.ts && sed -n '80,160p' src/register.ts",
+   {
+    "action": "read",
+    "target": "register.ts",
+    "path": "src/register.ts"
+   }
+  ],
+  [
+   "sed -n '1,80p' src/a.ts && sed -n '1,80p' src/b.ts",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "rg -n send src && sed -n '1,80p' src/register.ts",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "rg -n send src && rg -n receive src",
+   {
+    "action": "search"
+   }
+  ],
+  [
+   "git status --short && git diff --stat",
+   {
+    "action": "inspectRepository"
+   }
+  ],
+  [
+   "pnpm typecheck && pnpm test",
+   {
+    "action": "verify"
+   }
+  ],
+  [
+   "node --version && pnpm --version && which pnpm",
+   {
+    "action": "inspectEnvironment"
+   }
+  ],
+  [
+   "pwd && git status --short",
+   {
+    "action": "gitStatus"
+   }
+  ],
+  [
+   "pgrep -fl Cindy || true",
+   {
+    "action": "inspectProcesses"
+   }
+  ],
+  [
+   "test -d node_modules && echo present || echo missing",
+   {
+    "action": "inspectEnvironment"
+   }
+  ],
+  [
+   "nl -ba README.md | sed -n '1,20p'; printf '\\n--- package ---\\n'; nl -ba package.json | sed -n '1,20p'",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "cd /repo && sed -n '1,80p' src/a.ts && sed -n '1,80p' src/b.ts",
+   {
+    "action": "inspect"
+   }
+  ],
+  [
+   "rg TODO src && rm -rf build",
+   null
+  ],
+  [
+   "git add . && git commit -m done",
+   {
+    "action": "modifyRepository"
+   }
+  ],
+  [
+   "git cherry-pick --abort && git status --short --branch && git merge --no-ff feature",
+   {
+    "action": "modifyRepository"
+   }
+  ],
+  [
+   "git status --short; rm -rf build",
+   null
+  ],
+  [
+   "rg TODO src; printf -v result '%s' ok",
+   null
+  ],
+  [
+   "cat a.txt > out.txt && cat b.txt",
+   null
+  ],
+  [
+   "git add xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   null
+  ],
+  [
+   "cat README.md > important.conf",
+   null
+  ],
+  [
+   "grep foo src > report",
+   null
+  ],
+  [
+   "cat a.txt >> log.txt",
+   null
+  ],
+  [
+   "cat README.md>important.conf",
+   null
+  ],
+  [
+   "grep foo src>report",
+   null
+  ],
+  [
+   "rg \"=>\" src",
+   {
+    "action": "search",
+    "target": "=>",
+    "path": "src"
+   }
+  ],
+  [
+   "cat foo.txt & rm -rf bar",
+   null
+  ],
+  [
+   "cat README.md | head -5 > important.conf",
+   null
+  ],
+  [
+   "grep foo src | tee report.txt",
+   null
+  ],
+  [
+   "cat README.md | sort -o important.conf",
+   null
+  ],
+  [
+   "cat README.md | uniq dup.txt out.txt",
+   null
+  ],
+  [
+   "grep foo src | sort | head -5",
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "src"
+   }
+  ],
+  [
+   "grep -n foo src/a.ts | head -20 2>/dev/null",
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "src/a.ts"
+   }
+  ],
+  [
+   "cat a.txt 2>/dev/null",
+   {
+    "action": "read",
+    "target": "a.txt",
+    "path": "a.txt"
+   }
+  ],
+  [
+   "pnpm build && pnpm test",
+   {
+    "action": "verify"
+   }
+  ],
+  [
+   "pnpm test || echo failed",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "pnpm test 2>&1; pnpm lint 2>/dev/null",
+   {
+    "action": "verify"
+   }
+  ],
+  [
+   "pnpm test &>/dev/null; pnpm lint",
+   {
+    "action": "verify"
+   }
+  ],
+  [
+   "pnpm test &>test.log; pnpm lint",
+   null
+  ],
+  [
+   "pnpm test || rm -rf build",
+   null
+  ],
+  [
+   "echo $(date)",
+   null
+  ],
+  [
+   "cat <<EOF\nhi\nEOF",
+   null
+  ],
+  [
+   "grep \"a && b\" src",
+   {
+    "action": "search",
+    "target": "a && b",
+    "path": "src"
+   }
+  ],
+  [
+   "grep \"unterminated",
+   null
+  ],
+  [
+   "docker ps",
+   null
+  ],
+  [
+   "rm -rf node_modules",
+   null
+  ],
+  [
+   "",
+   null
+  ],
+  [
+   "/bin/zsh -lc 'git status --short'",
+   null
+  ],
+  [
+   "/usr/bin/bash -c \"gh pr checks 123\"",
+   null
+  ],
+  [
+   "/usr/bin/env zsh -lc 'pnpm test'",
+   null
+  ],
+  [
+   "/bin/zsh -lc pwd",
+   null
+  ],
+  [
+   "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"pnpm test\"",
+   null
+  ],
+  [
+   "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -c Get-Location",
+   null
+  ],
+  [
+   "cmd.exe /c \"git status --short\"",
+   null
+  ],
+  [
+   "cmd /C pnpm test",
+   null
+  ],
+  [
+   "git add src/file-0.ts src/file-1.ts src/file-2.ts src/file-3.ts src/file-4.ts src/file-5.ts src/file-6.ts src/file-7.ts src/file-8.ts src/file-9.ts src/file-10.ts src/file-11.ts src/file-12.ts src/file-13.ts src/file-14.ts src/file-15.ts src/file-16.ts src/file-17.ts src/file-18.ts src/file-19.ts src/file-20.ts src/file-21.ts src/file-22.ts src/file-23.ts src/file-24.ts src/file-25.ts src/file-26.ts src/file-27.ts src/file-28.ts src/file-29.ts src/file-30.ts src/file-31.ts src/file-32.ts src/file-33.ts src/file-34.ts src/file-35.ts src/file-36.ts src/file-37.ts src/file-38.ts src/file-39.ts src/file-40.ts src/file-41.ts src/file-42.ts src/file-43.ts src/file-44.ts src/file-45.ts src/file-46.ts src/file-47.ts src/file-48.ts src/file-49.ts src/file-50.ts src/file-51.ts src/file-52.ts src/file-53.ts src/file-54.ts src/file-55.ts src/file-56.ts src/file-57.ts src/file-58.ts src/file-59.ts src/file-60.ts src/file-61.ts src/file-62.ts src/file-63.ts src/file-64.ts src/file-65.ts src/file-66.ts src/file-67.ts src/file-68.ts src/file-69.ts src/file-70.ts src/file-71.ts src/file-72.ts src/file-73.ts src/file-74.ts src/file-75.ts src/file-76.ts src/file-77.ts src/file-78.ts src/file-79.ts src/file-80.ts src/file-81.ts src/file-82.ts src/file-83.ts src/file-84.ts src/file-85.ts src/file-86.ts src/file-87.ts src/file-88.ts src/file-89.ts src/file-90.ts src/file-91.ts src/file-92.ts src/file-93.ts src/file-94.ts src/file-95.ts src/file-96.ts src/file-97.ts src/file-98.ts src/file-99.ts src/file-100.ts src/file-101.ts src/file-102.ts src/file-103.ts src/file-104.ts src/file-105.ts src/file-106.ts src/file-107.ts src/file-108.ts src/file-109.ts src/file-110.ts src/file-111.ts src/file-112.ts src/file-113.ts src/file-114.ts src/file-115.ts src/file-116.ts src/file-117.ts src/file-118.ts src/file-119.ts src/file-120.ts src/file-121.ts src/file-122.ts src/file-123.ts src/file-124.ts src/file-125.ts src/file-126.ts src/file-127.ts src/file-128.ts src/file-129.ts src/file-130.ts src/file-131.ts src/file-132.ts src/file-133.ts src/file-134.ts src/file-135.ts src/file-136.ts src/file-137.ts src/file-138.ts src/file-139.ts src/file-140.ts src/file-141.ts src/file-142.ts src/file-143.ts src/file-144.ts src/file-145.ts src/file-146.ts src/file-147.ts src/file-148.ts src/file-149.ts src/file-150.ts src/file-151.ts src/file-152.ts src/file-153.ts src/file-154.ts src/file-155.ts src/file-156.ts src/file-157.ts src/file-158.ts src/file-159.ts src/file-160.ts src/file-161.ts src/file-162.ts src/file-163.ts src/file-164.ts src/file-165.ts src/file-166.ts src/file-167.ts src/file-168.ts src/file-169.ts src/file-170.ts src/file-171.ts src/file-172.ts src/file-173.ts src/file-174.ts src/file-175.ts src/file-176.ts src/file-177.ts src/file-178.ts src/file-179.ts src/file-180.ts src/file-181.ts src/file-182.ts src/file-183.ts src/file-184.ts src/file-185.ts src/file-186.ts src/file-187.ts src/file-188.ts src/file-189.ts src/file-190.ts src/file-191.ts src/file-192.ts src/file-193.ts src/file-194.ts src/file-195.ts src/file-196.ts src/file-197.ts src/file-198.ts src/file-199.ts src/file-200.ts src/file-201.ts src/file-202.ts src/file-203.ts src/file-204.ts src/file-205.ts src/file-206.ts src/file-207.ts src/file-208.ts src/file-209.ts src/file-210.ts src/file-211.ts src/file-212.ts src/file-213.ts src/file-214.ts src/file-215.ts src/file-216.ts src/file-217.ts src/file-218.ts src/file-219.ts",
+   {
+    "action": "gitAdd"
+   }
+  ],
+  [
+   "gh api graphql -f query='query { repository(owner: \"x\", name: \"y\") { issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues issues  } }'",
+   {
+    "action": "ghApiQuery"
+   }
+  ],
+  [
+   "﻿cat a.txt",
+   {
+    "action": "read",
+    "target": "a.txt",
+    "path": "a.txt"
+   }
+  ],
+  [
+   "cata.txt",
+   null
+  ],
+  [
+   "cat a.txt ",
+   {
+    "action": "read",
+    "target": "a.txt",
+    "path": "a.txt"
+   }
+  ],
+  [
+   "git status",
+   {
+    "action": "gitStatus"
+   }
+  ],
+  [
+   "GIT STATUS",
+   {
+    "action": "gitStatus"
+   }
+  ],
+  [
+   "/usr/bin/GREP foo src",
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "src"
+   }
+  ],
+  [
+   "C:\\\\tools\\\\rg.exe foo",
+   null
+  ],
+  [
+   "rg -i Ünïcode src",
+   {
+    "action": "search",
+    "target": "Ünïcode",
+    "path": "src"
+   }
+  ],
+  [
+   "grep -rf x src",
+   null
+  ],
+  [
+   "sed -n 1,5p a.txt",
+   {
+    "action": "read",
+    "target": "a.txt",
+    "path": "a.txt"
+   }
+  ],
+  [
+   "sed -n -e 5p a.txt b.txt",
+   {
+    "action": "read",
+    "target": "b.txt",
+    "path": "b.txt"
+   }
+  ],
+  [
+   "cat a | sed -n 5p",
+   {
+    "action": "read",
+    "target": "a",
+    "path": "a"
+   }
+  ],
+  [
+   "cat a | sed -n 5p b",
+   null
+  ],
+  [
+   "tree -L 2",
+   {
+    "action": "list"
+   }
+  ],
+  [
+   "tree -o x",
+   null
+  ],
+  [
+   "fd -Hx rm",
+   null
+  ],
+  [
+   "find . -name x -delete",
+   null
+  ],
+  [
+   "less +F a",
+   null
+  ],
+  [
+   "npx vitest run",
+   {
+    "action": "test"
+   }
+  ],
+  [
+   "pnpm exec eslint --fix .",
+   null
+  ],
+  [
+   "yarn lint:fix",
+   {
+    "action": "lint"
+   }
+  ],
+  [
+   "bun run build",
+   {
+    "action": "build"
+   }
+  ],
+  [
+   "cargo test --no-run",
+   null
+  ],
+  [
+   "cargo clippy --fix",
+   null
+  ],
+  [
+   "tsc --noEmit FALSE",
+   null
+  ],
+  [
+   "prettier -c .",
+   {
+    "action": "checkFormatting"
+   }
+  ],
+  [
+   "node -e 1",
+   {
+    "action": "runNodeScript"
+   }
+  ],
+  [
+   "python3 -c 1",
+   {
+    "action": "runPythonScript"
+   }
+  ],
+  [
+   "git -C repo status",
+   {
+    "action": "gitStatus"
+   }
+  ],
+  [
+   "git --no-pager log --oneline",
+   {
+    "action": "gitLog"
+   }
+  ],
+  [
+   "git push --force-with-lease",
+   null
+  ],
+  [
+   "gh pr view 12 -R a/b",
+   {
+    "action": "ghPrView"
+   }
+  ],
+  [
+   "gh api repos/a/b -X post",
+   {
+    "action": "ghApiMutation"
+   }
+  ],
+  [
+   "gh api graphql -f query='mutation { x }'",
+   {
+    "action": "ghApiMutation"
+   }
+  ],
+  [
+   "gh repo view a/b",
+   {
+    "action": "ghRepoView",
+    "target": "a/b"
+   }
+  ],
+  [
+   "env -i FOO=1 cat a",
+   {
+    "action": "read",
+    "target": "a",
+    "path": "a"
+   }
+  ],
+  [
+   "sudo cat /etc/hosts",
+   {
+    "action": "read",
+    "target": "hosts",
+    "path": "/etc/hosts"
+   }
+  ],
+  [
+   "FOO=x>out cat a",
+   null
+  ],
+  [
+   "cat <(rm x)",
+   null
+  ],
+  [
+   "cat <> f",
+   null
+  ],
+  [
+   "cat < a.txt",
+   null
+  ],
+  [
+   "echo hi >&2",
+   null
+  ],
+  [
+   "cat a >&b",
+   null
+  ],
+  [
+   "cat a 2>&-",
+   {
+    "action": "read",
+    "target": "a",
+    "path": "a"
+   }
+  ]
+ ],
+ "actions": [
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat src/app.ts",
+     "name": "app.ts",
+     "path": "/repo/src/app.ts"
+    }
+   ],
+   {
+    "action": "read",
+    "target": "app.ts",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat x",
+     "path": "/repo/src/app.ts"
+    }
+   ],
+   {
+    "action": "read",
+    "target": "app.ts",
+    "path": "/repo/src/app.ts"
+   }
+  ],
+  [
+   [
+    {
+     "type": "listFiles",
+     "command": "ls src",
+     "path": "src"
+    }
+   ],
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   [
+    {
+     "type": "listFiles",
+     "command": "ls"
+    }
+   ],
+   {
+    "action": "list"
+   }
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "rg foo src",
+     "query": "foo",
+     "path": "src"
+    }
+   ],
+   {
+    "action": "search",
+    "target": "foo",
+    "path": "src"
+   }
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "rg",
+     "path": "src"
+    }
+   ],
+   {
+    "action": "search",
+    "target": "src"
+   }
+  ],
+  [
+   [
+    {
+     "type": "unknown",
+     "command": "ps aux"
+    },
+    {
+     "type": "search",
+     "command": "grep node",
+     "query": "node"
+    }
+   ],
+   {
+    "action": "search",
+    "target": "node"
+   }
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "/bin/rm -rf build",
+     "name": "rm",
+     "path": "/bin/rm"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "name": "app.ts",
+     "path": "/repo/src/app.ts"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed -i '' 's/a/b/' f.ts",
+     "name": "f.ts",
+     "path": "/repo/f.ts"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed 's/a/b/' f.ts",
+     "name": "f.ts",
+     "path": "/repo/f.ts"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed -n '1,10p' f.ts",
+     "name": "f.ts",
+     "path": "/repo/f.ts"
+    }
+   ],
+   {
+    "action": "read",
+    "target": "f.ts",
+    "path": "/repo/f.ts"
+   }
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed -n --in-place '1,10p' f.ts",
+     "name": "f.ts",
+     "path": "/repo/f.ts"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "cd repo && find . -name '*.log' -delete",
+     "query": "*.log",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cd repo && sed -i \"s/a/b/\" f.ts",
+     "name": "f.ts",
+     "path": "/r/f.ts"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cd repo && cat README.md",
+     "name": "README.md",
+     "path": "/r/README.md"
+    }
+   ],
+   {
+    "action": "read",
+    "target": "README.md",
+    "path": "/r/README.md"
+   }
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed -n -f p input.txt",
+     "name": "input.txt",
+     "path": "/r/input.txt"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "find . -name \"*.log\" -delete",
+     "query": "*.log",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "find . -name \"*.tmp\" -exec rm {} ;",
+     "query": "*.tmp"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "listFiles",
+     "command": "find . -delete",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "find src -name \"*.ts\"",
+     "query": "*.ts",
+     "path": "src"
+    }
+   ],
+   {
+    "action": "search",
+    "target": "*.ts",
+    "path": "src"
+   }
+  ],
+  [
+   [
+    {
+     "type": "unknown",
+     "command": "foo"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "rg"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    null,
+    "x",
+    42,
+    [
+     "y"
+    ],
+    {
+     "type": "read"
+    }
+   ],
+   null
+  ],
+  [
+   "not-an-array",
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "sed -n '1w out.txt' in.txt",
+     "name": "in.txt",
+     "path": "/r/in.txt"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "fd '*.tmp' . -x rm {}",
+     "query": "*.tmp",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "rg --pre=rm TODO src",
+     "query": "TODO",
+     "path": "src"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "listFiles",
+     "command": "tree -o report.txt",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "listFiles",
+     "command": "tree src",
+     "path": "src"
+    }
+   ],
+   {
+    "action": "list",
+    "target": "src"
+   }
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "fd '*.tmp' . -xrm {}",
+     "query": "*.tmp",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "less '+!touch pwned' README.md",
+     "name": "README.md",
+     "path": "/r/README.md"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "search",
+     "command": "find . -name '*.log' -fprint report.txt",
+     "query": "*.log",
+     "path": "."
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "type": "read",
+     "command": "cat <(rm -rf build)",
+     "name": "build",
+     "path": "/x/build"
+    }
+   ],
+   null
+  ],
+  [
+   null,
+   null
+  ]
+ ],
+ "intents": [
+  [
+   [
+    "not-an-array"
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "type": "read",
+      "command": "cat src/a.ts",
+      "name": "a.ts",
+      "path": "/repo/src/a.ts"
+     },
+     {
+      "type": "search",
+      "command": "rg TODO src",
+      "query": "TODO",
+      "path": "src"
+     },
+     {
+      "type": "listFiles",
+      "command": "ls tests",
+      "path": "tests"
+     }
+    ]
+   ],
+   [
+    {
+     "action": "read",
+     "target": "a.ts",
+     "path": "/repo/src/a.ts"
+    },
+    {
+     "action": "search",
+     "target": "TODO",
+     "path": "src"
+    },
+    {
+     "action": "list",
+     "target": "tests"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "type": "read",
+      "command": "cat src/a.ts",
+      "name": "a.ts",
+      "path": "/repo/src/a.ts"
+     },
+     {
+      "type": "search",
+      "command": "rg TODO src",
+      "query": "TODO",
+      "path": "src"
+     },
+     {
+      "type": "listFiles",
+      "command": "ls tests",
+      "path": "tests"
+     }
+    ],
+    "cat src/a.ts && rg TODO src; ls tests"
+   ],
+   [
+    {
+     "action": "read",
+     "target": "a.ts",
+     "path": "/repo/src/a.ts"
+    },
+    {
+     "action": "search",
+     "target": "TODO",
+     "path": "src"
+    },
+    {
+     "action": "list",
+     "target": "tests"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "type": "read",
+      "command": "cat src/a.ts",
+      "name": "a.ts",
+      "path": "/repo/src/a.ts"
+     }
+    ],
+    "cat src/a.ts && rm -rf build"
+   ],
+   []
+  ]
+ ],
+ "display": [
+  [
+   "git status --short",
+   null
+  ],
+  [
+   "git -C /repo --no-pager diff --stat",
+   null
+  ],
+  [
+   "git log -5 --oneline",
+   null
+  ],
+  [
+   "git show HEAD:README.md",
+   null
+  ],
+  [
+   "git add src/app.ts",
+   null
+  ],
+  [
+   "git commit -m \"fix: parser\"",
+   null
+  ],
+  [
+   "git fetch origin --prune",
+   null
+  ],
+  [
+   "git pull --ff-only",
+   null
+  ],
+  [
+   "git push origin feature",
+   null
+  ],
+  [
+   "git rebase origin/main",
+   null
+  ],
+  [
+   "git merge --no-ff feature",
+   null
+  ],
+  [
+   "git cherry-pick --abort",
+   null
+  ],
+  [
+   "git stash list",
+   null
+  ],
+  [
+   "git restore src/app.ts",
+   null
+  ],
+  [
+   "git submodule update --init --recursive",
+   null
+  ],
+  [
+   "git remote -v",
+   null
+  ],
+  [
+   "git rev-parse --show-toplevel",
+   null
+  ],
+  [
+   "git branch --show-current",
+   null
+  ],
+  [
+   "git grep TODO -- src",
+   null
+  ],
+  [
+   "git merge-base main HEAD",
+   null
+  ],
+  [
+   "git ls-files src",
+   null
+  ],
+  [
+   "git rev-list --count main..HEAD",
+   null
+  ],
+  [
+   "git ls-remote origin HEAD",
+   null
+  ],
+  [
+   "git worktree list --porcelain",
+   null
+  ],
+  [
+   "git worktree add ../preview feature",
+   null
+  ],
+  [
+   "git worktree remove ../preview",
+   null
+  ],
+  [
+   "git worktree move ../old ../new",
+   null
+  ],
+  [
+   "git worktree prune",
+   null
+  ],
+  [
+   "gh pr list --limit 20",
+   null
+  ],
+  [
+   "gh pr view 123 --json title",
+   null
+  ],
+  [
+   "gh --repo makecindy/cindy pr checks 123",
+   null
+  ],
+  [
+   "gh pr status",
+   null
+  ],
+  [
+   "gh pr diff 123",
+   null
+  ],
+  [
+   "gh pr create --title fix",
+   null
+  ],
+  [
+   "gh pr edit 123 --add-label bug",
+   null
+  ],
+  [
+   "gh pr comment 123 --body fixed",
+   null
+  ],
+  [
+   "gh pr review 123 --approve",
+   null
+  ],
+  [
+   "gh pr merge 123 --squash",
+   null
+  ],
+  [
+   "gh pr close 123",
+   null
+  ],
+  [
+   "gh pr reopen 123",
+   null
+  ],
+  [
+   "gh pr checkout 123",
+   null
+  ],
+  [
+   "gh issue list",
+   null
+  ],
+  [
+   "gh issue view 7",
+   null
+  ],
+  [
+   "gh issue status",
+   null
+  ],
+  [
+   "gh issue create --title bug",
+   null
+  ],
+  [
+   "gh issue edit 7 --add-label bug",
+   null
+  ],
+  [
+   "gh issue comment 7 --body fixed",
+   null
+  ],
+  [
+   "gh issue close 7",
+   null
+  ],
+  [
+   "gh issue reopen 7",
+   null
+  ],
+  [
+   "gh auth status",
+   null
+  ],
+  [
+   "gh auth login",
+   null
+  ],
+  [
+   "gh auth logout",
+   null
+  ],
+  [
+   "gh auth refresh",
+   null
+  ],
+  [
+   "gh auth switch",
+   null
+  ],
+  [
+   "gh run list --limit 10",
+   null
+  ],
+  [
+   "gh run view 123 --log",
+   null
+  ],
+  [
+   "gh run watch 123",
+   null
+  ],
+  [
+   "gh repo list makecindy",
+   null
+  ],
+  [
+   "/bin/zsh -lc 'git status --short'",
+   "git status --short"
+  ],
+  [
+   "/usr/bin/bash -c \"gh pr checks 123\"",
+   "gh pr checks 123"
+  ],
+  [
+   "/usr/bin/env zsh -lc 'pnpm test'",
+   "pnpm test"
+  ],
+  [
+   "/bin/zsh -lc pwd",
+   "pwd"
+  ],
+  [
+   "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -Command \"pnpm test\"",
+   "pnpm test"
+  ],
+  [
+   "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -c Get-Location",
+   "Get-Location"
+  ],
+  [
+   "cmd.exe /c \"git status --short\"",
+   "git status --short"
+  ],
+  [
+   "cmd /C pnpm test",
+   "pnpm test"
+  ],
+  [
+   "git status",
+   null
+  ],
+  [
+   "/bin/zsh -lc 'git status' extra",
+   null
+  ],
+  [
+   "/bin/zsh -lc 'git status",
+   null
+  ],
+  [
+   "/tmp/zsh -lc 'git status'",
+   null
+  ],
+  [
+   "/bin/zsh -lc git\\ status",
+   null
+  ],
+  [
+   "/bin/zsh -lc echo;rm",
+   null
+  ],
+  [
+   "pwsh -Command \"pnpm test\"",
+   null
+  ],
+  [
+   "cmd.exe /k git status",
+   null
+  ],
+  [
+   "﻿cat a.txt",
+   null
+  ],
+  [
+   "cata.txt",
+   null
+  ],
+  [
+   "cat a.txt ",
+   null
+  ],
+  [
+   "git status",
+   null
+  ],
+  [
+   "GIT STATUS",
+   null
+  ],
+  [
+   "/usr/bin/GREP foo src",
+   null
+  ],
+  [
+   "C:\\\\tools\\\\rg.exe foo",
+   null
+  ],
+  [
+   "rg -i Ünïcode src",
+   null
+  ],
+  [
+   "grep -rf x src",
+   null
+  ],
+  [
+   "sed -n 1,5p a.txt",
+   null
+  ],
+  [
+   "sed -n -e 5p a.txt b.txt",
+   null
+  ],
+  [
+   "cat a | sed -n 5p",
+   null
+  ],
+  [
+   "cat a | sed -n 5p b",
+   null
+  ],
+  [
+   "tree -L 2",
+   null
+  ],
+  [
+   "tree -o x",
+   null
+  ],
+  [
+   "fd -Hx rm",
+   null
+  ],
+  [
+   "find . -name x -delete",
+   null
+  ],
+  [
+   "less +F a",
+   null
+  ],
+  [
+   "npx vitest run",
+   null
+  ],
+  [
+   "pnpm exec eslint --fix .",
+   null
+  ],
+  [
+   "yarn lint:fix",
+   null
+  ],
+  [
+   "bun run build",
+   null
+  ],
+  [
+   "cargo test --no-run",
+   null
+  ],
+  [
+   "cargo clippy --fix",
+   null
+  ],
+  [
+   "tsc --noEmit FALSE",
+   null
+  ],
+  [
+   "prettier -c .",
+   null
+  ],
+  [
+   "node -e 1",
+   null
+  ],
+  [
+   "python3 -c 1",
+   null
+  ],
+  [
+   "git -C repo status",
+   null
+  ],
+  [
+   "git --no-pager log --oneline",
+   null
+  ],
+  [
+   "git push --force-with-lease",
+   null
+  ],
+  [
+   "gh pr view 12 -R a/b",
+   null
+  ],
+  [
+   "gh api repos/a/b -X post",
+   null
+  ],
+  [
+   "gh api graphql -f query='mutation { x }'",
+   null
+  ],
+  [
+   "gh repo view a/b",
+   null
+  ],
+  [
+   "env -i FOO=1 cat a",
+   null
+  ],
+  [
+   "sudo cat /etc/hosts",
+   null
+  ],
+  [
+   "FOO=x>out cat a",
+   null
+  ],
+  [
+   "cat <(rm x)",
+   null
+  ],
+  [
+   "cat <> f",
+   null
+  ],
+  [
+   "cat < a.txt",
+   null
+  ],
+  [
+   "echo hi >&2",
+   null
+  ],
+  [
+   "cat a >&b",
+   null
+  ],
+  [
+   "cat a 2>&-",
+   null
+  ],
+  [
+   "/bin/zsh -lc 'can'\\''t'",
+   "can't"
+  ],
+  [
+   "/bin/bash -c \"a \\\"b\\\" \\$x\"",
+   "a \"b\" $x"
+  ],
+  [
+   "\"C:\\\\pwsh.exe\" -c 'x''y'",
+   "x'y"
+  ],
+  [
+   "\\\\\\\\srv\\\\pwsh.exe -NoProfile -Command git status",
+   "git status"
+  ],
+  [
+   "cmd /c \"a\" b",
+   null
+  ],
+  [
+   "/usr/bin/env bash -lc 'ls'",
+   "ls"
+  ],
+  [
+   "   ",
+   null
+  ],
+  [
+   "/bin/zsh -lc ''",
+   null
+  ],
+  [
+   "bash -c \\😀'echo hi'",
+   null
+  ],
+  [
+   "bash -c \\é'echo hi'",
+   "éecho hi"
+  ],
+  [
+   "bash -c '\\😀echo hi'",
+   "\\😀echo hi"
+  ],
+  [
+   "bash -c \\😀",
+   null
+  ],
+  [
+   "bash -c 'a'\\😀",
+   null
+  ]
+ ]
+}
