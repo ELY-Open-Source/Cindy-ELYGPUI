@@ -211,6 +211,14 @@ defines scope and what 1:1 means.
   hidden state in the layout tree. The content area's width is the window less the sidebar's
   painted width, read every frame of its 250ms width transition.
   `sidebar/top_nav.rs` is `SidebarTopNav.tsx`'s fixed section: the New row, off the rail.
+  `top_nav/more.rs` is the More row after Search with `SidebarNavigationMoreMenu`, drawn by the
+  port (Ely's menus cannot close on leave and take focus) on Ely's `surface`: right of the row,
+  flipped left without room, below the 58px titlebar strip. `sidebar/hover_menu.rs` is
+  `useHoverOpenMenu` on the executor clock: hover ignores key presses, a press on the open
+  trigger takes no focus, and a close returns focus to the trigger unless the open was a hover
+  or the close a press outside. Escape closes it through `intercept_keystrokes`, wherever focus
+  is; a press on the menu counts as inside the search, as Radix's popper wrapper does. With no data owner nothing is hidden, so it holds
+  Customize alone.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

@@ -133,5 +133,5 @@ fn tab_reaches_a_result_and_enter_opens_it(cx: &mut TestAppContext) {
     assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "fix");
 }
 
-/// The field, then clear and the options trigger, then the first result.
-const TABS: usize = 3;
+/// The field, then clear, the options trigger and More, then the first result.
+const TABS: usize = 4;

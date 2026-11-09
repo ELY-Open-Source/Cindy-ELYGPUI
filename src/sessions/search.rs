@@ -305,7 +305,8 @@ fn outside(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
                 // `closest(surface)` on the press's real target.
                 let results = cx.global::<Search>().surface.as_ref();
                 let inside = hitbox.is_hovered_at(e.position, window)
-                    || results.is_some_and(|r| r.is_hovered_at(e.position, window));
+                    || results.is_some_and(|r| r.is_hovered_at(e.position, window))
+                    || crate::sidebar::top_nav::more::over_menu(e.position, window, cx);
                 if phase != DispatchPhase::Capture || inside {
                     return;
                 }

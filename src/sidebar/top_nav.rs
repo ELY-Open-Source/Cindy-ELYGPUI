@@ -61,5 +61,7 @@ fn new_row(window: &mut Window, cx: &mut App) -> impl IntoElement {
         .child(label)
 }
 
+pub mod more;
+
 #[cfg(test)]
 mod tests;

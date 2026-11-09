@@ -20,7 +20,7 @@ use crate::{
 fn short(cx: &mut TestAppContext) -> (tempfile::TempDir, &mut VisualTestContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    cx.simulate_resize(size(px(400.0), px(240.0)));
+    cx.simulate_resize(size(px(400.0), px(274.0)));
     cx.run_until_parked();
     (dir, cx)
 }

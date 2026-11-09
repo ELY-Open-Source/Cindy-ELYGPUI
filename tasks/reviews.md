@@ -463,3 +463,14 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 ## 8.7c2d The search row sticky over the results
 
 - Round 1: PASS.
+
+## 8.7d1 The More row and its hover menu
+
+- Round 1: FAIL. Key presses read as a leave; Escape needed focus in the menu; no arrow-key
+  open; a press on the menu cleared the search; the open trigger took focus on press; a timed
+  close returned no focus. Fixed: modality-independent hover, Escape through
+  `intercept_keystrokes`, Down opens onto Customize, the menu's hitbox joins the search surface,
+  `prevent_default` on the open trigger, `HoverMenu` owns the return focus.
+- Round 2: FAIL. Tab and Shift-Tab left the open menu. Fixed: `capture_action` stops Ely's
+  `FocusNext` and `FocusPrev` in the menu.
+- Round 3: PASS.

@@ -360,12 +360,18 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
             - [x] 8.7c2d The search row sticky at the scroller's top while a query runs
               (`pinSearch`), the rows after it following it, and the content scrolled under it
               clipped at its bottom edge, as `SidebarTopNav`'s clip-path effect does; the rows
-              before Search come with 8.7d
+              before Search (Automations, Plugins) come with 15.0 and 16.0
         - [x] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
       `sidebarNavigationPrefs.ts`; without a data owner the defaults apply and nothing is saved,
       as Cindy does, until 13.0's owner-scoped storage
+        - [x] 8.7d1 The More row after Search, opened on hover by `useHoverOpenMenu` (90ms open,
+          160ms close, the gap to the menu kept, a click that only opens, no focus taken on
+          hover) at its right, with the hidden entries (none under the defaults) and Customize
+        - [ ] 8.7d2 `SidebarNavigationCustomize` in place of the rows: the draft over the
+          built-in entries (round checkbox rows, the grip's drag and arrow moves, Reset), Done
+          storing nothing without a data owner, as `setSidebarNavigationPrefs(null)` does
     - [ ] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as
       `ConversationSearchBox`'s popover, and More
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and

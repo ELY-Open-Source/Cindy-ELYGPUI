@@ -358,6 +358,9 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
             handle.clone(),
             pin_search,
         ))
+        .child(super::search::stick::after(
+            crate::sidebar::top_nav::more::section(window, cx),
+        ))
         .children(results.map(super::search::stick::after))
         .child(super::search::stick::after(list.into_any_element()))
         .child(super::select::end());

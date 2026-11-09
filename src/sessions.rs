@@ -24,7 +24,7 @@ mod rename;
 mod reorder;
 mod reveal;
 mod row;
-mod search;
+pub(crate) mod search;
 mod select;
 mod settings;
 mod sortable;
@@ -341,4 +341,4 @@ mod pin_tests;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]
-mod view_tests;
+pub(crate) mod view_tests;

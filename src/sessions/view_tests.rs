@@ -54,7 +54,7 @@ pub(super) fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -
     }
 }
 
-pub(super) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext {
+pub(crate) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext {
     let week = 7 * 24 * 60 * 60 * 1000;
     let old = jiff::Timestamp::now().as_millisecond() - week;
     let mut sessions: Vec<Session> = (0..7)
@@ -99,7 +99,7 @@ fn shown(cx: &mut VisualTestContext, id: &str) -> bool {
         .is_some()
 }
 
-pub(super) fn click(cx: &mut VisualTestContext, selector: &'static str) {
+pub(crate) fn click(cx: &mut VisualTestContext, selector: &'static str) {
     let bounds = cx
         .debug_bounds(selector)
         .unwrap_or_else(|| panic!("{selector} not drawn"));

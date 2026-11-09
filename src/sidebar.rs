@@ -1,12 +1,13 @@
 //! Cindy's left sidebar frame: `Sidebar.tsx`, with the width, rail and hidden state
 //! `MainLayout.tsx` keeps for it.
 
+pub(crate) mod hover_menu;
 mod peek;
 mod peek_view;
 mod resize;
 #[cfg(test)]
 mod tests;
-mod top_nav;
+pub(crate) mod top_nav;
 
 use std::time::{Duration, Instant};
 
