@@ -1,14 +1,14 @@
 //! `SessionCard.tsx`'s `list` variant: a flat row, the title line over one preview line.
 
 use gpui::{
-    AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _,
+    AnyElement, App, HoverListenerMode, InteractiveElement as _, IntoElement, ParentElement as _,
     StatefulInteractiveElement as _, Styled as _, div, prelude::FluentBuilder as _,
 };
 
 use super::{
     Sessions,
     group::Session,
-    rename,
+    marquee, rename,
     row::{ROW_GROUP, Slot, rename_on_double, source_label, status_glyph, with_menu},
     title,
 };
@@ -69,15 +69,11 @@ pub(super) fn list_row(
         .items_center()
         .gap(css(4.0))
         .child(
-            div()
-                .min_w_0()
-                .flex_shrink(1.0)
-                .truncate()
+            marquee::title(&s.id, title::display(s, cx.global::<Translator>()), cx)
                 .text_size(css(text_size(14.0, cx)))
                 .line_height(gpui::relative(1.3))
                 .font_weight(gpui::FontWeight::MEDIUM)
-                .text_color(appearance.hsl_token("foreground"))
-                .child(title::display(s, cx.global::<Translator>())),
+                .text_color(appearance.hsl_token("foreground")),
         )
         .when_some(label, |el, label| el.child(source_label(&s.id, label, cx)));
     let slot = div()
@@ -122,7 +118,7 @@ pub(super) fn list_row(
         .text_color(appearance.token("text-secondary"))
         .children(body);
     let selector = format!("task-{}", s.id);
-    let id = s.id.clone();
+    let (id, hovered) = (s.id.clone(), s.id.clone());
     let row = div()
         .id(gpui::SharedString::from(selector.clone()))
         .debug_selector(move || selector)
@@ -137,6 +133,9 @@ pub(super) fn list_row(
         .when(editing.is_none(), |el| el.cursor_pointer())
         .hover(|st| st.bg(appearance.hsl_token("sidebar-item-hover")))
         .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
+        .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
+        .child(marquee::mark(&s.id))
         .child(divider(false))
         .when(first, |el| el.child(divider(true)))
         .child(line_one)

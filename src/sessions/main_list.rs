@@ -300,6 +300,7 @@ pub(super) fn project(
 /// `CCAgentSidebarUpper`'s scroll body: the Pinned section above the main list; 8.4c draws the
 /// scope header between them. Show all resets for lists no longer drawn.
 pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
+    super::marquee::sweep(cx);
     let drawn = RefCell::new(Vec::new());
     let view_style = pinned::view_style(window, cx);
     // The header stays while the list loads or fails, as `MainListScopeHeader` does.

@@ -358,3 +358,12 @@ effort high, in a Herdr pane.
   Fixed: an unpin clears the summary and a failed write restores it; the docs name card mode
   and the fade's restart.
 - Round 2: PASS.
+
+## 8.5c2d The title marquee
+
+- Round 1: FAIL. A key press dropped the hover; a title back from rename under a hovered row
+  never restarted; the memo ignored reduced motion; the tests never advanced the clock. The
+  track's accessibility duplicate was answered: plain string children carry no a11y node.
+  Fixed: the hover ignores the keyboard, the row and the title are tracked apart, the motion
+  length joins the memo, and the tests drive frames and read painted offsets.
+- Round 2: PASS.

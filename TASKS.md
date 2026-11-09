@@ -290,7 +290,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     mode, laid out by `CardMasonry` (one column, two from 246px, three from 390px) and
     `DraggableCardColumns`' round-robin columns, with `sessionToCamel`'s `summary` and
     `resolveSessionCardBody`; dragging comes with 8.5c2e
-  - [ ] 8.5c2d `SidebarTitleMarquee`: an overflowing title scrolls once while its row is hovered,
+  - [x] 8.5c2d `SidebarTitleMarquee`: an overflowing title scrolls once while its row is hovered,
     in the text and list rows
   - [ ] 8.5c2e Drag to reorder as `SortableList` and `DraggableCardColumns` do: pinned entries in
     every mode (written to `pinnedOrder`) and projects under the `custom` project order

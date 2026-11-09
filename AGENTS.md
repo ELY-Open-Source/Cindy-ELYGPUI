@@ -62,6 +62,10 @@ defines scope and what 1:1 means.
   `card.rs` is the `card` variant (title, `resolveSessionCardBody`, meta row) and `masonry.rs`
   `CardMasonry`: one to three round-robin columns from the width measured in prepaint, with
   `card-col-fade`; card mode's fold height is that measured height.
+  `marquee.rs` is `SidebarTitleMarquee` in the text and list rows: the row's `on_hover` picks one
+  title, prepaint canvases measure it and its track, and the track scrolls on the executor clock.
+  The hover ignores key presses, as CSS `:hover` does. An unmounted row lets go at the next list
+  render; a title back from rename starts again. Tests drive frames with `simulate_next_frame`.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

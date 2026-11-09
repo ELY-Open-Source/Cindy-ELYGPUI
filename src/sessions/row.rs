@@ -4,12 +4,12 @@ use std::sync::Arc;
 
 use ely_gpui_component::{menus::ContextMenu, primitives::IconName};
 use gpui::{
-    AnyElement, App, ClickEvent, ElementId, FontFeatures, InteractiveElement as _, IntoElement,
-    ParentElement, RenderOnce, StatefulInteractiveElement as _, Styled, Window, div,
-    prelude::FluentBuilder as _,
+    AnyElement, App, ClickEvent, ElementId, FontFeatures, HoverListenerMode,
+    InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
+    StatefulInteractiveElement as _, Styled, Window, div, prelude::FluentBuilder as _,
 };
 
-use super::{Sessions, group::Session, meta, rename, task_menu, title};
+use super::{Sessions, group::Session, marquee, meta, rename, task_menu, title};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -256,19 +256,16 @@ pub(super) fn row(
         .flex_1()
         .items_center()
         .gap(css(6.0))
-        .child(
-            div()
-                .min_w_0()
-                .max_w_full()
-                .flex_shrink(1.0)
-                .truncate()
-                .child(title::display(row, cx.global::<Translator>())),
-        )
+        .child(marquee::title(
+            &row.id,
+            title::display(row, cx.global::<Translator>()),
+            cx,
+        ))
         .when_some(label, |el, label| {
             el.child(source_label(&row.id, label, cx))
         });
     let selector = format!("task-{}", row.id);
-    let id = row.id.clone();
+    let (id, hovered) = (row.id.clone(), row.id.clone());
     let body = div()
         .id(gpui::SharedString::from(selector.clone()))
         .debug_selector(move || selector)
@@ -287,6 +284,9 @@ pub(super) fn row(
         .text_color(appearance.hsl_token("foreground"))
         .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
         .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
+        .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
+        .child(marquee::mark(&row.id))
         .child(
             div()
                 .flex()

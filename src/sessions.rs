@@ -9,6 +9,7 @@ mod header;
 mod list_row;
 mod lists;
 mod main_list;
+mod marquee;
 mod masonry;
 mod meta;
 mod paths;
@@ -75,6 +76,7 @@ pub struct Sessions {
     /// Whether the watcher sees `owner_dir`, which the first pin may create.
     owner_watched: bool,
     masonry: masonry::State,
+    marquee: marquee::State,
 }
 
 impl gpui::Global for Sessions {}
@@ -100,6 +102,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         watcher: None,
         owner_watched: false,
         masonry: masonry::State::default(),
+        marquee: marquee::State::default(),
     });
     view_mode::install(cx);
     cx.observe_global::<LocalDb>(|cx| {
