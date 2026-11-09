@@ -333,6 +333,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     let handle = cx.global::<super::reveal::Reveal>().handle.clone();
     super::search::scroll::sync(&handle, cx);
     let results = super::search::results::body(window, cx);
+    let pin_search = !super::search::trimmed(cx).is_empty();
     let list = div()
         .flex()
         .flex_col()
@@ -352,9 +353,13 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .overflow_y_scroll()
         .track_scroll(&handle)
         .child(super::search::scroll::pointer(handle.clone()))
-        .child(super::search::section(window, cx))
-        .children(results)
-        .child(list)
+        .child(super::search::stick::row(
+            super::search::section(window, cx),
+            handle.clone(),
+            pin_search,
+        ))
+        .children(results.map(super::search::stick::after))
+        .child(super::search::stick::after(list.into_any_element()))
         .child(super::select::end());
     Some(
         div()

@@ -334,7 +334,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     - [x] 8.7b2 The search options as `SearchFilterMenu` offers them (sort, status, agent, last
       activity, reset, the active count), the sort remembered as `conversationSearchPrefs`
       keeps it
-    - [ ] 8.7c The search results in place of the list (`messages_fts` through `cjk_seg`, sorted
+    - [x] 8.7c The search results in place of the list (`messages_fts` through `cjk_seg`, sorted
       as `conversationSearchSort` sorts), with the search row sticky over them and the clip
       below it while a query runs; the options' Projects submenu, which lists every known
       project, archived tasks' included
@@ -343,7 +343,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
         - [x] 8.7c1b `chatHistorySearch`'s FTS pass over `messages_fts` through `cjk_seg`; the
           vector pass is skipped as Cindy skips it while the embedding service is down (11.0)
         - [x] 8.7c1c `searchConversations`: titles and messages merged, filtered by the options
-        - [ ] 8.7c2 The results list in place of the task list, the search row sticky over it
+        - [x] 8.7c2 The results list in place of the task list, the search row sticky over it
             - [x] 8.7c2a `useConversationSearch`'s search: the request from the shared query and
               options (24 results, the unnamed label), the keyword pass after 250ms and the hybrid
               pass after 900ms on the database worker, only the latest request publishing, the
@@ -357,6 +357,10 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
               place back once the query clears, after the pointer lifts
             - [x] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
               message jump (`searchJump`) lands with the chat view (chapter 9)
+            - [x] 8.7c2d The search row sticky at the scroller's top while a query runs
+              (`pinSearch`), the rows after it following it, and the content scrolled under it
+              clipped at its bottom edge, as `SidebarTopNav`'s clip-path effect does; the rows
+              before Search come with 8.7d
         - [x] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over

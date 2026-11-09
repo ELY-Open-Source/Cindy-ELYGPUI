@@ -140,6 +140,9 @@ defines scope and what 1:1 means.
   button role; gpui clicks them on Enter or Space key up.
   `search/scroll.rs` is the sidebar's layout effect: the list's offset is kept while it shows,
   each search starts at the top, and a clear puts the offset back once the pointer lifts.
+  `search/stick.rs` is `pinSearch`: while a query runs the row's prepaint offsets it to the
+  scroller's top (gpui has no `position: sticky`), and the content after it paints and hits
+  under a content mask that starts at the row's bottom, as the clip-path effect clips.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

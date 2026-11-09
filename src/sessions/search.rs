@@ -23,6 +23,7 @@ pub mod projects;
 pub mod results;
 pub mod run;
 pub mod scroll;
+pub mod stick;
 
 pub use options::Options;
 
@@ -36,6 +37,8 @@ pub struct Search {
     /// The results' hitbox this frame, part of the search surface.
     surface: Option<gpui::Hitbox>,
     scroll: scroll::Scroll,
+    /// The pinned row's bottom this frame.
+    pinned_bottom: Option<gpui::Pixels>,
 }
 
 struct Field {
@@ -57,6 +60,7 @@ pub fn install(cx: &mut App) {
         run: run::Run::default(),
         surface: None,
         scroll: scroll::Scroll::default(),
+        pinned_bottom: None,
     });
 }
 

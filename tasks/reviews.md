@@ -459,3 +459,7 @@ gate logs sit in `logs/review/<task>-r<N>*`.
   Fixed: `Recent` keeps `lastUsedAt` and `group` sorts by the latest of it and task activity;
   the request keys on the session ids, the scroll on the selection; comments cut to one line.
 - Round 2: PASS.
+
+## 8.7c2d The search row sticky over the results
+
+- Round 1: PASS.
