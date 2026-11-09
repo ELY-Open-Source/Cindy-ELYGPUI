@@ -20,17 +20,17 @@ use crate::{
     },
 };
 
-fn drawn(cx: &mut VisualTestContext, selector: &str) -> Option<Bounds<Pixels>> {
+pub(super) fn drawn(cx: &mut VisualTestContext, selector: &str) -> Option<Bounds<Pixels>> {
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
     cx.debug_bounds(Box::leak(selector.to_owned().into_boxed_str()))
 }
 
-fn open(cx: &mut VisualTestContext) -> Option<Section> {
+pub(super) fn open(cx: &mut VisualTestContext) -> Option<Section> {
     cx.update(|_, cx| cx.default_global::<Panels>().open)
 }
 
-fn wait(cx: &mut VisualTestContext, ms: u64) {
+pub(super) fn wait(cx: &mut VisualTestContext, ms: u64) {
     cx.executor().advance_clock(Duration::from_millis(ms));
     cx.run_until_parked();
 }
@@ -56,7 +56,7 @@ fn show(cx: &mut VisualTestContext) -> Bounds<Pixels> {
     tile
 }
 
-fn away() -> Point<Pixels> {
+pub(super) fn away() -> Point<Pixels> {
     point(px(700.0), px(550.0))
 }
 
@@ -144,7 +144,7 @@ fn a_shift_click_in_the_panel_only_opens(cx: &mut TestAppContext) {
     assert!(!selected, "selection stays in the sidebar");
 }
 
-fn enter(cx: &mut VisualTestContext) {
+pub(super) fn enter(cx: &mut VisualTestContext) {
     cx.simulate_keystrokes("enter");
     cx.simulate_event(KeyUpEvent {
         keystroke: Keystroke::parse("enter").unwrap(),
@@ -196,7 +196,7 @@ fn a_tile_out_of_view_closes_the_panel(cx: &mut TestAppContext) {
 }
 
 /// Focuses a tile with a click, then opens it from the keyboard.
-fn key_open(cx: &mut VisualTestContext, id: &str) {
+pub(super) fn key_open(cx: &mut VisualTestContext, id: &str) {
     let tile = drawn(cx, id).unwrap();
     cx.simulate_click(tile.center(), Modifiers::none());
     cx.run_until_parked();

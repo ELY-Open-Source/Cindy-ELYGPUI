@@ -258,3 +258,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: the listeners stand alone, the tile's prepaint closes, tiles hit-test, focus goes back
   when nothing inside takes it, Show all is `fold::ShowAll`, one-line comment.
 - Round 2: PASS.
+
+## 8.7e3c2a The rail Projects panel's list
+- Round 1: FAIL. The panel's scroll list was a flex column, so long lists shrank rows (32 to
+  22.5px) and Show all (24 to 19.5px) instead of scrolling.
+- Fixed: the rows sit in an inner column that does not shrink; the long-list test checks both
+  heights.
+- Round 2: PASS.

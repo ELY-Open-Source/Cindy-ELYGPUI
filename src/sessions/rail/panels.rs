@@ -1,4 +1,4 @@
-//! `RailPanels`: `RailPanelShell` and the Dialogues panel, with the closes both panels share.
+//! `RailPanels`: `RailPanelShell`, the Dialogues panel and the closes both panels share.
 
 use std::cmp::Ordering;
 
@@ -6,7 +6,6 @@ use gpui::{
     AnyElement, App, DispatchPhase, FocusHandle, Hitbox, HitboxBehavior, InteractiveElement as _,
     IntoElement, MouseDownEvent, MouseMoveEvent, ParentElement as _, Pixels, Point,
     StatefulInteractiveElement as _, Styled as _, Window, anchored, canvas, deferred, div, point,
-    prelude::FluentBuilder as _,
 };
 
 use super::sections::{self, Panels, Section};
@@ -83,8 +82,7 @@ pub fn panel(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
         .into_any_element();
     let body = match section {
         Section::Dialogues => dialogues(cx),
-        // The Projects panel's content comes with 8.7e3c2.
-        Section::Projects => return vec![watch],
+        Section::Projects => projects::body(window, cx),
     };
     let focus = window
         .use_keyed_state("rail-panel-focus", cx, |_, cx| cx.focus_handle())
@@ -199,30 +197,45 @@ fn dialogues(cx: &mut App) -> AnyElement {
     let title = cx
         .global::<Translator>()
         .t("ccAgent.sidebar.railNav.dialogues", &[]);
-    let rows: Vec<AnyElement> = visible
-        .iter()
-        .map(|s| row(s, false, None, now, Scope::Rail, cx))
-        .collect();
+    let rows = entry_list(&visible, hidden, sessions.len(), now, cx);
     div()
         .flex()
         .flex_col()
         .child(head(title, sessions.len(), cx))
-        .child(
-            div()
-                .id("rail-panel-list")
-                .flex()
-                .flex_col()
-                .max_h(css(420.0))
-                .overflow_y_scroll()
-                .children(rows)
-                .when(hidden > 0, |el| {
-                    el.child(ShowAll::new(
-                        "rail-panel-show-all".into(),
-                        sessions.len(),
-                        |cx| cx.global_mut::<Panels>().show_all = true,
-                    ))
-                }),
-        )
+        .child(scroll(rows))
+        .into_any_element()
+}
+
+/// `SessionEntryList` in a panel: its rows, then Show all while some are folded.
+fn entry_list(
+    visible: &[&Session],
+    hidden: usize,
+    total: usize,
+    now: i64,
+    cx: &mut App,
+) -> Vec<AnyElement> {
+    let mut rows: Vec<AnyElement> = visible
+        .iter()
+        .map(|s| row(s, false, None, now, Scope::Rail, cx))
+        .collect();
+    if hidden > 0 {
+        let more = ShowAll::new("rail-panel-show-all".into(), total, |cx| {
+            cx.global_mut::<Panels>().show_all = true
+        });
+        rows.push(more.into_any_element());
+    }
+    rows
+}
+
+/// `max-h-[420px] overflow-y-auto`, a block box: rows keep their height and overflow.
+fn scroll(children: Vec<AnyElement>) -> AnyElement {
+    div()
+        .id("rail-panel-list")
+        .flex()
+        .flex_col()
+        .max_h(css(420.0))
+        .overflow_y_scroll()
+        .child(div().flex_none().flex().flex_col().children(children))
         .into_any_element()
 }
 
@@ -276,5 +289,6 @@ pub(super) fn escape(cx: &mut App) -> gpui::Subscription {
     })
 }
 
+mod projects;
 #[cfg(test)]
 mod tests;

@@ -261,7 +261,11 @@ defines scope and what 1:1 means.
   is `fold::ShowAll`, a keyboard button the main list shares.
   `row::Scope` gives the panel's rows their own rename, marquee and selectors; they neither
   reveal nor join the selection, and a click only navigates (`handlePanelSessionClick`).
-  The Projects panel and the lamps come with 8.7e3c2 and 10.0.
+  `panels/projects.rs` is the Projects panel: `Lists.unclassified` (5, then Show all), then
+  `Lists.rail_projects` (`visibleRailProjectsWithVendor`, pinned projects kept, unpinned tasks
+  only, `sortProjectsForSidebar`; 20, then Show all), each row a tab stop. The Cindy Make group
+  is absent: `CINDY_MAKE_ENABLED` is off, so no such task loads. The project level comes with
+  8.7e3c2b; the lamps with 10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

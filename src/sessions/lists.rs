@@ -2,6 +2,8 @@
 
 use std::collections::HashMap;
 
+use crate::localdb::search::merge::COLLATOR;
+
 use super::{
     group::{Entry, Order, Project, Recent, Session, entries, for_main_list, group},
     paths::{compare, grouping, session_key},
@@ -34,6 +36,9 @@ pub struct Lists {
     pub main: Vec<Entry>,
     /// The dialogues the main list draws, grouped or loose, for the rail's panel.
     pub dialogues: Vec<Session>,
+    /// The rail's Projects panel: its drafts, then every project, pinned ones too.
+    pub unclassified: Vec<Session>,
+    pub rail_projects: Vec<Project>,
     /// `dialogueSourceLabelMap` for the main list's loose tasks.
     pub main_labels: HashMap<String, String>,
 }
@@ -151,21 +156,26 @@ pub fn build(
         })
         .collect();
     let matches = |s: &Session| order.vendor.is_none_or(|v| s.agent_kind == v);
-    let main_projects: Vec<Project> = main_with_pins
+    let narrowed = |p: Project| {
+        let sessions: Vec<Session> = p.sessions.iter().filter(|s| matches(s)).cloned().collect();
+        // `persistentProjectMatchesVendor`: no known kind matches any harness.
+        let kept = match (&p.persistent, order.vendor) {
+            _ if !sessions.is_empty() => true,
+            (None, _) => false,
+            (Some(_), None) => true,
+            (Some(kinds), Some(v)) => kinds.is_empty() || kinds.iter().any(|k| k == v),
+        };
+        kept.then(|| unpinned(Project { sessions, ..p }))
+    };
+    let visible: Vec<Project> = main_with_pins.into_iter().filter(shown).collect();
+    let rail_projects = for_sidebar(
+        visible.iter().cloned().filter_map(narrowed).collect(),
+        order,
+    );
+    let main_projects: Vec<Project> = visible
         .into_iter()
-        .filter(|p| shown(p) && !in_set(&pinned_projects, &p.key, platform))
-        .filter_map(|p| {
-            let sessions: Vec<Session> =
-                p.sessions.iter().filter(|s| matches(s)).cloned().collect();
-            // `persistentProjectMatchesVendor`: no known kind matches any harness.
-            let kept = match (&p.persistent, order.vendor) {
-                _ if !sessions.is_empty() => true,
-                (None, _) => false,
-                (Some(_), None) => true,
-                (Some(kinds), Some(v)) => kinds.is_empty() || kinds.iter().any(|k| k == v),
-            };
-            kept.then(|| unpinned(Project { sessions, ..p }))
-        })
+        .filter(|p| !in_set(&pinned_projects, &p.key, platform))
+        .filter_map(narrowed)
         .collect();
     let pin_labels = labels(&plain.pinned, &known, dialogues_label);
     let mut pinned: Vec<Pinned> = plain
@@ -197,12 +207,56 @@ pub fn build(
         dialogues.clone()
     };
     let main_labels = labels(&labelled, &known, dialogues_label);
-    let main = entries(main_projects, dialogues.clone(), pick(main.loose), order);
+    let loose = pick(main.loose);
+    let unclassified = sessions_for_sidebar(loose.clone(), order.created);
+    let main = entries(main_projects, dialogues.clone(), loose, order);
     Lists {
         pinned,
         labels: pin_labels,
         main,
         dialogues,
+        unclassified,
+        rail_projects,
         main_labels,
     }
+}
+
+/// `sortSessionsForSidebar`; `priority` waits for the agent runtime (10.0).
+fn sessions_for_sidebar(mut sessions: Vec<Session>, created: bool) -> Vec<Session> {
+    if created {
+        sessions.sort_by(|a, b| {
+            b.created_at
+                .cmp(&a.created_at)
+                .then_with(|| COLLATOR.compare(&a.id, &b.id))
+        });
+    }
+    sessions
+}
+
+/// `sortProjectsForSidebar`; the manual order comes with 13.0, as the main list's does.
+fn for_sidebar(projects: Vec<Project>, order: &Order) -> Vec<Project> {
+    let mut projects: Vec<Project> = projects
+        .into_iter()
+        .map(|p| Project {
+            sessions: sessions_for_sidebar(p.sessions, order.created),
+            ..p
+        })
+        .collect();
+    if !order.custom && order.created {
+        let newest = |p: &Project| {
+            p.sessions
+                .iter()
+                .map(|s| s.created_at)
+                .max()
+                .unwrap_or(0)
+                .max(0)
+        };
+        let first = |p: &Project| p.sessions.first().map_or(String::new(), |s| s.id.clone());
+        projects.sort_by(|a, b| {
+            newest(b)
+                .cmp(&newest(a))
+                .then_with(|| COLLATOR.compare(&first(a), &first(b)))
+        });
+    }
+    projects
 }

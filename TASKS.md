@@ -228,10 +228,15 @@ listed in `tasks/done.md`.
                   dialogue rows as the expanded group sorts and folds them), with both panels'
                   closes (pointer keep-alive, Escape, a press outside, the rail ending, the
                   trigger hidden) and the keyboard contract (focus in, focus back)
-                - [ ] 8.7e3c2 The Projects panel: the Cindy Make group, the unclassified tasks
-                  (hidden under a project filter), every project with its pinned ones as
-                  `visibleRailProjectsWithVendor` lists them (20, then Show all), and the project
-                  level with its own grace and keyboard contract
+                - [ ] 8.7e3c2 The Projects panel
+                    - [x] 8.7e3c2a Its list: the unclassified tasks (5, then Show all; the
+                      project filter that hides them comes with 13.0), then every project with
+                      its pinned ones as `visibleRailProjectsWithVendor` lists them and
+                      `sortProjectsForSidebar` orders them (20, then Show all), each row with
+                      its folder, name, count and chevron. The Cindy Make group never shows:
+                      `CINDY_MAKE_ENABLED` is off, so the list query has no such tasks
+                    - [ ] 8.7e3c2b The project level: a row's hover or click opens its tasks
+                      beside it, with its own grace, keep-alive and keyboard contract
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the

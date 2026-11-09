@@ -32,8 +32,8 @@ use crate::{
 };
 
 const DIALOGUE_COLLAPSED_KEY: &str = "cc-agent.sidebar.dialogueGroupCollapsed";
-const SESSION_LIMIT_KEY: &str = "sidebar.collapse.projectSessionLimit";
-const PROJECT_LIMIT_KEY: &str = "sidebar.collapse.projectLimit";
+pub(super) const SESSION_LIMIT_KEY: &str = "sidebar.collapse.projectSessionLimit";
+pub(super) const PROJECT_LIMIT_KEY: &str = "sidebar.collapse.projectLimit";
 /// `DIALOGUE_GROUP_ALL_KEY`, the one dialogue group of an ungrouped list.
 const DIALOGUE_ALL: &str = "all";
 const DIALOGUE_FOLD: &str = "dialogue:all";

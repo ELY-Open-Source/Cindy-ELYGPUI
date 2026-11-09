@@ -49,8 +49,9 @@ pub struct Panels {
     tiles: [Option<(Bounds<Pixels>, Hitbox)>; 2],
     /// Whether each tile was in view at its last prepaint.
     visible: [bool; 2],
-    /// The panel list's Show all, reset with the panel.
+    /// The panel's task list Show all and its projects' Show all, reset with the panel.
     pub(super) show_all: bool,
+    pub(super) show_projects: bool,
     /// A panel row's menu ran an item, so the press that chose it stays inside.
     pub(super) chosen: bool,
     /// Focus has moved into a keyboard-opened panel.
@@ -70,7 +71,7 @@ pub fn open(section: Section, anchor: Bounds<Pixels>, opener: Option<FocusHandle
     let p = panels(cx);
     let via_keyboard = opener.is_some();
     if p.open != Some(section) {
-        p.show_all = false;
+        (p.show_all, p.show_projects) = (false, false);
     }
     (p.open, p.anchor, p.via_keyboard, p.close) = (Some(section), Some(anchor), via_keyboard, None);
     if p._escape.is_none() {
@@ -117,7 +118,8 @@ pub fn close_all(window: &mut Window, cx: &mut App) {
     let Some(section) = p.open.take() else {
         return;
     };
-    (p.anchor, p.via_keyboard, p.show_all, p.chosen) = (None, false, false, false);
+    (p.anchor, p.via_keyboard, p.chosen) = (None, false, false);
+    (p.show_all, p.show_projects) = (false, false);
     p._escape = None;
     let back = p.opener.take().filter(|_| p.visible[section.index()]);
     log::info!(target: "sidebar", "rail panel {} closed, focus back {}", section.key(), back.is_some());
