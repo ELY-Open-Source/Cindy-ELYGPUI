@@ -128,6 +128,7 @@ impl Render for Root {
             .children(edges)
             .child(self.actions.clone())
             .child(crate::sessions::interrupted::dialog::view(window, cx))
+            .children(crate::confirm::view(window, cx))
             .child(self.toasts.clone())
             .children(crate::localdb::screen(cx));
         FocusScope::new(&self.tab_scope).size_full().child(root)

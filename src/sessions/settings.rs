@@ -225,9 +225,12 @@ fn rebased(current: &[String], base: &[String], desired: &[String], platform: &s
     pinned_order(out)
 }
 
-/// `savePinnedOrder` through `updateAtomic`: the owner's order with `mutation` applied.
-pub fn save(owner_dir: &Path, mutation: &Mutation, platform: &str) -> Result<Vec<String>> {
-    mutation.check()?;
+/// `updateAtomic`: under the lock, the file's fields with one field set from `next`.
+fn update<T>(
+    owner_dir: &Path,
+    field: &str,
+    next: impl FnOnce(&Map<String, Value>) -> Result<(Value, T)>,
+) -> Result<T> {
     let path = owner_dir.join(FILE);
     writable(&path)?;
     std::fs::create_dir_all(owner_dir)?;
@@ -240,13 +243,12 @@ pub fn save(owner_dir: &Path, mutation: &Mutation, platform: &str) -> Result<Vec
         let fields = crate::cindy_json::read(&path, Some(MAX_BYTES))
             .context("sidebar settings file is unreadable; refusing to overwrite it")?
             .unwrap_or_default();
-        let current = pinned_order(strings(fields.get("pinnedOrder").map(|v| &**v)));
-        let next = pinned_order(mutation.apply(&current, platform));
         let mut overrides = Map::new();
         for (key, raw) in &fields {
             overrides.insert(key.clone(), crate::cindy_json::roundtrip(raw.get())?);
         }
-        overrides.insert("pinnedOrder".into(), Value::from(next.clone()));
+        let (value, out) = next(&overrides)?;
+        overrides.insert(field.into(), value);
         let text = serde_json::to_string_pretty(&Value::Object(overrides))?;
         if text.len() as u64 > MAX_BYTES {
             bail!("file exceeds {MAX_BYTES} byte limit");
@@ -254,7 +256,55 @@ pub fn save(owner_dir: &Path, mutation: &Mutation, platform: &str) -> Result<Vec
         let tmp = crate::cross_process_lock::append_suffix(&path, ".tmp");
         std::fs::write(&tmp, text).context("sidebar settings temp write")?;
         std::fs::rename(&tmp, &path).context("sidebar settings rename")?;
+        Ok(out)
+    })
+}
+
+/// `savePinnedOrder` through `updateAtomic`: the owner's order with `mutation` applied.
+pub fn save(owner_dir: &Path, mutation: &Mutation, platform: &str) -> Result<Vec<String>> {
+    mutation.check()?;
+    update(owner_dir, "pinnedOrder", |fields| {
+        let current = pinned_order(json_strings(fields.get("pinnedOrder")));
+        let next = pinned_order(mutation.apply(&current, platform));
         log::info!(target: "sidebar-settings", "pinned order saved: {} entries, changed {}", next.len(), next != current);
-        Ok(next)
+        Ok((Value::from(next.clone()), next))
+    })
+}
+
+fn json_strings(value: Option<&Value>) -> Vec<String> {
+    let Some(Value::Array(items)) = value else {
+        return Vec::new();
+    };
+    items
+        .iter()
+        .filter_map(|v| v.as_str().map(str::to_owned))
+        .collect()
+}
+
+/// `setProjectHidden` hiding a project: its key appended unless one spelling is there.
+pub fn hide(owner_dir: &Path, key: &str, platform: &str) -> Result<Vec<String>> {
+    let Some(key) = normalize_key(key).filter(|k| {
+        js_len(k) <= MAX_LENGTH
+            && ["local:", "remote:", "device:"]
+                .iter()
+                .any(|p| k.starts_with(p))
+    }) else {
+        bail!("invalid sidebar project key");
+    };
+    update(owner_dir, "hiddenProjectKeys", |fields| {
+        let raw = fields.get("hiddenProjectKeys").map(|v| v.to_string());
+        let raw = raw
+            .as_deref()
+            .and_then(|r| RawValue::from_string(r.to_owned()).ok());
+        let mut keys = hidden(js_strings(raw.as_deref()), platform);
+        let identity = compare(&key, platform);
+        if !keys.iter().any(|k| compare(k, platform) == identity) {
+            if keys.len() >= MAX_ENTRIES {
+                bail!("too many hidden sidebar projects");
+            }
+            keys.push(key.clone());
+            log::info!(target: "sidebar-settings", "project hidden: {} hidden", keys.len());
+        }
+        Ok((Value::from(keys.clone()), keys))
     })
 }

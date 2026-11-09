@@ -329,3 +329,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 2: FAIL. More's own hover face and icon colour still followed keyboard modality.
 - Fixed: More keeps its own hover that ignores input modality for its face and icon.
 - Round 3: PASS.
+
+## 8.10a2 Remove from sidebar
+- Round 1: PASS.

@@ -21,7 +21,8 @@ impl Render for List {
                 .size_full()
                 .flex()
                 .flex_col()
-                .children(super::list(window, cx)),
+                .children(super::list(window, cx))
+                .children(crate::confirm::view(window, cx)),
         )
     }
 }

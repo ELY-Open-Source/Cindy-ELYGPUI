@@ -58,7 +58,8 @@ defines scope and what 1:1 means.
   right click or the menu key: Rename, Pin or Unpin (`pin::project`, `project:<key>` promoted or
   removed), Copy deep link (`buildProjectDeepLink`). `project/rename.rs` is the alias field on a
   double click or Rename, `project/alias.rs` `useProjectAliases.updateAlias` and
-  `upsertProjectAlias` on the database worker. The header's other actions come with their tasks.
+  `upsertProjectAlias` on the database worker. `project/remove.rs` is Remove from sidebar: a
+  confirm, then `settings::hide` (`setProjectHidden`). The other actions come with their tasks.
   `src/cross_process_lock.rs` is the advisory tier of Cindy's `crossProcessLock.ts`: the
   `{pid, startedAt, nonce}` file, a 2 s heartbeat, nonce-bound release, and stale takeover
   under the `.reclaim.d` gate, with owner liveness from `kill(pid, 0)` and `ps` (PowerShell,
@@ -398,6 +399,9 @@ defines scope and what 1:1 means.
   by mouse or held Space (`press.rs`); the `transition.rs` transitions carry
   fill over `--motion-fast` (Oklab beside an `oklch()` token, else sRGB), the inset over
   `--motion-instant`. A disabled one keeps the arrow cursor, as `globals.css` does.
+- Confirm host: `src/confirm.rs` is `ConfirmDialogProvider`'s `confirm`: a queue per window, one
+  dialog at a time, the next 200ms after a close; `ask` answers on a oneshot, cancel unless
+  confirmed. Only the options its callers use are ported.
 - Cindy's `components/ui` primitives are drawn with Ely's (the toast action is Ely's secondary
   small `Button`); Cindy's `--text-N` is `appearance_settings::text_px`.
 - Panel swap: `layout_root/view/panel_drag.rs` ports `PanelDragController.tsx`. Each pane and split

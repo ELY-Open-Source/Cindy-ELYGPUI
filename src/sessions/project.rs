@@ -1,6 +1,7 @@
 //! `ProjectNode`'s `ProjectHeader`: folds, renames, and opens the project menu.
 
 mod alias;
+mod remove;
 mod rename;
 
 use std::rc::Rc;
@@ -55,14 +56,16 @@ fn copy_link(dir: &str, window: &mut Window, cx: &mut App) {
     toast::success(window, message, toast::Options::default(), cx);
 }
 
-/// Search, Show files, the file manager, Import, Remove and Archive all come with their tasks.
+/// Search, Show files, the file manager, Import and Archive all come with their tasks.
 fn menu(p: &Project, cx: &App) -> Menu {
     let t = cx.global::<Translator>();
     let label = |key: &str| t.t(&format!("ccAgent.sidebar.projectAction.{key}"), &[]);
     let pinned = pin::project_pinned(&p.key, cx);
     let (key, name, dir) = (p.key.clone(), p.name.clone(), p.dir.clone());
     let pin_key = p.key.clone();
-    Menu::new()
+    let (remove_key, remove_name) = (p.key.clone(), p.name.clone());
+    let local = p.key.starts_with("local:");
+    let menu = Menu::new()
         .item(
             MenuItem::new(label("rename"))
                 .on_click(move |window, cx| rename::start(&key, &name, window, cx)),
@@ -76,6 +79,14 @@ fn menu(p: &Project, cx: &App) -> Menu {
             MenuItem::new(label("copyDeepLink"))
                 .on_click(move |window, cx| copy_link(&dir, window, cx)),
         )
+        .separator();
+    if !local {
+        return menu;
+    }
+    menu.item(
+        MenuItem::new(label("removeFromSidebar"))
+            .on_click(move |window, cx| remove::remove(&remove_key, &remove_name, window, cx)),
+    )
 }
 
 /// `ProjectNode`'s header for `project`.
