@@ -268,7 +268,7 @@ listed in `tasks/done.md`.
           (`selectSessionsByIds`, missing rows dropped), companion names as `bots.list` gives
           them (`displayName` per linked task, newest profile first, the last one wins; a
           failed read gives none; default-bot provisioning comes with 14.0), newest first
-        - [ ] 8.8c2 `ConfirmDialog`'s `standard` presentation on Ely's primitives: the scrim
+        - [x] 8.8c2 `ConfirmDialog`'s `standard` presentation on Ely's primitives: the scrim
           that drags the window, the centered panel (`maxWidth`, 85vh, its scroll area),
           title, description, content, cancel first, the confirm's auto focus and disabled
           state; Escape and the buttons close it, a press on the scrim does not

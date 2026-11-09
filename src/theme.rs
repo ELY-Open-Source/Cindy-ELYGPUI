@@ -2,7 +2,7 @@ mod css;
 pub mod ely;
 pub mod local;
 mod normalize;
-mod oklch;
+pub mod oklch;
 pub mod omarchy;
 pub mod shell;
 

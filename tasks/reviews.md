@@ -296,3 +296,14 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 1: FAIL. `by_ids` put every id in one `IN`, so 32767 candidates passed SQLite's variable limit and the load gave up; Cindy reads 256 ids a query.
 - Fixed: 256-id batches merged by id (hash set and map), a test under a 300-variable limit.
 - Round 2: PASS.
+
+## 8.8c2 The confirm dialog
+- Round 1: FAIL. Held Space gave no press; the face jumped where Cindy's transitions; a disabled
+  confirm showed `not-allowed`; two-line comments.
+- Fixed: Space presses the face while focused; `transition.rs` runs the fill and inset; the
+  disabled cursor stays default; comments cut to one line.
+- Round 2: FAIL. Blur hid a Space press but kept it, so a release elsewhere left the old
+  button pressed on return; reduced motion did not stop a running fill.
+- Fixed: blur clears the press; a zero duration ends a running transition, as `transition:
+  none` does.
+- Round 3: PASS.

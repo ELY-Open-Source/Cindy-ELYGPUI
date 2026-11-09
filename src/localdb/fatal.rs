@@ -15,9 +15,6 @@ use crate::{
     appearance_settings::text_size, i18n::Translator, motion, theme::Appearance, units::css,
 };
 
-/// `--motion-enter`.
-const ENTER: std::time::Duration = std::time::Duration::from_millis(250);
-
 /// `resolveLocalDbFatalView`, less the updater views (chapter 23) and `corrupt`, which needs
 /// the backup restore this port never runs: title, description and the retry label if any.
 fn view(fatal: &Fatal, t: &dyn Fn(&str) -> String) -> (String, String, Option<String>) {
@@ -158,7 +155,7 @@ pub fn screen(cx: &App) -> Option<AnyElement> {
         .children(confirm)
         .with_animation(
             "local-db-fatal-in",
-            Animation::new(motion::length(ENTER, cx)).with_easing(motion::motion_ease_out),
+            Animation::new(motion::length(motion::ENTER, cx)).with_easing(motion::motion_ease_out),
             |el, d| el.opacity(d).mt(css(8.0 * (1.0 - d))),
         );
     let screen = div()

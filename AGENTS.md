@@ -363,6 +363,18 @@ defines scope and what 1:1 means.
   each Cindy renderer keeps its own; timers run on gpui's executor clock. `toast/view.rs` draws
   `Toast.tsx` and `ToastContainer.tsx`; its `Slide` element does the FLIP in prepaint, so the
   slide starts in the frame the new tops are known. `motion::ease_out` is CSS `ease-out`.
+  The container is deferred over every dialog, as its `z-[10100]` is.
+- Confirm dialog: `src/confirm_dialog.rs` is `ConfirmDialog`'s `standard` presentation on Ely's
+  `take_focus`, `give_back` and trapping `FocusScope`: a deferred scrim (`drag_region`, occluding,
+  a press closes nothing), the centered panel (`maxWidth`, 85vh, the body scrolls between title
+  and buttons), Escape through `intercept_keystrokes`. Radix's `Presence` is `Phase`: it fades in
+  over `--motion-enter` and out over `--motion-exit` on the executor clock, inert while it fades
+  out; gpui has no transform, so the panel rises without its 0.96 scale, and no backdrop blur.
+  `confirm_dialog/button.rs` draws Cindy's `Button` (`lg`, `confirmation` palette) itself, since
+  Ely's tones come from Ely's palette: the face on the border box, pressed in to the padding box
+  by mouse or held Space; `transition.rs` is a CSS transition with its reversing shortening, the
+  fill over `--motion-fast` (Oklab beside an `oklch()` token, else sRGB), the inset over
+  `--motion-instant`. A disabled one keeps the arrow cursor, as `globals.css` does.
 - Cindy's `components/ui` primitives are drawn with Ely's (the toast action is Ely's secondary
   small `Button`); Cindy's `--text-N` is `appearance_settings::text_px`.
 - Panel swap: `layout_root/view/panel_drag.rs` ports `PanelDragController.tsx`. Each pane and split

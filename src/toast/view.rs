@@ -272,7 +272,8 @@ impl Render for ToastContainer {
         let label = cx
             .global::<Translator>()
             .t("commonUi.toastContainer.ariaLabel", &[]);
-        div()
+        // `z-[10100]`: over every dialog.
+        let container = div()
             .id("toast-container")
             .aria_label(label)
             .absolute()
@@ -306,7 +307,8 @@ impl Render for ToastContainer {
                 div()
                     .max_w(viewport - units::window_px(32.0, cx))
                     .child(slide)
-            }))
+            }));
+        gpui::deferred(container).with_priority(crate::confirm_dialog::PRIORITY + 1)
     }
 }
 
