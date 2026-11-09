@@ -17,9 +17,22 @@ type Job = Box<dyn FnOnce(&Connection) + Send>;
 /// A handle to the database thread; dropping the last one closes the connection and the lease.
 #[derive(Clone)]
 pub struct Db {
-    jobs: mpsc::Sender<Job>,
+    jobs: Jobs,
     /// Which open this is, so a reopened database is told apart.
     open: u64,
+}
+
+#[derive(Clone)]
+enum Jobs {
+    Thread(mpsc::Sender<Job>),
+    /// The caller's thread runs each job: gpui's test scheduler refuses wakes from others.
+    #[cfg(test)]
+    Inline(std::sync::Arc<std::sync::Mutex<Connection>>),
+}
+
+fn next_open() -> u64 {
+    static OPENS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    OPENS.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
 }
 
 impl PartialEq for Db {
@@ -64,9 +77,19 @@ impl Db {
                 }
                 log::info!(target: "localDb", "local database closed");
             })?;
-        static OPENS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let open = OPENS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-        Ok(Self { jobs, open })
+        Ok(Self {
+            jobs: Jobs::Thread(jobs),
+            open: next_open(),
+        })
+    }
+
+    /// A database whose jobs run where they are called.
+    #[cfg(test)]
+    pub fn inline(connection: Connection) -> Self {
+        Self {
+            jobs: Jobs::Inline(std::sync::Arc::new(std::sync::Mutex::new(connection))),
+            open: next_open(),
+        }
     }
 
     /// Runs `job` on the database thread; the answer is dropped if the thread has stopped.
@@ -75,11 +98,17 @@ impl Db {
         job: impl FnOnce(&Connection) -> R + Send + 'static,
     ) -> futures::channel::oneshot::Receiver<R> {
         let (reply, answer) = futures::channel::oneshot::channel();
-        let job = Box::new(move |db: &Connection| {
+        let job: Job = Box::new(move |db: &Connection| {
             let _ = reply.send(job(db));
         });
-        if self.jobs.send(job).is_err() {
-            log::error!(target: "localDb", "the database thread has stopped");
+        match &self.jobs {
+            Jobs::Thread(jobs) => {
+                if jobs.send(job).is_err() {
+                    log::error!(target: "localDb", "the database thread has stopped");
+                }
+            }
+            #[cfg(test)]
+            Jobs::Inline(db) => job(&db.lock().expect("an unpoisoned test database")),
         }
         answer
     }

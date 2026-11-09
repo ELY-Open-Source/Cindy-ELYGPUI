@@ -433,3 +433,7 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 ## 8.7c1c searchConversations
 
 - Round 1: PASS. No findings.
+
+## 8.7c2a useConversationSearch search
+
+- Round 1: PASS. No findings.

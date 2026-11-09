@@ -89,5 +89,11 @@ pub fn ensure_ready(cx: &mut App) {
     .detach();
 }
 
+/// A ready database over `db`, its jobs run inline.
+#[cfg(test)]
+pub fn serve(db: rusqlite::Connection, cx: &mut App) {
+    cx.global_mut::<LocalDb>().state = State::Ready(worker::Db::inline(db));
+}
+
 #[cfg(test)]
 mod tests;

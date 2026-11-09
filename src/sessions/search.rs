@@ -18,6 +18,7 @@ use crate::{
 };
 
 mod options;
+pub mod run;
 
 pub use options::Options;
 
@@ -27,6 +28,7 @@ pub struct Search {
     pub options: Options,
     /// A choice in the open menu took the press under way.
     chosen: bool,
+    run: run::Run,
 }
 
 struct Field {
@@ -45,6 +47,7 @@ pub fn install(cx: &mut App) {
         field: None,
         options,
         chosen: false,
+        run: run::Run::default(),
     });
 }
 
@@ -76,6 +79,7 @@ fn field(window: &mut Window, cx: &mut App) -> Entity<TextInput> {
             if let Some(field) = cx.global_mut::<Search>().field.as_mut() {
                 field.query = text;
             }
+            run::sync(cx);
             cx.refresh_windows();
         }
     });
@@ -102,6 +106,7 @@ fn reset(cx: &mut App) {
         field.query.clear();
     }
     log::info!(target: "search", "query cleared");
+    run::sync(cx);
     cx.refresh_windows();
 }
 

@@ -121,6 +121,11 @@ defines scope and what 1:1 means.
   status, agent and last activity, reset and the reminder dot. Focus inside the menu stands for
   `menuOpen`; a press past the open menu clears the query once the press is done, unless a row
   took it (Ely chooses on mouse down).
+  `search/run.rs` is `useConversationSearch`'s effect: a change of the trimmed query or an option
+  starts over (dropped tasks clear the timers); the keyword pass at 250ms and the hybrid pass at
+  900ms run `searchConversations` on the database worker, only the latest publishes, the hybrid
+  page wins once it lands, and an empty page waits for both. `fanout` is the renderer's
+  `mergeConversationSearchFanout` (Cindy Make rows dropped, `max(userSendAt, updatedAt)`).
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
@@ -274,7 +279,8 @@ defines scope and what 1:1 means.
 - Channel tokens (`0 0% 64%`) are read through `Appearance::hsl_token`, as Tailwind's `hslVar`
   wraps them in `hsl()`; `token` takes full colors.
 - View tests use gpui's `test-support` (a dev-dependency) and drive real mouse events
-  (`src/layout_root/screen_tests.rs`). Live checks on Hyprland: `hl.dsp.cursor.move({ x, y })`,
+  (`src/layout_root/screen_tests.rs`). gpui's test scheduler fails a wake from another thread, so
+  tests serve the database through `localdb::serve` (`Db::inline` runs each job where it is called). Live checks on Hyprland: `hl.dsp.cursor.move({ x, y })`,
   `hl.dsp.window.float/resize/move({ window = "address:..", x, y })`; a click needs a uinput device.
 - userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.

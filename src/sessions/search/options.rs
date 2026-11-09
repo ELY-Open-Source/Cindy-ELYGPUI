@@ -107,12 +107,14 @@ fn set_sort(value: &'static str, cx: &mut App) {
     if let Err(error) = cx.global_mut::<Preferences>().set(SORT_KEY, value) {
         log::error!(target: "search", "sortBy not saved: {error:#}");
     }
+    super::run::sync(cx);
     cx.refresh_windows();
 }
 
 fn set(field: fn(&mut Options) -> &mut &'static str, value: &'static str, cx: &mut App) {
     *field(options(cx)) = value;
     log::info!(target: "search", "filter {value}");
+    super::run::sync(cx);
     cx.refresh_windows();
 }
 
@@ -121,6 +123,7 @@ fn reset(cx: &mut App) {
     let o = options(cx);
     (o.status, o.agent, o.last_activity) = ("all", "all", "all");
     log::info!(target: "search", "filters reset");
+    super::run::sync(cx);
     cx.refresh_windows();
 }
 

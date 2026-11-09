@@ -2,7 +2,7 @@
 //! `conversationSearch.pure.ts` and `chatHistorySearch`'s FTS pass.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the results list calls it in 8.7c2")
+    expect(dead_code, reason = "the results list reads the rest in 8.7c2b")
 )]
 
 pub mod conversations;

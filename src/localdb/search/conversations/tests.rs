@@ -12,9 +12,14 @@ use crate::{
 const DAY: i64 = 24 * 60 * 60 * 1000;
 const NOW: i64 = 100 * DAY;
 
-/// The columns `searchConversations` reads, with `messages_fts` as migration 0100 builds it.
 fn db() -> Connection {
     let db = Connection::open_in_memory().unwrap();
+    schema(&db);
+    db
+}
+
+/// The columns `searchConversations` reads, with `messages_fts` as migration 0100 builds it.
+pub(crate) fn schema(db: &Connection) {
     db.execute_batch(
         "CREATE TABLE sessions (id text PRIMARY KEY, title text NOT NULL DEFAULT 'New Maker',
            working_dir text, project_dir text, workspace_kind text NOT NULL DEFAULT 'project',
@@ -33,11 +38,10 @@ fn db() -> Connection {
          CREATE TABLE messages_fts_rows (fts_rowid integer PRIMARY KEY AUTOINCREMENT, message_id text UNIQUE);",
     )
     .unwrap();
-    cjk::register(&db).unwrap();
-    db
+    cjk::register(db).unwrap();
 }
 
-fn task(db: &Connection, id: &str, title: &str, updated: i64) {
+pub(crate) fn task(db: &Connection, id: &str, title: &str, updated: i64) {
     db.execute(
         "INSERT INTO sessions (id, title, updated_at) VALUES (?, ?, ?)",
         (id, title, updated),
@@ -45,7 +49,7 @@ fn task(db: &Connection, id: &str, title: &str, updated: i64) {
     .unwrap();
 }
 
-fn say(db: &Connection, id: &str, session: &str, content: &str) {
+pub(crate) fn say(db: &Connection, id: &str, session: &str, content: &str) {
     db.execute(
         "INSERT INTO messages (id, client_id, session_id, role, content, created_at)
          VALUES (?, ?, ?, 'user', ?, 1)",

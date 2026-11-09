@@ -344,7 +344,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
           vector pass is skipped as Cindy skips it while the embedding service is down (11.0)
         - [x] 8.7c1c `searchConversations`: titles and messages merged, filtered by the options
         - [ ] 8.7c2 The results list in place of the task list, the search row sticky over it
-            - [ ] 8.7c2a `useConversationSearch`'s search: the request from the shared query and
+            - [x] 8.7c2a `useConversationSearch`'s search: the request from the shared query and
               options (24 results, the unnamed label), the keyword pass after 250ms and the hybrid
               pass after 900ms on the database worker, only the latest request publishing, the
               local page merged as `mergeConversationSearchFanout` does (Cindy Make rows, its
