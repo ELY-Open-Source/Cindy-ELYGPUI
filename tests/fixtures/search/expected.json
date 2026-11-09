@@ -551,6 +551,424 @@
   "spaced",
   ""
  ],
+ "fts": {
+  "tokens": [
+   [
+    [
+     "login",
+     "bug"
+    ],
+    "\"login\" OR \"bug\""
+   ],
+   [
+    [
+     "边界"
+    ],
+    "\"边 界\""
+   ],
+   [
+    [
+     "边",
+     "界"
+    ],
+    "\"边\" OR \"界\""
+   ],
+   [
+    [
+     "foo登录bar"
+    ],
+    "\"foo 登 录 bar\""
+   ],
+   [
+    [
+     "say",
+     "hi",
+     "now",
+     "x",
+     "y",
+     "z"
+    ],
+    "\"say\" OR \"hi\" OR \"now\" OR \"x\" OR \"y\" OR \"z\""
+   ],
+   [
+    [
+     "Café",
+     "ñandú"
+    ],
+    "\"Café\" OR \"ñandú\""
+   ],
+   [
+    [
+     "éclair"
+    ],
+    "\"éclair\""
+   ],
+   [
+    [
+     "lead",
+     "mark"
+    ],
+    "\"lead\" OR \"mark\""
+   ],
+   [
+    [
+     "葛󠄀藤"
+    ],
+    "\"葛󠄀 藤\""
+   ],
+   [
+    [
+     "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    ],
+    "\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\""
+   ],
+   [
+    [
+     "x"
+    ],
+    "\"x\""
+   ],
+   [
+    [
+     "t0",
+     "t1",
+     "t2",
+     "t3",
+     "t4",
+     "t5",
+     "t6",
+     "t7",
+     "t8",
+     "t9",
+     "t10",
+     "t11",
+     "t12",
+     "t13",
+     "t14",
+     "t15",
+     "t16",
+     "t17",
+     "t18",
+     "t19",
+     "t20",
+     "t21",
+     "t22",
+     "t23",
+     "t24",
+     "t25",
+     "t26",
+     "t27",
+     "t28",
+     "t29",
+     "t30",
+     "t31"
+    ],
+    "\"t0\" OR \"t1\" OR \"t2\" OR \"t3\" OR \"t4\" OR \"t5\" OR \"t6\" OR \"t7\" OR \"t8\" OR \"t9\" OR \"t10\" OR \"t11\" OR \"t12\" OR \"t13\" OR \"t14\" OR \"t15\" OR \"t16\" OR \"t17\" OR \"t18\" OR \"t19\" OR \"t20\" OR \"t21\" OR \"t22\" OR \"t23\" OR \"t24\" OR \"t25\" OR \"t26\" OR \"t27\" OR \"t28\" OR \"t29\" OR \"t30\" OR \"t31\""
+   ],
+   [
+    [
+     "重复",
+     "dup",
+     "DUP"
+    ],
+    "\"重 复\" OR \"dup\" OR \"DUP\""
+   ],
+   [
+    [],
+    null
+   ],
+   [
+    [],
+    null
+   ],
+   [
+    [
+     "İstanbul",
+     "ΣΑΣ"
+    ],
+    "\"İstanbul\" OR \"ΣΑΣ\""
+   ],
+   [
+    [
+     "emoji",
+     "after"
+    ],
+    "\"emoji\" OR \"after\""
+   ],
+   [
+    [
+     "汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉"
+    ],
+    "\"汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉 汉\""
+   ],
+   [
+    [
+     "abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab",
+     "next"
+    ],
+    "\"abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab\" OR \"next\""
+   ],
+   [
+    [
+     "12",
+     "5",
+     "3",
+     "000"
+    ],
+    "\"12\" OR \"5\" OR \"3\" OR \"000\""
+   ]
+  ],
+  "visible": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false,
+   true,
+   true,
+   false,
+   true,
+   true,
+   true
+  ],
+  "fuse": [
+   [
+    [
+     "m1",
+     "0.01639344262295082",
+     1
+    ],
+    [
+     "m2",
+     "0.016129032258064516",
+     2
+    ],
+    [
+     "m3",
+     "0.015873015873015872",
+     3
+    ]
+   ],
+   [
+    [
+     "b",
+     "0.01639344262295082",
+     1
+    ],
+    [
+     "a",
+     "0.016129032258064516",
+     2
+    ],
+    [
+     "B",
+     "0.015873015873015872",
+     3
+    ],
+    [
+     "A",
+     "0.015625",
+     4
+    ]
+   ],
+   [
+    [
+     "x",
+     "0.032266458495966696",
+     3
+    ],
+    [
+     "y",
+     "0.016129032258064516",
+     2
+    ]
+   ],
+   []
+  ]
+ },
+ "mcpApp": [
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "chart",
+    "text": "one\n\ntwo"
+   }
+  },
+  {
+   "mcpApp": {
+    "version": 1,
+    "serverId": "s",
+    "serverRevision": "r",
+    "resourceUri": "ui://x",
+    "tool": {
+     "name": "chart",
+     "inputSchema": {
+      "type": "object"
+     }
+    },
+    "arguments": {
+     "q": "secret"
+    },
+    "result": {
+     "content": [
+      {
+       "type": "text",
+       "text": "one"
+      },
+      {
+       "type": "image",
+       "data": "x"
+      },
+      {
+       "type": "text",
+       "text": "two"
+      }
+     ],
+     "_meta": {
+      "m": 1
+     }
+    }
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "Chart",
+    "text": "one\n\ntwo"
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "chart",
+    "text": "one\n\ntwo"
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "chart",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "chart",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "T",
+    "text": "body"
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "",
+    "text": ""
+   }
+  },
+  {
+   "mcpAppHistory": {
+    "version": 1,
+    "title": "S",
+    "text": "s"
+   }
+  }
+ ],
  "merge": [
   {
    "relevance": [

@@ -28,7 +28,11 @@ defines scope and what 1:1 means.
   `fuzzy.rs` in UTF-16 positions, `visible.rs` the role's visible text (`Js` objects keep
   `Object.values` order), `snippet.rs` the preview and keyword snippet in code points, each code
   point folded alone, `forwarded.rs` `forwardedRequestDisplayText`, `merge.rs` the merged order
-  (ids on ICU's root collation).
+  (ids on ICU's root collation). `fts.rs` is `chatHistorySearch.pure.ts` (tokens, the OR match
+  through `cjk_seg`, the visible-token check, RRF) and `history.rs` `prepareChatHistorySearch` as
+  conversation search calls it: the FTS arm with its filter, the pool cap, pages of hit rows read
+  as `messageToCamel` reads them, App rows through `mcp_app.rs` (`projectMcpAppHistory`; the
+  caller resolves the trust labels). The vector arm reports Cindy's disabled skip reason until 11.0.
 - Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
   first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
   reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher

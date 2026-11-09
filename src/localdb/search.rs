@@ -6,7 +6,10 @@
 )]
 
 mod forwarded;
+pub mod fts;
 pub mod fuzzy;
+pub mod history;
+pub mod mcp_app;
 pub mod merge;
 pub mod snippet;
 pub mod visible;

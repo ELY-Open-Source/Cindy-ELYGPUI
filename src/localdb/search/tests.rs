@@ -1,7 +1,7 @@
 use serde_json::{Value, json};
 
 use super::{
-    PREVIEW_CHARS,
+    PREVIEW_CHARS, fts,
     fuzzy::title_match,
     merge::{ContentHit, Item, MatchKind, Sort, Summary, merge},
     snippet::content_preview,
@@ -151,5 +151,32 @@ fn results_merge_and_sort_as_cindy_merges_them() {
             let got: Vec<Value> = got.iter().map(shown).collect();
             assert_eq!(Value::from(got), want[key], "{} {key}", case["name"]);
         }
+    }
+}
+
+#[test]
+fn fts_queries_and_fusion_match_chat_history_search_pure() {
+    let (cases, expected) = golden();
+    let (cases, want) = (&cases["fts"], &expected["fts"]);
+    for (query, want) in pairs(cases, want, "tokens") {
+        let query = query.as_str().unwrap();
+        let got = json!([fts::tokens(query), fts::messages_match(query)]);
+        assert_eq!(&got, want, "{query:?}");
+    }
+    for (case, want) in pairs(cases, want, "visible") {
+        let (text, query) = (case[0].as_str().unwrap(), case[1].as_str().unwrap());
+        assert_eq!(
+            Value::from(fts::visible_matches(text, query)),
+            *want,
+            "{case}"
+        );
+    }
+    for (ids, want) in pairs(cases, want, "fuse") {
+        let ids: Vec<String> = serde_json::from_value(ids.clone()).unwrap();
+        let got: Vec<Value> = fts::fuse(&ids)
+            .iter()
+            .map(|e| json!([e.message_id, js_number(e.score), e.fts_rank]))
+            .collect();
+        assert_eq!(Value::from(got), *want, "{ids:?}");
     }
 }

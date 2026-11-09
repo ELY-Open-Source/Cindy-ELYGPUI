@@ -51,6 +51,8 @@ try {
     "export { markdownPreviewText } from './shared/markdownPreviewText';",
     "export { finalizePlainPreview } from './main/localDb/mapper';",
     "export * as conversationSearch from './main/localDb/conversationSearch.pure';",
+    "export * as chatHistoryPure from './main/localDb/chatHistorySearch.pure';",
+    "export { projectMcpAppContent } from '@cindy/maker-shared/mcp-apps';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -62,7 +64,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -321,6 +323,12 @@ try {
       cs.normalizeConversationContentPreview(role, content, query, max ?? undefined, meta)),
     visible: search.visible.map(([role, content, preserveWhitespace]) =>
       cs.visibleMessageText(role, content, { preserveWhitespace })),
+    fts: {
+      tokens: search.fts.tokens.map((q) => [chatHistoryPure.extractMessagesFtsTokens(q), chatHistoryPure.buildMessagesFtsMatch(q)]),
+      visible: search.fts.visible.map(([text, q]) => chatHistoryPure.visibleTextMatchesMessagesFtsQuery(text, q)),
+      fuse: search.fts.fuse.map((ids) => chatHistoryPure.fuseRRF(ids, []).map((e) => [e.messageId, String(e.score), e.ftsRank])),
+    },
+    mcpApp: search.mcpApp.map(([content, marked]) => projectMcpAppContent(content, marked) ?? null),
     merge: search.merge.map((c) => Object.fromEntries(['relevance', 'activityDesc', 'activityAsc'].map((sortBy) =>
       [sortBy, cs.mergeConversationSearchResults({ ...structuredClone(c), sortBy }).map(item)]))),
   });

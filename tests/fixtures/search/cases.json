@@ -899,5 +899,566 @@
    "titleMatches": [],
    "contentHits": []
   }
+ ],
+ "fts": {
+  "tokens": [
+   "login bug",
+   "边界",
+   "边，界",
+   "foo登录bar",
+   "say \"hi\" (now) -x *y:z",
+   "Café ñandú",
+   "éclair",
+   "́lead mark",
+   "葛󠄀藤",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "x",
+   "t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21 t22 t23 t24 t25 t26 t27 t28 t29 t30 t31 t32 t33 t34 t35 t36 t37 t38 t39",
+   "重复 重复 dup DUP dup",
+   "",
+   "!!!",
+   "İstanbul ΣΑΣ",
+   "emoji 😀 after",
+   "汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉",
+   "abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab next",
+   "12.5% 3,000"
+  ],
+  "visible": [
+   [
+    "Login failed with BUG",
+    "bug"
+   ],
+   [
+    "边，界",
+    "边界"
+   ],
+   [
+    "边界",
+    "边，界"
+   ],
+   [
+    "foo登录bar",
+    "登录"
+   ],
+   [
+    "登 录",
+    "登录"
+   ],
+   [
+    "",
+    "x"
+   ],
+   [
+    "!!!",
+    "!!!"
+   ],
+   [
+    "Café",
+    "cafe"
+   ],
+   [
+    "CAFÉ au lait",
+    "café"
+   ],
+   [
+    "the runners ran",
+    "running"
+   ],
+   [
+    "file.txt attached",
+    "txt"
+   ],
+   [
+    "ΣΑΣ",
+    "σας"
+   ],
+   [
+    "İstanbul",
+    "istanbul"
+   ],
+   [
+    "a b c",
+    "b c"
+   ],
+   [
+    "a c b",
+    "b c"
+   ],
+   [
+    "éclair",
+    "éclair"
+   ]
+  ],
+  "fuse": [
+   [
+    "m1",
+    "m2",
+    "m3"
+   ],
+   [
+    "b",
+    "a",
+    "B",
+    "A"
+   ],
+   [
+    "x",
+    "y",
+    "x"
+   ],
+   []
+  ]
+ },
+ "mcpApp": [
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   false
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "title": "Chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   "{\"mcpApp\": {\"version\": 1, \"serverId\": \"s\", \"serverRevision\": \"r\", \"resourceUri\": \"ui://x\", \"tool\": {\"name\": \"chart\", \"inputSchema\": {\"type\": \"object\"}}, \"arguments\": {\"q\": \"secret\"}, \"result\": {\"content\": [{\"type\": \"text\", \"text\": \"one\"}, {\"type\": \"image\", \"data\": \"x\"}, {\"type\": \"text\", \"text\": \"two\"}], \"_meta\": {\"m\": 1}}}}",
+   true
+  ],
+  [
+   "not json",
+   true
+  ],
+  [
+   null,
+   true
+  ],
+  [
+   [
+    1
+   ],
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 2,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "http://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": [],
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": 0
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": "x"
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "object"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": "no"
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpApp": {
+     "version": 1,
+     "serverId": "s",
+     "serverRevision": "r",
+     "resourceUri": "ui://x",
+     "tool": {
+      "name": "chart",
+      "inputSchema": {
+       "type": "string"
+      }
+     },
+     "arguments": {
+      "q": "secret"
+     },
+     "result": {
+      "content": [
+       {
+        "type": "text",
+        "text": "one"
+       },
+       {
+        "type": "image",
+        "data": "x"
+       },
+       {
+        "type": "text",
+        "text": "two"
+       }
+      ],
+      "_meta": {
+       "m": 1
+      }
+     }
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpAppHistory": {
+     "version": 1,
+     "title": "T",
+     "text": "body"
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpAppHistory": {
+     "version": 2,
+     "title": "T",
+     "text": "body"
+    }
+   },
+   true
+  ],
+  [
+   {
+    "mcpAppHistory": {
+     "version": 1,
+     "title": "T"
+    }
+   },
+   true
+  ],
+  [
+   {
+    "text": "ordinary"
+   },
+   true
+  ],
+  [
+   "{\"mcpAppHistory\": {\"version\": 1, \"title\": \"S\", \"text\": \"s\"}}",
+   true
+  ]
  ]
 }

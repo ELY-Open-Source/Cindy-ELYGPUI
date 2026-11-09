@@ -340,7 +340,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       project, archived tasks' included
         - [x] 8.7c1a `conversationSearch.pure.ts`: title fuzzy match, keyword ranges, snippets,
           message text extraction and the sort, checked against golden `tests/fixtures/search`
-        - [ ] 8.7c1b `chatHistorySearch`'s FTS pass over `messages_fts` through `cjk_seg`; the
+        - [x] 8.7c1b `chatHistorySearch`'s FTS pass over `messages_fts` through `cjk_seg`; the
           vector pass is skipped as Cindy skips it while the embedding service is down (11.0)
         - [ ] 8.7c1c `searchConversations`: titles and messages merged, filtered by the options
         - [ ] 8.7c2 The results list in place of the task list, the search row sticky over it

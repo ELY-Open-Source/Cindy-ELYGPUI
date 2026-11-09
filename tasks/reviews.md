@@ -423,3 +423,9 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 
 - Round 1: PASS. No findings. Before the verdict, the content argument moved from the raw column
   to `JSON.parse`'s value, as `messageToCamel` hands it.
+
+## 8.7c1b The FTS pass
+
+- Round 1: FAIL. `messageToCamel` lost `projectMcpAppHistory`, so App rows exposed private card
+  fields to search. Fixed: `mcp_app.rs` ports the projection, trust title from the caller's labels.
+- Round 2: PASS.

@@ -34,6 +34,11 @@ pub fn letter_or_number(ch: char) -> bool {
     within(&classes().letter_or_number, ch)
 }
 
+/// V8's `\p{M}`.
+pub fn mark(ch: char) -> bool {
+    within(&classes().mark, ch)
+}
+
 /// `cjkSeg`: a space between Han characters, and between Han and a letter or digit.
 pub fn seg(text: &str) -> String {
     let c = classes();

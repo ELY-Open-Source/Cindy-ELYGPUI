@@ -8,7 +8,7 @@ use indexmap::IndexMap;
 use super::fuzzy::TitleMatch;
 
 /// `localeCompare` for ids, Cindy's main process on ICU's root order.
-static COLLATOR: LazyLock<CollatorBorrowed<'static>> = LazyLock::new(|| {
+pub(super) static COLLATOR: LazyLock<CollatorBorrowed<'static>> = LazyLock::new(|| {
     CollatorBorrowed::try_new(Default::default(), Default::default())
         .expect("the compiled root collation loads")
 });
@@ -57,7 +57,7 @@ pub struct Item {
 }
 
 /// A JavaScript difference in a comparator: `NaN` and zero both fall through.
-fn sign(diff: f64) -> Ordering {
+pub(super) fn sign(diff: f64) -> Ordering {
     diff.partial_cmp(&0.0).unwrap_or(Ordering::Equal)
 }
 
