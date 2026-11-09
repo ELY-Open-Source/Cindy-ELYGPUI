@@ -495,5 +495,5 @@ defines scope and what 1:1 means.
 - Errors surface: no fallback that hides a failure. Log each key step.
 - No file over 500 lines (vendored upstream code apart). Comments only where needed, one short line.
 - `TASKS.md` is progress truth; finished chapters move to `tasks/done.md`, their reviews to
-  `tasks/reviews-done.md`. One task, one review pass, one commit, one push.
+  `tasks/reviews-done*.md`. One task, one review pass, one commit, one push.
 - Update this file when the stack or direction changes.

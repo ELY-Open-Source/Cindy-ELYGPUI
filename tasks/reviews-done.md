@@ -262,4 +262,3 @@ Chapters 1 to 7 of `tasks/reviews.md`, moved here with their tasks in `tasks/don
 - Round 1: FAIL. Missing paths with `..` were not folded as `path.resolve` does; the
   official-profile refusal panicked instead of the FATAL line and exit 1.
 - Round 2: PASS.
-
