@@ -33,6 +33,9 @@ defines scope and what 1:1 means.
   conversation search calls it: the FTS arm with its filter, the pool cap, pages of hit rows read
   as `messageToCamel` reads them, App rows through `mcp_app.rs` (`projectMcpAppHistory`; the
   caller resolves the trust labels). The vector arm reports Cindy's disabled skip reason until 11.0.
+  `conversations.rs` is `searchConversations` for the owner's own search (no host scope, so no
+  source filter or remote aliases): candidates with their companions, title matches on the shown
+  title, up to three content pages, then merged results with live message counts.
 - Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
   first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
   reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher

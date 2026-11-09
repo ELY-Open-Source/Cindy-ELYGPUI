@@ -21,21 +21,48 @@ pub enum Sort {
     ActivityAsc,
 }
 
-/// The fields of `ConversationSearchSessionSummary` the order reads.
+/// The companion a search result belongs to.
 #[derive(Debug, Clone, PartialEq)]
-pub struct Summary {
+pub struct Companion {
     pub id: String,
-    /// `updatedAt` in ms.
-    pub updated_at: i64,
+    pub name: String,
+    pub role: String,
+    pub read_only: bool,
 }
 
-/// The fields of `ConversationSearchContentHit` the order reads.
-#[derive(Debug, Clone, PartialEq)]
+/// `ConversationSearchSessionSummary`; times in ms.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct Summary {
+    pub id: String,
+    pub title: String,
+    pub working_dir: Option<String>,
+    pub project_dir: Option<String>,
+    pub workspace_kind: String,
+    pub agent_kind: &'static str,
+    pub status: String,
+    pub source: String,
+    pub orca_role: Option<String>,
+    pub parent_session_id: Option<String>,
+    pub companion: Option<Companion>,
+    pub user_send_at: Option<i64>,
+    pub updated_at: i64,
+    pub created_at: i64,
+    /// `_count.messages`.
+    pub messages: i64,
+}
+
+/// `ConversationSearchContentHit`; `vectorRank` arrives with 11.0.
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct ContentHit {
     pub message_id: String,
+    pub client_id: String,
+    pub role: String,
     /// `createdAt` in ms.
     pub created_at: i64,
+    pub snippet: Option<String>,
+    pub preview: String,
     pub score: f64,
+    pub fts_rank: Option<usize>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]

@@ -108,6 +108,16 @@ pub fn grouping(raw: Option<&str>) -> Option<String> {
     Some(worktree_base(&out, &GROUPING, true).unwrap_or(out))
 }
 
+/// `normalizeWorkingDirForComparison`: the grouping form, Windows folders lowered.
+pub fn comparison(raw: Option<&str>) -> Option<String> {
+    let out = grouping(raw)?;
+    Some(if windows_like(&out) {
+        out.to_lowercase()
+    } else {
+        out
+    })
+}
+
 /// `encodeURIComponent`.
 pub fn encode_component(text: &str) -> String {
     let keep = |b: u8| b.is_ascii_alphanumeric() || b"-_.!~*'()".contains(&b);

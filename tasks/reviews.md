@@ -429,3 +429,7 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 - Round 1: FAIL. `messageToCamel` lost `projectMcpAppHistory`, so App rows exposed private card
   fields to search. Fixed: `mcp_app.rs` ports the projection, trust title from the caller's labels.
 - Round 2: PASS.
+
+## 8.7c1c searchConversations
+
+- Round 1: PASS. No findings.

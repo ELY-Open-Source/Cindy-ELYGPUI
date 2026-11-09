@@ -93,6 +93,7 @@ fn summary(value: &Value) -> Summary {
     Summary {
         id: value["id"].as_str().unwrap().to_owned(),
         updated_at: ms(&value["updatedAt"]),
+        ..Summary::default()
     }
 }
 
@@ -137,6 +138,7 @@ fn results_merge_and_sort_as_cindy_merges_them() {
                     message_id: c["hit"]["messageId"].as_str().unwrap().to_owned(),
                     created_at: ms(&c["hit"]["createdAt"]),
                     score: c["hit"]["score"].as_f64().unwrap(),
+                    ..ContentHit::default()
                 };
                 (summary(&c["session"]), hit)
             })

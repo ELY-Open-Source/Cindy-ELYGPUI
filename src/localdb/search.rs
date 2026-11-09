@@ -1,10 +1,11 @@
-//! `conversationSearch.pure.ts`: title matching, the visible text of a message, its preview
-//! and snippet, and the merged, sorted results.
+//! Conversation search as Cindy's main process runs it: `searchConversations` over
+//! `conversationSearch.pure.ts` and `chatHistorySearch`'s FTS pass.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "searchConversations calls it in 8.7c1c")
+    expect(dead_code, reason = "the results list calls it in 8.7c2")
 )]
 
+pub mod conversations;
 mod forwarded;
 pub mod fts;
 pub mod fuzzy;

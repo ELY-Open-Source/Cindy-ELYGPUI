@@ -14,7 +14,7 @@ mod marquee;
 mod masonry;
 mod meta;
 mod open;
-mod paths;
+pub(crate) mod paths;
 mod pin;
 mod pinned;
 pub(crate) mod preview;
@@ -30,7 +30,7 @@ mod settings;
 mod sortable;
 mod sweep;
 mod task_menu;
-mod title;
+pub(crate) mod title;
 mod view_mode;
 mod write;
 

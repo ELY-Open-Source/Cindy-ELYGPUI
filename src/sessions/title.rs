@@ -11,7 +11,7 @@ use crate::{
 };
 
 /// `DEFAULT_DRAFT_SESSION_TITLE`, the untitled sentinel.
-const DRAFT: &str = "New Maker";
+pub const DRAFT: &str = "New Maker";
 pub(super) const SCHEDULE_PREFIX: &str = "[Schedule] ";
 const MAKE: &str = "cindy-make";
 const MAKE_MERGE: &str = "cindy-make-merge";
