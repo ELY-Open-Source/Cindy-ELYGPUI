@@ -316,7 +316,7 @@ listed in `tasks/done.md`.
     read aloud and voice with 22.0; the Cindy Make gates stay off (`CINDY_MAKE_ENABLED`). Mermaid,
     KaTeX and highlight.js have no gpui counterpart: their tasks choose the renderer from evidence
     that it matches Cindy's output, and record the choice here
-- [ ] 9.1 The history read as `local-db:messages:view` and `local-db:messages:work-details` serve
+- [x] 9.1 The history read as `local-db:messages:view` and `local-db:messages:work-details` serve
   it: `historyViewReader.ts`'s pages (`HISTORY_VIEW_PAGE_BYTES`, `HISTORY_VIEW_PAGE_ITEMS`, the
   scan limits), `historyViewOutline.ts`'s outline rows, `projectHistoryView`'s items and work
   summaries, the cleared and rewound cuts, `restoreTaskImageRows`, rows read as `messageToCamel`
