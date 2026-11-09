@@ -3,9 +3,10 @@
 use std::cmp::Ordering;
 
 use gpui::{
-    AnyElement, App, DispatchPhase, FocusHandle, Hitbox, HitboxBehavior, InteractiveElement as _,
-    IntoElement, MouseDownEvent, MouseMoveEvent, ParentElement as _, Pixels, Point,
-    StatefulInteractiveElement as _, Styled as _, Window, anchored, canvas, deferred, div, point,
+    AnyElement, App, Bounds, DispatchPhase, FocusHandle, Hitbox, HitboxBehavior,
+    InteractiveElement as _, IntoElement, MouseDownEvent, MouseMoveEvent, ParentElement as _,
+    Pixels, Point, StatefulInteractiveElement as _, Styled as _, Window, anchored, canvas,
+    deferred, div, point,
 };
 
 use super::sections::{self, Panels, Section};
@@ -29,11 +30,13 @@ const DIALOGUE_LIMIT_KEY: &str = "sidebar.collapse.dialogueLimit";
 /// `w-[264px]`.
 const WIDTH: f32 = 264.0;
 
-/// The open panel's hitbox and focus this frame, for the listeners.
+/// Each level's hitbox and focus this frame, and the project rows', for the listeners.
 #[derive(Default)]
 struct Shell {
-    hitbox: Option<Hitbox>,
-    focus: Option<FocusHandle>,
+    hitbox: [Option<Hitbox>; 2],
+    focus: [Option<FocusHandle>; 2],
+    /// Each project row's key, bounds and hitbox.
+    rows: Vec<(String, Bounds<Pixels>, Hitbox)>,
 }
 
 impl gpui::Global for Shell {}
@@ -46,12 +49,12 @@ pub(super) fn suppressed(window: &Window, cx: &App) -> bool {
         .as_ref()
         .is_some_and(|e| e.scope == Scope::Rail);
     // Ely's menus hold a focus outside the tab order while open; rows and More are tab stops.
-    let shell = cx.try_global::<Shell>().and_then(|s| s.focus.as_ref());
-    let menu = shell.is_some_and(|panel| {
+    let focus = cx.try_global::<Shell>().map(|s| s.focus.clone());
+    let menu = focus.into_iter().flatten().flatten().any(|panel| {
         panel.contains_focused(window, cx)
             && window
                 .focused(cx)
-                .is_some_and(|f| !f.tab_stop && f != *panel)
+                .is_some_and(|f| !f.tab_stop && f != panel)
     });
     editing || menu
 }
@@ -69,7 +72,7 @@ fn by_recency(a: &Session, b: &Session) -> Ordering {
         .then_with(|| COLLATOR.compare(&a.id, &b.id))
 }
 
-/// The open panel deferred over the content, and the listeners both panels share.
+/// The open panels deferred over the content, and the listeners they share.
 pub fn panel(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
     cx.set_global(Shell::default());
     let p = cx.default_global::<Panels>();
@@ -84,16 +87,35 @@ pub fn panel(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
         Section::Dialogues => dialogues(cx),
         Section::Projects => projects::body(window, cx),
     };
+    let mut out = vec![watch, shell(0, anchor, body, window, cx)];
+    if let Some((anchor, body)) = level::body(cx) {
+        out.push(shell(1, anchor, body, window, cx));
+    }
+    out
+}
+
+/// `RailPanelShell` at `level` 0 or 1, beside `anchor`.
+fn shell(
+    level: usize,
+    anchor: Bounds<Pixels>,
+    body: AnyElement,
+    window: &mut Window,
+    cx: &mut App,
+) -> AnyElement {
+    let (id, gap) = match level {
+        0 => ("rail-panel", 12.0),
+        _ => ("rail-project-panel", 8.0),
+    };
     let focus = window
-        .use_keyed_state("rail-panel-focus", cx, |_, cx| cx.focus_handle())
+        .use_keyed_state(format!("{id}-focus"), cx, |_, cx| cx.focus_handle())
         .read(cx)
         .clone();
-    cx.default_global::<Shell>().focus = Some(focus.clone());
-    focus_in(&focus, window, cx);
+    cx.default_global::<Shell>().focus[level] = Some(focus.clone());
+    focus_in(&focus, level, window, cx);
     let appearance = cx.global::<Appearance>();
     let shell = div()
-        .id("rail-panel")
-        .debug_selector(|| "rail-panel".into())
+        .id(id)
+        .debug_selector(move || id.into())
         .track_focus(&focus)
         .occlude()
         .w(css(WIDTH))
@@ -105,9 +127,9 @@ pub fn panel(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
         .shadow(vec![appearance.shadow_token("shadow-menu", cx)])
         .child(
             canvas(
-                |bounds, window, cx| {
+                move |bounds, window, cx| {
                     let hitbox = window.insert_hitbox(bounds, HitboxBehavior::Normal);
-                    cx.default_global::<Shell>().hitbox = Some(hitbox);
+                    cx.default_global::<Shell>().hitbox[level] = Some(hitbox);
                 },
                 |_, _, _, _| {},
             )
@@ -116,34 +138,42 @@ pub fn panel(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
         )
         .child(body);
     let at = point(
-        anchor.right() + window_px(12.0, cx),
+        anchor.right() + window_px(gap, cx),
         anchor.top() - window_px(6.0, cx),
     );
-    let shell = deferred(
+    deferred(
         anchored()
             .position(at)
             .snap_to_window_with_margin(window_px(8.0, cx))
             .child(shell),
     )
-    .with_priority(1)
-    .into_any_element();
-    vec![watch, shell]
+    // `z-[48]`, then `z-[49]` for the project level.
+    .with_priority(1 + level)
+    .into_any_element()
 }
 
-/// A keyboard open moves focus to the panel's first stop, once; with none it stays put.
-fn focus_in(panel: &FocusHandle, window: &mut Window, cx: &mut App) {
+/// A keyboard open moves focus to the level's first stop, once; with none it stays put.
+fn focus_in(panel: &FocusHandle, level: usize, window: &mut Window, cx: &mut App) {
     let p = cx.global_mut::<Panels>();
-    if !p.via_keyboard || p.focused_in {
+    let flag = match level {
+        0 => p.via_keyboard.then_some(&mut p.focused_in),
+        _ => p
+            .project
+            .as_mut()
+            .filter(|o| o.via_keyboard)
+            .map(|o| &mut o.focused_in),
+    };
+    let Some(flag) = flag.filter(|f| !**f) else {
         return;
-    }
-    p.focused_in = true;
+    };
+    *flag = true;
     let panel = panel.clone();
     window.defer(cx, move |window, cx| {
         let before = window.focused(cx);
         window.focus(&panel, cx);
         window.focus_next(cx);
         let inside = panel.contains_focused(window, cx) && !panel.is_focused(window);
-        log::info!(target: "sidebar", "rail panel: focus moved in {inside}");
+        log::info!(target: "sidebar", "rail panel {level}: focus moved in {inside}");
         if !inside && let Some(before) = before {
             window.focus(&before, cx);
         }
@@ -197,7 +227,10 @@ fn dialogues(cx: &mut App) -> AnyElement {
     let title = cx
         .global::<Translator>()
         .t("ccAgent.sidebar.railNav.dialogues", &[]);
-    let rows = entry_list(&visible, hidden, sessions.len(), now, cx);
+    let more = ShowAll::new("rail-panel-show-all".into(), sessions.len(), |cx| {
+        cx.global_mut::<Panels>().show_all = true
+    });
+    let rows = entry_list(&visible, hidden, more, now, cx);
     div()
         .flex()
         .flex_col()
@@ -210,7 +243,7 @@ fn dialogues(cx: &mut App) -> AnyElement {
 fn entry_list(
     visible: &[&Session],
     hidden: usize,
-    total: usize,
+    more: ShowAll,
     now: i64,
     cx: &mut App,
 ) -> Vec<AnyElement> {
@@ -219,9 +252,6 @@ fn entry_list(
         .map(|s| row(s, false, None, now, Scope::Rail, cx))
         .collect();
     if hidden > 0 {
-        let more = ShowAll::new("rail-panel-show-all".into(), total, |cx| {
-            cx.global_mut::<Panels>().show_all = true
-        });
         rows.push(more.into_any_element());
     }
     rows
@@ -239,13 +269,16 @@ fn scroll(children: Vec<AnyElement>) -> AnyElement {
         .into_any_element()
 }
 
-/// Whether `at` falls on the panel or a rail tile: `RAIL_PANEL_KEEPALIVE_SELECTOR`.
+/// Whether `at` hits the level's panel.
+fn on_level(level: usize, at: Point<Pixels>, window: &Window, cx: &App) -> bool {
+    cx.try_global::<Shell>()
+        .and_then(|s| s.hitbox[level].as_ref())
+        .is_some_and(|h| h.is_hovered_at(at, window))
+}
+
+/// Whether `at` falls on a panel or a rail tile: `RAIL_PANEL_KEEPALIVE_SELECTOR`.
 pub(super) fn inside(at: Point<Pixels>, window: &Window, cx: &App) -> bool {
-    let on_panel = cx
-        .try_global::<Shell>()
-        .and_then(|s| s.hitbox.as_ref())
-        .is_some_and(|h| h.is_hovered_at(at, window));
-    on_panel || sections::on_tile(at, window, cx)
+    on_level(0, at, window, cx) || on_level(1, at, window, cx) || sections::on_tile(at, window, cx)
 }
 
 /// The pointer keep-alive and a press outside, while the panel is open.
@@ -258,6 +291,7 @@ fn listen(window: &mut Window) {
             true => sections::cancel_close(cx),
             false => sections::schedule_close(window, cx),
         }
+        level::pointer(e.position, window, cx);
     });
     window.on_mouse_event(|e: &MouseDownEvent, phase, window, cx| {
         if phase != DispatchPhase::Capture || inside(e.position, window, cx) {
@@ -289,6 +323,7 @@ pub(super) fn escape(cx: &mut App) -> gpui::Subscription {
     })
 }
 
+mod level;
 mod projects;
 #[cfg(test)]
 mod tests;

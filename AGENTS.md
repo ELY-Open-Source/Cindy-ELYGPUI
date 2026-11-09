@@ -264,8 +264,11 @@ defines scope and what 1:1 means.
   `panels/projects.rs` is the Projects panel: `Lists.unclassified` (5, then Show all), then
   `Lists.rail_projects` (`visibleRailProjectsWithVendor`, pinned projects kept, unpinned tasks
   only, `sortProjectsForSidebar`; 20, then Show all), each row a tab stop. The Cindy Make group
-  is absent: `CINDY_MAKE_ENABLED` is off, so no such task loads. The project level comes with
-  8.7e3c2b; the lamps with 10.0.
+  is absent: `CINDY_MAKE_ENABLED` is off, so no such task loads. `panels/level.rs` is the
+  project level (`openProject`, `scheduleProjectClose`): a row's hover or click opens its tasks
+  8px right of the row in a second shell; its grace runs whenever the pointer is off the level
+  and every project row (both hitboxes, recorded in prepaint), so either hover order holds it.
+  A keyboard open on either level takes no grace and moves focus in. The lamps come with 10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

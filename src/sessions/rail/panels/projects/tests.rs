@@ -141,7 +141,7 @@ fn a_keyboard_open_focuses_the_first_project(cx: &mut TestAppContext) {
     let (_dir, cx) = rail(cx);
     key_open(cx, "rail-projects");
     let inside = cx.update(|window, cx| {
-        let shell = cx.global::<Shell>().focus.clone().unwrap();
+        let shell = cx.global::<Shell>().focus[0].clone().unwrap();
         shell.contains_focused(window, cx) && !shell.is_focused(window)
     });
     assert!(inside, "the project row took focus");

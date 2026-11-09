@@ -1,12 +1,13 @@
-//! The Projects panel: drafts, then a row per project; each row opens its level (8.7e3c2b).
+//! The Projects panel: drafts, then a row per project; each row opens its level.
 
 use ely_gpui_component::primitives::IconName;
 use gpui::{
-    AnyElement, App, ElementId, InteractiveElement as _, IntoElement, ParentElement as _, Role,
-    StatefulInteractiveElement as _, Styled as _, Window, div,
+    AnyElement, App, ClickEvent, ElementId, HoverListenerMode, InteractiveElement as _,
+    IntoElement, ParentElement as _, Role, StatefulInteractiveElement as _, Styled as _, Window,
+    canvas, div, prelude::FluentBuilder as _,
 };
 
-use super::{Panels, entry_list, head, scroll};
+use super::{Panels, entry_list, head, level, scroll};
 use crate::{
     appearance_settings::text_size,
     i18n::Translator,
@@ -37,7 +38,10 @@ pub(super) fn body(window: &mut Window, cx: &mut App) -> AnyElement {
     let now = jiff::Timestamp::now().as_millisecond();
     let since = Some(fold::recent_since(now));
     let (visible, hidden) = fold::view(&drafts, session_limit, show_all, since, |s| s.activity_at);
-    let mut children = entry_list(&visible, hidden, drafts.len(), now, cx);
+    let more = ShowAll::new("rail-panel-show-all".into(), drafts.len(), |cx| {
+        cx.global_mut::<Panels>().show_all = true
+    });
+    let mut children = entry_list(&visible, hidden, more, now, cx);
     let (shown, folded) = fold::view(&projects, project_limit, show_projects, None, |_| 0);
     children.extend(shown.into_iter().map(|p| row(p, window, cx)));
     if folded > 0 {
@@ -57,7 +61,7 @@ pub(super) fn body(window: &mut Window, cx: &mut App) -> AnyElement {
         .into_any_element()
 }
 
-/// A project's row: folder, name, task count, chevron; its lamp and dot come with 10.0.
+/// A project's row opens its level on hover or click; lamp and dot 10.0, its menu 8.10.
 fn row(p: &Project, window: &mut Window, cx: &mut App) -> AnyElement {
     let id = format!("rail-project-{}", p.key);
     let focus = window
@@ -68,16 +72,25 @@ fn row(p: &Project, window: &mut Window, cx: &mut App) -> AnyElement {
         )
         .read(cx)
         .clone();
+    let open = cx
+        .global::<Panels>()
+        .project
+        .as_ref()
+        .is_some_and(|o| o.key == p.key);
     let appearance = cx.global::<Appearance>();
     let tertiary = appearance.token("text-tertiary");
+    let hover = appearance.hsl_token("sidebar-item-hover");
     let selector = id.clone();
+    let (key, hover_key, click_key) = (p.key.clone(), p.key.clone(), p.key.clone());
+    let opener = focus.clone();
     div()
         .id(ElementId::Name(id.into()))
         .debug_selector(move || selector)
         .track_focus(&focus)
         .role(Role::MenuItem)
         .aria_label(p.name.clone())
-        .aria_expanded(false)
+        .aria_expanded(open)
+        .relative()
         .flex()
         .h(css(32.0))
         .w_full()
@@ -86,7 +99,29 @@ fn row(p: &Project, window: &mut Window, cx: &mut App) -> AnyElement {
         .rounded(css(8.0))
         .pl(css(10.0))
         .pr(css(6.0))
-        .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
+        .map(|el| match open {
+            true => el.bg(hover),
+            false => el.hover(move |s| s.bg(hover)),
+        })
+        // `onMouseEnter`: a key press is no leave, and a move back is no enter.
+        .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
+        .on_hover(move |on, _, cx| {
+            if *on {
+                level::open(&hover_key, None, cx);
+            }
+        })
+        .on_click(move |event: &ClickEvent, _, cx| {
+            let opener = event.is_keyboard().then(|| opener.clone());
+            level::open(&click_key, opener, cx);
+        })
+        .child(
+            canvas(
+                move |bounds, window, cx| level::record(key.clone(), bounds, window, cx),
+                |_, _, _, _| {},
+            )
+            .absolute()
+            .inset_0(),
+        )
         .child(lucide::icon(IconName::Folder.svg(), 13.0, 2.0).text_color(tertiary))
         .child(
             div()

@@ -265,3 +265,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: the rows sit in an inner column that does not shrink; the long-list test checks both
   heights.
 - Round 2: PASS.
+
+## 8.7e3c2b The rail project level
+- Round 1: FAIL. A Projects tile click that reset a keyboard-opened level left focus on the
+  tile; the project row's hover took a key press as a leave and a move back as an enter, so a
+  keyboard level turned into a mouse one and closed after the grace.
+- Fixed: `openSection` hands focus back to the keyboard row while Projects stays open; the row's
+  hover ignores input modality, as `onMouseEnter` does.
+- Round 2: PASS.

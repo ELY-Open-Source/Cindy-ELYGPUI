@@ -14,7 +14,7 @@ use crate::{
 };
 
 /// `RAIL_PANEL_CLOSE_GRACE_MS`.
-const CLOSE_GRACE: Duration = Duration::from_millis(120);
+pub(super) const CLOSE_GRACE: Duration = Duration::from_millis(120);
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Section {
@@ -35,7 +35,16 @@ impl Section {
     }
 }
 
-/// `railPanelStore`'s state; the project level and the lamp scope come with 8.7e3c2 and 10.0.
+/// The project level: `openProjectKey`, its anchor and keyboard flag, and its list's fold.
+pub(super) struct OpenProject {
+    pub(super) key: String,
+    pub(super) anchor: Bounds<Pixels>,
+    pub(super) via_keyboard: bool,
+    pub(super) focused_in: bool,
+    pub(super) show_all: bool,
+}
+
+/// `railPanelStore`'s state; the lamp scope comes with 10.0.
 #[derive(Default)]
 pub struct Panels {
     pub open: Option<Section>,
@@ -58,22 +67,36 @@ pub struct Panels {
     pub(super) focused_in: bool,
     close: Option<Task<()>>,
     _escape: Option<gpui::Subscription>,
+    pub(super) project: Option<OpenProject>,
+    /// `keyboardProjectReturnRef`: the project row a keyboard open hands focus back to.
+    pub(super) project_opener: Option<FocusHandle>,
+    pub(super) project_close: Option<Task<()>>,
 }
 
 impl Global for Panels {}
 
-fn panels(cx: &mut App) -> &mut Panels {
+pub(super) fn panels(cx: &mut App) -> &mut Panels {
     cx.default_global::<Panels>()
 }
 
 /// `openSection`: opens or switches the panel at `anchor`; a keyboard open remembers `opener`.
-pub fn open(section: Section, anchor: Bounds<Pixels>, opener: Option<FocusHandle>, cx: &mut App) {
+fn open(
+    section: Section,
+    anchor: Bounds<Pixels>,
+    opener: Option<FocusHandle>,
+    window: &mut Window,
+    cx: &mut App,
+) {
     let p = panels(cx);
     let via_keyboard = opener.is_some();
     if p.open != Some(section) {
         (p.show_all, p.show_projects) = (false, false);
     }
     (p.open, p.anchor, p.via_keyboard, p.close) = (Some(section), Some(anchor), via_keyboard, None);
+    // The project level closes; its keyboard row, still drawn under Projects, takes focus back.
+    let back = p.project.take().and(p.project_opener.take());
+    let back = back.filter(|_| section == Section::Projects);
+    p.project_close = None;
     if p._escape.is_none() {
         let escape = super::panels::escape(cx);
         panels(cx)._escape = Some(escape);
@@ -83,6 +106,10 @@ pub fn open(section: Section, anchor: Bounds<Pixels>, opener: Option<FocusHandle
         (p.opener, p.focused_in) = (opener, false);
     }
     log::info!(target: "sidebar", "rail panel {} opened, keyboard {via_keyboard}", section.key());
+    if let Some(back) = back {
+        log::info!(target: "sidebar", "rail project level reset, focus back to its row");
+        window.focus(&back, cx);
+    }
     cx.refresh_windows();
 }
 
@@ -120,6 +147,7 @@ pub fn close_all(window: &mut Window, cx: &mut App) {
     };
     (p.anchor, p.via_keyboard, p.chosen) = (None, false, false);
     (p.show_all, p.show_projects) = (false, false);
+    (p.project, p.project_opener, p.project_close) = (None, None, None);
     p._escape = None;
     let back = p.opener.take().filter(|_| p.visible[section.index()]);
     log::info!(target: "sidebar", "rail panel {} closed, focus back {}", section.key(), back.is_some());
@@ -157,7 +185,7 @@ fn open_at(section: Section, opener: Option<FocusHandle>, window: &mut Window, c
         log::warn!(target: "sidebar", "rail panel {}: tile not laid out", section.key());
         return;
     };
-    open(section, anchor, opener, cx);
+    open(section, anchor, opener, window, cx);
 }
 
 /// The two tiles, after the Pinned divider.

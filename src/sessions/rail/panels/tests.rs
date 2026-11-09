@@ -167,7 +167,7 @@ fn a_keyboard_open_moves_focus_in_and_escape_hands_it_back(cx: &mut TestAppConte
             .opener
             .clone()
             .expect("a keyboard opener");
-        let shell = cx.global::<Shell>().focus.clone().unwrap();
+        let shell = cx.global::<Shell>().focus[0].clone().unwrap();
         (
             opener,
             shell.contains_focused(window, cx) && !shell.is_focused(window),

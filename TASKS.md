@@ -145,7 +145,7 @@ listed in `tasks/done.md`.
       (`ccAgent.sidebar.bulkSelection`) with Clear; its Archive and Delete go to 18.0
     - [x] 8.6e The active row scrolled into view as `scrollIntoNearestView` does (`block:
       nearest`, smooth unless motion is reduced) when it becomes active
-- [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
+- [x] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles, with
   `useActiveMainView`'s active view and `navigateToView`
@@ -200,7 +200,7 @@ listed in `tasks/done.md`.
         - [x] 8.7d2 `SidebarNavigationCustomize` in place of the rows: the draft over the
           built-in entries (round checkbox rows, the grip's drag and arrow moves, Reset), Done
           storing nothing without a data owner, as `setSidebarNavigationPrefs(null)` does
-    - [ ] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as
+    - [x] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as
       `ConversationSearchBox`'s popover, and More
         - [x] 8.7e1 `CollapsedView` in place of the list while the sidebar is a rail and not
           peeking, both kept drawn and crossfading 200ms `ease-in-out`, the hidden one taking no
@@ -215,7 +215,7 @@ listed in `tasks/done.md`.
           scroller), focus on open; Escape, a press outside, focus leaving or the trigger close
           it and reset the query; a chosen result closes it; the inline search counts it as a
           popper
-        - [ ] 8.7e3 `RailNav`: the Pinned, Projects and Dialogues tiles with their hover panels
+        - [x] 8.7e3 `RailNav`: the Pinned, Projects and Dialogues tiles with their hover panels
             - [x] 8.7e3a The Pinned tiles: every pinned task (archived ones and Orca workers left
               out) in `manualPinnedOrder`, each a round tile with the status glyph and
               `pinnedTileLabel` under it, the active one in the selected pill; a click opens it,
@@ -223,19 +223,19 @@ listed in `tasks/done.md`.
               `handleRailPinnedReorder`; the divider after them
             - [x] 8.7e3b The Projects and Dialogues tiles opening `railPanelStore`'s panels on
               hover or click; their lamps come with 10.0
-            - [ ] 8.7e3c `RailPanels`: the panels' content as `ExpandedView` renders it
+            - [x] 8.7e3c `RailPanels`: the panels' content as `ExpandedView` renders it
                 - [x] 8.7e3c1 `RailPanelShell` and the Dialogues panel (its head and count, the
                   dialogue rows as the expanded group sorts and folds them), with both panels'
                   closes (pointer keep-alive, Escape, a press outside, the rail ending, the
                   trigger hidden) and the keyboard contract (focus in, focus back)
-                - [ ] 8.7e3c2 The Projects panel
+                - [x] 8.7e3c2 The Projects panel
                     - [x] 8.7e3c2a Its list: the unclassified tasks (5, then Show all; the
                       project filter that hides them comes with 13.0), then every project with
                       its pinned ones as `visibleRailProjectsWithVendor` lists them and
                       `sortProjectsForSidebar` orders them (20, then Show all), each row with
                       its folder, name, count and chevron. The Cindy Make group never shows:
                       `CINDY_MAKE_ENABLED` is off, so the list query has no such tasks
-                    - [ ] 8.7e3c2b The project level: a row's hover or click opens its tasks
+                    - [x] 8.7e3c2b The project level: a row's hover or click opens its tasks
                       beside it, with its own grace, keep-alive and keyboard contract
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
