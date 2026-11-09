@@ -85,6 +85,18 @@ listed in `tasks/done.md`.
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
   chapter owns), the message column with its width rules, the composer dock; loading, empty, not
   found and archived states; `useTrackLastView` keeps the slot
+  - [ ] 9.3a The route's task: `CindyMakeSessionGate` for a local task (the list's source, else
+    `getSessionFor`; missing or failed draws `SessionEntryError` with Back, failed adds Retry), the
+    task as the view resolves it (the database's `get` over the list row, archived ones kept), a
+    deleted task purged and left for `/cc-agent`, the store's `ensureInitialMessages`,
+    `enterView` and `leaveView` with the route; the provisional draft's redirect comes with 9.15
+  - [ ] 9.3b The content header: `SessionContentHeader` in the header slot for the route's task:
+    the pin mark, the title (`max-w-[40vw]`, its manual window drag) with the double-click rename
+    (`w-72 h-7`), More (`Ellipsis` 15 in `h-7 w-7`) opening `SessionTaskMenu` with the header's
+    handlers; device, schedule, tag, git and migration badges come with their chapters
+  - [ ] 9.3c The column: `useProportionalWidth` (the 914 floor, `compact` under 700), the message
+    area at `messageWidth` (rows come with 9.4 to 9.14), the composer dock (the `h-8` fade, the
+    `pb-5` zone at `inputPad`) that 9.15 fills
 - [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
   work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
   subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
