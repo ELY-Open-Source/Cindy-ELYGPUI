@@ -326,4 +326,4 @@ pub fn revision(db: &Connection, open: u64) -> Result<String> {
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

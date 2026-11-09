@@ -1,7 +1,7 @@
 //! `commandOutputPaths.ts`: the files a command's text says it writes. Offsets are bytes.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the history reader reads them in 9.1e")
+    expect(dead_code, reason = "the session slice reads them in 9.2")
 )]
 
 mod converters;

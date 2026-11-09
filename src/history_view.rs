@@ -1,7 +1,7 @@
 //! `historyView.ts`'s items and `historyViewProjection.ts`'s `projectHistoryView`.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the history reader reads them in 9.1e")
+    expect(dead_code, reason = "the session slice reads them in 9.2")
 )]
 
 use std::collections::{HashMap, HashSet};
@@ -15,6 +15,7 @@ use crate::{
 mod artifacts;
 pub mod json;
 pub mod outline;
+pub mod reader;
 pub mod rows;
 mod source;
 

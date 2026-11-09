@@ -335,7 +335,7 @@ listed in `tasks/done.md`.
     `validate`, `revision` on the database worker; tests on Cindy's schema
   - [x] 9.1d `withHistoryArtifacts`: dropped agent meta, `extractCommandOutputPathCandidates` with
     its cache, `createdPathsFromDescriptor`, the `command`, `file` and `fileChange` kinds; golden
-  - [ ] 9.1e `historyViewReader.ts`'s `page` (boundaries, safe starts, item and byte targets, scan
+  - [x] 9.1e `historyViewReader.ts`'s `page` (boundaries, safe starts, item and byte targets, scan
     budgets, sealed-answer context, outline then hydrate, revisions, in-flight share) and
     `details` (subagent, live and plain ranges, detail cache); tests from `historyViewReader.test.ts`.
     Work lines and page shapes come with 19.0, the first page's import with 10.0,

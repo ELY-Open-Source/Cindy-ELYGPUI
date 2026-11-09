@@ -376,3 +376,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 9.1d History artifacts
 - Round 1: PASS. Note: a token can start on a separator (`Out-File -FilePath ;out/`), so `tail.terminator < to` is not an equivalent mutant; the code matches Cindy.
+
+## 9.1e History reader
+- Round 1: PASS. The in-flight share is left out: reads run one job at a time on the database worker.

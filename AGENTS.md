@@ -115,11 +115,9 @@ defines scope and what 1:1 means.
 - Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
   `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.
-  Golden `tests/fixtures/command-intent` holds the literal inputs of Cindy's own tests, run
-  through Cindy's functions by `sync-golden.mjs`.
-  `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`,
-  `humanizeToolToken`), kept to the fields the row label and history read (an MCP call's
-  `createdPath`); golden `tests/fixtures/tool-use` projects Cindy's descriptor to them.
+  Golden `command-intent` holds the literal inputs of Cindy's tests, run through Cindy's code.
+  `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`, `humanizeToolToken`)
+  kept to the fields rows and history read; golden `tool-use` projects Cindy's descriptor to them.
 - History rows: `src/message_rows.rs` holds the row checks `projectHistoryView` reads, on rows
   as `messageToCamel` reads them (`parseMessageToolUse` with its gateway unwrap,
   `messageContentToPreview`, `isDeliveryProseText` with JS `\s` and line terminators,
@@ -137,12 +135,14 @@ defines scope and what 1:1 means.
   `source.rs` `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order.
   `rows.rs` is `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
   `messageToCamelWithRowid` (`localdb/camel.rs`, shared with search); `outline.rs` the outline SQL,
-  as Cindy's drizzle renders it; `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048);
-  `src/js_date.rs` is `Date.parse` and `toISOString`.
+  as Cindy's drizzle renders it; `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048).
+  `reader.rs` is `createHistoryViewReader` over `Deps` (`db.rs` the database's; turns and live
+  rows come with 10.0): `page`, `details` and the detail cache. Its tests port Cindy's on a fake.
+  Reads run one job at a time on the database worker, so the in-flight share has nothing to join.
   `src/command_output.rs` is `commandOutputPaths.ts`: `js_re` turns JS regex sources into Rust's,
   lookarounds scanned by hand; offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's
-  half is U+FFFD). Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts`
-  (a lease) and `remoteMirrorCache.test.ts`; `history-artifacts` adds `cases.json`.
+  half is U+FFFD). `src/js_date.rs` is `Date.parse` and `toISOString`. Golden `history-view`
+  records Cindy's tests less two (a lease, `import.meta.env`); `history-artifacts` adds `cases.json`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
