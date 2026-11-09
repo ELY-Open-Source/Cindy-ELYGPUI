@@ -87,6 +87,12 @@ defines scope and what 1:1 means.
   `row * N + column`. Slides move in x and y. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
   golden `pinned-reorder`) and `settings::save` takes `savePinnedOrder`'s `reorder`, rebased on the
   file as `rebasePinnedReorder` does. A press on a group's tasks does not drag the group.
+- Interrupted tasks: `src/sessions/interrupted.rs` is `listInterruptedResumeCandidateRows`: active
+  tasks whose turn started before this process (`cross_process_lock::started_ms`, Cindy's
+  `bootAtMs`) and never ended, companion tasks through the send path's guards and the owner's
+  `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each
+  with its turn's last message time and `tool_use`. `load` runs once per owner when the database
+  is ready. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

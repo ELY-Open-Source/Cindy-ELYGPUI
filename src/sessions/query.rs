@@ -10,7 +10,7 @@ use super::{
 
 /// `DESKTOP_TASK_LIST_SESSION_SOURCES`: the visible sources less `review` and `side-chat`;
 /// `CINDY_MAKE_ENABLED` is off at the reference commit.
-const TASK_SOURCES: &str = "'desktop', 'feishu', 'slack', 'telegram', 'x', 'discord', 'wechat', \
+pub(super) const TASK_SOURCES: &str = "'desktop', 'feishu', 'slack', 'telegram', 'x', 'discord', 'wechat', \
                             'dingtalk', 'wecom', 'scheduler', 'learn', 'shared', 'plugin'";
 
 /// `ordinaryTaskListFilter`: task sources, a companion's routine or channel task, never hidden.

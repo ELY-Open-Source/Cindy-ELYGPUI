@@ -25,6 +25,11 @@ pub fn note_process_start() {
     LazyLock::force(&STARTED_MS);
 }
 
+/// The start time in ms, which also bounds `getSessionInterruptionBootAt`.
+pub fn started_ms() -> f64 {
+    *STARTED_MS
+}
+
 /// `estimateCurrentProcessIdentity`'s key.
 pub fn estimate_self() -> String {
     format!("start-ms:{}", STARTED_MS.round() as i64)

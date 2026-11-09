@@ -19,7 +19,7 @@ use std::{
 
 pub use fsops::append as append_suffix;
 use fsops::{Identity, append, now_ms, remove_with_retry, restore_moved, transient};
-pub use identity::note_process_start;
+pub use identity::{note_process_start, started_ms};
 use record::Advisory;
 
 const STALE_MS: f64 = 10_000.0;

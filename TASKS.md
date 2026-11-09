@@ -242,16 +242,23 @@ listed in `tasks/done.md`.
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the
   still-interrupted recheck before continuing); the continue itself dispatches a turn, which
   lands with the agent runtime (10.0)
-    - [ ] 8.8a The candidates on the database worker: `listInterruptedPendingRows` with companion
+    - [x] 8.8a The candidates on the database worker: `listInterruptedPendingRows` with companion
       tasks (active, a task-list source or a `canonical`, `delegation`, `routine` or `channel`
       companion task, not hidden, started after its last end and its clear and before this
       process booted), kept when `botSessionInputBlockReason` passes and the companion is not
       in the owner's `companion-cloud/shadowed.json` (the live homes come with 14.0); then each
-      turn's last message time and last `tool_use` (`parseToolUse`)
+      turn's last message time and last `tool_use` (`parseToolUse`); loaded once per owner when
+      the database is ready, 5 tries `2000 * attempt` ms apart
     - [ ] 8.8b The activity line: `formatIslandToolDetail` over `describeToolUse` and
       `formatToolRowText` with `createLocalizedToolRowWording`, golden from Cindy's functions
-    - [ ] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the 5-try load
-      (`2000 * attempt` ms apart), the tasks newest first with their checkbox, vendor icon,
+        - [ ] 8.8b1 `commandIntent.ts`: `commandIntentFromCommand` and `commandIntentFromActions`
+          over `commandDisplay.ts`'s `normalizeDisplayCommand`
+        - [ ] 8.8b2 `describeToolUse` with `parseToolName`, `truncateToolText` and the file
+          paths it reads (`basenameRemotePath`, `parseMessageToolUse`)
+        - [ ] 8.8b3 `formatToolRowText`, `formatIslandToolDetail` and the localized wording
+          (`agentActionVerbKeys.ts`); the candidates' `activity` as the IPC makes it
+    - [ ] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the load, the
+      tasks (`getMany`, companion names) newest first with their checkbox, vendor icon,
       title and source label or companion name, activity and time; select all; Continue
       rechecks the still-interrupted set, the dispatch with 10.0
 - [ ] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most

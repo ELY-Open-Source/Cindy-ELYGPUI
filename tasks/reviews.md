@@ -273,3 +273,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: `openSection` hands focus back to the keyboard row while Projects stays open; the row's
   hover ignores input modality, as `onMouseEnter` does.
 - Round 2: PASS.
+
+## 8.8a The interrupted-task candidates
+- Round 1: FAIL. The `atomic_file::read` doc comment ran two lines.
+- Fixed: one line; no other comment in the task runs past one.
+- Round 2: PASS.

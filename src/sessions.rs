@@ -6,6 +6,7 @@ mod filter;
 mod fold;
 mod group;
 mod header;
+pub mod interrupted;
 mod keyboard;
 mod list_row;
 mod lists;
@@ -126,6 +127,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         if matches!(cx.global::<LocalDb>().state, State::Ready(_)) {
             watch(cx);
             reload(cx);
+            interrupted::load(cx);
         }
     })
     .detach();
