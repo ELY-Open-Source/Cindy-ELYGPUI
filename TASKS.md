@@ -65,11 +65,15 @@ listed in `tasks/done.md`.
   - [x] 9.2c `mergeMessages` with `hydratePersistedMessage`, `sortMessagesChronologically` and
     `collapseConsecutiveAutoResumeRows`, and `remoteUserHandoff.ts`'s `confirmRemoteUsers`;
     golden from Cindy's functions, exported in the bundle only
-  - [ ] 9.2d The store's slice for a local task: `createRemoteHistoryView`'s local transport,
-    `ensureInitialMessages`, `enterView` and `leaveView` (ref-counted views), the snapshot's
-    mirror into `messages` (borrowed detail rows retired; durable tool pairs come with 10.0's
-    echoes), `loadOlderMessages` through the view, the database watcher's `invalidate`
-  - [ ] 9.2e Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
+  - [ ] 9.2d `createRemoteHistoryView`'s local transport: one reader per database on its
+    worker (`local-db:messages:view` with `lazyDetails`, `work-details`), rows mapped by
+    `mapServerMessages` into `HistoryChatMessage` (`mapHistoryViewMessages`), a thrown map an
+    error of the read
+  - [ ] 9.2e The store's slice for a local task: `ensureInitialMessages` through the view,
+    `enterView` and `leaveView` (ref-counted views), the snapshot's mirror into `messages`
+    (borrowed detail rows retired; durable tool pairs come with 10.0's echoes),
+    `loadOlderMessages` through the view, the database watcher's `invalidate`
+  - [ ] 9.2f Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
     `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands
 - [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
