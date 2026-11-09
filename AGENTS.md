@@ -66,7 +66,9 @@ defines scope and what 1:1 means.
   then WMIC, on Windows). It blocks, so callers run it on the background executor.
   `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
   the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
-  choice, and lacks some lucide icons; the nearest Ely icon stands in.
+  choice, and lacks some lucide icons; the nearest Ely icon stands in. A right click on the
+  list's blank space opens the same menu at the pointer (Ely `ContextMenu` around the scroller,
+  `handleSidebarBlankContextMenu`); rows and headers stop their own right clicks.
   `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed by section and group and
   resets once its list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
   `background_executor().now()` so tests can advance the clock.

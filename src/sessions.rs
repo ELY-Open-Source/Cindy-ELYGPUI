@@ -343,6 +343,8 @@ impl Sessions {
 pub use main_list::list;
 
 #[cfg(test)]
+mod blank_tests;
+#[cfg(test)]
 mod menu_tests;
 #[cfg(test)]
 mod pin_tests;

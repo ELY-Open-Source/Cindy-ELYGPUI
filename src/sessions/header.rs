@@ -254,13 +254,19 @@ fn task_info(ticked: &[&'static str], t: &Translator) -> Menu {
     })
 }
 
+/// The menu for the saved filter, view mode and task info.
+pub fn current(cx: &App) -> Menu {
+    let f = Filter::read(cx.global::<Preferences>());
+    let info = &cx.global::<super::Sessions>().task_info;
+    menu(&f, view_mode::main(cx), info, cx.global::<Translator>())
+}
+
 /// `group/sidebar-header flex h-6 justify-between pl-6`: the scope title, and the settings
 /// button that shows on hover, or always with a dot while archived tasks are listed.
 pub fn header(window: &mut Window, cx: &mut App) -> AnyElement {
     let f = Filter::read(cx.global::<Preferences>());
     let translator = cx.global::<Translator>();
-    let info = cx.global::<super::Sessions>().task_info.clone();
-    let menu = menu(&f, view_mode::main(cx), &info, translator);
+    let menu = current(cx);
     let (title, label) = (
         translator.t("ccAgent.sidebar.allSessions", &[]),
         translator.t("ccAgent.sidebar.organizeSidebar", &[]),

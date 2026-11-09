@@ -20,7 +20,7 @@ use super::{
     row::{ROW_HEIGHT, Scope, row},
     view_mode::{self, Main},
 };
-use ely_gpui_component::primitives::IconName;
+use ely_gpui_component::{menus::ContextMenu, primitives::IconName};
 
 use crate::{
     appearance_settings::text_size, i18n::Translator, lucide::icon, preferences::Preferences,
@@ -348,7 +348,15 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
             .flex_1()
             .min_h_0()
             .children(super::select::bar(window, cx))
-            .child(scroll)
+            // `handleSidebarBlankContextMenu`: rows and headers stop their own right clicks.
+            .child(
+                ContextMenu::new("sidebar-blank-menu", super::header::current(cx))
+                    .flex()
+                    .flex_col()
+                    .flex_1()
+                    .min_h_0()
+                    .child(scroll),
+            )
             .into_any_element(),
     )
 }

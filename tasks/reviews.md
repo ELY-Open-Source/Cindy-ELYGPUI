@@ -347,3 +347,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: the view test runs on Unix, a Windows test checks `%SystemRoot%`; a failed COM init
   returns its error before any shell call, and a successful one is always paired.
 - Round 2: PASS.
+
+## 8.11 The blank space's filter menu
+- Round 1: PASS.
