@@ -214,6 +214,17 @@ fn status_then_pinned(list: &mut [Session]) {
     });
 }
 
+/// `pinnedSessionIdsInDisplayOrder`: the pinned tasks as the Pinned section sorts them.
+pub fn pinned_in_display_order(sessions: &[Session]) -> Vec<Session> {
+    let mut pinned: Vec<Session> = sessions
+        .iter()
+        .filter(|s| s.pinned_at.is_some())
+        .cloned()
+        .collect();
+    status_then_pinned(&mut pinned);
+    pinned
+}
+
 /// `groupSessions` (`recent` seeded first); `with_pins` is `includePinnedInProjects`.
 pub fn group(
     sessions: &[Session],
@@ -222,12 +233,7 @@ pub fn group(
     platform: &str,
     with_pins: bool,
 ) -> Groups {
-    let mut pinned: Vec<Session> = sessions
-        .iter()
-        .filter(|s| s.pinned_at.is_some())
-        .cloned()
-        .collect();
-    status_then_pinned(&mut pinned);
+    let pinned = pinned_in_display_order(sessions);
     let mut representative: HashMap<String, (String, String)> = HashMap::new();
     for project in recent {
         let Some(dir) = grouping(Some(&project.path)) else {
@@ -463,4 +469,4 @@ fn rank(mut entries: Vec<Entry>, order: &Order) -> Vec<Entry> {
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

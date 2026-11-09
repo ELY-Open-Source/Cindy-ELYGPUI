@@ -38,14 +38,33 @@ fn pinned_order(cx: &mut App) -> Option<&mut Vec<String>> {
     Some(&mut loaded.settings.pinned_order)
 }
 
-/// `updatePinnedOrder`: the order changes here first, then the save queues behind the others.
+/// `promotePin`.
 fn promote(id: &str, window: &Window, cx: &mut App) {
     let Some(order) = pinned_order(cx) else {
         log::warn!(target: "sessions", "pin {id}: no list loaded");
         return;
     };
+    let desired = settings::promoted(order, id, PLATFORM);
+    persist(
+        desired,
+        settings::Mutation::Promote(id.to_owned()),
+        window,
+        cx,
+    );
+}
+
+/// `updatePinnedOrder`: the order changes here first, then the save queues behind the others.
+pub(super) fn persist(
+    desired: Vec<String>,
+    mutation: settings::Mutation,
+    window: &Window,
+    cx: &mut App,
+) {
+    let Some(order) = pinned_order(cx) else {
+        log::warn!(target: "sessions", "pinned order: no list loaded");
+        return;
+    };
     let current = order.clone();
-    let desired = settings::promoted(&current, id, PLATFORM);
     if desired == current {
         return;
     }
@@ -59,22 +78,21 @@ fn promote(id: &str, window: &Window, cx: &mut App) {
     let owner_dir = store.owner_dir.clone();
     cx.refresh_windows();
     let handle = window.window_handle();
-    let entry = id.to_owned();
     let task = cx.spawn(async move |cx| {
         if let Some(previous) = previous {
             previous.await;
         }
         let saving = cx.background_spawn({
-            let entry = entry.clone();
+            let mutation = mutation.clone();
             async move {
                 let Some(owner_dir) = owner_dir else {
                     anyhow::bail!("sidebar settings require an active data owner");
                 };
-                settings::promote(&owner_dir, &entry, PLATFORM)
+                settings::save(&owner_dir, &mutation, PLATFORM)
             }
         });
         let result = saving.await;
-        cx.update(|cx| settled(&entry, &desired, result, handle, cx));
+        cx.update(|cx| settled(&mutation, &desired, result, handle, cx));
     });
     cx.global_mut::<Sessions>().pins.queue = Some(task);
 }
@@ -82,7 +100,7 @@ fn promote(id: &str, window: &Window, cx: &mut App) {
 /// A save's end: a failure rolls back to the durable order while its order still shows; the
 /// last save of a run shows what was saved.
 fn settled(
-    id: &str,
+    mutation: &settings::Mutation,
     desired: &[String],
     result: anyhow::Result<Vec<String>>,
     handle: gpui::AnyWindowHandle,
@@ -111,7 +129,14 @@ fn settled(
     let Some(error) = error else {
         return;
     };
-    log::warn!(target: "sessions", "failed to persist pinned session order for {id}: {error:#}");
+    match mutation {
+        settings::Mutation::Promote(id) => {
+            log::warn!(target: "sessions", "failed to persist pinned session order for {id}: {error:#}")
+        }
+        settings::Mutation::Reorder { .. } => {
+            log::warn!(target: "sessions", "failed to persist pinned order: {error:#}")
+        }
+    }
     let shown = handle.update(cx, |_, window, cx| {
         let message = cx
             .global::<Translator>()

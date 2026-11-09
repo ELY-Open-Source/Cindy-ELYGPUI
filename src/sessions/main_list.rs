@@ -222,6 +222,8 @@ fn group(
             .gap(css(2.0))
             .pt(css(2.0))
             .when(list, |el| el.pl(css(8.0)))
+            // `data-no-drag`: a press on a task does not drag its project.
+            .on_mouse_down(gpui::MouseButton::Left, |_, _, cx| cx.stop_propagation())
             .children(visible.iter().enumerate().map(|(i, s)| {
                 if list {
                     list_row(s, i == 0, None, now, cx)
@@ -301,6 +303,7 @@ pub(super) fn project(
 /// scope header between them. Show all resets for lists no longer drawn.
 pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     super::marquee::sweep(cx);
+    super::sortable::sweep(window, cx);
     let drawn = RefCell::new(Vec::new());
     let view_style = pinned::view_style(window, cx);
     // The header stays while the list loads or fails, as `MainListScopeHeader` does.

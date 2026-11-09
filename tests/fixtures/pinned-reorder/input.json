@@ -1,0 +1,449 @@
+[
+ {
+  "name": "a first drag with nothing ranked",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "c",
+    "title": "c",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-01T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [],
+  "visible": [
+   "c",
+   "a",
+   "b"
+  ]
+ },
+ {
+  "name": "ranked pins and a project, all shown",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "b",
+   "project:local:/work/app",
+   "a"
+  ],
+  "visible": [
+   "a",
+   "b",
+   "project:local:/work/app"
+  ]
+ },
+ {
+  "name": "a hidden pin keeps its slot",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "c",
+    "title": "c",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-01T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "a",
+   "b",
+   "c"
+  ],
+  "visible": [
+   "c",
+   "a"
+  ]
+ },
+ {
+  "name": "an unpinned rank drops out of the base",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "gone",
+    "title": "gone",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": null,
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "gone",
+   "a",
+   "b"
+  ],
+  "visible": [
+   "b",
+   "a"
+  ]
+ },
+ {
+  "name": "an unranked new pin goes where it is dropped",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "new",
+    "title": "new",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-04T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "a",
+   "b"
+  ],
+  "visible": [
+   "a",
+   "new",
+   "b"
+  ]
+ },
+ {
+  "name": "archived pins follow active ones",
+  "sessions": [
+   {
+    "id": "old",
+    "title": "old",
+    "status": "archived",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-05T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   },
+   {
+    "id": "b",
+    "title": "b",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-02T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [],
+  "visible": [
+   "b",
+   "a"
+  ]
+ },
+ {
+  "name": "windows project variants by identity",
+  "platform": "win32",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "project:local:D:/École/Project-A",
+   "project:local:d:/école/project-a",
+   "a"
+  ],
+  "visible": [
+   "a",
+   "project:local:d:/école/project-a"
+  ]
+ },
+ {
+  "name": "an empty project entry is not a pin",
+  "sessions": [
+   {
+    "id": "a",
+    "title": "a",
+    "status": "active",
+    "source": "desktop",
+    "workspaceKind": "project",
+    "workingDir": "/work/app",
+    "projectDir": null,
+    "remoteHostId": null,
+    "userSendAt": "2026-11-01T10:00:00.000Z",
+    "lastActivityAt": "2026-11-01T10:00:00.000Z",
+    "updatedAt": "2026-11-01T10:00:00.000Z",
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "pinnedAt": "2026-11-03T10:00:00.000Z",
+    "_count": {
+     "messages": 1
+    }
+   }
+  ],
+  "manual": [
+   "project:",
+   "a"
+  ],
+  "visible": [
+   "a"
+  ]
+ }
+]

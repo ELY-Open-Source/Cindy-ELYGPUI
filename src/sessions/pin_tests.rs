@@ -36,17 +36,18 @@ fn pins_and_unpins_as_update_session_in_db_does() {
     assert_eq!(read(&db), (None, None, 5), "an unpin clears it");
 }
 
+fn promote(dir: &std::path::Path, entry: &str, platform: &str) -> anyhow::Result<Vec<String>> {
+    settings::save(dir, &settings::Mutation::Promote(entry.into()), platform)
+}
+
 #[test]
 fn promotes_pins_as_save_pinned_order_does() {
     let dir = tempfile::tempdir().unwrap();
     let file = dir.path().join(settings::FILE);
-    assert_eq!(settings::promote(dir.path(), "a", "linux").unwrap(), ["a"]);
+    assert_eq!(promote(dir.path(), "a", "linux").unwrap(), ["a"]);
+    assert_eq!(promote(dir.path(), "b", "linux").unwrap(), ["b", "a"]);
     assert_eq!(
-        settings::promote(dir.path(), "b", "linux").unwrap(),
-        ["b", "a"]
-    );
-    assert_eq!(
-        settings::promote(dir.path(), "b", "linux").unwrap(),
+        promote(dir.path(), "b", "linux").unwrap(),
         ["b", "a"],
         "already first"
     );
@@ -56,7 +57,7 @@ fn promotes_pins_as_save_pinned_order_does() {
     )
     .unwrap();
     assert_eq!(
-        settings::promote(dir.path(), "project:local:D:/ÉCOLE/A", "win32").unwrap(),
+        promote(dir.path(), "project:local:D:/ÉCOLE/A", "win32").unwrap(),
         ["project:local:D:/École/A", "s"],
         "one spelling per identity, the first kept"
     );
@@ -77,18 +78,18 @@ fn promotes_pins_as_save_pinned_order_does() {
     assert!(!dir.path().join("sidebar-settings.json.lock").exists());
     std::fs::write(&file, "[1]").unwrap();
     assert!(
-        settings::promote(dir.path(), "c", "linux").is_err(),
+        promote(dir.path(), "c", "linux").is_err(),
         "an unreadable file stays"
     );
     assert_eq!(std::fs::read_to_string(&file).unwrap(), "[1]");
     std::fs::remove_file(&file).unwrap();
     std::fs::write(dir.path().join("sidebar-settings.json.bak"), "{}").unwrap();
     assert!(
-        settings::promote(dir.path(), "c", "linux").is_err(),
+        promote(dir.path(), "c", "linux").is_err(),
         "a backup blocks"
     );
     assert!(!file.exists());
-    assert!(settings::promote(dir.path(), "", "linux").is_err());
+    assert!(promote(dir.path(), "", "linux").is_err());
 }
 
 #[gpui::test]

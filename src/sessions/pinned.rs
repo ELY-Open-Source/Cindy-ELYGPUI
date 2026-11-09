@@ -1,7 +1,7 @@
 //! `PinnedSection.tsx` in text, list and card mode: pinned tasks and projects, folded as one
 //! section, with the `ViewStyleMenu` that picks the section's display mode.
 
-use std::cell::RefCell;
+use std::{cell::RefCell, rc::Rc};
 
 use ely_gpui_component::{
     menus::{Menu, MenuItem, menu_under},
@@ -13,13 +13,15 @@ use gpui::{
 };
 
 use super::{
+    Sessions,
     card::Card,
     fold,
     list_row::{self, list_row},
     lists::{Lists, Pinned},
     main_list::{Place, project, text},
-    masonry,
+    masonry, reorder,
     row::{ROW_HEIGHT, row},
+    sortable,
     view_mode::{self, Pinned as Mode},
 };
 use crate::{
@@ -117,6 +119,44 @@ pub fn view_style(window: &mut Window, cx: &mut App) -> AnyElement {
 }
 
 /// The section, none without pins.
+/// A pinned task's source label.
+fn label_of(entry: &Pinned, lists: &Lists) -> Option<String> {
+    match entry {
+        Pinned::Session(s) => lists.labels.get(&s.id).cloned(),
+        Pinned::Project(_) => None,
+    }
+}
+
+/// An entry in text or list mode, with its drawn height.
+fn entry_element(
+    entry: &Pinned,
+    first: bool,
+    label: Option<&str>,
+    now: i64,
+    place: &Place,
+    window: &mut Window,
+    cx: &App,
+) -> (AnyElement, f32) {
+    match entry {
+        Pinned::Session(s) if place.list => {
+            (list_row(s, first, label, now, cx), list_row::height(cx))
+        }
+        Pinned::Session(s) => (row(s, false, label, now, cx), ROW_HEIGHT),
+        // `border-b border-[var(--cmd-palette-border)] py-0.5`.
+        Pinned::Project(p) if place.list => {
+            let (element, h) = project(p, place, window, cx);
+            let framed = div()
+                .py(css(2.0))
+                .border_b(css(1.0))
+                .border_color(cx.global::<Appearance>().token("cmd-palette-border"))
+                .child(element)
+                .into_any_element();
+            (framed, h + 5.0)
+        }
+        Pinned::Project(p) => project(p, place, window, cx),
+    }
+}
+
 pub fn section(
     lists: &Lists,
     view_style: AnyElement,
@@ -207,29 +247,42 @@ pub fn section(
         Mode::Card => 2.0,
     };
     let mut height = top;
+    let entries = sortable::arrange(lists.pinned.clone(), Pinned::id, cx);
+    let ids = Rc::new(entries.iter().map(Pinned::id).collect::<Vec<_>>());
+    let editing = cx
+        .global::<Sessions>()
+        .editing
+        .as_ref()
+        .map(|e| e.id.clone());
     let mut rows: Vec<AnyElement> = Vec::new();
-    for (i, entry) in lists.pinned.iter().enumerate() {
-        let label = |s: &super::group::Session| lists.labels.get(&s.id).map(String::as_str);
-        let (element, h) = match entry {
-            Pinned::Session(s) if list => {
-                (list_row(s, i == 0, label(s), now, cx), list_row::height(cx))
-            }
-            Pinned::Session(s) => (row(s, false, label(s), now, cx), ROW_HEIGHT),
-            // `border-b border-[var(--cmd-palette-border)] py-0.5`.
-            Pinned::Project(p) if list => {
-                let (element, h) = project(p, &place, window, cx);
-                let framed = div()
-                    .py(css(2.0))
-                    .border_b(css(1.0))
-                    .border_color(appearance.token("cmd-palette-border"))
-                    .child(element)
-                    .into_any_element();
-                (framed, h + 5.0)
-            }
-            Pinned::Project(p) => project(p, &place, window, cx),
-        };
+    for (i, entry) in entries.iter().enumerate() {
+        let label = label_of(entry, lists);
+        let (element, h) = entry_element(entry, i == 0, label.as_deref(), now, &place, window, cx);
         height += h + if i > 0 { 2.0 } else { 0.0 };
-        rows.push(element);
+        if mode == Mode::Card {
+            continue;
+        }
+        let draw: sortable::Draw = {
+            let entry = entry.clone();
+            Rc::new(move |window, cx| {
+                let drawn = RefCell::new(Vec::new());
+                let place = Place {
+                    list,
+                    section: "pinned",
+                    drawn: &drawn,
+                };
+                entry_element(&entry, false, label.as_deref(), now, &place, window, cx).0
+            })
+        };
+        let enabled = editing.as_deref() != Some(entry.id().as_str());
+        rows.push(sortable::item(
+            &entry.id(),
+            ids.clone(),
+            enabled,
+            element,
+            draw,
+            cx,
+        ));
     }
     // `CardMasonry`: sessions as cards, projects framed; its height is measured.
     if mode == Mode::Card {
@@ -255,14 +308,15 @@ pub fn section(
         rows = vec![masonry::layout(cards, &inner, window, cx)];
         height = top + cx.global::<super::Sessions>().masonry.height;
     }
+    let on_reorder: sortable::OnReorder =
+        Rc::new(|order, window, cx| reorder::reorder(order, window, cx));
     let body = move || {
-        div()
+        sortable::list("pinned-sortable", rows, on_reorder)
             .flex()
             .flex_col()
             .gap(css(2.0))
             .pl(css(12.0))
             .pt(css(top))
-            .children(rows)
             .into_any_element()
     };
     let body = fold::section(FOLD, collapsed, height, body, window, cx);

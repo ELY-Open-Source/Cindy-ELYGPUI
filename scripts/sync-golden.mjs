@@ -42,6 +42,7 @@ try {
     "export * as usage from './renderer/lib/usageFormat';",
     "export { formatCompactTokens } from '@cindy/maker-shared/usage-format';",
     "export * as pinnedOrder from './renderer/features/cc-agent/lib/pinnedSidebarOrder';",
+    "export * as filterCore from './renderer/features/cc-agent/hooks/helpers/sidebarFilterCore';",
     "export * as sourceLabel from './renderer/features/cc-agent/lib/sessionSourceLabel';",
     "export { getSessionDisplayTitle, toStoredSessionTitle } from './renderer/features/cc-agent/lib/sessionDisplayTitle';",
     "export { richAnswerText } from '@cindy/maker-shared/rich-answer';",
@@ -58,7 +59,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -245,6 +246,18 @@ try {
         : { kind: 'project', key: e.project.projectKey, name: e.project.displayName, sessions: ids(e.displaySessions) }),
       entries: entries.map(shown),
     };
+  }));
+
+  // handlePinnedReorder and setManualPinnedOrder for a drag's shown order.
+  const reorderDir = path.join(fixtures, 'pinned-reorder');
+  const reorderCases = JSON.parse(fs.readFileSync(path.join(reorderDir, 'input.json'), 'utf8'));
+  write(path.join(reorderDir, 'expected.json'), reorderCases.map((c) => {
+    const platform = c.platform ?? 'linux';
+    const key = (id) => pinnedOrder.pinnedSidebarEntryComparisonKey(id, platform);
+    const pinnedIds = projectGrouping.pinnedSessionIdsInDisplayOrder(c.sessions);
+    const active = pinnedOrder.activePinnedSidebarEntryIds(c.manual, pinnedIds, platform);
+    const { baseOrder, order } = filterCore.buildManualPinnedReorder(c.manual, active, c.visible, key);
+    return { name: c.name, active, base: baseOrder, next: filterCore.normalizeManualPinnedOrder(order, active, key) };
   }));
 
   // SessionInfoMeta's token and money text.

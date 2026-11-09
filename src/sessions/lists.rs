@@ -8,13 +8,23 @@ use super::{
     settings::Settings,
 };
 
-const PROJECT_ENTRY: &str = "project:";
+pub(super) const PROJECT_ENTRY: &str = "project:";
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Pinned {
     Session(Box<Session>),
     /// The project with its tasks not pinned on their own.
     Project(Project),
+}
+
+impl Pinned {
+    /// The entry's `pinnedOrder` id: the task's, or `project:` and the project key.
+    pub fn id(&self) -> String {
+        match self {
+            Pinned::Session(s) => s.id.clone(),
+            Pinned::Project(p) => format!("{PROJECT_ENTRY}{}", p.key),
+        }
+    }
 }
 
 pub struct Lists {
@@ -167,12 +177,8 @@ pub fn build(
         for (i, id) in settings.pinned_order.iter().enumerate() {
             rank.entry(entry_identity(id, platform)).or_insert(i);
         }
-        let id = |p: &Pinned| match p {
-            Pinned::Session(s) => s.id.clone(),
-            Pinned::Project(p) => format!("{PROJECT_ENTRY}{}", p.key),
-        };
         pinned.sort_by_key(|p| {
-            rank.get(&entry_identity(&id(p), platform))
+            rank.get(&entry_identity(&p.id(), platform))
                 .copied()
                 .unwrap_or(usize::MAX)
         });

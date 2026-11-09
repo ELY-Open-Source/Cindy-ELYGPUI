@@ -19,8 +19,10 @@ mod preview;
 mod projection;
 mod query;
 mod rename;
+mod reorder;
 mod row;
 mod settings;
+mod sortable;
 mod sweep;
 mod task_menu;
 mod title;
@@ -77,6 +79,7 @@ pub struct Sessions {
     owner_watched: bool,
     masonry: masonry::State,
     marquee: marquee::State,
+    sortable: sortable::State,
 }
 
 impl gpui::Global for Sessions {}
@@ -103,6 +106,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         owner_watched: false,
         masonry: masonry::State::default(),
         marquee: marquee::State::default(),
+        sortable: sortable::State::default(),
     });
     view_mode::install(cx);
     cx.observe_global::<LocalDb>(|cx| {

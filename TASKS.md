@@ -292,8 +292,14 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     `resolveSessionCardBody`; dragging comes with 8.5c2e
   - [x] 8.5c2d `SidebarTitleMarquee`: an overflowing title scrolls once while its row is hovered,
     in the text and list rows
-  - [ ] 8.5c2e Drag to reorder as `SortableList` and `DraggableCardColumns` do: pinned entries in
-    every mode (written to `pinnedOrder`) and projects under the `custom` project order
+  - Drag to reorder pinned entries; project drag under the `custom` order writes
+    `manualProjectOrder`, so it comes with 13.0:
+    - [x] 8.5c2e1 The text and list modes as `PinnedSection`'s `SortableList` drags them (native
+      drag: the dragged entry's ghost at 0.3, siblings making way in 150ms, a drop outside the
+      list or a lost window saving nothing), saved as `handlePinnedReorder` does:
+      `buildManualPinnedReorder`, then `savePinnedOrder`'s `reorder` rebased on the file
+    - [ ] 8.5c2e2 Card mode: one column as the list above, two or three as
+      `DraggableCardColumns` lays a drag across its round-robin columns
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
@@ -351,7 +357,8 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 
 - [ ] 13.0 Expand from Cindy's code, with official wallpaper downloads (`wallpaper-video.ts`, from
   6.9e2), the mock mode's gate, account-free start and seed (from 7.0), the dev keychain identity
-  marker, `cloud` owners' database (8.2 admits only `local-v1`), isolated device id and `--endpoints-cdn` (from 7.1), the sidebar's owner-scoped storage and its legacy claims,
+  marker, `cloud` owners' database (8.2 admits only `local-v1`), isolated device id and `--endpoints-cdn` (from 7.1), the sidebar's owner-scoped storage and its legacy claims
+  (with `manualProjectOrder` and project drag from 8.5c2e),
   log upload and redaction, and the database admission in `docs/storage.md` (reader lease,
   read-only migration check, `cjk_seg`)
 

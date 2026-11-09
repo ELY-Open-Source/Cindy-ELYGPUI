@@ -24,7 +24,7 @@ fn text(v: &Value) -> Option<String> {
     v.as_str().map(str::to_owned)
 }
 
-fn session(v: &Value) -> Session {
+pub(in crate::sessions) fn session(v: &Value) -> Session {
     Session {
         id: text(&v["id"]).unwrap(),
         title: text(&v["title"]).unwrap(),

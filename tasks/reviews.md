@@ -367,3 +367,11 @@ effort high, in a Herdr pane.
   Fixed: the hover ignores the keyboard, the row and the title are tracked apart, the motion
   length joins the memo, and the tests drive frames and read painted offsets.
 - Round 2: PASS.
+
+## 8.5c2e1 Pinned drag in text and list modes
+
+- Round 1: FAIL. A move mid-slide restarted from the layout top; stale bounds and tracks were
+  never pruned. A claimed drag loss on leaving the window was answered: gpui promotes a drag to
+  the platform only with an external payload, which this drag never sets.
+  Fixed: a new slide starts from the painted offset; each list render keeps only painted entries.
+- Round 2: PASS.

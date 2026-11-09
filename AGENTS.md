@@ -66,6 +66,12 @@ defines scope and what 1:1 means.
   title, prepaint canvases measure it and its track, and the track scrolls on the executor clock.
   The hover ignores key presses, as CSS `:hover` does. An unmounted row lets go at the next list
   render; a title back from rename starts again. Tests drive frames with `simulate_next_frame`.
+  `sortable.rs` is `SortableList`'s native drag for the Pinned text and list modes: gpui's
+  `on_drag` per entry, the entry under the pointer takes the dragged one's place (`swapThreshold:
+  1`), displaced entries slide 150ms, a drop on the list saves; Escape, a drop elsewhere or a lost
+  window put the order back. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
+  golden `pinned-reorder`) and `settings::save` takes `savePinnedOrder`'s `reorder`, rebased on the
+  file as `rebasePinnedReorder` does. A press on a group's tasks does not drag the group.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

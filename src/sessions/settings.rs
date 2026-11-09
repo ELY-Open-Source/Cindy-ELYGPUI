@@ -135,11 +135,86 @@ fn writable(path: &Path) -> Result<()> {
     }
 }
 
-/// `savePinnedOrder` with `promote`, through `updateAtomic`: the owner's order with `entry` first.
-pub fn promote(owner_dir: &Path, entry: &str, platform: &str) -> Result<Vec<String>> {
-    if entry.is_empty() || js_len(entry) > MAX_LENGTH {
-        bail!("invalid sidebar pinned entry");
+/// `SidebarPinnedOrderMutation`: the two kinds this port sends.
+#[derive(Clone, Debug, PartialEq)]
+pub enum Mutation {
+    Promote(String),
+    /// A drag that started from `base`.
+    Reorder {
+        base: Vec<String>,
+        order: Vec<String>,
+    },
+}
+
+/// `requirePinnedEntry`.
+fn entry_ok(entry: &str) -> bool {
+    !entry.is_empty() && js_len(entry) <= MAX_LENGTH
+}
+
+/// `requirePinnedOrder`: bounded, valid entries, no repeats.
+fn order_ok(order: &[String]) -> bool {
+    let unique: std::collections::HashSet<&String> = order.iter().collect();
+    order.len() <= MAX_ENTRIES && order.iter().all(|e| entry_ok(e)) && unique.len() == order.len()
+}
+
+impl Mutation {
+    fn check(&self) -> Result<()> {
+        match self {
+            Mutation::Promote(entry) if !entry_ok(entry) => bail!("invalid sidebar pinned entry"),
+            Mutation::Reorder { base, order } if !order_ok(base) || !order_ok(order) => {
+                bail!("invalid sidebar pinned order")
+            }
+            _ => Ok(()),
+        }
     }
+
+    /// `applyPinnedMutation`.
+    fn apply(&self, current: &[String], platform: &str) -> Vec<String> {
+        match self {
+            Mutation::Promote(entry) => promoted(current, entry, platform),
+            Mutation::Reorder { base, order } => rebased(current, base, order, platform),
+        }
+    }
+}
+
+/// `rebasePinnedReorder`: a drag laid on the latest order. Another window's new entries keep
+/// their slot; entries it removed stay removed.
+fn rebased(current: &[String], base: &[String], desired: &[String], platform: &str) -> Vec<String> {
+    let identity = |e: &str| entry_identity(e, platform);
+    let base: Vec<String> = base.iter().map(|e| identity(e)).collect();
+    let mut durable: Vec<(String, &String)> = Vec::new();
+    for entry in current {
+        let id = identity(entry);
+        if !durable.iter().any(|(d, _)| *d == id) {
+            durable.push((id, entry));
+        }
+    }
+    let (mut out, mut placed): (Vec<String>, Vec<String>) = (Vec::new(), Vec::new());
+    for entry in desired {
+        let id = identity(entry);
+        if placed.contains(&id) {
+            continue;
+        }
+        let kept = durable.iter().find(|(d, _)| *d == id).map(|(_, e)| *e);
+        if base.contains(&id) && kept.is_none() {
+            continue;
+        }
+        out.push(kept.unwrap_or(entry).clone());
+        placed.push(id);
+    }
+    for (index, (id, entry)) in durable.iter().enumerate() {
+        if base.contains(id) || placed.contains(id) {
+            continue;
+        }
+        out.insert(index.min(out.len()), (*entry).clone());
+        placed.push(id.clone());
+    }
+    pinned_order(out)
+}
+
+/// `savePinnedOrder` through `updateAtomic`: the owner's order with `mutation` applied.
+pub fn save(owner_dir: &Path, mutation: &Mutation, platform: &str) -> Result<Vec<String>> {
+    mutation.check()?;
     let path = owner_dir.join(FILE);
     writable(&path)?;
     std::fs::create_dir_all(owner_dir)?;
@@ -153,7 +228,7 @@ pub fn promote(owner_dir: &Path, entry: &str, platform: &str) -> Result<Vec<Stri
             .context("sidebar settings file is unreadable; refusing to overwrite it")?
             .unwrap_or_default();
         let current = pinned_order(strings(fields.get("pinnedOrder").map(|v| &**v)));
-        let next = pinned_order(promoted(&current, entry, platform));
+        let next = pinned_order(mutation.apply(&current, platform));
         let mut overrides = Map::new();
         for (key, raw) in &fields {
             overrides.insert(key.clone(), crate::cindy_json::roundtrip(raw.get())?);

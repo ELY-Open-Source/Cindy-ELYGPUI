@@ -1,0 +1,125 @@
+[
+ {
+  "name": "a first drag with nothing ranked",
+  "active": [
+   "a",
+   "b",
+   "c"
+  ],
+  "base": [],
+  "next": [
+   "c",
+   "a",
+   "b"
+  ]
+ },
+ {
+  "name": "ranked pins and a project, all shown",
+  "active": [
+   "a",
+   "b",
+   "project:local:/work/app"
+  ],
+  "base": [
+   "b",
+   "project:local:/work/app",
+   "a"
+  ],
+  "next": [
+   "a",
+   "b",
+   "project:local:/work/app"
+  ]
+ },
+ {
+  "name": "a hidden pin keeps its slot",
+  "active": [
+   "a",
+   "b",
+   "c"
+  ],
+  "base": [
+   "a",
+   "b",
+   "c"
+  ],
+  "next": [
+   "c",
+   "b",
+   "a"
+  ]
+ },
+ {
+  "name": "an unpinned rank drops out of the base",
+  "active": [
+   "a",
+   "b"
+  ],
+  "base": [
+   "a",
+   "b"
+  ],
+  "next": [
+   "b",
+   "a"
+  ]
+ },
+ {
+  "name": "an unranked new pin goes where it is dropped",
+  "active": [
+   "new",
+   "a",
+   "b"
+  ],
+  "base": [
+   "a",
+   "b"
+  ],
+  "next": [
+   "a",
+   "new",
+   "b"
+  ]
+ },
+ {
+  "name": "archived pins follow active ones",
+  "active": [
+   "a",
+   "b",
+   "old"
+  ],
+  "base": [],
+  "next": [
+   "b",
+   "a",
+   "old"
+  ]
+ },
+ {
+  "name": "windows project variants by identity",
+  "active": [
+   "a",
+   "project:local:D:/École/Project-A"
+  ],
+  "base": [
+   "project:local:D:/École/Project-A",
+   "a"
+  ],
+  "next": [
+   "a",
+   "project:local:D:/École/Project-A"
+  ]
+ },
+ {
+  "name": "an empty project entry is not a pin",
+  "active": [
+   "a"
+  ],
+  "base": [
+   "a"
+  ],
+  "next": [
+   "a"
+  ]
+ }
+]
