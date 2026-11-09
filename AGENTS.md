@@ -130,6 +130,9 @@ defines scope and what 1:1 means.
   stays built under `display: none`, so gpui skips its prepaint and its rows leave the selection,
   as Cindy's hidden rows do. Its hitbox joins the search surface. `marks.rs` draws title and
   keyword marks as text highlights, which have no padding or radius.
+  A click on a result or hit is `handleSelect`: its task opens and the query stays; the hit's
+  `searchJump` lands with the chat view (9.0). Results, hits and More are Tab stops with the
+  button role; gpui clicks them on Enter or Space key up.
   `search/scroll.rs` is the sidebar's layout effect: the list's offset is kept while it shows,
   each search starts at the top, and a clear puts the offset back once the pointer lifts.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast

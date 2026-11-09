@@ -11,7 +11,7 @@ pub(super) fn is_active(id: &str, cx: &App) -> bool {
 }
 
 /// `resolveSessionRoute` for a listed task: its own page; a companion's chat comes with 14.0.
-fn route(id: &str) -> String {
+pub(super) fn route(id: &str) -> String {
     format!("/cc-agent/{id}")
 }
 

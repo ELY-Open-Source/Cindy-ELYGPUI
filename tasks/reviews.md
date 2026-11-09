@@ -445,3 +445,9 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 ## 8.7c2b2 the list scroll under the search
 
 - Round 1: PASS. No findings.
+
+## 8.7c2c handleSelect
+
+- Round 1: FAIL. Results and hits were not Tab stops, so Enter or Space could not open them.
+  Fixed: each is a focusable button; hits moved to `results/hits.rs`.
+- Round 2: PASS.

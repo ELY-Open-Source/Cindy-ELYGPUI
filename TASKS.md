@@ -355,7 +355,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
               tips; the empty line lands with the rail popover, teammate hits with companions
             - [x] 8.7c2b2 The list's scroll under the search: top on each search, the list's
               place back once the query clears, after the pointer lifts
-            - [ ] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
+            - [x] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
               message jump (`searchJump`) lands with the chat view (chapter 9)
         - [ ] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its

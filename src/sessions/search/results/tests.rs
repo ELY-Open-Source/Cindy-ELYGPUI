@@ -88,3 +88,50 @@ fn a_failed_search_says_so(cx: &mut TestAppContext) {
     wait(cx, 900);
     assert!(drawn(cx, "search-failed"));
 }
+
+fn path(cx: &mut VisualTestContext) -> String {
+    cx.update(|_, cx| crate::router::path(cx).to_owned())
+}
+
+#[gpui::test]
+fn a_result_opens_its_task_and_keeps_the_query(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = search(cx, dir.path(), Some(tasks));
+    cx.simulate_input("login");
+    wait(cx, 250);
+    click(cx, "search-result-t");
+    assert_eq!(path(cx), "/cc-agent/t");
+    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "login");
+    assert!(drawn(cx, "search-result-h"), "the results stay");
+}
+
+#[gpui::test]
+fn a_hit_opens_its_task(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = search(cx, dir.path(), Some(tasks));
+    cx.simulate_input("step");
+    wait(cx, 250);
+    click(cx, "search-hit-m0");
+    assert_eq!(path(cx), "/cc-agent/h");
+    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "step");
+}
+
+#[gpui::test]
+fn tab_reaches_a_result_and_enter_opens_it(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = search(cx, dir.path(), Some(tasks));
+    cx.simulate_input("fix");
+    wait(cx, 250);
+    for _ in 0..TABS {
+        cx.simulate_keystrokes("tab");
+    }
+    cx.simulate_keystrokes("enter");
+    let keystroke = gpui::Keystroke::parse("enter").unwrap();
+    cx.simulate_event(gpui::KeyUpEvent { keystroke });
+    cx.run_until_parked();
+    assert_eq!(path(cx), "/cc-agent/t");
+    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "fix");
+}
+
+/// The field, then clear and the options trigger, then the first result.
+const TABS: usize = 3;

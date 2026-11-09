@@ -17,11 +17,13 @@ use crate::{
         merge::{ContentHit, Item, MatchKind},
     },
     lucide::icon,
-    sessions::{row::relative, select},
+    router,
+    sessions::{open, row::relative, select},
     theme::Appearance,
     tip::{rich, tip},
     units::css,
 };
+use hits::{hit_row, more};
 
 /// `MAX_VISIBLE_HITS_PER_RESULT`.
 const VISIBLE_HITS: usize = 3;
@@ -137,21 +139,21 @@ fn failed(cx: &App) -> AnyElement {
 }
 
 /// `searchSourceLabel`; no hit has a vector rank before 11.0.
-fn source(hit: &ContentHit, cx: &App) -> String {
+pub(super) fn source(hit: &ContentHit, cx: &App) -> String {
     match hit.fts_rank {
         Some(_) => t("ccAgent.search.source.keyword", cx),
         None => t("ccAgent.search.source.content", cx),
     }
 }
 
-fn when(at: i64, cx: &App) -> String {
+pub(super) fn when(at: i64, cx: &App) -> String {
     let translator = cx.global::<Translator>();
     let t = |key: &str, count: i64| translator.t(key, &[("count", Arg::Number(count))]);
     relative(at, jiff::Timestamp::now().as_millisecond(), &t)
 }
 
 /// `renderSnippet(snippet) ?? renderKeywordHighlights(preview)`'s text.
-fn hit_text(hit: &ContentHit) -> &str {
+pub(super) fn hit_text(hit: &ContentHit) -> &str {
     hit.snippet
         .as_deref()
         .filter(|s| !s.is_empty())
@@ -215,6 +217,12 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
         .filter(|h| !h.preview.is_empty())
         .map(|h| hit_text(h).to_owned());
     let card = tip_card(title.clone(), preview, query.to_owned());
+    let hits: Vec<AnyElement> = visible
+        .iter()
+        .map(|hit| hit_row(&s.id, hit, query, window, cx))
+        .collect();
+    let more = (hidden > 0).then(|| more(&s.id, hidden, expanded, window, cx));
+    let head = button(format!("search-result-{}", s.id), window, cx);
     let appearance = cx.global::<Appearance>();
     let (size13, size12, size11, size10) = (
         text_size(13.0, cx),
@@ -226,9 +234,9 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
     let tertiary = appearance.token("text-tertiary");
     let id = s.id.clone();
     let probe = id.clone();
-    let head = div()
-        .id(SharedString::from(format!("search-result-{id}")))
-        .debug_selector(move || format!("search-result-{id}"))
+    let chosen = id.clone();
+    let head = head
+        .on_click(move |_, _, cx| choose(&chosen, None, cx))
         .flex()
         .w_full()
         .items_start()
@@ -321,8 +329,8 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
             .px(css(12.0))
             .pb(css(8.0))
             .pl(css(40.0))
-            .children(visible.iter().map(|hit| hit_row(hit, query, cx)))
-            .when(hidden > 0, |el| el.child(more(&s.id, hidden, expanded, cx)))
+            .children(hits)
+            .children(more)
     });
     div()
         .relative()
@@ -369,88 +377,28 @@ fn tip_card(
     })
 }
 
-/// The hit and More box; `strong` is the text a hover gives.
-fn hit_box(id: String, strong: Option<gpui::Hsla>, cx: &App) -> gpui::Stateful<gpui::Div> {
-    let appearance = cx.global::<Appearance>();
-    let (border, elevated) = (
-        appearance.token("border-default"),
-        appearance.token("surface-elevated"),
-    );
+/// A `<button>`: a Tab stop that Enter or Space clicks.
+pub(super) fn button(id: String, window: &mut Window, cx: &mut App) -> gpui::Stateful<gpui::Div> {
+    let focus = window
+        .use_keyed_state(SharedString::from(format!("{id}-focus")), cx, |_, cx| {
+            cx.focus_handle().tab_stop(true)
+        })
+        .read(cx)
+        .clone();
     div()
         .id(SharedString::from(id.clone()))
         .debug_selector(move || id)
-        .flex()
-        .w_full()
-        .items_start()
-        .rounded(css(6.0))
-        .border(css(1.0))
-        .border_color(gpui::transparent_black())
-        .px(css(8.0))
-        .py(css(6.0))
-        .hover(move |s| {
-            let s = s.border_color(border).bg(elevated);
-            match strong {
-                Some(color) => s.text_color(color),
-                None => s,
-            }
-        })
+        .track_focus(&focus)
+        .role(gpui::Role::Button)
 }
 
-/// `SearchHitRow`.
-fn hit_row(hit: &ContentHit, query: &str, cx: &App) -> AnyElement {
-    let appearance = cx.global::<Appearance>();
-    let (size12, size10) = (text_size(12.0, cx), text_size(10.0, cx));
-    let meta = format!("{} · {}", when(hit.created_at, cx), source(hit, cx));
-    hit_box(format!("search-hit-{}", hit.message_id), None, cx)
-        .child(
-            div()
-                .min_w_0()
-                .flex_1()
-                .child(
-                    div()
-                        .line_clamp(2)
-                        .text_size(css(size12))
-                        .line_height(css(size12 * 1.375))
-                        .text_color(appearance.token("text-secondary"))
-                        .child(marks::keywords(hit_text(hit), query, cx)),
-                )
-                .child(
-                    div()
-                        .mt(css(2.0))
-                        .truncate()
-                        .text_size(css(size10))
-                        .line_height(css(size10))
-                        .text_color(appearance.token("text-tertiary"))
-                        .child(meta),
-                ),
-        )
-        .into_any_element()
+/// `handleSelect`: the task opens and the query stays; the hit's `searchJump` lands with 9.0.
+pub(super) fn choose(id: &str, hit: Option<&str>, cx: &mut App) {
+    log::info!(target: "search", "result {id} chosen, hit {hit:?}");
+    router::navigate(&open::route(id), cx);
 }
 
-/// The `moreHits` button: every hit of the row shows.
-fn more(id: &str, hidden: usize, expanded: gpui::Entity<bool>, cx: &App) -> AnyElement {
-    let appearance = cx.global::<Appearance>();
-    let size = text_size(10.0, cx);
-    let strong = appearance.token("text-primary");
-    let label = cx.global::<Translator>().t(
-        "ccAgent.search.moreHits",
-        &[("count", Arg::Number(hidden as i64))],
-    );
-    hit_box(format!("search-more-{id}"), Some(strong), cx)
-        .text_size(css(size))
-        .line_height(css(size))
-        .text_color(appearance.token("text-tertiary"))
-        .on_click(move |_, _, cx| {
-            cx.stop_propagation();
-            expanded.update(cx, |shown, cx| {
-                *shown = true;
-                cx.notify();
-            });
-            log::debug!(target: "search", "every hit shown");
-        })
-        .child(label)
-        .into_any_element()
-}
+mod hits;
 
 #[cfg(test)]
 mod tests;
