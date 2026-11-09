@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
 import * as workRuns from './golden/workRuns.mjs';
 
 const [cindy, commit] = process.argv.slice(2);
@@ -70,7 +70,8 @@ try {
     "export * as messageRender from '@cindy/maker-shared/message-render';",
     "export * as agentTask from '@cindy/maker-shared/agent-task';",
     "export { hasRichAnswer } from '@cindy/maker-shared/rich-answer';",
-    "export { historyOutlineContent, historyOutlineContentStamp } from './main/localDb/ipc/historyViewOutline';",
+    "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
+    "export { extractCommandOutputPathCandidates } from './shared/commandOutputPaths';",
     "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
@@ -84,7 +85,7 @@ try {
     nodePaths, alias,
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, historyOutlineContent, historyOutlineContentStamp, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -368,14 +369,14 @@ try {
   const toolDir = path.join(fixtures, 'tool-use');
   const toolCases = JSON.parse(fs.readFileSync(path.join(toolDir, 'cases.json'), 'utf8'));
   const labelFields = {
-    command: ['description', 'command', 'intent'], file: ['action', 'fileName'], fileChange: ['changes'],
+    command: ['description', 'command', 'intent'], file: ['action', 'filePath', 'fileName'], fileChange: ['changes'],
     search: ['pattern'], web: ['mode', 'target'], todo: [], task: ['description'],
     mcp: ['serverLabel', 'toolLabel', 'createdPath'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
   };
   const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
   const labelled = (d) => ({
     kind: d.kind, toolName: d.toolName, ...pick(d, labelFields[d.kind]),
-    ...(d.kind === 'fileChange' ? { changes: d.changes.map((c) => pick(c, ['action', 'fileName', 'moveFileName'])) } : {}),
+    ...(d.kind === 'fileChange' ? { changes: d.changes.map((c) => pick(c, ['action', 'path', 'fileName', 'moveFileName'])) } : {}),
   });
   write(path.join(toolDir, 'expected.json'), {
     describe: toolCases.describeToolUse.map(([name, input]) => [name, input, labelled(toolUse.describeToolUse(name, input ?? undefined))]),
@@ -417,6 +418,10 @@ try {
   console.log(`${viewCases} history view cases`);
   const runCases = await recorded({ ...golden, name: 'work-runs', tests: {}, fns: { groupWorkRuns: workRuns.run(groupWorkRuns) } });
   console.log(`${runCases} work run cases`);
+  const artifactCases = await recorded({ ...golden, name: 'history-artifacts', tests: ARTIFACT_TESTS, fns: {
+    extractCommandOutputPathCandidates, withHistoryArtifacts,
+  } });
+  console.log(`${artifactCases} history artifact cases`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),

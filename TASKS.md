@@ -333,7 +333,7 @@ listed in `tasks/done.md`.
     `createdAt` and rowid, cleared and rewound cuts) full and outlined (`historyOutlineContent`,
     `historyOutlineContentStamp`), `messageToCamelWithRowid`, and the reader's `anchor`, `hydrate`,
     `validate`, `revision` on the database worker; tests on Cindy's schema
-  - [ ] 9.1d `withHistoryArtifacts`: dropped agent meta, `extractCommandOutputPathCandidates` with
+  - [x] 9.1d `withHistoryArtifacts`: dropped agent meta, `extractCommandOutputPathCandidates` with
     its cache, `createdPathsFromDescriptor`, the `command`, `file` and `fileChange` kinds; golden
   - [ ] 9.1e `historyViewReader.ts`'s `page` (boundaries, safe starts, item and byte targets, scan
     budgets, sealed-answer context, outline then hydrate, revisions, in-flight share) and

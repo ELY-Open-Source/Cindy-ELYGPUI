@@ -8,6 +8,7 @@ mod chrome;
 mod cindy_json;
 mod command_display;
 mod command_intent;
+mod command_output;
 mod confirm;
 mod confirm_dialog;
 mod cross_process_lock;

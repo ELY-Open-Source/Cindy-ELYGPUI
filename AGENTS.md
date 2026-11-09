@@ -137,9 +137,12 @@ defines scope and what 1:1 means.
   `source.rs` `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order.
   `rows.rs` is `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
   `messageToCamelWithRowid` (`localdb/camel.rs`, shared with search); `outline.rs` the outline SQL,
-  checked against what Cindy's drizzle renders. `src/js_date.rs` is `Date.parse` and `toISOString`.
-  Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts` (a real lease) and
-  `remoteMirrorCache.test.ts` (`import.meta.env`).
+  as Cindy's drizzle renders it; `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048);
+  `src/js_date.rs` is `Date.parse` and `toISOString`.
+  `src/command_output.rs` is `commandOutputPaths.ts`: `js_re` turns JS regex sources into Rust's,
+  lookarounds scanned by hand; offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's
+  half is U+FFFD). Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts`
+  (a lease) and `remoteMirrorCache.test.ts`; `history-artifacts` adds `cases.json`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
@@ -231,15 +234,13 @@ defines scope and what 1:1 means.
   Linux, `src/os_appearance.rs` reads the portal's color scheme before the window opens, since gpui
   learns it only later; gpui's reports count once they agree with it.
 - Local themes: `src/theme/local.rs` reads `~/.cindy/themes/` as Cindy's loader does and
-  `src/theme/normalize.rs` applies `normalizeLocalThemeColors`; local families follow the built-in
-  ones.
+  `src/theme/normalize.rs` applies `normalizeLocalThemeColors`; local families follow built-ins.
 - Omarchy: `src/theme/omarchy.rs` reads `~/.local/state/omarchy/current/theme/vscode-theme.json`
   through the VS Code converter as family `omarchy`, never writing Omarchy files. An inotify
   watcher (`notify`) reloads every theme on each finished `theme.name` write; a read inside
   Omarchy's folder swap keeps the last good theme.
 - Fonts: `src/appearance_settings.rs` reads Cindy's shared `appearance-settings.json` (fonts only so
-  far) and sets Ely's font scale (`uiSize / 14`) and families; gpui takes one family, so the first
-  of Cindy's CSS font list is used.
+  far) and sets Ely's font scale (`uiSize / 14`) and families; gpui takes the first of the list.
 - Main window: `src/main_window.rs` opens it as Cindy's `createWindow` does (app id per region from
   `src/region.rs`, title, 800x600 minimum) and keeps `window-state.json` with `electron-window-state`'s
   rules (`src/window_state.rs`). `src/activation_click.rs` swallows the activating click per platform
@@ -403,14 +404,13 @@ defines scope and what 1:1 means.
   opens, pauses or drops one decoder; `layer` paints it over the veil and drops retired frames).
   The decoder plays the bytes that were read and checked, never a path reopened later; errors
   log GStreamer's domain and code, not its text. Each platform decodes with its system
-  framework: Linux GStreamer (`video/gst.rs`, from a sealed memfd, needs
-  `gst-plugins-good` and `gst-libav` at run time); macOS AVFoundation (`video/avf.rs`, the checked bytes
-  in a private temp file) and Windows Media Foundation (`video/mf.rs`, a memory stream) are
-  `paced::Decoder`s: `paced::Player` runs one on its own thread, paces frames by their times,
-  and restarts it to loop or refit. A hidden
-  window pauses through gpui's `WindowVisibility`; Hyprland 0.56 sends no `suspended` state for a
-  window on another workspace, so there it keeps playing. Decoder threads wake gpui from outside,
-  so tests drive the real decoder only outside the gpui test scheduler.
+  framework: Linux GStreamer (`video/gst.rs`, from a sealed memfd, needs `gst-plugins-good` and
+  `gst-libav` at run time); macOS AVFoundation (`video/avf.rs`, the checked bytes in a private temp
+  file) and Windows Media Foundation (`video/mf.rs`, a memory stream) are `paced::Decoder`s:
+  `paced::Player` runs one on its own thread, paces frames by their times, and restarts it to loop
+  or refit. A hidden window pauses through gpui's `WindowVisibility`; Hyprland 0.56 sends no
+  `suspended` state for a window on another workspace, so there it keeps playing. Decoder threads
+  wake gpui from outside, so tests drive the real decoder only outside the gpui test scheduler.
 - Open path: `src/file_path_policy.rs` is `filePathPolicy.ts`'s system blocklist and
   `isPathAllowedAgainst` on this host's paths (`canonical::resolve` stands for `path.resolve`);
   the sensitive-media list comes with `xdt-file://`. `src/open_path.rs` is the `shell:open-path`

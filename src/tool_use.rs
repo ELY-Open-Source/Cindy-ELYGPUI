@@ -112,6 +112,7 @@ pub fn truncate(text: &str, max: usize) -> String {
 #[derive(Debug, PartialEq)]
 pub struct Change {
     pub action: &'static str,
+    pub path: String,
     pub file_name: String,
     pub move_file_name: Option<String>,
 }
@@ -125,6 +126,7 @@ pub enum Kind {
     },
     File {
         action: &'static str,
+        file_path: String,
         file_name: String,
     },
     FileChange(Vec<Change>),
@@ -247,6 +249,7 @@ fn file(action: &'static str, path: Option<String>) -> Option<Kind> {
     Some(Kind::File {
         action,
         file_name: base_or(&path).to_owned(),
+        file_path: path,
     })
 }
 
@@ -279,6 +282,7 @@ fn change(raw: &Js) -> Option<Change> {
     };
     Some(Change {
         action,
+        path: path.to_owned(),
         file_name: base_or(path).to_owned(),
         move_file_name: moved.map(|m| base_or(m).to_owned()),
     })

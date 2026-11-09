@@ -12,6 +12,7 @@ use crate::{
     rich_answer::js::{self, Js, Obj, truthy},
 };
 
+mod artifacts;
 pub mod json;
 pub mod outline;
 pub mod rows;

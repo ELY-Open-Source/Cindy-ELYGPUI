@@ -254,6 +254,7 @@
     "kind": "file",
     "toolName": "Read",
     "action": "read",
+    "filePath": "/repo/src/app.ts",
     "fileName": "app.ts"
    }
   ],
@@ -266,6 +267,7 @@
     "kind": "file",
     "toolName": "Edit",
     "action": "edit",
+    "filePath": "/repo/a.ts",
     "fileName": "a.ts"
    }
   ],
@@ -278,6 +280,7 @@
     "kind": "file",
     "toolName": "MultiEdit",
     "action": "edit",
+    "filePath": "/repo/a.ts",
     "fileName": "a.ts"
    }
   ],
@@ -290,6 +293,7 @@
     "kind": "file",
     "toolName": "Write",
     "action": "create",
+    "filePath": "/repo/a.ts",
     "fileName": "a.ts"
    }
   ],
@@ -302,6 +306,7 @@
     "kind": "file",
     "toolName": "Read",
     "action": "read",
+    "filePath": "C:\\repo\\src\\app.ts",
     "fileName": "app.ts"
    }
   ],
@@ -314,6 +319,7 @@
     "kind": "file",
     "toolName": "Read",
     "action": "read",
+    "filePath": "/repo/b.ts",
     "fileName": "b.ts"
    }
   ],
@@ -359,6 +365,7 @@
     "kind": "file",
     "toolName": "read",
     "action": "read",
+    "filePath": "/repo/src/app.ts",
     "fileName": "app.ts"
    }
   ],
@@ -377,6 +384,7 @@
     "kind": "file",
     "toolName": "edit",
     "action": "edit",
+    "filePath": "/repo/a.ts",
     "fileName": "a.ts"
    }
   ],
@@ -390,6 +398,7 @@
     "kind": "file",
     "toolName": "write",
     "action": "create",
+    "filePath": "/repo/new.ts",
     "fileName": "new.ts"
    }
   ],
@@ -402,6 +411,7 @@
     "kind": "file",
     "toolName": "ls",
     "action": "read",
+    "filePath": "/repo/src",
     "fileName": "src"
    }
   ],
@@ -424,6 +434,7 @@
     "kind": "file",
     "toolName": "edit",
     "action": "edit",
+    "filePath": "/repo/a.ts",
     "fileName": "a.ts"
    }
   ],
@@ -500,18 +511,22 @@
     "changes": [
      {
       "action": "add",
+      "path": "/repo/src/new.ts",
       "fileName": "new.ts"
      },
      {
       "action": "update",
+      "path": "/repo/src/app.ts",
       "fileName": "app.ts"
      },
      {
       "action": "delete",
+      "path": "/repo/src/old.ts",
       "fileName": "old.ts"
      },
      {
       "action": "move",
+      "path": "/repo/src/before.ts",
       "fileName": "before.ts",
       "moveFileName": "after.ts"
      }
@@ -545,11 +560,13 @@
     "changes": [
      {
       "action": "move",
+      "path": "C:\\repo\\a.ts",
       "fileName": "a.ts",
       "moveFileName": "b.ts"
      },
      {
       "action": "unknown",
+      "path": "/repo/custom.bin",
       "fileName": "custom.bin"
      }
     ]
@@ -803,6 +820,7 @@
     "kind": "file",
     "toolName": "Write",
     "action": "create",
+    "filePath": "/tmp/a.txt",
     "fileName": "a.txt"
    }
   ],
@@ -815,6 +833,7 @@
     "kind": "file",
     "toolName": "Edit",
     "action": "edit",
+    "filePath": "/tmp/a.txt",
     "fileName": "a.txt"
    }
   ],
@@ -1020,6 +1039,7 @@
     "changes": [
      {
       "action": "update",
+      "path": "/r/a.ts",
       "fileName": "a.ts"
      }
     ]
@@ -1045,6 +1065,7 @@
     "changes": [
      {
       "action": "move",
+      "path": "/r/a.ts",
       "fileName": "a.ts",
       "moveFileName": "b.ts"
      }
@@ -1077,10 +1098,12 @@
     "changes": [
      {
       "action": "unknown",
+      "path": "/r/a.ts",
       "fileName": "a.ts"
      },
      {
       "action": "add",
+      "path": "b",
       "fileName": "b"
      }
     ]
@@ -1132,6 +1155,7 @@
     "changes": [
      {
       "action": "delete",
+      "path": "/r/",
       "fileName": "r"
      }
     ]
@@ -1147,6 +1171,7 @@
     "kind": "file",
     "toolName": "Read",
     "action": "read",
+    "filePath": "C:\\\\x\\\\y.txt",
     "fileName": "y.txt"
    }
   ],

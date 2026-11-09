@@ -81,7 +81,9 @@ fn change_label(t: &Translator, change: &Change) -> String {
 /// `formatToolRowText(...).label` for the kinds whose label the island shows.
 fn label(t: &Translator, tool_name: &str, kind: &Kind) -> String {
     match kind {
-        Kind::File { action, file_name } => join(verb(t, action), file_name),
+        Kind::File {
+            action, file_name, ..
+        } => join(verb(t, action), file_name),
         Kind::FileChange(changes) => match changes.as_slice() {
             [one] => change_label(t, one),
             many => {

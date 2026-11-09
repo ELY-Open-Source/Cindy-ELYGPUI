@@ -22,7 +22,7 @@ fn intent(i: &crate::command_intent::Intent) -> Value {
 }
 
 fn change(c: &Change) -> Value {
-    let mut out = json!({ "action": c.action, "fileName": c.file_name });
+    let mut out = json!({ "action": c.action, "path": c.path, "fileName": c.file_name });
     put(
         &mut out,
         "moveFileName",
@@ -48,8 +48,13 @@ fn shown(name: &str, input: &Value) -> Value {
             put(&mut out, "intent", i.as_ref().map(intent));
             "command"
         }
-        Kind::File { action, file_name } => {
-            (out["action"], out["fileName"]) = (json!(action), json!(file_name));
+        Kind::File {
+            action,
+            file_path,
+            file_name,
+        } => {
+            (out["action"], out["filePath"]) = (json!(action), json!(file_path));
+            out["fileName"] = json!(file_name);
             "file"
         }
         Kind::FileChange(changes) => {

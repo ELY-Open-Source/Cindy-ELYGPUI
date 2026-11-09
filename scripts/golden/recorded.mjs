@@ -47,3 +47,8 @@ export const VIEW_TESTS = {
   [`${shared}/historyViewOffline.test.ts`]: { '../historyViewProjection': ['projectHistoryView'] },
   [`${desktop}/main/device-link/__tests__/sharedTaskDispatch.test.ts`]: window,
 };
+
+export const ARTIFACT_TESTS = {
+  [`${desktop}/renderer/__tests__/generatedFiles.test.ts`]: { '../lib/generatedFiles': ['extractCommandOutputPathCandidates'] },
+  [`${desktop}/main/localDb/ipc/__tests__/historyViewOutline.test.ts`]: { '../historyViewOutline': ['withHistoryArtifacts'] },
+};
