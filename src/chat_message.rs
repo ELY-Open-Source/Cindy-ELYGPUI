@@ -1,7 +1,7 @@
 //! `makerChatStore.ts`'s `mapServerMessages`: stored rows as the chat's `ChatMessage`s.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the store slice reads it in 9.2c")
+    expect(dead_code, reason = "the store slice reads it in 9.2d")
 )]
 
 use std::collections::HashMap;
@@ -15,6 +15,7 @@ use crate::{
 mod assistant;
 mod bot;
 mod cards;
+mod merge;
 mod meta;
 mod money;
 mod references;

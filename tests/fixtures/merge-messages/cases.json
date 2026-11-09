@@ -1,0 +1,5007 @@
+[
+ {
+  "name": "empty store sorts by time",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "rowid breaks a time tie",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 5
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 2
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "server order breaks a full tie",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "newest-first reverses server order",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [],
+  "rowsOrder": "newest-first"
+ },
+ {
+  "name": "missing and invalid times sort last",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "x",
+    "role": "assistant",
+    "content": "text x"
+   },
+   {
+    "clientId": "y",
+    "role": "assistant",
+    "content": "text y",
+    "createdAt": "garbage"
+   },
+   {
+    "clientId": "z",
+    "role": "assistant",
+    "content": "text z",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "w",
+    "role": "assistant",
+    "content": "text w",
+    "createdAt": ""
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "numeric createdAt",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": 5000
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": 1000
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": 0
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "non-finite rowid is no tie break",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": null
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": "2"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "duplicate server ids keep first slot last value",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "one",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "clientId by SameValueZero",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": 1,
+    "role": "assistant",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "1",
+    "role": "assistant",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": 0,
+    "role": "assistant",
+    "content": "text 0",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": -0.0,
+    "role": "assistant",
+    "content": "neg",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": null,
+    "role": "assistant",
+    "content": "text None",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "missing clientIds share a key",
+  "fn": "merge",
+  "server": [
+   {
+    "role": "user",
+    "content": "x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "role": "user",
+    "content": "y",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "empty everything",
+  "fn": "merge",
+  "server": [],
+  "existing": []
+ },
+ {
+  "name": "same objects stay the same",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "$ref": "server:0"
+   },
+   {
+    "$ref": "server:1"
+   }
+  ]
+ },
+ {
+  "name": "equal primitive copies keep existing",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ]
+ },
+ {
+  "name": "equal object field is a new object",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "ls"
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "ls"
+    }
+   }
+  ]
+ },
+ {
+  "name": "shared object field stays",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "ls"
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "$ref": "server:0/toolInput"
+    }
+   }
+  ]
+ },
+ {
+  "name": "existing has an extra key",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "extra": true
+   }
+  ]
+ },
+ {
+  "name": "persisted adds a key",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "model": "m"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "NaN-free equal numbers",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 3
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 3
+   }
+  ]
+ },
+ {
+  "name": "negative zero is not zero",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "n": -0.0
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "n": 0
+   }
+  ]
+ },
+ {
+  "name": "sender fields absent in persisted are dropped",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "automationOrigin": {
+     "id": 1
+    },
+    "sourceDevice": "d",
+    "sourcePlugin": "p",
+    "sourceGroup": "g",
+    "hookSource": "h",
+    "sharedAuthorName": "n",
+    "sharedAuthorMemberId": "m",
+    "other": "kept"
+   }
+  ]
+ },
+ {
+  "name": "sender fields in persisted win",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": "new"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": "old"
+   }
+  ]
+ },
+ {
+  "name": "null sender field is kept",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": null
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": "old"
+   }
+  ]
+ },
+ {
+  "name": "retry files and mentions stay",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": [
+     "new"
+    ]
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": [
+     "old"
+    ],
+    "retryMentions": [
+     {
+      "x": 1
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "falsy retry files do not stay",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": [
+     "new"
+    ],
+    "retryMentions": "m"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": "",
+    "retryMentions": 0
+   }
+  ]
+ },
+ {
+  "name": "codex plan kept with the option",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan replaced without the option",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "terminal plan snapshot closes it",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    },
+    "terminalPlanSnapshot": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "truthy non-true terminal stamp",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    },
+    "terminalPlanSnapshot": 1
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan other tool use id",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p2",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan not an array",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": "x"
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan input is an array",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": [
+     1
+    ]
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan existing without content",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan other tool name",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "todo",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "todo",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "codex plan missing tool use ids",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "answered ask stays over pending echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered",
+    "askUserReply": "yes",
+    "askUserAnswers": {
+     "q": "yes"
+    }
+   }
+  ]
+ },
+ {
+  "name": "answered ask without reply gains undefined keys",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered"
+   }
+  ]
+ },
+ {
+  "name": "pending over expired echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "expired"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ]
+ },
+ {
+  "name": "expired over expired echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "expired"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "expired",
+    "askUserReply": "r"
+   }
+  ]
+ },
+ {
+  "name": "answered echo wins",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered",
+    "askUserReply": "db"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ]
+ },
+ {
+  "name": "no live ask status",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "empty live ask status",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": ""
+   }
+  ]
+ },
+ {
+  "name": "ask role mismatch",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered"
+   }
+  ]
+ },
+ {
+  "name": "approved review over pending echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "approved",
+    "planReviewRequestId": "r1",
+    "planReviewFeedback": "ok",
+    "planReviewPlan": "p",
+    "planReviewFilePath": "/f"
+   }
+  ]
+ },
+ {
+  "name": "pending same request keeps live",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "db"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "live"
+   }
+  ]
+ },
+ {
+  "name": "pending other request takes echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r2",
+    "planReviewPlan": "db"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "live"
+   }
+  ]
+ },
+ {
+  "name": "pending both without request ids",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": null,
+    "planReviewPlan": "db"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewPlan": "live"
+   }
+  ]
+ },
+ {
+  "name": "review expired echo over expired",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "expired",
+    "planReviewRequestId": "r1"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "expired",
+    "planReviewRequestId": "r1",
+    "planReviewFeedback": "f"
+   }
+  ]
+ },
+ {
+  "name": "placeholder echo keeps full content",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "full body",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "placeholder existing takes the echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "part",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "both truncated, longer existing stays",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcdef",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "both truncated, longer echo wins",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcdefgh",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "both truncated, equal sizes keep existing",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "xy",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "truncated sizes count escapes",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcd",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "a\n\"",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "truncated echo on untruncated existing",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "cut",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true,
+    "remoteRowsTrimmed": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "whole",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated tool use keeps its input",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "x": "cut"
+    },
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "full",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "a long command"
+    }
+   }
+  ]
+ },
+ {
+  "name": "truncated tool use sizes compare input",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "c",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "x": "longer input here"
+    },
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "c",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "x": 1
+    },
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "truncated echo with role change",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "full",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated echo, existing null content",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": null,
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated echo, existing object content",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": {
+     "blocks": [
+      1
+     ]
+    },
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated echo, truthy non-true flag",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": 1
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "full",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated flag drops when echo is whole",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "whole",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "part",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "tool result content kept with the option",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "summary",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "full output",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "options": {
+   "preserveExistingToolResultContent": true
+  }
+ },
+ {
+  "name": "tool result content without the option",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "summary",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "full output",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "tool result option on other roles",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "summary",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "full",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "options": {
+   "preserveExistingToolResultContent": true
+  }
+ },
+ {
+  "name": "pending persist and trimmed drop",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteRowsTrimmed": "yes"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isPendingPersist": true,
+    "remoteRowsTrimmed": true
+   }
+  ]
+ },
+ {
+  "name": "trimmed echo stays",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteRowsTrimmed": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "pending persist on an unmatched row stays",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isPendingPersist": true
+   }
+  ]
+ },
+ {
+  "name": "existing duplicates fold into the first",
+  "fn": "merge",
+  "server": [],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "one",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "extra": 1
+   }
+  ]
+ },
+ {
+  "name": "existing duplicates with an echo",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "one",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isPendingPersist": true
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "add only leaves present rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "options": {
+   "addOnly": true
+  }
+ },
+ {
+  "name": "add only except hydrates listed rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "options": {
+   "addOnly": true,
+   "addOnlyExcept": [
+    "c"
+   ]
+  }
+ },
+ {
+  "name": "add only with nothing new",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "options": {
+   "addOnly": true
+  }
+ },
+ {
+  "name": "add only except without add only",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "options": {
+   "addOnlyExcept": []
+  }
+ },
+ {
+  "name": "new rows sort in",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "d",
+    "role": "assistant",
+    "content": "text d",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ]
+ },
+ {
+  "name": "existing out of order resorts",
+  "fn": "merge",
+  "server": [],
+  "existing": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "existing out of order with echoes",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "$ref": "server:1"
+   },
+   {
+    "$ref": "server:0"
+   }
+  ]
+ },
+ {
+  "name": "server order ties existing rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "server order newest first on existing",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "rowsOrder": "newest-first"
+ },
+ {
+  "name": "rows unknown to the server keep index order",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "x",
+    "role": "assistant",
+    "content": "text x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a"
+   },
+   {
+    "clientId": "x",
+    "role": "assistant",
+    "content": "text x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "consecutive resume cards collapse",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume-pending",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   },
+   {
+    "clientId": "r3",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r3"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "thinking does not end an interruption",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "t",
+    "role": "thinking",
+    "content": "hmm",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "visible text ends an interruption",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "answer",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "zero-width text is not visible",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "​­ \n⁠",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "control characters are not visible",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "\u0000\u001b﻿",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "braille blank is visible",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "⠀",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "hangul filler is visible",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "ㅤ",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "empty text is not visible",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "object content is substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": {
+     "a": 1
+    },
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "number content is substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": 0,
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "null content is not substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": null,
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "missing content is not substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "synthetic row is not substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "s",
+    "role": "assistant",
+    "content": "go on",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "other system card is a boundary",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "g",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "systemCardType": "compact"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "empty system card type",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "g",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "systemCardType": ""
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "tool use is substantive",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "u",
+    "role": "tool_use",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-u",
+    "toolInput": {
+     "command": "ls"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "unchanged store keeps uncollapsed cards",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "existing": [
+   {
+    "$ref": "server:0"
+   },
+   {
+    "$ref": "server:1"
+   }
+  ]
+ },
+ {
+  "name": "a change collapses existing cards",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   },
+   {
+    "clientId": "n",
+    "role": "assistant",
+    "content": "text n",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "existing": [
+   {
+    "$ref": "server:0"
+   },
+   {
+    "$ref": "server:1"
+   }
+  ]
+ },
+ {
+  "name": "collapse within groups",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "a1"
+    }
+   },
+   {
+    "clientId": "a2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "a2"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "b1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "b1"
+    }
+   },
+   {
+    "clientId": "t",
+    "role": "thinking",
+    "content": "text t",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "b2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:06.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "b2"
+    }
+   },
+   {
+    "clientId": "b3",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:07.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "b3"
+    }
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "codex plan tool use ids zero and negative zero",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": -0.0,
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": 0,
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "options": {
+   "preserveExistingCodexPlanContent": true
+  }
+ },
+ {
+  "name": "equal copies with a null field",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "model": null
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "model": null
+   }
+  ]
+ },
+ {
+  "name": "null and missing clientIds differ",
+  "fn": "merge",
+  "server": [
+   {
+    "role": "user",
+    "content": "x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": null,
+    "role": "assistant",
+    "content": "text None",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "duplicate server id takes its last slot",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "one",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "infinite rowid is no tie break",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 1e999
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 1
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "pending review over approved echo, same request",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "approved",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "db"
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "live"
+   }
+  ]
+ },
+ {
+  "name": "placeholder echo over a shorter truncated row",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "truncated longer echo over a whole shorter row",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcdefgh",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "truncated sizes count UTF-16 units",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcd",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ééé",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "truncated sizes count astral pairs",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcde",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "😀😀😀",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ]
+ },
+ {
+  "name": "non-total order, 9 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "rowid": 1
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "rowid": 1
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "rowid": 0
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 0
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "rowid": 2
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "bad"
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "non-total order with existing, 9 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 5
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6"
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 4
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "$ref": "server:1"
+   },
+   {
+    "$ref": "server:2"
+   },
+   {
+    "clientId": "e3",
+    "role": "assistant",
+    "content": "text e3",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ]
+ },
+ {
+  "name": "non-total order, 40 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 20
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 37
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 28
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "bad"
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "rowid": 8
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 27
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 9
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15"
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 37
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17"
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "rowid": 39
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28"
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "rowid": 29
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32"
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "bad",
+    "rowid": 10
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 33
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 5
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 12
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "non-total order with existing, 40 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "rowid": 1
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 12
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "rowid": 21
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "rowid": 39
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 7
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 21
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "rowid": 25
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13"
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "rowid": 9
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "rowid": 1
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "rowid": 6
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 12
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "rowid": 37
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "rowid": 29
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24"
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 38
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "rowid": 11
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "rowid": 7
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 33
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30"
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 4
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 9
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "e1",
+    "role": "assistant",
+    "content": "text e1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:2"
+   },
+   {
+    "$ref": "server:3"
+   },
+   {
+    "$ref": "server:4"
+   },
+   {
+    "clientId": "e5",
+    "role": "assistant",
+    "content": "text e5",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "$ref": "server:6"
+   },
+   {
+    "$ref": "server:7"
+   },
+   {
+    "clientId": "e8",
+    "role": "assistant",
+    "content": "text e8",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:9"
+   },
+   {
+    "$ref": "server:10"
+   },
+   {
+    "clientId": "e11",
+    "role": "assistant",
+    "content": "text e11",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "$ref": "server:12"
+   },
+   {
+    "$ref": "server:13"
+   },
+   {
+    "$ref": "server:14"
+   },
+   {
+    "$ref": "server:15"
+   },
+   {
+    "$ref": "server:16"
+   },
+   {
+    "$ref": "server:17"
+   },
+   {
+    "clientId": "e18",
+    "role": "assistant",
+    "content": "text e18",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "$ref": "server:19"
+   }
+  ],
+  "rowsOrder": "newest-first"
+ },
+ {
+  "name": "non-total order, 70 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 13
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2"
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "rowid": 33
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 63
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 9
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "bad"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9"
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 34
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "rowid": 39
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "rowid": 24
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 13
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 63
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "rowid": 32
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 36
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31"
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "rowid": 27
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35"
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 0
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "rowid": 18
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "bad",
+    "rowid": 10
+   },
+   {
+    "clientId": "s40",
+    "role": "assistant",
+    "content": "text s40",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 19
+   },
+   {
+    "clientId": "s41",
+    "role": "assistant",
+    "content": "text s41",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 49
+   },
+   {
+    "clientId": "s42",
+    "role": "assistant",
+    "content": "text s42",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 19
+   },
+   {
+    "clientId": "s43",
+    "role": "assistant",
+    "content": "text s43",
+    "createdAt": "bad",
+    "rowid": 18
+   },
+   {
+    "clientId": "s44",
+    "role": "assistant",
+    "content": "text s44",
+    "rowid": 65
+   },
+   {
+    "clientId": "s45",
+    "role": "assistant",
+    "content": "text s45",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "s46",
+    "role": "assistant",
+    "content": "text s46",
+    "rowid": 64
+   },
+   {
+    "clientId": "s47",
+    "role": "assistant",
+    "content": "text s47",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 29
+   },
+   {
+    "clientId": "s48",
+    "role": "assistant",
+    "content": "text s48"
+   },
+   {
+    "clientId": "s49",
+    "role": "assistant",
+    "content": "text s49",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s50",
+    "role": "assistant",
+    "content": "text s50",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 68
+   },
+   {
+    "clientId": "s51",
+    "role": "assistant",
+    "content": "text s51",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s52",
+    "role": "assistant",
+    "content": "text s52",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "s53",
+    "role": "assistant",
+    "content": "text s53",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s54",
+    "role": "assistant",
+    "content": "text s54",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s55",
+    "role": "assistant",
+    "content": "text s55"
+   },
+   {
+    "clientId": "s56",
+    "role": "assistant",
+    "content": "text s56",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s57",
+    "role": "assistant",
+    "content": "text s57",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 48
+   },
+   {
+    "clientId": "s58",
+    "role": "assistant",
+    "content": "text s58",
+    "rowid": 36
+   },
+   {
+    "clientId": "s59",
+    "role": "assistant",
+    "content": "text s59",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s60",
+    "role": "assistant",
+    "content": "text s60"
+   },
+   {
+    "clientId": "s61",
+    "role": "assistant",
+    "content": "text s61",
+    "createdAt": "bad",
+    "rowid": 38
+   },
+   {
+    "clientId": "s62",
+    "role": "assistant",
+    "content": "text s62",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s63",
+    "role": "assistant",
+    "content": "text s63"
+   },
+   {
+    "clientId": "s64",
+    "role": "assistant",
+    "content": "text s64",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s65",
+    "role": "assistant",
+    "content": "text s65",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 59
+   },
+   {
+    "clientId": "s66",
+    "role": "assistant",
+    "content": "text s66",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s67",
+    "role": "assistant",
+    "content": "text s67",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 2
+   },
+   {
+    "clientId": "s68",
+    "role": "assistant",
+    "content": "text s68",
+    "createdAt": "bad"
+   },
+   {
+    "clientId": "s69",
+    "role": "assistant",
+    "content": "text s69",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 49
+   }
+  ],
+  "existing": []
+ },
+ {
+  "name": "non-total order with existing, 70 rows",
+  "fn": "merge",
+  "server": [
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "rowid": 26
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1"
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 62
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 18
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 35
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "rowid": 36
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "bad",
+    "rowid": 24
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 51
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "rowid": 57
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 36
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "bad",
+    "rowid": 33
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 57
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 24
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29"
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "bad",
+    "rowid": 2
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 46
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "rowid": 27
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "rowid": 49
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 62
+   },
+   {
+    "clientId": "s40",
+    "role": "assistant",
+    "content": "text s40"
+   },
+   {
+    "clientId": "s41",
+    "role": "assistant",
+    "content": "text s41",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 57
+   },
+   {
+    "clientId": "s42",
+    "role": "assistant",
+    "content": "text s42"
+   },
+   {
+    "clientId": "s43",
+    "role": "assistant",
+    "content": "text s43",
+    "rowid": 13
+   },
+   {
+    "clientId": "s44",
+    "role": "assistant",
+    "content": "text s44",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 58
+   },
+   {
+    "clientId": "s45",
+    "role": "assistant",
+    "content": "text s45",
+    "rowid": 0
+   },
+   {
+    "clientId": "s46",
+    "role": "assistant",
+    "content": "text s46",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 4
+   },
+   {
+    "clientId": "s47",
+    "role": "assistant",
+    "content": "text s47",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s48",
+    "role": "assistant",
+    "content": "text s48",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s49",
+    "role": "assistant",
+    "content": "text s49"
+   },
+   {
+    "clientId": "s50",
+    "role": "assistant",
+    "content": "text s50",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s51",
+    "role": "assistant",
+    "content": "text s51",
+    "rowid": 1
+   },
+   {
+    "clientId": "s52",
+    "role": "assistant",
+    "content": "text s52",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s53",
+    "role": "assistant",
+    "content": "text s53",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s54",
+    "role": "assistant",
+    "content": "text s54",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s55",
+    "role": "assistant",
+    "content": "text s55"
+   },
+   {
+    "clientId": "s56",
+    "role": "assistant",
+    "content": "text s56",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s57",
+    "role": "assistant",
+    "content": "text s57",
+    "rowid": 47
+   },
+   {
+    "clientId": "s58",
+    "role": "assistant",
+    "content": "text s58"
+   },
+   {
+    "clientId": "s59",
+    "role": "assistant",
+    "content": "text s59",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s60",
+    "role": "assistant",
+    "content": "text s60",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "s61",
+    "role": "assistant",
+    "content": "text s61",
+    "rowid": 25
+   },
+   {
+    "clientId": "s62",
+    "role": "assistant",
+    "content": "text s62",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s63",
+    "role": "assistant",
+    "content": "text s63",
+    "rowid": 37
+   },
+   {
+    "clientId": "s64",
+    "role": "assistant",
+    "content": "text s64",
+    "rowid": 23
+   },
+   {
+    "clientId": "s65",
+    "role": "assistant",
+    "content": "text s65",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 7
+   },
+   {
+    "clientId": "s66",
+    "role": "assistant",
+    "content": "text s66",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 6
+   },
+   {
+    "clientId": "s67",
+    "role": "assistant",
+    "content": "text s67",
+    "rowid": 18
+   },
+   {
+    "clientId": "s68",
+    "role": "assistant",
+    "content": "text s68",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s69",
+    "role": "assistant",
+    "content": "text s69",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 14
+   }
+  ],
+  "existing": [
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:1"
+   },
+   {
+    "$ref": "server:2"
+   },
+   {
+    "clientId": "e3",
+    "role": "assistant",
+    "content": "text e3",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "$ref": "server:4"
+   },
+   {
+    "$ref": "server:5"
+   },
+   {
+    "clientId": "e6",
+    "role": "assistant",
+    "content": "text e6",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "e7",
+    "role": "assistant",
+    "content": "text e7",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "$ref": "server:8"
+   },
+   {
+    "$ref": "server:9"
+   },
+   {
+    "$ref": "server:10"
+   },
+   {
+    "$ref": "server:11"
+   },
+   {
+    "clientId": "e12",
+    "role": "assistant",
+    "content": "text e12",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "e13",
+    "role": "assistant",
+    "content": "text e13",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:14"
+   },
+   {
+    "clientId": "e15",
+    "role": "assistant",
+    "content": "text e15",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "e16",
+    "role": "assistant",
+    "content": "text e16",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "$ref": "server:17"
+   },
+   {
+    "clientId": "e18",
+    "role": "assistant",
+    "content": "text e18",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:19"
+   },
+   {
+    "clientId": "e20",
+    "role": "assistant",
+    "content": "text e20",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "$ref": "server:21"
+   },
+   {
+    "clientId": "e22",
+    "role": "assistant",
+    "content": "text e22",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "$ref": "server:23"
+   },
+   {
+    "$ref": "server:24"
+   },
+   {
+    "clientId": "e25",
+    "role": "assistant",
+    "content": "text e25",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "$ref": "server:26"
+   },
+   {
+    "$ref": "server:27"
+   },
+   {
+    "$ref": "server:28"
+   },
+   {
+    "clientId": "e29",
+    "role": "assistant",
+    "content": "text e29",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "$ref": "server:30"
+   },
+   {
+    "$ref": "server:31"
+   },
+   {
+    "clientId": "e32",
+    "role": "assistant",
+    "content": "text e32",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "$ref": "server:33"
+   },
+   {
+    "clientId": "e34",
+    "role": "assistant",
+    "content": "text e34",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   }
+  ]
+ },
+ {
+  "name": "confirmed send retires its slot",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "confirmed": [
+   "u"
+  ]
+ },
+ {
+  "name": "unconfirmed send keeps its slot",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   },
+   {
+    "clientId": "v",
+    "role": "user",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "u"
+    ]
+   }
+  ],
+  "confirmed": [
+   "v"
+  ]
+ },
+ {
+  "name": "nothing confirmed keeps the array",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "confirmed": [
+   "x"
+  ]
+ },
+ {
+  "name": "empty preceding list is truthy",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": []
+   }
+  ],
+  "confirmed": [
+   "u"
+  ]
+ },
+ {
+  "name": "falsy preceding value stays",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": ""
+   },
+   {
+    "clientId": "v",
+    "role": "user",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": null
+   },
+   {
+    "clientId": "w",
+    "role": "user",
+    "content": "text w",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": 0
+   }
+  ],
+  "confirmed": [
+   "u",
+   "v",
+   "w"
+  ]
+ },
+ {
+  "name": "confirmed id without a slot",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": "u",
+    "role": "assistant",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "confirmed": [
+   "u"
+  ]
+ },
+ {
+  "name": "non-string id never matches",
+  "fn": "confirm",
+  "messages": [
+   {
+    "clientId": 1,
+    "role": "user",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   }
+  ],
+  "confirmed": [
+   "1"
+  ]
+ },
+ {
+  "name": "empty list",
+  "fn": "confirm",
+  "messages": [],
+  "confirmed": [
+   "u"
+  ]
+ }
+]

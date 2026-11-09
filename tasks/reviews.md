@@ -44,3 +44,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: FAIL. Rust's `sort_by` met Cindy's non-total timeline order (wrong order, a panic at 24 rows); `finishedAt` read ISO only; Cindy Make card arrays spread into objects; prototype tool names did not throw; `String()` never threw.
 - Fixed: `js_sort` ports V8's TimSort (insertion under 8); `js_date::parse` ports V8's `DateParser` with local times through jiff; card `data` kept as is; `paramKeys is not iterable`; `js::try_string` at the four coercions, billing sources read before the early return. Goldens `js-sort` (V8) and `js-date` (Cindy's Electron, three zones); the reviewer's inputs join `chat-message`.
 - Round 2: PASS.
+
+## 9.2c mergeMessages
+- Round 1: FAIL. `valueReadableSize` counts 0 when `JSON.stringify` throws: V8's slow serializer (a `toJSON` key, index keys, cons strings) overflows past about 5,000 levels; the golden script opened with two comment lines.
+- Answered: the overflow depth moves with the caller's stack (5655, 5613, 5246 array levels under 0, 100, 1000 frames; `logs/review/9.2c-r2-depth-bisect.log`), and cons strings are invisible to the port, so the throw is not ported. The `String::kMaxLength` throw needs 512 MiB. Comment joined.
+- Round 2: FAIL. The stack bound is accepted as a runtime limit; `String::kMaxLength` is fixed: 90M NULs encode to 540,000,002 units and V8 throws.
+- Fixed: a field whose encoding passes `(1 << 29) - 24` counts 0; test on the reviewer's input.
+- Round 3: PASS.

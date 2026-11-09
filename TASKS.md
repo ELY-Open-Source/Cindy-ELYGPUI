@@ -62,7 +62,7 @@ listed in `tasks/done.md`.
   - [x] 9.2b `mapServerMessages`: `ChatMessage` as the store builds it from rows (hidden
     thinking rows, timeline order, the tool, ask, thinking, plan, error and card branches,
     `projectLegacyUserTurnCosts`); golden from Cindy's function, exported in the bundle only
-  - [ ] 9.2c `mergeMessages` with `hydratePersistedMessage`, `sortMessagesChronologically` and
+  - [x] 9.2c `mergeMessages` with `hydratePersistedMessage`, `sortMessagesChronologically` and
     `collapseConsecutiveAutoResumeRows`, and `remoteUserHandoff.ts`'s `confirmRemoteUsers`;
     golden from Cindy's functions, exported in the bundle only
   - [ ] 9.2d The store's slice for a local task: `createRemoteHistoryView`'s local transport,

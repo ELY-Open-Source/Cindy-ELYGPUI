@@ -1,0 +1,5313 @@
+[
+ {
+  "name": "empty store sorts by time",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "origin": [
+   "server:1",
+   "server:0",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "rowid breaks a time tie",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 2
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 5
+   }
+  ],
+  "origin": [
+   "server:1",
+   "server:0"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "server order breaks a full tie",
+  "result": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "newest-first reverses server order",
+  "result": [
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "server:2",
+   "server:1",
+   "server:0"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "missing and invalid times sort last",
+  "result": [
+   {
+    "clientId": "z",
+    "role": "assistant",
+    "content": "text z",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "x",
+    "role": "assistant",
+    "content": "text x"
+   },
+   {
+    "clientId": "y",
+    "role": "assistant",
+    "content": "text y",
+    "createdAt": "garbage"
+   },
+   {
+    "clientId": "w",
+    "role": "assistant",
+    "content": "text w",
+    "createdAt": ""
+   }
+  ],
+  "origin": [
+   "server:2",
+   "server:0",
+   "server:1",
+   "server:3"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "numeric createdAt",
+  "result": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": 1000
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": 5000
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": 0
+   }
+  ],
+  "origin": [
+   "server:1",
+   "server:0",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-finite rowid is no tie break",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": null
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": "2"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "duplicate server ids keep first slot last value",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "server:2",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "clientId by SameValueZero",
+  "result": [
+   {
+    "clientId": 1,
+    "role": "assistant",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "1",
+    "role": "assistant",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": 0,
+    "role": "assistant",
+    "content": "neg",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": null,
+    "role": "assistant",
+    "content": "text None",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:3",
+   "server:4"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "missing clientIds share a key",
+  "result": [
+   {
+    "role": "user",
+    "content": "y",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "server:1"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "empty everything",
+  "result": [],
+  "origin": [],
+  "undefinedKeys": [],
+  "same": false
+ },
+ {
+  "name": "same objects stay the same",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "equal primitive copies keep existing",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "existing:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "equal object field is a new object",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "ls"
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "shared object field stays",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "ls"
+    }
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "existing has an extra key",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "extra": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "persisted adds a key",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "model": "m"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "NaN-free equal numbers",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 3
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "negative zero is not zero",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "n": 0
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "sender fields absent in persisted are dropped",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "other": "kept"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "sender fields in persisted win",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": "new"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "null sender field is kept",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "sourceDevice": null
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "retry files and mentions stay",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": [
+     "old"
+    ],
+    "retryMentions": [
+     {
+      "x": 1
+     }
+    ]
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "falsy retry files do not stay",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "retryFiles": [
+     "new"
+    ],
+    "retryMentions": "m"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan kept with the option",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "codex plan replaced without the option",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "terminal plan snapshot closes it",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    },
+    "terminalPlanSnapshot": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truthy non-true terminal stamp",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    },
+    "terminalPlanSnapshot": 1
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan other tool use id",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p2",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan not an array",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": "x"
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan input is an array",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": [
+     1
+    ]
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan existing without content",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   [
+    "content"
+   ]
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan other tool name",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "todo",
+    "toolUseId": "p1",
+    "toolInput": {
+     "plan": [
+      1
+     ]
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan missing tool use ids",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "answered ask stays over pending echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered",
+    "askUserReply": "yes",
+    "askUserAnswers": {
+     "q": "yes"
+    }
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "answered ask without reply gains undefined keys",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   [
+    "askUserReply",
+    "askUserAnswers"
+   ]
+  ],
+  "same": false
+ },
+ {
+  "name": "pending over expired echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   [
+    "askUserReply",
+    "askUserAnswers"
+   ]
+  ],
+  "same": false
+ },
+ {
+  "name": "expired over expired echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "expired",
+    "askUserReply": "r"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "answered echo wins",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "answered",
+    "askUserReply": "db"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "no live ask status",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "empty live ask status",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "ask role mismatch",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "ask_user",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "askUserStatus": "pending"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "approved review over pending echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "approved",
+    "planReviewRequestId": "r1",
+    "planReviewFeedback": "ok",
+    "planReviewPlan": "p",
+    "planReviewFilePath": "/f"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "pending same request keeps live",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "live"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   [
+    "planReviewFeedback",
+    "planReviewFilePath"
+   ]
+  ],
+  "same": false
+ },
+ {
+  "name": "pending other request takes echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewRequestId": "r2",
+    "planReviewPlan": "db"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "pending both without request ids",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "pending",
+    "planReviewPlan": "db",
+    "planReviewRequestId": null
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "review expired echo over expired",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "expired",
+    "planReviewRequestId": "r1",
+    "planReviewFeedback": "f"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "placeholder echo keeps full content",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "full body",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "placeholder existing takes the echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "part",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "both truncated, longer existing stays",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcdef",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "both truncated, longer echo wins",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcdefgh",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "both truncated, equal sizes keep existing",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated sizes count escapes",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "a\n\"",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated echo on untruncated existing",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "whole",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteRowsTrimmed": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated tool use keeps its input",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "full",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "command": "a long command"
+    }
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated tool use sizes compare input",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "c",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-a",
+    "toolInput": {
+     "x": "longer input here"
+    },
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated echo with role change",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "user",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated echo, existing null content",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated echo, existing object content",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": {
+     "blocks": [
+      1
+     ]
+    },
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated echo, truthy non-true flag",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "[remote content truncated: payload too large]",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated flag drops when echo is whole",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "whole",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "tool result content kept with the option",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "full output",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "tool result content without the option",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_result",
+    "content": "summary",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "tool result option on other roles",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "summary",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "pending persist and trimmed drop",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "trimmed echo stays",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteRowsTrimmed": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "pending persist on an unmatched row stays",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isPendingPersist": true
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "server:0"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "existing duplicates fold into the first",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "extra": 1
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   null,
+   "existing:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "existing duplicates with an echo",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "add only leaves present rows",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "add only except hydrates listed rows",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   null
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "add only with nothing new",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "live",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "add only except without add only",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "db",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "new rows sort in",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "c",
+    "role": "assistant",
+    "content": "text c",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "d",
+    "role": "assistant",
+    "content": "text d",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "server:0",
+   "existing:1",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "existing out of order resorts",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "existing:1",
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "existing out of order with echoes",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "server order ties existing rows",
+  "result": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:1",
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "server order newest first on existing",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "existing:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "rows unknown to the server keep index order",
+  "result": [
+   {
+    "clientId": "x",
+    "role": "assistant",
+    "content": "text x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a"
+   }
+  ],
+  "origin": [
+   "existing:2",
+   "existing:0",
+   "existing:1"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "consecutive resume cards collapse",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "r3",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r3"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   null,
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "thinking does not end an interruption",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "t",
+    "role": "thinking",
+    "content": "hmm",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "visible text ends an interruption",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "answer",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "zero-width text is not visible",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "​­ \n⁠",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "control characters are not visible",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "\u0000\u001b﻿",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "braille blank is visible",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "⠀",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "hangul filler is visible",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "ㅤ",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "empty text is not visible",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "object content is substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": {
+     "a": 1
+    },
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "number content is substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": 0,
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "null content is not substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": null,
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "missing content is not substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "synthetic row is not substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "s",
+    "role": "assistant",
+    "content": "go on",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "other system card is a boundary",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "g",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "systemCardType": "compact"
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "empty system card type",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "g",
+    "role": "assistant",
+    "content": "",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "systemCardType": ""
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "tool use is substantive",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "u",
+    "role": "tool_use",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "toolName": "Bash",
+    "toolUseId": "tu-u",
+    "toolInput": {
+     "command": "ls"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "unchanged store keeps uncollapsed cards",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r1"
+    }
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "a change collapses existing cards",
+  "result": [
+   {
+    "clientId": "r1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "r2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "r2"
+    }
+   },
+   {
+    "clientId": "n",
+    "role": "assistant",
+    "content": "text n",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "collapse within groups",
+  "result": [
+   {
+    "clientId": "a1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "a2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "a2"
+    }
+   },
+   {
+    "clientId": "v",
+    "role": "assistant",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "b1",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "t",
+    "role": "thinking",
+    "content": "text t",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "b2",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:06.000Z",
+    "isSyntheticTrigger": true
+   },
+   {
+    "clientId": "b3",
+    "role": "user",
+    "content": "resume",
+    "createdAt": "2026-01-01T00:00:07.000Z",
+    "isSyntheticTrigger": true,
+    "systemCardType": "auto-resume",
+    "systemCardData": {
+     "attempt": "b3"
+    }
+   }
+  ],
+  "origin": [
+   null,
+   "server:1",
+   "server:2",
+   null,
+   "server:4",
+   null,
+   "server:6"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "codex plan tool use ids zero and negative zero",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "tool_use",
+    "content": "plan 2",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "toolName": "update_plan",
+    "toolUseId": 0,
+    "toolInput": {
+     "plan": [
+      1,
+      2
+     ]
+    }
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "equal copies with a null field",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "model": null
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "null and missing clientIds differ",
+  "result": [
+   {
+    "role": "user",
+    "content": "x",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": null,
+    "role": "assistant",
+    "content": "text None",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "duplicate server id takes its last slot",
+  "result": [
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "two",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "server:1",
+   "server:2"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "infinite rowid is no tie break",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": null
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 1
+   }
+  ],
+  "origin": [
+   "server:0",
+   "server:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "pending review over approved echo, same request",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "plan_review",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "planReviewStatus": "approved",
+    "planReviewRequestId": "r1",
+    "planReviewPlan": "db"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "placeholder echo over a shorter truncated row",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated longer echo over a whole shorter row",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "ab",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "truncated sizes count UTF-16 units",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "abcd",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "truncated sizes count astral pairs",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "😀😀😀",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "remoteContentTruncated": true
+   }
+  ],
+  "origin": [
+   "existing:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "non-total order, 9 rows",
+  "result": [
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 0
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "rowid": 0
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "rowid": 1
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "rowid": 1
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "rowid": 2
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "bad"
+   }
+  ],
+  "origin": [
+   "server:5",
+   "server:2",
+   "server:0",
+   "server:6",
+   "server:4",
+   "server:1",
+   "server:3",
+   "server:7",
+   "server:8"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-total order with existing, 9 rows",
+  "result": [
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "e3",
+    "role": "assistant",
+    "content": "text e3",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 4
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 5
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0"
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6"
+   }
+  ],
+  "origin": [
+   "existing:0",
+   "server:3",
+   "server:7",
+   "server:1",
+   "server:2",
+   "existing:3",
+   "server:8",
+   "server:5",
+   "server:4",
+   "server:0",
+   "server:6"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-total order, 40 rows",
+  "result": [
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 37
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 12
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 33
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 5
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 27
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 28
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 37
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 9
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 20
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "bad"
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "rowid": 8
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15"
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17"
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "bad",
+    "rowid": 10
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "rowid": 39
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28"
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "rowid": 29
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32"
+   }
+  ],
+  "origin": [
+   "server:3",
+   "server:7",
+   "server:11",
+   "server:16",
+   "server:23",
+   "server:25",
+   "server:27",
+   "server:39",
+   "server:19",
+   "server:38",
+   "server:34",
+   "server:36",
+   "server:37",
+   "server:13",
+   "server:12",
+   "server:5",
+   "server:29",
+   "server:2",
+   "server:31",
+   "server:0",
+   "server:10",
+   "server:14",
+   "server:22",
+   "server:24",
+   "server:1",
+   "server:26",
+   "server:4",
+   "server:35",
+   "server:20",
+   "server:21",
+   "server:6",
+   "server:8",
+   "server:9",
+   "server:15",
+   "server:17",
+   "server:33",
+   "server:18",
+   "server:28",
+   "server:30",
+   "server:32"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-total order with existing, 40 rows",
+  "result": [
+   {
+    "clientId": "e5",
+    "role": "assistant",
+    "content": "text e5",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 3
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 7
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 9
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "e1",
+    "role": "assistant",
+    "content": "text e1",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "e8",
+    "role": "assistant",
+    "content": "text e8",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 12
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 12
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "e11",
+    "role": "assistant",
+    "content": "text e11",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 33
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 21
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "e18",
+    "role": "assistant",
+    "content": "text e18",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 4
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 38
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 1
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 22
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30"
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "rowid": 7
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24"
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "rowid": 1
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "rowid": 6
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "rowid": 9
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "rowid": 1
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "rowid": 11
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "rowid": 21
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "rowid": 25
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "rowid": 29
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "rowid": 37
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "rowid": 39
+   }
+  ],
+  "origin": [
+   "existing:5",
+   "server:29",
+   "server:8",
+   "server:39",
+   "server:32",
+   "existing:1",
+   "existing:8",
+   "server:36",
+   "server:19",
+   "server:18",
+   "server:4",
+   "server:2",
+   "server:3",
+   "existing:11",
+   "server:28",
+   "server:38",
+   "server:10",
+   "server:7",
+   "existing:18",
+   "server:37",
+   "server:0",
+   "server:25",
+   "server:31",
+   "server:21",
+   "server:33",
+   "server:15",
+   "server:34",
+   "server:23",
+   "existing:0",
+   "server:12",
+   "server:35",
+   "server:9",
+   "server:30",
+   "server:27",
+   "server:24",
+   "server:16",
+   "server:17",
+   "server:14",
+   "server:13",
+   "server:1",
+   "server:26",
+   "server:5",
+   "server:11",
+   "server:22",
+   "server:20",
+   "server:6"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-total order, 70 rows",
+  "result": [
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s47",
+    "role": "assistant",
+    "content": "text s47",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 29
+   },
+   {
+    "clientId": "s49",
+    "role": "assistant",
+    "content": "text s49",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s67",
+    "role": "assistant",
+    "content": "text s67",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 2
+   },
+   {
+    "clientId": "s53",
+    "role": "assistant",
+    "content": "text s53",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 8
+   },
+   {
+    "clientId": "s66",
+    "role": "assistant",
+    "content": "text s66",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s52",
+    "role": "assistant",
+    "content": "text s52",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "s50",
+    "role": "assistant",
+    "content": "text s50",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 68
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 9
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 13
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 13
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 0
+   },
+   {
+    "clientId": "s56",
+    "role": "assistant",
+    "content": "text s56",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s62",
+    "role": "assistant",
+    "content": "text s62",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 34
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s51",
+    "role": "assistant",
+    "content": "text s51",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s54",
+    "role": "assistant",
+    "content": "text s54",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s57",
+    "role": "assistant",
+    "content": "text s57",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 48
+   },
+   {
+    "clientId": "s69",
+    "role": "assistant",
+    "content": "text s69",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 49
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 36
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 63
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s40",
+    "role": "assistant",
+    "content": "text s40",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 19
+   },
+   {
+    "clientId": "s59",
+    "role": "assistant",
+    "content": "text s59",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 25
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 17
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 63
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s42",
+    "role": "assistant",
+    "content": "text s42",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 19
+   },
+   {
+    "clientId": "s41",
+    "role": "assistant",
+    "content": "text s41",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 49
+   },
+   {
+    "clientId": "s45",
+    "role": "assistant",
+    "content": "text s45",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "s64",
+    "role": "assistant",
+    "content": "text s64",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s65",
+    "role": "assistant",
+    "content": "text s65",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 59
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2"
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "rowid": 33
+   },
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "bad"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9"
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "rowid": 24
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "rowid": 27
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "rowid": 32
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "rowid": 39
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31"
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35"
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "bad",
+    "rowid": 10
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "rowid": 18
+   },
+   {
+    "clientId": "s43",
+    "role": "assistant",
+    "content": "text s43",
+    "createdAt": "bad",
+    "rowid": 18
+   },
+   {
+    "clientId": "s58",
+    "role": "assistant",
+    "content": "text s58",
+    "rowid": 36
+   },
+   {
+    "clientId": "s46",
+    "role": "assistant",
+    "content": "text s46",
+    "rowid": 64
+   },
+   {
+    "clientId": "s44",
+    "role": "assistant",
+    "content": "text s44",
+    "rowid": 65
+   },
+   {
+    "clientId": "s48",
+    "role": "assistant",
+    "content": "text s48"
+   },
+   {
+    "clientId": "s55",
+    "role": "assistant",
+    "content": "text s55"
+   },
+   {
+    "clientId": "s60",
+    "role": "assistant",
+    "content": "text s60"
+   },
+   {
+    "clientId": "s61",
+    "role": "assistant",
+    "content": "text s61",
+    "createdAt": "bad",
+    "rowid": 38
+   },
+   {
+    "clientId": "s63",
+    "role": "assistant",
+    "content": "text s63"
+   },
+   {
+    "clientId": "s68",
+    "role": "assistant",
+    "content": "text s68",
+    "createdAt": "bad"
+   }
+  ],
+  "origin": [
+   "server:6",
+   "server:13",
+   "server:27",
+   "server:34",
+   "server:38",
+   "server:47",
+   "server:49",
+   "server:67",
+   "server:53",
+   "server:66",
+   "server:52",
+   "server:50",
+   "server:7",
+   "server:1",
+   "server:3",
+   "server:10",
+   "server:14",
+   "server:16",
+   "server:17",
+   "server:20",
+   "server:23",
+   "server:30",
+   "server:36",
+   "server:56",
+   "server:62",
+   "server:18",
+   "server:25",
+   "server:11",
+   "server:12",
+   "server:22",
+   "server:51",
+   "server:54",
+   "server:57",
+   "server:69",
+   "server:0",
+   "server:28",
+   "server:5",
+   "server:32",
+   "server:40",
+   "server:59",
+   "server:24",
+   "server:21",
+   "server:29",
+   "server:42",
+   "server:41",
+   "server:45",
+   "server:64",
+   "server:65",
+   "server:2",
+   "server:4",
+   "server:8",
+   "server:9",
+   "server:19",
+   "server:33",
+   "server:26",
+   "server:15",
+   "server:31",
+   "server:35",
+   "server:39",
+   "server:37",
+   "server:43",
+   "server:58",
+   "server:46",
+   "server:44",
+   "server:48",
+   "server:55",
+   "server:60",
+   "server:61",
+   "server:63",
+   "server:68"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "non-total order with existing, 70 rows",
+  "result": [
+   {
+    "clientId": "s8",
+    "role": "assistant",
+    "content": "text s8",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "e12",
+    "role": "assistant",
+    "content": "text e12",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s26",
+    "role": "assistant",
+    "content": "text s26",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s34",
+    "role": "assistant",
+    "content": "text s34",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 46
+   },
+   {
+    "clientId": "s38",
+    "role": "assistant",
+    "content": "text s38",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "s54",
+    "role": "assistant",
+    "content": "text s54",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s60",
+    "role": "assistant",
+    "content": "text s60",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "rowid": 64
+   },
+   {
+    "clientId": "e0",
+    "role": "assistant",
+    "content": "text e0",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s46",
+    "role": "assistant",
+    "content": "text s46",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 4
+   },
+   {
+    "clientId": "s53",
+    "role": "assistant",
+    "content": "text s53",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 30
+   },
+   {
+    "clientId": "s20",
+    "role": "assistant",
+    "content": "text s20",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 36
+   },
+   {
+    "clientId": "s4",
+    "role": "assistant",
+    "content": "text s4",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 62
+   },
+   {
+    "clientId": "s5",
+    "role": "assistant",
+    "content": "text s5",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "e13",
+    "role": "assistant",
+    "content": "text e13",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "e18",
+    "role": "assistant",
+    "content": "text e18",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "e20",
+    "role": "assistant",
+    "content": "text e20",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s15",
+    "role": "assistant",
+    "content": "text s15",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s24",
+    "role": "assistant",
+    "content": "text s24",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s33",
+    "role": "assistant",
+    "content": "text s33",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s50",
+    "role": "assistant",
+    "content": "text s50",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s62",
+    "role": "assistant",
+    "content": "text s62",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "s66",
+    "role": "assistant",
+    "content": "text s66",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "rowid": 6
+   },
+   {
+    "clientId": "s2",
+    "role": "assistant",
+    "content": "text s2",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 16
+   },
+   {
+    "clientId": "e6",
+    "role": "assistant",
+    "content": "text e6",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s11",
+    "role": "assistant",
+    "content": "text s11",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "e15",
+    "role": "assistant",
+    "content": "text e15",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "e29",
+    "role": "assistant",
+    "content": "text e29",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s22",
+    "role": "assistant",
+    "content": "text s22",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s30",
+    "role": "assistant",
+    "content": "text s30",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "e32",
+    "role": "assistant",
+    "content": "text e32",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   },
+   {
+    "clientId": "s47",
+    "role": "assistant",
+    "content": "text s47",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s13",
+    "role": "assistant",
+    "content": "text s13",
+    "createdAt": "2026-01-01T00:00:02.000Z",
+    "rowid": 35
+   },
+   {
+    "clientId": "e7",
+    "role": "assistant",
+    "content": "text e7",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s7",
+    "role": "assistant",
+    "content": "text s7",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s9",
+    "role": "assistant",
+    "content": "text s9",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "e16",
+    "role": "assistant",
+    "content": "text e16",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s17",
+    "role": "assistant",
+    "content": "text s17",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 51
+   },
+   {
+    "clientId": "e22",
+    "role": "assistant",
+    "content": "text e22",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "e25",
+    "role": "assistant",
+    "content": "text e25",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s6",
+    "role": "assistant",
+    "content": "text s6",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 18
+   },
+   {
+    "clientId": "s25",
+    "role": "assistant",
+    "content": "text s25",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s28",
+    "role": "assistant",
+    "content": "text s28",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 24
+   },
+   {
+    "clientId": "s27",
+    "role": "assistant",
+    "content": "text s27",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 57
+   },
+   {
+    "clientId": "s32",
+    "role": "assistant",
+    "content": "text s32",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s65",
+    "role": "assistant",
+    "content": "text s65",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 7
+   },
+   {
+    "clientId": "s48",
+    "role": "assistant",
+    "content": "text s48",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s37",
+    "role": "assistant",
+    "content": "text s37",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 39
+   },
+   {
+    "clientId": "s39",
+    "role": "assistant",
+    "content": "text s39",
+    "createdAt": "2026-01-01T00:00:03.000Z",
+    "rowid": 62
+   },
+   {
+    "clientId": "s52",
+    "role": "assistant",
+    "content": "text s52",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s59",
+    "role": "assistant",
+    "content": "text s59",
+    "createdAt": "2026-01-01T00:00:03.000Z"
+   },
+   {
+    "clientId": "s18",
+    "role": "assistant",
+    "content": "text s18",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 10
+   },
+   {
+    "clientId": "s21",
+    "role": "assistant",
+    "content": "text s21",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "e34",
+    "role": "assistant",
+    "content": "text e34",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s12",
+    "role": "assistant",
+    "content": "text s12",
+    "createdAt": "2026-01-01T00:00:04.000Z"
+   },
+   {
+    "clientId": "s41",
+    "role": "assistant",
+    "content": "text s41",
+    "createdAt": "2026-01-01T00:00:04.000Z",
+    "rowid": 57
+   },
+   {
+    "clientId": "e3",
+    "role": "assistant",
+    "content": "text e3",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s3",
+    "role": "assistant",
+    "content": "text s3",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s10",
+    "role": "assistant",
+    "content": "text s10",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s69",
+    "role": "assistant",
+    "content": "text s69",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 14
+   },
+   {
+    "clientId": "s56",
+    "role": "assistant",
+    "content": "text s56",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 32
+   },
+   {
+    "clientId": "s44",
+    "role": "assistant",
+    "content": "text s44",
+    "createdAt": "2026-01-01T00:00:05.000Z",
+    "rowid": 58
+   },
+   {
+    "clientId": "s68",
+    "role": "assistant",
+    "content": "text s68",
+    "createdAt": "2026-01-01T00:00:05.000Z"
+   },
+   {
+    "clientId": "s1",
+    "role": "assistant",
+    "content": "text s1"
+   },
+   {
+    "clientId": "s29",
+    "role": "assistant",
+    "content": "text s29"
+   },
+   {
+    "clientId": "s45",
+    "role": "assistant",
+    "content": "text s45",
+    "rowid": 0
+   },
+   {
+    "clientId": "s51",
+    "role": "assistant",
+    "content": "text s51",
+    "rowid": 1
+   },
+   {
+    "clientId": "s31",
+    "role": "assistant",
+    "content": "text s31",
+    "createdAt": "bad",
+    "rowid": 2
+   },
+   {
+    "clientId": "s43",
+    "role": "assistant",
+    "content": "text s43",
+    "rowid": 13
+   },
+   {
+    "clientId": "s67",
+    "role": "assistant",
+    "content": "text s67",
+    "rowid": 18
+   },
+   {
+    "clientId": "s64",
+    "role": "assistant",
+    "content": "text s64",
+    "rowid": 23
+   },
+   {
+    "clientId": "s16",
+    "role": "assistant",
+    "content": "text s16",
+    "createdAt": "bad",
+    "rowid": 24
+   },
+   {
+    "clientId": "s61",
+    "role": "assistant",
+    "content": "text s61",
+    "rowid": 25
+   },
+   {
+    "clientId": "s0",
+    "role": "assistant",
+    "content": "text s0",
+    "rowid": 26
+   },
+   {
+    "clientId": "s35",
+    "role": "assistant",
+    "content": "text s35",
+    "rowid": 27
+   },
+   {
+    "clientId": "s23",
+    "role": "assistant",
+    "content": "text s23",
+    "createdAt": "bad",
+    "rowid": 33
+   },
+   {
+    "clientId": "s14",
+    "role": "assistant",
+    "content": "text s14",
+    "rowid": 36
+   },
+   {
+    "clientId": "s36",
+    "role": "assistant",
+    "content": "text s36",
+    "rowid": 49
+   },
+   {
+    "clientId": "s40",
+    "role": "assistant",
+    "content": "text s40"
+   },
+   {
+    "clientId": "s42",
+    "role": "assistant",
+    "content": "text s42"
+   },
+   {
+    "clientId": "s49",
+    "role": "assistant",
+    "content": "text s49"
+   },
+   {
+    "clientId": "s55",
+    "role": "assistant",
+    "content": "text s55"
+   },
+   {
+    "clientId": "s63",
+    "role": "assistant",
+    "content": "text s63",
+    "rowid": 37
+   },
+   {
+    "clientId": "s57",
+    "role": "assistant",
+    "content": "text s57",
+    "rowid": 47
+   },
+   {
+    "clientId": "s19",
+    "role": "assistant",
+    "content": "text s19",
+    "rowid": 57
+   },
+   {
+    "clientId": "s58",
+    "role": "assistant",
+    "content": "text s58"
+   }
+  ],
+  "origin": [
+   "server:8",
+   "existing:12",
+   "server:26",
+   "server:34",
+   "server:38",
+   "server:54",
+   "server:60",
+   "existing:0",
+   "server:46",
+   "server:53",
+   "server:20",
+   "server:4",
+   "server:5",
+   "existing:13",
+   "existing:18",
+   "existing:20",
+   "server:15",
+   "server:24",
+   "server:33",
+   "server:50",
+   "server:62",
+   "server:66",
+   "server:2",
+   "existing:6",
+   "server:11",
+   "existing:15",
+   "existing:29",
+   "server:22",
+   "server:30",
+   "existing:32",
+   "server:47",
+   "server:13",
+   "existing:7",
+   "server:7",
+   "server:9",
+   "existing:16",
+   "server:17",
+   "existing:22",
+   "existing:25",
+   "server:6",
+   "server:25",
+   "server:28",
+   "server:27",
+   "server:32",
+   "server:65",
+   "server:48",
+   "server:37",
+   "server:39",
+   "server:52",
+   "server:59",
+   "server:18",
+   "server:21",
+   "existing:34",
+   "server:12",
+   "server:41",
+   "existing:3",
+   "server:3",
+   "server:10",
+   "server:69",
+   "server:56",
+   "server:44",
+   "server:68",
+   "server:1",
+   "server:29",
+   "server:45",
+   "server:51",
+   "server:31",
+   "server:43",
+   "server:67",
+   "server:64",
+   "server:16",
+   "server:61",
+   "server:0",
+   "server:35",
+   "server:23",
+   "server:14",
+   "server:36",
+   "server:40",
+   "server:42",
+   "server:49",
+   "server:55",
+   "server:63",
+   "server:57",
+   "server:19",
+   "server:58"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "confirmed send retires its slot",
+  "result": [
+   {
+    "clientId": "a",
+    "role": "assistant",
+    "content": "text a",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+   },
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "messages:0",
+   null,
+   "messages:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "unconfirmed send keeps its slot",
+  "result": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   },
+   {
+    "clientId": "v",
+    "role": "user",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "messages:0",
+   null
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "nothing confirmed keeps the array",
+  "result": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   },
+   {
+    "clientId": "b",
+    "role": "assistant",
+    "content": "text b",
+    "createdAt": "2026-01-01T00:00:02.000Z"
+   }
+  ],
+  "origin": [
+   "messages:0",
+   "messages:1"
+  ],
+  "undefinedKeys": [
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "empty preceding list is truthy",
+  "result": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   null
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": false
+ },
+ {
+  "name": "falsy preceding value stays",
+  "result": [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": ""
+   },
+   {
+    "clientId": "v",
+    "role": "user",
+    "content": "text v",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": null
+   },
+   {
+    "clientId": "w",
+    "role": "user",
+    "content": "text w",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": 0
+   }
+  ],
+  "origin": [
+   "messages:0",
+   "messages:1",
+   "messages:2"
+  ],
+  "undefinedKeys": [
+   [],
+   [],
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "confirmed id without a slot",
+  "result": [
+   {
+    "clientId": "u",
+    "role": "assistant",
+    "content": "text u",
+    "createdAt": "2026-01-01T00:00:01.000Z"
+   }
+  ],
+  "origin": [
+   "messages:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "non-string id never matches",
+  "result": [
+   {
+    "clientId": 1,
+    "role": "user",
+    "content": "text 1",
+    "createdAt": "2026-01-01T00:00:01.000Z",
+    "localSendPrecedingClientIds": [
+     "a"
+    ]
+   }
+  ],
+  "origin": [
+   "messages:0"
+  ],
+  "undefinedKeys": [
+   []
+  ],
+  "same": true
+ },
+ {
+  "name": "empty list",
+  "result": [],
+  "origin": [],
+  "undefinedKeys": [],
+  "same": true
+ }
+]
