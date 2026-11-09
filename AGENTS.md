@@ -266,6 +266,9 @@ defines scope and what 1:1 means.
   `hl.dsp.window.float/resize/move({ window = "address:..", x, y })`; a click needs a uinput device.
 - userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
+- Local builds run on huacnlee/cargo (`~/.local/bin/cargo`, ahead of the rustup proxy): build
+  output lives in `~/.cargo/targets/` under a size cap, binaries in `./target`. Remove that file
+  to go back.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).
   Level: `LOG_LEVEL`, then `log-config.json`, else `trace` in debug and `info` in release; other
