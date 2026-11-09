@@ -368,3 +368,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 1: FAIL. The History view bullet pushed `AGENTS.md` to 501 lines.
 - Fixed: the bullet is two lines shorter; `AGENTS.md` is 499 lines.
 - Round 2: PASS.
+
+## 9.1c History rows read
+- Round 1: FAIL. `js_date::iso` negated `i64::MIN`; `TASKS.md` reached 503 lines; `rows.rs`'s module doc ran to two lines.
+- Fixed: a range check without negation, with tests at both bounds and `i64::MIN`/`MAX`; the split entries are shorter (499 lines); the doc is one line.
+- Round 2: PASS.

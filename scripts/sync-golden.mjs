@@ -70,6 +70,8 @@ try {
     "export * as messageRender from '@cindy/maker-shared/message-render';",
     "export * as agentTask from '@cindy/maker-shared/agent-task';",
     "export { hasRichAnswer } from '@cindy/maker-shared/rich-answer';",
+    "export { historyOutlineContent, historyOutlineContentStamp } from './main/localDb/ipc/historyViewOutline';",
+    "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -82,7 +84,7 @@ try {
     nodePaths, alias,
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, historyOutlineContent, historyOutlineContentStamp, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -415,6 +417,11 @@ try {
   console.log(`${viewCases} history view cases`);
   const runCases = await recorded({ ...golden, name: 'work-runs', tests: {}, fns: { groupWorkRuns: workRuns.run(groupWorkRuns) } });
   console.log(`${runCases} work run cases`);
+  const dialect = new SQLiteSyncDialect();
+  write(path.join(fixtures, 'history-outline', 'sql.json'), {
+    content: dialect.sqlToQuery(historyOutlineContent()),
+    stamp: dialect.sqlToQuery(historyOutlineContentStamp()),
+  });
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

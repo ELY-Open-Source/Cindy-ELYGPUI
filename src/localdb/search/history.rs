@@ -7,7 +7,7 @@ use rusqlite::{Connection, types::Value};
 
 use super::{
     fts::{self, Fused},
-    mcp_app::{self, TrustLabels},
+    mcp_app::TrustLabels,
 };
 use crate::rich_answer::js::{self, Js};
 
@@ -159,46 +159,6 @@ pub fn prepare(db: &Connection, args: &Args) -> Pool {
     }
 }
 
-/// `agentMeta.mcpApp === true` over `JSON.parse`; a meta that does not parse is `null`.
-fn mcp_app_marked(agent_meta: Option<&str>) -> bool {
-    agent_meta
-        .and_then(|m| js::parse(m).ok())
-        .is_some_and(|m| m.obj().and_then(|o| o.get("mcpApp")) == Some(&Js::Bool(true)))
-}
-
-/// `messageToCamel`'s content: parsed JSON, else the text; App rows as their public history.
-fn camel_content(raw: String, row: (&str, &str, Option<&str>), labels: &TrustLabels) -> Js {
-    let (role, client_id, agent_meta) = row;
-    let mut content = js::parse(&raw).unwrap_or(Js::Str(raw));
-    if role == "assistant" && client_id.starts_with("cloud-history:") {
-        content = imported_reply_text(content);
-    }
-    let content = match &content {
-        Js::Str(text) if role == "assistant" => {
-            Js::Str(crate::sessions::preview::strip_internal_web_citations(text))
-        }
-        _ => content,
-    };
-    mcp_app::project(content, mcp_app_marked(agent_meta), labels)
-}
-
-/// `importedReplyText`: text blocks joined, anything else left as it is.
-fn imported_reply_text(content: Js) -> Js {
-    let joined = match &content {
-        Js::Arr(blocks) if !blocks.is_empty() => blocks
-            .iter()
-            .map(|b| {
-                let b = b.obj()?;
-                (b.get("type")?.str()? == "text").then_some(())?;
-                b.get("text")?.str()
-            })
-            .collect::<Option<Vec<_>>>()
-            .map(|texts| texts.concat()),
-        _ => None,
-    };
-    joined.map_or(content, Js::Str)
-}
-
 /// `fetchAnchorContexts`: the page's rows in one read.
 fn messages(
     db: &Connection,
@@ -218,7 +178,7 @@ fn messages(
         let agent_meta: Option<String> = row.get(4)?;
         let shape = (role.as_str(), client_id.as_str(), agent_meta.as_deref());
         let message = Message {
-            content: camel_content(row.get(2)?, shape, labels),
+            content: crate::localdb::camel::content(row.get(2)?, shape, labels),
             client_id,
             agent_meta,
         };

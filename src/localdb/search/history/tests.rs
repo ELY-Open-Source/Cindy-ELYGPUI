@@ -207,7 +207,7 @@ fn hit_rows_read_as_message_to_camel_reads_them() {
 #[test]
 fn citations_leave_assistant_strings_and_a_broken_index_finds_nothing() {
     assert_eq!(
-        super::camel_content(
+        crate::localdb::camel::content(
             "\"a \u{E200}cite\u{E202}x\u{E201}b\"".into(),
             ("assistant", "c", None),
             &labels()

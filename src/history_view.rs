@@ -1,7 +1,7 @@
 //! `historyView.ts`'s items and `historyViewProjection.ts`'s `projectHistoryView`.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the history reader reads them in 9.1c")
+    expect(dead_code, reason = "the history reader reads them in 9.1e")
 )]
 
 use std::collections::{HashMap, HashSet};
@@ -13,6 +13,8 @@ use crate::{
 };
 
 pub mod json;
+pub mod outline;
+pub mod rows;
 mod source;
 
 const LIVE: &str = "history-live:";

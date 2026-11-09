@@ -124,22 +124,22 @@ defines scope and what 1:1 means.
   as `messageToCamel` reads them (`parseMessageToolUse` with its gateway unwrap,
   `messageContentToPreview`, `isDeliveryProseText` with JS `\s` and line terminators,
   `isContinuationMessage`, `hasVisibleHistoryResult`); `src/payload.rs` is `payloadSummary.ts`'s
-  tool result readers, `payload/files.rs` the file references with their source-literal lexer
-  on UTF-8 bytes (it compares ASCII only). `new URL(...).searchParams` is the `url` crate.
-  `js::stringify` is `JSON.stringify` with an indent, `js::entries` the property order.
-  Golden `tests/fixtures/history-rows`: `scripts/golden/record.mjs` runs Cindy's own tests with
-  vitest stubbed and records the arguments they pass, plus `cases.json`; tests read it with
-  `js::parse`, since serde_json sorts keys.
+  tool result readers, `payload/files.rs` the file references (a source-literal lexer on UTF-8
+  bytes, ASCII compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify`
+  with an indent, `js::entries` the property order. Golden `history-rows`: `record.mjs` runs
+  Cindy's tests with vitest stubbed, records their arguments, plus `cases.json`; read with `js::parse`.
   `src/tool_row.rs` is `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs
   from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
   checked in every locale against `activity.json`.
-- History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`
-  via the toy adapter in `scripts/golden/workRuns.mjs`). `src/history_view.rs` is
-  `projectHistoryView` (lazy details put subagent bodies in a `deferred` range),
-  `historySubagentScopes`, `completesHistoryTurn`; `source.rs` `projectHistorySourceView`
-  (`foldAnswerTail: false`), `json.rs` Cindy's key order. `src/js_date.rs` is `Date.parse` on ISO
-  strings. Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts` (a real
-  lease) and `remoteMirrorCache.test.ts` (`import.meta.env`).
+- History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`,
+  toy adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (lazy
+  details: subagent bodies as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`;
+  `source.rs` `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order.
+  `rows.rs` is `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
+  `messageToCamelWithRowid` (`localdb/camel.rs`, shared with search); `outline.rs` the outline SQL,
+  checked against what Cindy's drizzle renders. `src/js_date.rs` is `Date.parse` and `toISOString`.
+  Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts` (a real lease) and
+  `remoteMirrorCache.test.ts` (`import.meta.env`).
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

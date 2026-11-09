@@ -329,11 +329,17 @@ listed in `tasks/done.md`.
     `mcp` kind with `createdPath`; golden from Cindy's functions
   - [x] 9.1b `groupWorkRuns` (`workRunGrouping.ts`), `historySubagentScopes`, `projectHistoryView`
     with and without lazy details, `completesHistoryTurn`; golden from Cindy's functions
-  - [ ] 9.1c The reader: `readMessagesList`'s rows (cleared and rewound cuts, cursors) and
-    `historyViewOutline.ts`'s outline, `historyViewReader.ts`'s `page` (page boundaries, safe
-    starts, the item and byte targets, scan budgets, the sealed-answer context) and `details`, on
-    the database worker. The first page's history import comes with 10.0, `restoreTaskImageRows`
-    and `recoverGeneratedImagesForHistory` (both write the media store) with 9.13
+  - [x] 9.1c Rows: `readMessagesList`'s query (`before`, `beforeTs` and `after` cursors on
+    `createdAt` and rowid, cleared and rewound cuts) full and outlined (`historyOutlineContent`,
+    `historyOutlineContentStamp`), `messageToCamelWithRowid`, and the reader's `anchor`, `hydrate`,
+    `validate`, `revision` on the database worker; tests on Cindy's schema
+  - [ ] 9.1d `withHistoryArtifacts`: dropped agent meta, `extractCommandOutputPathCandidates` with
+    its cache, `createdPathsFromDescriptor`, the `command`, `file` and `fileChange` kinds; golden
+  - [ ] 9.1e `historyViewReader.ts`'s `page` (boundaries, safe starts, item and byte targets, scan
+    budgets, sealed-answer context, outline then hydrate, revisions, in-flight share) and
+    `details` (subagent, live and plain ranges, detail cache); tests from `historyViewReader.test.ts`.
+    Work lines and page shapes come with 19.0, the first page's import with 10.0,
+    `restoreTaskImageRows` and `recoverGeneratedImagesForHistory` with 9.13, legacy turn costs with 9.11
 - [ ] 9.2 The session slice as `makerChatStore.ts` keeps it for a local task: the first page on
   `enterView`, older pages (`loadOlderMessages`), work details on demand, the reload on a database
   change (the watcher of 8.3), the soft eviction of idle sessions and the window trim;
@@ -365,7 +371,8 @@ listed in `tasks/done.md`.
 - [ ] 9.11 The assistant turn: `AssistantMessage.tsx`, `ThinkingCard.tsx` and `ThinkingText.tsx`,
   `AgentActionRow.tsx` and `AgentActionsBlock.tsx` with the full `describeToolUse` (details,
   paths, diffs, created paths, from 8.8b2), `WorkGroupBlock.tsx` folded and expanded,
-  `ToolCallCard.tsx`, `ToolPayloadLightbox.tsx`, `TodoListCard.tsx`, `AgentTaskCard.tsx`
+  `ToolCallCard.tsx`, `ToolPayloadLightbox.tsx`, `TodoListCard.tsx`, `AgentTaskCard.tsx`;
+  `hydrateLegacyUserTurnCosts` for the turn's cost
 - [ ] 9.12 System rows: `SystemCard.tsx` (agent switch, compaction, notices), `ErrorMessageCard.tsx`
   with `errorReasonI18n.ts` and `outputLimitI18n.ts`, `HistoryClearedMarker`, `ForkOriginMarker`,
   `InterruptedTurnBanner.tsx`

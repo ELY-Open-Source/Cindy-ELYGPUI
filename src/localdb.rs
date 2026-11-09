@@ -3,6 +3,7 @@
 
 mod admission;
 mod boot;
+pub mod camel;
 mod cjk;
 mod fatal;
 mod lease;
