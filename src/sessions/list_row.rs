@@ -8,8 +8,8 @@ use gpui::{
 use super::{
     Sessions,
     group::Session,
-    marquee, rename,
-    row::{ROW_GROUP, Slot, rename_on_double, source_label, status_glyph, with_menu},
+    marquee, open, rename,
+    row::{ROW_GROUP, Slot, ring, source_label, status_glyph, with_menu},
     title,
 };
 use crate::{
@@ -32,6 +32,8 @@ pub(super) fn list_row(
 ) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let xs = text_size(12.0, cx);
+    let active = open::is_active(&s.id, cx);
+    let active_fg = appearance.token("sidebar-item-active-foreground");
     let editing = cx
         .global::<Sessions>()
         .editing
@@ -47,6 +49,7 @@ pub(super) fn list_row(
             .h(css(1.0))
             .map(|el| if top { el.top_0() } else { el.bottom_0() })
             .bg(line)
+            .when(active, |el| el.opacity(0.0))
             .group_hover(ROW_GROUP, |st| st.opacity(0.0))
     };
     let prefix = div()
@@ -59,7 +62,7 @@ pub(super) fn list_row(
                 .w(css(12.0))
                 .items_center()
                 .justify_center()
-                .child(status_glyph(s, None, cx)),
+                .child(status_glyph(s, None, active, cx)),
         )
         .child(div().w(css(6.0)));
     let title = div()
@@ -73,9 +76,14 @@ pub(super) fn list_row(
                 .text_size(css(text_size(14.0, cx)))
                 .line_height(gpui::relative(1.3))
                 .font_weight(gpui::FontWeight::MEDIUM)
-                .text_color(appearance.hsl_token("foreground")),
+                .text_color(match active {
+                    true => active_fg,
+                    false => appearance.hsl_token("foreground"),
+                }),
         )
-        .when_some(label, |el, label| el.child(source_label(&s.id, label, cx)));
+        .when_some(label, |el, label| {
+            el.child(source_label(&s.id, label, active, cx))
+        });
     let slot = div()
         .relative()
         .flex()
@@ -85,7 +93,7 @@ pub(super) fn list_row(
         .items_center()
         .child(prefix);
     let slot = match editing {
-        Some(editing) => slot.child(rename::field(editing, rename::TEXT, cx)),
+        Some(editing) => slot.child(rename::field(editing, rename::TEXT, active, cx)),
         None => slot.child(title),
     };
     let line_one =
@@ -99,6 +107,7 @@ pub(super) fn list_row(
                     session: s.clone(),
                     now,
                     height: 22.0,
+                    active,
                 })
             });
     // `resolveSessionCardBody`: the latest message, trimmed; the line stays when empty.
@@ -115,7 +124,10 @@ pub(super) fn list_row(
         .truncate()
         .text_size(css(xs))
         .line_height(css(1.45 * xs))
-        .text_color(appearance.token("text-secondary"))
+        .text_color(match active {
+            true => active_fg.opacity(0.8),
+            false => appearance.token("text-secondary"),
+        })
         .children(body);
     let selector = format!("task-{}", s.id);
     let (id, hovered) = (s.id.clone(), s.id.clone());
@@ -131,8 +143,13 @@ pub(super) fn list_row(
         .overflow_hidden()
         .rounded(css(8.0))
         .when(editing.is_none(), |el| el.cursor_pointer())
-        .hover(|st| st.bg(appearance.hsl_token("sidebar-item-hover")))
-        .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .map(|el| match active {
+            true => el
+                .bg(appearance.hsl_token("sidebar-item-active"))
+                .child(ring(&s.id, 8.0, cx)),
+            false => el.hover(|st| st.bg(appearance.hsl_token("sidebar-item-hover"))),
+        })
+        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
         .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
         .child(marquee::mark(&s.id))
@@ -140,5 +157,5 @@ pub(super) fn list_row(
         .when(first, |el| el.child(divider(true)))
         .child(line_one)
         .child(preview);
-    with_menu(s, editing.is_some(), row.into_any_element(), cx)
+    with_menu(s, row.into_any_element(), cx)
 }

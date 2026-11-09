@@ -60,21 +60,28 @@ pub struct More {
     /// A Tab stop; Enter or Space opens the menu.
     pub focus: FocusHandle,
     pub card: bool,
+    /// On the active row: its foreground, a 14% tint on hover.
+    pub active: bool,
 }
 
 impl RenderOnce for More {
     fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
         let appearance = cx.global::<Appearance>();
         let card = self.card;
-        let (color, hover_bg, hover_fg) = (
-            if card {
-                appearance.token("text-tertiary")
-            } else {
-                appearance.hsl_token("sidebar-action-icon")
-            },
-            appearance.hsl_token("sidebar-item-hover"),
-            appearance.hsl_token("foreground"),
-        );
+        let active_fg = appearance.token("sidebar-item-active-foreground");
+        let (color, hover_bg, hover_fg) = match (card, self.active) {
+            (true, _) => (
+                appearance.token("text-tertiary"),
+                appearance.hsl_token("sidebar-item-hover"),
+                appearance.hsl_token("foreground"),
+            ),
+            (false, true) => (active_fg, active_fg.opacity(0.14), active_fg),
+            (false, false) => (
+                appearance.hsl_token("sidebar-action-icon"),
+                appearance.hsl_token("sidebar-item-hover"),
+                appearance.hsl_token("foreground"),
+            ),
+        };
         let (card_bg, card_border) = (
             appearance.token("cmd-palette-bg"),
             appearance.hsl_token("sidebar-border"),

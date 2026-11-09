@@ -9,8 +9,8 @@ use gpui::{
 use super::{
     Sessions,
     group::Session,
-    rename,
-    row::{InfoStyle, ROW_GROUP, info, rename_on_double, status_glyph, with_menu},
+    open, rename,
+    row::{InfoStyle, ROW_GROUP, info, status_glyph, with_menu},
     task_menu, title,
 };
 use crate::{
@@ -66,17 +66,30 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .as_ref()
         .filter(|e| e.id == s.id);
     let small = text_size(11.0, cx);
-    let (foreground, secondary, tertiary, meta) = (
-        appearance.hsl_token("foreground"),
-        appearance.token("text-secondary"),
-        appearance.token("text-tertiary"),
-        appearance.token("cmd-palette-item-meta"),
-    );
-    let (surface, border, hover) = (
-        appearance.token("surface-elevated"),
-        appearance.hsl_token("sidebar-border"),
-        appearance.hsl_token("sidebar-item-hover"),
-    );
+    let active = open::is_active(&s.id, cx);
+    let active_fg = appearance.token("sidebar-item-active-foreground");
+    // The active card: its own surface and border, its foreground for text and meta.
+    let (foreground, secondary, tertiary, meta) = match active {
+        true => (active_fg, active_fg.opacity(0.8), active_fg, active_fg),
+        false => (
+            appearance.hsl_token("foreground"),
+            appearance.token("text-secondary"),
+            appearance.token("text-tertiary"),
+            appearance.token("cmd-palette-item-meta"),
+        ),
+    };
+    let (surface, border, hover) = match active {
+        true => (
+            appearance.hsl_token("sidebar-item-active"),
+            appearance.token("sidebar-item-active-border"),
+            None,
+        ),
+        false => (
+            appearance.token("surface-elevated"),
+            appearance.hsl_token("sidebar-border"),
+            Some(appearance.hsl_token("sidebar-item-hover")),
+        ),
+    };
     let actions = editing.is_none().then(|| {
         div()
             .absolute()
@@ -92,6 +105,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 menu: task_menu::menu(s, cx.global::<Translator>()),
                 focus,
                 card: true,
+                active: false,
             })
     });
     let title_size = text_size(12.0, cx);
@@ -120,6 +134,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                     .child(rename::field(
                         editing,
                         (12.0, gpui::FontWeight::SEMIBOLD),
+                        active,
                         cx,
                     )),
             )
@@ -148,7 +163,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .line_height(css(small))
         .font_weight(gpui::FontWeight::MEDIUM)
         .text_color(tertiary)
-        .child(status_glyph(s, Some(11.0), cx))
+        .child(status_glyph(s, Some(11.0), active, cx))
         .children(info);
     let selector = format!("task-{}", s.id);
     let id = s.id.clone();
@@ -164,8 +179,8 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .border(css(1.0))
         .border_color(border)
         .when(editing.is_none(), |el| el.cursor_pointer())
-        .hover(|st| st.bg(hover))
-        .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .when_some(hover, |el, hover| el.hover(|st| st.bg(hover)))
+        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
         .child(
             div()
                 .relative()
@@ -178,7 +193,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 .child(meta_row)
                 .children(actions),
         );
-    with_menu(s, editing.is_some(), card.into_any_element(), cx)
+    with_menu(s, card.into_any_element(), cx)
 }
 
 #[cfg(test)]

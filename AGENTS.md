@@ -80,6 +80,12 @@ defines scope and what 1:1 means.
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
   last chat view (`lastViewStore`'s chat slot, kept by `navigate` as `useTrackLastView` does), the
   first task, or `/cc-agent/new`. The chat pane shows its loading line meanwhile.
+  `sessions/open.rs` is `handleSessionClick`: a plain click on a row, list row or card opens
+  `/cc-agent/<id>` unless it is shown; a Shift, Mod or Ctrl click waits for 8.6d's selection.
+  The active task (`router::active_session`) draws as Cindy's: its pill and ring (an absolute
+  bordered overlay stands in for the inset shadow), foreground and tints. The task menu wraps a
+  row while it is renamed too, so the press that commits a rename still lands its click; the
+  field stops its own right press.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

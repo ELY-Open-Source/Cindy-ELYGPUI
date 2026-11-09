@@ -306,10 +306,17 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       entry and `useRememberMainEntry`), `/cc-agent` with `CCAgentIndexRedirect` and
       `useTrackLastView`'s last chat view, `/cc-agent/new` and `/cc-agent/:sessionId` as the chat
       view's place until chapter 9
-    - [ ] 8.6b A row click to its session as `handleSessionClick` and `resolveSessionRoute` do;
-      the active row as `SessionItem` and the list row's inset ring draw it
+    - [x] 8.6b A row click to its session as `handleSessionClick` and `resolveSessionRoute` do
+      (the priority hold and attention clears come with 10.0); the active task, from
+      `/cc-agent/:sessionId`, drawn as `SessionItem`, `SessionCard`'s list and card variants and
+      `SessionStatusIcon` draw it
     - [ ] 8.6c The row a Tab stop (`tabIndex=0`) that Enter and Space open, with its task menu on
       the keyboard's context-menu key
+    - [ ] 8.6d Bulk selection: Shift and Mod clicks as `handleSessionClick` select (range over
+      `getVisibleSidebarSessionIds`, anchor, toggle), the selected rows' look, and the bulk bar
+      (`ccAgent.sidebar.bulkSelection`) with its actions
+    - [ ] 8.6e The active row scrolled into view as `scrollIntoNearestView` does (`block:
+      nearest`, smooth unless motion is reduced) when it becomes active
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles, with

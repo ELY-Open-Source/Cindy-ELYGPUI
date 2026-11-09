@@ -4,7 +4,8 @@
 use ely_gpui_component::forms::{InputEvent, TextInput};
 use gpui::{
     AnyElement, App, AppContext as _, Entity, InteractiveElement as _, IntoElement as _,
-    ParentElement as _, StatefulInteractiveElement as _, Styled as _, Subscription, Window, div,
+    MouseButton, ParentElement as _, StatefulInteractiveElement as _, Styled as _, Subscription,
+    Window, div,
 };
 
 use super::{Sessions, group::Session, title, write};
@@ -90,8 +91,22 @@ fn cancel(cx: &mut App) {
 /// The field's type in a row: `text-sm font-medium`.
 pub const TEXT: (f32, gpui::FontWeight) = (14.0, gpui::FontWeight::MEDIUM);
 
-pub fn field(editing: &Editing, (size, weight): (f32, gpui::FontWeight), cx: &App) -> AnyElement {
+/// `activeForeground` on the active row: a 28% foreground border and the active foreground.
+pub fn field(
+    editing: &Editing,
+    (size, weight): (f32, gpui::FontWeight),
+    active: bool,
+    cx: &App,
+) -> AnyElement {
     let appearance = cx.global::<Appearance>();
+    let active_fg = appearance.token("sidebar-item-active-foreground");
+    let (border, color) = match active {
+        true => (active_fg.opacity(0.28), active_fg),
+        false => (
+            appearance.token("border-default"),
+            appearance.hsl_token("foreground"),
+        ),
+    };
     let input = editing.input.clone();
     div()
         .id("task-rename")
@@ -113,6 +128,7 @@ pub fn field(editing: &Editing, (size, weight): (f32, gpui::FontWeight), cx: &Ap
             commit(&text, window, cx);
         })
         .on_click(|_, _, cx| cx.stop_propagation())
+        .on_mouse_down(MouseButton::Right, |_, _, cx| cx.stop_propagation())
         .child(
             div()
                 .flex()
@@ -124,10 +140,10 @@ pub fn field(editing: &Editing, (size, weight): (f32, gpui::FontWeight), cx: &Ap
                 .pr(css(28.0))
                 .rounded(css(9999.0))
                 .border(css(1.0))
-                .border_color(appearance.token("border-default"))
+                .border_color(border)
                 .text_size(css(text_size(size, cx)))
                 .font_weight(weight)
-                .text_color(appearance.hsl_token("foreground"))
+                .text_color(color)
                 .child(editing.input.clone()),
         )
         .into_any_element()

@@ -383,3 +383,7 @@ effort high, in a Herdr pane.
 ## 8.6a The router
 
 - Round 1: PASS.
+
+## 8.6b Row click and the active task
+
+- Round 1: PASS.

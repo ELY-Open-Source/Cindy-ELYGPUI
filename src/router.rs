@@ -70,6 +70,14 @@ pub fn path(cx: &App) -> &str {
     &cx.global::<Router>().path
 }
 
+/// The task `/cc-agent/:sessionId` shows, as the sidebar's `useMatch` reads it.
+pub fn active_session(cx: &App) -> Option<&str> {
+    match route(path(cx)) {
+        Route::Session(id) => Some(id),
+        _ => None,
+    }
+}
+
 pub fn navigate(to: &str, cx: &mut App) {
     if path(cx) == to {
         return;

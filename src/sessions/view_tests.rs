@@ -80,6 +80,7 @@ pub(super) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut Visual
             aliases: Vec::new(),
             settings: Default::default(),
         });
+        crate::router::install(cx);
     });
     let (view, vcx) = cx.add_window_view(|_, cx| List(cx.focus_handle()));
     vcx.update(|window, cx| window.focus(&view.read(cx).0.clone(), cx));

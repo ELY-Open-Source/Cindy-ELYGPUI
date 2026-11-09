@@ -9,7 +9,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled, Window, div, prelude::FluentBuilder as _,
 };
 
-use super::{Sessions, group::Session, marquee, meta, rename, task_menu, title};
+use super::{Sessions, group::Session, marquee, meta, open, rename, task_menu, title};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -58,10 +58,15 @@ fn absolute(at_ms: i64) -> String {
 }
 
 /// `SessionStatusIcon` at rest: the archive box, the Orca lead's people, else the harness mark;
-/// running, attention and drafts come with the agent runtime (10.0). `size` overrides each.
-pub(super) fn status_glyph(s: &Session, size: Option<f32>, cx: &App) -> AnyElement {
+/// running, attention and drafts come with the agent runtime (10.0). `size` overrides each; the
+/// active row draws it in its foreground.
+pub(super) fn status_glyph(s: &Session, size: Option<f32>, active: bool, cx: &App) -> AnyElement {
     let appearance = cx.global::<Appearance>();
-    let meta = appearance.token("cmd-palette-item-meta");
+    let active_fg = appearance.token("sidebar-item-active-foreground");
+    let meta = match active {
+        true => active_fg,
+        false => appearance.token("cmd-palette-item-meta"),
+    };
     if s.status == "archived" {
         lucide::icon(IconName::Archive.svg(), size.unwrap_or(12.0), 1.75)
             .text_color(meta)
@@ -72,7 +77,10 @@ pub(super) fn status_glyph(s: &Session, size: Option<f32>, cx: &App) -> AnyEleme
             .into_any_element()
     } else {
         // `VendorIcon`: Claude Code at 13 px, Codex and Pi at 12.
-        let muted = appearance.hsl_token("sidebar-muted");
+        let muted = match active {
+            true => active_fg,
+            false => appearance.hsl_token("sidebar-muted"),
+        };
         match s.agent_kind.as_str() {
             "codex" => lucide::mark(
                 &lucide::codex_mark(size.unwrap_or(12.0)),
@@ -163,6 +171,7 @@ pub(super) struct Slot {
     pub now: i64,
     /// 24 in the text row, 22 in the list row's title line.
     pub height: f32,
+    pub active: bool,
 }
 
 impl RenderOnce for Slot {
@@ -192,7 +201,12 @@ impl RenderOnce for Slot {
                     self.now,
                     InfoStyle {
                         size: text_size(12.0, cx),
-                        color: cx.global::<Appearance>().hsl_token("sidebar-action-icon"),
+                        color: match self.active {
+                            true => cx
+                                .global::<Appearance>()
+                                .token("sidebar-item-active-foreground"),
+                            false => cx.global::<Appearance>().hsl_token("sidebar-action-icon"),
+                        },
                         height: Some(self.height),
                     },
                     cx,
@@ -229,6 +243,7 @@ impl RenderOnce for Slot {
                         menu,
                         focus,
                         card: false,
+                        active: self.active,
                     }),
             )
     }
@@ -245,6 +260,7 @@ pub(super) fn row(
 ) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let title_size = text_size(14.0, cx);
+    let active = open::is_active(&row.id, cx);
     let editing = cx
         .global::<Sessions>()
         .editing
@@ -262,7 +278,7 @@ pub(super) fn row(
             cx,
         ))
         .when_some(label, |el, label| {
-            el.child(source_label(&row.id, label, cx))
+            el.child(source_label(&row.id, label, active, cx))
         });
     let selector = format!("task-{}", row.id);
     let (id, hovered) = (row.id.clone(), row.id.clone());
@@ -281,9 +297,17 @@ pub(super) fn row(
         .when(editing.is_none(), |el| el.cursor_pointer())
         .text_size(css(title_size))
         .font_weight(gpui::FontWeight::MEDIUM)
-        .text_color(appearance.hsl_token("foreground"))
-        .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
-        .on_click(move |event, window, cx| rename_on_double(&id, event, window, cx))
+        .map(|el| match active {
+            true => el
+                .bg(appearance.hsl_token("sidebar-item-active"))
+                .text_color(appearance.token("sidebar-item-active-foreground"))
+                .relative()
+                .child(ring(&row.id, 9999.0, cx)),
+            false => el
+                .text_color(appearance.hsl_token("foreground"))
+                .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover"))),
+        })
+        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
         .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
         .child(marquee::mark(&row.id))
@@ -294,21 +318,29 @@ pub(super) fn row(
                 .w(css(15.0))
                 .items_center()
                 .justify_center()
-                .child(status_glyph(row, None, cx)),
+                .child(status_glyph(row, None, active, cx)),
         );
     let body = match editing {
-        Some(editing) => body.child(rename::field(editing, rename::TEXT, cx)),
+        Some(editing) => body.child(rename::field(editing, rename::TEXT, active, cx)),
         None => body.child(title).child(Slot {
             session: row.clone(),
             now,
             height: ROW_SLOT,
+            active,
         }),
     };
-    with_menu(row, editing.is_some(), body.into_any_element(), cx)
+    with_menu(row, body.into_any_element(), cx)
 }
 
-/// `sourceLabel`, its full text in `title`.
-pub(super) fn source_label(id: &str, label: &str, cx: &App) -> AnyElement {
+/// `sourceLabel`, its full text in `title`; 70% of the active foreground on the active row.
+pub(super) fn source_label(id: &str, label: &str, active: bool, cx: &App) -> AnyElement {
+    let appearance = cx.global::<Appearance>();
+    let color = match active {
+        true => appearance
+            .token("sidebar-item-active-foreground")
+            .opacity(0.7),
+        false => appearance.token("cmd-palette-item-meta"),
+    };
     let selector = format!("task-label-{id}");
     div()
         .id(gpui::SharedString::from(selector.clone()))
@@ -317,17 +349,31 @@ pub(super) fn source_label(id: &str, label: &str, cx: &App) -> AnyElement {
         .truncate()
         .text_size(css(text_size(12.0, cx)))
         .font_weight(gpui::FontWeight::NORMAL)
-        .text_color(cx.global::<Appearance>().token("cmd-palette-item-meta"))
+        .text_color(color)
         .tooltip(tip(label.to_owned()))
         .child(label.to_owned())
         .into_any_element()
 }
 
-/// A right click opens the task menu, except while the title is edited.
-pub(super) fn with_menu(s: &Session, editing: bool, body: AnyElement, cx: &App) -> AnyElement {
-    if editing {
-        return body;
-    }
+/// `shadow-[inset_0_0_0_1px_var(--sidebar-item-active-border)]`: a ring inside the box, out
+/// of layout.
+pub(super) fn ring(id: &str, radius: f32, cx: &App) -> gpui::Div {
+    let selector = format!("task-active-{id}");
+    div()
+        .debug_selector(move || selector)
+        .absolute()
+        .inset_0()
+        .rounded(css(radius))
+        .border(css(1.0))
+        .border_color(
+            cx.global::<Appearance>()
+                .token("sidebar-item-active-border"),
+        )
+}
+
+/// A right click opens the task menu; the rename field keeps its own. The wrapper stays while
+/// editing, so a press that commits the rename still lands its click.
+pub(super) fn with_menu(s: &Session, body: AnyElement, cx: &App) -> AnyElement {
     ContextMenu::new(
         ElementId::Name(format!("task-menu-{}", s.id).into()),
         task_menu::menu(s, cx.global::<Translator>()),

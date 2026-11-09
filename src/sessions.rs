@@ -12,6 +12,7 @@ mod main_list;
 mod marquee;
 mod masonry;
 mod meta;
+mod open;
 mod paths;
 mod pin;
 mod pinned;

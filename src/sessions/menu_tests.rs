@@ -276,3 +276,14 @@ fn a_failed_unpin_puts_the_summary_back(cx: &mut TestAppContext) {
     assert_eq!(summary(cx), (Some(1), Some("done".into())), "both restored");
     assert_eq!(toasts(cx), ["Operation failed"]);
 }
+
+#[gpui::test]
+fn a_right_click_in_the_rename_field_keeps_the_task_menu_shut(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    press(cx, "task-a0", MouseButton::Left, 2);
+    assert!(editing(cx));
+    press(cx, "task-rename", MouseButton::Right, 1);
+    assert!(editing(cx), "still renaming");
+    assert!(cx.debug_bounds("menu-row-Rename").is_none(), "no task menu");
+}
