@@ -407,3 +407,9 @@ effort high, in a Herdr pane.
 ## 8.7a The New row
 
 - Round 1: PASS.
+
+## 8.7b1 The Search row
+
+- Round 1: FAIL. The outside press used the row's unclipped bounds; key presses dropped the
+  hover; the drawn placeholder could wrap.
+- Round 2: PASS.

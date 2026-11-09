@@ -325,7 +325,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       sidebar's fixed top section (`section='pinned'`), off the rail and in the peek; the
       route state's computer comes with the New draft (chapter 9), `ROW_ACTIVE_CLASS` with the
       first row that can be active (15.0)
-    - [ ] 8.7b1 The rows `section='scrollable'` draws at the top of the list's scroller, in the
+    - [x] 8.7b1 The rows `section='scrollable'` draws at the top of the list's scroller, in the
       saved order, and Search at rest and open as `SidebarInlineSearch` draws it (hover, focus
       within or a query opens the field; the clear button), its query shared with the results
       as `conversationSearchContext` shares it, and a press outside the search surface clearing

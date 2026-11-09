@@ -340,6 +340,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .pb(css(16.0))
         .overflow_y_scroll()
         .track_scroll(&cx.global::<super::reveal::Reveal>().handle)
+        .child(super::search::section(window, cx))
         .children(pinned)
         .child(section)
         .child(super::select::end());

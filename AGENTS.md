@@ -99,6 +99,12 @@ defines scope and what 1:1 means.
   curve (`cubic-bezier(0.4,0,0,1)`, `min(sqrt(|delta|), 90) / 60` s in device pixels); reduced
   motion jumps, and a scroll by the user or a reveal that needs no move ends it. The active
   record is keyed by look (text, list, card), since Cindy mounts a new component per look.
+  `search.rs` is the conversation search: the query `conversationSearchContext` shares, held in
+  one Ely `TextInput`, and the top nav's Search row (`SidebarInlineSearch`) at the top of the
+  list's scroller. Focus goes straight to the field, which stands for `forceOpen`; the
+  placeholder is drawn over the field in `text-placeholder`, since Ely draws its own in
+  `fg_subtle`. A press that does not hit the row (gpui's hit test, so a clipped row misses)
+  clears a running query; hover ignores key presses.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
