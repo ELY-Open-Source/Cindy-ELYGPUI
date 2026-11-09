@@ -6,15 +6,13 @@ use crate::rich_answer::js::Js;
 const BOOT: i64 = 10_000;
 
 fn db() -> Connection {
-    let db = Connection::open_in_memory().unwrap();
+    let db = crate::sessions::tests::db();
     db.execute_batch(
-        "CREATE TABLE sessions (id text PRIMARY KEY, status text NOT NULL DEFAULT 'active',
-           source text NOT NULL DEFAULT 'desktop', hidden_at integer, cleared_at integer,
-           active_turn_started_at integer, last_turn_ended_at integer);
-         CREATE TABLE bot_profiles (id text PRIMARY KEY, status text NOT NULL);
-         CREATE TABLE bot_session_links (session_id text, bot_id text, role text);
-         CREATE TABLE messages (id text PRIMARY KEY, session_id text NOT NULL, role text NOT NULL,
-           content text NOT NULL, created_at integer NOT NULL, rewind_at integer);",
+        "ALTER TABLE sessions ADD COLUMN active_turn_started_at integer;
+         ALTER TABLE sessions ADD COLUMN last_turn_ended_at integer;
+         ALTER TABLE bot_profiles ADD COLUMN display_name text NOT NULL DEFAULT '';
+         ALTER TABLE bot_profiles ADD COLUMN updated_at integer NOT NULL DEFAULT 0;
+         ALTER TABLE bot_session_links ADD COLUMN created_at integer NOT NULL DEFAULT 0;",
     )
     .unwrap();
     db
@@ -23,7 +21,8 @@ fn db() -> Connection {
 /// A task whose turn started at `started` and never ended.
 fn task(db: &Connection, id: &str, source: &str, started: i64) {
     db.execute(
-        "INSERT INTO sessions (id, source, active_turn_started_at) VALUES (?, ?, ?)",
+        "INSERT INTO sessions (id, source, active_turn_started_at, created_at, updated_at)
+         VALUES (?1, ?2, ?3, 0, 0)",
         (id, source, started),
     )
     .unwrap();
@@ -126,13 +125,13 @@ fn companion_tasks_follow_the_send_path_guards() {
     let link = |id: &str, bot: &str, role: &str| {
         task(&db, id, "bot", 1_000);
         db.execute(
-            "INSERT INTO bot_session_links VALUES (?, ?, ?)",
+            "INSERT INTO bot_session_links (session_id, bot_id, role) VALUES (?, ?, ?)",
             (id, bot, role),
         )
         .unwrap();
     };
     db.execute_batch(
-        "INSERT INTO bot_profiles VALUES ('on', 'active'), ('off', 'disabled'), ('far', 'active');",
+        "INSERT INTO bot_profiles (id, status) VALUES ('on', 'active'), ('off', 'disabled'), ('far', 'active');",
     )
     .unwrap();
     link("main", "on", "canonical");
@@ -199,7 +198,7 @@ fn the_owners_load_runs_once_when_the_database_is_ready(cx: &mut gpui::TestAppCo
     let found = cx.update(|cx| {
         let store = cx.global::<Interrupted>();
         let mut lines: Vec<_> = store
-            .candidates
+            .tasks
             .as_ref()
             .unwrap()
             .iter()
@@ -214,10 +213,93 @@ fn the_owners_load_runs_once_when_the_database_is_ready(cx: &mut gpui::TestAppCo
         "the island's line, in English"
     );
     cx.update(|cx| {
-        cx.global_mut::<Interrupted>().candidates = None;
+        cx.global_mut::<Interrupted>().tasks = None;
         super::load(cx);
     });
     cx.run_until_parked();
-    let again = cx.update(|cx| cx.global::<Interrupted>().candidates.is_none());
+    let again = cx.update(|cx| cx.global::<Interrupted>().tasks.is_none());
     assert!(again, "the same owner loads once");
+}
+
+#[test]
+fn the_dialogs_tasks_keep_existing_rows_newest_first_with_companion_names() {
+    let db = db();
+    task(&db, "old", "desktop", 1_000);
+    task(&db, "new", "desktop", 2_000);
+    task(&db, "bot", "bot", 1_500);
+    let link = |session: &str, bot: &str| {
+        let sql =
+            "INSERT INTO bot_session_links (session_id, bot_id, role) VALUES (?, ?, 'channel')";
+        db.execute(sql, (session, bot)).unwrap();
+    };
+    db.execute_batch(
+        "INSERT INTO bot_profiles (id, status, display_name, updated_at)
+           VALUES ('fresh', 'active', 'Fresh', 20), ('stale', 'active', 'Stale', 10);",
+    )
+    .unwrap();
+    link("bot", "fresh");
+    link("bot", "stale");
+    let read = super::tasks::read(&db, BOOT, &[]).unwrap();
+    let t = crate::i18n::Translator::new("en").unwrap();
+    let got: Vec<_> = super::tasks::assemble(read, &t)
+        .into_iter()
+        .map(|t| (t.session.id, t.companion))
+        .collect();
+    let stale = Some("Stale".to_owned());
+    assert_eq!(
+        got,
+        [
+            ("new".to_owned(), None),
+            ("bot".to_owned(), stale.clone()),
+            ("bot".to_owned(), stale),
+            ("old".to_owned(), None),
+        ],
+        "the oldest profile's name wins; Cindy's join gives a row per link"
+    );
+}
+
+#[test]
+fn names_wait_for_a_companion_task_and_a_failed_read_gives_none() {
+    let db = db();
+    task(&db, "t", "desktop", 1_000);
+    let rename = "ALTER TABLE bot_profiles RENAME COLUMN display_name TO name";
+    db.execute_batch(rename).unwrap();
+    let t = crate::i18n::Translator::new("en").unwrap();
+    let read = super::tasks::read(&db, BOOT, &[]).unwrap();
+    assert_eq!(
+        super::tasks::assemble(read, &t).len(),
+        1,
+        "no companion task, no names read"
+    );
+    task(&db, "bot", "bot", 1_000);
+    let sql =
+        "INSERT INTO bot_session_links (session_id, bot_id, role) VALUES ('bot', 'b', 'channel')";
+    db.execute(sql, ()).unwrap();
+    let read = super::tasks::read(&db, BOOT, &[]).unwrap();
+    let names: Vec<_> = super::tasks::assemble(read, &t)
+        .into_iter()
+        .map(|t| t.companion)
+        .collect();
+    assert_eq!(names, [None, None], "a failed name read gives none");
+}
+
+#[test]
+fn get_many_reads_each_id_once_in_its_order() {
+    let db = db();
+    task(&db, "a", "desktop", 1_000);
+    task(&db, "b", "desktop", 1_000);
+    let ids = ["b", "x", "a", "b"].map(String::from);
+    let rows = crate::sessions::query::by_ids(&db, &ids).unwrap();
+    let got: Vec<_> = rows.iter().map(|s| s.id.as_str()).collect();
+    assert_eq!(got, ["b", "a"], "a missing id is left out");
+    // One query per 256 ids: a 300-variable limit fails a single IN of 600.
+    let limit = rusqlite::limits::Limit::SQLITE_LIMIT_VARIABLE_NUMBER;
+    db.set_limit(limit, 300).unwrap();
+    let many: Vec<String> = (0..600).map(|i| format!("m{i:03}")).rev().collect();
+    for id in &many {
+        task(&db, id, "desktop", 1_000);
+    }
+    let rows = crate::sessions::query::by_ids(&db, &many).unwrap();
+    let got: Vec<_> = rows.iter().map(|s| s.id.clone()).collect();
+    assert_eq!(got, many, "three batches, in the asked order");
 }

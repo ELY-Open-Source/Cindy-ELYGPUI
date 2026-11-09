@@ -92,7 +92,9 @@ defines scope and what 1:1 means.
   `bootAtMs`) and never ended, companion tasks through the send path's guards and the owner's
   `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each
   with its turn's last message time and its last `tool_use` as `activity`. `load` runs once
-  per owner when the database is ready. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
+  per owner when the database is ready. `interrupted/tasks.rs` is `loadInterruptedTasks` in
+  the same read: `getMany`'s rows (`query::by_ids`), companion names when a companion task is
+  there, newest first. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
 - Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
   `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.

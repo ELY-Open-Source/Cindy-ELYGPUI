@@ -291,3 +291,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 8.8b3 The activity line
 - Round 1: PASS.
+
+## 8.8c1 The dialog's tasks
+- Round 1: FAIL. `by_ids` put every id in one `IN`, so 32767 candidates passed SQLite's variable limit and the load gave up; Cindy reads 256 ids a query.
+- Fixed: 256-id batches merged by id (hash set and map), a test under a 300-variable limit.
+- Round 2: PASS.

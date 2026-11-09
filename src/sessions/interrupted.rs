@@ -30,33 +30,11 @@ pub struct Pending {
     pub tool: Option<ToolUse>,
 }
 
-/// What `interrupted-resume-candidates` gives the dialog.
-#[derive(Debug, PartialEq)]
-pub struct Candidate {
-    pub session_id: String,
-    pub interrupted_at: i64,
-    /// The last tool call's island line, else its name.
-    pub activity: Option<String>,
-}
-
-impl Candidate {
-    fn new(pending: Pending, t: &crate::i18n::Translator) -> Self {
-        let activity = pending
-            .tool
-            .map(|tool| crate::tool_row::activity(t, &tool.name, tool.input.as_ref()));
-        Self {
-            session_id: pending.session_id,
-            interrupted_at: pending.interrupted_at,
-            activity,
-        }
-    }
-}
-
 /// The window's load, keyed by owner, as the dialog's `_load` singleton is.
 #[derive(Default)]
 pub struct Interrupted {
     pub owner: Option<std::path::PathBuf>,
-    pub candidates: Option<Vec<Candidate>>,
+    pub tasks: Option<Vec<tasks::Task>>,
 }
 
 impl gpui::Global for Interrupted {}
@@ -186,16 +164,16 @@ pub fn load(cx: &mut App) {
     let Some(dir) = owner.clone().filter(|_| store.owner != owner) else {
         return;
     };
-    (store.owner, store.candidates) = (owner, None);
+    (store.owner, store.tasks) = (owner, None);
     let boot_at = crate::cross_process_lock::started_ms() as i64;
     cx.spawn(async move |cx| {
-        let mut found = Vec::new();
+        let mut found = None;
         for attempt in 1..=ATTEMPTS {
             let dir = dir.clone();
-            let read = db.call(move |conn| candidates(conn, boot_at, &shadowed(&dir)));
+            let read = db.call(move |conn| tasks::read(conn, boot_at, &shadowed(&dir)));
             match read.await {
-                Ok(Ok(rows)) => {
-                    found = rows;
+                Ok(Ok(read)) => {
+                    found = Some(read);
                     break;
                 }
                 Ok(Err(error)) if attempt < ATTEMPTS => {
@@ -213,15 +191,17 @@ pub fn load(cx: &mut App) {
             let wait = Duration::from_millis(2000 * attempt);
             cx.background_executor().timer(wait).await;
         }
-        log::info!(target: "interrupted-tasks-resume", "found {} interrupted task(s)", found.len());
         cx.update(|cx| {
             let t = cx.global::<crate::i18n::Translator>();
-            let found = found.into_iter().map(|p| Candidate::new(p, t)).collect();
-            cx.default_global::<Interrupted>().candidates = Some(found);
+            let found = found.map_or_else(Vec::new, |read| tasks::assemble(read, t));
+            log::info!(target: "interrupted-tasks-resume", "found {} interrupted task(s)", found.len());
+            cx.default_global::<Interrupted>().tasks = Some(found);
         });
     })
     .detach();
 }
+
+pub mod tasks;
 
 #[cfg(test)]
 mod tests;

@@ -264,6 +264,20 @@ listed in `tasks/done.md`.
       tasks (`getMany`, companion names) newest first with their checkbox, vendor icon,
       title and source label or companion name, activity and time; select all; Continue
       rechecks the still-interrupted set, the dispatch with 10.0
+        - [x] 8.8c1 The dialog's tasks in the same load: `getMany`'s rows for the candidates
+          (`selectSessionsByIds`, missing rows dropped), companion names as `bots.list` gives
+          them (`displayName` per linked task, newest profile first, the last one wins; a
+          failed read gives none; default-bot provisioning comes with 14.0), newest first
+        - [ ] 8.8c2 `ConfirmDialog`'s `standard` presentation on Ely's primitives: the scrim
+          that drags the window, the centered panel (`maxWidth`, 85vh, its scroll area),
+          title, description, content, cancel first, the confirm's auto focus and disabled
+          state; Escape and the buttons close it, a press on the scrim does not
+        - [ ] 8.8c3 The dialog itself: shown once per window and owner (closing marks the
+          owner handled), its rows (checkbox, vendor icon, title, source label or companion
+          name, activity, time), select all with its mixed state, the counts and the
+          buttons; Continue closes it and rechecks the still-interrupted set; the send comes
+          with 10.0, so each picked task fails as Cindy's failed send does (the
+          `continueFailed` toast). The release notes that suspend it come with their chapter
 - [ ] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most
   50 in memory, cleared on owner change, ⌘[ / ⌘]) with `SessionHistoryButtons`
 - [ ] 8.10 The project header's actions as `ProjectNode.tsx` draws them: the hover More and New

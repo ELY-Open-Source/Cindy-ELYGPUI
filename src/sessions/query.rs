@@ -63,6 +63,36 @@ pub fn list(
     status: Status,
 ) -> rusqlite::Result<(Vec<Session>, Vec<projection::Item>)> {
     let filter = ORDINARY.replace("TASK_SOURCES", TASK_SOURCES);
+    let tail = format!(
+        "{filter} AND {} ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
+        status.sql()
+    );
+    read(db, &tail, rusqlite::params_from_iter([LIMIT]))
+}
+
+/// `selectSessionsByIds`' batch of ids per query.
+const ID_BATCH: usize = 256;
+
+/// `selectSessionsByIds`: the rows of `ids` in their order, missing ones left out.
+pub fn by_ids(db: &Connection, ids: &[String]) -> rusqlite::Result<Vec<Session>> {
+    let mut seen = std::collections::HashSet::new();
+    let unique: Vec<&String> = ids.iter().filter(|id| seen.insert(*id)).collect();
+    let mut found = std::collections::HashMap::new();
+    for batch in unique.chunks(ID_BATCH) {
+        let marks = vec!["?"; batch.len()].join(", ");
+        let tail = format!("sessions.id IN ({marks})");
+        let (rows, _) = read(db, &tail, rusqlite::params_from_iter(batch))?;
+        found.extend(rows.into_iter().map(|s| (s.id.clone(), s)));
+    }
+    Ok(unique.iter().filter_map(|id| found.remove(*id)).collect())
+}
+
+/// The columns `sessionToCamel` reads, under `tail`'s filter and order.
+fn read(
+    db: &Connection,
+    tail: &str,
+    params: impl rusqlite::Params,
+) -> rusqlite::Result<(Vec<Session>, Vec<projection::Item>)> {
     let sql = format!(
         "SELECT sessions.id, sessions.title, sessions.status, sessions.source, sessions.workspace_kind,
                 sessions.working_dir, sessions.project_dir, sessions.remote_host_id, sessions.user_send_at,
@@ -72,13 +102,11 @@ pub fn list(
                 sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency,
                 sessions.notifications_muted, {}, sessions.list_preview, sessions.list_preview_role,
                 sessions.summary, sessions.updated_at
-         FROM sessions WHERE {filter} AND {}
-         ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
+         FROM sessions WHERE {tail}",
         projection::columns(),
-        status.sql()
     );
     let mut statement = db.prepare(&sql)?;
-    let rows = statement.query_map([LIMIT], |row| {
+    let rows = statement.query_map(params, |row| {
         let (extract, role): (Option<String>, Option<String>) = (row.get(20)?, row.get(21)?);
         let cached: (Option<String>, Option<String>) = (row.get(24)?, row.get(25)?);
         // The cached preview with its own role, else the latest message.
