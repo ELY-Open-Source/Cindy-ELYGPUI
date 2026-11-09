@@ -344,6 +344,17 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
           vector pass is skipped as Cindy skips it while the embedding service is down (11.0)
         - [x] 8.7c1c `searchConversations`: titles and messages merged, filtered by the options
         - [ ] 8.7c2 The results list in place of the task list, the search row sticky over it
+            - [ ] 8.7c2a `useConversationSearch`'s search: the request from the shared query and
+              options (24 results, the unnamed label), the keyword pass after 250ms and the hybrid
+              pass after 900ms on the database worker, only the latest request publishing, the
+              local page merged as `mergeConversationSearchFanout` does (Cindy Make rows, its
+              order), searching, done and error
+            - [ ] 8.7c2b `SearchResultsBody`, `SearchResultRow` and `SearchHitRow` in place of the
+              list, which stays mounted and hidden: the empty, searching, failed and no-result
+              lines, title marks, the kind chip, the meta line, three hits then More, keyword
+              marks and tips; teammate hits come with the companions chapter
+            - [ ] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
+              message jump (`searchJump`) lands with the chat view (chapter 9)
         - [ ] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
