@@ -5,6 +5,9 @@ use indexmap::IndexMap;
 
 use crate::cindy_json::js_number;
 
+mod stringify;
+pub use stringify::{entries, stringify};
+
 /// Recursion grows the stack on the heap, as V8 nests a million levels.
 const RED_ZONE: usize = 64 * 1024;
 const STACK: usize = 1024 * 1024;
@@ -368,20 +371,7 @@ fn quoted_len(text: &str) -> usize {
 
 /// `Object.values`: array-index keys ascending, then the rest in insertion order.
 pub fn values(fields: &Obj) -> impl Iterator<Item = &Js> {
-    let index = |key: &str| {
-        let n = key.parse::<u32>().ok()?;
-        (n != u32::MAX && n.to_string() == key).then_some(n)
-    };
-    let mut indexed: Vec<(u32, &Js)> = fields
-        .iter()
-        .filter_map(|(k, v)| index(k).map(|n| (n, v)))
-        .collect();
-    indexed.sort_by_key(|(n, _)| *n);
-    let named = fields.iter().filter(move |(k, _)| index(k).is_none());
-    indexed
-        .into_iter()
-        .map(|(_, v)| v)
-        .chain(named.map(|(_, v)| v))
+    entries(fields).map(|(_, v)| v)
 }
 
 /// `JSON.stringify` of a string.

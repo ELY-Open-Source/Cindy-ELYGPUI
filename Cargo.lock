@@ -1023,6 +1023,7 @@ dependencies = [
  "stacker",
  "sys-locale",
  "tempfile",
+ "url",
  "uuid",
  "windows 0.62.2",
  "zbus",

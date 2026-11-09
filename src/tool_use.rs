@@ -3,9 +3,13 @@
 use crate::{
     command_display,
     command_intent::{self, Intent, base_or},
+    message_rows::unwrap_gateway,
     rich_answer::js::{Js, Obj, non_empty},
     theme_import::color::{js_space, js_trim},
 };
+
+/// `MCP_OUTPUT_PATH_KEYS`: where an MCP tool names the file it makes.
+const OUTPUT_PATH_KEYS: [&str; 4] = ["outPath", "out_path", "outputPath", "output_path"];
 
 /// `ParsedToolName`; a plain name is the caller's own.
 #[derive(Debug, PartialEq)]
@@ -138,6 +142,7 @@ pub enum Kind {
     Mcp {
         server: String,
         tool_label: String,
+        created_path: Option<String>,
     },
     Dynamic {
         namespace: Option<String>,
@@ -156,38 +161,18 @@ pub struct ToolUse {
     pub kind: Kind,
 }
 
-/// `parseMessageToolUse`'s own `readNonEmptyString`: a nonempty string, untrimmed.
-fn string(value: Option<&Js>) -> Option<&str> {
-    value?.str().filter(|s| !s.is_empty())
-}
-
-/// `parseMessageToolUse`: Pi's MCP gateway call becomes `mcp:server:tool`.
-fn message_tool_use(name: &str, input: Option<&Js>) -> (String, Option<Js>) {
-    if name == "cindy_mcp_call_tool"
-        && let Some(gateway) = input.and_then(Js::obj)
-        && let (Some(server), Some(tool)) =
-            (string(gateway.get("server")), string(gateway.get("tool")))
-    {
-        let args = match gateway.get("args") {
-            None => Some(Js::Obj(Obj::new())),
-            Some(args @ Js::Obj(_)) => Some(args.clone()),
-            Some(_) => None,
-        };
-        if let Some(args) = args {
-            return (format!("mcp:{server}:{tool}"), Some(args));
-        }
-    }
-    (name.to_owned(), input.cloned())
-}
-
 /// `describeToolUse`.
 pub fn describe(name: &str, input: Option<&Js>) -> ToolUse {
-    let (tool_name, input) = message_tool_use(name, input);
+    let (tool_name, input) = unwrap_gateway(name, input);
     let inp = input.as_ref().and_then(Js::obj);
     let kind = match parse_name(&tool_name) {
         Parsed::Mcp { server, tool } => Kind::Mcp {
             server,
             tool_label: humanize(&tool),
+            created_path: OUTPUT_PATH_KEYS
+                .iter()
+                .find_map(|key| non_empty(inp.and_then(|o| o.get(*key))))
+                .map(str::to_owned),
         },
         Parsed::Dynamic { namespace, tool } => Kind::Dynamic {
             namespace,

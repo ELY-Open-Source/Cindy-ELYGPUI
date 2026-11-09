@@ -358,3 +358,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
   which live in the runtime and come with 10.0 (panels drawn against fixtures); the composer is
   9.15 and message actions 9.16, the quote landing in 9.15's draft.
 - Round 2: PASS.
+
+## 9.1a History row checks
+- Round 1: FAIL. The module docs of `message_rows.rs` and `payload/files.rs` ran to two lines.
+- Fixed: each is one line; no other new comment spans two.
+- Round 2: PASS.

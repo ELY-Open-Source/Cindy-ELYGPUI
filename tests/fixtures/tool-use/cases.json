@@ -722,6 +722,54 @@
    {
     "prompt": "p"
    }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outPath": "  /tmp/a.png  "
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "out_path": "/tmp/b.png",
+    "outPath": "   "
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outputPath": "/tmp/c.png",
+    "output_path": "/tmp/d.png"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "output_path": 5
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outpath": "/tmp/e.png"
+   }
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": "art",
+    "tool": "make",
+    "args": {
+     "outPath": "/tmp/f.png"
+    }
+   }
+  ],
+  [
+   "mcp:docs:pdf",
+   {
+    "out_path": "/tmp/g.pdf"
+   }
   ]
  ],
  "parseToolName": [

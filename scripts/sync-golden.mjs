@@ -6,6 +6,8 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+import { rows } from './golden/rows.mjs';
+
 const [cindy, commit] = process.argv.slice(2);
 if (!cindy || !commit) throw new Error('usage: sync-golden.mjs <cindy checkout> <commit>');
 const fixtures = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'tests/fixtures');
@@ -59,18 +61,26 @@ try {
     "export { formatIslandToolDetail } from './main/agent-island/toolDetail';",
     "export { createLocalizedToolRowWording } from './main/agent-island/toolWording';",
     "export { setMainLocale } from './main/i18n';",
+    "export * as payloadSummary from '@cindy/maker-shared/payload-summary';",
+    "export * as messageWindow from '@cindy/maker-shared/message-window';",
+    "export * as syntheticTrigger from '@cindy/maker-shared/synthetic-trigger';",
+    "export * as messageNormalize from '@cindy/maker-shared/message-normalize';",
+    "export * as messageRender from '@cindy/maker-shared/message-render';",
+    "export * as agentTask from '@cindy/maker-shared/agent-task';",
+    "export { hasRichAnswer } from '@cindy/maker-shared/rich-answer';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
   fs.writeFileSync(electronStub, 'const any = new Proxy(function () {}, { get: (_, key) => key === Symbol.toPrimitive ? () => "" : any, apply: () => any, construct: () => any });\nmodule.exports = any;\n');
   const bundle = path.join(tmp, 'bundle.mjs');
+  const nodePaths = [links, path.join(path.resolve(cindy), 'node_modules')];
+  const alias = { '@': path.join(tmp, src, 'renderer'), electron: electronStub };
   await esbuild.build({
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
-    nodePaths: [links, path.join(path.resolve(cindy), 'node_modules')],
-    alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
+    nodePaths, alias,
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -356,7 +366,7 @@ try {
   const labelFields = {
     command: ['description', 'command', 'intent'], file: ['action', 'fileName'], fileChange: ['changes'],
     search: ['pattern'], web: ['mode', 'target'], todo: [], task: ['description'],
-    mcp: ['serverLabel', 'toolLabel'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
+    mcp: ['serverLabel', 'toolLabel', 'createdPath'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
   };
   const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
   const labelled = (d) => ({
@@ -377,6 +387,23 @@ try {
     return [locale, toolCases.island.map(([name, input]) =>
       (formatIslandToolDetail(name, input ?? undefined, { wording }) ?? name).toWellFormed())];
   }));
+
+  const rowCases = await rows({ esbuild, tmp, nodePaths, alias, fixtures, write, fns: {
+    extractPayloadToolResultMedia: payloadSummary.extractPayloadToolResultMedia,
+    extractPayloadToolResultFiles: payloadSummary.extractPayloadToolResultFiles,
+    extractPayloadToolCardIds: payloadSummary.extractPayloadToolCardIds,
+    hasVisibleHistoryResult: messageWindow.hasVisibleHistoryResult,
+    isContinuationMessage: syntheticTrigger.isContinuationMessage,
+    parseMessageToolUse: messageNormalize.parseMessageToolUse,
+    messageContentToPreview: messageNormalize.messageContentToPreview,
+    isOrcaCommunicationTool: messageNormalize.isOrcaCommunicationTool,
+    isAgentTaskToolName: agentTask.isAgentTaskToolName,
+    isAgentPlanToolName: messageRender.isAgentPlanToolName,
+    isSteerUserRow: messageRender.isSteerUserRow,
+    isDeliveryProseText: messageRender.isDeliveryProseText,
+    hasRichAnswer,
+  } });
+  console.log(`${rowCases} history row cases`);
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

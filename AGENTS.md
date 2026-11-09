@@ -118,8 +118,18 @@ defines scope and what 1:1 means.
   Golden `tests/fixtures/command-intent` holds the literal inputs of Cindy's own tests, run
   through Cindy's functions by `sync-golden.mjs`.
   `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`,
-  `humanizeToolToken`, `parseMessageToolUse`'s gateway unwrap), kept to the fields the row
-  label reads; golden `tests/fixtures/tool-use` projects Cindy's descriptor to them.
+  `humanizeToolToken`), kept to the fields the row label and history read (an MCP call's
+  `createdPath`); golden `tests/fixtures/tool-use` projects Cindy's descriptor to them.
+- History rows: `src/message_rows.rs` holds the row checks `projectHistoryView` reads, on rows
+  as `messageToCamel` reads them (`parseMessageToolUse` with its gateway unwrap,
+  `messageContentToPreview`, `isDeliveryProseText` with JS `\s` and line terminators,
+  `isContinuationMessage`, `hasVisibleHistoryResult`); `src/payload.rs` is `payloadSummary.ts`'s
+  tool result readers, `payload/files.rs` the file references with their source-literal lexer
+  on UTF-8 bytes (it compares ASCII only). `new URL(...).searchParams` is the `url` crate.
+  `js::stringify` is `JSON.stringify` with an indent, `js::entries` the property order.
+  Golden `tests/fixtures/history-rows`: `scripts/golden/record.mjs` runs Cindy's own tests with
+  vitest stubbed and records the arguments they pass, plus `cases.json`; tests read it with
+  `js::parse`, since serde_json sorts keys.
   `src/tool_row.rs` is `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs
   from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
   checked in every locale against `activity.json`.

@@ -778,7 +778,8 @@
     "kind": "mcp",
     "toolName": "mcp__cindy_docs__make_pptx",
     "serverLabel": "cindy_docs",
-    "toolLabel": "make pptx"
+    "toolLabel": "make pptx",
+    "createdPath": "documents/Q3.pptx"
    }
   ],
   [
@@ -827,7 +828,8 @@
     "kind": "mcp",
     "toolName": "mcp__cindy_docs__render_pdf",
     "serverLabel": "cindy_docs",
-    "toolLabel": "render pdf"
+    "toolLabel": "render pdf",
+    "createdPath": "documents/report.pdf"
    }
   ],
   [
@@ -840,7 +842,8 @@
     "kind": "mcp",
     "toolName": "mcp__cindy_docs__render_pdf",
     "serverLabel": "cindy_docs",
-    "toolLabel": "render pdf"
+    "toolLabel": "render pdf",
+    "createdPath": "documents/report.pdf"
    }
   ],
   [
@@ -867,7 +870,8 @@
     "kind": "mcp",
     "toolName": "mcp:docs:make_pptx",
     "serverLabel": "docs",
-    "toolLabel": "make pptx"
+    "toolLabel": "make pptx",
+    "createdPath": "/a.pptx"
    }
   ],
   [
@@ -1310,6 +1314,101 @@
    {
     "kind": "generic",
     "toolName": "Custom"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outPath": "  /tmp/a.png  "
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__art__make",
+    "serverLabel": "art",
+    "toolLabel": "make",
+    "createdPath": "/tmp/a.png"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "out_path": "/tmp/b.png",
+    "outPath": "   "
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__art__make",
+    "serverLabel": "art",
+    "toolLabel": "make",
+    "createdPath": "/tmp/b.png"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outputPath": "/tmp/c.png",
+    "output_path": "/tmp/d.png"
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__art__make",
+    "serverLabel": "art",
+    "toolLabel": "make",
+    "createdPath": "/tmp/c.png"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "output_path": 5
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__art__make",
+    "serverLabel": "art",
+    "toolLabel": "make"
+   }
+  ],
+  [
+   "mcp__art__make",
+   {
+    "outpath": "/tmp/e.png"
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__art__make",
+    "serverLabel": "art",
+    "toolLabel": "make"
+   }
+  ],
+  [
+   "cindy_mcp_call_tool",
+   {
+    "server": "art",
+    "tool": "make",
+    "args": {
+     "outPath": "/tmp/f.png"
+    }
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp:art:make",
+    "serverLabel": "art",
+    "toolLabel": "make",
+    "createdPath": "/tmp/f.png"
+   }
+  ],
+  [
+   "mcp:docs:pdf",
+   {
+    "out_path": "/tmp/g.pdf"
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp:docs:pdf",
+    "serverLabel": "docs",
+    "toolLabel": "pdf",
+    "createdPath": "/tmp/g.pdf"
    }
   ]
  ],

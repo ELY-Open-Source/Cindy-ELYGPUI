@@ -86,6 +86,13 @@ fn split(source: &str) -> Vec<Part<'_>> {
     parts
 }
 
+/// `hasRichAnswer`.
+pub fn has(source: &str) -> bool {
+    split(source)
+        .iter()
+        .any(|part| matches!(part, Part::Rich(_)))
+}
+
 /// `richAnswerText`.
 pub fn text(source: &str) -> String {
     split(source)

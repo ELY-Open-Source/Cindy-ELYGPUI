@@ -321,6 +321,19 @@ listed in `tasks/done.md`.
   scan limits), `historyViewOutline.ts`'s outline rows, `projectHistoryView`'s items and work
   summaries, the cleared and rewound cuts, `restoreTaskImageRows`, rows read as `messageToCamel`
   reads them; on the database worker, checked against goldens from `sync-golden.mjs`
+  - [x] 9.1a The row checks `projectHistoryView` reads: `messageContentToPreview`,
+    `parseMessageToolUse` in full, `isOrcaCommunicationTool`, `isAgentPlanToolName`,
+    `isAgentTaskToolName`, `isDeliveryProseText` (`hasRichAnswer`), `isSteerUserRow`,
+    `isContinuationMessage`, `parseToolResultPayload` with `extractPayloadToolResultMedia`,
+    `extractPayloadToolResultFiles` and `extractPayloadToolCardIds`, and `describeToolUse`'s
+    `mcp` kind with `createdPath`; golden from Cindy's functions
+  - [ ] 9.1b `groupWorkRuns` (`workRunGrouping.ts`), `historySubagentScopes`, `projectHistoryView`
+    with and without lazy details, `completesHistoryTurn`; golden from Cindy's functions
+  - [ ] 9.1c The reader: `readMessagesList`'s rows (cleared and rewound cuts, cursors) and
+    `historyViewOutline.ts`'s outline, `historyViewReader.ts`'s `page` (page boundaries, safe
+    starts, the item and byte targets, scan budgets, the sealed-answer context) and `details`, on
+    the database worker. The first page's history import comes with 10.0, `restoreTaskImageRows`
+    and `recoverGeneratedImagesForHistory` (both write the media store) with 9.13
 - [ ] 9.2 The session slice as `makerChatStore.ts` keeps it for a local task: the first page on
   `enterView`, older pages (`loadOlderMessages`), work details on demand, the reload on a database
   change (the watcher of 8.3), the soft eviction of idle sessions and the window trim;

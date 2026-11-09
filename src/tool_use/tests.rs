@@ -70,8 +70,13 @@ fn shown(name: &str, input: &Value) -> Value {
             put(&mut out, "description", opt(description));
             "task"
         }
-        Kind::Mcp { server, tool_label } => {
+        Kind::Mcp {
+            server,
+            tool_label,
+            created_path,
+        } => {
             (out["serverLabel"], out["toolLabel"]) = (json!(server), json!(tool_label));
+            put(&mut out, "createdPath", opt(created_path));
             "mcp"
         }
         Kind::Dynamic {
