@@ -8,9 +8,11 @@ use std::{
     cell::RefCell,
     collections::{HashMap, HashSet},
     rc::Rc,
+    time::Instant,
 };
 
-use gpui::App;
+use gpui::{App, BackgroundExecutor, ForegroundExecutor, Task};
+use indexmap::IndexMap;
 
 use crate::{
     chat_message::merge::{Message, Messages},
@@ -18,6 +20,7 @@ use crate::{
 };
 
 mod initial;
+mod memory;
 mod mirror;
 mod older;
 mod raw;
@@ -56,9 +59,17 @@ struct Entry {
     mirror_paused: bool,
 }
 
-#[derive(Default)]
 struct Inner {
-    sessions: HashMap<String, SessionState>,
+    /// `sessions`, in the order a `Map` keeps.
+    sessions: IndexMap<String, SessionState>,
+    /// `_accessOrder`: least recently used first.
+    access: Vec<String>,
+    /// `_lastViewedAt`.
+    last_viewed: HashMap<String, Instant>,
+    budget: memory::Budget,
+    timer: Option<Task<()>>,
+    foreground: ForegroundExecutor,
+    background: BackgroundExecutor,
     views: HashMap<String, Entry>,
     /// `_activeViewSessions`: how many views show each task.
     active: HashMap<String, usize>,
@@ -70,13 +81,29 @@ struct Inner {
 }
 
 /// The store; clones share it, as the module's maps are shared.
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct Store(Rc<RefCell<Inner>>);
 
 impl gpui::Global for Store {}
 
 pub fn install(cx: &mut App) {
-    cx.set_global(Store::default());
+    let inner = Inner {
+        sessions: IndexMap::new(),
+        access: Vec::new(),
+        last_viewed: HashMap::new(),
+        budget: memory::Budget::default(),
+        timer: None,
+        foreground: cx.foreground_executor().clone(),
+        background: cx.background_executor().clone(),
+        views: HashMap::new(),
+        active: HashMap::new(),
+        epochs: HashMap::new(),
+        fetch_tokens: HashMap::new(),
+        next_token: 0,
+        in_flight: HashSet::new(),
+        force: HashMap::new(),
+    };
+    cx.set_global(Store(Rc::new(RefCell::new(inner))));
 }
 
 impl Store {
@@ -95,16 +122,21 @@ impl Store {
 
     /// `getOrCreateState`.
     fn get_or_create(&self, id: &str) -> SessionState {
-        let mut inner = self.0.borrow_mut();
-        inner.sessions.entry(id.to_owned()).or_default().clone()
+        self.admit(id);
+        // A slice the cap pushed out at once still answers, as Cindy's local does.
+        self.0
+            .borrow()
+            .sessions
+            .get(id)
+            .cloned()
+            .unwrap_or_default()
     }
 
     /// `setState`: `update` returns `None` to keep the state as it is.
     fn set(&self, id: &str, update: impl FnOnce(&SessionState) -> Option<SessionState>) {
-        let mut inner = self.0.borrow_mut();
-        let state = inner.sessions.entry(id.to_owned()).or_default();
-        if let Some(next) = update(state) {
-            *state = next;
+        let prev = self.get_or_create(id);
+        if let Some(next) = update(&prev) {
+            self.0.borrow_mut().sessions.insert(id.to_owned(), next);
         }
     }
 

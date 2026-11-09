@@ -55,6 +55,11 @@ impl Store {
     /// `ensureInitialMessages`: the first page through the view; the mirror fills `messages`.
     pub fn ensure_initial_messages(&self, id: &str, cx: &mut App) {
         let state = self.get_or_create(id);
+        // A caller with no view mounted still gives the slice a leave time.
+        if !self.0.borrow().active.contains_key(id) {
+            self.note_left(id);
+            self.ensure_timer();
+        }
         if state.history_loaded || self.0.borrow().in_flight.contains(id) {
             return;
         }

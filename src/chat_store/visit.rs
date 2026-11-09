@@ -15,7 +15,12 @@ impl Store {
         if let Some(view) = &view {
             view.set_active(true);
         }
-        *self.0.borrow_mut().active.entry(id.to_owned()).or_default() += 1;
+        {
+            let mut inner = self.0.borrow_mut();
+            *inner.active.entry(id.to_owned()).or_default() += 1;
+            inner.last_viewed.remove(id);
+        }
+        self.ensure_timer();
         if resuming {
             log::debug!(target: "chatStore", "history of {id} resumes");
             let opts = Opts {
@@ -46,5 +51,8 @@ impl Store {
         if let Some(view) = self.view(id) {
             view.set_active(false);
         }
+        self.note_left(id);
+        self.trim_messages();
+        self.soft_evict();
     }
 }

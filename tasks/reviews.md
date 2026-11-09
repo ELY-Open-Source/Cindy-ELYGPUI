@@ -66,3 +66,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: FAIL. The raw older pages took the lock at call time but read only while the caller polled, so a dropped waiter left the task busy for good.
 - Fixed: the raw read runs on the foreground executor as a shared future; the caller's copy only waits. A test drops the waiter and checks the page lands and the lock lifts.
 - Round 2: PASS.
+
+## 9.2g Memory
+- Round 1: FAIL. `set` re-inserted a slice the full cache had just pushed out, even when its update was a no-op, so the cache held 21 slices and the access order 20.
+- Fixed: `set` reads through `get_or_create` and writes only a real update, as `setState` returns before `sessions.set`; the reviewer's full-cache case is a test.
+- Round 2: PASS.

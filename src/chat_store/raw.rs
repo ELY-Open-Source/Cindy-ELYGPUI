@@ -63,7 +63,7 @@ fn raw_key(row: &Js) -> Key {
 
 impl Store {
     /// `invalidateMessageHistoryWindow`; the viewport's load budget resets with 9.14.
-    fn invalidate_window(&self, id: &str) {
+    pub(super) fn invalidate_window(&self, id: &str) {
         if let Some(view) = self.view(id) {
             view.reset();
         }

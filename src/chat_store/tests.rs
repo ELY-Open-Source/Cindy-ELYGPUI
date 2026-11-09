@@ -5,6 +5,7 @@ use rusqlite::Connection;
 
 use super::*;
 
+mod memory;
 mod raw;
 use crate::{chat_message::merge, i18n::Translator, rich_answer::js::Js};
 

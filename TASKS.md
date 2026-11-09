@@ -78,8 +78,9 @@ listed in `tasks/done.md`.
     view is ready, the window's islands they keep; the viewport's load budget comes with 9.14,
     `getSessionFor`'s seeding comes with the fields it seeds (9.18), idle plan discovery with
     `getLatestMessageTodoState` (9.11), pending interactions with 10.0
-  - [ ] 9.2g Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
-    `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands
+  - [x] 9.2g Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
+    `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands; the runtime's busy
+    guard comes with 10.0, warm reading windows with 9.14's scroll memory
 - [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
   chapter owns), the message column with its width rules, the composer dock; loading, empty, not
