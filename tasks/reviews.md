@@ -451,3 +451,11 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 - Round 1: FAIL. Results and hits were not Tab stops, so Enter or Space could not open them.
   Fixed: each is a focusable button; hits moved to `results/hits.rs`.
 - Round 2: PASS.
+
+## 8.7c3 Projects submenu
+
+- Round 1: FAIL. Projects kept first-seen order, not `compareProjectsByLatestSessionDesc`; a
+  choice that left the scope's ids unchanged restarted the search; two comments ran two lines.
+  Fixed: `Recent` keeps `lastUsedAt` and `group` sorts by the latest of it and task activity;
+  the request keys on the session ids, the scroll on the selection; comments cut to one line.
+- Round 2: PASS.

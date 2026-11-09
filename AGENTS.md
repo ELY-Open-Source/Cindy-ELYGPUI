@@ -118,9 +118,14 @@ defines scope and what 1:1 means.
   `fg_subtle`. A press that does not hit the row (gpui's hit test, so a clipped row misses)
   clears a running query; hover ignores key presses. `search/options.rs` is `SearchFilterMenu`
   on Ely's `Menu` (`menu_under`) in the open row: sort (saved under `cc-agent.search.sortBy`),
-  status, agent and last activity, reset and the reminder dot. Focus inside the menu stands for
-  `menuOpen`; a press past the open menu clears the query once the press is done, unless a row
-  took it (Ely chooses on mouse down).
+  status, projects, agent and last activity, reset and the reminder dot. Focus inside the menu
+  stands for `menuOpen`; a press past the open menu clears the query once the press is done,
+  unless a row took it (Ely chooses on mouse down). `search/projects.rs` is the Projects filter:
+  `allKnownProjects` from a second read of every status (Orca workers, pins and hidden projects
+  left out), `nextProjectSelection`, and the selection reconciled after each read. Its tasks'
+  ids scope the search, so a choice that adds no task keeps the page; the list's scroll keys on
+  the selection. `group.rs` sorts projects by their latest task or `lastUsedAt`. Ely's rows have no value slot,
+  so a project's task count joins its label.
   `search/run.rs` is `useConversationSearch`'s effect: a change of the trimmed query or an option
   starts over (dropped tasks clear the timers); the keyword pass at 250ms and the hybrid pass at
   900ms run `searchConversations` on the database worker, only the latest publishes, the hybrid

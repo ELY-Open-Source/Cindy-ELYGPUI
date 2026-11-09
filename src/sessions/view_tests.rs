@@ -42,6 +42,7 @@ pub(super) fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -
         created_at: activity,
         agent_kind: "cc".into(),
         orca_lead: false,
+        orca_worker: false,
         muted: false,
         tokens: 0,
         cost_usd: 0.0,
@@ -74,11 +75,13 @@ pub(super) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut Visual
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
         cx.set_global(crate::toast::Toasts::default());
+        let known = crate::sessions::search::projects::known(&sessions, &[], &[], &[]);
         cx.global_mut::<Sessions>().loaded = Some(Loaded {
             sessions,
             recent: Vec::new(),
             aliases: Vec::new(),
             settings: Default::default(),
+            known,
         });
         crate::router::install(cx);
     });

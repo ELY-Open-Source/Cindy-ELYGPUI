@@ -40,6 +40,7 @@ pub(in crate::sessions) fn session(v: &Value) -> Session {
         created_at: ms(&v["createdAt"]).unwrap_or(0),
         agent_kind: text(&v["agentKind"]).unwrap_or_else(|| "cc".into()),
         orca_lead: false,
+        orca_worker: false,
         muted: false,
         tokens: 0,
         cost_usd: 0.0,
@@ -97,7 +98,10 @@ fn matches_cindys_grouping_and_main_list() {
             .as_array()
             .cloned()
             .unwrap_or_default();
-        let paths = rows.iter().filter_map(|r| text(&r["path"])).collect();
+        let paths = rows
+            .iter()
+            .map(|r| (text(&r["path"]).unwrap(), ms(&r["lastUsedAt"]).unwrap()))
+            .collect();
         let recent: Vec<Recent> = query::with_kinds(paths, &tasks, platform)
             .into_iter()
             .zip(&rows)

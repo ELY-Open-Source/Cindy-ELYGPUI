@@ -1,5 +1,4 @@
-//! `SearchFilterMenu`'s options: sort (remembered as `conversationSearchPrefs` keeps it), status,
-//! agent and last activity, with the compact trigger inside the Search row.
+//! `SearchFilterMenu`'s options and its trigger in the Search row.
 
 use ely_gpui_component::{
     menus::{Menu, MenuItem, menu_under},
@@ -11,7 +10,7 @@ use gpui::{
     prelude::FluentBuilder as _,
 };
 
-use super::Search;
+use super::{Search, projects};
 use crate::{
     i18n::{Arg, Translator},
     lucide::icon,
@@ -55,6 +54,8 @@ pub struct Options {
     pub status: &'static str,
     pub agent: &'static str,
     pub last_activity: &'static str,
+    /// `projectSelection`; none is `all`.
+    pub projects: Option<Vec<String>>,
 }
 
 impl Options {
@@ -76,15 +77,14 @@ impl Options {
             status: "all",
             agent: "all",
             last_activity: "all",
+            projects: None,
         }
     }
 
-    /// `activeFilterCount`; the sort never counts, projects come with 8.7c.
+    /// `activeFilterCount`; the sort never counts.
     pub fn active_count(&self) -> usize {
-        [self.status, self.agent, self.last_activity]
-            .iter()
-            .filter(|v| **v != "all")
-            .count()
+        let filters = [self.status, self.agent, self.last_activity];
+        filters.iter().filter(|v| **v != "all").count() + usize::from(self.projects.is_some())
     }
 }
 
@@ -122,9 +122,59 @@ fn set(field: fn(&mut Options) -> &mut &'static str, value: &'static str, cx: &m
 fn reset(cx: &mut App) {
     let o = options(cx);
     (o.status, o.agent, o.last_activity) = ("all", "all", "all");
+    o.projects = None;
     log::info!(target: "search", "filters reset");
     super::run::sync(cx);
     cx.refresh_windows();
+}
+
+fn set_projects(value: Option<Vec<String>>, cx: &mut App) {
+    log::info!(target: "search", "project filter {:?}", value.as_ref().map(Vec::len));
+    options(cx).projects = value;
+    super::run::sync(cx);
+    cx.refresh_windows();
+}
+
+/// `projectValue`.
+fn projects_label(o: &Options, t: &Translator) -> String {
+    match &o.projects {
+        None => t.t("ccAgent.search.filter.allProjects", &[]),
+        Some(keys) => t.t(
+            "ccAgent.sidebar.filterSelectedProjects",
+            &[("count", Arg::Number(keys.len() as i64))],
+        ),
+    }
+}
+
+/// The Projects submenu; the task count joins the label.
+fn projects_menu(o: &Options, known: &[crate::sessions::group::Project], t: &Translator) -> Menu {
+    let all = MenuItem::check(
+        t.t("ccAgent.search.filter.allProjects", &[]),
+        o.projects.is_none(),
+    )
+    .on_click(|_, cx| {
+        chosen(cx);
+        set_projects(None, cx)
+    });
+    let menu = Menu::new().item(all);
+    let menu = match known.is_empty() {
+        true => menu,
+        false => menu.separator(),
+    };
+    known.iter().fold(menu, |menu, p| {
+        let key = p.key.clone();
+        let text = format!("{} · {}", p.name, p.sessions.len());
+        let item = MenuItem::check(text, projects::selected(o.projects.as_deref(), &p.key))
+            .on_click(move |_, cx| {
+                chosen(cx);
+                let next = projects::next(options(cx).projects.as_deref(), &key);
+                set_projects(next, cx)
+            });
+        menu.item(match p.key.starts_with("remote:") {
+            true => item.icon(IconName::Globe),
+            false => item,
+        })
+    })
 }
 
 fn label(choices: &[Choice], value: &str, t: &Translator) -> String {
@@ -149,7 +199,7 @@ fn radios(
     })
 }
 
-fn menu(o: &Options, t: &Translator) -> Menu {
+fn menu(o: &Options, known: &[crate::sessions::group::Project], t: &Translator) -> Menu {
     let reset_row = (o.active_count() > 0).then(|| {
         MenuItem::new(t.t("ccAgent.search.filter.reset", &[])).on_click(|_, cx| {
             chosen(cx);
@@ -168,6 +218,10 @@ fn menu(o: &Options, t: &Translator) -> Menu {
             radios(t, &STATUSES, o.status, |v, cx| {
                 set(|o| &mut o.status, v, cx)
             }),
+        ))
+        .item(sub(
+            "ccAgent.sidebar.filterProjectsHeading",
+            projects_menu(o, known, t),
         ))
         .item(sub(
             "ccAgent.sidebar.filterAgentHeading",
@@ -191,7 +245,7 @@ pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElem
         label(&STATUSES, o.status, t),
         label(&AGENTS, o.agent, t),
         label(&ACTIVITIES, o.last_activity, t),
-        t.t("ccAgent.search.filter.allProjects", &[]),
+        projects_label(o, t),
     ];
     let names = ["sort", "status", "agent", "lastActivity", "projects"];
     let args: Vec<_> = names
@@ -200,7 +254,7 @@ pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElem
         .map(|(n, v)| (*n, Arg::Text(v)))
         .collect();
     let aria = t.t("ccAgent.search.filterAria", &args);
-    let menu = menu(o, t);
+    let menu = menu(o, projects::known_of(cx), t);
     let appearance = cx.global::<Appearance>();
     let (tertiary, strong) = (
         appearance.token("text-tertiary"),

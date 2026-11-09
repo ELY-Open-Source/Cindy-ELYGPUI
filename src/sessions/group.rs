@@ -22,6 +22,8 @@ pub struct Session {
     pub created_at: i64,
     pub agent_kind: String,
     pub orca_lead: bool,
+    /// `isOrcaWorkerSession`.
+    pub orca_worker: bool,
     /// `notifications_muted`.
     pub muted: bool,
     pub tokens: i64,
@@ -51,6 +53,8 @@ pub struct Project {
 pub struct Recent {
     pub path: String,
     pub kinds: Vec<String>,
+    /// `last_used_at`, in ms.
+    pub last_used: i64,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -278,6 +282,7 @@ pub fn group(
         }
     }
     let mut kinds: HashMap<String, Vec<String>> = HashMap::new();
+    let mut used: HashMap<String, i64> = HashMap::new();
     for project in recent {
         let Some(dir) = grouping(Some(&project.path)) else {
             continue;
@@ -292,6 +297,8 @@ pub fn group(
             groups.push((seed.clone(), dir, Vec::new()));
             seed
         });
+        let last = used.entry(key.clone()).or_insert(project.last_used);
+        *last = (*last).max(project.last_used);
         let set = kinds.entry(key).or_default();
         set.extend(project.kinds.iter().cloned());
         set.sort();
@@ -309,19 +316,25 @@ pub fn group(
         .map(|(k, d, l)| (k.clone(), d.clone(), earliest(l)))
         .collect();
     let names = names(&dirs, aliases, platform);
-    let projects = groups
+    let mut projects: Vec<(i64, Project)> = groups
         .into_iter()
         .zip(names)
         .map(|((key, _, mut sessions), name)| {
+            let tasks = sessions.iter().map(|s| s.activity_at);
+            let latest = tasks.fold(used.get(&key).copied().unwrap_or(0), i64::max);
             by_status_then_time(&mut sessions);
-            Project {
+            let project = Project {
                 persistent: kinds.remove(&key),
                 key,
                 name,
                 sessions,
-            }
+            };
+            (latest, project)
         })
         .collect();
+    // `compareProjectsByLatestSessionDesc`.
+    projects.sort_by_key(|p| std::cmp::Reverse(p.0));
+    let projects = projects.into_iter().map(|(_, p)| p).collect();
     by_status_then_time(&mut dialogues);
     by_status_then_time(&mut loose);
     Groups {

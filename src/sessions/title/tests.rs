@@ -22,6 +22,7 @@ fn session(title: &str, source: &str, working_dir: Option<&str>) -> Session {
         created_at: CREATED_MS,
         agent_kind: "cc".into(),
         orca_lead: false,
+        orca_worker: false,
         muted: false,
         tokens: 0,
         cost_usd: 0.0,

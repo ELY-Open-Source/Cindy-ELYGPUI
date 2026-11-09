@@ -19,6 +19,7 @@ use crate::{
 
 mod marks;
 mod options;
+pub mod projects;
 pub mod results;
 pub mod run;
 pub mod scroll;

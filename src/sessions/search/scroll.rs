@@ -12,7 +12,8 @@ use super::{Search, run};
 pub struct Scroll {
     /// `lastListScrollTopRef`: the list's offset before the search.
     last: Point<Pixels>,
-    key: Option<run::Key>,
+    /// The options as the effect keys them, with `searchProjectKey`.
+    key: Option<(run::Key, Option<Vec<String>>)>,
     was_active: bool,
     down: bool,
     pending: bool,
@@ -20,8 +21,8 @@ pub struct Scroll {
 
 /// The effect over the search's dependencies; the list's offset is kept while it shows.
 pub fn sync(handle: &ScrollHandle, cx: &mut App) {
-    let key = run::key(cx);
-    let active = !key.query.is_empty();
+    let key = (run::key(cx), cx.global::<Search>().options.projects.clone());
+    let active = !key.0.query.is_empty();
     let s = &mut cx.global_mut::<Search>().scroll;
     if s.key.as_ref() != Some(&key) {
         if active {

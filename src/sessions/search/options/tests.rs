@@ -128,3 +128,21 @@ fn a_press_on_the_menu_keeps_the_query(cx: &mut TestAppContext) {
         "a press past the open menu clears it"
     );
 }
+
+#[gpui::test]
+fn a_project_choice_counts_and_names_its_projects(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    pick(cx, &["Projects", "app · 7"]);
+    let label = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| {
+            let t = cx.global::<crate::i18n::Translator>();
+            super::projects_label(&cx.global::<Search>().options, t)
+        })
+    };
+    assert_eq!(label(cx), "1 selected");
+    assert!(drawn(cx, "search-filter-dot"));
+    pick(cx, &["Reset"]);
+    assert_eq!(label(cx), "All projects");
+    assert!(!drawn(cx, "search-filter-dot"));
+}

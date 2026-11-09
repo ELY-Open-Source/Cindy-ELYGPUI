@@ -50,6 +50,12 @@ pub struct Item {
     count: Option<i64>,
 }
 
+impl Item {
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+}
+
 /// One row's backfill: its preview while uncached, its count while uncached.
 pub fn item(
     id: &str,

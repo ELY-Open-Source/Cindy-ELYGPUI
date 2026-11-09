@@ -86,6 +86,7 @@ pub fn list(
             Some(text) => preview::finalize(Some(text), cached.1.as_deref()),
             None => preview::finalize(extract.as_deref(), role.as_deref()),
         };
+        let orca: Option<String> = row.get(14)?;
         let session = Session {
             id: row.get(0)?,
             title: row.get(1)?,
@@ -101,7 +102,8 @@ pub fn list(
             created_at: row.get(11)?,
             activity_at: row.get(12)?,
             agent_kind: row.get(13)?,
-            orca_lead: row.get::<_, Option<String>>(14)?.as_deref() == Some("lead"),
+            orca_lead: orca.as_deref() == Some("lead"),
+            orca_worker: orca.as_deref() == Some("worker"),
             tokens: row.get(15)?,
             cost_usd: row.get(16)?,
             cost_amount: row.get(17)?,
@@ -133,9 +135,9 @@ pub fn list(
 /// `listRecentWorkdirs`: paths last used first, with the agent kinds of their local tasks.
 pub fn recent(db: &Connection, platform: &str) -> rusqlite::Result<Vec<Recent>> {
     let mut statement =
-        db.prepare("SELECT path FROM recent_workdirs ORDER BY last_used_at DESC")?;
-    let paths: Vec<String> = statement
-        .query_map([], |row| row.get(0))?
+        db.prepare("SELECT path, last_used_at FROM recent_workdirs ORDER BY last_used_at DESC")?;
+    let paths: Vec<(String, i64)> = statement
+        .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))?
         .collect::<Result<_, _>>()?;
     let mut statement = db.prepare(
         "SELECT DISTINCT working_dir, project_dir, agent_kind FROM sessions
@@ -153,7 +155,7 @@ pub fn recent(db: &Connection, platform: &str) -> rusqlite::Result<Vec<Recent>> 
 
 /// `recentWorkdirProjectIdentity` matched against each task's folder.
 pub fn with_kinds(
-    paths: Vec<String>,
+    paths: Vec<(String, i64)>,
     tasks: &[(Option<String>, String)],
     platform: &str,
 ) -> Vec<Recent> {
@@ -161,7 +163,7 @@ pub fn with_kinds(
         |dir: &str| grouping(Some(dir)).map(|d| comparison_key(&format!("local:{d}"), platform));
     paths
         .into_iter()
-        .map(|path| {
+        .map(|(path, last_used)| {
             let own = identity(&path);
             let mut kinds: Vec<String> = tasks
                 .iter()
@@ -170,7 +172,11 @@ pub fn with_kinds(
                 .collect();
             kinds.sort();
             kinds.dedup();
-            Recent { path, kinds }
+            Recent {
+                path,
+                kinds,
+                last_used,
+            }
         })
         .collect()
 }

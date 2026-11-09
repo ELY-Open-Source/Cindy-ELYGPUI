@@ -54,6 +54,8 @@ pub struct Loaded {
     recent: Vec<group::Recent>,
     aliases: Vec<(String, String)>,
     settings: settings::Settings,
+    /// `allKnownProjects`: every status's projects, for the search's Projects filter.
+    known: Vec<group::Project>,
 }
 
 pub struct Sessions {
@@ -156,6 +158,7 @@ pub fn load_for_tests(tasks: &[(&str, &str, &str)], cx: &mut App) {
         recent: Vec::new(),
         aliases: Vec::new(),
         settings: Default::default(),
+        known: Vec::new(),
     });
 }
 
@@ -253,14 +256,29 @@ pub fn reload(cx: &mut App) {
             let now = jiff::Timestamp::now().as_millisecond();
             sweep::sweep(conn, &user_data, now);
         }
-        let (sessions, backfill) = query::list(conn, status)?;
+        let (sessions, mut backfill) = query::list(conn, status)?;
+        // `useCCSessions({ includeArchived: 'all' })`, the search's own bucket.
+        let all = match status {
+            Status::All => sessions.clone(),
+            _ => {
+                let (all, more) = query::list(conn, Status::All)?;
+                let ids: HashSet<String> = backfill.iter().map(|i| i.id().to_owned()).collect();
+                backfill.extend(more.into_iter().filter(|i| !ids.contains(i.id())));
+                all
+            }
+        };
+        let recent = query::recent(conn, paths::PLATFORM)?;
+        let aliases = query::aliases(conn)?;
+        let settings = owner_dir
+            .map(|dir| settings::read(&dir, paths::PLATFORM))
+            .unwrap_or_default();
+        let known = search::projects::known(&all, &recent, &aliases, &settings.hidden);
         let loaded = Loaded {
             sessions,
-            recent: query::recent(conn, paths::PLATFORM)?,
-            aliases: query::aliases(conn)?,
-            settings: owner_dir
-                .map(|dir| settings::read(&dir, paths::PLATFORM))
-                .unwrap_or_default(),
+            recent,
+            aliases,
+            settings,
+            known,
         };
         Ok::<_, rusqlite::Error>((loaded, backfill))
     });
@@ -271,9 +289,9 @@ pub fn reload(cx: &mut App) {
             store.loading = false;
             match rows {
                 Ok(Ok((loaded, backfill))) => {
-                    log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases, {} pins ordered, {} hidden projects",
+                    log::info!(target: "sessions", "{} {status:?} tasks, {} recent projects, {} aliases, {} pins ordered, {} hidden projects, {} known projects",
                         loaded.sessions.len(), loaded.recent.len(), loaded.aliases.len(),
-                        loaded.settings.pinned_order.len(), loaded.settings.hidden.len());
+                        loaded.settings.pinned_order.len(), loaded.settings.hidden.len(), loaded.known.len());
                     store.show(loaded);
                     if !backfill.is_empty() {
                         // The worker runs it; nothing waits for the reply.
@@ -283,7 +301,9 @@ pub fn reload(cx: &mut App) {
                 Ok(Err(error)) => log::error!(target: "sessions", "task list read failed: {error}"),
                 Err(_) => log::error!(target: "sessions", "the database closed during the read"),
             }
-            if std::mem::take(&mut store.dirty) {
+            let again = std::mem::take(&mut store.dirty);
+            search::projects::loaded(cx);
+            if again {
                 reload(cx);
             }
             cx.refresh_windows();

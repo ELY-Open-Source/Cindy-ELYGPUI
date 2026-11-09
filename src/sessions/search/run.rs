@@ -6,7 +6,7 @@ use std::{cmp::Ordering, time::Duration};
 use futures::channel::oneshot;
 use gpui::{App, Task};
 
-use super::{Search, trimmed};
+use super::{Search, projects, trimmed};
 use crate::{
     i18n::Translator,
     localdb::{
@@ -36,7 +36,7 @@ pub enum Status {
     Error,
 }
 
-/// The effect's dependencies.
+/// The query and the options but projects.
 #[derive(Debug, Clone, PartialEq)]
 pub(super) struct Key {
     pub(super) query: String,
@@ -46,11 +46,18 @@ pub(super) struct Key {
     last_activity: &'static str,
 }
 
+/// The search effect's dependencies: the key and `searchScopeKey`'s session ids.
+#[derive(Debug, Clone, PartialEq)]
+struct Scoped {
+    key: Key,
+    session_ids: Option<Vec<String>>,
+}
+
 /// `status`, `response` and the request in flight.
 #[derive(Default)]
 pub struct Run {
     seq: u64,
-    key: Option<Key>,
+    key: Option<Scoped>,
     status: Status,
     response: Option<Response>,
     pages: Pages,
@@ -91,7 +98,11 @@ pub(super) fn key(cx: &App) -> Key {
 
 /// Runs the effect again once the query or an option changed.
 pub fn sync(cx: &mut App) {
-    let key = key(cx);
+    let session_ids = projects::scope(cx.global::<Search>().options.projects.as_deref(), cx);
+    let key = Scoped {
+        key: key(cx),
+        session_ids,
+    };
     let run = &mut cx.global_mut::<Search>().run;
     if run.key.as_ref() == Some(&key) {
         return;
@@ -100,23 +111,25 @@ pub fn sync(cx: &mut App) {
     run.key = Some(key.clone());
     run.passes.clear();
     run.pages = Pages::default();
-    if key.query.is_empty() {
+    if key.key.query.is_empty() {
         (run.status, run.response) = (Status::Idle, None);
         log::debug!(target: "search", "idle");
         return;
     }
     run.status = Status::Searching;
     let seq = run.seq;
-    log::info!(target: "search", "search {seq} for {} chars, sort {}", key.query.chars().count(), key.sort);
+    let k = &key.key;
+    log::info!(target: "search", "search {seq} for {} chars, sort {}, {:?} tasks in scope",
+        k.query.chars().count(), k.sort, key.session_ids.as_ref().map(Vec::len));
     let passes = [(Pass::Keyword, DEBOUNCE), (Pass::Hybrid, SEMANTIC_DEBOUNCE)]
         .map(|(pass, delay)| start(seq, pass, delay, key.clone(), cx));
     cx.global_mut::<Search>().run.passes = passes.into();
 }
 
-fn start(seq: u64, pass: Pass, delay: Duration, key: Key, cx: &mut App) -> Task<()> {
+fn start(seq: u64, pass: Pass, delay: Duration, key: Scoped, cx: &mut App) -> Task<()> {
     cx.spawn(async move |cx| {
         cx.background_executor().timer(delay).await;
-        let sort = key.sort;
+        let sort = key.key.sort;
         let job = cx.update(|cx| dispatch(pass, key, cx));
         let page = match job {
             Ok(answer) => match answer.await {
@@ -153,7 +166,7 @@ fn unnamed_label(label: String) -> Result<Option<String>, &'static str> {
 type Answer = oneshot::Receiver<rusqlite::Result<Response>>;
 
 /// `localDb.conversations.search` with `semanticMode` for `pass`.
-fn dispatch(pass: Pass, key: Key, cx: &App) -> Result<Answer, &'static str> {
+fn dispatch(pass: Pass, scoped: Scoped, cx: &App) -> Result<Answer, &'static str> {
     let State::Ready(db) = &cx.global::<LocalDb>().state else {
         return Err("the database is not open");
     };
@@ -162,6 +175,7 @@ fn dispatch(pass: Pass, key: Key, cx: &App) -> Result<Answer, &'static str> {
     let labels = TrustLabels::new(t);
     let now = jiff::Timestamp::now().as_millisecond();
     Ok(db.call(move |conn| {
+        let key = &scoped.key;
         let request = Request {
             query: &key.query,
             limit: Some(LIMIT as f64),
@@ -170,7 +184,7 @@ fn dispatch(pass: Pass, key: Key, cx: &App) -> Result<Answer, &'static str> {
             status: key.status,
             agent_kind: key.agent,
             last_activity: key.last_activity,
-            session_ids: None,
+            session_ids: scoped.session_ids.as_deref(),
             working_dirs: None,
             unnamed_label: unnamed.as_deref(),
         };

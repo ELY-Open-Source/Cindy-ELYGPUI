@@ -17,6 +17,7 @@ fn task(pinned: bool, summary: Option<&str>, preview: Option<&str>) -> Session {
         created_at: 0,
         agent_kind: "cc".into(),
         orca_lead: false,
+        orca_worker: false,
         muted: false,
         tokens: 0,
         cost_usd: 0.0,
