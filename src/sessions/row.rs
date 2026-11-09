@@ -2,14 +2,19 @@
 
 use std::sync::Arc;
 
-use ely_gpui_component::{menus::ContextMenu, primitives::IconName};
+use ely_gpui_component::primitives::IconName;
 use gpui::{
     AnyElement, App, ClickEvent, ElementId, FontFeatures, HoverListenerMode,
     InteractiveElement as _, IntoElement, ParentElement, RenderOnce,
     StatefulInteractiveElement as _, Styled, Window, div, prelude::FluentBuilder as _,
 };
 
-use super::{Sessions, group::Session, marquee, meta, open, rename, task_menu, title};
+use super::{
+    Sessions,
+    group::Session,
+    keyboard::{Probe, with_menu},
+    marquee, meta, open, rename, task_menu, title,
+};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -172,6 +177,7 @@ pub(super) struct Slot {
     /// 24 in the text row, 22 in the list row's title line.
     pub height: f32,
     pub active: bool,
+    pub more: Probe,
 }
 
 impl RenderOnce for Slot {
@@ -244,6 +250,7 @@ impl RenderOnce for Slot {
                         focus,
                         card: false,
                         active: self.active,
+                        probe: self.more,
                     }),
             )
     }
@@ -320,6 +327,7 @@ pub(super) fn row(
                 .justify_center()
                 .child(status_glyph(row, None, active, cx)),
         );
+    let more = Probe::default();
     let body = match editing {
         Some(editing) => body.child(rename::field(editing, rename::TEXT, active, cx)),
         None => body.child(title).child(Slot {
@@ -327,9 +335,10 @@ pub(super) fn row(
             now,
             height: ROW_SLOT,
             active,
+            more: more.clone(),
         }),
     };
-    with_menu(row, body.into_any_element(), cx)
+    with_menu(row, body, more).into_any_element()
 }
 
 /// `sourceLabel`, its full text in `title`; 70% of the active foreground on the active row.
@@ -369,18 +378,6 @@ pub(super) fn ring(id: &str, radius: f32, cx: &App) -> gpui::Div {
             cx.global::<Appearance>()
                 .token("sidebar-item-active-border"),
         )
-}
-
-/// A right click opens the task menu; the rename field keeps its own. The wrapper stays while
-/// editing, so a press that commits the rename still lands its click.
-pub(super) fn with_menu(s: &Session, body: AnyElement, cx: &App) -> AnyElement {
-    ContextMenu::new(
-        ElementId::Name(format!("task-menu-{}", s.id).into()),
-        task_menu::menu(s, cx.global::<Translator>()),
-    )
-    .w_full()
-    .child(body)
-    .into_any_element()
 }
 
 /// A double click renames, as `handleDoubleClick` does.

@@ -6,6 +6,7 @@ mod filter;
 mod fold;
 mod group;
 mod header;
+mod keyboard;
 mod list_row;
 mod lists;
 mod main_list;

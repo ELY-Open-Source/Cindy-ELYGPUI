@@ -157,6 +157,8 @@ fn key(cx: &mut VisualTestContext, key: &'static str) {
 fn tab_reaches_more_and_enter_opens_its_menu(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
+    // The row first, then its More button.
+    key(cx, "tab");
     key(cx, "tab");
     key(cx, "enter");
     assert!(

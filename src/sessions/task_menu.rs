@@ -10,7 +10,12 @@ use gpui::{
     div, prelude::FluentBuilder as _,
 };
 
-use super::{Sessions, group::Session, pin, rename, title, write};
+use super::{
+    Sessions,
+    group::Session,
+    keyboard::{self, Probe},
+    pin, rename, title, write,
+};
 use crate::{i18n::Translator, lucide::icon, theme::Appearance, tip::tip, units::css};
 
 fn session(id: &str, cx: &App) -> Option<Session> {
@@ -62,6 +67,8 @@ pub struct More {
     pub card: bool,
     /// On the active row: its foreground, a 14% tint on hover.
     pub active: bool,
+    /// Where the menu key opens the task menu while this holds focus.
+    pub probe: Probe,
 }
 
 impl RenderOnce for More {
@@ -90,7 +97,7 @@ impl RenderOnce for More {
             .global::<Translator>()
             .t("ccAgent.sidebar.sessionMenu.moreActions", &[]);
         let selector = format!("task-more-{}", self.id);
-        let focus = self.focus;
+        let (focus, probe) = (self.focus, self.probe);
         menu_under(
             ElementId::Name(format!("task-more-menu-{}", self.id).into()),
             &self.menu,
@@ -102,6 +109,7 @@ impl RenderOnce for More {
                     .role(Role::Button)
                     .aria_label(label.clone())
                     .group("task-more")
+                    .relative()
                     .flex()
                     .flex_none()
                     .size(css(if card { 24.0 } else { 20.0 }))
@@ -127,6 +135,7 @@ impl RenderOnce for More {
                         .text_color(color)
                         .group_hover("task-more", |s| s.text_color(hover_fg)),
                     )
+                    .child(keyboard::probe(probe.clone()))
                     .into_any_element()
             },
             window,

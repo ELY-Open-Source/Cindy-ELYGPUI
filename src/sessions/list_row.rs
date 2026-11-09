@@ -8,8 +8,9 @@ use gpui::{
 use super::{
     Sessions,
     group::Session,
+    keyboard::{Probe, with_menu},
     marquee, open, rename,
-    row::{ROW_GROUP, Slot, ring, source_label, status_glyph, with_menu},
+    row::{ROW_GROUP, Slot, ring, source_label, status_glyph},
     title,
 };
 use crate::{
@@ -96,6 +97,7 @@ pub(super) fn list_row(
         Some(editing) => slot.child(rename::field(editing, rename::TEXT, active, cx)),
         None => slot.child(title),
     };
+    let more = Probe::default();
     let line_one =
         div()
             .flex()
@@ -108,6 +110,7 @@ pub(super) fn list_row(
                     now,
                     height: 22.0,
                     active,
+                    more: more.clone(),
                 })
             });
     // `resolveSessionCardBody`: the latest message, trimmed; the line stays when empty.
@@ -157,5 +160,5 @@ pub(super) fn list_row(
         .when(first, |el| el.child(divider(true)))
         .child(line_one)
         .child(preview);
-    with_menu(s, row.into_any_element(), cx)
+    with_menu(s, row, more).into_any_element()
 }

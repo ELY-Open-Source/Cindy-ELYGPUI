@@ -86,6 +86,10 @@ defines scope and what 1:1 means.
   bordered overlay stands in for the inset shadow), foreground and tints. The task menu wraps a
   row while it is renamed too, so the press that commits a rename still lands its click; the
   field stops its own right press.
+  `sessions/keyboard.rs` hosts that menu (Ely `ContextMenu::manual`) and makes each row, list
+  row and card a Tab stop: Enter or Space on the row itself opens it; the menu key (key up on
+  Windows) or Shift+F10 (not macOS) opens the menu at the focused row's or More's centre, as
+  Chromium's `ShowNonLocatedContextMenu` does. Prepaint probes record those visible bounds.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

@@ -310,7 +310,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       (the priority hold and attention clears come with 10.0); the active task, from
       `/cc-agent/:sessionId`, drawn as `SessionItem`, `SessionCard`'s list and card variants and
       `SessionStatusIcon` draw it
-    - [ ] 8.6c The row a Tab stop (`tabIndex=0`) that Enter and Space open, with its task menu on
+    - [x] 8.6c The row a Tab stop (`tabIndex=0`) that Enter and Space open, with its task menu on
       the keyboard's context-menu key
     - [ ] 8.6d Bulk selection: Shift and Mod clicks as `handleSessionClick` select (range over
       `getVisibleSidebarSessionIds`, anchor, toggle), the selected rows' look, and the bulk bar

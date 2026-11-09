@@ -9,8 +9,9 @@ use gpui::{
 use super::{
     Sessions,
     group::Session,
+    keyboard::{Probe, with_menu},
     open, rename,
-    row::{InfoStyle, ROW_GROUP, info, status_glyph, with_menu},
+    row::{InfoStyle, ROW_GROUP, info, status_glyph},
     task_menu, title,
 };
 use crate::{
@@ -90,6 +91,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
             Some(appearance.hsl_token("sidebar-item-hover")),
         ),
     };
+    let more = Probe::default();
     let actions = editing.is_none().then(|| {
         div()
             .absolute()
@@ -106,6 +108,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 focus,
                 card: true,
                 active: false,
+                probe: more.clone(),
             })
     });
     let title_size = text_size(12.0, cx);
@@ -193,7 +196,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 .child(meta_row)
                 .children(actions),
         );
-    with_menu(s, card.into_any_element(), cx)
+    with_menu(s, card, more).into_any_element()
 }
 
 #[cfg(test)]
