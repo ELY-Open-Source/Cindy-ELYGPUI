@@ -32,6 +32,8 @@ pub struct Lists {
     /// `buildSessionSourceLabelMap` for the pinned tasks.
     pub labels: HashMap<String, String>,
     pub main: Vec<Entry>,
+    /// The dialogues the main list draws, grouped or loose, for the rail's panel.
+    pub dialogues: Vec<Session>,
     /// `dialogueSourceLabelMap` for the main list's loose tasks.
     pub main_labels: HashMap<String, String>,
 }
@@ -195,11 +197,12 @@ pub fn build(
         dialogues.clone()
     };
     let main_labels = labels(&labelled, &known, dialogues_label);
-    let main = entries(main_projects, dialogues, pick(main.loose), order);
+    let main = entries(main_projects, dialogues.clone(), pick(main.loose), order);
     Lists {
         pinned,
         labels: pin_labels,
         main,
+        dialogues,
         main_labels,
     }
 }

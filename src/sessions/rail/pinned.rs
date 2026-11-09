@@ -135,9 +135,9 @@ pub fn section(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
 }
 
 /// `handlePinnedClick`: the preview and any panel go; the task shown stays.
-fn clicked(id: &str, cx: &mut App) {
+fn clicked(id: &str, window: &mut Window, cx: &mut App) {
     cx.global_mut::<Preview>().shown = None;
-    super::sections::close_all(cx);
+    super::sections::close_all(window, cx);
     if open::is_active(id, cx) {
         return;
     }
@@ -228,7 +228,7 @@ fn tile(s: &Session, window: &mut Window, cx: &mut App) -> AnyElement {
             });
             hover_preview(&hover_id, *on, window, cx);
         })
-        .on_click(move |_, _, cx| clicked(&id, cx))
+        .on_click(move |_, window, cx| clicked(&id, window, cx))
         .relative()
         .child(gpui::canvas(record, |_, _, _, _| {}).absolute().inset_0())
         .child(pill)

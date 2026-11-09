@@ -20,7 +20,7 @@ use super::{
     lists::{Lists, Pinned},
     main_list::{Place, project, text},
     masonry, reorder,
-    row::{ROW_HEIGHT, row},
+    row::{ROW_HEIGHT, Scope, row},
     select, sortable,
     view_mode::{self, Pinned as Mode},
 };
@@ -171,7 +171,7 @@ fn entry_element(
         Pinned::Session(s) if place.list => {
             (list_row(s, first, label, now, cx), list_row::height(cx))
         }
-        Pinned::Session(s) => (row(s, false, label, now, cx), ROW_HEIGHT),
+        Pinned::Session(s) => (row(s, false, label, now, Scope::Sidebar, cx), ROW_HEIGHT),
         // `border-b border-[var(--cmd-palette-border)] py-0.5`.
         Pinned::Project(p) if place.list => {
             let (element, h) = project(p, place, window, cx);
@@ -289,6 +289,7 @@ pub fn section(
         .global::<Sessions>()
         .editing
         .as_ref()
+        .filter(|e| e.scope == Scope::Sidebar)
         .map(|e| e.id.clone());
     let mut shown: Vec<Vec<AnyElement>> = Vec::new();
     for bucket in &buckets {

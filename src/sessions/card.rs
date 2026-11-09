@@ -7,11 +7,10 @@ use gpui::{
 };
 
 use super::{
-    Sessions,
     group::Session,
     keyboard::{Probe, with_menu},
     open, rename,
-    row::{InfoStyle, ROW_GROUP, info, selected_ring, status_glyph},
+    row::{InfoStyle, ROW_GROUP, Scope, info, selected_ring, status_glyph},
     select, task_menu, title,
 };
 use crate::{
@@ -61,11 +60,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .clone();
     let focused = focus.is_focused(window);
     let appearance = cx.global::<Appearance>();
-    let editing = cx
-        .global::<Sessions>()
-        .editing
-        .as_ref()
-        .filter(|e| e.id == s.id);
+    let editing = rename::editing(&s.id, Scope::Sidebar, cx);
     let small = text_size(11.0, cx);
     let active = open::is_active(&s.id, cx);
     let selected = select::is_selected(&s.id, cx);
@@ -105,7 +100,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
             .group_hover(ROW_GROUP, |st| st.opacity(1.0))
             .child(task_menu::More {
                 id: s.id.clone(),
-                menu: task_menu::menu(s, cx.global::<Translator>()),
+                menu: task_menu::menu(s, Scope::Sidebar, cx.global::<Translator>()),
                 focus,
                 card: true,
                 active: false,
@@ -184,7 +179,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .border_color(border)
         .when(editing.is_none(), |el| el.cursor_pointer())
         .when_some(hover, |el, hover| el.hover(|st| st.bg(hover)))
-        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
+        .on_click(move |event, window, cx| open::clicked(&id, Scope::Sidebar, event, window, cx))
         // Inside the border, as an inset ring is.
         .when(selected, |el| {
             el.aria_selected(true).child(selected_ring(&s.id, 11.0, cx))
@@ -201,7 +196,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 .child(meta_row)
                 .children(actions),
         );
-    with_menu(s, "card", card, more).into_any_element()
+    with_menu(s, "card", Scope::Sidebar, card, more).into_any_element()
 }
 
 #[cfg(test)]

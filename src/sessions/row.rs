@@ -24,6 +24,23 @@ use crate::{
     units::css,
 };
 
+/// The list that draws a row: the rail's panel draws rows of its own for tasks the sidebar shows.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Scope {
+    Sidebar,
+    Rail,
+}
+
+impl Scope {
+    /// A per-row key; the sidebar's is the bare id.
+    pub(super) fn key(self, id: &str) -> String {
+        match self {
+            Scope::Sidebar => id.to_owned(),
+            Scope::Rail => format!("rail-{id}"),
+        }
+    }
+}
+
 /// `formatSidebarTime`: now, minutes, hours, days, weeks, months, years.
 pub(super) fn relative(at_ms: i64, now_ms: i64, t: &dyn Fn(&str, i64) -> String) -> String {
     const MINUTE: i64 = 60_000;
@@ -178,6 +195,7 @@ pub(super) struct Slot {
     pub height: f32,
     pub active: bool,
     pub more: Probe,
+    pub scope: Scope,
 }
 
 impl RenderOnce for Slot {
@@ -192,7 +210,7 @@ impl RenderOnce for Slot {
             .read(cx)
             .clone();
         let focused = focus.is_focused(window);
-        let menu = task_menu::menu(s, cx.global::<Translator>());
+        let menu = task_menu::menu(s, self.scope, cx.global::<Translator>());
         div()
             .relative()
             .flex()
@@ -263,17 +281,15 @@ pub(super) fn row(
     indented: bool,
     label: Option<&str>,
     now: i64,
+    scope: Scope,
     cx: &App,
 ) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let title_size = text_size(14.0, cx);
     let active = open::is_active(&row.id, cx);
     let selected = select::is_selected(&row.id, cx);
-    let editing = cx
-        .global::<Sessions>()
-        .editing
-        .as_ref()
-        .filter(|e| e.id == row.id);
+    let editing = rename::editing(&row.id, scope, cx);
+    let key = scope.key(&row.id);
     let title = div()
         .flex()
         .min_w_0()
@@ -281,15 +297,15 @@ pub(super) fn row(
         .items_center()
         .gap(css(6.0))
         .child(marquee::title(
-            &row.id,
+            &key,
             title::display(row, cx.global::<Translator>()),
             cx,
         ))
         .when_some(label, |el, label| {
             el.child(source_label(&row.id, label, active, cx))
         });
-    let selector = format!("task-{}", row.id);
-    let (id, hovered) = (row.id.clone(), row.id.clone());
+    let selector = format!("task-{key}");
+    let (id, hovered) = (row.id.clone(), key.clone());
     let body = div()
         .id(gpui::SharedString::from(selector.clone()))
         .debug_selector(move || selector)
@@ -322,10 +338,10 @@ pub(super) fn row(
             el.aria_toggled(gpui::Toggled::True)
                 .child(selected_ring(&row.id, 9999.0, cx))
         })
-        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
+        .on_click(move |event, window, cx| open::clicked(&id, scope, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
         .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
-        .child(marquee::mark(&row.id))
+        .child(marquee::mark(&key))
         .child(
             div()
                 .flex()
@@ -344,9 +360,10 @@ pub(super) fn row(
             height: ROW_SLOT,
             active,
             more: more.clone(),
+            scope,
         }),
     };
-    with_menu(row, "text", body, more).into_any_element()
+    with_menu(row, "text", scope, body, more).into_any_element()
 }
 
 /// `sourceLabel`, its full text in `title`; 70% of the active foreground on the active row.
@@ -401,7 +418,13 @@ pub(super) fn selected_ring(id: &str, radius: f32, cx: &App) -> gpui::Div {
 }
 
 /// A double click renames, as `handleDoubleClick` does.
-pub(super) fn rename_on_double(id: &str, event: &ClickEvent, window: &mut Window, cx: &mut App) {
+pub(super) fn rename_on_double(
+    id: &str,
+    scope: Scope,
+    event: &ClickEvent,
+    window: &mut Window,
+    cx: &mut App,
+) {
     if event.click_count() != 2 {
         return;
     }
@@ -411,7 +434,7 @@ pub(super) fn rename_on_double(id: &str, event: &ClickEvent, window: &mut Window
         .as_ref()
         .and_then(|l| l.sessions.iter().find(|s| s.id == id).cloned());
     if let Some(s) = found {
-        rename::start(&s, window, cx);
+        rename::start(&s, scope, window, cx);
     }
 }
 

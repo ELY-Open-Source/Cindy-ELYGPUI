@@ -6,11 +6,10 @@ use gpui::{
 };
 
 use super::{
-    Sessions,
     group::Session,
     keyboard::{Probe, with_menu},
     marquee, open, rename,
-    row::{ROW_GROUP, Slot, ring, selected_ring, source_label, status_glyph},
+    row::{ROW_GROUP, Scope, Slot, ring, selected_ring, source_label, status_glyph},
     select, title,
 };
 use crate::{
@@ -36,11 +35,7 @@ pub(super) fn list_row(
     let active = open::is_active(&s.id, cx);
     let selected = select::is_selected(&s.id, cx);
     let active_fg = appearance.token("sidebar-item-active-foreground");
-    let editing = cx
-        .global::<Sessions>()
-        .editing
-        .as_ref()
-        .filter(|e| e.id == s.id);
+    let editing = rename::editing(&s.id, Scope::Sidebar, cx);
     // `bg-[color-mix(in_srgb,hsl(var(--sidebar-border))_50%,transparent)]`.
     let line = appearance.hsl_token("sidebar-border").opacity(0.5);
     let divider = move |top: bool| {
@@ -112,6 +107,7 @@ pub(super) fn list_row(
                     height: 22.0,
                     active,
                     more: more.clone(),
+                    scope: Scope::Sidebar,
                 })
             });
     // `resolveSessionCardBody`: the latest message, trimmed; the line stays when empty.
@@ -156,7 +152,7 @@ pub(super) fn list_row(
         .when(selected, |el| {
             el.aria_selected(true).child(selected_ring(&s.id, 8.0, cx))
         })
-        .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
+        .on_click(move |event, window, cx| open::clicked(&id, Scope::Sidebar, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
         .on_hover(move |h, window, cx| marquee::hover(&hovered, *h, window, cx))
         .child(marquee::mark(&s.id))
@@ -164,5 +160,5 @@ pub(super) fn list_row(
         .when(first, |el| el.child(divider(true)))
         .child(line_one)
         .child(preview);
-    with_menu(s, "list", row, more).into_any_element()
+    with_menu(s, "list", Scope::Sidebar, row, more).into_any_element()
 }

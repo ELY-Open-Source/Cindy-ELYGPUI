@@ -248,8 +248,20 @@ defines scope and what 1:1 means.
   `rail/sections.rs` is the Projects and Dialogues tiles over `railPanelStore` (the `Panels`
   global): a hover opens the section at the tile's bounds and hides the pin preview, leaving
   closes it after 120ms unless a key opened it, a click opens it (`is_keyboard` for the key
-  flag), a pin click closes all. The panels, their close paths and the lamps come with 8.7e3c
-  and 10.0.
+  flag), a pin click closes all.
+  `rail/panels.rs` is `RailPanels`: `RailPanelShell` deferred at the tile, the Dialogues panel
+  (`compareDialogueSessions` by recency, `sidebar.collapse.dialogueLimit` 10, its own Show all)
+  and the closes: a pointer move off the panel and tiles schedules one, a press outside or
+  Escape (`intercept_keystrokes`) closes, so do the rail's end and a tile out of view (its
+  prepaint against the content mask stands in for `IntersectionObserver`). A row's field or
+  menu holds the panel: Ely's menus focus a handle outside the tab order, which stands in for
+  Radix's modal overlay; a choice in such a menu marks the press as inside. A keyboard open
+  moves focus in (`focus_next` from the panel; with no stop inside, focus stays) and Escape
+  gives it back to the tile. The tiles' keep-alive is a hit test on their hitboxes; Show all
+  is `fold::ShowAll`, a keyboard button the main list shares.
+  `row::Scope` gives the panel's rows their own rename, marquee and selectors; they neither
+  reveal nor join the selection, and a click only navigates (`handlePanelSessionClick`).
+  The Projects panel and the lamps come with 8.7e3c2 and 10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

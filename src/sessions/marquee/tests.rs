@@ -183,7 +183,7 @@ fn a_title_back_from_rename_starts_again(cx: &mut TestAppContext) {
             .find(|s| s.id == "a0")
             .unwrap()
             .clone();
-        rename::start(&s, window, cx);
+        rename::start(&s, crate::sessions::row::Scope::Sidebar, window, cx);
     });
     settle(cx);
     assert!(

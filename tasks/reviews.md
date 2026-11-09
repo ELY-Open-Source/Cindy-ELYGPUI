@@ -250,3 +250,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 8.7e3b The rail Projects and Dialogues tiles
 - Round 1: PASS.
+
+## 8.7e3c1 The rail panel shell and the Dialogues panel
+- Round 1: FAIL. The Projects panel had no listeners; the out-of-view close waited for a frame;
+  the tile check ignored clipping; an empty panel lost focus; Show all took no keyboard; a
+  two-line comment.
+- Fixed: the listeners stand alone, the tile's prepaint closes, tiles hit-test, focus goes back
+  when nothing inside takes it, Show all is `fold::ShowAll`, one-line comment.
+- Round 2: PASS.

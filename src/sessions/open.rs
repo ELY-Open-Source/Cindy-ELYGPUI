@@ -2,7 +2,10 @@
 
 use gpui::{App, ClickEvent, Window};
 
-use super::{row::rename_on_double, select};
+use super::{
+    row::{Scope, rename_on_double},
+    select,
+};
 use crate::router;
 
 /// `isActive`: the task `/cc-agent/:sessionId` shows.
@@ -17,13 +20,20 @@ pub(super) fn route(id: &str) -> String {
 
 /// A click opens the task, as `handleClick` passes it on, or selects it with a modifier; a
 /// double click then renames. The press outside a rename field has committed it by then.
-pub(super) fn clicked(id: &str, event: &ClickEvent, window: &mut Window, cx: &mut App) {
+pub(super) fn clicked(
+    id: &str,
+    scope: Scope,
+    event: &ClickEvent,
+    window: &mut Window,
+    cx: &mut App,
+) {
     let m = event.modifiers();
-    if select::modified(&m) {
+    // `handlePanelSessionClick`: the rail's rows only navigate; selection stays in the sidebar.
+    if scope == Scope::Sidebar && select::modified(&m) {
         return select::click(id, &m, cx);
     }
     open(id, cx);
-    rename_on_double(id, event, window, cx);
+    rename_on_double(id, scope, event, window, cx);
 }
 
 /// `handleSessionClick` without modifiers: the selection clears; no navigation to the task

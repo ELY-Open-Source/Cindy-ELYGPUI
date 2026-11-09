@@ -224,6 +224,14 @@ listed in `tasks/done.md`.
             - [x] 8.7e3b The Projects and Dialogues tiles opening `railPanelStore`'s panels on
               hover or click; their lamps come with 10.0
             - [ ] 8.7e3c `RailPanels`: the panels' content as `ExpandedView` renders it
+                - [x] 8.7e3c1 `RailPanelShell` and the Dialogues panel (its head and count, the
+                  dialogue rows as the expanded group sorts and folds them), with both panels'
+                  closes (pointer keep-alive, Escape, a press outside, the rail ending, the
+                  trigger hidden) and the keyboard contract (focus in, focus back)
+                - [ ] 8.7e3c2 The Projects panel: the Cindy Make group, the unclassified tasks
+                  (hidden under a project filter), every project with its pinned ones as
+                  `visibleRailProjectsWithVendor` lists them (20, then Show all), and the project
+                  level with its own grace and keyboard contract
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the
@@ -235,7 +243,7 @@ listed in `tasks/done.md`.
   in this folder buttons and its menu, by More or a right click (Rename, Search in this project
   with the search's locked project chip and the list's scroll freeze on that open, Show files, Open in the file manager, Copy deep link,
   Import, Remove from sidebar), and the dialogue group's Search; actions whose feature lands in a
-  later chapter come with it
+  later chapter come with it; the rail panels' New buttons and their project row menu with them
 - [ ] 8.11 A right click on the list's blank space opens the filter menu at the pointer, as
   `handleSidebarBlankContextMenu` opens `SidebarFilterPopover`
 ## 9. Chat view

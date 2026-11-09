@@ -110,3 +110,32 @@ fn a_press_insets_the_face_unless_motion_is_reduced(cx: &mut TestAppContext) {
 fn reduced_motion_keeps_the_pressed_face_still(cx: &mut TestAppContext) {
     assert_eq!(pressed_face(cx, true), 36.0);
 }
+
+#[gpui::test]
+fn leaving_the_rail_closes_its_panel(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let (row, cx) = open(cx, dir.path(), r#"{"sidebar-rail":"true"}"#);
+    let sidebar = cx.update(|_, cx| row.read(cx).sidebar.clone());
+    let tile = cx
+        .debug_bounds("rail-dialogues")
+        .expect("the Dialogues tile");
+    cx.simulate_mouse_move(tile.center(), None, Modifiers::none());
+    cx.run_until_parked();
+    let open = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| {
+            cx.default_global::<crate::sessions::rail::sections::Panels>()
+                .open
+        })
+    };
+    assert!(open(cx).is_some());
+    // No width tween: the tile stays in view, so only the rail's end closes the panel.
+    cx.update(|_, cx| cx.set_global(crate::motion::ReducedMotion(true)));
+    cx.update(|_, cx| {
+        sidebar.update(cx, |s, cx| {
+            s.set_rail(false, cx);
+            s.retarget(cx);
+        })
+    });
+    cx.run_until_parked();
+    assert!(open(cx).is_none(), "the tiles are gone");
+}

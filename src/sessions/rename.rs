@@ -8,7 +8,7 @@ use gpui::{
     Window, div,
 };
 
-use super::{Sessions, group::Session, title, write};
+use super::{Sessions, group::Session, row::Scope, title, write};
 use crate::{
     appearance_settings::text_size, i18n::Translator, theme::Appearance,
     theme_import::color::js_trim, units::css,
@@ -17,6 +17,8 @@ use crate::{
 /// The row under edit, as `SessionItem`'s `isEditing` and `editValue` keep it.
 pub struct Editing {
     pub id: String,
+    /// The list whose row holds the field.
+    pub scope: Scope,
     input: Entity<TextInput>,
     /// The display title the field opened with.
     display: String,
@@ -25,7 +27,7 @@ pub struct Editing {
 
 /// `handleDoubleClick` and `handleRenameSelect`: the field opens on the display title,
 /// selected and focused.
-pub fn start(s: &Session, window: &mut Window, cx: &mut App) {
+pub fn start(s: &Session, scope: Scope, window: &mut Window, cx: &mut App) {
     let display = title::display(s, cx.global::<Translator>());
     let input = cx.new(|cx| {
         let mut input = TextInput::new(window, cx);
@@ -47,11 +49,18 @@ pub fn start(s: &Session, window: &mut Window, cx: &mut App) {
     }
     store.editing = Some(Editing {
         id: s.id.clone(),
+        scope,
         input,
         display,
         _events: events,
     });
     cx.refresh_windows();
+}
+
+/// The field of `id`'s row in `scope`, if it is under edit.
+pub fn editing<'a>(id: &str, scope: Scope, cx: &'a App) -> Option<&'a Editing> {
+    let e = cx.global::<Sessions>().editing.as_ref()?;
+    (e.id == id && e.scope == scope).then_some(e)
 }
 
 /// `commitTitle`: once; a blank or unchanged title saves nothing.

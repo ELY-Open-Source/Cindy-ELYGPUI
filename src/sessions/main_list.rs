@@ -11,20 +11,20 @@ use gpui::{
 use super::{
     Sessions,
     filter::Filter,
-    fold,
+    fold::{self, ShowAll},
     group::{Entry, Order, Project, Session, aliases},
     list_row::{self, list_row},
-    lists::build,
+    lists::{Lists, build},
     paths::PLATFORM,
     pinned,
-    row::{ROW_HEIGHT, row},
+    row::{ROW_HEIGHT, Scope, row},
     view_mode::{self, Main},
 };
 use ely_gpui_component::primitives::IconName;
 
 use crate::{
     appearance_settings::text_size,
-    i18n::{Arg, Translator},
+    i18n::Translator,
     lucide::{MESSAGES_SQUARE, icon},
     preferences::Preferences,
     theme::Appearance,
@@ -154,34 +154,6 @@ pub(super) fn header(
         )
 }
 
-/// The Show all footer of `SessionEntryList` and `ShowAllEntriesButton`.
-fn show_all(id: SharedString, count: usize, cx: &App) -> gpui::Stateful<gpui::Div> {
-    let appearance = cx.global::<Appearance>();
-    let label = cx.global::<Translator>().t(
-        "ccAgent.sidebar.showAllSessions",
-        &[("count", Arg::Number(count as i64))],
-    );
-    let selector = id.to_string();
-    div()
-        .id(id)
-        .debug_selector(move || selector)
-        .flex()
-        .h(css(24.0))
-        .w_full()
-        .items_center()
-        .justify_center()
-        .rounded(css(9999.0))
-        .px(css(8.0))
-        .cursor_pointer()
-        .text_size(css(text_size(12.0, cx)))
-        .text_color(appearance.token("cmd-palette-item-meta"))
-        .hover(|s| {
-            s.bg(appearance.hsl_token("sidebar-item-hover"))
-                .text_color(appearance.hsl_token("foreground"))
-        })
-        .child(label)
-}
-
 /// A group: its header and, when open, its first tasks (`pt-0.5 gap-0.5`, text rows indented),
 /// with its drawn height.
 fn group(
@@ -229,18 +201,17 @@ fn group(
                 if list {
                     list_row(s, i == 0, None, now, cx)
                 } else {
-                    row(s, true, None, now, cx)
+                    row(s, true, None, now, Scope::Sidebar, cx)
                 }
             }))
             .when(footer, |el| {
-                el.child(
-                    show_all(format!("{id}-show-all").into(), sessions.len(), cx).on_click(
-                        move |_, _, cx| {
-                            cx.global_mut::<Sessions>().show_all.insert(shown.clone());
-                            cx.refresh_windows();
-                        },
-                    ),
-                )
+                el.child(ShowAll::new(
+                    format!("{id}-show-all"),
+                    sessions.len(),
+                    move |cx| {
+                        cx.global_mut::<Sessions>().show_all.insert(shown.clone());
+                    },
+                ))
             })
             .into_any_element()
     };
@@ -385,6 +356,34 @@ fn nav(handle: &ScrollHandle, pin: bool, window: &mut Window, cx: &mut App) -> V
     vec![search.into_any_element(), more.into_any_element()]
 }
 
+/// The sidebar's lists from the loaded bucket under the filter, as `ExpandedView` derives them.
+pub(super) fn lists(cx: &App) -> Option<Lists> {
+    let prefs = cx.global::<Preferences>();
+    let loaded = cx.global::<Sessions>().loaded.as_ref()?;
+    let filter = Filter::read(prefs);
+    let order = Order {
+        flat: filter.flat,
+        created: filter.sort_by == "created",
+        custom: filter.project_order == "custom",
+        manual: &[],
+        group_dialogue: filter.group_dialogue,
+        vendor: (filter.vendor != "all").then_some(filter.vendor),
+        cutoff: filter.cutoff(jiff::Timestamp::now().as_millisecond()),
+    };
+    let dialogues = cx
+        .global::<Translator>()
+        .t("ccAgent.sidebar.dialogues", &[]);
+    Some(build(
+        &loaded.sessions,
+        &loaded.recent,
+        &aliases(&loaded.aliases, PLATFORM),
+        &loaded.settings,
+        PLATFORM,
+        &order,
+        &dialogues,
+    ))
+}
+
 /// The Pinned section and the main list's body.
 fn draw(
     drawn: &RefCell<Vec<String>>,
@@ -400,29 +399,11 @@ fn draw(
     };
     let prefs = cx.global::<Preferences>();
     let store = cx.global::<Sessions>();
-    let loaded = store.loaded.as_ref()?;
-    let filter = Filter::read(prefs);
-    let order = Order {
-        flat: filter.flat,
-        created: filter.sort_by == "created",
-        custom: filter.project_order == "custom",
-        manual: &[],
-        group_dialogue: filter.group_dialogue,
-        vendor: (filter.vendor != "all").then_some(filter.vendor),
-        cutoff: filter.cutoff(jiff::Timestamp::now().as_millisecond()),
-    };
-    let translator = cx.global::<Translator>();
-    let dialogues = translator.t("ccAgent.sidebar.dialogues", &[]);
-    let lists = build(
-        &loaded.sessions,
-        &loaded.recent,
-        &aliases(&loaded.aliases, PLATFORM),
-        &loaded.settings,
-        PLATFORM,
-        &order,
-        &dialogues,
-    );
+    let lists = lists(cx)?;
     let limit = fold::limit(text(prefs, PROJECT_LIMIT_KEY), 20);
+    let dialogues = cx
+        .global::<Translator>()
+        .t("ccAgent.sidebar.dialogues", &[]);
     let (visible, hidden) = fold::view(&lists.main, limit, store.show_all_entries, None, |_| 0);
     let now = jiff::Timestamp::now().as_millisecond();
     let mut children: Vec<AnyElement> = visible
@@ -455,19 +436,17 @@ fn draw(
                 if list {
                     list_row(s, false, label, now, cx)
                 } else {
-                    row(s, false, label, now, cx)
+                    row(s, false, label, now, Scope::Sidebar, cx)
                 }
             }
         })
         .collect();
     if hidden > 0 {
         children.push(
-            show_all("main-list-show-all".into(), lists.main.len(), cx)
-                .on_click(|_, _, cx| {
-                    cx.global_mut::<Sessions>().show_all_entries = true;
-                    cx.refresh_windows();
-                })
-                .into_any_element(),
+            ShowAll::new("main-list-show-all".into(), lists.main.len(), |cx| {
+                cx.global_mut::<Sessions>().show_all_entries = true;
+            })
+            .into_any_element(),
         );
     }
     let main = div()

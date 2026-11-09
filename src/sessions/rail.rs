@@ -6,6 +6,7 @@ use gpui::{
     Window, div, prelude::FluentBuilder as _,
 };
 
+pub mod panels;
 pub mod pinned;
 pub mod search;
 pub mod sections;
@@ -17,6 +18,10 @@ use crate::{
 
 /// Both views stay drawn; `rail` is the rail's opacity, and `on` picks the one taking the pointer.
 pub fn upper(rail: f32, on: bool, window: &mut Window, cx: &mut App) -> AnyElement {
+    if !on {
+        // The rail's tiles are gone: its panels close, as `RailPanels` does once not collapsed.
+        sections::rail_ended(window, cx);
+    }
     let layer = |id: &'static str, opacity: f32| {
         div()
             .id(id)
@@ -88,6 +93,7 @@ fn view(window: &mut Window, cx: &mut App) -> AnyElement {
         )
         .children(pinned::section(window, cx))
         .children(sections::tiles(window, cx))
+        .children(panels::panel(window, cx))
         .into_any_element()
 }
 

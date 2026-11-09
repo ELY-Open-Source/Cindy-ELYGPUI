@@ -11,7 +11,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, canvas,
 };
 
-use super::{Sessions, group::Session, open, reveal, select, task_menu};
+use super::{group::Session, open, rename, reveal, row::Scope, select, task_menu};
 use crate::{i18n::Translator, router};
 
 /// An element's visible bounds, as its last prepaint saw them.
@@ -58,15 +58,23 @@ fn menu_key(k: &Keystroke, up: bool) -> bool {
 pub(super) struct Host {
     session: Session,
     kind: &'static str,
+    scope: Scope,
     body: Stateful<Div>,
     more: Probe,
 }
 
 /// `kind` keys the look, as Cindy mounts one component per look; `more` is More's probe.
-pub(super) fn with_menu(s: &Session, kind: &'static str, body: Stateful<Div>, more: Probe) -> Host {
+pub(super) fn with_menu(
+    s: &Session,
+    kind: &'static str,
+    scope: Scope,
+    body: Stateful<Div>,
+    more: Probe,
+) -> Host {
     Host {
         session: s.clone(),
         kind,
+        scope,
         body,
         more,
     }
@@ -83,6 +91,7 @@ fn ask(asked: &Entity<Option<(u64, Point<Pixels>)>>, at: Point<Pixels>, cx: &mut
 
 struct Keys {
     id: String,
+    scope: Scope,
     focus: FocusHandle,
     row: Probe,
     more: Probe,
@@ -91,11 +100,7 @@ struct Keys {
 
 impl Keys {
     fn pressed(&self, k: &Keystroke, up: bool, window: &mut Window, cx: &mut App) {
-        let editing = cx
-            .global::<Sessions>()
-            .editing
-            .as_ref()
-            .is_some_and(|e| e.id == self.id);
+        let editing = rename::editing(&self.id, self.scope, cx).is_some();
         let own = self.focus.is_focused(window);
         if !up && matches!(k.key.as_str(), "enter" | "space") {
             // `e.target !== e.currentTarget`: a key on More is More's own.
@@ -131,12 +136,15 @@ impl RenderOnce for Host {
         let active = router::active_session(cx) == Some(id.as_str());
         let was =
             window.use_keyed_state(key(&format!("was-active-{}", self.kind)), cx, |_, _| false);
-        if active && !*was.read(cx) {
+        // The rail's panel rows are not the sidebar list's, which reveals and selects.
+        let sidebar = self.scope == Scope::Sidebar;
+        if sidebar && active && !*was.read(cx) {
             reveal::activated(&id, cx);
         }
         was.update(cx, |was, _| *was = active);
         let keys = Rc::new(Keys {
             id: id.clone(),
+            scope: self.scope,
             focus: focus.clone(),
             row: Rc::default(),
             more: self.more,
@@ -155,10 +163,13 @@ impl RenderOnce for Host {
                 cx.stop_propagation();
                 ask(&asked, e.position, cx);
             })
-            .child(row_probe(id.clone(), keys.row.clone()));
+            .child(match sidebar {
+                true => row_probe(id.clone(), keys.row.clone()).into_any_element(),
+                false => probe(keys.row.clone()).into_any_element(),
+            });
         ContextMenu::new(
             key("menu"),
-            task_menu::menu(&self.session, cx.global::<Translator>()),
+            task_menu::menu(&self.session, self.scope, cx.global::<Translator>()),
         )
         .manual(request)
         .w_full()

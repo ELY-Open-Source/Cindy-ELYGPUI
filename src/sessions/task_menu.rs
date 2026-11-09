@@ -14,7 +14,9 @@ use super::{
     Sessions,
     group::Session,
     keyboard::{self, Probe},
-    pin, rename, title, write,
+    pin, rename,
+    row::Scope,
+    title, write,
 };
 use crate::{i18n::Translator, lucide::icon, theme::Appearance, tip::tip, units::css};
 
@@ -23,21 +25,35 @@ fn session(id: &str, cx: &App) -> Option<Session> {
     loaded.sessions.iter().find(|s| s.id == id).cloned()
 }
 
+type Run = Box<dyn Fn(&mut Window, &mut App)>;
+
 /// Tags, move, share, export, a new window, archive and delete come with the chapters that
-/// own them.
-pub fn menu(s: &Session, t: &Translator) -> Menu {
-    let item = |key: &str| MenuItem::new(t.t(&format!("ccAgent.sidebar.sessionMenu.{key}"), &[]));
+/// own them. A choice in a rail panel row's menu keeps the panel, as the popper wrapper does.
+pub fn menu(s: &Session, scope: Scope, t: &Translator) -> Menu {
+    let item = |key: &str, run: Run| {
+        MenuItem::new(t.t(&format!("ccAgent.sidebar.sessionMenu.{key}"), &[])).on_click(
+            move |window, cx| {
+                if scope == Scope::Rail {
+                    crate::sessions::rail::sections::chosen(cx);
+                }
+                run(window, cx)
+            },
+        )
+    };
     let id = s.id.clone();
-    let rename = item("rename").on_click(move |window, cx| match session(&id, cx) {
-        Some(s) => rename::start(&s, window, cx),
-        None => log::warn!(target: "sessions", "rename {id}: the task left the list"),
-    });
+    let rename = item(
+        "rename",
+        Box::new(move |window, cx| match session(&id, cx) {
+            Some(s) => rename::start(&s, scope, window, cx),
+            None => log::warn!(target: "sessions", "rename {id}: the task left the list"),
+        }),
+    );
     let mut menu = Menu::new();
     if s.status != "archived" && !title::empty_draft(s) {
         let (id, pinned) = (s.id.clone(), s.pinned_at.is_some());
         let key = if pinned { "unpin" } else { "pin" };
-        menu =
-            menu.item(item(key).on_click(move |window, cx| pin::toggle(&id, pinned, window, cx)));
+        let toggle = move |window: &mut Window, cx: &mut App| pin::toggle(&id, pinned, window, cx);
+        menu = menu.item(item(key, Box::new(toggle)));
     }
     menu = menu.item(rename);
     if s.status != "archived" && !title::empty_draft(s) {
@@ -47,13 +63,15 @@ pub fn menu(s: &Session, t: &Translator) -> Menu {
         } else {
             "muteNotifications"
         };
-        menu = menu.item(item(key).on_click(move |window, cx| {
-            write::apply(&id, write::Meta::Muted(!muted), window, cx);
-        }));
+        let mute = move |window: &mut Window, cx: &mut App| {
+            write::apply(&id, write::Meta::Muted(!muted), window, cx)
+        };
+        menu = menu.item(item(key, Box::new(mute)));
     }
     let id = s.id.clone();
+    let copy = move |window: &mut Window, cx: &mut App| write::copy_link(&id, window, cx);
     menu.separator()
-        .item(item("copySessionLink").on_click(move |window, cx| write::copy_link(&id, window, cx)))
+        .item(item("copySessionLink", Box::new(copy)))
 }
 
 /// The hover More button: `size-5 rounded-md`, `EllipsisVertical` 14/2; on a card, `CardAction`'s

@@ -1,11 +1,17 @@
 //! `getSessionListCollapseView`'s first N and `SectionCollapse`'s 200 ms fold.
 
-use gpui::{AnyElement, App, IntoElement, ParentElement as _, Styled as _, Window, div};
+use gpui::{
+    AnyElement, App, BoxShadow, InteractiveElement as _, IntoElement, ParentElement as _,
+    RenderOnce, Role, StatefulInteractiveElement as _, Styled as _, Window, div, point, px,
+};
 
 use super::Sessions;
 use crate::{
+    appearance_settings::text_size,
+    i18n::{Arg, Translator},
     motion::{BASE, Tween, length},
-    units::css,
+    theme::Appearance,
+    units::{css, window_px},
 };
 
 /// `SESSION_LIST_COLLAPSE_RECENT_WINDOW_MS`.
@@ -111,4 +117,74 @@ pub fn section(
             .child(body())
             .into_any_element(),
     )
+}
+
+/// The Show all footer of `SessionEntryList` and `ShowAllEntriesButton`, a button.
+#[derive(IntoElement)]
+pub struct ShowAll {
+    id: String,
+    count: usize,
+    show: Box<dyn Fn(&mut App)>,
+}
+
+impl ShowAll {
+    pub fn new(id: String, count: usize, show: impl Fn(&mut App) + 'static) -> Self {
+        Self {
+            id,
+            count,
+            show: Box::new(show),
+        }
+    }
+}
+
+impl RenderOnce for ShowAll {
+    fn render(self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let focus = window
+            .use_keyed_state(format!("{}-focus", self.id), cx, |_, cx| {
+                cx.focus_handle().tab_stop(true)
+            })
+            .read(cx)
+            .clone();
+        let appearance = cx.global::<Appearance>();
+        let label = cx.global::<Translator>().t(
+            "ccAgent.sidebar.showAllSessions",
+            &[("count", Arg::Number(self.count as i64))],
+        );
+        // `focus-visible:ring-1 ring-[var(--focus-ring)]`.
+        let ring = BoxShadow {
+            color: appearance.token("focus-ring"),
+            offset: point(px(0.0), px(0.0)),
+            blur_radius: px(0.0),
+            spread_radius: window_px(1.0, cx),
+            inset: false,
+        };
+        let (id, show) = (self.id, self.show);
+        let selector = id.clone();
+        div()
+            .id(gpui::SharedString::from(id.clone()))
+            .debug_selector(move || selector)
+            .track_focus(&focus)
+            .role(Role::Button)
+            .flex()
+            .h(css(24.0))
+            .w_full()
+            .items_center()
+            .justify_center()
+            .rounded(css(9999.0))
+            .px(css(8.0))
+            .cursor_pointer()
+            .text_size(css(text_size(12.0, cx)))
+            .text_color(appearance.token("cmd-palette-item-meta"))
+            .hover(|s| {
+                s.bg(appearance.hsl_token("sidebar-item-hover"))
+                    .text_color(appearance.hsl_token("foreground"))
+            })
+            .focus_visible(|s| s.shadow(vec![ring]))
+            .on_click(move |_, _, cx| {
+                log::info!(target: "sessions", "{id}: all shown");
+                show(cx);
+                cx.refresh_windows();
+            })
+            .child(label)
+    }
 }
