@@ -8,7 +8,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, canvas, div, prelude::FluentBuilder as _,
 };
 
-use super::{Search, marks, run, trimmed};
+use super::{Search, Which, marks, run, trimmed};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -42,12 +42,12 @@ fn surface() -> impl IntoElement {
 }
 
 /// The results while a query runs, else none and the list shows.
-pub fn body(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
-    let query = trimmed(cx).to_owned();
+pub fn body(w: Which, window: &mut Window, cx: &mut App) -> Option<AnyElement> {
+    let query = trimmed(w, cx).to_owned();
     if query.is_empty() {
         return None;
     }
-    let (status, response) = run::state(cx);
+    let (status, response) = run::state(w, cx);
     let results: Vec<Item> = response.map_or_else(Vec::new, |r| r.results.clone());
     let content = match status {
         run::Status::Searching => searching(cx),
@@ -55,7 +55,11 @@ pub fn body(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         _ if results.is_empty() => none(cx),
         _ => div()
             .p(css(8.0))
-            .children(results.iter().map(|item| result(item, &query, window, cx)))
+            .children(
+                results
+                    .iter()
+                    .map(|item| result(w, item, &query, window, cx)),
+            )
             .into_any_element(),
     };
     Some(
@@ -63,7 +67,7 @@ pub fn body(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
             .id("search-results")
             .debug_selector(|| "search-results".into())
             .relative()
-            .child(surface())
+            .when(w == Which::Inline, |el| el.child(surface()))
             .child(content)
             .into_any_element(),
     )
@@ -169,7 +173,7 @@ fn kind_key(kind: MatchKind) -> &'static str {
 }
 
 /// `SearchResultRow`.
-fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyElement {
+fn result(w: Which, item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyElement {
     let s = &item.session;
     let expanded = window.use_keyed_state(
         SharedString::from(format!("search-hits-{}", s.id)),
@@ -219,7 +223,7 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
     let card = tip_card(title.clone(), preview, query.to_owned());
     let hits: Vec<AnyElement> = visible
         .iter()
-        .map(|hit| hit_row(&s.id, hit, query, window, cx))
+        .map(|hit| hit_row(w, &s.id, hit, query, window, cx))
         .collect();
     let more = (hidden > 0).then(|| more(&s.id, hidden, expanded, window, cx));
     let head = button(format!("search-result-{}", s.id), window, cx);
@@ -236,7 +240,7 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
     let probe = id.clone();
     let chosen = id.clone();
     let head = head
-        .on_click(move |_, _, cx| choose(&chosen, None, cx))
+        .on_click(move |_, window, cx| choose(w, &chosen, None, window, cx))
         .flex()
         .w_full()
         .items_start()
@@ -337,7 +341,10 @@ fn result(item: &Item, query: &str, window: &mut Window, cx: &mut App) -> AnyEle
         .rounded(css(8.0))
         .id(SharedString::from(format!("search-row-{}", s.id)))
         .hover(|st| st.bg(appearance.token("cmd-palette-item-hover")))
-        .child(canvas(move |_, _, cx| select::drawn(&probe, cx), |_, _, _, _| {}).absolute())
+        // The popover sits outside the sidebar's root, so its rows are not the sidebar's.
+        .when(w == Which::Inline, |el| {
+            el.child(canvas(move |_, _, cx| select::drawn(&probe, cx), |_, _, _, _| {}).absolute())
+        })
         .child(head)
         .children(hits)
         .into_any_element()
@@ -392,9 +399,12 @@ pub(super) fn button(id: String, window: &mut Window, cx: &mut App) -> gpui::Sta
         .role(gpui::Role::Button)
 }
 
-/// `handleSelect`: the task opens and the query stays; the hit's `searchJump` lands with 9.0.
-pub(super) fn choose(id: &str, hit: Option<&str>, cx: &mut App) {
-    log::info!(target: "search", "result {id} chosen, hit {hit:?}");
+/// `handleSelect`: the inline query stays; the popover's `onResultChosen` closes it.
+pub(super) fn choose(w: Which, id: &str, hit: Option<&str>, window: &mut Window, cx: &mut App) {
+    log::info!(target: "search", "{w:?} result {id} chosen, hit {hit:?}");
+    if w == Which::Rail {
+        crate::sessions::rail::search::chosen(window, cx);
+    }
     router::navigate(&open::route(id), cx);
 }
 

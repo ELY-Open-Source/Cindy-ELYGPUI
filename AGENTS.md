@@ -111,9 +111,10 @@ defines scope and what 1:1 means.
   curve (`cubic-bezier(0.4,0,0,1)`, `min(sqrt(|delta|), 90) / 60` s in device pixels); reduced
   motion jumps, and a scroll by the user or a reveal that needs no move ends it. The active
   record is keyed by look (text, list, card), since Cindy mounts a new component per look.
-  `search.rs` is the conversation search: the query `conversationSearchContext` shares, held in
-  one Ely `TextInput`, and the top nav's Search row (`SidebarInlineSearch`) at the top of the
-  list's scroller. Focus goes straight to the field, which stands for `forceOpen`; the
+  `search.rs` is the conversation search: two `useConversationSearch` instances (`Which`), the
+  inline one `conversationSearchContext` shares and the rail popover's, each with its own Ely
+  `TextInput`, filters and run, one sort on `Search` for both; and the top nav's Search row
+  (`SidebarInlineSearch`) at the top of the list's scroller. Focus goes straight to the field, which stands for `forceOpen`; the
   placeholder is drawn over the field in `text-placeholder`, since Ely draws its own in
   `fg_subtle`. A press that does not hit the row (gpui's hit test, so a clipped row misses)
   clears a running query; hover ignores key presses. `search/options.rs` is `SearchFilterMenu`
@@ -230,7 +231,13 @@ defines scope and what 1:1 means.
   `upper` tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and
   not peeking, and the shown view paints last with `occlude`, standing in for
   `pointer-events-none`. `CollapsedView` holds the New tile (`SidebarIconButton`, its face
-  inset 1px on press) and the divider; Search comes with 8.7e2, `RailNav` with 8.7e3.
+  inset 1px on press), Search and the divider; `RailNav` comes with 8.7e3.
+  `rail/search.rs` is `ConversationSearchBox`: the tile toggles a popover at its right over the
+  rail's search, enabled only while open; Escape (`intercept_keystrokes`), a press outside
+  (unless the open options menu keeps it), focus leaving the panel or the tile close it and
+  reset the query, focus going back to the tile unless the close came from outside. A chosen
+  result closes it first. The panel occludes what lies under it and loops Tab in Ely's
+  trapping `FocusScope`. The inline search counts the panel and its open menu as poppers.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

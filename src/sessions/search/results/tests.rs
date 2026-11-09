@@ -68,7 +68,10 @@ fn a_press_on_the_results_keeps_the_query(cx: &mut TestAppContext) {
     wait(cx, 250);
     cx.update(|window, cx| window.blur(cx));
     click(cx, "search-result-t");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "login");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "login"
+    );
 }
 
 #[gpui::test]
@@ -101,7 +104,10 @@ fn a_result_opens_its_task_and_keeps_the_query(cx: &mut TestAppContext) {
     wait(cx, 250);
     click(cx, "search-result-t");
     assert_eq!(path(cx), "/cc-agent/t");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "login");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "login"
+    );
     assert!(drawn(cx, "search-result-h"), "the results stay");
 }
 
@@ -113,7 +119,10 @@ fn a_hit_opens_its_task(cx: &mut TestAppContext) {
     wait(cx, 250);
     click(cx, "search-hit-m0");
     assert_eq!(path(cx), "/cc-agent/h");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "step");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "step"
+    );
 }
 
 #[gpui::test]
@@ -130,7 +139,10 @@ fn tab_reaches_a_result_and_enter_opens_it(cx: &mut TestAppContext) {
     cx.simulate_event(gpui::KeyUpEvent { keystroke });
     cx.run_until_parked();
     assert_eq!(path(cx), "/cc-agent/t");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "fix");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "fix"
+    );
 }
 
 /// The field, then clear, the options trigger and More, then the first result.

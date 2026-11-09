@@ -2,7 +2,7 @@
 
 use gpui::App;
 
-use super::{Search, run};
+use super::{Which, of, of_mut, run};
 use crate::sessions::{
     Sessions,
     group::{self, Project, Recent, Session},
@@ -88,16 +88,18 @@ pub(super) fn scope(selection: Option<&[String]>, cx: &App) -> Option<Vec<String
     Some(ids)
 }
 
-/// A read landed: the selection keeps only known projects, then the search follows its scope.
+/// A read landed: each selection keeps only known projects, then each search follows its scope.
 pub fn loaded(cx: &mut App) {
-    if let Some(selection) = cx.global::<Search>().options.projects.clone() {
-        let next = reconcile(&selection, known_of(cx));
-        if next != selection {
-            log::info!(target: "search", "project filter {} -> {} projects", selection.len(), next.len());
-            cx.global_mut::<Search>().options.projects = (!next.is_empty()).then_some(next);
+    for w in [Which::Inline, Which::Rail] {
+        if let Some(selection) = of(w, cx).options.projects.clone() {
+            let next = reconcile(&selection, known_of(cx));
+            if next != selection {
+                log::info!(target: "search", "{w:?} project filter {} -> {} projects", selection.len(), next.len());
+                of_mut(w, cx).options.projects = (!next.is_empty()).then_some(next);
+            }
         }
+        run::sync(w, cx);
     }
-    run::sync(cx);
 }
 
 #[cfg(test)]

@@ -6,7 +6,7 @@ use gpui::{
     Styled as _, canvas, point, px,
 };
 
-use super::{Search, run};
+use super::{Search, Which, run};
 
 #[derive(Default)]
 pub struct Scroll {
@@ -21,7 +21,8 @@ pub struct Scroll {
 
 /// The effect over the search's dependencies; the list's offset is kept while it shows.
 pub fn sync(handle: &ScrollHandle, cx: &mut App) {
-    let key = (run::key(cx), cx.global::<Search>().options.projects.clone());
+    let inline = &super::of(Which::Inline, cx).options;
+    let key = (run::key(Which::Inline, cx), inline.projects.clone());
     let active = !key.0.query.is_empty();
     let s = &mut cx.global_mut::<Search>().scroll;
     if s.key.as_ref() != Some(&key) {

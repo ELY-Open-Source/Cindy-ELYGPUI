@@ -15,7 +15,7 @@ fn drawn(cx: &mut VisualTestContext, selector: &'static str) -> bool {
 }
 
 fn typed(cx: &mut VisualTestContext) -> String {
-    cx.update(|_, cx| query(cx).to_owned())
+    cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned())
 }
 
 /// A press on the list's empty foot, outside the search surface.
@@ -53,7 +53,10 @@ fn a_click_opens_the_field_and_typing_sets_the_query(cx: &mut TestAppContext) {
     assert!(!drawn(cx, "nav-search-open"), "the field took the row");
     cx.simulate_input("  plan ");
     assert_eq!(typed(cx), "  plan ");
-    assert_eq!(cx.update(|_, cx| trimmed(cx).to_owned()), "plan");
+    assert_eq!(
+        cx.update(|_, cx| trimmed(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "plan"
+    );
     assert!(drawn(cx, "nav-search-clear"));
 }
 

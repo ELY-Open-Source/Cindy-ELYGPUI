@@ -7,10 +7,7 @@ use crate::{
     sessions::{
         Sessions,
         group::{Recent, Session},
-        search::{
-            Search,
-            run::{self, tests::wait},
-        },
+        search::run::{self, tests::wait},
         view_tests::{self, click},
     },
 };
@@ -104,9 +101,11 @@ fn tasks(db: &Connection) {
 
 fn found(cx: &mut VisualTestContext) -> Vec<String> {
     cx.update(|_, cx| {
-        run::state(cx).1.map_or_else(Vec::new, |r| {
-            r.results.iter().map(|i| i.session.id.clone()).collect()
-        })
+        run::state(crate::sessions::search::Which::Inline, cx)
+            .1
+            .map_or_else(Vec::new, |r| {
+                r.results.iter().map(|i| i.session.id.clone()).collect()
+            })
     })
 }
 
@@ -147,7 +146,12 @@ fn a_project_that_leaves_drops_out_of_the_selection(cx: &mut TestAppContext) {
         loaded(cx);
     });
     wait(cx, 250);
-    let selection = cx.update(|_, cx| cx.global::<Search>().options.projects.clone());
+    let selection = cx.update(|_, cx| {
+        crate::sessions::search::of(crate::sessions::search::Which::Inline, cx)
+            .options
+            .projects
+            .clone()
+    });
     assert_eq!(selection, None, "an empty selection is all");
     assert_eq!(found(cx).len(), 2);
 }
@@ -158,9 +162,11 @@ fn a_choice_that_keeps_the_scope_keeps_the_page(cx: &mut TestAppContext) {
     let cx = run::tests::search(cx, dir.path(), Some(tasks));
     let pick = |cx: &mut VisualTestContext, keys: Option<Vec<String>>| {
         cx.update(|_, cx| {
-            cx.global_mut::<Search>().options.projects = keys;
-            run::sync(cx);
-            run::state(cx).0
+            crate::sessions::search::of_mut(crate::sessions::search::Which::Inline, cx)
+                .options
+                .projects = keys;
+            run::sync(crate::sessions::search::Which::Inline, cx);
+            run::state(crate::sessions::search::Which::Inline, cx).0
         })
     };
     cx.update(|_, cx| {

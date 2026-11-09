@@ -44,7 +44,7 @@ fn pick(cx: &mut VisualTestContext, rows: &[&str]) {
 }
 
 fn sort(cx: &mut VisualTestContext) -> &'static str {
-    cx.update(|_, cx| cx.global::<Search>().options.sort)
+    cx.update(|_, cx| cx.global::<Search>().sort)
 }
 
 fn with_sort(dir: &std::path::Path, value: &str) {
@@ -85,7 +85,11 @@ fn a_filter_shows_the_dot_and_reset_clears_it(cx: &mut TestAppContext) {
     let cx = open(cx, dir.path());
     pick(cx, &["Status", "Archived"]);
     let count = |cx: &mut VisualTestContext| {
-        cx.update(|_, cx| cx.global::<Search>().options.active_count())
+        cx.update(|_, cx| {
+            crate::sessions::search::of(crate::sessions::search::Which::Inline, cx)
+                .options
+                .active_count()
+        })
     };
     assert_eq!(count(cx), 1);
     assert!(drawn(cx, "search-filter-dot"));
@@ -115,7 +119,10 @@ fn a_press_on_the_menu_keeps_the_query(cx: &mut TestAppContext) {
     cx.simulate_input("plan");
     pick(cx, &["Status"]);
     click(cx, "menu-row-Archived");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "plan");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "plan"
+    );
     click(cx, "search-filter-button");
     assert!(drawn(cx, "menu-panel-0"));
     let panel = cx.debug_bounds("menu-panel-0").unwrap();
@@ -123,7 +130,7 @@ fn a_press_on_the_menu_keeps_the_query(cx: &mut TestAppContext) {
     assert!(panel.bottom() < foot - px(4.0), "{panel:?}");
     crate::sessions::search::tests::press_below(cx);
     assert_eq!(
-        cx.update(|_, cx| query(cx).to_owned()),
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
         "",
         "a press past the open menu clears it"
     );
@@ -137,7 +144,10 @@ fn a_project_choice_counts_and_names_its_projects(cx: &mut TestAppContext) {
     let label = |cx: &mut VisualTestContext| {
         cx.update(|_, cx| {
             let t = cx.global::<crate::i18n::Translator>();
-            super::projects_label(&cx.global::<Search>().options, t)
+            super::projects_label(
+                &crate::sessions::search::of(crate::sessions::search::Which::Inline, cx).options,
+                t,
+            )
         })
     };
     assert_eq!(label(cx), "1 selected");

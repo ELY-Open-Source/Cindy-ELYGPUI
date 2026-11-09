@@ -489,3 +489,11 @@ gate logs sit in `logs/review/<task>-r<N>*`.
   the occluding view; no inset under reduced motion; hover held through `on_hover` in
   modality-independent mode.
 - Round 2: PASS.
+
+## 8.7e2 The rail Search popover
+- Round 1: FAIL. A press on the panel reached the content beneath; Clear was no Tab stop; Tab
+  left the panel and closed it; the rail's options menu was no popper to the inline search.
+  Fixed: the panel occludes; Clear is a focusable button that hands focus to the panel; Ely's
+  trapping `FocusScope` loops Tab; the inline check takes the rail's open menu, and the press
+  flag is read, not taken, by both searches.
+- Round 2: PASS.

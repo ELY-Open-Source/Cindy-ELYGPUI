@@ -18,7 +18,7 @@ use crate::{
 };
 
 mod marks;
-mod options;
+pub mod options;
 pub mod projects;
 pub mod results;
 pub mod run;
@@ -27,13 +27,29 @@ pub mod stick;
 
 pub use options::Options;
 
-/// The field and its query, made with the first window that draws the row, and the options.
-pub struct Search {
+/// Which `useConversationSearch` a call means: the Search row's or the rail popover's.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Which {
+    Inline,
+    Rail,
+}
+
+/// One search: its field and query, filters and run.
+#[derive(Default)]
+pub struct Instance {
     field: Option<Field>,
     pub options: Options,
+    run: run::Run,
+}
+
+/// Both searches, the sort they share, and the inline search's surface and scroll.
+pub struct Search {
+    inline: Instance,
+    rail: Instance,
+    /// `subscribeSearchSortBy`: one sort for both.
+    pub sort: &'static str,
     /// A choice in the open menu took the press under way.
     chosen: bool,
-    run: run::Run,
     /// The results' hitbox this frame, part of the search surface.
     surface: Option<gpui::Hitbox>,
     scroll: scroll::Scroll,
@@ -49,54 +65,69 @@ struct Field {
 
 impl Global for Search {}
 
-/// The search with the sort read back from the preferences.
+/// The searches with the sort read back from the preferences.
 pub fn install(cx: &mut App) {
-    let options = Options::load(cx.global::<Preferences>());
-    log::info!(target: "search", "sort {} loaded", options.sort);
+    let sort = options::load_sort(cx.global::<Preferences>());
+    log::info!(target: "search", "sort {sort} loaded");
+    let mut inline = Instance::default();
+    inline.run.enabled = true;
     cx.set_global(Search {
-        field: None,
-        options,
+        inline,
+        rail: Instance::default(),
+        sort,
         chosen: false,
-        run: run::Run::default(),
         surface: None,
         scroll: scroll::Scroll::default(),
         pinned_bottom: None,
     });
 }
 
-/// `search.query`; empty before the row is drawn.
-pub fn query(cx: &App) -> &str {
-    cx.global::<Search>()
-        .field
-        .as_ref()
-        .map_or("", |f| f.query.as_str())
+pub fn of(w: Which, cx: &App) -> &Instance {
+    let s = cx.global::<Search>();
+    match w {
+        Which::Inline => &s.inline,
+        Which::Rail => &s.rail,
+    }
+}
+
+pub fn of_mut(w: Which, cx: &mut App) -> &mut Instance {
+    let s = cx.global_mut::<Search>();
+    match w {
+        Which::Inline => &mut s.inline,
+        Which::Rail => &mut s.rail,
+    }
+}
+
+/// `search.query`; empty before its field is made.
+pub fn query(w: Which, cx: &App) -> &str {
+    of(w, cx).field.as_ref().map_or("", |f| f.query.as_str())
 }
 
 /// `search.trimmed`.
-pub fn trimmed(cx: &App) -> &str {
-    js_trim(query(cx))
+pub fn trimmed(w: Which, cx: &App) -> &str {
+    js_trim(query(w, cx))
 }
 
-fn field(window: &mut Window, cx: &mut App) -> Entity<TextInput> {
-    if let Some(field) = &cx.global::<Search>().field {
+pub(crate) fn field(w: Which, window: &mut Window, cx: &mut App) -> Entity<TextInput> {
+    if let Some(field) = &of(w, cx).field {
         return field.input.clone();
     }
     let label = cx
         .global::<Translator>()
         .t("ccAgent.search.placeholder", &[]);
     let input = cx.new(|cx| TextInput::new(window, cx).label(label));
-    let events = window.subscribe(&input, cx, |input, event, _, cx| {
+    let events = window.subscribe(&input, cx, move |input, event, _, cx| {
         if *event == InputEvent::Changed {
             let text = input.read(cx).text().to_owned();
-            log::debug!(target: "search", "query {} chars", text.chars().count());
-            if let Some(field) = cx.global_mut::<Search>().field.as_mut() {
+            log::debug!(target: "search", "{w:?} query {} chars", text.chars().count());
+            if let Some(field) = of_mut(w, cx).field.as_mut() {
                 field.query = text;
             }
-            run::sync(cx);
+            run::sync(w, cx);
             cx.refresh_windows();
         }
     });
-    cx.global_mut::<Search>().field = Some(Field {
+    of_mut(w, cx).field = Some(Field {
         input: input.clone(),
         query: String::new(),
         _events: events,
@@ -105,21 +136,16 @@ fn field(window: &mut Window, cx: &mut App) -> Entity<TextInput> {
 }
 
 /// `search.reset` and `setQuery('')`: the query goes, the field stays.
-fn reset(cx: &mut App) {
-    let Some(input) = cx
-        .global::<Search>()
-        .field
-        .as_ref()
-        .map(|f| f.input.clone())
-    else {
+pub(crate) fn reset(w: Which, cx: &mut App) {
+    let Some(input) = of(w, cx).field.as_ref().map(|f| f.input.clone()) else {
         return;
     };
     input.update(cx, |input, cx| input.set_text("", cx));
-    if let Some(field) = cx.global_mut::<Search>().field.as_mut() {
+    if let Some(field) = of_mut(w, cx).field.as_mut() {
         field.query.clear();
     }
-    log::info!(target: "search", "query cleared");
-    run::sync(cx);
+    log::info!(target: "search", "{w:?} query cleared");
+    run::sync(w, cx);
     cx.refresh_windows();
 }
 
@@ -135,7 +161,7 @@ pub fn section(window: &mut Window, cx: &mut App) -> AnyElement {
 /// `SidebarInlineSearch`: the nav row at rest, the field while hovered, focused or holding a
 /// query. Focus moves straight to the field, which stands for `forceOpen`.
 fn row(window: &mut Window, cx: &mut App) -> AnyElement {
-    let input = field(window, cx);
+    let input = field(Which::Inline, window, cx);
     let input_focus = input.read(cx).focus().clone();
     let hovered = window.use_keyed_state("nav-search-hovered", cx, |_, _| false);
     let clear_focus = window
@@ -163,7 +189,7 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
     if rest.is_focused(window) {
         window.focus(&input_focus, cx);
     }
-    let query = query(cx).to_owned();
+    let query = query(Which::Inline, cx).to_owned();
     let within = input_focus.is_focused(window)
         || clear_focus.is_focused(window)
         || menu.contains_focused(window, cx);
@@ -234,7 +260,7 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
         .hover(|s| s.bg(hover_bg))
         .tooltip(tip(clear))
         .on_click(|_, window, cx| {
-            reset(cx);
+            reset(Which::Inline, cx);
             window.blur(cx);
         })
         .child(
@@ -244,7 +270,7 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
         );
     let border = appearance.token("border-default");
     let surface = appearance.token("sidebar-search-input-bg");
-    let running = !trimmed(cx).is_empty();
+    let running = !trimmed(Which::Inline, cx).is_empty();
     div()
         .id("nav-search")
         .debug_selector(|| "nav-search".into())
@@ -278,23 +304,46 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
         .when(expanded && !query.is_empty(), |el| el.child(clear_button))
         .when(expanded, |el| {
             // The trigger and its menu; focus inside, off the trigger, is `menuOpen`.
-            el.child(
-                div()
-                    .track_focus(&menu)
-                    .child(options::button(&filter, window, cx)),
-            )
+            el.child(div().track_focus(&menu).child(options::button(
+                Which::Inline,
+                &filter,
+                window,
+                cx,
+            )))
         })
         .into_any_element()
 }
 
 /// Whether the options menu holds focus.
-fn menu_open(menu: &FocusHandle, filter: &FocusHandle, window: &Window, cx: &App) -> bool {
+pub(crate) fn menu_open(
+    menu: &FocusHandle,
+    filter: &FocusHandle,
+    window: &Window,
+    cx: &App,
+) -> bool {
     menu.contains_focused(window, cx) && !filter.is_focused(window)
+}
+
+/// A press past the open menu: once done, `out` runs unless a row took it or the menu stayed.
+pub(crate) fn past_menu(
+    (menu, filter): (FocusHandle, FocusHandle),
+    window: &mut Window,
+    cx: &mut App,
+    out: impl FnOnce(&mut Window, &mut App) + 'static,
+) {
+    cx.global_mut::<Search>().chosen = false;
+    // Read, not taken: both searches may wait on the same press.
+    window.defer(cx, move |window, cx| {
+        let chosen = cx.global::<Search>().chosen;
+        if !chosen && !menu_open(&menu, &filter, window, cx) {
+            out(window, cx);
+        }
+    });
 }
 
 /// The provider's listener while the row is unmounted, as Customize leaves it: no surface, no menu.
 pub fn listen(cx: &App) -> Option<AnyElement> {
-    let running = !trimmed(cx).is_empty();
+    let running = !trimmed(Which::Inline, cx).is_empty();
     running.then(|| outside(None).size_0().into_any_element())
 }
 
@@ -312,24 +361,25 @@ fn outside(menu: Option<(FocusHandle, FocusHandle)>) -> gpui::Canvas<Hitbox> {
                 let results = cx.global::<Search>().surface.as_ref();
                 let inside = hitbox.is_hovered_at(e.position, window)
                     || results.is_some_and(|r| r.is_hovered_at(e.position, window))
-                    || crate::sidebar::top_nav::more::over_menu(e.position, window, cx);
+                    || crate::sidebar::top_nav::more::over_menu(e.position, window, cx)
+                    || crate::sessions::rail::search::over(e.position, window, cx);
                 if phase != DispatchPhase::Capture || inside {
                     return;
                 }
-                let Some((menu, filter)) =
-                    menu.clone().filter(|(m, f)| menu_open(m, f, window, cx))
+                // The rail popover's open menu is a popper too.
+                let rail = crate::sessions::rail::search::menu(cx);
+                let Some((menu, filter)) = menu
+                    .clone()
+                    .into_iter()
+                    .chain(rail)
+                    .find(|(m, f)| menu_open(m, f, window, cx))
                 else {
                     log::info!(target: "search", "a press outside the search");
-                    return reset(cx);
+                    return reset(Which::Inline, cx);
                 };
-                // The menu closes on a press past its panels, or on a choice; once done, see.
-                cx.global_mut::<Search>().chosen = false;
-                window.defer(cx, move |window, cx| {
-                    let chosen = std::mem::take(&mut cx.global_mut::<Search>().chosen);
-                    if !chosen && !menu_open(&menu, &filter, window, cx) {
-                        log::info!(target: "search", "a press outside the search and its menu");
-                        reset(cx);
-                    }
+                past_menu((menu, filter), window, cx, |_, cx| {
+                    log::info!(target: "search", "a press outside the search and its menu");
+                    reset(Which::Inline, cx);
                 });
             });
         },

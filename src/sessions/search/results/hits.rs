@@ -5,7 +5,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, div,
 };
 
-use super::{button, choose, hit_text, marks, source, when};
+use super::{Which, button, choose, hit_text, marks, source, when};
 use crate::{
     appearance_settings::text_size,
     i18n::{Arg, Translator},
@@ -47,6 +47,7 @@ fn hit_box(
 
 /// `SearchHitRow`.
 pub(super) fn hit_row(
+    w: Which,
     session: &str,
     hit: &ContentHit,
     query: &str,
@@ -58,9 +59,9 @@ pub(super) fn hit_row(
     let (size12, size10) = (text_size(12.0, cx), text_size(10.0, cx));
     let meta = format!("{} · {}", when(hit.created_at, cx), source(hit, cx));
     let (session, message) = (session.to_owned(), hit.message_id.clone());
-    row.on_click(move |_, _, cx| {
+    row.on_click(move |_, window, cx| {
         cx.stop_propagation();
-        choose(&session, Some(&message), cx);
+        choose(w, &session, Some(&message), window, cx);
     })
     .child(
         div()

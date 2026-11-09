@@ -1,10 +1,12 @@
 //! `CCAgentSidebarUpper`'s two views, crossfading, and `CollapsedView`, the rail's column.
 
 use gpui::{
-    AnyElement, App, ElementId, HoverListenerMode, InteractiveElement as _, IntoElement,
-    ParentElement as _, Role, StatefulInteractiveElement as _, Styled as _, Svg, Window, div,
-    prelude::FluentBuilder as _,
+    AnyElement, App, ElementId, FocusHandle, HoverListenerMode, InteractiveElement as _,
+    IntoElement, ParentElement as _, Role, StatefulInteractiveElement as _, Styled as _, Svg,
+    Window, div, prelude::FluentBuilder as _,
 };
+
+pub mod search;
 
 use crate::{
     i18n::Translator, lucide, motion::ReducedMotion, router, theme::Appearance, tip::tip,
@@ -43,13 +45,14 @@ pub fn upper(rail: f32, on: bool, window: &mut Window, cx: &mut App) -> AnyEleme
         .into_any_element()
 }
 
-/// `CollapsedView`'s scroller, no scrollbar; Search lands with 8.7e2, the segments with 8.7e3.
+/// `CollapsedView`'s scroller, no scrollbar; the segments land with 8.7e3.
 fn view(window: &mut Window, cx: &mut App) -> AnyElement {
     let label = cx.global::<Translator>().t("ccAgent.layout.new", &[]);
     let new = tile(
         "rail-new",
         label,
         lucide::circle_plus().as_bytes(),
+        false,
         window,
         cx,
     )
@@ -72,6 +75,7 @@ fn view(window: &mut Window, cx: &mut App) -> AnyElement {
         .pt(css(12.0))
         .pb(css(8.0))
         .child(new)
+        .child(search::tile(window, cx))
         .child(
             div()
                 .flex_none()
@@ -83,22 +87,25 @@ fn view(window: &mut Window, cx: &mut App) -> AnyElement {
         .into_any_element()
 }
 
-/// `SidebarIconButton`: a 36px round button, its face inset 1px while pressed.
+/// A tile's Tab stop, the same handle each frame.
+fn tab_stop(id: &str, window: &mut Window, cx: &mut App) -> FocusHandle {
+    let key = ElementId::Name(format!("{id}-focus").into());
+    window
+        .use_keyed_state(key, cx, |_, cx| cx.focus_handle().tab_stop(true))
+        .read(cx)
+        .clone()
+}
+
+/// `SidebarIconButton`, 36px round; `open` is `data-state=open`.
 fn tile(
     id: &'static str,
     label: String,
     source: &[u8],
+    open: bool,
     window: &mut Window,
     cx: &mut App,
 ) -> gpui::Stateful<gpui::Div> {
-    let focus = window
-        .use_keyed_state(
-            ElementId::Name(format!("{id}-focus").into()),
-            cx,
-            |_, cx| cx.focus_handle().tab_stop(true),
-        )
-        .read(cx)
-        .clone();
+    let focus = tab_stop(id, window, cx);
     let hovered =
         window.use_keyed_state(ElementId::Name(format!("{id}-hover").into()), cx, |_, _| {
             false
@@ -111,10 +118,14 @@ fn tile(
         1.0
     };
     let appearance = cx.global::<Appearance>();
-    let (fg, hover) = (
-        appearance.hsl_token("titlebar-icon"),
-        appearance.hsl_token("sidebar-item-hover"),
-    );
+    let hover = appearance.hsl_token("sidebar-item-hover");
+    let (fg, chip) = match open {
+        true => (
+            appearance.token("msg-assistant-text"),
+            Some(appearance.token("chat-input-chip-bg")),
+        ),
+        false => (appearance.hsl_token("titlebar-icon"), None),
+    };
     let svg: Svg = lucide::icon(source, 18.0, 2.0).text_color(fg);
     div()
         .id(id)
@@ -149,6 +160,7 @@ fn tile(
                 .inset_0()
                 .rounded(css(9999.0))
                 .when(lit, |el| el.bg(hover))
+                .when_some(chip, |el, chip| el.bg(chip))
                 .group_active(id, |s| s.bg(hover).inset(css(inset))),
         )
         .child(svg)

@@ -55,6 +55,16 @@ pub(super) fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -
 }
 
 pub(crate) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut VisualTestContext {
+    install(cx, dir);
+    let (view, vcx) = cx.add_window_view(|_, cx| List(cx.focus_handle()));
+    vcx.update(|window, cx| window.focus(&view.read(cx).0.clone(), cx));
+    vcx.simulate_resize(size(px(400.0), px(900.0)));
+    vcx.run_until_parked();
+    vcx
+}
+
+/// The globals a list needs, with seven project tasks and a dialogue loaded.
+pub(crate) fn install(cx: &mut TestAppContext, dir: &Path) {
     let week = 7 * 24 * 60 * 60 * 1000;
     let old = jiff::Timestamp::now().as_millisecond() - week;
     let mut sessions: Vec<Session> = (0..7)
@@ -85,11 +95,6 @@ pub(crate) fn open<'a>(cx: &'a mut TestAppContext, dir: &Path) -> &'a mut Visual
         });
         crate::router::install(cx);
     });
-    let (view, vcx) = cx.add_window_view(|_, cx| List(cx.focus_handle()));
-    vcx.update(|window, cx| window.focus(&view.read(cx).0.clone(), cx));
-    vcx.simulate_resize(size(px(400.0), px(900.0)));
-    vcx.run_until_parked();
-    vcx
 }
 
 fn shown(cx: &mut VisualTestContext, id: &str) -> bool {

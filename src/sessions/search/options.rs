@@ -10,11 +10,12 @@ use gpui::{
     prelude::FluentBuilder as _,
 };
 
-use super::{Search, projects};
+use super::{Search, Which, of, of_mut, projects, run};
 use crate::{
     i18n::{Arg, Translator},
     lucide::icon,
     preferences::Preferences,
+    sessions::group::Project,
     theme::Appearance,
     units::css,
 };
@@ -48,9 +49,8 @@ const ACTIVITIES: [Choice; 5] = [
     ("all", "ccAgent.sidebar.filterLastActivity.all"),
 ];
 
-/// The sort shared by every search, and the filters each session starts at `all`.
+/// A search's filters, each starting at `all`; the sort is shared, on `Search`.
 pub struct Options {
-    pub sort: &'static str,
     pub status: &'static str,
     pub agent: &'static str,
     pub last_activity: &'static str,
@@ -58,29 +58,33 @@ pub struct Options {
     pub projects: Option<Vec<String>>,
 }
 
-impl Options {
-    /// `loadSearchSortBy`: an unknown or missing value is `relevance`.
-    pub fn load(prefs: &Preferences) -> Self {
-        let raw = match prefs.text(SORT_KEY) {
-            Ok(raw) => raw,
-            Err(error) => {
-                log::warn!(target: "search", "sortBy unread: {error:#}");
-                None
-            }
-        };
-        let sort = SORTS
-            .iter()
-            .find(|(v, _)| Some(*v) == raw)
-            .map_or("relevance", |c| c.0);
+/// `loadSearchSortBy`: an unknown or missing value is `relevance`.
+pub fn load_sort(prefs: &Preferences) -> &'static str {
+    let raw = match prefs.text(SORT_KEY) {
+        Ok(raw) => raw,
+        Err(error) => {
+            log::warn!(target: "search", "sortBy unread: {error:#}");
+            None
+        }
+    };
+    SORTS
+        .iter()
+        .find(|(v, _)| Some(*v) == raw)
+        .map_or("relevance", |c| c.0)
+}
+
+impl Default for Options {
+    fn default() -> Self {
         Options {
-            sort,
             status: "all",
             agent: "all",
             last_activity: "all",
             projects: None,
         }
     }
+}
 
+impl Options {
     /// `activeFilterCount`; the sort never counts.
     pub fn active_count(&self) -> usize {
         let filters = [self.status, self.agent, self.last_activity];
@@ -88,8 +92,8 @@ impl Options {
     }
 }
 
-fn options(cx: &mut App) -> &mut Options {
-    &mut cx.global_mut::<Search>().options
+fn options(w: Which, cx: &mut App) -> &mut Options {
+    &mut of_mut(w, cx).options
 }
 
 /// A row chosen: the press was the menu's.
@@ -97,41 +101,42 @@ fn chosen(cx: &mut App) {
     cx.global_mut::<Search>().chosen = true;
 }
 
-/// `setSearchSortBy`: the choice is written, as `persistSearchSortBy` writes it.
+/// `setSearchSortBy`: written as `persistSearchSortBy` writes it; both searches follow.
 fn set_sort(value: &'static str, cx: &mut App) {
-    if options(cx).sort == value {
+    if cx.global::<Search>().sort == value {
         return;
     }
-    options(cx).sort = value;
+    cx.global_mut::<Search>().sort = value;
     log::info!(target: "search", "sort {value}");
     if let Err(error) = cx.global_mut::<Preferences>().set(SORT_KEY, value) {
         log::error!(target: "search", "sortBy not saved: {error:#}");
     }
-    super::run::sync(cx);
+    run::sync(Which::Inline, cx);
+    run::sync(Which::Rail, cx);
     cx.refresh_windows();
 }
 
-fn set(field: fn(&mut Options) -> &mut &'static str, value: &'static str, cx: &mut App) {
-    *field(options(cx)) = value;
-    log::info!(target: "search", "filter {value}");
-    super::run::sync(cx);
+type Field = fn(&mut Options) -> &mut &'static str;
+
+fn set(w: Which, field: Field, value: &'static str, cx: &mut App) {
+    *field(options(w, cx)) = value;
+    log::info!(target: "search", "{w:?} filter {value}");
+    run::sync(w, cx);
     cx.refresh_windows();
 }
 
 /// `resetFilters`.
-fn reset(cx: &mut App) {
-    let o = options(cx);
-    (o.status, o.agent, o.last_activity) = ("all", "all", "all");
-    o.projects = None;
-    log::info!(target: "search", "filters reset");
-    super::run::sync(cx);
+fn reset(w: Which, cx: &mut App) {
+    *options(w, cx) = Options::default();
+    log::info!(target: "search", "{w:?} filters reset");
+    run::sync(w, cx);
     cx.refresh_windows();
 }
 
-fn set_projects(value: Option<Vec<String>>, cx: &mut App) {
-    log::info!(target: "search", "project filter {:?}", value.as_ref().map(Vec::len));
-    options(cx).projects = value;
-    super::run::sync(cx);
+fn set_projects(w: Which, value: Option<Vec<String>>, cx: &mut App) {
+    log::info!(target: "search", "{w:?} project filter {:?}", value.as_ref().map(Vec::len));
+    options(w, cx).projects = value;
+    run::sync(w, cx);
     cx.refresh_windows();
 }
 
@@ -147,14 +152,14 @@ fn projects_label(o: &Options, t: &Translator) -> String {
 }
 
 /// The Projects submenu; the task count joins the label.
-fn projects_menu(o: &Options, known: &[crate::sessions::group::Project], t: &Translator) -> Menu {
+fn projects_menu(w: Which, o: &Options, known: &[Project], t: &Translator) -> Menu {
     let all = MenuItem::check(
         t.t("ccAgent.search.filter.allProjects", &[]),
         o.projects.is_none(),
     )
-    .on_click(|_, cx| {
+    .on_click(move |_, cx| {
         chosen(cx);
-        set_projects(None, cx)
+        set_projects(w, None, cx)
     });
     let menu = Menu::new().item(all);
     let menu = match known.is_empty() {
@@ -167,8 +172,8 @@ fn projects_menu(o: &Options, known: &[crate::sessions::group::Project], t: &Tra
         let item = MenuItem::check(text, projects::selected(o.projects.as_deref(), &p.key))
             .on_click(move |_, cx| {
                 chosen(cx);
-                let next = projects::next(options(cx).projects.as_deref(), &key);
-                set_projects(next, cx)
+                let next = projects::next(options(w, cx).projects.as_deref(), &key);
+                set_projects(w, next, cx)
             });
         menu.item(match p.key.starts_with("remote:") {
             true => item.icon(IconName::Globe),
@@ -199,11 +204,11 @@ fn radios(
     })
 }
 
-fn menu(o: &Options, known: &[crate::sessions::group::Project], t: &Translator) -> Menu {
+fn menu(w: Which, o: &Options, sort: &str, known: &[Project], t: &Translator) -> Menu {
     let reset_row = (o.active_count() > 0).then(|| {
-        MenuItem::new(t.t("ccAgent.search.filter.reset", &[])).on_click(|_, cx| {
+        MenuItem::new(t.t("ccAgent.search.filter.reset", &[])).on_click(move |_, cx| {
             chosen(cx);
-            reset(cx)
+            reset(w, cx)
         })
     });
     let sub = |heading: &str, menu: Menu| MenuItem::submenu(t.t(heading, &[]), menu);
@@ -211,37 +216,39 @@ fn menu(o: &Options, known: &[crate::sessions::group::Project], t: &Translator) 
         .group(t.t("ccAgent.search.filter.label", &[]), reset_row)
         .item(sub(
             "ccAgent.sidebar.filterSortByHeading",
-            radios(t, &SORTS, o.sort, set_sort),
+            radios(t, &SORTS, sort, set_sort),
         ))
         .item(sub(
             "ccAgent.sidebar.filterStatusHeading",
-            radios(t, &STATUSES, o.status, |v, cx| {
-                set(|o| &mut o.status, v, cx)
+            radios(t, &STATUSES, o.status, move |v, cx| {
+                set(w, |o| &mut o.status, v, cx)
             }),
         ))
         .item(sub(
             "ccAgent.sidebar.filterProjectsHeading",
-            projects_menu(o, known, t),
+            projects_menu(w, o, known, t),
         ))
         .item(sub(
             "ccAgent.sidebar.filterAgentHeading",
-            radios(t, &AGENTS, o.agent, |v, cx| set(|o| &mut o.agent, v, cx)),
+            radios(t, &AGENTS, o.agent, move |v, cx| {
+                set(w, |o| &mut o.agent, v, cx)
+            }),
         ))
         .item(sub(
             "ccAgent.sidebar.filterLastActivityHeading",
-            radios(t, &ACTIVITIES, o.last_activity, |v, cx| {
-                set(|o| &mut o.last_activity, v, cx)
+            radios(t, &ACTIVITIES, o.last_activity, move |v, cx| {
+                set(w, |o| &mut o.last_activity, v, cx)
             }),
         ))
 }
 
 /// The compact trigger (`SEARCH_TOOL_ICON_CLASS`) and its menu; `focus` is its Tab stop.
-pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElement {
+pub fn button(w: Which, focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElement {
     let t = cx.global::<Translator>();
-    let o = &cx.global::<Search>().options;
+    let (o, sort) = (&of(w, cx).options, cx.global::<Search>().sort);
     let active = o.active_count();
     let values = [
-        label(&SORTS, o.sort, t),
+        label(&SORTS, sort, t),
         label(&STATUSES, o.status, t),
         label(&AGENTS, o.agent, t),
         label(&ACTIVITIES, o.last_activity, t),
@@ -254,7 +261,7 @@ pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElem
         .map(|(n, v)| (*n, Arg::Text(v)))
         .collect();
     let aria = t.t("ccAgent.search.filterAria", &args);
-    let menu = menu(o, projects::known_of(cx), t);
+    let menu = menu(w, o, sort, projects::known_of(cx), t);
     let appearance = cx.global::<Appearance>();
     let (tertiary, strong) = (
         appearance.token("text-tertiary"),
@@ -263,6 +270,27 @@ pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElem
     let hover = appearance.hsl_token("sidebar-item-hover");
     let accent = appearance.token("status-bar-accent");
     let focus = focus.clone();
+    if w == Which::Rail {
+        let text = match active {
+            0 => t.t("ccAgent.search.filter.label", &[]),
+            n => t.t(
+                "ccAgent.search.filter.active",
+                &[("count", Arg::Number(n as i64))],
+            ),
+        };
+        let look = labelled(text, aria, active > 0, &focus, cx);
+        let menu = menu_under(
+            "rail-search-filter".into(),
+            &menu,
+            move |click| {
+                look.on_click(move |event, window, cx| click(event, window, cx))
+                    .into_any_element()
+            },
+            window,
+            cx,
+        );
+        return menu.into_any_element();
+    }
     menu_under(
         "search-filter".into(),
         &menu,
@@ -313,6 +341,63 @@ pub fn button(focus: &FocusHandle, window: &mut Window, cx: &mut App) -> AnyElem
         cx,
     )
     .into_any_element()
+}
+
+/// `SEARCH_TOOL_BUTTON_CLASS` with its label and chevron, the popover's trigger.
+fn labelled(
+    text: String,
+    aria: String,
+    active: bool,
+    focus: &FocusHandle,
+    cx: &App,
+) -> gpui::Stateful<gpui::Div> {
+    let appearance = cx.global::<Appearance>();
+    let size = crate::appearance_settings::text_size(12.0, cx);
+    let (hover, strong, secondary) = (
+        appearance.token("cmd-palette-item-hover"),
+        appearance.token("text-primary"),
+        appearance.token("text-secondary"),
+    );
+    let group = "rail-search-filter-button";
+    div()
+        .id(group)
+        .group(group)
+        .debug_selector(|| "rail-search-filter-button".into())
+        .track_focus(focus)
+        .role(Role::Button)
+        .aria_label(aria)
+        .aria_toggled(if active {
+            Toggled::True
+        } else {
+            Toggled::False
+        })
+        .flex()
+        .h(css(28.0))
+        .min_w_0()
+        .items_center()
+        .gap(css(6.0))
+        .rounded(css(9999.0))
+        .border(css(1.0))
+        .border_color(appearance.token("border-default"))
+        .bg(match active {
+            true => appearance.token("surface-chip"),
+            false => appearance.token("surface-elevated"),
+        })
+        .px(css(10.0))
+        .cursor_pointer()
+        .text_size(css(size))
+        .text_color(secondary)
+        .hover(|s| s.bg(hover).text_color(strong))
+        .child(
+            icon(IconName::SlidersHorizontal.svg(), 13.0, 2.0)
+                .text_color(secondary)
+                .group_hover(group, |s| s.text_color(strong)),
+        )
+        .child(div().truncate().child(text))
+        .child(
+            icon(IconName::ChevronDown.svg(), 13.0, 2.0)
+                .text_color(appearance.token("cmd-palette-item-meta")),
+        )
 }
 
 #[cfg(test)]

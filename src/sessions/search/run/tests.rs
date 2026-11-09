@@ -15,10 +15,7 @@ use crate::{
             merge::{Item, MatchKind, Summary},
         },
     },
-    sessions::{
-        search::Search,
-        view_tests::{click, open},
-    },
+    sessions::view_tests::{click, open},
 };
 
 const KEYWORD: &str = "本次请求已禁用语义检索, 仅用 FTS。";
@@ -135,7 +132,7 @@ type Shown = (String, Vec<String>, Option<&'static str>);
 
 fn now(cx: &mut VisualTestContext) -> (Status, Option<Shown>) {
     cx.update(|_, cx| {
-        let (status, response) = state(cx);
+        let (status, response) = state(crate::sessions::search::Which::Inline, cx);
         let shown = response.map(|r| {
             let found = r.results.iter().map(|i| i.session.id.clone()).collect();
             (r.query.clone(), found, r.vector_skip_reason)
@@ -203,8 +200,10 @@ fn an_option_change_searches_again_and_keeps_the_page_meanwhile(cx: &mut TestApp
     cx.simulate_input("login");
     wait(cx, 900);
     cx.update(|_, cx| {
-        cx.global_mut::<Search>().options.status = "archived";
-        sync(cx);
+        crate::sessions::search::of_mut(crate::sessions::search::Which::Inline, cx)
+            .options
+            .status = "archived";
+        sync(crate::sessions::search::Which::Inline, cx);
     });
     assert_eq!(
         now(cx),

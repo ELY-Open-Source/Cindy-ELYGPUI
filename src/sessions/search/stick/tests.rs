@@ -66,7 +66,10 @@ fn the_results_under_the_row_take_no_press(cx: &mut TestAppContext) {
     cx.run_until_parked();
     let path = cx.update(|_, cx| crate::router::path(cx).to_owned());
     assert!(!path.starts_with("/cc-agent/p"), "{path}");
-    assert_eq!(cx.update(|_, cx| query(cx).to_owned()), "plan");
+    assert_eq!(
+        cx.update(|_, cx| query(crate::sessions::search::Which::Inline, cx).to_owned()),
+        "plan"
+    );
 }
 
 #[gpui::test]

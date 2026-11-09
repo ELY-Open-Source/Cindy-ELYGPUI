@@ -6,7 +6,7 @@ use std::{cmp::Ordering, time::Duration};
 use futures::channel::oneshot;
 use gpui::{App, Task};
 
-use super::{Search, projects, trimmed};
+use super::{Search, Which, of, of_mut, projects, trimmed};
 use crate::{
     i18n::Translator,
     localdb::{
@@ -53,9 +53,11 @@ struct Scoped {
     session_ids: Option<Vec<String>>,
 }
 
-/// `status`, `response` and the request in flight.
+/// `status`, `response` and the request in flight; a disabled search stays idle.
 #[derive(Default)]
 pub struct Run {
+    /// `enabled`: the inline one's always, the rail's while its popover is open.
+    pub enabled: bool,
     seq: u64,
     key: Option<Scoped>,
     status: Status,
@@ -80,16 +82,16 @@ enum Pass {
 }
 
 /// The search's state and the page it shows.
-pub fn state(cx: &App) -> (Status, Option<&Response>) {
-    let run = &cx.global::<Search>().run;
+pub fn state(w: Which, cx: &App) -> (Status, Option<&Response>) {
+    let run = &of(w, cx).run;
     (run.status, run.response.as_ref())
 }
 
-pub(super) fn key(cx: &App) -> Key {
-    let o = &cx.global::<Search>().options;
+pub(super) fn key(w: Which, cx: &App) -> Key {
+    let o = &of(w, cx).options;
     Key {
-        query: trimmed(cx).to_owned(),
-        sort: o.sort,
+        query: trimmed(w, cx).to_owned(),
+        sort: cx.global::<Search>().sort,
         status: o.status,
         agent: o.agent,
         last_activity: o.last_activity,
@@ -97,13 +99,16 @@ pub(super) fn key(cx: &App) -> Key {
 }
 
 /// Runs the effect again once the query or an option changed.
-pub fn sync(cx: &mut App) {
-    let session_ids = projects::scope(cx.global::<Search>().options.projects.as_deref(), cx);
-    let key = Scoped {
-        key: key(cx),
+pub fn sync(w: Which, cx: &mut App) {
+    let session_ids = projects::scope(of(w, cx).options.projects.as_deref(), cx);
+    let mut key = Scoped {
+        key: key(w, cx),
         session_ids,
     };
-    let run = &mut cx.global_mut::<Search>().run;
+    let run = &mut of_mut(w, cx).run;
+    if !run.enabled {
+        key.key.query.clear();
+    }
     if run.key.as_ref() == Some(&key) {
         return;
     }
@@ -113,20 +118,27 @@ pub fn sync(cx: &mut App) {
     run.pages = Pages::default();
     if key.key.query.is_empty() {
         (run.status, run.response) = (Status::Idle, None);
-        log::debug!(target: "search", "idle");
+        log::debug!(target: "search", "{w:?} idle");
         return;
     }
     run.status = Status::Searching;
     let seq = run.seq;
     let k = &key.key;
-    log::info!(target: "search", "search {seq} for {} chars, sort {}, {:?} tasks in scope",
+    log::info!(target: "search", "{w:?} search {seq} for {} chars, sort {}, {:?} tasks in scope",
         k.query.chars().count(), k.sort, key.session_ids.as_ref().map(Vec::len));
     let passes = [(Pass::Keyword, DEBOUNCE), (Pass::Hybrid, SEMANTIC_DEBOUNCE)]
-        .map(|(pass, delay)| start(seq, pass, delay, key.clone(), cx));
-    cx.global_mut::<Search>().run.passes = passes.into();
+        .map(|(pass, delay)| start(w, seq, pass, delay, key.clone(), cx));
+    of_mut(w, cx).run.passes = passes.into();
 }
 
-fn start(seq: u64, pass: Pass, delay: Duration, key: Scoped, cx: &mut App) -> Task<()> {
+/// `enabled` changed: the rail's popover opened or closed.
+pub fn enable(w: Which, on: bool, cx: &mut App) {
+    of_mut(w, cx).run.enabled = on;
+    log::info!(target: "search", "{w:?} search enabled {on}");
+    sync(w, cx);
+}
+
+fn start(w: Which, seq: u64, pass: Pass, delay: Duration, key: Scoped, cx: &mut App) -> Task<()> {
     cx.spawn(async move |cx| {
         cx.background_executor().timer(delay).await;
         let sort = key.key.sort;
@@ -148,7 +160,7 @@ fn start(seq: u64, pass: Pass, delay: Duration, key: Scoped, cx: &mut App) -> Ta
                 None
             }
         };
-        cx.update(|cx| settle(seq, pass, page, sort, cx));
+        cx.update(|cx| settle(w, seq, pass, page, sort, cx));
     })
 }
 
@@ -193,8 +205,8 @@ fn dispatch(pass: Pass, scoped: Scoped, cx: &App) -> Result<Answer, &'static str
 }
 
 /// `publishResults`: the hybrid page wins once it lands; an empty page waits for both passes.
-fn settle(seq: u64, pass: Pass, page: Option<Response>, sort: &str, cx: &mut App) {
-    let run = &mut cx.global_mut::<Search>().run;
+fn settle(w: Which, seq: u64, pass: Pass, page: Option<Response>, sort: &str, cx: &mut App) {
+    let run = &mut of_mut(w, cx).run;
     if run.seq != seq {
         log::debug!(target: "search", "{pass:?} pass of search {seq} is stale");
         return;
@@ -208,7 +220,7 @@ fn settle(seq: u64, pass: Pass, page: Option<Response>, sort: &str, cx: &mut App
     let Some(local) = pages.semantic.as_ref().or(pages.keyword.as_ref()) else {
         if settled {
             run.status = Status::Error;
-            log::warn!(target: "search", "search {seq} failed");
+            log::warn!(target: "search", "{w:?} search {seq} failed");
             cx.refresh_windows();
         }
         return;
@@ -218,7 +230,7 @@ fn settle(seq: u64, pass: Pass, page: Option<Response>, sort: &str, cx: &mut App
     if next.results.is_empty() && !settled {
         return;
     }
-    log::info!(target: "search", "search {seq} shows {} results after the {pass:?} pass", next.results.len());
+    log::info!(target: "search", "{w:?} search {seq} shows {} results after the {pass:?} pass", next.results.len());
     (run.response, run.status) = (Some(next), Status::Done);
     cx.refresh_windows();
 }

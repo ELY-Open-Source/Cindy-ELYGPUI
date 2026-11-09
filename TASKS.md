@@ -380,9 +380,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
           hover and press face, tip), the nav tiles in the saved order (Automations and Plugins
           with 15.0 and 16.0), More drawing nothing under the defaults (no hidden entries, no
           Customize on the rail), the divider; the Teammates tile with 14.0
-        - [ ] 8.7e2 The Search tile as `ConversationSearchBox`: its own search while open, the
-          popover at the tile's right (field, clear, options, results with the empty line),
-          focus on open, reset on close, a chosen result closing it
+        - [x] 8.7e2 The Search tile as `ConversationSearchBox`: its own `useConversationSearch`
+          (query, filters, projects, run) searching only while open, the sort shared with the
+          inline one as `subscribeSearchSortBy` syncs it; the popover at the tile's right (field,
+          clear, the labelled options trigger, `SearchResultsBody` with the empty line in its
+          scroller), focus on open; Escape, a press outside, focus leaving or the trigger close
+          it and reset the query; a chosen result closes it; the inline search counts it as a
+          popper
         - [ ] 8.7e3 `RailNav`: the Pinned, Projects and Dialogues tiles with their hover panels
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and

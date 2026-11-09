@@ -173,7 +173,9 @@ fn a_press_on_the_panel_clears_a_query_it_was_opened_over(cx: &mut TestAppContex
         .advance_clock(std::time::Duration::from_millis(90));
     cx.run_until_parked();
     click(cx, "nav-more-customize");
-    let query = |cx: &mut VisualTestContext| cx.update(|_, cx| search::query(cx).to_owned());
+    let query = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| search::query(crate::sessions::search::Which::Inline, cx).to_owned())
+    };
     assert_eq!(query(cx), "plan", "the menu's choice keeps it");
     click(cx, "nav-customize-row-plugins");
     assert_eq!(query(cx), "", "the panel is outside the search");

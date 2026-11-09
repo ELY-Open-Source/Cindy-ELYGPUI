@@ -152,7 +152,9 @@ fn a_press_on_the_menu_keeps_a_running_query(cx: &mut TestAppContext) {
         Modifiers::none(),
     );
     cx.run_until_parked();
-    let query = cx.update(|_, cx| crate::sessions::search::query(cx).to_owned());
+    let query = cx.update(|_, cx| {
+        crate::sessions::search::query(crate::sessions::search::Which::Inline, cx).to_owned()
+    });
     assert_eq!(query, "plan");
 }
 

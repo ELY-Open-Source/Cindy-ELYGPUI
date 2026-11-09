@@ -333,8 +333,8 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     // The list stays built while results show, as `hidden` keeps it mounted.
     let handle = cx.global::<super::reveal::Reveal>().handle.clone();
     super::search::scroll::sync(&handle, cx);
-    let results = super::search::results::body(window, cx);
-    let pin_search = !super::search::trimmed(cx).is_empty();
+    let results = super::search::results::body(super::search::Which::Inline, window, cx);
+    let pin_search = !super::search::trimmed(super::search::Which::Inline, cx).is_empty();
     let list = div()
         .flex()
         .flex_col()

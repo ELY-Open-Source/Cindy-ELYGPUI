@@ -8,10 +8,7 @@ use crate::{
     localdb::search::conversations::tests::task,
     sessions::{
         reveal::Reveal,
-        search::{
-            Search,
-            run::tests::{search, wait},
-        },
+        search::run::tests::{search, wait},
         view_tests::click,
     },
 };
@@ -67,8 +64,10 @@ fn an_option_change_scrolls_the_results_back_up(cx: &mut TestAppContext) {
     scroll(cx, 40.0);
     assert_eq!(offset(cx), -40.0);
     cx.update(|_, cx| {
-        cx.global_mut::<Search>().options.status = "archived";
-        crate::sessions::search::run::sync(cx);
+        crate::sessions::search::of_mut(crate::sessions::search::Which::Inline, cx)
+            .options
+            .status = "archived";
+        crate::sessions::search::run::sync(crate::sessions::search::Which::Inline, cx);
         cx.refresh_windows();
     });
     cx.run_until_parked();
@@ -91,7 +90,11 @@ fn a_press_that_clears_restores_once_the_pointer_lifts(cx: &mut TestAppContext) 
     });
     cx.run_until_parked();
     assert_eq!(
-        cx.update(|_, cx| crate::sessions::search::query(cx).to_owned()),
+        cx.update(|_, cx| crate::sessions::search::query(
+            crate::sessions::search::Which::Inline,
+            cx
+        )
+        .to_owned()),
         ""
     );
     assert_eq!(offset(cx), 0.0, "held while the pointer is down");
