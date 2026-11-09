@@ -278,13 +278,19 @@ listed in `tasks/done.md`.
           buttons; Continue closes it and rechecks the still-interrupted set; the send comes
           with 10.0, so each picked task fails as Cindy's failed send does (the
           `continueFailed` toast). The release notes that suspend it come with their chapter
-- [ ] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most
+- [x] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most
   50 in memory, cleared on owner change, ⌘[ / ⌘]) with `SessionHistoryButtons`
 - [ ] 8.10 The project header's actions as `ProjectNode.tsx` draws them: the hover More and New
   in this folder buttons and its menu, by More or a right click (Rename, Search in this project
   with the search's locked project chip and the list's scroll freeze on that open, Show files, Open in the file manager, Copy deep link,
   Import, Remove from sidebar), and the dialogue group's Search; actions whose feature lands in a
   later chapter come with it; the rail panels' New buttons and their project row menu with them
+  - [ ] 8.10a The header's hover More and New buttons and the menu by More or a right click:
+    Rename (double click too, `project_aliases`), Pin/Unpin, Copy deep link, Remove from sidebar
+  - [ ] 8.10b Search in this project with the locked project chip and the scroll freeze, and the
+    dialogue group's Search
+  - [ ] 8.10c Open in the file manager: `filePathPolicy.ts`'s blocklist and an open that reports
+    its error
 - [ ] 8.11 A right click on the list's blank space opens the filter menu at the pointer, as
   `handleSidebarBlankContextMenu` opens `SidebarFilterPopover`
 ## 9. Chat view

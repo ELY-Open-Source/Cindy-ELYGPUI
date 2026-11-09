@@ -80,7 +80,7 @@ pub struct Sessions {
     swept_for: Option<Db>,
     user_data: PathBuf,
     /// `owners/<key>`, where `sidebar-settings.json` lives.
-    owner_dir: Option<PathBuf>,
+    pub(crate) owner_dir: Option<PathBuf>,
     /// Pinned-order saves in flight, one at a time.
     pins: pin::Writes,
     watcher: Option<notify::RecommendedWatcher>,

@@ -314,3 +314,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: `dialog/check.rs` draws the box with its own focus, which the label's click takes;
   the row's hover ignores input modality.
 - Round 2: PASS.
+
+## 8.9 Session browse history
+- Round 1: FAIL. A disabled history button kept its action name; Cindy names it by the
+  unavailable reason.
+- Fixed: `history::names` gives a disabled button the reason as name and tip.
+- Round 2: PASS.

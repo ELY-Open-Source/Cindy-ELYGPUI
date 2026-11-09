@@ -101,6 +101,15 @@ impl Render for Root {
                     this.sidebar.update(cx, |sidebar, cx| sidebar.toggle(cx));
                     cx.stop_propagation();
                 }
+                for (id, direction) in
+                    [("session-history-back", -1), ("session-history-forward", 1)]
+                {
+                    if cx.global::<AppShortcuts>().matches(id, event)
+                        && crate::browse_history::go(direction, cx)
+                    {
+                        cx.stop_propagation();
+                    }
+                }
             }))
             .capture_any_mouse_down(cx.listener(|this, event: &gpui::MouseDownEvent, _, cx| {
                 if event.button == MouseButton::Left {
@@ -293,6 +302,8 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
     Ok(())
 }
 
+#[cfg(test)]
+mod history_tests;
 #[cfg(test)]
 mod screen_tests;
 

@@ -313,6 +313,15 @@ defines scope and what 1:1 means.
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
   through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button). `tip::rich`
   takes any content.
+  `src/browse_history.rs` is `sessionBrowseHistory.ts` with `useSessionBrowseHistory`: one
+  `History` global (50 task ids, emptied when the data owner changes) that follows the `Router`;
+  a hop waits for its route before it moves the cursor. `chrome/history.rs` is
+  `SessionHistoryButtons` on `ChromeIconButton`, after the toggle; the window root's
+  `capture_key_down` runs the shortcuts and stops a key only when it hopped. `src/press.rs` is a
+  native button's `:hover` and `:active` (hover ignores keys, Space presses while focused) and
+  `src/transition.rs` the CSS transition that `transition::keyed` keeps per element. gpui's div
+  has no `aria-disabled`. Forgetting deleted tasks comes with 18.0; the `.xterm` and `.cm-editor`
+  exclusion with their editors.
   Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon`
   also swaps in Cindy's `strokeWidth`. An `svg` takes no inherited color: set `text_color` on it.
 - Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for
@@ -380,7 +389,7 @@ defines scope and what 1:1 means.
   out; gpui has no transform, so the panel rises without its 0.96 scale, and no backdrop blur.
   `confirm_dialog/button.rs` draws Cindy's `Button` (`lg`, `confirmation` palette) itself, since
   Ely's tones come from Ely's palette: the face on the border box, pressed in to the padding box
-  by mouse or held Space; `transition.rs` is a CSS transition with its reversing shortening, the
+  by mouse or held Space (`press.rs`); the `transition.rs` transitions carry
   fill over `--motion-fast` (Oklab beside an `oklch()` token, else sRGB), the inset over
   `--motion-instant`. A disabled one keeps the arrow cursor, as `globals.css` does.
 - Cindy's `components/ui` primitives are drawn with Ely's (the toast action is Ely's secondary

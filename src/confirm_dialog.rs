@@ -16,7 +16,6 @@ use gpui::{
 use crate::{appearance_settings::text_size, motion, theme::Appearance, units::css};
 
 mod button;
-mod transition;
 
 use button::{Look, Run};
 

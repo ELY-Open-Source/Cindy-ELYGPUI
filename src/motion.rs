@@ -64,6 +64,8 @@ pub fn refresh_reduced_motion(cx: &mut gpui::App) {
 pub const FAST: std::time::Duration = std::time::Duration::from_millis(150);
 /// `--motion-base`.
 pub const BASE: std::time::Duration = std::time::Duration::from_millis(200);
+/// `--motion-instant`.
+pub const INSTANT: std::time::Duration = std::time::Duration::from_millis(80);
 /// `--motion-enter`.
 pub const ENTER: std::time::Duration = std::time::Duration::from_millis(250);
 /// `--motion-exit`.

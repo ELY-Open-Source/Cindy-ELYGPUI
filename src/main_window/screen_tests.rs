@@ -13,7 +13,7 @@ use crate::{
     toast::Toasts,
 };
 
-fn open(cx: &mut TestAppContext, dir: &std::path::Path) -> VisualTestContext {
+pub(super) fn open(cx: &mut TestAppContext, dir: &std::path::Path) -> VisualTestContext {
     open_zoomed(cx, dir, 1.0)
 }
 
@@ -32,6 +32,7 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::router::install(cx);
+        crate::browse_history::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());
@@ -132,7 +133,7 @@ fn the_header_starts_inset_and_never_drags_a_panel(cx: &mut TestAppContext) {
     );
 }
 
-fn wait(vcx: &mut VisualTestContext, ms: u64) {
+pub(super) fn wait(vcx: &mut VisualTestContext, ms: u64) {
     vcx.executor()
         .advance_clock(std::time::Duration::from_millis(ms));
     vcx.run_until_parked();

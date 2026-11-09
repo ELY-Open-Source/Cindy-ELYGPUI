@@ -26,6 +26,8 @@ pub struct ChromeActions {
 impl ChromeActions {
     pub fn new(sidebar: Entity<Sidebar>, cx: &mut Context<Self>) -> Self {
         cx.observe(&sidebar, |_, _, cx| cx.notify()).detach();
+        cx.observe_global::<crate::browse_history::History>(|_, cx| cx.notify())
+            .detach();
         ChromeActions {
             sidebar,
             left: None,
@@ -101,7 +103,8 @@ impl Render for ChromeActions {
             .flex()
             .items_center()
             .gap_1()
-            .child(self.toggle(cx));
+            .child(self.toggle(cx))
+            .children(super::history::buttons(window, cx));
         div()
             .absolute()
             .top_0()

@@ -388,28 +388,3 @@ fn reduced_motion_keeps_the_face_out(cx: &mut TestAppContext) {
     wait(cx, 100);
     assert_eq!(face_outset(cx), REST);
 }
-
-#[test]
-fn colors_mix_premultiplied_in_their_space() {
-    use gpui::{Hsla, Rgba};
-    let rgba = |r, g, b, a| Hsla::from(Rgba { r, g, b, a });
-    let clear = rgba(0.0, 0.0, 0.0, 0.0);
-    let tint = rgba(1.0, 1.0, 1.0, 0.06);
-    let mid: Rgba = super::button::mix_srgb(clear, tint, 0.5).into();
-    assert!(
-        (mid.a - 0.03).abs() < 1e-4 && (mid.r - 1.0).abs() < 1e-3,
-        "{mid:?}"
-    );
-    let (dark, light) = (rgba(0.09, 0.09, 0.09, 1.0), rgba(0.2, 0.2, 0.2, 1.0));
-    let ends: [Rgba; 2] = [
-        super::button::mix_oklab(dark, light, 0.0).into(),
-        super::button::mix_oklab(dark, light, 1.0).into(),
-    ];
-    assert!((ends[0].r - 0.09).abs() < 1e-3 && (ends[1].r - 0.2).abs() < 1e-3);
-    let half: Rgba = super::button::mix_oklab(dark, light, 0.5).into();
-    let srgb: Rgba = super::button::mix_srgb(dark, light, 0.5).into();
-    assert!(
-        half.r < srgb.r,
-        "Oklab's midpoint is darker in sRGB: {half:?} {srgb:?}"
-    );
-}
