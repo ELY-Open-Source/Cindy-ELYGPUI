@@ -300,7 +300,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       `buildManualPinnedReorder`, then `savePinnedOrder`'s `reorder` rebased on the file
     - [x] 8.5c2e2 Card mode: one column as the list above, two or three as
       `DraggableCardColumns` lays a drag across its round-robin columns
-- [ ] 8.6 The router and the row's way into a task
+- [x] 8.6 The router and the row's way into a task
     - [x] 8.6a The router as `router.tsx` declares it for the routes this chapter owns: `/` with
       `MainEntryRedirect` (to `/cc-agent` until 13.0's owner-scoped storage brings the remembered
       entry and `useRememberMainEntry`), `/cc-agent` with `CCAgentIndexRedirect` and
@@ -321,6 +321,22 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles, with
   `useActiveMainView`'s active view and `navigateToView`
+    - [ ] 8.7a The New row (`handleNew` to `/cc-agent/new`) in the sidebar's fixed top section
+      (`section='pinned'`), the nav rows' pill (`ROW_CLASS`, `ROW_ACTIVE_CLASS`), and the rows
+      `section='scrollable'` draws at the top of the list's scroller, in the saved order
+    - [ ] 8.7b Search at rest and open as `SidebarInlineSearch` draws it (hover or focus opens
+      the field), its query and options in `conversationSearchContext` and
+      `conversationSearchPrefs`; a search from another view returns to the task view
+      (`useActiveMainView`'s `navigateToView`)
+    - [ ] 8.7c The search results in place of the list (`messages_fts` through `cjk_seg`, sorted
+      as `conversationSearchSort` sorts), with the search row sticky over them and the clip
+      below it while a query runs
+    - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
+      hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
+      `sidebarNavigationPrefs.ts`; without a data owner the defaults apply and nothing is saved,
+      as Cindy does, until 13.0's owner-scoped storage
+    - [ ] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as
+      `ConversationSearchBox`'s popover, and More
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the
