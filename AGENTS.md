@@ -392,6 +392,15 @@ defines scope and what 1:1 means.
   window pauses through gpui's `WindowVisibility`; Hyprland 0.56 sends no `suspended` state for a
   window on another workspace, so there it keeps playing. Decoder threads wake gpui from outside,
   so tests drive the real decoder only outside the gpui test scheduler.
+- Open path: `src/file_path_policy.rs` is `filePathPolicy.ts`'s system blocklist and
+  `isPathAllowedAgainst` on this host's paths (`canonical::resolve` stands for `path.resolve`);
+  the sensitive-media list comes with `xdt-file://`. `src/open_path.rs` is the `shell:open-path`
+  handler: `resolveShellOpenPathTarget` for paths (`cindy-media://` comes with its store), the
+  blocklist, then Electron's `shell.openPath`. Linux starts `xdg-open` and reaps it unwaited, as
+  Electron's Linux open never settles, so no error reaches a toast; Electron's XDG activation
+  token is not passed. macOS calls `NSWorkspace openURL`; Windows `ShellExecuteEx` on a COM
+  thread (Chromium's `SHParseDisplayName` id list, `explore` for a folder). The project menu's
+  Open in file manager toasts the handler's error. Native code is type-checked in a scratch crate.
 - Untrusted files: read with `bounded_read::read`, Cindy's `readBoundedFileNoFollow` (no-follow
   open, regular file, size limit, stable while read).
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as

@@ -69,7 +69,7 @@ fn spelled(real: PathBuf) -> PathBuf {
 }
 
 /// Node's `path.resolve`: absolute, with `.` and `..` folded away by name.
-fn resolve(path: &Path) -> PathBuf {
+pub fn resolve(path: &Path) -> PathBuf {
     use std::path::Component;
     let absolute = std::path::absolute(path).unwrap_or_else(|_| path.to_owned());
     let mut out = PathBuf::new();

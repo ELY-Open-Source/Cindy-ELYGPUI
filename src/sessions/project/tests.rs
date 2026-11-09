@@ -254,3 +254,24 @@ fn a_key_press_keeps_the_hovered_more_lit(cx: &mut TestAppContext) {
     assert!(!folded(cx), "the header took the key");
     assert!(drawn(cx, "project-more-hover-local:/work/app"), "still lit");
 }
+
+#[cfg(unix)]
+#[gpui::test]
+fn opening_a_refused_folder_toasts_the_handlers_error(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        for s in &mut loaded.sessions {
+            if s.working_dir.is_some() {
+                s.working_dir = Some("/etc/app".into());
+            }
+        }
+        loaded.known = crate::sessions::search::projects::known(&loaded.sessions, &[], &[], &[]);
+    });
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    press(cx, "project:local:/etc/app-header", MouseButton::Right, 1);
+    click(cx, "menu-row-Open in file manager");
+    assert_eq!(toasts(cx), ["不允许访问该路径"]);
+}

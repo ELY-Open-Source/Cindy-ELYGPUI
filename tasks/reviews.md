@@ -340,3 +340,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: a press outside the row and its poppers past an open menu restores unless the menu
   chose; the X keeps a hover that ignores input modality (`search/chip.rs`); the comments fit one line.
 - Round 2: PASS.
+
+## 8.10c Open in the file manager
+- Round 1: FAIL. The refused-folder view test assumed Unix roots on every platform; the Windows
+  open went on after a failed `CoInitializeEx`.
+- Fixed: the view test runs on Unix, a Windows test checks `%SystemRoot%`; a failed COM init
+  returns its error before any shell call, and a successful one is always paired.
+- Round 2: PASS.

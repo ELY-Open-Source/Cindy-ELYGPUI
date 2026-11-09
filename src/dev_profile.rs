@@ -1,6 +1,6 @@
 //! Cindy's `devCliFlags.ts`: where a source run keeps its data.
 
-mod canonical;
+pub mod canonical;
 
 use std::path::{Path, PathBuf};
 

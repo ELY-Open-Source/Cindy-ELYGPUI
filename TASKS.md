@@ -291,7 +291,7 @@ listed in `tasks/done.md`.
   - [x] 8.10a2 Remove from sidebar: the awaitable confirm and `hiddenProjectKeys`' write
   - [x] 8.10b Search in this project with the locked project chip and the scroll freeze, and the
     dialogue group's Search
-  - [ ] 8.10c Open in the file manager: `filePathPolicy.ts`'s blocklist and an open that reports
+  - [x] 8.10c Open in the file manager: `filePathPolicy.ts`'s blocklist and an open that reports
     its error
 - [ ] 8.11 A right click on the list's blank space opens the filter menu at the pointer, as
   `handleSidebarBlankContextMenu` opens `SidebarFilterPopover`
