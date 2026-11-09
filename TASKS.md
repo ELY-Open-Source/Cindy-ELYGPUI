@@ -300,16 +300,20 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       `buildManualPinnedReorder`, then `savePinnedOrder`'s `reorder` rebased on the file
     - [x] 8.5c2e2 Card mode: one column as the list above, two or three as
       `DraggableCardColumns` lays a drag across its round-robin columns
-- [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
-  `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
-  `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),
-  `useActiveMainView`, and a row click to its session as `handleSessionClick` and
-  `resolveSessionRoute` do; the row a Tab stop (`tabIndex=0`) that Enter and Space open, with
-  its task menu on the keyboard's context-menu key; the active row as `SessionItem` and the list
-  row's inset ring draw it
+- [ ] 8.6 The router and the row's way into a task
+    - [x] 8.6a The router as `router.tsx` declares it for the routes this chapter owns: `/` with
+      `MainEntryRedirect` (to `/cc-agent` until 13.0's owner-scoped storage brings the remembered
+      entry and `useRememberMainEntry`), `/cc-agent` with `CCAgentIndexRedirect` and
+      `useTrackLastView`'s last chat view, `/cc-agent/new` and `/cc-agent/:sessionId` as the chat
+      view's place until chapter 9
+    - [ ] 8.6b A row click to its session as `handleSessionClick` and `resolveSessionRoute` do;
+      the active row as `SessionItem` and the list row's inset ring draw it
+    - [ ] 8.6c The row a Tab stop (`tabIndex=0`) that Enter and Space open, with its task menu on
+      the keyboard's context-menu key
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
-  order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles
+  order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles, with
+  `useActiveMainView`'s active view and `navigateToView`
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the

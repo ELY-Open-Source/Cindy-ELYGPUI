@@ -21,6 +21,7 @@ mod os_appearance;
 mod preferences;
 mod region;
 mod rich_answer;
+mod router;
 mod session_owner;
 mod sessions;
 mod sidebar;
@@ -82,6 +83,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(toast::Toasts::default());
     sessions::install(startup.user_data.clone(), startup.owner_dir.clone(), cx);
     localdb::install(startup.database.clone(), cx);
+    router::install(cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());
     let home = dirs::home_dir().context("this user has no home folder")?;

@@ -26,7 +26,7 @@ impl Render for List {
     }
 }
 
-fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
+pub(super) fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
     Session {
         id: id.into(),
         title: id.into(),

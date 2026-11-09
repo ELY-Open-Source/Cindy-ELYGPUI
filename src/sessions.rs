@@ -118,6 +118,37 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
     .detach();
 }
 
+/// The listed tasks `CCAgentIndexRedirect` can open, in list order; none while loading.
+pub fn active_task_ids(cx: &App) -> Option<Vec<&str>> {
+    let loaded = cx.global::<Sessions>().loaded.as_ref()?;
+    let ids = loaded
+        .sessions
+        .iter()
+        .filter(|s| !matches!(s.status.as_str(), "archived" | "deleted"))
+        .filter(|s| !matches!(s.source.as_str(), "bot" | "side-chat"))
+        .map(|s| s.id.as_str());
+    Some(ids.collect())
+}
+
+/// A loaded list of `(id, status, source)` tasks.
+#[cfg(test)]
+pub fn load_for_tests(tasks: &[(&str, &str, &str)], cx: &mut App) {
+    let sessions = tasks
+        .iter()
+        .map(|(id, status, source)| Session {
+            status: (*status).into(),
+            source: (*source).into(),
+            ..view_tests::task(id, None, false, 0)
+        })
+        .collect();
+    cx.global_mut::<Sessions>().loaded = Some(Loaded {
+        sessions,
+        recent: Vec::new(),
+        aliases: Vec::new(),
+        settings: Default::default(),
+    });
+}
+
 /// Cindy's push events reach Cindy's own windows only; here the database, its WAL and the
 /// sidebar settings changing on disk stand for them.
 fn watch(cx: &mut App) {

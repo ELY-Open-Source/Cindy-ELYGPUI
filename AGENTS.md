@@ -75,6 +75,11 @@ defines scope and what 1:1 means.
   `row * N + column`. Slides move in x and y. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
   golden `pinned-reorder`) and `settings::save` takes `savePinnedOrder`'s `reorder`, rebased on the
   file as `rebasePinnedReorder` does. A press on a group's tasks does not drag the group.
+- Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
+  `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
+  entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
+  last chat view (`lastViewStore`'s chat slot, kept by `navigate` as `useTrackLastView` does), the
+  first task, or `/cc-agent/new`. The chat pane shows its loading line meanwhile.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

@@ -29,6 +29,11 @@ impl LayoutRoot {
                 el.bg(crate::wallpaper::clear(area, cx))
             })
             .children(header)
+            .children(
+                (pane.panel_kind == CHAT)
+                    .then(|| index_redirect(cx))
+                    .flatten(),
+            )
             .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))
             .on_mouse_down(
                 MouseButton::Left,
@@ -199,6 +204,24 @@ impl LayoutRoot {
 }
 
 /// A divider that stays still: nested rows and a root that is not a row, as Cindy's do.
+/// `CCAgentIndexRedirect`'s placeholder while the task list loads.
+fn index_redirect(cx: &App) -> Option<AnyElement> {
+    use crate::{appearance_settings::text_size, i18n::Translator, router};
+    if router::route(router::path(cx)) != router::Route::Index {
+        return None;
+    }
+    let text = cx.global::<Translator>().t("ccAgent.common.loading", &[]);
+    let muted = cx.global::<Appearance>().hsl_token("sidebar-muted");
+    let line = div()
+        .debug_selector(|| "cc-agent-loading".into())
+        .text_size(css(text_size(14.0, cx)))
+        .line_height(css(text_size(20.0, cx)))
+        .text_color(muted)
+        .child(text);
+    let place = div().flex().size_full().items_center().justify_center();
+    Some(place.child(line).into_any_element())
+}
+
 pub(super) fn static_divider(row: bool, cx: &App) -> AnyElement {
     line(row, false, cx).into_any_element()
 }

@@ -113,6 +113,8 @@ impl LayoutRoot {
     pub fn new(sidebar: Box<dyn Fn(&App) -> SidebarSeen>, cx: &mut Context<Self>) -> Self {
         cx.observe_global::<LayoutStore>(|_, cx| cx.notify())
             .detach();
+        cx.observe_global::<crate::router::Router>(|_, cx| cx.notify())
+            .detach();
         LayoutRoot {
             sidebar,
             header_inset: None,

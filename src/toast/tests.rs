@@ -38,6 +38,7 @@ fn open_with_host(cx: &mut TestAppContext) -> (Entity<Host>, &mut VisualTestCont
         let dir = tempfile::tempdir().unwrap();
         cx.set_global(crate::preferences::Preferences::load(dir.path()).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
+        crate::router::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(Translator::new("en").unwrap());

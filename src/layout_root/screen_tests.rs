@@ -72,12 +72,14 @@ pub(super) fn open_beside<'a>(
             os: WindowAppearance::Light,
             gpui_agrees: true,
         };
+        ely_gpui_component::init_for_tests(cx);
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
         cx.set_global(crate::window_material::Material::load());
         crate::wallpaper::none_for_tests(cx);
         cx.set_global(crate::preferences::Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
+        crate::router::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
@@ -226,4 +228,19 @@ fn a_root_that_is_not_a_row_has_still_dividers(cx: &mut TestAppContext) {
         cx.simulate_mouse_up(to, MouseButton::Left, none);
     }
     assert_eq!(fractions(cx).0, vec![0.5, 0.5]);
+}
+
+#[gpui::test]
+fn the_chat_pane_says_loading_until_the_index_resolves(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path(), tree(0.6, 0.4), 1200.0);
+    let shown = |cx: &mut VisualTestContext| cx.debug_bounds("cc-agent-loading").is_some();
+    assert!(shown(cx), "at /cc-agent before the list loads");
+    cx.update(|_, cx| crate::sessions::load_for_tests(&[("t", "active", "desktop")], cx));
+    cx.run_until_parked();
+    assert_eq!(
+        cx.update(|_, cx| crate::router::path(cx).to_owned()),
+        "/cc-agent/t"
+    );
+    assert!(!shown(cx), "the task's place");
 }
