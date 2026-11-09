@@ -325,11 +325,15 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       sidebar's fixed top section (`section='pinned'`), off the rail and in the peek; the
       route state's computer comes with the New draft (chapter 9), `ROW_ACTIVE_CLASS` with the
       first row that can be active (15.0)
-    - [ ] 8.7b The rows `section='scrollable'` draws at the top of the list's scroller, in the
-      saved order, and Search at rest and open as `SidebarInlineSearch` draws it (hover or focus opens
-      the field), its query and options in `conversationSearchContext` and
-      `conversationSearchPrefs`; a search from another view returns to the task view
-      (`useActiveMainView`'s `navigateToView`)
+    - [ ] 8.7b1 The rows `section='scrollable'` draws at the top of the list's scroller, in the
+      saved order, and Search at rest and open as `SidebarInlineSearch` draws it (hover, focus
+      within or a query opens the field; the clear button), its query shared with the results
+      as `conversationSearchContext` shares it, and a press outside the search surface clearing
+      a running query; a search from another view returns to the task view
+      (`useActiveMainView`'s `navigateToView`) with the first other main view (16.0)
+    - [ ] 8.7b2 The search options as `SearchFilterMenu` offers them (sort, status, agent, last
+      activity, projects, reset, the active count), the sort remembered as
+      `conversationSearchPrefs` keeps it
     - [ ] 8.7c The search results in place of the list (`messages_fts` through `cjk_seg`, sorted
       as `conversationSearchSort` sorts), with the search row sticky over them and the clip
       below it while a query runs
@@ -346,6 +350,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
   lands with the agent runtime (10.0)
 - [ ] 8.9 Back and forward through the session browse history (`sessionBrowseHistory.ts`, at most
   50 in memory, cleared on owner change, ⌘[ / ⌘]) with `SessionHistoryButtons`
+- [ ] 8.10 The project header's actions as `ProjectNode.tsx` draws them: the hover More and New
+  in this folder buttons and its menu, by More or a right click (Rename, Search in this project
+  with the search's locked project chip, Show files, Open in the file manager, Copy deep link,
+  Import, Remove from sidebar), and the dialogue group's Search; actions whose feature lands in a
+  later chapter come with it
+- [ ] 8.11 A right click on the list's blank space opens the filter menu at the pointer, as
+  `handleSidebarBlankContextMenu` opens `SidebarFilterPopover`
 ## 9. Chat view
 
 - [ ] 9.0 Expand from Cindy's code
