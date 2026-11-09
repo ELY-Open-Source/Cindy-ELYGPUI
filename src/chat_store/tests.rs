@@ -4,9 +4,11 @@ use gpui::TestAppContext;
 use rusqlite::Connection;
 
 use super::*;
+
+mod raw;
 use crate::{chat_message::merge, i18n::Translator, rich_answer::js::Js};
 
-fn put(db: &Connection, n: i64, role: &str, content: &str, tool: Option<&str>) {
+pub fn put(db: &Connection, n: i64, role: &str, content: &str, tool: Option<&str>) {
     db.execute(
         "INSERT INTO messages (id, client_id, session_id, role, content, tool_use_id, created_at)
          VALUES (?, ?, 's1', ?, ?, ?, ?)",
@@ -36,7 +38,7 @@ fn turn(db: &Connection, at: i64) {
     put(db, at + 5, "assistant", "\"Done\"", None);
 }
 
-fn serve(db: Connection, cx: &mut TestAppContext) -> Store {
+pub fn serve(db: Connection, cx: &mut TestAppContext) -> Store {
     cx.update(|cx| {
         crate::localdb::install(None, cx);
         cx.set_global(Translator::new("en").unwrap());
@@ -46,13 +48,13 @@ fn serve(db: Connection, cx: &mut TestAppContext) -> Store {
     })
 }
 
-fn one_turn() -> Connection {
+pub fn one_turn() -> Connection {
     let db = crate::history_view::rows::tests::db();
     turn(&db, 0);
     db
 }
 
-fn ids(store: &Store) -> Vec<String> {
+pub fn ids(store: &Store) -> Vec<String> {
     let state = store.state("s1").unwrap();
     let ids = state
         .messages
@@ -61,11 +63,11 @@ fn ids(store: &Store) -> Vec<String> {
     ids.collect()
 }
 
-fn text<'a>(m: &'a merge::Message, key: &str) -> &'a str {
+pub fn text<'a>(m: &'a merge::Message, key: &str) -> &'a str {
     merge::get(m, key).and_then(Js::str).unwrap_or("")
 }
 
-fn open(store: &Store, cx: &mut TestAppContext) {
+pub fn open(store: &Store, cx: &mut TestAppContext) {
     cx.update(|cx| store.ensure_initial_messages("s1", cx));
     cx.run_until_parked();
 }
@@ -186,13 +188,17 @@ async fn older_pages_move_the_window_back(cx: &mut TestAppContext) {
         put(&db, 2 * n + 1, "assistant", "\"Answer\"", None);
     }
     let store = serve(db, cx);
-    assert!(!store.load_older_messages("s1").await.unwrap());
+    assert!(
+        !cx.update(|cx| store.load_older_messages("s1", cx))
+            .await
+            .unwrap()
+    );
     open(&store, cx);
     let first = store.state("s1").unwrap();
     assert!(first.has_more_messages);
     let cursor = first.oldest_message_id.clone();
     assert!(cursor.is_some());
-    let moved = store.load_older_messages("s1");
+    let moved = cx.update(|cx| store.load_older_messages("s1", cx));
     cx.run_until_parked();
     assert!(moved.await.unwrap());
     let state = store.state("s1").unwrap();
@@ -200,13 +206,17 @@ async fn older_pages_move_the_window_back(cx: &mut TestAppContext) {
     assert!(state.messages.len() > first.messages.len());
     assert!(!state.is_loading_more);
     while store.state("s1").unwrap().has_more_messages {
-        let more = store.load_older_messages("s1");
+        let more = cx.update(|cx| store.load_older_messages("s1", cx));
         cx.run_until_parked();
         more.await.unwrap();
     }
     assert_eq!(store.state("s1").unwrap().messages.len(), 60);
     // At the start of history the window cannot move.
-    assert!(!store.load_older_messages("s1").await.unwrap());
+    assert!(
+        !cx.update(|cx| store.load_older_messages("s1", cx))
+            .await
+            .unwrap()
+    );
 }
 
 #[gpui::test]
@@ -230,7 +240,7 @@ async fn a_database_change_rereads_the_shown_view(cx: &mut TestAppContext) {
     assert_eq!(ids(&store), ["c0", "c5", "c6"]);
 }
 
-fn write(cx: &mut TestAppContext, sql: &'static str) -> impl std::future::Future<Output = ()> {
+pub fn write(cx: &mut TestAppContext, sql: &'static str) -> impl std::future::Future<Output = ()> {
     let call = cx.update(|cx| {
         let crate::localdb::State::Ready(db) = &cx.global::<crate::localdb::LocalDb>().state else {
             panic!("a ready database");

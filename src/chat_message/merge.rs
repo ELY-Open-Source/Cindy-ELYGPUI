@@ -79,16 +79,21 @@ pub enum Key {
 }
 
 pub fn client_id(m: &Fields) -> Key {
-    let Some(value) = m.get("clientId").and_then(Option::as_ref) else {
+    key(get(m, "clientId"))
+}
+
+/// A value as a `Map` key; `None` is `undefined`.
+pub fn key(value: Option<&Js>) -> Key {
+    let Some(value) = value else {
         return Key::Undefined;
     };
-    match &**value {
+    match value {
         Js::Null => Key::Null,
         Js::Bool(b) => Key::Bool(*b),
         Js::Num(n) if n.is_nan() => Key::Num(f64::NAN.to_bits()),
         Js::Num(n) => Key::Num((n + 0.0).to_bits()),
         Js::Str(s) => Key::Str(s.clone()),
-        Js::Arr(_) | Js::Obj(_) => Key::Object(Rc::as_ptr(value)),
+        Js::Arr(_) | Js::Obj(_) => Key::Object(std::ptr::from_ref(value)),
     }
 }
 

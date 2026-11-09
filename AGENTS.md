@@ -128,28 +128,28 @@ defines scope and what 1:1 means.
   from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
   checked in every locale against `activity.json`.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
-  adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent
-  bodies as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
+- apter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
+  as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
   `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order. `rows.rs` is
   `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
-  `messageToCamelWithRowid`; `outline.rs` the outline SQL as drizzle renders it; `artifacts.rs`
-  `withHistoryArtifacts` (its LRU of 2048). `reader.rs` is `createHistoryViewReader` over `Deps`
-  (`db.rs` the database's; turns and live rows come with 10.0): `page`, `details`, the detail cache.
-  Reads take turns on the database worker, unshared. `controller.rs` is `HistoryViewController`
-  (network, cache, intents: 20.0) in JS promise order. `src/chat_message.rs` is `mapServerMessages`
-  (`Out` keeps keys set to `undefined`; golden `chat-message`): throws are `Err` with V8's text
-  (`js::try_string` is a throwing `String()`). `merge.rs` is `mergeMessages` and `confirmRemoteUsers`
-  on `Rc` rows (`===` is `Rc::ptr_eq`, `None` a key set to `undefined`; golden `merge-messages`).
-  `transport.rs` is the view's local `page` and `details` (a `Reader` per database open).
-  `src/chat_store.rs` is the store's local slice: `ensureInitialMessages` and `loadOlderMessages`
-  through the view, an add-only mirror (borrowed thinking and read bodies retire), counted visits, the
-  forced resume read; the watcher invalidates views. `src/js_sort.rs` is V8's sort (`array-sort.tq`:
-  TimSort, insertion under 8 items). `src/js_date.rs` is V8's `Date.parse` (`parser.rs` ports
-  `dateparser*`; local times in the host zone through jiff, as ICU's `FORMER`) and `toISOString`.
-  Goldens `js-sort`, `js-date` (Cindy's Electron, three zones). `src/command_output.rs` is
-  `commandOutputPaths.ts` (`js_re`, lookarounds by hand); offsets in bytes, 240/80 windows in UTF-16
-  units (a cut pair's half is U+FFFD). Golden `history-view` is Cindy's tests less a lease and
-  `import.meta.env`; `history-artifacts` adds cases.
+  `messageToCamelWithRowid`; `outline.rs` the outline SQL; `artifacts.rs` `withHistoryArtifacts` (its
+  LRU of 2048). `reader.rs` is `createHistoryViewReader` over `Deps` (`db.rs` the database's; turns and
+  live rows come with 10.0): `page`, `details`, the detail cache. Reads take turns on the database
+  worker, unshared. `controller.rs` is `HistoryViewController` (network, cache, intents: 20.0) in JS
+  promise order. `src/chat_message.rs` is `mapServerMessages` (`Out` keeps keys set to `undefined`;
+  golden `chat-message`): throws are `Err` with V8's text (`js::try_string` is a throwing `String()`).
+  `merge.rs` is `mergeMessages` and `confirmRemoteUsers` on `Rc` rows (`===` is `Rc::ptr_eq`, `None` a
+  key set to `undefined`; golden `merge-messages`). `transport.rs` is the view's local `page` and
+  `details` (a `Reader` per database open). `src/chat_store.rs` is the store's local slice:
+  `ensureInitialMessages` and `loadOlderMessages` through the view, an add-only mirror (borrowed
+  thinking and read bodies retire), counted visits, the forced resume read; the watcher invalidates
+  views. `raw.rs` is `listMessagesFor` and `runRemoteReconcile`, `older.rs` raw pages, `window.rs`
+  timeline and islands. `src/js_sort.rs` is V8's sort (`array-sort.tq`'s TimSort). `src/js_date.rs` is
+  V8's `Date.parse` (`parser.rs` ports `dateparser*`; host-zone local times via jiff, as ICU's
+  `FORMER`) and `toISOString`. Goldens `js-sort`, `js-date` (Cindy's Electron, three zones).
+  `src/command_output.rs` is `commandOutputPaths.ts` (`js_re`, lookarounds by hand); offsets in bytes,
+  240/80 windows in UTF-16 units (a cut pair's half is U+FFFD). Goldens `history-view` (Cindy's tests
+  less a lease and `import.meta.env`), `history-artifacts`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

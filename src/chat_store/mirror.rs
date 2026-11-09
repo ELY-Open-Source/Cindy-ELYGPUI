@@ -169,6 +169,7 @@ fn mirrored(
         has_more_messages: snapshot.has_more,
         is_loading_more: loading_older,
         oldest_message_id: snapshot.next_cursor.clone(),
+        ..state.clone()
     })
 }
 

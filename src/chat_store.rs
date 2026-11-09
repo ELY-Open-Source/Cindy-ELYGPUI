@@ -20,8 +20,10 @@ use crate::{
 mod initial;
 mod mirror;
 mod older;
+mod raw;
 mod reconcile;
 mod visit;
+mod window;
 
 /// The slice of `SessionChatState` the history owns.
 #[derive(Clone)]
@@ -31,6 +33,7 @@ pub struct SessionState {
     pub has_more_messages: bool,
     pub is_loading_more: bool,
     pub oldest_message_id: Option<String>,
+    pub history_window_islands: Rc<Vec<window::Island>>,
 }
 
 impl Default for SessionState {
@@ -42,6 +45,7 @@ impl Default for SessionState {
             has_more_messages: true,
             is_loading_more: false,
             oldest_message_id: None,
+            history_window_islands: Rc::new(Vec::new()),
         }
     }
 }

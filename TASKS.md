@@ -73,10 +73,11 @@ listed in `tasks/done.md`.
     `enterView` and `leaveView` (ref-counted views), the snapshot's mirror into `messages`
     (borrowed detail rows retired; durable tool pairs come with 10.0's echoes),
     `loadOlderMessages` through the view, the database watcher's `invalidate`
-  - [ ] 9.2f The raw reads beside the view: `listMessagesFor` and `runRemoteReconcile` (the forced
+  - [x] 9.2f The raw reads beside the view: `listMessagesFor` and `runRemoteReconcile` (the forced
     read's fallback when a detail range is incomplete), `loadOlderMessages`' raw pages before the
-    view is ready; `getSessionFor`'s seeding comes with the fields it seeds (9.18), idle plan
-    discovery with `getLatestMessageTodoState` (9.11), pending interactions with 10.0
+    view is ready, the window's islands they keep; the viewport's load budget comes with 9.14,
+    `getSessionFor`'s seeding comes with the fields it seeds (9.18), idle plan discovery with
+    `getLatestMessageTodoState` (9.11), pending interactions with 10.0
   - [ ] 9.2g Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
     `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands
 - [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content

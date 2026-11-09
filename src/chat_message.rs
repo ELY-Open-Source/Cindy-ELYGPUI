@@ -134,7 +134,7 @@ fn subagent(meta: Option<&Obj>, out: &mut Out) {
 }
 
 /// `new Date(value).getTime()` for the values a row's `createdAt` holds.
-fn time(value: Option<&Js>) -> f64 {
+pub fn time(value: Option<&Js>) -> f64 {
     match value {
         Some(Js::Str(s)) => crate::js_date::parse(s),
         Some(Js::Num(n)) if n.abs() <= 8.64e15 => n.trunc(),

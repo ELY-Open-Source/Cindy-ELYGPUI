@@ -6,7 +6,7 @@ use futures::{
     FutureExt,
     future::{LocalBoxFuture, Shared, join_all},
 };
-use gpui::ForegroundExecutor;
+use gpui::AsyncApp;
 
 use super::{SessionState, Store, mirror::page_rows};
 use crate::{
@@ -59,9 +59,33 @@ fn same(a: Option<&Message>, b: Option<&Message>) -> bool {
     }
 }
 
+#[cfg(test)]
+impl Flight {
+    pub fn starting_at(messages: &Messages) -> Rc<RefCell<Flight>> {
+        Rc::new(RefCell::new(Flight {
+            run: None,
+            rerun: false,
+            rows_at_start: rows_by_client(messages),
+            latest: Opts::default(),
+        }))
+    }
+}
+
+/// `noteHydration`: advance the flight's baseline only for its own writes.
+pub fn note_hydration(flight: &Rc<RefCell<Flight>>, before: &Messages, after: &Messages) {
+    let previous = rows_by_client(before);
+    let mut flight = flight.borrow_mut();
+    for row in after.iter() {
+        let key = merge::client_id(row);
+        if same(flight.rows_at_start.get(&key), previous.get(&key)) {
+            flight.rows_at_start.insert(key, row.clone());
+        }
+    }
+}
+
 impl Store {
     /// `reconcileRemoteMessages` with `force` and `repair`: one forced read per task at a time.
-    pub(super) fn reconcile(&self, id: &str, opts: Opts, fg: &ForegroundExecutor) -> Run {
+    pub(super) fn reconcile(&self, id: &str, opts: Opts, cx: &AsyncApp) -> Run {
         let Some(view) = self.view(id) else {
             // A local task has no raw remote reconcile.
             return async { Ok(false) }.boxed_local().shared();
@@ -89,10 +113,10 @@ impl Store {
             epoch: self.epoch(id),
             read: view.refresh(false, !opts.activation_read),
         };
-        let (store, task, fg2) = (self.clone(), id.to_owned(), fg.clone());
+        let (store, task, cx2) = (self.clone(), id.to_owned(), cx.clone());
         let held = flight.clone();
         let run = async move {
-            let result = store.flight(&task, &view, opts, start, &held, &fg2).await;
+            let result = store.flight(&task, &view, opts, start, &held, &cx2).await;
             let mut inner = store.0.borrow_mut();
             if inner.force.get(&task).is_some_and(|f| Rc::ptr_eq(f, &held)) {
                 inner.force.remove(&task);
@@ -102,7 +126,7 @@ impl Store {
         .boxed_local()
         .shared();
         flight.borrow_mut().run = Some(run.clone());
-        fg.spawn(run.clone()).detach();
+        cx.foreground_executor().spawn(run.clone()).detach();
         run
     }
 
@@ -113,9 +137,9 @@ impl Store {
         opts: Opts,
         start: Start,
         flight: &Rc<RefCell<Flight>>,
-        fg: &ForegroundExecutor,
+        cx: &AsyncApp,
     ) -> Result<bool, String> {
-        let mut applied = match self.run_view(id, view, &opts, start, flight).await {
+        let mut applied = match self.run_view(id, view, &opts, start, flight, cx).await {
             Ok(applied) => applied,
             Err(error) if !flight.borrow().rerun || !self.has(id) => return Err(error),
             Err(_) => false,
@@ -139,7 +163,7 @@ impl Store {
                 }
             }
             log::debug!(target: "chatStore", "forced history read of {id} runs again");
-            applied = self.reconcile(id, latest, fg).await?;
+            applied = self.reconcile(id, latest, cx).await?;
         }
         Ok(applied)
     }
@@ -152,6 +176,7 @@ impl Store {
         opts: &Opts,
         start: Start,
         flight: &Rc<RefCell<Flight>>,
+        cx: &AsyncApp,
     ) -> Result<bool, String> {
         let Start {
             at_start,
@@ -204,8 +229,11 @@ impl Store {
                 .is_none_or(|d| !d.complete || d.error.is_some() || d.revision != s.revision)
         });
         if incomplete {
-            log::warn!(target: "chatStore", "forced history read of {id} met incomplete details; the raw reconcile comes with 9.2f");
-            return Ok(false);
+            log::info!(target: "chatStore", "forced history read of {id} met incomplete details");
+            let raw = self.raw_reconcile(id, &opts.preserve, flight, cx).await;
+            return raw.inspect_err(|e| {
+                log::warn!(target: "chatStore", "reconcileRemoteMessages failed {id}: {e}");
+            });
         }
         if !self.is_view(id, view) || !view.is_active() {
             return Ok(false);
@@ -259,15 +287,7 @@ impl Store {
                 ..Options::default()
             };
             let messages = merge::merge(&rows, &state.messages, &options, RowsOrder::OldestFirst);
-            // `noteHydration`: advance the flight's baseline only for its own writes.
-            let previous = rows_by_client(&state.messages);
-            let mut flight = flight.borrow_mut();
-            for row in messages.iter() {
-                let key = merge::client_id(row);
-                if same(flight.rows_at_start.get(&key), previous.get(&key)) {
-                    flight.rows_at_start.insert(key, row.clone());
-                }
-            }
+            note_hydration(flight, &state.messages, &messages);
             (!Rc::ptr_eq(&messages, &state.messages)).then(|| SessionState {
                 messages,
                 ..state.clone()

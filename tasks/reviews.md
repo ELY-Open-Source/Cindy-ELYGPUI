@@ -61,3 +61,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: FAIL. The forced read took its row baseline at first poll, not at call; a two-line doc comment.
 - Fixed: `reconcile` captures the baseline, epoch and page read before it spawns; the comment is one line; a regression test changes a row before the queue runs.
 - Round 2: PASS.
+
+## 9.2f The raw reads beside the view
+- Round 1: FAIL. The raw older pages took the lock at call time but read only while the caller polled, so a dropped waiter left the task busy for good.
+- Fixed: the raw read runs on the foreground executor as a shared future; the caller's copy only waits. A test drops the waiter and checks the page lands and the lock lifts.
+- Round 2: PASS.

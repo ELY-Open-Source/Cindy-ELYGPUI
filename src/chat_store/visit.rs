@@ -22,7 +22,7 @@ impl Store {
                 activation_read: true,
                 ..Opts::default()
             };
-            drop(self.reconcile(id, opts, cx.foreground_executor()));
+            drop(self.reconcile(id, opts, &cx.to_async()));
         }
     }
 
