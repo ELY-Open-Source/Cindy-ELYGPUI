@@ -237,7 +237,7 @@ listed in `tasks/done.md`.
                       `CINDY_MAKE_ENABLED` is off, so the list query has no such tasks
                     - [x] 8.7e3c2b The project level: a row's hover or click opens its tasks
                       beside it, with its own grace, keep-alive and keyboard contract
-- [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
+- [x] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the
   still-interrupted recheck before continuing); the continue itself dispatches a turn, which
@@ -260,7 +260,7 @@ listed in `tasks/done.md`.
         - [x] 8.8b3 `formatToolRowText`, `formatIslandToolDetail` and the localized wording
           (`agentActionVerbKeys.ts`); the candidates' `activity` as the IPC makes it. The row
           text keeps the labels the island shows (details come with the chat view, 9.0)
-    - [ ] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the load, the
+    - [x] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the load, the
       tasks (`getMany`, companion names) newest first with their checkbox, vendor icon,
       title and source label or companion name, activity and time; select all; Continue
       rechecks the still-interrupted set, the dispatch with 10.0
@@ -272,7 +272,7 @@ listed in `tasks/done.md`.
           that drags the window, the centered panel (`maxWidth`, 85vh, its scroll area),
           title, description, content, cancel first, the confirm's auto focus and disabled
           state; Escape and the buttons close it, a press on the scrim does not
-        - [ ] 8.8c3 The dialog itself: shown once per window and owner (closing marks the
+        - [x] 8.8c3 The dialog itself: shown once per window and owner (closing marks the
           owner handled), its rows (checkbox, vendor icon, title, source label or companion
           name, activity, time), select all with its mixed state, the counts and the
           buttons; Continue closes it and rechecks the still-interrupted set; the send comes

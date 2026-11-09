@@ -95,6 +95,14 @@ defines scope and what 1:1 means.
   per owner when the database is ready. `interrupted/tasks.rs` is `loadInterruptedTasks` in
   the same read: `getMany`'s rows (`query::by_ids`), companion names when a companion task is
   there, newest first. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
+  `interrupted/dialog.rs` is `InterruptedTasksResumeDialog` on `ConfirmDialog`, drawn from the
+  main window's root: it opens when an owner's load with tasks lands and the window has not
+  handled that owner; closing marks it. Rows reuse `lists::labels` and `row::vendor`.
+  `dialog/check.rs` draws the native box (Space, not Enter; focus on press) in
+  `confirm-btn-primary-bg`, and its `label`: a click focuses the box; box and label set one
+  target state, so a press toggles once. The row's hover ignores keys, as CSS `:hover` does. Continue rechecks the
+  candidates; with no send before 10.0 each picked task still interrupted fails with the
+  `continueFailed` toast. The release notes that suspend it come with their chapter.
 - Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
   `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.

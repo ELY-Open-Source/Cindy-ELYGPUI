@@ -307,3 +307,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: blur clears the press; a zero duration ends a running transition, as `transition:
   none` does.
 - Round 3: PASS.
+
+## 8.8c3 The resume dialog
+- Round 1: FAIL. A click on a row's or Select all's text did not focus its box, so Space
+  went elsewhere; the row's hover went out on a key press.
+- Fixed: `dialog/check.rs` draws the box with its own focus, which the label's click takes;
+  the row's hover ignores input modality.
+- Round 2: PASS.

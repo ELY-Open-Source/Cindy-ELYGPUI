@@ -103,28 +103,36 @@ pub(super) fn status_glyph(s: &Session, size: Option<f32>, active: bool, cx: &Ap
             true => active_fg,
             false => appearance.hsl_token("sidebar-muted"),
         };
-        match s.agent_kind.as_str() {
-            "codex" => lucide::mark(
-                &lucide::codex_mark(size.unwrap_or(12.0)),
-                size.unwrap_or(12.0),
-            )
-            .text_color(muted)
+        let kind = s.agent_kind.as_str();
+        let default = if matches!(kind, "codex" | "pi") {
+            12.0
+        } else {
+            13.0
+        };
+        vendor(kind, size.unwrap_or(default), muted)
+    }
+}
+
+/// `VendorIcon` by `agentKindToVendor`, at `size` in `color`.
+pub(super) fn vendor(kind: &str, size: f32, color: gpui::Hsla) -> AnyElement {
+    match kind {
+        "codex" => lucide::mark(&lucide::codex_mark(size), size)
+            .text_color(color)
             .into_any_element(),
-            "pi" => div()
-                .flex()
-                .size(css(size.unwrap_or(12.0)))
-                .items_center()
-                .justify_center()
-                .text_size(css(size.unwrap_or(12.0) * 0.86))
-                .line_height(css(size.unwrap_or(12.0)))
-                .font_weight(gpui::FontWeight::SEMIBOLD)
-                .text_color(muted)
-                .child("π")
-                .into_any_element(),
-            _ => lucide::mark(&lucide::claude_mark(), size.unwrap_or(13.0))
-                .text_color(muted)
-                .into_any_element(),
-        }
+        "pi" => div()
+            .flex()
+            .size(css(size))
+            .items_center()
+            .justify_center()
+            .text_size(css(size * 0.86))
+            .line_height(css(size))
+            .font_weight(gpui::FontWeight::SEMIBOLD)
+            .text_color(color)
+            .child("π")
+            .into_any_element(),
+        _ => lucide::mark(&lucide::claude_mark(), size)
+            .text_color(color)
+            .into_any_element(),
     }
 }
 

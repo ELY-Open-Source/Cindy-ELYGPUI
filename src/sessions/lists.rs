@@ -65,7 +65,11 @@ fn in_set(set: &[String], key: &str, platform: &str) -> bool {
 }
 
 /// `buildSessionSourceLabelMap`: Chat, the project's name, else the folder's last segment.
-fn labels(pinned: &[Session], known: &[Project], dialogues: &str) -> HashMap<String, String> {
+pub(super) fn labels(
+    pinned: &[Session],
+    known: &[Project],
+    dialogues: &str,
+) -> HashMap<String, String> {
     let mut out = HashMap::new();
     for s in pinned {
         if s.dialogue {

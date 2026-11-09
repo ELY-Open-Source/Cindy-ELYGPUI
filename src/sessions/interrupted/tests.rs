@@ -5,7 +5,7 @@ use crate::rich_answer::js::Js;
 
 const BOOT: i64 = 10_000;
 
-fn db() -> Connection {
+pub(super) fn db() -> Connection {
     let db = crate::sessions::tests::db();
     db.execute_batch(
         "ALTER TABLE sessions ADD COLUMN active_turn_started_at integer;
@@ -19,7 +19,7 @@ fn db() -> Connection {
 }
 
 /// A task whose turn started at `started` and never ended.
-fn task(db: &Connection, id: &str, source: &str, started: i64) {
+pub(super) fn task(db: &Connection, id: &str, source: &str, started: i64) {
     db.execute(
         "INSERT INTO sessions (id, source, active_turn_started_at, created_at, updated_at)
          VALUES (?1, ?2, ?3, 0, 0)",
@@ -28,7 +28,7 @@ fn task(db: &Connection, id: &str, source: &str, started: i64) {
     .unwrap();
 }
 
-fn say(db: &Connection, session: &str, role: &str, content: &str, at: i64) {
+pub(super) fn say(db: &Connection, session: &str, role: &str, content: &str, at: i64) {
     let id = format!("{session}-{at}-{role}");
     db.execute(
         "INSERT INTO messages (id, session_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)",

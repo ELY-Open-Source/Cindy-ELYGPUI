@@ -196,11 +196,13 @@ pub fn load(cx: &mut App) {
             let found = found.map_or_else(Vec::new, |read| tasks::assemble(read, t));
             log::info!(target: "interrupted-tasks-resume", "found {} interrupted task(s)", found.len());
             cx.default_global::<Interrupted>().tasks = Some(found);
+            cx.refresh_windows();
         });
     })
     .detach();
 }
 
+pub mod dialog;
 pub mod tasks;
 
 #[cfg(test)]

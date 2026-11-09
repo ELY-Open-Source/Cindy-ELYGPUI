@@ -11,7 +11,7 @@ use crate::{
 };
 
 /// `InterruptedTask`.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Task {
     pub session: Session,
     pub interrupted_at: i64,

@@ -1,8 +1,4 @@
 //! `ConfirmDialog`'s `standard` presentation, an `AlertDialog` over a dragging scrim.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the interrupted-tasks dialog (8.8c3) opens it")
-)]
 
 use std::{rc::Rc, time::Instant};
 
