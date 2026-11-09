@@ -49,6 +49,7 @@ fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -> Session {
         cost_currency: None,
         activity_at: activity,
         preview: None,
+        summary: None,
     }
 }
 
@@ -412,5 +413,40 @@ fn list_mode_draws_list_rows_inset_in_groups(cx: &mut TestAppContext) {
         bounds(cx, "a1").size.height,
         px(32.0),
         "the main list keeps text"
+    );
+}
+
+#[gpui::test]
+fn card_mode_lays_pins_out_in_columns(cx: &mut TestAppContext) {
+    use super::view_mode::{self, Pinned};
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    cx.update(|_, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        for (i, s) in loaded.sessions.iter_mut().take(3).enumerate() {
+            s.pinned_at = Some(i as i64 + 1);
+            s.summary = Some("summary".into());
+        }
+        view_mode::set_pinned(Pinned::Card, cx);
+    });
+    let at = |cx: &mut VisualTestContext, id: &str| {
+        cx.update(|window, _| window.refresh());
+        cx.run_until_parked();
+        cx.debug_bounds(Box::leak(format!("task-{id}").into_boxed_str()))
+            .unwrap()
+            .origin
+    };
+    // Newest pin first: a2, a1, a0.
+    let (a, b, c) = (at(cx, "a2"), at(cx, "a1"), at(cx, "a0"));
+    assert!(
+        a.y == b.y && a.x < b.x,
+        "two columns side by side: {a:?} {b:?}"
+    );
+    assert!(c.x == a.x && c.y > a.y, "the third under the first: {c:?}");
+    cx.simulate_resize(size(px(240.0), px(900.0)));
+    let (a, b) = (at(cx, "a2"), at(cx, "a1"));
+    assert!(
+        a.x == b.x && b.y > a.y,
+        "one column when narrow: {a:?} {b:?}"
     );
 }

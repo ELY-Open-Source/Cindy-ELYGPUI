@@ -59,6 +59,9 @@ defines scope and what 1:1 means.
   module memo, chosen from the filter menu's Display row and the Pinned header's view style menu.
   `list_row.rs` is `SessionCard`'s `list` variant (dividers, title line, one preview line from
   `sessionToCamel`'s `preview`), drawn in list mode; groups inset it `pl-2`.
+  `card.rs` is the `card` variant (title, `resolveSessionCardBody`, meta row) and `masonry.rs`
+  `CardMasonry`: one to three round-robin columns from the width measured in prepaint, with
+  `card-col-fade`; card mode's fold height is that measured height.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

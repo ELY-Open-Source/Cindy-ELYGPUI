@@ -58,45 +58,56 @@ fn absolute(at_ms: i64) -> String {
 }
 
 /// `SessionStatusIcon` at rest: the archive box, the Orca lead's people, else the harness mark;
-/// running, attention and drafts come with the agent runtime (10.0).
-pub(super) fn status_glyph(s: &Session, cx: &App) -> AnyElement {
+/// running, attention and drafts come with the agent runtime (10.0). `size` overrides each.
+pub(super) fn status_glyph(s: &Session, size: Option<f32>, cx: &App) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let meta = appearance.token("cmd-palette-item-meta");
     if s.status == "archived" {
-        lucide::icon(IconName::Archive.svg(), 12.0, 1.75)
+        lucide::icon(IconName::Archive.svg(), size.unwrap_or(12.0), 1.75)
             .text_color(meta)
             .into_any_element()
     } else if s.orca_lead {
-        lucide::icon(lucide::users_round().as_bytes(), 13.0, 1.75)
+        lucide::icon(lucide::users_round().as_bytes(), size.unwrap_or(13.0), 1.75)
             .text_color(meta)
             .into_any_element()
     } else {
         // `VendorIcon`: Claude Code at 13 px, Codex and Pi at 12.
         let muted = appearance.hsl_token("sidebar-muted");
         match s.agent_kind.as_str() {
-            "codex" => lucide::mark(&lucide::codex_mark(12.0), 12.0)
-                .text_color(muted)
-                .into_any_element(),
+            "codex" => lucide::mark(
+                &lucide::codex_mark(size.unwrap_or(12.0)),
+                size.unwrap_or(12.0),
+            )
+            .text_color(muted)
+            .into_any_element(),
             "pi" => div()
                 .flex()
-                .size(css(12.0))
+                .size(css(size.unwrap_or(12.0)))
                 .items_center()
                 .justify_center()
-                .text_size(css(12.0 * 0.86))
-                .line_height(css(12.0))
+                .text_size(css(size.unwrap_or(12.0) * 0.86))
+                .line_height(css(size.unwrap_or(12.0)))
                 .font_weight(gpui::FontWeight::SEMIBOLD)
                 .text_color(muted)
                 .child("π")
                 .into_any_element(),
-            _ => lucide::mark(&lucide::claude_mark(), 13.0)
+            _ => lucide::mark(&lucide::claude_mark(), size.unwrap_or(13.0))
                 .text_color(muted)
                 .into_any_element(),
         }
     }
 }
 
-/// `SessionInfoMeta`: the ticked fields, `·` between them, in `text-sidebar-action-icon`.
-fn info(s: &Session, now: i64, height: f32, cx: &App) -> Option<AnyElement> {
+/// How `SessionInfoMeta` is sized and colored where it sits.
+pub(super) struct InfoStyle {
+    pub size: f32,
+    pub color: gpui::Hsla,
+    /// The slot's height; none is `leading-none`.
+    pub height: Option<f32>,
+}
+
+/// `SessionInfoMeta`: the ticked fields, `·` between them.
+pub(super) fn info(s: &Session, now: i64, style: InfoStyle, cx: &App) -> Option<AnyElement> {
     let translator = cx.global::<Translator>();
     let t = |key: &str, count: i64| translator.t(key, &[("count", Arg::Number(count))]);
     let fields = cx.global::<super::Sessions>().task_info.clone();
@@ -109,7 +120,6 @@ fn info(s: &Session, now: i64, height: f32, cx: &App) -> Option<AnyElement> {
     if pieces.is_empty() {
         return None;
     }
-    let size = text_size(12.0, cx);
     let children = pieces.into_iter().enumerate().map(|(i, piece)| {
         let selector = format!("task-{}-{}", piece.field, s.id);
         div()
@@ -127,13 +137,16 @@ fn info(s: &Session, now: i64, height: f32, cx: &App) -> Option<AnyElement> {
         div()
             .flex()
             .flex_none()
-            .h(css(height))
+            .map(|el| match style.height {
+                Some(h) => el.h(css(h)),
+                None => el.line_height(css(style.size)),
+            })
             .items_center()
             .gap(css(4.0))
-            .text_size(css(size))
+            .text_size(css(style.size))
             .font_weight(gpui::FontWeight::MEDIUM)
             .font_features(FontFeatures(Arc::new(vec![("tnum".into(), 1)])))
-            .text_color(cx.global::<Appearance>().hsl_token("sidebar-action-icon"))
+            .text_color(style.color)
             .children(children)
             .into_any_element(),
     )
@@ -173,14 +186,26 @@ impl RenderOnce for Slot {
             .ml_auto()
             .items_center()
             .justify_end()
-            .children(info(s, self.now, self.height, cx).map(|info| {
-                div()
-                    .flex()
-                    .overflow_hidden()
-                    .when(focused, |el| el.w(css(0.0)).opacity(0.0))
-                    .group_hover(ROW_GROUP, |st| st.w(css(0.0)).opacity(0.0))
-                    .child(info)
-            }))
+            .children(
+                info(
+                    s,
+                    self.now,
+                    InfoStyle {
+                        size: text_size(12.0, cx),
+                        color: cx.global::<Appearance>().hsl_token("sidebar-action-icon"),
+                        height: Some(self.height),
+                    },
+                    cx,
+                )
+                .map(|info| {
+                    div()
+                        .flex()
+                        .overflow_hidden()
+                        .when(focused, |el| el.w(css(0.0)).opacity(0.0))
+                        .group_hover(ROW_GROUP, |st| st.w(css(0.0)).opacity(0.0))
+                        .child(info)
+                }),
+            )
             .child(
                 div()
                     .hidden()
@@ -203,6 +228,7 @@ impl RenderOnce for Slot {
                         id: s.id.clone(),
                         menu,
                         focus,
+                        card: false,
                     }),
             )
     }
@@ -268,10 +294,10 @@ pub(super) fn row(
                 .w(css(15.0))
                 .items_center()
                 .justify_center()
-                .child(status_glyph(row, cx)),
+                .child(status_glyph(row, None, cx)),
         );
     let body = match editing {
-        Some(editing) => body.child(rename::field(editing, cx)),
+        Some(editing) => body.child(rename::field(editing, rename::TEXT, cx)),
         None => body.child(title).child(Slot {
             session: row.clone(),
             now,

@@ -87,7 +87,10 @@ fn cancel(cx: &mut App) {
 
 /// `min-w-0 flex-1` around `h-6 rounded-full border px-1.5 pr-7 text-sm font-medium`; the
 /// AI rename button that fills `pr-7` comes with 11.0.
-pub fn field(editing: &Editing, cx: &App) -> AnyElement {
+/// The field's type in a row: `text-sm font-medium`.
+pub const TEXT: (f32, gpui::FontWeight) = (14.0, gpui::FontWeight::MEDIUM);
+
+pub fn field(editing: &Editing, (size, weight): (f32, gpui::FontWeight), cx: &App) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let input = editing.input.clone();
     div()
@@ -122,8 +125,8 @@ pub fn field(editing: &Editing, cx: &App) -> AnyElement {
                 .rounded(css(9999.0))
                 .border(css(1.0))
                 .border_color(appearance.token("border-default"))
-                .text_size(css(text_size(14.0, cx)))
-                .font_weight(gpui::FontWeight::MEDIUM)
+                .text_size(css(text_size(size, cx)))
+                .font_weight(weight)
                 .text_color(appearance.hsl_token("foreground"))
                 .child(editing.input.clone()),
         )

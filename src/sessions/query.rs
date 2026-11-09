@@ -70,7 +70,8 @@ pub fn list(
                 coalesce(sessions.last_activity_at, sessions.user_send_at, sessions.updated_at),
                 sessions.agent_kind, sessions.orca_role, sessions.total_token_usage,
                 sessions.total_cost_usd, sessions.total_cost_amount, sessions.total_cost_currency,
-                sessions.notifications_muted, {}, sessions.list_preview, sessions.list_preview_role
+                sessions.notifications_muted, {}, sessions.list_preview, sessions.list_preview_role,
+                sessions.summary
          FROM sessions WHERE {filter} AND {}
          ORDER BY sessions.updated_at DESC, sessions.id DESC LIMIT ?",
         projection::columns(),
@@ -107,6 +108,7 @@ pub fn list(
             cost_currency: row.get(18)?,
             muted: row.get(19)?,
             preview,
+            summary: row.get(26)?,
         };
         let uncached = (row.get(22)?, row.get(23)?);
         let item = projection::item(

@@ -286,11 +286,14 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     Pinned section's list mode (dividers, the title line with the info slot that gives way to
     More, one preview line), with `sessionToCamel`'s `preview`; the active ring with 8.6, live
     preview text with 10.0
-  - [ ] 8.5c2c The card as `SessionCard.tsx` draws its `card` variant in the Pinned section's card
-    mode, laid out by `CardMasonry` and `DraggableCardColumns`, with `sessionToCamel`'s
-    `summary` and `resolveSessionCardBody`
+  - [x] 8.5c2c The card as `SessionCard.tsx` draws its `card` variant in the Pinned section's card
+    mode, laid out by `CardMasonry` (one column, two from 246px, three from 390px) and
+    `DraggableCardColumns`' round-robin columns, with `sessionToCamel`'s `summary` and
+    `resolveSessionCardBody`; dragging comes with 8.5c2e
   - [ ] 8.5c2d `SidebarTitleMarquee`: an overflowing title scrolls once while its row is hovered,
     in the text and list rows
+  - [ ] 8.5c2e Drag to reorder as `SortableList` and `DraggableCardColumns` do: pinned entries in
+    every mode (written to `pinnedOrder`) and projects under the `custom` project order
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,
   `/cc-agent/new`, `/cc-agent/:sessionId` as the chat view's place until chapter 9),

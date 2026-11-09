@@ -140,4 +140,14 @@ fn the_list_reads_its_preview_as_session_to_camel_does() {
         "an assistant answer"
     );
     assert_eq!(preview("none"), None);
+    db.execute("UPDATE sessions SET summary = 'done' WHERE id = 'none'", [])
+        .unwrap();
+    let rows = query::list(&db, Status::Active).unwrap().0;
+    let summary = rows
+        .iter()
+        .find(|s| s.id == "none")
+        .unwrap()
+        .summary
+        .clone();
+    assert_eq!(summary.as_deref(), Some("done"));
 }

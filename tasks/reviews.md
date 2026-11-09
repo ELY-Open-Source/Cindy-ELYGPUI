@@ -351,3 +351,10 @@ effort high, in a Herdr pane.
   a cut label had no full text. Fixed in both rows: `dialogueSourceLabelMap` for loose rows, no
   menu while editing, the label's tooltip.
 - Round 2: PASS.
+
+## 8.5c2c The card
+
+- Round 1: FAIL. An optimistic unpin kept the in-memory summary; two module docs were stale.
+  Fixed: an unpin clears the summary and a failed write restores it; the docs name card mode
+  and the fade's restart.
+- Round 2: PASS.

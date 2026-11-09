@@ -254,3 +254,25 @@ fn flat_loose_tasks_carry_their_source_label(cx: &mut TestAppContext) {
     cx.update(|_, cx| super::view_mode::set_main(super::view_mode::Main::Text, cx));
     assert!(label(cx, "a1"), "flat text row");
 }
+
+#[gpui::test]
+fn a_failed_unpin_puts_the_summary_back(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path());
+    let summary = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| {
+            let loaded = cx.global::<Sessions>().loaded.as_ref().unwrap();
+            let row = loaded.sessions.iter().find(|s| s.id == "a0").unwrap();
+            (row.pinned_at, row.summary.clone())
+        })
+    };
+    cx.update(|window, cx| {
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].pinned_at = Some(1);
+        loaded.sessions[0].summary = Some("done".into());
+        super::write::apply("a0", super::write::Meta::Pinned(None), window, cx);
+    });
+    cx.run_until_parked();
+    assert_eq!(summary(cx), (Some(1), Some("done".into())), "both restored");
+    assert_eq!(toasts(cx), ["Operation failed"]);
+}

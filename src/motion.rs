@@ -80,6 +80,11 @@ pub fn ease_move(x: f32) -> f32 {
     cubic_bezier(0.4, 0.0, 0.2, 1.0, x.clamp(0.0, 1.0))
 }
 
+/// CSS `ease`.
+pub fn ease(x: f32) -> f32 {
+    cubic_bezier(0.25, 0.1, 0.25, 1.0, x.clamp(0.0, 1.0))
+}
+
 /// CSS `ease-out`.
 pub fn ease_out(x: f32) -> f32 {
     cubic_bezier(0.0, 0.0, 0.58, 1.0, x.clamp(0.0, 1.0))

@@ -59,7 +59,7 @@ pub(super) fn list_row(
                 .w(css(12.0))
                 .items_center()
                 .justify_center()
-                .child(status_glyph(s, cx)),
+                .child(status_glyph(s, None, cx)),
         )
         .child(div().w(css(6.0)));
     let title = div()
@@ -89,7 +89,7 @@ pub(super) fn list_row(
         .items_center()
         .child(prefix);
     let slot = match editing {
-        Some(editing) => slot.child(rename::field(editing, cx)),
+        Some(editing) => slot.child(rename::field(editing, rename::TEXT, cx)),
         None => slot.child(title),
     };
     let line_one =

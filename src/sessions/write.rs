@@ -66,6 +66,16 @@ fn set_local(id: &str, meta: &Meta, cx: &mut App) -> Option<Meta> {
     })
 }
 
+/// An unpin clears the summary too, as `patchLocal` does; returns the one it cleared.
+fn clear_summary(id: &str, meta: &Meta, cx: &mut App) -> Option<String> {
+    if *meta != Meta::Pinned(None) {
+        return None;
+    }
+    let loaded = cx.global_mut::<Sessions>().loaded.as_mut()?;
+    let row = loaded.sessions.iter_mut().find(|s| s.id == id)?;
+    row.summary.take()
+}
+
 fn current(id: &str, cx: &App) -> Option<bool> {
     let loaded = cx.global::<Sessions>().loaded.as_ref()?;
     loaded.sessions.iter().find(|s| s.id == id).map(|s| s.muted)
@@ -81,6 +91,8 @@ struct Undo {
     id: String,
     meta: Meta,
     previous: Option<Meta>,
+    /// The summary an unpin cleared.
+    summary: Option<String>,
     seq: u64,
 }
 
@@ -99,6 +111,13 @@ impl Undo {
         };
         if let (true, Some(previous)) = (undo, self.previous) {
             set_local(&self.id, &previous, cx);
+            if let Some(summary) = self.summary {
+                let loaded = cx.global_mut::<Sessions>().loaded.as_mut();
+                let row = loaded.and_then(|l| l.sessions.iter_mut().find(|s| s.id == self.id));
+                if let Some(row) = row {
+                    row.summary = Some(summary);
+                }
+            }
             cx.refresh_windows();
         }
         key
@@ -109,6 +128,7 @@ impl Undo {
 /// the write.
 pub fn apply(id: &str, meta: Meta, window: &Window, cx: &mut App) {
     let previous = set_local(id, &meta, cx);
+    let summary = clear_summary(id, &meta, cx);
     let store = cx.global_mut::<Sessions>();
     store.writes += 1;
     let seq = store.writes;
@@ -121,6 +141,7 @@ pub fn apply(id: &str, meta: Meta, window: &Window, cx: &mut App) {
         id: id.to_owned(),
         meta: meta.clone(),
         previous,
+        summary,
         seq,
     };
     let State::Ready(db) = &cx.global::<LocalDb>().state else {

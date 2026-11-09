@@ -1,4 +1,4 @@
-//! `PinnedSection.tsx` in text and list mode: pinned tasks and projects, folded as one
+//! `PinnedSection.tsx` in text, list and card mode: pinned tasks and projects, folded as one
 //! section, with the `ViewStyleMenu` that picks the section's display mode.
 
 use std::cell::RefCell;
@@ -13,10 +13,12 @@ use gpui::{
 };
 
 use super::{
+    card::Card,
     fold,
     list_row::{self, list_row},
     lists::{Lists, Pinned},
     main_list::{Place, project, text},
+    masonry,
     row::{ROW_HEIGHT, row},
     view_mode::{self, Pinned as Mode},
 };
@@ -124,7 +126,8 @@ pub fn section(
     cx: &App,
 ) -> Option<AnyElement> {
     let inner = RefCell::new(Vec::new());
-    let list = view_mode::pinned(cx) == Mode::List;
+    let mode = view_mode::pinned(cx);
+    let list = mode == Mode::List;
     let place = Place {
         list,
         section: "pinned",
@@ -198,7 +201,11 @@ pub fn section(
                 .child(button),
         )
         .child(view_style);
-    let top = if list { 4.0 } else { 6.0 };
+    let top = match mode {
+        Mode::Text => 6.0,
+        Mode::List => 4.0,
+        Mode::Card => 2.0,
+    };
     let mut height = top;
     let mut rows: Vec<AnyElement> = Vec::new();
     for (i, entry) in lists.pinned.iter().enumerate() {
@@ -223,6 +230,30 @@ pub fn section(
         };
         height += h + if i > 0 { 2.0 } else { 0.0 };
         rows.push(element);
+    }
+    // `CardMasonry`: sessions as cards, projects framed; its height is measured.
+    if mode == Mode::Card {
+        let cards: Vec<AnyElement> = lists
+            .pinned
+            .iter()
+            .map(|entry| match entry {
+                Pinned::Session(s) => Card {
+                    session: (**s).clone(),
+                    now,
+                }
+                .into_any_element(),
+                Pinned::Project(p) => div()
+                    .rounded(css(12.0))
+                    .border(css(1.0))
+                    .border_color(appearance.token("cmd-palette-border"))
+                    .bg(appearance.token("surface-elevated"))
+                    .p(css(4.0))
+                    .child(project(p, &place, window, cx).0)
+                    .into_any_element(),
+            })
+            .collect();
+        rows = vec![masonry::layout(cards, &inner, window, cx)];
+        height = top + cx.global::<super::Sessions>().masonry.height;
     }
     let body = move || {
         div()

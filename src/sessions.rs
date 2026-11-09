@@ -1,6 +1,7 @@
 //! Cindy's `sessionsStore.ts` for this window's bucket: the task list, read from the local
 //! database and read again whenever that database changes on disk.
 
+mod card;
 mod filter;
 mod fold;
 mod group;
@@ -8,6 +9,7 @@ mod header;
 mod list_row;
 mod lists;
 mod main_list;
+mod masonry;
 mod meta;
 mod paths;
 mod pin;
@@ -72,6 +74,7 @@ pub struct Sessions {
     watcher: Option<notify::RecommendedWatcher>,
     /// Whether the watcher sees `owner_dir`, which the first pin may create.
     owner_watched: bool,
+    masonry: masonry::State,
 }
 
 impl gpui::Global for Sessions {}
@@ -96,6 +99,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         pins: pin::Writes::default(),
         watcher: None,
         owner_watched: false,
+        masonry: masonry::State::default(),
     });
     view_mode::install(cx);
     cx.observe_global::<LocalDb>(|cx| {

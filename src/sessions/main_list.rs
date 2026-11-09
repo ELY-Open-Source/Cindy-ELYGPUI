@@ -309,6 +309,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     };
     let drawn = drawn.into_inner();
     let store = cx.global_mut::<Sessions>();
+    store.masonry.mounted &= drawn.iter().any(|k| k == super::masonry::DRAWN);
     let before = store.show_all.len();
     store.show_all.retain(|k| drawn.contains(k));
     if store.show_all.len() < before {

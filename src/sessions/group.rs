@@ -33,6 +33,8 @@ pub struct Session {
     pub activity_at: i64,
     /// `sessionToCamel`'s `preview`: the latest message as plain text.
     pub preview: Option<String>,
+    /// `sessionToCamel`'s `summary`.
+    pub summary: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
