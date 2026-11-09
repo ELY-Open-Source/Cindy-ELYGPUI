@@ -2,7 +2,6 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -11,7 +10,10 @@ if (!cindy || !commit) throw new Error('usage: sync-themes.mjs <cindy checkout> 
 const out = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'themes');
 const esbuild = createRequire(path.join(path.resolve(cindy), 'package.json'))('esbuild');
 
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cindy-themes-'));
+// Scratch work stays in the checkout.
+const scratch = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '.scratch');
+fs.mkdirSync(scratch, { recursive: true });
+const tmp = fs.mkdtempSync(path.join(scratch, 'cindy-themes-'));
 try {
   const src = 'apps/desktop/src';
   const archive = execFileSync('git', ['-C', cindy, 'archive', commit, src], { maxBuffer: 1 << 30 });

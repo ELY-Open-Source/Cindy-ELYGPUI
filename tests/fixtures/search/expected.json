@@ -1,0 +1,950 @@
+{
+ "fuzzy": [
+  {
+   "score": "56.57142857142857",
+   "indices": [
+    0,
+    1
+   ]
+  },
+  {
+   "score": "57.57142857142857",
+   "indices": [
+    0,
+    1
+   ]
+  },
+  {
+   "score": "50.57142857142857",
+   "indices": [
+    1,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "score": "56.57142857142857",
+   "indices": [
+    0,
+    1
+   ]
+  },
+  {
+   "score": "0",
+   "indices": []
+  },
+  {
+   "score": "0",
+   "indices": []
+  },
+  null,
+  null,
+  {
+   "score": "52.72727272727273",
+   "indices": [
+    0,
+    3
+   ]
+  },
+  {
+   "score": "32.72727272727273",
+   "indices": [
+    3
+   ]
+  },
+  {
+   "score": "34.72727272727273",
+   "indices": [
+    3
+   ]
+  },
+  {
+   "score": "34.69565217391305",
+   "indices": [
+    4
+   ]
+  },
+  {
+   "score": "53.69565217391305",
+   "indices": [
+    0,
+    4
+   ]
+  },
+  {
+   "score": "35.666666666666664",
+   "indices": [
+    0,
+    2
+   ]
+  },
+  {
+   "score": "65.66666666666667",
+   "indices": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "score": "55.666666666666664",
+   "indices": [
+    0,
+    1
+   ]
+  },
+  {
+   "score": "34.666666666666664",
+   "indices": [
+    3
+   ]
+  },
+  {
+   "score": "34.8",
+   "indices": [
+    3
+   ]
+  },
+  {
+   "score": "34.8421052631579",
+   "indices": [
+    2
+   ]
+  },
+  {
+   "score": "26.666666666666668",
+   "indices": [
+    4,
+    5
+   ]
+  },
+  {
+   "score": "6.666666666666667",
+   "indices": [
+    1,
+    5
+   ]
+  },
+  {
+   "score": "76.84210526315789",
+   "indices": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "score": "2.888888888888889",
+   "indices": [
+    1
+   ]
+  },
+  null,
+  null,
+  {
+   "score": "4.7272727272727275",
+   "indices": [
+    4
+   ]
+  },
+  null,
+  {
+   "score": "76.84210526315789",
+   "indices": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "score": "76.84210526315789",
+   "indices": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "score": "75.8",
+   "indices": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "score": "50.64",
+   "indices": [
+    0,
+    4
+   ]
+  },
+  {
+   "score": "52.53333333333333",
+   "indices": [
+    0,
+    9
+   ]
+  },
+  {
+   "score": "34.8421052631579",
+   "indices": [
+    2
+   ]
+  },
+  {
+   "score": "38.72727272727273",
+   "indices": [
+    0,
+    3
+   ]
+  },
+  {
+   "score": "58.8421052631579",
+   "indices": [
+    0,
+    1
+   ]
+  },
+  {
+   "score": "26.727272727272727",
+   "indices": [
+    1,
+    2
+   ]
+  },
+  {
+   "score": "4.888888888888889",
+   "indices": [
+    1
+   ]
+  }
+ ],
+ "preview": [
+  {
+   "preview": "please inspect the billing flow",
+   "snippet": "please inspect the billing flow",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "please inspect the billing flow",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "please inspect the billing flow",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "first second",
+   "snippet": "first second",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "nested",
+   "snippet": "nested",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "结论。",
+   "snippet": "结论。",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "one two",
+   "snippet": "one two",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "hello",
+   "snippet": "hello",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "one two deep zero-one",
+   "snippet": "one two deep zero-one",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "z y",
+   "snippet": "z y",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "Which db? pg sqlite ok",
+   "snippet": "Which db? pg sqlite ok",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "Pick a b",
+   "snippet": "Pick a b",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "Step one looks fine",
+   "snippet": "Step one looks fine",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "only",
+   "snippet": "only",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "three",
+   "snippet": "three",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "bash ls -la",
+   "snippet": "bash ls -la",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "plain thought",
+   "snippet": "plain thought",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "{not json",
+   "snippet": "{not json",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀 登录 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀...",
+   "snippet": "...😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀 登录 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀...",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀...",
+   "snippet": "...😀😀😀😀😀😀😀😀 登录 😀😀😀😀😀😀😀😀...",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word...",
+   "snippet": "...rd word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word needle at the end",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "word word word word word word...",
+   "snippet": "...rd word word needle at the end",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "needle first filler filler fi...",
+   "snippet": "needle first filler filler fil...",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "...",
+   "snippet": "n...",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "İstanbul trip",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "İstanbul trip",
+   "snippet": "İstanbul trip",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "ΟΔΟΣ ΜΑΚΡΥΣ",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "ΟΔΟΣ ΜΑΚΡΥΣ",
+   "snippet": "ΟΔΟΣ ΜΑΚΡΥΣ",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "Straße frei",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "Straße frei",
+   "snippet": "Straße frei",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "please inspect the billing flow",
+   "snippet": "please inspect the billing flow",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "billing bill",
+   "snippet": "billing bill",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "aaaa",
+   "snippet": "aaaa",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "lots of space",
+   "snippet": "lots of space",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "no match here",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "punctuation only",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "😀 smile...",
+   "snippet": "...smile 😀",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "CamelCase",
+   "snippet": "CamelCase",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words: hello world Agent supplement: do it",
+   "snippet": "[Source] from task X User’s original words: hello world Agent supplement: do it",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Task source] Nightly Task ID: abc [Source] x User’s original words: a Agent supplement: b c",
+   "snippet": "[Task source] Nightly Task ID: abc [Source] x User’s original words: a Agent supplement: b c",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] x User’s original words:\"\\u0041\" Agent supplement:\"b\"",
+   "snippet": "[Source] x User’s original words:\"\\u0041\" Agent supplement:\"b\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[来源] 任务 用户原话： 你好 Agent补充： 补充",
+   "snippet": "[来源] 任务 用户原话： 你好 Agent补充： 补充",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\" extra",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\" extra",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "snippet": "[Source] from task X User’s original words:\"hello\\nworld\" Agent supplement:\"do it\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "object text",
+   "snippet": "object text",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "",
+   "snippet": null,
+   "keywordMatchedVisibleText": false
+  },
+  {
+   "preview": "parsed block",
+   "snippet": "parsed block",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "cite kept",
+   "snippet": "cite kept",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "\"quoted\"",
+   "snippet": "\"quoted\"",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "asked? answered",
+   "snippet": "asked? answered",
+   "keywordMatchedVisibleText": true
+  },
+  {
+   "preview": "nested out",
+   "snippet": "nested out",
+   "keywordMatchedVisibleText": true
+  }
+ ],
+ "visible": [
+  "  indented\n    code\n",
+  "indented\n    code",
+  "  [UI_ACTION_TRIGGER] x",
+  "",
+  "  a\n  b \nc",
+  "answer ",
+  "m",
+  "  spaced  ",
+  "spaced",
+  ""
+ ],
+ "merge": [
+  {
+   "relevance": [
+    {
+     "id": "s1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0,
+      1
+     ],
+     "titleScore": "10.5",
+     "contentHit": "m3",
+     "contentHits": [
+      "m3",
+      "m2"
+     ],
+     "rankScore": "2151077"
+    },
+    {
+     "id": "s2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      2
+     ],
+     "titleScore": "5.25",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000524"
+    },
+    {
+     "id": "s3",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m4",
+     "contentHits": [
+      "m4",
+      "m1"
+     ],
+     "rankScore": "1000005"
+    }
+   ],
+   "activityDesc": [
+    {
+     "id": "s2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      2
+     ],
+     "titleScore": "5.25",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000524"
+    },
+    {
+     "id": "s1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0,
+      1
+     ],
+     "titleScore": "10.5",
+     "contentHit": "m3",
+     "contentHits": [
+      "m3",
+      "m2"
+     ],
+     "rankScore": "2151077"
+    },
+    {
+     "id": "s3",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m4",
+     "contentHits": [
+      "m4",
+      "m1"
+     ],
+     "rankScore": "1000005"
+    }
+   ],
+   "activityAsc": [
+    {
+     "id": "s3",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m4",
+     "contentHits": [
+      "m4",
+      "m1"
+     ],
+     "rankScore": "1000005"
+    },
+    {
+     "id": "s1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0,
+      1
+     ],
+     "titleScore": "10.5",
+     "contentHit": "m3",
+     "contentHits": [
+      "m3",
+      "m2"
+     ],
+     "rankScore": "2151077"
+    },
+    {
+     "id": "s2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      2
+     ],
+     "titleScore": "5.25",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000524"
+    }
+   ]
+  },
+  {
+   "relevance": [
+    {
+     "id": "s3",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      0
+     ],
+     "titleScore": "1",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000100"
+    },
+    {
+     "id": "s2",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m2",
+     "contentHits": [
+      "m2"
+     ],
+     "rankScore": "1000001"
+    }
+   ],
+   "activityDesc": [
+    {
+     "id": "s2",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m2",
+     "contentHits": [
+      "m2"
+     ],
+     "rankScore": "1000001"
+    },
+    {
+     "id": "s1",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m1",
+     "contentHits": [
+      "m1"
+     ],
+     "rankScore": "1000001"
+    }
+   ],
+   "activityAsc": [
+    {
+     "id": "s3",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      0
+     ],
+     "titleScore": "1",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000100"
+    },
+    {
+     "id": "s1",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "m1",
+     "contentHits": [
+      "m1"
+     ],
+     "rankScore": "1000001"
+    }
+   ]
+  },
+  {
+   "relevance": [
+    {
+     "id": "a",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "x1",
+     "contentHits": [
+      "x1"
+     ],
+     "rankScore": "1000005"
+    },
+    {
+     "id": "B",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "X1",
+     "contentHits": [
+      "X1",
+      "x10",
+      "x2"
+     ],
+     "rankScore": "1000005"
+    }
+   ],
+   "activityDesc": [
+    {
+     "id": "a",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "x1",
+     "contentHits": [
+      "x1"
+     ],
+     "rankScore": "1000005"
+    },
+    {
+     "id": "B",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "X1",
+     "contentHits": [
+      "X1",
+      "x10",
+      "x2"
+     ],
+     "rankScore": "1000005"
+    }
+   ],
+   "activityAsc": [
+    {
+     "id": "a",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "x1",
+     "contentHits": [
+      "x1"
+     ],
+     "rankScore": "1000005"
+    },
+    {
+     "id": "B",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "X1",
+     "contentHits": [
+      "X1",
+      "x10",
+      "x2"
+     ],
+     "rankScore": "1000005"
+    }
+   ]
+  },
+  {
+   "relevance": [
+    {
+     "id": "t1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0
+     ],
+     "titleScore": "2",
+     "contentHit": "z",
+     "contentHits": [
+      "z"
+     ],
+     "rankScore": "2050202.5"
+    },
+    {
+     "id": "t2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      1
+     ],
+     "titleScore": "3",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000299"
+    },
+    {
+     "id": "c1",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "y",
+     "contentHits": [
+      "y"
+     ],
+     "rankScore": "1000010"
+    }
+   ],
+   "activityDesc": [
+    {
+     "id": "c1",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "y",
+     "contentHits": [
+      "y"
+     ],
+     "rankScore": "1000010"
+    },
+    {
+     "id": "t1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0
+     ],
+     "titleScore": "2",
+     "contentHit": "z",
+     "contentHits": [
+      "z"
+     ],
+     "rankScore": "2050202.5"
+    },
+    {
+     "id": "t2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      1
+     ],
+     "titleScore": "3",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000299"
+    }
+   ],
+   "activityAsc": [
+    {
+     "id": "t1",
+     "matchKind": "both",
+     "titleMatchIndices": [
+      0
+     ],
+     "titleScore": "2",
+     "contentHit": "z",
+     "contentHits": [
+      "z"
+     ],
+     "rankScore": "2050202.5"
+    },
+    {
+     "id": "t2",
+     "matchKind": "title",
+     "titleMatchIndices": [
+      1
+     ],
+     "titleScore": "3",
+     "contentHit": null,
+     "contentHits": [],
+     "rankScore": "2000299"
+    },
+    {
+     "id": "c1",
+     "matchKind": "content",
+     "titleMatchIndices": [],
+     "titleScore": null,
+     "contentHit": "y",
+     "contentHits": [
+      "y"
+     ],
+     "rankScore": "1000010"
+    }
+   ]
+  },
+  {
+   "relevance": [],
+   "activityDesc": [],
+   "activityAsc": []
+  }
+ ]
+}

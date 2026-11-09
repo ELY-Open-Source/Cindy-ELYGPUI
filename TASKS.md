@@ -338,7 +338,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       as `conversationSearchSort` sorts), with the search row sticky over them and the clip
       below it while a query runs; the options' Projects submenu, which lists every known
       project, archived tasks' included
-        - [ ] 8.7c1a `conversationSearch.pure.ts`: title fuzzy match, keyword ranges, snippets,
+        - [x] 8.7c1a `conversationSearch.pure.ts`: title fuzzy match, keyword ranges, snippets,
           message text extraction and the sort, checked against golden `tests/fixtures/search`
         - [ ] 8.7c1b `chatHistorySearch`'s FTS pass over `messages_fts` through `cjk_seg`; the
           vector pass is skipped as Cindy skips it while the embedding service is down (11.0)

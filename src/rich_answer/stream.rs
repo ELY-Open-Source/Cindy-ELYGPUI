@@ -194,7 +194,7 @@ impl Doc {
             _ => None,
         };
         if inline.is_some() {
-            props.remove("children");
+            props.shift_remove("children");
         }
         self.nodes.insert(
             id.clone(),
@@ -248,7 +248,7 @@ impl Doc {
             }
             .filter(|_| container(kind));
             if nested.is_some() {
-                props.remove("children");
+                props.shift_remove("children");
             }
             self.nodes.insert(
                 id.clone(),

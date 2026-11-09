@@ -1,0 +1,903 @@
+{
+ "fuzzy": [
+  [
+   "Chat History",
+   "ch"
+  ],
+  [
+   "Chat History",
+   "CH"
+  ],
+  [
+   "Chat History",
+   "hist"
+  ],
+  [
+   "Chat History",
+   " ch "
+  ],
+  [
+   "Chat History",
+   ""
+  ],
+  [
+   "Chat History",
+   "   "
+  ],
+  [
+   "",
+   "a"
+  ],
+  [
+   "ab",
+   "abc"
+  ],
+  [
+   "fooBar",
+   "fb"
+  ],
+  [
+   "fooBar",
+   "b"
+  ],
+  [
+   "fooBar",
+   "B"
+  ],
+  [
+   "foo-bar",
+   "b"
+  ],
+  [
+   "foo_bar",
+   "fb"
+  ],
+  [
+   "İstanbul",
+   "is"
+  ],
+  [
+   "İstanbul",
+   "stan"
+  ],
+  [
+   "İstanbul",
+   "i̇"
+  ],
+  [
+   "😀 smile",
+   "s"
+  ],
+  [
+   "a😀b",
+   "b"
+  ],
+  [
+   "😀b",
+   "b"
+  ],
+  [
+   "处理源码更新冲突",
+   "更新"
+  ],
+  [
+   "处理源码更新冲突",
+   "理新"
+  ],
+  [
+   "ΣΑΣ",
+   "σας"
+  ],
+  [
+   "ΑΣ",
+   "ς"
+  ],
+  [
+   "ΑΣ",
+   "σ"
+  ],
+  [
+   "Straße",
+   "strasse"
+  ],
+  [
+   "Straße",
+   "ß"
+  ],
+  [
+   "ﬁle",
+   "fi"
+  ],
+  [
+   "ABC",
+   "abc"
+  ],
+  [
+   "abc",
+   "ABC"
+  ],
+  [
+   "x  y",
+   "x y"
+  ],
+  [
+   "New Maker",
+   "nm"
+  ],
+  [
+   "camelCaseTitle",
+   "ct"
+  ],
+  [
+   "a　b",
+   "b"
+  ],
+  [
+   "123abc",
+   "1a"
+  ],
+  [
+   "aaa",
+   "aa"
+  ],
+  [
+   "banana",
+   "an"
+  ],
+  [
+   "ab",
+   "b "
+  ]
+ ],
+ "preview": [
+  [
+   "user",
+   "please inspect the billing flow",
+   "billing",
+   null,
+   null
+  ],
+  [
+   "user",
+   "{\"text\": \"please inspect the billing flow\", \"images\": [{\"name\": \"secret.png\"}]}",
+   "images",
+   null,
+   null
+  ],
+  [
+   "user",
+   "{\"text\": \"please inspect the billing flow\", \"images\": [{\"name\": \"secret.png\"}]}",
+   "secret",
+   null,
+   null
+  ],
+  [
+   "user",
+   "[{\"type\": \"text\", \"text\": \"first\"}, {\"type\": \"image\", \"source\": \"x\"}, {\"type\": \"text\", \"text\": \"second\"}]",
+   "second",
+   null,
+   null
+  ],
+  [
+   "user",
+   "[UI_ACTION_TRIGGER] continue please",
+   "continue",
+   null,
+   null
+  ],
+  [
+   "user",
+   "{\"content\": [{\"type\": \"text\", \"text\": \"nested\"}], \"x\": 1}",
+   "nested",
+   null,
+   null
+  ],
+  [
+   "user",
+   "{\"files\": [\"a.txt\"], \"note\": \"zz\"}",
+   "zz",
+   null,
+   null
+  ],
+  [
+   "user",
+   "{\"text\": \"[UI_ACTION_TRIGGER] hidden\"}",
+   "hidden",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "结论。citeturn0search0",
+   "结论",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "[{\"type\": \"text\", \"text\": \"one\"}, {\"type\": \"text\", \"text\": \"two\"}]",
+   "two",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "{\"type\": \"text\", \"text\": \"hello\"}",
+   "hello",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "{\"foo\":{\"bar\":\"deep\"},\"2\":\"two\",\"1\":\"one\",\"01\":\"zero-one\"}",
+   "deep",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "{\"b\":\"x\",\"a\":\"y\",\"b\":\"z\"}",
+   "z",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "<|endoftext|>",
+   "endoftext",
+   null,
+   null
+  ],
+  [
+   "ask_user",
+   "{\"questions\": [{\"question\": \"Which db?\"}, \"bare\", {\"q\": \"no\"}], \"answers\": {\"q2\": \"sqlite\", \"1\": \"pg\", \"n\": 3}, \"reply\": \"ok\"}",
+   "sqlite",
+   null,
+   null
+  ],
+  [
+   "ask_user",
+   "{\"question\": \"Pick\", \"answers\": [\"a\", \"b\"]}",
+   "b",
+   null,
+   null
+  ],
+  [
+   "ask_user",
+   "[\"x\"]",
+   "x",
+   null,
+   null
+  ],
+  [
+   "plan_review",
+   "{\"plan\": \"Step one\", \"feedback\": \"looks fine\"}",
+   "fine",
+   null,
+   null
+  ],
+  [
+   "plan_review",
+   "{\"plan\": 7, \"feedback\": \"only\"}",
+   "only",
+   null,
+   null
+  ],
+  [
+   "tool_result",
+   "[1, 2, {\"text\":\"three\"}, null, true]",
+   "three",
+   null,
+   null
+  ],
+  [
+   "tool_use",
+   "{\"name\": \"bash\", \"input\": {\"command\": \"ls -la\"}}",
+   "ls",
+   null,
+   null
+  ],
+  [
+   "thinking",
+   "plain thought",
+   "thought",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "{not json",
+   "json",
+   null,
+   null
+  ],
+  [
+   "user",
+   "  [1, 2] ",
+   "1",
+   null,
+   null
+  ],
+  [
+   "user",
+   "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀 登录 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+   "登录",
+   null,
+   null
+  ],
+  [
+   "user",
+   "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀 登录 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+   "登录",
+   20,
+   null
+  ],
+  [
+   "user",
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word needle at the end",
+   "needle",
+   null,
+   null
+  ],
+  [
+   "user",
+   "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word needle at the end",
+   "needle",
+   30,
+   null
+  ],
+  [
+   "user",
+   "needle first filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler filler ",
+   "needle",
+   30,
+   null
+  ],
+  [
+   "user",
+   "needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle needle ",
+   "needle",
+   1,
+   null
+  ],
+  [
+   "user",
+   "İstanbul trip",
+   "istanbul",
+   null,
+   null
+  ],
+  [
+   "user",
+   "İstanbul trip",
+   "stanbul",
+   null,
+   null
+  ],
+  [
+   "user",
+   "ΟΔΟΣ ΜΑΚΡΥΣ",
+   "ΟΔΟΣ",
+   null,
+   null
+  ],
+  [
+   "user",
+   "ΟΔΟΣ ΜΑΚΡΥΣ",
+   "οδοσ",
+   null,
+   null
+  ],
+  [
+   "user",
+   "Straße frei",
+   "STRASSE",
+   null,
+   null
+  ],
+  [
+   "user",
+   "Straße frei",
+   "straße",
+   null,
+   null
+  ],
+  [
+   "user",
+   "please inspect the billing flow",
+   "billing, flow!",
+   null,
+   null
+  ],
+  [
+   "user",
+   "billing bill",
+   "bill billing",
+   null,
+   null
+  ],
+  [
+   "user",
+   "aaaa",
+   "aa",
+   null,
+   null
+  ],
+  [
+   "user",
+   "  lots\n\nof   space\t",
+   "space",
+   null,
+   null
+  ],
+  [
+   "user",
+   "no match here",
+   "zebra",
+   null,
+   null
+  ],
+  [
+   "user",
+   "punctuation only",
+   "!!!",
+   null,
+   null
+  ],
+  [
+   "user",
+   "😀 smile 😀",
+   "smile",
+   8,
+   null
+  ],
+  [
+   "user",
+   "CamelCase",
+   "camelcase",
+   null,
+   null
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   null
+  ],
+  [
+   "user",
+   "[Task source] Nightly\n\nTask ID: abc\n\n[Source] x\nUser’s original words:\"a\"\nAgent supplement:\"b c\"",
+   "c",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "user",
+   "[Source] x\nUser’s original words:\"\\u0041\"\nAgent supplement:\"b\"",
+   "A",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "user",
+   "[来源] 任务\n用户原话：\"你好\"\nAgent补充：\"补充\"",
+   "你好",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"\nextra",
+   "world",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "assistant",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   "{\"origin\": {\"kind\": \"session\"}}"
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   "not json"
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   "{\"origin\": {\"kind\": \"scheduler\"}}"
+  ],
+  [
+   "user",
+   "[Source] from task X\nUser’s original words:\"hello\\nworld\"\nAgent supplement:\"do it\"",
+   "world",
+   null,
+   "[{\"origin\": {\"kind\": \"session\"}}]"
+  ],
+  [
+   "user",
+   123,
+   "123",
+   null,
+   null
+  ],
+  [
+   "user",
+   {
+    "text": "object text"
+   },
+   "object",
+   null,
+   null
+  ],
+  [
+   "user",
+   null,
+   "null",
+   null,
+   null
+  ],
+  [
+   "user",
+   true,
+   "true",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   [
+    {
+     "type": "text",
+     "text": "parsed block"
+    }
+   ],
+   "block",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   {
+    "type": "text",
+    "text": "cite citex kept"
+   },
+   "kept",
+   null,
+   null
+  ],
+  [
+   "assistant",
+   "\"quoted\"",
+   "quoted",
+   null,
+   null
+  ],
+  [
+   "ask_user",
+   {
+    "question": "asked?",
+    "reply": "answered"
+   },
+   "answered",
+   null,
+   null
+  ],
+  [
+   "tool_result",
+   {
+    "output": {
+     "lines": [
+      "nested out"
+     ]
+    }
+   },
+   "nested",
+   null,
+   null
+  ]
+ ],
+ "visible": [
+  [
+   "assistant",
+   "  indented\n    code\n",
+   true
+  ],
+  [
+   "assistant",
+   "  indented\n    code\n",
+   false
+  ],
+  [
+   "user",
+   "  [UI_ACTION_TRIGGER] x",
+   true
+  ],
+  [
+   "user",
+   "[UI_ACTION_TRIGGER] x",
+   true
+  ],
+  [
+   "plan_review",
+   "{\"plan\": \"  a\\n  b \", \"feedback\": \"c\"}",
+   true
+  ],
+  [
+   "assistant",
+   "answer citex",
+   true
+  ],
+  [
+   "tool_result",
+   "  {\"message\":\"m\",\"x\":[\"deep\"]}",
+   false
+  ],
+  [
+   "user",
+   {
+    "text": "  spaced  "
+   },
+   true
+  ],
+  [
+   "user",
+   {
+    "text": "  spaced  "
+   },
+   false
+  ],
+  [
+   "plan_review",
+   42,
+   false
+  ]
+ ],
+ "merge": [
+  {
+   "name": "title above content",
+   "limit": 10,
+   "titleMatches": [
+    {
+     "session": {
+      "id": "s1",
+      "updatedAt": "2026-03-04T05:06:07.000Z"
+     },
+     "score": 10.5,
+     "indices": [
+      0,
+      1
+     ]
+    },
+    {
+     "session": {
+      "id": "s2",
+      "updatedAt": "2026-03-05T05:06:07.000Z"
+     },
+     "score": 5.25,
+     "indices": [
+      2
+     ]
+    }
+   ],
+   "contentHits": [
+    {
+     "session": {
+      "id": "s3",
+      "updatedAt": "2026-03-03T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m1",
+      "createdAt": "2026-03-03T05:06:07.000Z",
+      "score": 0.5
+     }
+    },
+    {
+     "session": {
+      "id": "s1",
+      "updatedAt": "2026-03-04T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m2",
+      "createdAt": "2026-03-04T05:06:07.000Z",
+      "score": 0.9
+     }
+    },
+    {
+     "session": {
+      "id": "s1",
+      "updatedAt": "2026-03-04T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m3",
+      "createdAt": "2026-03-04T06:06:07.000Z",
+      "score": 0.9
+     }
+    },
+    {
+     "session": {
+      "id": "s1",
+      "updatedAt": "2026-03-04T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m2",
+      "createdAt": "2026-03-04T05:06:07.000Z",
+      "score": 0.9
+     }
+    },
+    {
+     "session": {
+      "id": "s3",
+      "updatedAt": "2026-03-03T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m4",
+      "createdAt": "2026-03-03T05:06:07.000Z",
+      "score": 0.7
+     }
+    }
+   ]
+  },
+  {
+   "name": "limit cuts",
+   "limit": 2,
+   "titleMatches": [
+    {
+     "session": {
+      "id": "s3",
+      "updatedAt": "2026-03-03T05:06:07.000Z"
+     },
+     "score": 1,
+     "indices": [
+      0
+     ]
+    }
+   ],
+   "contentHits": [
+    {
+     "session": {
+      "id": "s1",
+      "updatedAt": "2026-03-04T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m1",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.1
+     }
+    },
+    {
+     "session": {
+      "id": "s2",
+      "updatedAt": "2026-03-05T05:06:07.000Z"
+     },
+     "hit": {
+      "messageId": "m2",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.2
+     }
+    }
+   ]
+  },
+  {
+   "name": "ties fall to the collation",
+   "limit": 10,
+   "titleMatches": [],
+   "contentHits": [
+    {
+     "session": {
+      "id": "B",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "x2",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.5
+     }
+    },
+    {
+     "session": {
+      "id": "a",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "x1",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.6
+     }
+    },
+    {
+     "session": {
+      "id": "B",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "X1",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.5
+     }
+    },
+    {
+     "session": {
+      "id": "B",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "x10",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "name": "same activity",
+   "limit": 10,
+   "titleMatches": [
+    {
+     "session": {
+      "id": "t1",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "score": 2,
+     "indices": [
+      0
+     ]
+    },
+    {
+     "session": {
+      "id": "t2",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "score": 3,
+     "indices": [
+      1
+     ]
+    }
+   ],
+   "contentHits": [
+    {
+     "session": {
+      "id": "c1",
+      "updatedAt": "2026-03-02T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "y",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 1
+     }
+    },
+    {
+     "session": {
+      "id": "t1",
+      "updatedAt": "2026-03-01T00:00:00.000Z"
+     },
+     "hit": {
+      "messageId": "z",
+      "createdAt": "2026-03-01T00:00:00.000Z",
+      "score": 0.25
+     }
+    }
+   ]
+  },
+  {
+   "name": "empty",
+   "limit": 10,
+   "titleMatches": [],
+   "contentHits": []
+  }
+ ]
+}

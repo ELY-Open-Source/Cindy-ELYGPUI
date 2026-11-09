@@ -1,7 +1,7 @@
 # Reviews
 
-Each round: task, round, verdict, findings and their fixes. Reviewer: an Orca worker (Codex,
-GPT-6.1 Sol, effort xhigh) since 8.6; Claude Code on Kimi K3.1 Pro before. Each round's verdict and
+Each round: task, round, verdict, findings and their fixes. Reviewer: an Orca worker, Claude Code
+on Kimi K3.1 Pro (effort high) from 8.7c1a; Codex GPT-6.1 Sol (xhigh) for 8.6 to 8.7b2; Kimi before. Each round's verdict and
 gate logs sit in `logs/review/<task>-r<N>*`.
 
 ## 1.1 Crate, window, docs
@@ -418,3 +418,8 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 ## 8.7b2 The search options
 
 - Round 1: PASS.
+
+## 8.7c1a The conversation search core
+
+- Round 1: PASS. No findings. Before the verdict, the content argument moved from the raw column
+  to `JSON.parse`'s value, as `messageToCamel` hands it.

@@ -3,7 +3,6 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -11,7 +10,10 @@ const [cindy, commit] = process.argv.slice(2);
 if (!cindy || !commit) throw new Error('usage: sync-golden.mjs <cindy checkout> <commit>');
 const fixtures = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'tests/fixtures');
 const esbuild = createRequire(path.join(path.resolve(cindy), 'package.json'))('esbuild');
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'cindy-golden-'));
+// Scratch work stays in the checkout.
+const scratch = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '.scratch');
+fs.mkdirSync(scratch, { recursive: true });
+const tmp = fs.mkdtempSync(path.join(scratch, 'cindy-golden-'));
 const write = (file, value) => fs.writeFileSync(file, `${JSON.stringify(value, null, 1)}\n`);
 
 try {
@@ -48,6 +50,7 @@ try {
     "export { richAnswerText } from '@cindy/maker-shared/rich-answer';",
     "export { markdownPreviewText } from './shared/markdownPreviewText';",
     "export { finalizePlainPreview } from './main/localDb/mapper';",
+    "export * as conversationSearch from './main/localDb/conversationSearch.pure';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -59,7 +62,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -297,6 +300,29 @@ try {
     rich: previewCases.rich.map((source) => [source, richAnswerText(source)]),
     markdown: previewCases.markdown.map((source) => [source, markdownPreviewText(source)]),
     finalize: previewCases.finalize.map(([text, role]) => [text, role, finalizePlainPreview(text, role)]),
+  });
+
+  // conversationSearch.pure: title matches, visible text, previews and the merged order.
+  const searchDir = path.join(fixtures, 'search');
+  const search = JSON.parse(fs.readFileSync(path.join(searchDir, 'cases.json'), 'utf8'));
+  const cs = conversationSearch;
+  const item = (r) => ({
+    id: r.session.id, matchKind: r.matchKind, titleMatchIndices: r.titleMatchIndices,
+    titleScore: r.titleScore === null ? null : String(r.titleScore),
+    contentHit: r.contentHit?.messageId ?? null, contentHits: r.contentHits.map((h) => h.messageId),
+    rankScore: String(r.rankScore),
+  });
+  write(path.join(searchDir, 'expected.json'), {
+    fuzzy: search.fuzzy.map(([title, query]) => {
+      const m = cs.fuzzyTitleMatch(title, query);
+      return m && { score: String(m.score), indices: m.indices };
+    }),
+    preview: search.preview.map(([role, content, query, max, meta]) =>
+      cs.normalizeConversationContentPreview(role, content, query, max ?? undefined, meta)),
+    visible: search.visible.map(([role, content, preserveWhitespace]) =>
+      cs.visibleMessageText(role, content, { preserveWhitespace })),
+    merge: search.merge.map((c) => Object.fromEntries(['relevance', 'activityDesc', 'activityAsc'].map((sortBy) =>
+      [sortBy, cs.mergeConversationSearchResults({ ...structuredClone(c), sortBy }).map(item)]))),
   });
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();

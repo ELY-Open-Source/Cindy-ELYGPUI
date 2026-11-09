@@ -17,7 +17,7 @@ mod open;
 mod paths;
 mod pin;
 mod pinned;
-mod preview;
+pub(crate) mod preview;
 mod projection;
 mod query;
 mod rename;

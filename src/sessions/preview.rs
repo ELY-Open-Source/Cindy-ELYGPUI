@@ -13,7 +13,8 @@ const CACHED_CHARS: usize = 4096;
 /// `PREVIEW_CACHE_ENTRIES`.
 const CACHE_ENTRIES: usize = 1024;
 
-const UI_ACTION_TRIGGER_PREFIX: &str = "[UI_ACTION_TRIGGER]";
+/// `UI_ACTION_TRIGGER_PREFIX`; `isSyntheticTriggerText` is a text that starts with it.
+pub const UI_ACTION_TRIGGER_PREFIX: &str = "[UI_ACTION_TRIGGER]";
 const CITATION_OPEN: &str = "\u{E200}cite\u{E202}";
 const CITATION_CLOSE: &str = "\u{E201}";
 const STOP_TOKENS: [&str; 4] = ["<|endoftext|>", "<|eot_id|>", "<|im_end|>", "<|eos|>"];
@@ -77,7 +78,7 @@ fn truncate(text: &str) -> String {
 }
 
 /// `stripInternalWebCitations`.
-fn strip_internal_web_citations(text: &str) -> String {
+pub fn strip_internal_web_citations(text: &str) -> String {
     stop_token_only(&strip_citation_markers(text))
 }
 

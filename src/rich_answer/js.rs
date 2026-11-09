@@ -1,7 +1,7 @@
 //! What `JSON.parse` gives JavaScript: numbers past f64 are `Infinity`, not `null`, a
-//! repeated key keeps its last value, and nesting has no limit.
+//! repeated key keeps its first place and last value, and nesting has no limit.
 
-use std::collections::BTreeMap;
+use indexmap::IndexMap;
 
 use crate::cindy_json::js_number;
 
@@ -19,7 +19,8 @@ pub enum Js {
     Obj(Obj),
 }
 
-pub type Obj = BTreeMap<String, Js>;
+/// Keys in insertion order; `values` gives JavaScript's property order.
+pub type Obj = IndexMap<String, Js>;
 
 impl Clone for Js {
     fn clone(&self) -> Self {
@@ -285,6 +286,11 @@ impl Js {
     }
 }
 
+/// Runs deep recursion on a grown stack.
+pub fn deep<R>(f: impl FnOnce() -> R) -> R {
+    stacker::maybe_grow(RED_ZONE, STACK, f)
+}
+
 /// JavaScript truthiness; none is `undefined`.
 pub fn truthy(value: Option<&Js>) -> bool {
     match value {
@@ -352,4 +358,43 @@ fn quoted_len(text: &str) -> usize {
             _ => 1,
         })
         .sum::<usize>()
+}
+
+/// `Object.values`: array-index keys ascending, then the rest in insertion order.
+pub fn values(fields: &Obj) -> impl Iterator<Item = &Js> {
+    let index = |key: &str| {
+        let n = key.parse::<u32>().ok()?;
+        (n != u32::MAX && n.to_string() == key).then_some(n)
+    };
+    let mut indexed: Vec<(u32, &Js)> = fields
+        .iter()
+        .filter_map(|(k, v)| index(k).map(|n| (n, v)))
+        .collect();
+    indexed.sort_by_key(|(n, _)| *n);
+    let named = fields.iter().filter(move |(k, _)| index(k).is_none());
+    indexed
+        .into_iter()
+        .map(|(_, v)| v)
+        .chain(named.map(|(_, v)| v))
+}
+
+/// `JSON.stringify` of a string.
+pub fn quote(text: &str) -> String {
+    let mut out = String::with_capacity(text.len() + 2);
+    out.push('"');
+    for c in text.chars() {
+        match c {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\u{8}' => out.push_str("\\b"),
+            '\u{c}' => out.push_str("\\f"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            c if u32::from(c) < 0x20 => out.push_str(&format!("\\u{:04x}", u32::from(c))),
+            c => out.push(c),
+        }
+    }
+    out.push('"');
+    out
 }

@@ -29,6 +29,11 @@ fn within(ranges: &[[u32; 2]], ch: char) -> bool {
     ranges.get(at).is_some_and(|[start, _]| *start <= cp)
 }
 
+/// V8's `[\p{L}\p{N}]`.
+pub fn letter_or_number(ch: char) -> bool {
+    within(&classes().letter_or_number, ch)
+}
+
 /// `cjkSeg`: a space between Han characters, and between Han and a letter or digit.
 pub fn seg(text: &str) -> String {
     let c = classes();

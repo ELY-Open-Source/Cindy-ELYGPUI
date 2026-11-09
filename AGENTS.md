@@ -24,6 +24,11 @@ defines scope and what 1:1 means.
   then `admission.rs` against `resources/migration-manifest.json` (Cindy's 149 migrations, also
   from `sync-golden.mjs`). The connection and its lease live on one thread (`worker.rs`). Any
   refusal shows `fatal.rs`, Cindy's `LocalDbFatalScreen`, above everything.
+  `localdb/search.rs` is `conversationSearch.pure.ts` (golden `tests/fixtures/search`):
+  `fuzzy.rs` in UTF-16 positions, `visible.rs` the role's visible text (`Js` objects keep
+  `Object.values` order), `snippet.rs` the preview and keyword snippet in code points, each code
+  point folded alone, `forwarded.rs` `forwardedRequestDisplayText`, `merge.rs` the merged order
+  (ids on ICU's root collation).
 - Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
   first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
   reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher
@@ -278,7 +283,7 @@ defines scope and what 1:1 means.
 
 - `cargo run` opens the app.
 - Review verdicts and gate logs go to `logs/review/<task>-r<N>.md` and `-{fmt,clippy,test}.log`.
-  Every file a task makes stays inside this checkout.
+  Every file a task makes stays inside this checkout. The sync scripts work in `.scratch/` (ignored).
 - `scripts/sync-locales.sh <cindy checkout> <commit>` copies Cindy's locale files into `locales/`
   and records the commit in `locales/COMMIT`. Never edit `locales/` by hand.
 - `node scripts/sync-themes.mjs <cindy checkout with node_modules> <commit>` runs Cindy's

@@ -7,6 +7,7 @@ mod cjk;
 mod fatal;
 mod lease;
 mod open;
+pub mod search;
 mod worker;
 
 use std::path::{Path, PathBuf};
