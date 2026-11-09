@@ -297,8 +297,99 @@ listed in `tasks/done.md`.
   `handleSidebarBlankContextMenu` opens `SidebarFilterPopover`
 ## 9. Chat view
 
-- [ ] 9.0 Expand from Cindy's code
-- [ ] 9.1 Tab groups (from 6.7): `right-tabs` and the edge groups, as `tabGroups.ts` and
+- [x] 9.0 Expand from Cindy's code
+  - 9.0 plan, from `features/cc-agent/CCAgentSessionView.tsx`, `SessionContentHeader.tsx` and
+    `NewMakerDraftRoute.tsx`; `lib/makerChatStore.ts` (the session slice, `enterView`,
+    `loadOlderMessages`), `maker-shared`'s `historyView*.ts`, `messageWindow.ts`,
+    `messageRender.ts`, `messageNormalize.ts`, `richAnswer.ts`, `permissionMode.ts` and
+    `agentInputProjection.ts`; main's `localDb/ipc/messages.ts` with `historyViewReader.ts` and
+    `historyViewOutline.ts`; `components/chat/` and `components/new-chat/`; `docs/rich-answers.md`,
+    `design-rules/message-link-clickability.md` and `attachment-preview.md`. A local task reads
+    `local-db:messages:view` (`createRemoteHistoryView` takes it whenever the preload offers
+    `historyView`), never the flat list. This chapter draws what the database holds and every
+    control the user touches; what needs a running agent (a send reaching the engine, stop, steer,
+    a prompt's answer, live streaming) is drawn here and wired with 10.0, which says so in each
+    case. Banners and chips owned by later chapters come with them: the provider, upgrade and
+    spend banners and the context ring with 11.0 and 13.0, teammates and bot views with 14.0,
+    schedule banners with 15.0, plugin prompts and Ghost cards with 16.0, MCP App cards with 17.0,
+    worktree and turn-change actions with 18.0, remote and shared-task views with 19.0 and 20.0,
+    read aloud and voice with 22.0; the Cindy Make gates stay off (`CINDY_MAKE_ENABLED`). Mermaid,
+    KaTeX and highlight.js have no gpui counterpart: their tasks choose the renderer from evidence
+    that it matches Cindy's output, and record the choice here
+- [ ] 9.1 The history read as `local-db:messages:view` and `local-db:messages:work-details` serve
+  it: `historyViewReader.ts`'s pages (`HISTORY_VIEW_PAGE_BYTES`, `HISTORY_VIEW_PAGE_ITEMS`, the
+  scan limits), `historyViewOutline.ts`'s outline rows, `projectHistoryView`'s items and work
+  summaries, the cleared and rewound cuts, `restoreTaskImageRows`, rows read as `messageToCamel`
+  reads them; on the database worker, checked against goldens from `sync-golden.mjs`
+- [ ] 9.2 The session slice as `makerChatStore.ts` keeps it for a local task: the first page on
+  `enterView`, older pages (`loadOlderMessages`), work details on demand, the reload on a database
+  change (the watcher of 8.3), the soft eviction of idle sessions and the window trim;
+  `mapServerMessages`
+- [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
+  header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
+  chapter owns), the message column with its width rules, the composer dock; loading, empty, not
+  found and archived states; `useTrackLastView` keeps the slot
+- [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
+  work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
+  subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
+- [ ] 9.5 The user message (`UserMessage.tsx`): `userMessageDisplayText.ts`, linkify and URL links
+  (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
+  quote, inline reference and session link chips, the forwarded-request text of 8.7
+- [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
+  lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
+  `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the
+  copy and selection behaviour; `repairStreamingMarkdown` and the streaming chunks
+  (`streamingMarkdownChunks.ts`) for rows still being written
+- [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
+  theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
+- [ ] 9.8 Math: `remark-math` with `remarkStrictInlineMath` and `math-markdown`, drawn as KaTeX
+  draws it, inline and block (`rehypeMathBlockMarker`)
+- [ ] 9.9 Diagrams: `MarkdownMermaidBlock.tsx` with `mermaid-autofix`, the source toggle, error
+  state and `MermaidLightbox.tsx`
+- [ ] 9.10 Rich answers (`RichAnswer.tsx`, `docs/rich-answers.md`): the `cindy-ui` component tree
+  from 8.7's `stream.rs` and `values.rs` drawn on Ely (layout, text, stat, chart, svg, media,
+  controls, tabs, details), local control state per message, `send` buttons queued for 10.0
+- [ ] 9.11 The assistant turn: `AssistantMessage.tsx`, `ThinkingCard.tsx` and `ThinkingText.tsx`,
+  `AgentActionRow.tsx` and `AgentActionsBlock.tsx` with the full `describeToolUse` (details,
+  paths, diffs, created paths, from 8.8b2), `WorkGroupBlock.tsx` folded and expanded,
+  `ToolCallCard.tsx`, `ToolPayloadLightbox.tsx`, `TodoListCard.tsx`, `AgentTaskCard.tsx`
+- [ ] 9.12 System rows: `SystemCard.tsx` (agent switch, compaction, notices), `ErrorMessageCard.tsx`
+  with `errorReasonI18n.ts` and `outputLimitI18n.ts`, `HistoryClearedMarker`, `ForkOriginMarker`,
+  `InterruptedTurnBanner.tsx`
+- [ ] 9.13 Media and artifacts: `ChatImageView.tsx`, `ChatVideoView.tsx`, `ChatAudioCard.tsx`,
+  `GeneratedFilesCard.tsx` (`generatedFilesProjection.ts`), `AttachmentCollection.tsx`, the image,
+  video, text and file lightboxes, missing-media placeholders; files through `cindy-media://` and
+  the open path of 8.10c (`attachment-preview.md`)
+- [ ] 9.14 The viewport (`MessageViewport.tsx`, `useMessageViewport.ts`): the render window
+  (`RENDER_WINDOW_INITIAL_ITEMS`, first-paint budget), scroll anchoring and restore per session,
+  auto follow, older pages on scroll, `JumpToBottomChip`, `NewMessageIndicator`,
+  `PrevMessageJumpChip`, `MessageNavRail.tsx`, navigation keys; the search hit's `searchJump`
+  lands here (from 8.7, `searchJumpTargeting.ts`)
+- [ ] 9.15 The composer (`ChatInput.tsx`, `composerDocState.ts`): the document as Tiptap keeps it
+  (paragraphs, hard breaks, list and quote nodes, mention, pasted-text and slash chips), history,
+  placeholder, IME and CJK punctuation, the paste pipeline, `SlashCommandPalette.tsx`,
+  `AtMentionPanel.tsx`, drafts as `composerDraftStore.ts` keeps them; the New draft route
+  (`NewMakerDraftRoute.tsx`) with its folder and computer, the project header's New in this
+  folder (from 8.10a) and provisional task creation (from 8.3)
+- [ ] 9.16 Message actions (`MessageActionBar.tsx`): copy, copy as image, the selection quote
+  button (`SelectionQuoteButton.tsx`, `appendQuoteToDraft` into 9.15's draft), delete
+  (`useDeleteMessage.ts`) and fork (`useForkAtMessage.ts`) on the database; edit last and rewind
+  preview drawn, resent with 10.0
+- [ ] 9.17 Attachments: `ComposerAttachments.tsx`, the local picker, drop (`composerDrop.ts`,
+  `globalDropIntercept.ts`), pasted images and paths, staging and its cleanup
+  (`chatAttachmentStageCleanup.ts`), `attachment-preview.md`
+- [ ] 9.18 Composer controls: `PermissionSelector.tsx` with `permissionMode.ts` and
+  `FullAccessConfirmContent.tsx`, plan mode, effort, fast and thinking toggles, the agent select,
+  the send button's states (`SendButton.tsx`), the model selector's face (its catalog with 11.0);
+  the `ask_user` and `plan_review` rows as history cards (`AskUserQuestionBubble.tsx`,
+  `PlanReviewBubble.tsx`, the plan cards). Pending interactions live only in the runtime
+  (`getPendingInteractionsForSession` reads `pendingInteractionResolvers`; a permission makes no
+  row), so `PermissionPrompt.tsx`, `AskUserQuestionPrompt.tsx` and the plan action panel are drawn
+  here against fixtures, and their input, snapshot rebuild and answers come with 10.0
+- [ ] 9.19 Queue and interjection, stop and continue: `PendingQueuePanel.tsx` over
+  `agentInputQueueSnapshots.ts` and `agentInputProjection.ts` (rows, edit, reorder, steer), the
+  stop face, the interrupted-turn continue; drawn from the database, sent with 10.0
+- [ ] 9.20 Tab groups (from 6.7): `right-tabs` and the edge groups, as `tabGroups.ts` and
   `ensureTabGroupPane` place them; edge groups parked on non-chat routes other than settings; an edge group's temporary
   maximize and restore without changing the tree (`panelMaximize.tsx`, `LayoutRoot.tsx`; its only
   trigger is `TabGroupPanel.tsx`); the pane placement signals panels read (`panePlacement.tsx`:
@@ -307,7 +398,7 @@ listed in `tasks/done.md`.
   parked); `right-tabs` collapse per session under `right-sidebar-collapsed:<sessionId>`; the window
   grows and shrinks as the right group opens and closes (`sidebarPresentation.ts`, `sidebarExpansion.ts`, anchored
   widths)
-- [ ] 9.2 Detached windows (from 6.10): bounds in `right-sidebar-window-state.json` and the shared
+- [ ] 9.21 Detached windows (from 6.10): bounds in `right-sidebar-window-state.json` and the shared
   `sidebar-tab-window-state.json`, restored without maximize or fullscreen; which tabs are detached
   lives only for the process, so restart or crash returns them to the main window; legacy
   `right-sidebar-window-settings.json` deleted; detach, merge back, close and multi-window cascade as

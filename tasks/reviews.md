@@ -350,3 +350,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 8.11 The blank space's filter menu
 - Round 1: PASS.
+
+## 9.0 Chat view plan
+- Round 1: FAIL. 9.18 drew the permission prompt from database rows, which do not exist; 9.15's
+  selection quote needed 9.16's composer draft.
+- Fixed: 9.18 splits history cards (`ask_user`, `plan_review` rows) from pending interactions,
+  which live in the runtime and come with 10.0 (panels drawn against fixtures); the composer is
+  9.15 and message actions 9.16, the quote landing in 9.15's draft.
+- Round 2: PASS.
