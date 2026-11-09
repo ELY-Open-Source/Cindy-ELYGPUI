@@ -14,7 +14,9 @@ mod cross_process_lock;
 mod dev_profile;
 mod dock_icon;
 mod file_path_policy;
+mod history_view;
 mod i18n;
+mod js_date;
 mod layout_root;
 mod layout_tree;
 mod localdb;
@@ -47,6 +49,7 @@ mod units;
 mod wallpaper;
 mod window_material;
 mod window_state;
+mod work_runs;
 
 use std::path::PathBuf;
 

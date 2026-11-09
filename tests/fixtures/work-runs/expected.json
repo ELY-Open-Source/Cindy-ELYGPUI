@@ -1,0 +1,1505 @@
+{
+ "groupWorkRuns": [
+  [
+   [
+    [],
+    false,
+    null
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 2,
+      "end": 5
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 6
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "a2",
+      "answer": true,
+      "arch": true,
+      "ms": 4
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "a1",
+      "t2"
+     ],
+     "next": "a2",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a2",
+     "answer": true,
+     "arch": true,
+     "ms": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "streaming": false,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "arch": true,
+     "ms": 2
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": null,
+     "streaming": false,
+     "boundary": 2
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "n1",
+      "ms": 4
+     },
+     {
+      "id": "t3",
+      "act": true,
+      "ms": 5
+     }
+    ],
+    true,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 2
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "n1",
+     "streaming": true,
+     "boundary": 2
+    },
+    {
+     "id": "n1",
+     "ms": 4
+    },
+    {
+     "group": [
+      "t3"
+     ],
+     "next": null,
+     "streaming": true,
+     "boundary": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "c1",
+      "compact": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "ms": 4
+     },
+     {
+      "id": "t3",
+      "act": true,
+      "ms": 5
+     }
+    ],
+    true,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "c1",
+     "streaming": false,
+     "boundary": 0
+    },
+    {
+     "id": "c1",
+     "compact": true,
+     "ms": 2
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a1",
+     "streaming": false,
+     "boundary": 2
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "ms": 4
+    },
+    {
+     "group": [
+      "t3"
+     ],
+     "next": null,
+     "streaming": true,
+     "boundary": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "ms": 2
+     },
+     {
+      "id": "n1",
+      "ms": 3
+     }
+    ],
+    true,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "streaming": false,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "ms": 2
+    },
+    {
+     "id": "n1",
+     "ms": 3
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 1800002
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "ms": 1800003
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": null,
+     "streaming": false,
+     "boundary": 0
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": null
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "ms": 1800003
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "p1",
+      "answer": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "p2",
+      "answer": true,
+      "arch": true,
+      "commentary": true,
+      "ms": 3
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 4
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "p1",
+      "p2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "p1",
+      "answer": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 3
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 4
+     },
+     {
+      "id": "d1",
+      "answer": true,
+      "ms": 5
+     },
+     {
+      "id": "a2",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 6
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "p1",
+      "a1",
+      "t2"
+     ],
+     "next": "d1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "d1",
+     "answer": true,
+     "ms": 5
+    },
+    {
+     "id": "a2",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "cont": true,
+      "ms": 3
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 4
+     },
+     {
+      "id": "a2",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "u3",
+      "user": true,
+      "ms": 6
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "a1"
+     ],
+     "next": null,
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "cont": true,
+     "ms": 3
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a2",
+     "completed": true,
+     "boundary": 3
+    },
+    {
+     "id": "a2",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "id": "u3",
+     "user": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "cont": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "arch": true,
+      "ms": 4
+     },
+     {
+      "id": "u3",
+      "user": true,
+      "ms": 5
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": null,
+     "streaming": false,
+     "boundary": 0
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "cont": true,
+     "ms": 2
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 2
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "arch": true,
+     "ms": 4
+    },
+    {
+     "id": "u3",
+     "user": true,
+     "ms": 5
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "x1",
+      "arch": true,
+      "ms": 4
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 6
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2",
+      "x1"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "x1",
+      "arch": true,
+      "ms": 4
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 6
+     }
+    ],
+    false,
+    false
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "group": [
+      "t2",
+      "x1"
+     ],
+     "next": null,
+     "completed": true,
+     "boundary": 5
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 6
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 7
+     }
+    ],
+    false,
+    true
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": null,
+     "completed": true,
+     "boundary": 5
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 7
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": null,
+     "completed": true,
+     "boundary": null
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "t0",
+      "act": true
+     },
+     {
+      "id": "u1",
+      "user": true
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 9
+     },
+     {
+      "id": "n1"
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 1800010
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "arch": true,
+      "ms": 1800011
+     }
+    ],
+    true,
+    null
+   ],
+   [
+    {
+     "group": [
+      "t0"
+     ],
+     "next": null,
+     "streaming": false,
+     "boundary": null
+    },
+    {
+     "id": "u1",
+     "user": true
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": "n1",
+     "streaming": false,
+     "boundary": null
+    },
+    {
+     "id": "n1"
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a1",
+     "streaming": false,
+     "boundary": null
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "arch": true,
+     "ms": 1800011
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 100
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 50,
+      "end": 200
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 10
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 1800300
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "ms": 1800400
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 100
+    },
+    {
+     "group": [
+      "t1"
+     ],
+     "next": null,
+     "streaming": false,
+     "boundary": 100
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 10
+    },
+    {
+     "group": [
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": null
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "ms": 1800400
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 2
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 3
+     },
+     {
+      "id": "a2",
+      "answer": true,
+      "sealed": true,
+      "ms": 4
+     },
+     {
+      "id": "t3",
+      "act": true,
+      "ms": 5
+     }
+    ],
+    true,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "a1",
+      "t2"
+     ],
+     "next": "a2",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a2",
+     "answer": true,
+     "sealed": true,
+     "ms": 4
+    },
+    {
+     "group": [
+      "t3"
+     ],
+     "next": null,
+     "streaming": true,
+     "boundary": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 1800001
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "ms": 1800002
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "ms": 1800002
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1,
+      "end": 1000000
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 2,
+      "end": 2
+     },
+     {
+      "id": "t3",
+      "act": true,
+      "ms": 1800100
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "ms": 1800101
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2",
+      "t3"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "ms": 1800101
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 5
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 6
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2"
+     ],
+     "next": "a1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 6
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "id": "u1",
+      "user": true,
+      "ms": 0
+     },
+     {
+      "id": "t1",
+      "act": true,
+      "ms": 1
+     },
+     {
+      "id": "p1",
+      "answer": true,
+      "arch": true,
+      "ms": 5
+     },
+     {
+      "id": "a1",
+      "answer": true,
+      "sealed": true,
+      "arch": true,
+      "ms": 10
+     },
+     {
+      "id": "t2",
+      "act": true,
+      "ms": 7
+     },
+     {
+      "id": "u2",
+      "user": true,
+      "ms": 20
+     }
+    ],
+    false,
+    null
+   ],
+   [
+    {
+     "id": "u1",
+     "user": true,
+     "ms": 0
+    },
+    {
+     "group": [
+      "t1",
+      "t2"
+     ],
+     "next": "p1",
+     "completed": true,
+     "boundary": 0
+    },
+    {
+     "id": "p1",
+     "answer": true,
+     "arch": true,
+     "ms": 5
+    },
+    {
+     "id": "a1",
+     "answer": true,
+     "sealed": true,
+     "arch": true,
+     "ms": 10
+    },
+    {
+     "id": "u2",
+     "user": true,
+     "ms": 20
+    }
+   ]
+  ]
+ ]
+}

@@ -6,7 +6,8 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { rows } from './golden/rows.mjs';
+import { ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
+import * as workRuns from './golden/workRuns.mjs';
 
 const [cindy, commit] = process.argv.slice(2);
 if (!cindy || !commit) throw new Error('usage: sync-golden.mjs <cindy checkout> <commit>');
@@ -56,6 +57,7 @@ try {
     "export * as chatHistoryPure from './main/localDb/chatHistorySearch.pure';",
     "export { projectMcpAppContent } from '@cindy/maker-shared/mcp-apps';",
     "export * as commandIntent from '../../../packages/maker-shared/src/commandIntent';",
+    "export { groupWorkRuns } from '../../../packages/maker-shared/src/workRunGrouping';",
     "export { normalizeDisplayCommand } from '@cindy/maker-shared/command-display';",
     "export * as toolUse from '@cindy/maker-shared/tool-use-descriptor';",
     "export { formatIslandToolDetail } from './main/agent-island/toolDetail';",
@@ -80,7 +82,7 @@ try {
     nodePaths, alias,
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -388,7 +390,8 @@ try {
       (formatIslandToolDetail(name, input ?? undefined, { wording }) ?? name).toWellFormed())];
   }));
 
-  const rowCases = await rows({ esbuild, tmp, nodePaths, alias, fixtures, write, fns: {
+  const golden = { esbuild, tmp, nodePaths, alias, fixtures, write };
+  const rowCases = await recorded({ ...golden, name: 'history-rows', tests: ROW_TESTS, fns: {
     extractPayloadToolResultMedia: payloadSummary.extractPayloadToolResultMedia,
     extractPayloadToolResultFiles: payloadSummary.extractPayloadToolResultFiles,
     extractPayloadToolCardIds: payloadSummary.extractPayloadToolCardIds,
@@ -404,6 +407,14 @@ try {
     hasRichAnswer,
   } });
   console.log(`${rowCases} history row cases`);
+  const viewCases = await recorded({ ...golden, name: 'history-view', tests: VIEW_TESTS, fns: {
+    projectHistoryView: messageWindow.projectHistoryView,
+    historySubagentScopes: (rows, root) => Object.fromEntries(messageWindow.historySubagentScopes(rows, root)),
+    completesHistoryTurn: messageWindow.completesHistoryTurn,
+  } });
+  console.log(`${viewCases} history view cases`);
+  const runCases = await recorded({ ...golden, name: 'work-runs', tests: {}, fns: { groupWorkRuns: workRuns.run(groupWorkRuns) } });
+  console.log(`${runCases} work run cases`);
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();
   fs.writeFileSync(path.join(fixtures, 'COMMIT'), `${full}\n`);

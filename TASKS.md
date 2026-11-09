@@ -327,7 +327,7 @@ listed in `tasks/done.md`.
     `isContinuationMessage`, `parseToolResultPayload` with `extractPayloadToolResultMedia`,
     `extractPayloadToolResultFiles` and `extractPayloadToolCardIds`, and `describeToolUse`'s
     `mcp` kind with `createdPath`; golden from Cindy's functions
-  - [ ] 9.1b `groupWorkRuns` (`workRunGrouping.ts`), `historySubagentScopes`, `projectHistoryView`
+  - [x] 9.1b `groupWorkRuns` (`workRunGrouping.ts`), `historySubagentScopes`, `projectHistoryView`
     with and without lazy details, `completesHistoryTurn`; golden from Cindy's functions
   - [ ] 9.1c The reader: `readMessagesList`'s rows (cleared and rewound cuts, cursors) and
     `historyViewOutline.ts`'s outline, `historyViewReader.ts`'s `page` (page boundaries, safe

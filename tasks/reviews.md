@@ -363,3 +363,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 1: FAIL. The module docs of `message_rows.rs` and `payload/files.rs` ran to two lines.
 - Fixed: each is one line; no other new comment spans two.
 - Round 2: PASS.
+
+## 9.1b History view projection
+- Round 1: FAIL. The History view bullet pushed `AGENTS.md` to 501 lines.
+- Fixed: the bullet is two lines shorter; `AGENTS.md` is 499 lines.
+- Round 2: PASS.

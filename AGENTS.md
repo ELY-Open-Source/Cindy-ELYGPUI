@@ -133,6 +133,13 @@ defines scope and what 1:1 means.
   `src/tool_row.rs` is `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs
   from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
   checked in every locale against `activity.json`.
+- History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`
+  via the toy adapter in `scripts/golden/workRuns.mjs`). `src/history_view.rs` is
+  `projectHistoryView` (lazy details put subagent bodies in a `deferred` range),
+  `historySubagentScopes`, `completesHistoryTurn`; `source.rs` `projectHistorySourceView`
+  (`foldAnswerTail: false`), `json.rs` Cindy's key order. `src/js_date.rs` is `Date.parse` on ISO
+  strings. Golden `history-view` records Cindy's tests, less `historyViewReader.test.ts` (a real
+  lease) and `remoteMirrorCache.test.ts` (`import.meta.env`).
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

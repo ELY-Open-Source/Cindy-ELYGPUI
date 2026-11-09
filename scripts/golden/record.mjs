@@ -8,11 +8,15 @@ const tests = [];
 const each = (register) => (table) => (name, fn) => table.forEach((row) => register(name, () => (Array.isArray(row) ? fn(...row) : fn(row))));
 const it = Object.assign((name, fn) => fn && tests.push(fn), { skip() {}, todo() {}, only: (name, fn) => tests.push(fn) });
 it.each = each(it);
+it.skipIf = (c) => (c ? () => {} : it);
+it.runIf = (c) => (c ? it : () => {});
 const describe = Object.assign((name, fn) => fn(), { skip() {}, only: (name, fn) => fn() });
 describe.each = each(describe);
+describe.skipIf = (c) => (c ? () => {} : describe);
+describe.runIf = (c) => (c ? describe : () => {});
 const any = new Proxy(function () {}, { get: (_, key) => (key === 'then' ? undefined : any), apply: () => any });
 export { it, it as test, describe };
-export const expect = any;
+export const expect = any, vi = any;
 export const beforeEach = () => {}, afterEach = () => {}, beforeAll = () => {}, afterAll = () => {};
 export async function run() {
   let failed = 0;
@@ -34,11 +38,12 @@ export async function record({ esbuild, tmp, nodePaths, alias, test, targets }) 
     name: 'record',
     setup(build) {
       build.onResolve({ filter: /^vitest$/ }, () => ({ path: vitest }));
-      build.onResolve({ filter: /.*/ }, (args) => {
+      build.onResolve({ filter: /.*/ }, async (args) => {
         const spec = args.path.replace(/\.js$/, '');
-        if (args.importer !== test || !(spec in targets)) return undefined;
-        const real = `${path.resolve(path.dirname(test), spec)}.ts`;
-        return { path: real, namespace: 'record', pluginData: targets[spec] };
+        if (args.importer !== test || !(spec in targets) || args.pluginData?.real) return undefined;
+        const real = await build.resolve(args.path, { resolveDir: args.resolveDir, kind: args.kind, pluginData: { real: true } });
+        if (real.errors.length) throw new Error(`cannot resolve ${args.path} from ${test}`);
+        return { path: real.path, namespace: 'record', pluginData: targets[spec] };
       });
       build.onLoad({ filter: /.*/, namespace: 'record' }, (args) => ({
         resolveDir: path.dirname(args.path),
@@ -46,7 +51,7 @@ export async function record({ esbuild, tmp, nodePaths, alias, test, targets }) 
           `import * as real from ${JSON.stringify(args.path)};`,
           `import { calls } from ${JSON.stringify(calls)};`,
           `export * from ${JSON.stringify(args.path)};`,
-          ...args.pluginData.map((name) => `export const ${name} = (...a) => { calls.push([${JSON.stringify(name)}, a]); return real.${name}(...a); };`),
+          ...args.pluginData.map((name) => `export const ${name} = (...a) => { calls.push([${JSON.stringify(name)}, structuredClone(a)]); return real.${name}(...a); };`),
         ].join('\n'),
       }));
     },

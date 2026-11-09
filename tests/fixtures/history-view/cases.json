@@ -1,0 +1,984 @@
+{
+  "historySubagentScopes": [
+    [
+      [
+        {
+          "id": "u",
+          "role": "user",
+          "content": "go"
+        },
+        {
+          "id": "a",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "A",
+            "input": {}
+          }
+        },
+        {
+          "id": "b",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B",
+            "input": {}
+          },
+          "agentMeta": {
+            "parentUuid": "A"
+          }
+        },
+        {
+          "id": "br",
+          "role": "tool_result",
+          "toolUseId": "B",
+          "content": "ok"
+        },
+        {
+          "id": "c",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "C",
+            "input": {}
+          },
+          "agentMeta": {
+            "parentUuid": "A"
+          }
+        },
+        {
+          "id": "d",
+          "role": "assistant",
+          "content": "inner",
+          "agentMeta": {
+            "parentUuid": "C"
+          }
+        },
+        {
+          "id": "e",
+          "role": "assistant",
+          "content": "stray",
+          "agentMeta": {
+            "parentUuid": "X"
+          }
+        },
+        {
+          "id": "f",
+          "role": "assistant",
+          "content": "empty",
+          "agentMeta": {
+            "parentUuid": ""
+          }
+        },
+        {
+          "id": "g",
+          "role": "assistant",
+          "content": "number",
+          "agentMeta": {
+            "parentUuid": 7
+          }
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "id": "r1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Read",
+            "toolUseId": "R",
+            "input": {}
+          },
+          "agentMeta": {
+            "parentUuid": "ROOT"
+          }
+        },
+        {
+          "id": "r2",
+          "role": "tool_result",
+          "toolUseId": "R",
+          "content": "x"
+        },
+        {
+          "id": "r3",
+          "role": "thinking",
+          "content": "t",
+          "agentMeta": {
+            "parentUuid": "ROOT"
+          }
+        }
+      ],
+      "ROOT"
+    ],
+    [
+      [
+        {
+          "id": "p",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "P",
+            "input": {}
+          },
+          "agentMeta": {
+            "parentUuid": "Q"
+          }
+        },
+        {
+          "id": "q",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "Q",
+            "input": {}
+          },
+          "agentMeta": {
+            "parentUuid": "P"
+          }
+        },
+        {
+          "id": "z",
+          "role": "assistant",
+          "content": "loop",
+          "agentMeta": {
+            "parentUuid": "P"
+          }
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "id": "n",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "input": {}
+          }
+        },
+        {
+          "id": "m",
+          "role": "tool_use",
+          "toolUseId": "M",
+          "content": {
+            "toolName": "Agent",
+            "input": {}
+          }
+        },
+        {
+          "id": "k",
+          "role": "assistant",
+          "content": "k",
+          "agentMeta": {
+            "parentUuid": "M"
+          }
+        }
+      ]
+    ]
+  ],
+  "completesHistoryTurn": [
+    [
+      {
+        "id": "1",
+        "role": "assistant",
+        "content": "a"
+      }
+    ],
+    [
+      {
+        "id": "2",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": null
+      }
+    ],
+    [
+      {
+        "id": "3",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCompleted": true
+        }
+      }
+    ],
+    [
+      {
+        "id": "4",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCompleted": "true"
+        }
+      }
+    ],
+    [
+      {
+        "id": "5",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "userTurnCost": {
+            "amount": 0.2
+          }
+        }
+      }
+    ],
+    [
+      {
+        "id": "6",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "userTurnCost": {
+            "amount": 0
+          }
+        }
+      }
+    ],
+    [
+      {
+        "id": "7",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCost": {
+            "amount": "1"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "id": "8",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCost": {
+            "amount": 3
+          }
+        }
+      }
+    ],
+    [
+      {
+        "id": "9",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "userTurnCostUsd": 0.01
+        }
+      }
+    ],
+    [
+      {
+        "id": "10",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCostUsd": -1
+        }
+      }
+    ],
+    [
+      {
+        "id": "11",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnCostUsd": 2
+        }
+      }
+    ],
+    [
+      {
+        "id": "12",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnUsageDetails": {}
+        }
+      }
+    ],
+    [
+      {
+        "id": "13",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnUsageDetails": []
+        }
+      }
+    ],
+    [
+      {
+        "id": "14",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnUsageDetails": null
+        }
+      }
+    ],
+    [
+      {
+        "id": "15",
+        "role": "assistant",
+        "content": "a",
+        "agentMeta": {
+          "turnUsageDetails": "x",
+          "turnCost": null
+        }
+      }
+    ]
+  ],
+  "projectHistoryView": [
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "a",
+          "clientId": "c-a",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "A1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "g",
+          "clientId": "c-g",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Agent",
+            "toolUseId": "G1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:02Z",
+          "agentMeta": {
+            "parentUuid": "A1"
+          }
+        },
+        {
+          "id": "gg",
+          "clientId": "c-gg",
+          "role": "assistant",
+          "content": "deep",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "agentMeta": {
+            "parentUuid": "G1",
+            "model": "deep"
+          }
+        },
+        {
+          "id": "s1",
+          "clientId": "c-s1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "S1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:02Z",
+          "agentMeta": {
+            "parentUuid": "A1",
+            "model": "direct"
+          }
+        },
+        {
+          "id": "s1r",
+          "clientId": "c-s1r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:03Z",
+          "toolUseId": "S1"
+        },
+        {
+          "id": "s2",
+          "clientId": "c-s2",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "S2",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:04Z",
+          "agentMeta": {
+            "parentUuid": "A1"
+          }
+        },
+        {
+          "id": "s2r",
+          "clientId": "c-s2r",
+          "role": "tool_result",
+          "content": "{\"xdt_card_id\":\"k1\"}",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "toolUseId": "S2"
+        },
+        {
+          "id": "s3",
+          "clientId": "c-s3",
+          "role": "tool_use",
+          "content": {
+            "toolName": "mcp__cindy_docs__make_docx",
+            "toolUseId": "S3",
+            "input": {
+              "outputPath": "/tmp/a.docx"
+            }
+          },
+          "createdAt": "2026-01-01T00:00:06Z",
+          "agentMeta": {
+            "parentUuid": "A1"
+          }
+        },
+        {
+          "id": "s3r",
+          "clientId": "c-s3r",
+          "role": "tool_result",
+          "content": "done",
+          "createdAt": "2026-01-01T00:00:07Z",
+          "toolUseId": "S3"
+        },
+        {
+          "id": "ar",
+          "clientId": "c-ar",
+          "role": "tool_result",
+          "content": "agent done",
+          "createdAt": "2026-01-01T00:00:08Z",
+          "toolUseId": "A1"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:09Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "w1",
+          "clientId": "c-w1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Write",
+            "toolUseId": "W1",
+            "input": {
+              "file_path": "/a"
+            }
+          },
+          "createdAt": "2026-01-01T00:00:01Z",
+          "historyArtifacts": [
+            {
+              "toolUseId": "W1",
+              "path": "/a"
+            }
+          ]
+        },
+        {
+          "id": "w1r",
+          "clientId": "c-w1r",
+          "role": "tool_result",
+          "content": "<tool_use_error>nope</tool_use_error>",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "W1"
+        },
+        {
+          "id": "w2",
+          "clientId": "c-w2",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Write",
+            "toolUseId": "W2",
+            "input": {
+              "file_path": "/b"
+            }
+          },
+          "createdAt": "2026-01-01T00:00:03Z",
+          "historyArtifacts": [
+            {
+              "toolUseId": "W2",
+              "path": "/b"
+            },
+            {
+              "path": "/c"
+            }
+          ]
+        },
+        {
+          "id": "w2r",
+          "clientId": "c-w2r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:04Z",
+          "toolUseId": "W2"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "e",
+          "clientId": "c-e",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Edit",
+            "toolUseId": "E1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "er",
+          "clientId": "c-er",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "E1"
+        },
+        {
+          "id": "b",
+          "clientId": "c-b",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:03Z"
+        },
+        {
+          "id": "br",
+          "clientId": "c-br",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:04Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      false
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "e",
+          "clientId": "c-e",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Edit",
+            "toolUseId": "E1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "er",
+          "clientId": "c-er",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "E1"
+        },
+        {
+          "id": "b",
+          "clientId": "c-b",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:03Z"
+        },
+        {
+          "id": "br",
+          "clientId": "c-br",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:04Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "th",
+          "clientId": "c-th",
+          "role": "thinking",
+          "content": {
+            "isRedacted": true
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "b",
+          "clientId": "c-b",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:02Z"
+        },
+        {
+          "id": "br",
+          "clientId": "c-br",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:03Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:04Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "b",
+          "clientId": "c-b",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "br",
+          "clientId": "c-br",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "bad",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:03Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "b1",
+          "clientId": "c-b1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "b1r",
+          "clientId": "c-b1r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "a",
+          "clientId": "c-a",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:10Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        },
+        {
+          "id": "b2",
+          "clientId": "c-b2",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B2",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:05Z"
+        },
+        {
+          "id": "b2r",
+          "clientId": "c-b2r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:06Z",
+          "toolUseId": "B2"
+        },
+        {
+          "id": "u2",
+          "clientId": "c-u2",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:20Z"
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "b1",
+          "clientId": "c-b1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "b1r",
+          "clientId": "c-b1r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "i",
+          "clientId": "c-i",
+          "role": "assistant",
+          "content": "Interim.",
+          "createdAt": "2026-01-01T00:00:02Z"
+        },
+        {
+          "id": "s",
+          "clientId": "c-s",
+          "role": "user",
+          "content": "more",
+          "createdAt": "2026-01-01T00:00:03Z",
+          "delivery": "steer"
+        },
+        {
+          "id": "b2",
+          "clientId": "c-b2",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B2",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:04Z"
+        },
+        {
+          "id": "b2r",
+          "clientId": "c-b2r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "toolUseId": "B2"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:06Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      true
+    ],
+    [
+      [
+        {
+          "id": "u",
+          "clientId": "c-u",
+          "role": "user",
+          "content": "go",
+          "createdAt": "2026-01-01T00:00:00Z"
+        },
+        {
+          "id": "b1",
+          "clientId": "c-b1",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B1",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:01Z"
+        },
+        {
+          "id": "b1r",
+          "clientId": "c-b1r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:02Z",
+          "toolUseId": "B1"
+        },
+        {
+          "id": "n",
+          "clientId": "c-n",
+          "role": "assistant",
+          "content": "inner note",
+          "createdAt": "2026-01-01T00:00:03Z",
+          "agentMeta": {
+            "parentUuid": "P"
+          }
+        },
+        {
+          "id": "b2",
+          "clientId": "c-b2",
+          "role": "tool_use",
+          "content": {
+            "toolName": "Bash",
+            "toolUseId": "B2",
+            "input": {}
+          },
+          "createdAt": "2026-01-01T00:00:04Z"
+        },
+        {
+          "id": "b2r",
+          "clientId": "c-b2r",
+          "role": "tool_result",
+          "content": "ok",
+          "createdAt": "2026-01-01T00:00:05Z",
+          "toolUseId": "B2"
+        },
+        {
+          "id": "z",
+          "clientId": "c-z",
+          "role": "assistant",
+          "content": "Done.",
+          "createdAt": "2026-01-01T00:00:06Z",
+          "agentMeta": {
+            "turnCompleted": true
+          }
+        }
+      ],
+      false,
+      false
+    ]
+  ]
+}
