@@ -68,8 +68,8 @@ fn tab_reaches_each_row_and_enter_or_space_opens_it(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
     assert_eq!(here(cx), "/cc-agent/a0");
-    // Search, its options, More, then each row and its More button.
-    tabs(cx, 6);
+    // Search, its options, More, the project and its More, then each row and its More.
+    tabs(cx, 8);
     key(cx, "enter");
     assert_eq!(here(cx), "/cc-agent/a1");
     tabs(cx, 2);
@@ -81,7 +81,7 @@ fn tab_reaches_each_row_and_enter_or_space_opens_it(cx: &mut TestAppContext) {
 fn enter_on_more_opens_its_menu_not_the_task(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    tabs(cx, 7);
+    tabs(cx, 9);
     key(cx, "enter");
     assert!(
         bounds(cx, "menu-row-Rename").is_some(),
@@ -94,7 +94,7 @@ fn enter_on_more_opens_its_menu_not_the_task(cx: &mut TestAppContext) {
 fn the_menu_key_opens_the_task_menu_at_the_row_centre(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    tabs(cx, 6);
+    tabs(cx, 8);
     key(cx, "menu");
     let row = bounds(cx, "task-a1").unwrap();
     assert!(opened_at(cx, row.center()), "{:?} for {row:?}", menu_at(cx));
@@ -105,7 +105,7 @@ fn the_menu_key_opens_the_task_menu_at_the_row_centre(cx: &mut TestAppContext) {
 fn the_menu_key_on_more_opens_the_task_menu_at_more(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    tabs(cx, 5);
+    tabs(cx, 7);
     let more = bounds(cx, "task-more-a0").unwrap();
     key(cx, "menu");
     assert!(
@@ -119,7 +119,7 @@ fn the_menu_key_on_more_opens_the_task_menu_at_more(cx: &mut TestAppContext) {
 fn shift_f10_opens_the_task_menu_off_macos(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    tabs(cx, 4);
+    tabs(cx, 6);
     key(cx, "shift-f10");
     let opened = bounds(cx, "menu-row-Rename").is_some();
     assert_eq!(opened, !cfg!(target_os = "macos"));
@@ -154,7 +154,7 @@ fn a_text_row_takes_the_menu_key(cx: &mut TestAppContext) {
     let cx = open(cx, dir.path());
     cx.update(|_, cx| view_mode::set_main(Main::Text, cx));
     cx.run_until_parked();
-    tabs(cx, 4);
+    tabs(cx, 6);
     key(cx, "menu");
     let row = bounds(cx, "task-a0").unwrap();
     assert!(opened_at(cx, row.center()), "{:?} for {row:?}", menu_at(cx));

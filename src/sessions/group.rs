@@ -45,6 +45,8 @@ pub struct Session {
 pub struct Project {
     pub key: String,
     pub name: String,
+    /// `workingDir`: the grouped folder.
+    pub dir: String,
     pub sessions: Vec<Session>,
     /// A `recent_workdirs` project's known agent kinds; none for others.
     pub persistent: Option<Vec<String>>,
@@ -321,7 +323,7 @@ pub fn group(
     let mut projects: Vec<(i64, Project)> = groups
         .into_iter()
         .zip(names)
-        .map(|((key, _, mut sessions), name)| {
+        .map(|((key, dir, mut sessions), name)| {
             let tasks = sessions.iter().map(|s| s.activity_at);
             let latest = tasks.fold(used.get(&key).copied().unwrap_or(0), i64::max);
             by_status_then_time(&mut sessions);
@@ -329,6 +331,7 @@ pub fn group(
                 persistent: kinds.remove(&key),
                 key,
                 name,
+                dir,
                 sessions,
             };
             (latest, project)

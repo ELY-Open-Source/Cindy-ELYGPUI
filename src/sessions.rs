@@ -19,6 +19,7 @@ pub(crate) mod paths;
 mod pin;
 mod pinned;
 pub(crate) mod preview;
+mod project;
 mod projection;
 mod query;
 pub(crate) mod rail;
@@ -71,6 +72,8 @@ pub struct Sessions {
     task_info: Vec<&'static str>,
     /// The row whose title is being edited.
     editing: Option<rename::Editing>,
+    /// The project header whose name is being edited.
+    project_editing: Option<project::Editing>,
     /// Writes started, and each task's latest mute write, as `latestWriteSeq` keeps them.
     writes: u64,
     latest_mute: HashMap<String, u64>,
@@ -104,6 +107,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         show_all_entries: false,
         task_info: meta::fields(cx.global::<crate::preferences::Preferences>()),
         editing: None,
+        project_editing: None,
         writes: 0,
         latest_mute: HashMap::new(),
         loading: false,

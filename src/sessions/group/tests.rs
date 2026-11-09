@@ -60,7 +60,7 @@ fn shown(entry: &Entry) -> Value {
     let ids = |list: &[Session]| list.iter().map(|s| s.id.clone()).collect::<Vec<_>>();
     match entry {
         Entry::Project(p) => {
-            json!({ "kind": "project", "key": p.key, "name": p.name, "sessions": ids(&p.sessions) })
+            json!({ "kind": "project", "key": p.key, "name": p.name, "workingDir": p.dir, "sessions": ids(&p.sessions) })
         }
         Entry::Dialogues(list) => json!({ "kind": "dialogue-group", "sessions": ids(list) }),
         Entry::Loose(s) => json!({ "kind": "session", "session": s.id }),
@@ -166,7 +166,7 @@ fn matches_cindys_grouping_and_main_list() {
                     json!({ "kind": "session", "session": s.id, "label": lists.labels.get(&s.id) })
                 }
                 Pinned::Project(p) => json!({ "kind": "project", "key": p.key, "name": p.name,
-                    "sessions": p.sessions.iter().map(|s| &s.id).collect::<Vec<_>>() }),
+                    "workingDir": p.dir, "sessions": p.sessions.iter().map(|s| &s.id).collect::<Vec<_>>() }),
             })
             .collect();
         assert_eq!(

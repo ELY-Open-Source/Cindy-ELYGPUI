@@ -53,6 +53,39 @@ fn promote(id: &str, window: &Window, cx: &mut App) {
     );
 }
 
+/// `handleToggleProjectPin`: `project:<key>` promoted, or dropped from `pinnedOrder`.
+pub fn project(key: &str, pinned: bool, window: &Window, cx: &mut App) {
+    let entry = format!("{}{key}", super::lists::PROJECT_ENTRY);
+    let Some(order) = pinned_order(cx) else {
+        log::warn!(target: "sessions", "pin {entry}: no list loaded");
+        return;
+    };
+    log::info!(target: "sessions", "project {key} {}", if pinned { "unpinned" } else { "pinned" });
+    let (desired, mutation) = match pinned {
+        true => (
+            settings::removed(order, &entry, PLATFORM),
+            settings::Mutation::Remove(entry),
+        ),
+        false => (
+            settings::promoted(order, &entry, PLATFORM),
+            settings::Mutation::Promote(entry),
+        ),
+    };
+    persist(desired, mutation, window, cx);
+}
+
+/// Whether `pinnedOrder` holds the project, as `pinnedProjectKeys` does.
+pub fn project_pinned(key: &str, cx: &App) -> bool {
+    let entry = format!("{}{key}", super::lists::PROJECT_ENTRY);
+    let identity = super::lists::entry_identity(&entry, PLATFORM);
+    cx.global::<Sessions>().loaded.as_ref().is_some_and(|l| {
+        let order = &l.settings.pinned_order;
+        order
+            .iter()
+            .any(|e| super::lists::entry_identity(e, PLATFORM) == identity)
+    })
+}
+
 /// `updatePinnedOrder`: the order changes here first, then the save queues behind the others.
 pub(super) fn persist(
     desired: Vec<String>,
@@ -130,8 +163,8 @@ fn settled(
         return;
     };
     match mutation {
-        settings::Mutation::Promote(id) => {
-            log::warn!(target: "sessions", "failed to persist pinned session order for {id}: {error:#}")
+        settings::Mutation::Promote(id) | settings::Mutation::Remove(id) => {
+            log::warn!(target: "sessions", "failed to persist pinned order for {id}: {error:#}")
         }
         settings::Mutation::Reorder { .. } => {
             log::warn!(target: "sessions", "failed to persist pinned order: {error:#}")

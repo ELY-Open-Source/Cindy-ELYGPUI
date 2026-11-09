@@ -92,11 +92,17 @@ pub(super) struct Place<'a> {
     pub drawn: &'a RefCell<Vec<String>>,
 }
 
-/// `ProjectNode` and `SessionGroupNode`'s header: icon, name, hover chevron.
+/// The header's title: the name, or the rename field in its place.
+pub(super) enum Name {
+    Text(String),
+    Field(AnyElement),
+}
+
+/// `ProjectNode` and `SessionGroupNode`'s header; `lit` is a hover that ignores key presses.
 pub(super) fn header(
     id: SharedString,
     glyph: &[u8],
-    name: String,
+    (name, lit): (Name, Option<bool>),
     collapsed: bool,
     cx: &App,
 ) -> gpui::Stateful<gpui::Div> {
@@ -109,6 +115,19 @@ pub(super) fn header(
     };
     let muted = appearance.token("sidebar-list-muted");
     let selector = id.to_string();
+    let hover = appearance.hsl_token("sidebar-item-hover");
+    let meta = appearance.token("cmd-palette-item-meta");
+    let editing = matches!(name, Name::Field(_));
+    let title = match name {
+        Name::Text(name) => div()
+            .min_w_0()
+            .max_w_full()
+            .flex_shrink(1.0)
+            .truncate()
+            .child(name)
+            .into_any_element(),
+        Name::Field(field) => field,
+    };
     div()
         .id(id)
         .debug_selector(move || selector)
@@ -121,10 +140,16 @@ pub(super) fn header(
         .pl(css(12.0))
         .pr(css(8.0))
         .rounded(css(9999.0))
-        .cursor_pointer()
+        .map(|el| match editing {
+            true => el.cursor_text(),
+            false => el.cursor_pointer().map(|el| match lit {
+                Some(true) => el.bg(hover),
+                Some(false) => el,
+                None => el.hover(|s| s.bg(hover)),
+            }),
+        })
         .text_size(css(text_size(14.0, cx)))
         .text_color(muted)
-        .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover")))
         .child(icon(glyph, 15.0, 1.8).text_color(muted))
         .child(
             div()
@@ -133,32 +158,49 @@ pub(super) fn header(
                 .flex_1()
                 .items_center()
                 .gap(css(6.0))
-                .child(
-                    div()
-                        .min_w_0()
-                        .max_w_full()
-                        .flex_shrink(1.0)
-                        .truncate()
-                        .child(name),
-                )
-                .child(
-                    div()
-                        .flex_none()
-                        .opacity(0.0)
-                        .group_hover(group, |s| s.opacity(1.0))
-                        .child(
-                            icon(chevron.svg(), 13.0, 2.0)
-                                .text_color(appearance.token("cmd-palette-item-meta")),
-                        ),
-                ),
+                .child(title)
+                .when(!editing, |el| {
+                    el.child(
+                        div()
+                            .flex_none()
+                            .opacity(if lit == Some(true) { 1.0 } else { 0.0 })
+                            .when(lit.is_none(), |el| {
+                                el.group_hover(group, |s| s.opacity(1.0))
+                            })
+                            .child(icon(chevron.svg(), 13.0, 2.0).text_color(meta)),
+                    )
+                }),
         )
+}
+
+/// Folds or unfolds a group, as `onToggle` does.
+pub(super) type Toggle = std::rc::Rc<dyn Fn(&mut App)>;
+
+pub(super) fn toggler(fold_id: String, collapsed: bool) -> Toggle {
+    std::rc::Rc::new(move |cx: &mut App| {
+        let now_collapsed = !collapsed;
+        log::info!(target: "sessions", "{fold_id} {}", if now_collapsed { "folded" } else { "unfolded" });
+        if fold_id == DIALOGUE_FOLD {
+            if !set_dialogue_collapsed(now_collapsed, cx) {
+                return;
+            }
+        } else if now_collapsed {
+            cx.global_mut::<Sessions>()
+                .collapsed
+                .insert(fold_id.clone());
+        } else {
+            cx.global_mut::<Sessions>().collapsed.remove(&fold_id);
+        }
+        fold::toggle(&fold_id, now_collapsed, cx);
+        cx.refresh_windows();
+    })
 }
 
 /// A group: its header and, when open, its first tasks (`pt-0.5 gap-0.5`, text rows indented),
 /// with its drawn height.
 fn group(
     fold_id: String,
-    header: gpui::Stateful<gpui::Div>,
+    header: AnyElement,
     sessions: &[Session],
     collapsed: bool,
     place: &Place,
@@ -215,22 +257,6 @@ fn group(
             })
             .into_any_element()
     };
-    let toggle = fold_id.clone();
-    let header = header.on_click(move |_, _, cx| {
-        let now_collapsed = !collapsed;
-        log::info!(target: "sessions", "{toggle} {}", if now_collapsed { "folded" } else { "unfolded" });
-        if toggle == DIALOGUE_FOLD {
-            if !set_dialogue_collapsed(now_collapsed, cx) {
-                return;
-            }
-        } else if now_collapsed {
-            cx.global_mut::<Sessions>().collapsed.insert(toggle.clone());
-        } else {
-            cx.global_mut::<Sessions>().collapsed.remove(&toggle);
-        }
-        fold::toggle(&toggle, now_collapsed, cx);
-        cx.refresh_windows();
-    });
     let open = fold::openness(&fold_id, collapsed, cx);
     let body = fold::section(&fold_id, collapsed, height, body, window, cx);
     if body.is_some() {
@@ -256,18 +282,8 @@ pub(super) fn project(
 ) -> (AnyElement, f32) {
     let fold_id = format!("project:{}", p.key);
     let collapsed = cx.global::<Sessions>().collapsed.contains(&fold_id);
-    let glyph = if collapsed {
-        IconName::Folder
-    } else {
-        IconName::FolderOpen
-    };
-    let head = header(
-        SharedString::from(format!("{fold_id}-header")),
-        glyph.svg(),
-        p.name.clone(),
-        collapsed,
-        cx,
-    );
+    let toggle = toggler(fold_id.clone(), collapsed);
+    let head = super::project::Head::new(p, collapsed, toggle).into_any_element();
     group(fold_id, head, &p.sessions, collapsed, place, window, cx)
 }
 
@@ -412,13 +428,16 @@ fn draw(
             Entry::Project(p) => project(p, &main_place, window, cx).0,
             Entry::Dialogues(list) => {
                 let collapsed = dialogue_collapsed(prefs);
+                let toggle = toggler(DIALOGUE_FOLD.into(), collapsed);
                 let head = header(
                     format!("{DIALOGUE_FOLD}-header").into(),
                     MESSAGES_SQUARE,
-                    dialogues.clone(),
+                    (Name::Text(dialogues.clone()), None),
                     collapsed,
                     cx,
-                );
+                )
+                .on_click(move |_, _, cx| toggle(cx))
+                .into_any_element();
                 group(
                     DIALOGUE_FOLD.into(),
                     head,

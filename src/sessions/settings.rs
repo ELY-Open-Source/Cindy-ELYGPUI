@@ -121,6 +121,15 @@ pub fn promoted(current: &[String], entry: &str, platform: &str) -> Vec<String> 
     std::iter::once(head).chain(rest).collect()
 }
 
+/// `applyPinnedMutation`'s `remove`: every spelling of the entry dropped.
+pub fn removed(current: &[String], entry: &str, platform: &str) -> Vec<String> {
+    let identity = entry_identity(entry, platform);
+    let kept = current
+        .iter()
+        .filter(|c| entry_identity(c, platform) != identity);
+    kept.cloned().collect()
+}
+
 /// `sidebarPathState` for a local owner: a regular file or none; a left `.bak` blocks.
 fn writable(path: &Path) -> Result<()> {
     match std::fs::symlink_metadata(path) {
@@ -135,10 +144,11 @@ fn writable(path: &Path) -> Result<()> {
     }
 }
 
-/// `SidebarPinnedOrderMutation`: the two kinds this port sends.
+/// `SidebarPinnedOrderMutation`: the kinds this port sends.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Mutation {
     Promote(String),
+    Remove(String),
     /// A drag that started from `base`.
     Reorder {
         base: Vec<String>,
@@ -160,7 +170,9 @@ fn order_ok(order: &[String]) -> bool {
 impl Mutation {
     fn check(&self) -> Result<()> {
         match self {
-            Mutation::Promote(entry) if !entry_ok(entry) => bail!("invalid sidebar pinned entry"),
+            Mutation::Promote(entry) | Mutation::Remove(entry) if !entry_ok(entry) => {
+                bail!("invalid sidebar pinned entry")
+            }
             Mutation::Reorder { base, order } if !order_ok(base) || !order_ok(order) => {
                 bail!("invalid sidebar pinned order")
             }
@@ -172,6 +184,7 @@ impl Mutation {
     fn apply(&self, current: &[String], platform: &str) -> Vec<String> {
         match self {
             Mutation::Promote(entry) => promoted(current, entry, platform),
+            Mutation::Remove(entry) => removed(current, entry, platform),
             Mutation::Reorder { base, order } => rebased(current, base, order, platform),
         }
     }

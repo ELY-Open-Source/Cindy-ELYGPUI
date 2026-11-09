@@ -23,6 +23,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "a1",
      "a2",
@@ -33,6 +34,7 @@
     "kind": "project",
     "key": "local:/work/site",
     "name": "site",
+    "workingDir": "/work/site",
     "sessions": [
      "b1"
     ]
@@ -51,6 +53,7 @@
     "kind": "project",
     "key": "local:/b/app",
     "name": "app",
+    "workingDir": "/b/app",
     "sessions": [
      "y"
     ]
@@ -59,6 +62,7 @@
     "kind": "project",
     "key": "local:/a/app",
     "name": "a/app",
+    "workingDir": "/a/app",
     "sessions": [
      "x"
     ]
@@ -67,6 +71,7 @@
     "kind": "project",
     "key": "local:/c/x/app",
     "name": "x/app",
+    "workingDir": "/c/x/app",
     "sessions": [
      "z"
     ]
@@ -81,6 +86,7 @@
     "kind": "project",
     "key": "local:/repo",
     "name": "repo",
+    "workingDir": "/repo",
     "sessions": [
      "w1",
      "w2",
@@ -91,6 +97,7 @@
     "kind": "project",
     "key": "local:/other",
     "name": "other",
+    "workingDir": "/other",
     "sessions": [
      "w4"
     ]
@@ -99,6 +106,7 @@
     "kind": "project",
     "key": "local:/project-dir",
     "name": "project-dir",
+    "workingDir": "/project-dir",
     "sessions": [
      "w5"
     ]
@@ -113,6 +121,7 @@
     "kind": "project",
     "key": "local:C:/Users/Me/Proj",
     "name": "Proj",
+    "workingDir": "C:/Users/Me/Proj",
     "sessions": [
      "p1",
      "p2"
@@ -122,6 +131,7 @@
     "kind": "project",
     "key": "local:C:/Users/Me/Other",
     "name": "Other",
+    "workingDir": "C:/Users/Me/Other",
     "sessions": [
      "p3"
     ]
@@ -136,6 +146,7 @@
     "kind": "project",
     "key": "remote:host-1:/srv/app",
     "name": "Server",
+    "workingDir": "/srv/app",
     "sessions": [
      "r1"
     ]
@@ -144,6 +155,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "My App",
+    "workingDir": "/work/app",
     "sessions": [
      "l1"
     ]
@@ -152,6 +164,7 @@
     "kind": "project",
     "key": "local:/empty/project",
     "name": "project",
+    "workingDir": "/empty/project",
     "sessions": []
    }
   ]
@@ -164,6 +177,7 @@
     "kind": "project",
     "key": "local:/work/site",
     "name": "site",
+    "workingDir": "/work/site",
     "sessions": [
      "c2"
     ]
@@ -172,6 +186,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "c1",
      "c4"
@@ -195,6 +210,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "g2"
     ]
@@ -213,6 +229,7 @@
     "kind": "project",
     "key": "remote:host-1:/srv/app",
     "name": "srv/app",
+    "workingDir": "/srv/app",
     "sessions": [
      "there"
     ]
@@ -221,6 +238,7 @@
     "kind": "project",
     "key": "local:/srv/app",
     "name": "app",
+    "workingDir": "/srv/app",
     "sessions": [
      "here"
     ]
@@ -234,6 +252,7 @@
     "kind": "project",
     "key": "local:/work/site",
     "name": "site",
+    "workingDir": "/work/site",
     "sessions": [
      "w1"
     ]
@@ -269,6 +288,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "a1"
     ]
@@ -277,6 +297,7 @@
     "kind": "project",
     "key": "local:/work/solo",
     "name": "solo",
+    "workingDir": "/work/solo",
     "sessions": []
    }
   ]
@@ -301,6 +322,7 @@
     "kind": "project",
     "key": "local:/work/kept",
     "name": "kept",
+    "workingDir": "/work/kept",
     "sessions": [
      "k1"
     ]
@@ -314,6 +336,7 @@
     "kind": "project",
     "key": "local:/work/site",
     "name": "site",
+    "workingDir": "/work/site",
     "sessions": [
      "f3"
     ]
@@ -370,6 +393,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "x1"
     ]
@@ -378,12 +402,14 @@
     "kind": "project",
     "key": "local:/work/empty",
     "name": "empty",
+    "workingDir": "/work/empty",
     "sessions": []
    },
    {
     "kind": "project",
     "key": "local:/work/codexdir",
     "name": "codexdir",
+    "workingDir": "/work/codexdir",
     "sessions": []
    }
   ]
@@ -408,6 +434,7 @@
     "kind": "project",
     "key": "local:/work/app",
     "name": "app",
+    "workingDir": "/work/app",
     "sessions": [
      "y1"
     ]

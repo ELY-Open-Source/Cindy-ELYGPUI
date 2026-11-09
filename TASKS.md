@@ -285,8 +285,10 @@ listed in `tasks/done.md`.
   with the search's locked project chip and the list's scroll freeze on that open, Show files, Open in the file manager, Copy deep link,
   Import, Remove from sidebar), and the dialogue group's Search; actions whose feature lands in a
   later chapter come with it; the rail panels' New buttons and their project row menu with them
-  - [ ] 8.10a The header's hover More and New buttons and the menu by More or a right click:
-    Rename (double click too, `project_aliases`), Pin/Unpin, Copy deep link, Remove from sidebar
+  - [x] 8.10a The header as a Tab stop, its hover More and the menu by More, a right click or the
+    menu key: Rename (double click too, `project_aliases`), Pin/Unpin, Copy deep link; New in this
+    folder comes with the New draft (chapter 9)
+  - [ ] 8.10a2 Remove from sidebar: the awaitable confirm and `hiddenProjectKeys`' write
   - [ ] 8.10b Search in this project with the locked project chip and the scroll freeze, and the
     dialogue group's Search
   - [ ] 8.10c Open in the file manager: `filePathPolicy.ts`'s blocklist and an open that reports

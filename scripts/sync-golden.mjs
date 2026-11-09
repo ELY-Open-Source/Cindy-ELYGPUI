@@ -198,7 +198,7 @@ try {
   // CCAgentSidebarUpper's composition, local tasks, no filters beyond status.
   const ids = (list) => list.map((x) => x.id);
   const shown = (e) => e.kind === 'project'
-    ? { kind: e.kind, key: e.project.projectKey, name: e.project.displayName, sessions: ids(e.project.sessions) }
+    ? { kind: e.kind, key: e.project.projectKey, name: e.project.displayName, workingDir: e.project.workingDir, sessions: ids(e.project.sessions) }
     : e.kind === 'session' ? { kind: e.kind, session: e.session.id }
     : { kind: e.kind, sessions: ids(e.sessions) };
   write(path.join(groupDir, 'expected.json'), groupCases.map((c) => {
@@ -254,7 +254,7 @@ try {
       name: c.name,
       pinned: pinned.map((e) => e.kind === 'session'
         ? { kind: 'session', session: e.session.id, label: labels.get(e.session.id) ?? null }
-        : { kind: 'project', key: e.project.projectKey, name: e.project.displayName, sessions: ids(e.displaySessions) }),
+        : { kind: 'project', key: e.project.projectKey, name: e.project.displayName, workingDir: e.project.workingDir, sessions: ids(e.displaySessions) }),
       entries: entries.map(shown),
     };
   }));

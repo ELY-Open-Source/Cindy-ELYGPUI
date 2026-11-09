@@ -42,7 +42,7 @@ fn row_probe(id: String, slot: Probe) -> impl IntoElement {
 }
 
 /// `is_unmodified_menu_key`, on key up on Windows, or `is_shift_f10` off macOS, on key down.
-fn menu_key(k: &Keystroke, up: bool) -> bool {
+pub(super) fn menu_key(k: &Keystroke, up: bool) -> bool {
     let m = &k.modifiers;
     let others = m.control || m.alt || m.platform;
     match k.key.as_str() {
@@ -81,7 +81,7 @@ pub(super) fn with_menu(
 }
 
 /// `setMenuPos`: each ask opens the menu once.
-fn ask(asked: &Entity<Option<(u64, Point<Pixels>)>>, at: Point<Pixels>, cx: &mut App) {
+pub(super) fn ask(asked: &Entity<Option<(u64, Point<Pixels>)>>, at: Point<Pixels>, cx: &mut App) {
     asked.update(cx, |asked, cx| {
         let number = asked.map_or(1, |(n, _)| n + 1);
         *asked = Some((number, at));

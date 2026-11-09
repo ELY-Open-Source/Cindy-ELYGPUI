@@ -53,6 +53,12 @@ defines scope and what 1:1 means.
   `pin.rs` is `handleTogglePin`: `pinnedAt` through `write.rs`, and a pin promoted in
   `sidebar-settings.json`'s `pinnedOrder` by `settings::promote` (`savePinnedOrder` and
   `updateAtomic`: under the lock, an unreadable file refused, tmp then rename).
+  `project.rs` is `ProjectNode`'s `ProjectHeader`: a Tab stop that folds on a click, Enter or
+  Space, its hover More (`ProjectAction`), and one menu (Ely `ContextMenu::manual`) from More, a
+  right click or the menu key: Rename, Pin or Unpin (`pin::project`, `project:<key>` promoted or
+  removed), Copy deep link (`buildProjectDeepLink`). `project/rename.rs` is the alias field on a
+  double click or Rename, `project/alias.rs` `useProjectAliases.updateAlias` and
+  `upsertProjectAlias` on the database worker. The header's other actions come with their tasks.
   `src/cross_process_lock.rs` is the advisory tier of Cindy's `crossProcessLock.ts`: the
   `{pid, startedAt, nonce}` file, a 2 s heartbeat, nonce-bound release, and stale takeover
   under the `.reclaim.d` gate, with owner liveness from `kill(pid, 0)` and `ps` (PowerShell,
