@@ -16,9 +16,9 @@ pub struct ContentPreview {
 
 /// A hit in UTF-16 offsets of the original text.
 #[derive(Clone, Copy)]
-struct Range {
-    start: usize,
-    end: usize,
+pub(crate) struct Range {
+    pub start: usize,
+    pub end: usize,
 }
 
 /// `replace(/\s+/g, ' ').trim()`.
@@ -93,7 +93,7 @@ fn find(haystack: &[u16], needle: &[u16], from: usize) -> Option<usize> {
 }
 
 /// `keywordRanges`: each code point folded alone, mapped back to the original offsets.
-fn keyword_ranges(text: &str, query: &str) -> Vec<Range> {
+pub(crate) fn keyword_ranges(text: &str, query: &str) -> Vec<Range> {
     let tokens = tokens(query);
     if tokens.is_empty() || text.is_empty() {
         return Vec::new();

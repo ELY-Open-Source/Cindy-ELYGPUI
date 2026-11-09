@@ -1,9 +1,11 @@
-use gpui::{
-    Modifiers, MouseMoveEvent, ScrollDelta, ScrollEvent, TestAppContext, TouchPhase,
-    VisualTestContext, point, px, size,
-};
+use gpui::{Modifiers, MouseMoveEvent, TestAppContext, VisualTestContext, point, px};
 
-use super::{query, trimmed};
+use super::{
+    query,
+    run::tests::{search, wait},
+    trimmed,
+};
+use crate::localdb::search::conversations::tests::task;
 use crate::sessions::view_tests::{click, open};
 
 fn drawn(cx: &mut VisualTestContext, selector: &'static str) -> bool {
@@ -14,6 +16,14 @@ fn drawn(cx: &mut VisualTestContext, selector: &'static str) -> bool {
 
 fn typed(cx: &mut VisualTestContext) -> String {
     cx.update(|_, cx| query(cx).to_owned())
+}
+
+/// A press on the list's empty foot, outside the search surface.
+pub(super) fn press_below(cx: &mut VisualTestContext) {
+    let list = cx.debug_bounds("main-list").unwrap();
+    let at = point(list.center().x, list.bottom() - px(4.0));
+    cx.simulate_click(at, Modifiers::none());
+    cx.run_until_parked();
 }
 
 /// The pointer far from the row, so hover does not hold it open.
@@ -81,7 +91,7 @@ fn a_press_outside_clears_a_running_query(cx: &mut TestAppContext) {
     cx.simulate_input("plan");
     click(cx, "nav-search");
     assert_eq!(typed(cx), "plan", "a press on the row keeps it");
-    click(cx, "task-a2");
+    press_below(cx);
     assert_eq!(typed(cx), "");
 }
 
@@ -98,31 +108,28 @@ fn tab_onto_search_lands_in_the_field(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
-fn a_press_where_the_scrolled_off_row_was_still_clears(cx: &mut TestAppContext) {
+fn a_running_query_prunes_the_selection_to_its_results(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
-    let cx = open(cx, dir.path());
-    cx.simulate_resize(size(px(400.0), px(240.0)));
+    let cx = search(cx, dir.path(), Some(plans));
+    away(cx);
+    cx.update(|window, cx| window.blur(cx));
     cx.run_until_parked();
     let row = cx.debug_bounds("task-a1").unwrap();
     cx.simulate_click(row.center(), Modifiers::control());
     cx.run_until_parked();
+    assert!(drawn(cx, "bulk-count"));
     click(cx, "nav-search-open");
     cx.simulate_input("plan");
-    let list = cx.debug_bounds("main-list").unwrap();
-    cx.simulate_event(ScrollEvent {
-        position: list.center(),
-        delta: ScrollDelta::Pixels(point(px(0.0), px(-40.0))),
-        modifiers: Modifiers::none(),
-        touch_phase: TouchPhase::Moved,
-        ..Default::default()
-    });
-    cx.run_until_parked();
-    let search = cx.debug_bounds("nav-search").unwrap();
-    let bar = cx.debug_bounds("bulk-count").unwrap();
-    assert!(search.contains(&bar.center()), "{search:?} under {bar:?}");
-    cx.simulate_click(bar.center(), Modifiers::none());
-    cx.run_until_parked();
-    assert_eq!(typed(cx), "", "the bar took the press, not the hidden row");
+    assert!(!drawn(cx, "bulk-count"), "the searching line shows no rows");
+    wait(cx, 250);
+    assert!(drawn(cx, "search-result-a1"));
+}
+
+/// Tasks titled `plan`, `a1` among them.
+fn plans(db: &rusqlite::Connection) {
+    for i in 0..3 {
+        task(db, &format!("a{i}"), &format!("plan {i}"), i);
+    }
 }
 
 #[gpui::test]

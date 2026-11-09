@@ -17,7 +17,9 @@ use crate::{
     theme::Appearance, theme_import::color::js_trim, tip::tip, units::css,
 };
 
+mod marks;
 mod options;
+pub mod results;
 pub mod run;
 
 pub use options::Options;
@@ -29,6 +31,8 @@ pub struct Search {
     /// A choice in the open menu took the press under way.
     chosen: bool,
     run: run::Run,
+    /// The results' hitbox this frame, part of the search surface.
+    surface: Option<gpui::Hitbox>,
 }
 
 struct Field {
@@ -48,6 +52,7 @@ pub fn install(cx: &mut App) {
         options,
         chosen: false,
         run: run::Run::default(),
+        surface: None,
     });
 }
 
@@ -283,11 +288,17 @@ fn menu_open(menu: &FocusHandle, filter: &FocusHandle, window: &Window, cx: &App
 /// A press the open menu keeps, as `data-radix-popper-content-wrapper`, leaves it.
 fn outside(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
     canvas(
-        |bounds, window, _| window.insert_hitbox(bounds, HitboxBehavior::Normal),
+        |bounds, window, cx| {
+            cx.global_mut::<Search>().surface = None;
+            window.insert_hitbox(bounds, HitboxBehavior::Normal)
+        },
         move |_, hitbox, window, _| {
             window.on_mouse_event(move |e: &MouseDownEvent, phase, window, cx| {
                 // `closest(surface)` on the press's real target.
-                if phase != DispatchPhase::Capture || hitbox.is_hovered_at(e.position, window) {
+                let results = cx.global::<Search>().surface.as_ref();
+                let inside = hitbox.is_hovered_at(e.position, window)
+                    || results.is_some_and(|r| r.is_hovered_at(e.position, window));
+                if phase != DispatchPhase::Capture || inside {
                     return;
                 }
                 if !menu_open(&menu, &filter, window, cx) {

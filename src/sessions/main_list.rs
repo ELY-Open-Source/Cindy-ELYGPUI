@@ -329,6 +329,15 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .gap(css(2.0))
         .child(super::header::header(window, cx))
         .children(main);
+    // The list stays built while results show, as `hidden` keeps it mounted.
+    let results = super::search::results::body(window, cx);
+    let list = div()
+        .flex()
+        .flex_col()
+        .gap(css(8.0))
+        .when(results.is_some(), |el| el.hidden())
+        .children(pinned)
+        .child(section);
     let scroll = div()
         .id("main-list")
         .debug_selector(|| "main-list".into())
@@ -341,8 +350,8 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .overflow_y_scroll()
         .track_scroll(&cx.global::<super::reveal::Reveal>().handle)
         .child(super::search::section(window, cx))
-        .children(pinned)
-        .child(section)
+        .children(results)
+        .child(list)
         .child(super::select::end());
     Some(
         div()

@@ -126,6 +126,10 @@ defines scope and what 1:1 means.
   900ms run `searchConversations` on the database worker, only the latest publishes, the hybrid
   page wins once it lands, and an empty page waits for both. `fanout` is the renderer's
   `mergeConversationSearchFanout` (Cindy Make rows dropped, `max(userSendAt, updatedAt)`).
+  `search/results.rs` is `SearchResultsBody` with its rows, drawn while a query runs; the list
+  stays built under `display: none`, so gpui skips its prepaint and its rows leave the selection,
+  as Cindy's hidden rows do. Its hitbox joins the search surface. `marks.rs` draws title and
+  keyword marks as text highlights, which have no padding or radius.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
@@ -209,7 +213,8 @@ defines scope and what 1:1 means.
   peek: `src/sidebar/peek.rs` is `useSidebarPeek.ts` as a clock-driven state machine (deadlines,
   `tick`), `peek_view.rs` wakes on its next timer, decides drawer and toggle hits from the pointer
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
-  through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button).
+  through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button). `tip::rich`
+  takes any content.
   Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon`
   also swaps in Cindy's `strokeWidth`. An `svg` takes no inherited color: set `text_color` on it.
 - Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for

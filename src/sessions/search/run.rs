@@ -73,10 +73,6 @@ enum Pass {
 }
 
 /// The search's state and the page it shows.
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the results list reads it in 8.7c2b")
-)]
 pub fn state(cx: &App) -> (Status, Option<&Response>) {
     let run = &cx.global::<Search>().run;
     (run.status, run.response.as_ref())
@@ -271,4 +267,4 @@ fn relevance(a: &Item, b: &Item) -> Ordering {
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

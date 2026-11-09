@@ -224,6 +224,14 @@ fn candidates(
     rows.collect()
 }
 
+/// `conversationSearchTitle`: the draft sentinel shows as the unnamed label.
+pub fn shown_title<'a>(title: &'a str, unnamed: Option<&'a str>) -> &'a str {
+    match unnamed {
+        Some(label) if title == DRAFT && !label.is_empty() => label,
+        _ => title,
+    }
+}
+
 /// `activityMs` of the title order: the last send, else the update.
 fn activity(s: &Summary) -> i64 {
     s.user_send_at.unwrap_or(s.updated_at)
@@ -279,11 +287,7 @@ pub fn search(
         .iter()
         .enumerate()
         .filter_map(|(index, row)| {
-            let shown = match request.unnamed_label {
-                Some(label) if row.title == DRAFT && !label.is_empty() => label,
-                _ => &row.title,
-            };
-            let m = title_match(shown, query)?;
+            let m = title_match(shown_title(&row.title, request.unnamed_label), query)?;
             Some((index, summaries[row.id.as_str()], m))
         })
         .collect();

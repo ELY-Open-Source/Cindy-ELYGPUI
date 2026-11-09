@@ -103,7 +103,7 @@ fn the_unnamed_label_is_sent_as_written() {
 }
 
 /// The search row open and a database serving `fill`'s tasks, if any.
-fn search<'a>(
+pub(crate) fn search<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,
     fill: Option<fn(&Connection)>,
@@ -125,7 +125,7 @@ fn tasks(db: &Connection) {
     say(db, "m1", "c", "\"the login page broke\"");
 }
 
-fn wait(cx: &mut VisualTestContext, ms: u64) {
+pub(crate) fn wait(cx: &mut VisualTestContext, ms: u64) {
     cx.executor().advance_clock(Duration::from_millis(ms));
     cx.run_until_parked();
 }

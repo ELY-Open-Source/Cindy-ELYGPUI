@@ -119,9 +119,9 @@ fn a_press_on_the_menu_keeps_the_query(cx: &mut TestAppContext) {
     click(cx, "search-filter-button");
     assert!(drawn(cx, "menu-panel-0"));
     let panel = cx.debug_bounds("menu-panel-0").unwrap();
-    let row = cx.debug_bounds("task-a4").unwrap();
-    assert!(!panel.intersects(&row), "{panel:?} {row:?}");
-    click(cx, "task-a4");
+    let foot = cx.debug_bounds("main-list").unwrap().bottom();
+    assert!(panel.bottom() < foot - px(4.0), "{panel:?}");
+    crate::sessions::search::tests::press_below(cx);
     assert_eq!(
         cx.update(|_, cx| query(cx).to_owned()),
         "",

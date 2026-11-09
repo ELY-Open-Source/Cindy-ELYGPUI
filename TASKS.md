@@ -349,10 +349,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
               pass after 900ms on the database worker, only the latest request publishing, the
               local page merged as `mergeConversationSearchFanout` does (Cindy Make rows, its
               order), searching, done and error
-            - [ ] 8.7c2b `SearchResultsBody`, `SearchResultRow` and `SearchHitRow` in place of the
-              list, which stays mounted and hidden: the empty, searching, failed and no-result
-              lines, title marks, the kind chip, the meta line, three hits then More, keyword
-              marks and tips; teammate hits come with the companions chapter
+            - [x] 8.7c2b1 `SearchResultsBody`, `SearchResultRow` and `SearchHitRow` in place of the
+              list, which stays built and hidden: the searching, failed and no-result lines,
+              title marks, the kind chip, the meta line, three hits then More, keyword marks and
+              tips; the empty line lands with the rail popover, teammate hits with companions
+            - [ ] 8.7c2b2 The list's scroll under the search: top on each search, the list's
+              place back once the query clears, after the pointer lifts
             - [ ] 8.7c2c `handleSelect`: a result or hit opens its task and keeps the query; the
               message jump (`searchJump`) lands with the chat view (chapter 9)
         - [ ] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
