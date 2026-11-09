@@ -1,30 +1,26 @@
-//! `Date.parse` on the ISO strings `toISOString` writes, `toISOString` itself and `Date.now`.
+//! V8's `Date.parse` (`ParseDateTimeString`), `toISOString` and `Date.now`.
 
 use std::sync::LazyLock;
 
-use regex::Regex;
+use jiff::{
+    civil::DateTime,
+    tz::{AmbiguousOffset, TimeZone},
+};
 
-static ISO: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
-        r"^([+-][0-9]{6}|[0-9]{4})(?:-([0-9]{2})(?:-([0-9]{2}))?)?",
-        r"(?:T([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\.([0-9]+))?)?(Z|[+-][0-9]{2}:[0-9]{2})?)?$"
-    ))
-    .expect("valid pattern")
+mod parser;
+
+const MS_PER_DAY: f64 = 86_400_000.0;
+/// `DateCache::kMaxTimeInMs`.
+const MAX_TIME: f64 = 8.64e15;
+/// `kMaxTimeBeforeUTCInMs`: a month past the largest time.
+const MAX_TIME_BEFORE_UTC: f64 = MAX_TIME + 30.0 * MS_PER_DAY;
+
+/// The host's zone, read once as V8's date cache does.
+static LOCAL: LazyLock<TimeZone> = LazyLock::new(|| {
+    let zone = TimeZone::system();
+    log::info!(target: "js-date", "local time zone: {}", zone.iana_name().unwrap_or("unnamed"));
+    zone
 });
-
-/// Days from 1970-01-01 to the first of `month` in `year`.
-fn days_to_month(year: i64, month: i64) -> i64 {
-    let (y, m) = if month <= 2 {
-        (year - 1, month + 9)
-    } else {
-        (year, month - 3)
-    };
-    let era = y.div_euclid(400);
-    let yoe = y - era * 400;
-    let doy = (153 * m + 2) / 5;
-    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
-    era * 146_097 + doe - 719_468
-}
 
 /// `Date.now()`: whole milliseconds since 1970.
 pub fn now() -> f64 {
@@ -34,50 +30,85 @@ pub fn now() -> f64 {
     since.as_millis() as f64
 }
 
-/// `Date.parse` on the ECMAScript date-time format, offset-less times read as UTC.
+/// `MakeDay`: days from 1970 to a date, the month allowed to run past a year.
+fn make_day(year: f64, month: f64, date: f64) -> f64 {
+    if !(-1e6..=1e6).contains(&year) || !(-1e7..=1e7).contains(&month) || !date.is_finite() {
+        return f64::NAN;
+    }
+    let (mut y, mut m) = (year as i64, month as i64);
+    y += m / 12;
+    m %= 12;
+    if m < 0 {
+        m += 12;
+        y -= 1;
+    }
+    let days = |y: i64| {
+        let y = y + 399_999;
+        365 * y + y / 4 - y / 100 + y / 400
+    };
+    let leap = y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
+    let before = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334][m as usize];
+    let from_month = before + i64::from(leap && m >= 2);
+    (days(y) - days(1970) + from_month - 1) as f64 + date.trunc()
+}
+
+/// The zone's offset for a local wall time, ICU's `UCAL_TZ_LOCAL_FORMER` both ways.
+fn local_offset_ms(local_ms: i64, zone: &TimeZone) -> i64 {
+    let (days, rest) = (
+        local_ms.div_euclid(86_400_000),
+        local_ms.rem_euclid(86_400_000),
+    );
+    let (mut year, month, day) = civil(days);
+    // Shifting whole 400-year cycles keeps the calendar; jiff stops at 9999.
+    if year.abs() > 9999 {
+        year -= (year - year.signum() * 9600).div_euclid(400) * 400;
+    }
+    let dt = DateTime::new(
+        year as i16,
+        month as i8,
+        day as i8,
+        (rest / 3_600_000) as i8,
+        (rest / 60_000 % 60) as i8,
+        (rest / 1000 % 60) as i8,
+        0,
+    )
+    .expect("a valid civil time");
+    let offset = match zone.to_ambiguous_timestamp(dt).offset() {
+        AmbiguousOffset::Unambiguous { offset } => offset,
+        AmbiguousOffset::Gap { before, .. } | AmbiguousOffset::Fold { before, .. } => before,
+    };
+    i64::from(offset.seconds()) * 1000
+}
+
+/// `Date.parse` in the host's zone.
 pub fn parse(text: &str) -> f64 {
-    let Some(c) = ISO.captures(text) else {
+    parse_in(text, &LOCAL)
+}
+
+/// `ParseDateTimeString` with local times read in `zone`.
+fn parse_in(text: &str, zone: &TimeZone) -> f64 {
+    let units: Vec<u16> = text.encode_utf16().collect();
+    let Some(f) = parser::parse(&units) else {
         return f64::NAN;
     };
-    let num = |i: usize, default: i64| {
-        c.get(i)
-            .map_or(default, |m| m.as_str().parse().unwrap_or(-1))
+    let day = make_day(f[0], f[1], f[2]);
+    let time = f[3] * 3_600_000.0 + f[4] * 60_000.0 + f[5] * 1000.0 + f[6];
+    let mut date = match day.is_finite() {
+        true => time + day * MS_PER_DAY,
+        false => f64::NAN,
     };
-    let year = num(1, 0);
-    if c[1].len() == 7 && year == 0 && c[1].starts_with('-') {
-        return f64::NAN;
-    }
-    let (month, day) = (num(2, 1), num(3, 1));
-    let (hour, minute, second) = (num(4, 0), num(5, 0), num(6, 0));
-    let ms = c.get(7).map_or(0, |m| {
-        let digits = format!("{:0<3}", &m.as_str()[..m.len().min(3)]);
-        digits.parse::<i64>().expect("three digits")
-    });
-    let valid = (1..=12).contains(&month)
-        && (1..=31).contains(&day)
-        && minute < 60
-        && second < 60
-        && (hour < 24 || (hour == 24 && minute == 0 && second == 0 && ms == 0));
-    if !valid {
-        return f64::NAN;
-    }
-    let offset = match c.get(8).map(|m| m.as_str()) {
-        None | Some("Z") => 0,
-        Some(o) => {
-            let sign = if o.starts_with('-') { -1 } else { 1 };
-            let (h, m): (i64, i64) = (
-                o[1..3].parse().expect("digits"),
-                o[4..6].parse().expect("digits"),
-            );
-            if h > 23 || m > 59 {
-                return f64::NAN;
-            }
-            sign * (h * 60 + m)
+    if f[7].is_nan() {
+        if !(-MAX_TIME_BEFORE_UTC..=MAX_TIME_BEFORE_UTC).contains(&date) {
+            return f64::NAN;
         }
-    };
-    let days = days_to_month(year, month) + day - 1;
-    let minutes = days * 1440 + hour * 60 + minute - offset;
-    ((minutes * 60 + second) * 1000 + ms) as f64
+        date -= local_offset_ms(date as i64, zone) as f64;
+    } else {
+        date -= f[7] * 1000.0;
+    }
+    match (-MAX_TIME..=MAX_TIME).contains(&date) {
+        true => date.trunc() + 0.0,
+        false => f64::NAN,
+    }
 }
 
 /// The date of a day count from 1970-01-01.
@@ -116,55 +147,4 @@ pub fn iso(ms: i64) -> Option<String> {
 }
 
 #[cfg(test)]
-mod tests {
-    #[test]
-    fn iso_strings_parse_as_v8_does() {
-        // Values from Node 26's `Date.parse` with TZ=UTC.
-        for (text, want) in [
-            ("2021-02-30", 1_614_643_200_000.0),
-            ("2026-01-01T24:00:00Z", 1_767_312_000_000.0),
-            ("2026-01-01T00:00:00.1234Z", 1_767_225_600_123.0),
-            ("2026-01-01T00:00Z", 1_767_225_600_000.0),
-            ("2026-01-01T00:00:00", 1_767_225_600_000.0),
-            ("2026", 1_767_225_600_000.0),
-            ("+002026-01-01T00:00:00Z", 1_767_225_600_000.0),
-            ("2026-01-01T00:00:00+05:30", 1_767_205_800_000.0),
-            ("1969-12-31T23:59:59.999Z", -1.0),
-        ] {
-            assert_eq!(super::parse(text), want, "{text}");
-        }
-        for text in [
-            "2021-13-01",
-            "2026-01-01T24:00:01Z",
-            "2026-01-01T00:00:00.Z",
-            "",
-            "x",
-        ] {
-            assert!(super::parse(text).is_nan(), "{text}");
-        }
-    }
-
-    #[test]
-    fn iso_strings_match_v8() {
-        // Values from Node 26's `toISOString`.
-        for (ms, want) in [
-            (0, "1970-01-01T00:00:00.000Z"),
-            (-1, "1969-12-31T23:59:59.999Z"),
-            (1_767_225_600_123, "2026-01-01T00:00:00.123Z"),
-            (951_782_400_000, "2000-02-29T00:00:00.000Z"),
-            (253_402_300_800_000, "+010000-01-01T00:00:00.000Z"),
-            (-62_198_755_200_000, "-000001-01-01T00:00:00.000Z"),
-            (8_640_000_000_000_000, "+275760-09-13T00:00:00.000Z"),
-        ] {
-            assert_eq!(super::iso(ms).as_deref(), Some(want), "{ms}");
-        }
-        assert_eq!(super::iso(8_640_000_000_000_001), None);
-        assert_eq!(super::iso(-8_640_000_000_000_001), None);
-        assert_eq!(super::iso(i64::MIN), None);
-        assert_eq!(super::iso(i64::MAX), None);
-        assert_eq!(
-            super::iso(-8_640_000_000_000_000).as_deref(),
-            Some("-271821-04-20T00:00:00.000Z")
-        );
-    }
-}
+mod tests;

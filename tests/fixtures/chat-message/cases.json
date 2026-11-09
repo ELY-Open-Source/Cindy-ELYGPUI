@@ -1,0 +1,6271 @@
+[
+ {
+  "name": "plain user",
+  "rows": [
+   {
+    "id": "m1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "hello",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:21.000Z",
+    "rowid": 1
+   }
+  ]
+ },
+ {
+  "name": "user envelope",
+  "rows": [
+   {
+    "id": "m2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "hi",
+     "images": [
+      {
+       "url": "cindy-media://a",
+       "mimeType": "image/png",
+       "originalName": "a.png",
+       "size": 5,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+       "url": "https://x",
+       "mimeType": "image/png",
+       "originalName": "bad"
+      },
+      {
+       "url": "xdt-image://b",
+       "mimeType": "image/png",
+       "name": "b.png",
+       "size": 0,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "annotationSourceUrl": "cindy-media://src",
+       "annotationStrokes": [
+        {
+         "points": [
+          {
+           "x": 1,
+           "y": 2
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "url": "xdt-image://c",
+       "mimeType": "image/png",
+       "originalName": "c",
+       "annotationSourceUrl": "cindy-media://s",
+       "annotationStrokes": [
+        {
+         "points": []
+        }
+       ]
+      },
+      "str",
+      null
+     ],
+     "files": [
+      {
+       "name": "f",
+       "path": "/f"
+      },
+      {
+       "name": "g",
+       "path": "/g",
+       "size": 3
+      },
+      {
+       "name": "h",
+       "path": "/h",
+       "size": 3,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      []
+     ],
+     "quotesEncoded": true,
+     "replyQuote": {
+      "clientId": "q",
+      "role": "assistant",
+      "excerpt": "  a\n\n b xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+     },
+     "pastedTextRanges": [
+      {
+       "start": 0,
+       "end": 1,
+       "display": "h"
+      }
+     ],
+     "slashCommandRanges": [],
+     "sessionReferences": [
+      {
+       "sessionId": "s",
+       "range": "recent",
+       "messageCount": 3,
+       "truncated": false,
+       "messageClientId": "mc"
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:22.000Z",
+    "rowid": 2
+   }
+  ]
+ },
+ {
+  "name": "user bad ranges",
+  "rows": [
+   {
+    "id": "m3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "/run it",
+     "pastedTextRanges": [
+      {
+       "start": 0,
+       "end": 9,
+       "display": "x"
+      }
+     ],
+     "slashCommandRanges": [
+      {
+       "start": 0,
+       "end": 4
+      }
+     ],
+     "sessionReferences": [
+      {
+       "sessionId": "",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": true
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:23.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "m4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "/a b",
+     "slashCommandRanges": [
+      {
+       "start": 0,
+       "end": 4
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:24.000Z",
+    "rowid": 4
+   },
+   {
+    "id": "m5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "ab",
+     "pastedTextRanges": [
+      {
+       "start": 1,
+       "end": 2,
+       "display": "b"
+      },
+      {
+       "start": 0,
+       "end": 1,
+       "display": "a"
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:25.000Z",
+    "rowid": 5
+   }
+  ]
+ },
+ {
+  "name": "user blocks",
+  "rows": [
+   {
+    "id": "m6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": [
+     {
+      "type": "text",
+      "text": "a"
+     },
+     {
+      "type": "text",
+      "text": "b"
+     },
+     {
+      "type": "image",
+      "url": "cindy-media://i",
+      "mimeType": "image/png",
+      "path": "C:\\dir\\pic.png"
+     },
+     {
+      "type": "image",
+      "url": "cindy-media://j",
+      "mimeType": "image/png"
+     },
+     {
+      "type": "file",
+      "path": "/x/y.txt"
+     },
+     {
+      "type": "file",
+      "path": "/x/",
+      "originalName": "o"
+     },
+     {
+      "type": "file",
+      "path": "/z/"
+     },
+     null,
+     3
+    ],
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:26.000Z",
+    "rowid": 6
+   }
+  ]
+ },
+ {
+  "name": "user json string",
+  "rows": [
+   {
+    "id": "m7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "{\"text\":\"inner\",\"quotesEncoded\":true}",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:27.000Z",
+    "rowid": 7
+   },
+   {
+    "id": "m8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[not json",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:28.000Z",
+    "rowid": 8
+   },
+   {
+    "id": "m9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:29.000Z",
+    "rowid": 9
+   },
+   {
+    "id": "m10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "no": "text",
+     "1": 2
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:30.000Z",
+    "rowid": 10
+   },
+   {
+    "id": "m11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": 42,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:31.000Z",
+    "rowid": 11
+   },
+   {
+    "id": "m12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": null,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:32.000Z",
+    "rowid": 12
+   },
+   {
+    "id": "m13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": true,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:33.000Z",
+    "rowid": 13
+   }
+  ]
+ },
+ {
+  "name": "user meta",
+  "rows": [
+   {
+    "id": "m14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "sharedTaskAuthor": {
+      "displayName": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+      "memberId": "  m1  "
+     },
+     "origin": {
+      "kind": "session",
+      "senderSessionId": " s2 ",
+      "senderSessionTitle": "T",
+      "senderBotId": "b",
+      "senderBotName": " "
+     },
+     "sourceDevice": {
+      "deviceId": "d",
+      "platform": "mobile",
+      "name": "Phone\u0001 「x」  y"
+     },
+     "sourcePlugin": {
+      "pluginId": " p ",
+      "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+     },
+     "delivery": "steer",
+     "goalObjective": "goal",
+     "imSource": null,
+     "hookSource": "hook",
+     "parentUuid": "toolu_1",
+     "model": "m",
+     "autoResumeInfo": {
+      "reason": "usage-limit-reset",
+      "at": 5
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:34.000Z",
+    "rowid": 14
+   },
+   {
+    "id": "m15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "y",
+    "toolUseId": null,
+    "agentMeta": {
+     "origin": {
+      "kind": "orca",
+      "senderLabel": "lead"
+     },
+     "delivery": "other",
+     "imSource": "im",
+     "hookSource": "h",
+     "parentUuid": "11111111-1111-1111-1111-111111111111"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:35.000Z",
+    "rowid": 15
+   },
+   {
+    "id": "m16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "z",
+    "toolUseId": null,
+    "agentMeta": {
+     "origin": {
+      "kind": "scheduler",
+      "scheduleId": "x"
+     },
+     "sourceDevice": {
+      "deviceId": "d",
+      "platform": "tv"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:36.000Z",
+    "rowid": 16
+   },
+   {
+    "id": "m17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "w",
+    "toolUseId": null,
+    "agentMeta": {
+     "origin": {
+      "kind": "session"
+     },
+     "sharedTaskAuthor": {
+      "memberId": " "
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:37.000Z",
+    "rowid": 17
+   },
+   {
+    "id": "m18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "v",
+    "toolUseId": null,
+    "agentMeta": {
+     "origin": {
+      "kind": "orca"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:38.000Z",
+    "rowid": 18
+   }
+  ]
+ },
+ {
+  "name": "voice task",
+  "rows": [
+   {
+    "id": "m19",
+    "clientId": "voice-task:x:src",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "say it",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoReviewUserText": {
+      "kind": "agent-request",
+      "request": {
+       "clientId": "src",
+       "sessionId": "s1",
+       "userText": "say it"
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:39.000Z",
+    "rowid": 19
+   },
+   {
+    "id": "m20",
+    "clientId": "voice-task::src",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "say it",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoReviewUserText": {
+      "kind": "agent-request",
+      "request": {
+       "clientId": "src",
+       "sessionId": "s1",
+       "userText": "say it"
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:40.000Z",
+    "rowid": 20
+   }
+  ]
+ },
+ {
+  "name": "synthetic",
+  "rows": [
+   {
+    "id": "m21",
+    "clientId": "c21",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER]do",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:41.000Z",
+    "rowid": 21
+   },
+   {
+    "id": "m22",
+    "clientId": "c22",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "[UI_ACTION_TRIGGER] The previous turn was interrupted because the app exited mid-run. Review the conversation above to determine how far the task progressed, then continue from where it left off. Do not repeat steps that already completed and had external effects (messages or comments already sent, commits already pushed, files already written)."
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:42.000Z",
+    "rowid": 22
+   },
+   {
+    "id": "m23",
+    "clientId": "c23",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER] The previous turn was interrupted because the app exited mid-run. Review the conversation above to determine how far the task progressed, then continue from where it left off. Do not repeat steps that already completed and had external effects (messages or comments already sent, commits already pushed, files already written).",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true,
+     "autoResumeInfo": {
+      "a": 1
+     },
+     "autoResumeOutcome": "ok"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:43.000Z",
+    "rowid": 23
+   },
+   {
+    "id": "m24",
+    "clientId": "c24",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER][Input handoff ended] status=succeeded steps=0003 origin=https://a.b/c. app=\"  App \" answered_on=\"Pad\" failure=nothing_to_fill",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:44.000Z",
+    "rowid": 24
+   },
+   {
+    "id": "m25",
+    "clientId": "c25",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[Input handoff ended] status=failed steps=2 answered_on=phone",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:45.000Z",
+    "rowid": 25
+   },
+   {
+    "id": "m26",
+    "clientId": "c26",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER][Input handoff ended] status=weird steps=2",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:46.000Z",
+    "rowid": 26
+   },
+   {
+    "id": "m27",
+    "clientId": "c27",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER][Input handoff ended] status=failed steps=2",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:47.000Z",
+    "rowid": 27
+   }
+  ]
+ },
+ {
+  "name": "auto resume",
+  "rows": [
+   {
+    "id": "m28",
+    "clientId": "c28",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "continue",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:48.000Z",
+    "rowid": 28
+   },
+   {
+    "id": "m29",
+    "clientId": "c29",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "continue",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true,
+     "autoResumeInfo": "ab",
+     "autoResumeOutcome": ""
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:49.000Z",
+    "rowid": 29
+   },
+   {
+    "id": "m30",
+    "clientId": "c30",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "c",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true,
+     "autoResumeInfo": null,
+     "autoResumeOutcome": "done"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:50.000Z",
+    "rowid": 30
+   }
+  ]
+ },
+ {
+  "name": "references",
+  "rows": [
+   {
+    "id": "m31",
+    "clientId": "c31",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "see cindy://session/s%201?message=m1 and [x](cindy://session/abc/) ok",
+     "agentReferences": [
+      {
+       "kind": "message",
+       "start": 4,
+       "end": 37,
+       "href": "cindy://session/s%201?message=m1",
+       "text": "t",
+       "truncated": true
+      },
+      {
+       "kind": "session",
+       "start": 42,
+       "end": 69,
+       "href": "cindy://session/abc/",
+       "title": "Abc"
+      },
+      {
+       "kind": "session",
+       "start": 4,
+       "end": 37,
+       "href": "cindy://session/s%201?message=m1"
+      },
+      {
+       "kind": "message",
+       "start": 0,
+       "end": 3,
+       "href": "see"
+      },
+      "bad",
+      {
+       "start": 1.5
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:51.000Z",
+    "rowid": 31
+   }
+  ]
+ },
+ {
+  "name": "more references",
+  "rows": [
+   {
+    "id": "m32",
+    "clientId": "c32",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "a cindy://project/%2Fhome%2Fme/ b xdt-maker://browser-tab/t1?x=1&url=https%3A%2F%2Fex.com c cindy://desktop-window/12/0?app=Fi%20nder d cindy://plugin-resource/gh/tool-x/r%201 e cindy://bot/b1 f cindy://bot-todo/b1/t2 g cindy://plugin-resource/gh h cindy://desktop-window/0/1?app=a",
+     "agentReferences": [
+      {
+       "kind": "project",
+       "start": 2,
+       "end": 31,
+       "href": "cindy://project/%2Fhome%2Fme/",
+       "name": "me"
+      },
+      {
+       "kind": "browser-tab",
+       "start": 34,
+       "end": 89,
+       "href": "xdt-maker://browser-tab/t1?x=1&url=https%3A%2F%2Fex.com",
+       "title": "Ex"
+      },
+      {
+       "kind": "desktop-window",
+       "start": 92,
+       "end": 133,
+       "href": "cindy://desktop-window/12/0?app=Fi%20nder",
+       "title": ""
+      },
+      {
+       "kind": "plugin-resource",
+       "start": 136,
+       "end": 175,
+       "href": "cindy://plugin-resource/gh/tool-x/r%201",
+       "pluginName": " P\nN ",
+       "label": "L",
+       "description": "d  e"
+      },
+      {
+       "kind": "bot",
+       "start": 178,
+       "end": 192,
+       "href": "cindy://bot/b1",
+       "name": " Bot  one ",
+       "hostSnapshot": {
+        "availability": "ready",
+        "activity": "idle",
+        "activeDelegations": 2,
+        "reason": " r\n r "
+       }
+      },
+      {
+       "kind": "todo",
+       "start": 195,
+       "end": 217,
+       "href": "cindy://bot-todo/b1/t2",
+       "title": " T "
+      },
+      {
+       "kind": "plugin-resource",
+       "start": 136,
+       "end": 162,
+       "href": "cindy://plugin-resource/gh",
+       "pluginName": "P",
+       "label": "L"
+      },
+      {
+       "kind": "desktop-window",
+       "start": 249,
+       "end": 281,
+       "href": "cindy://desktop-window/0/1?app=a"
+      },
+      {
+       "kind": "project",
+       "start": 0,
+       "end": 1,
+       "href": "a"
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:52.000Z",
+    "rowid": 32
+   }
+  ]
+ },
+ {
+  "name": "tool use",
+  "rows": [
+   {
+    "id": "m33",
+    "clientId": "c33",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Read",
+     "input": {
+      "file_path": "/a/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+     },
+     "toolUseId": "t1"
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "agentTaskStatus": "failed",
+     "model": "sub",
+     "parentUuid": "call_9"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:53.000Z",
+    "rowid": 33
+   },
+   {
+    "id": "m34",
+    "clientId": "c34",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": ""
+     }
+    },
+    "toolUseId": "col",
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:54.000Z",
+    "rowid": 34
+   },
+   {
+    "id": "m35",
+    "clientId": "c35",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Grep",
+     "input": null
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:55.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "m36",
+    "clientId": "c36",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "update_plan",
+     "input": {},
+     "terminalPlanSnapshot": true,
+     "terminalPlanAtMs": 9,
+     "turnCompleted": false
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "agentTaskStatus": "running"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:56.000Z",
+    "rowid": 36
+   },
+   {
+    "id": "m37",
+    "clientId": "c37",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "cindy_mcp_call_tool",
+     "input": {
+      "server": "s",
+      "tool": "t",
+      "args": {
+       "a": 1
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:57.000Z",
+    "rowid": 37
+   },
+   {
+    "id": "m38",
+    "clientId": "c38",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Write",
+     "input": {
+      "file_path": [
+       "a",
+       null,
+       3
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:58.000Z",
+    "rowid": 38
+   },
+   {
+    "id": "m39",
+    "clientId": "c39",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": [
+     "array"
+    ],
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:59.000Z",
+    "rowid": 39
+   },
+   {
+    "id": "m40",
+    "clientId": "c40",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": "plain text tool",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:00.000Z",
+    "rowid": 40
+   },
+   {
+    "id": "m41",
+    "clientId": "c41",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Read",
+     "input": {
+      "path": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:01.000Z",
+    "rowid": 41
+   }
+  ]
+ },
+ {
+  "name": "ask user",
+  "rows": [
+   {
+    "id": "m42",
+    "clientId": "c42",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "status": "answered",
+     "questions": [
+      {
+       "question": "Q1"
+      },
+      {
+       "question": null
+      },
+      "s"
+     ],
+     "answers": {
+      "Q1": "A",
+      "Q2": ""
+     },
+     "requestId": "r",
+     "options": [
+      1
+     ],
+     "pageIndicator": "1/2"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:02.000Z",
+    "rowid": 42
+   },
+   {
+    "id": "m43",
+    "clientId": "c43",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "status": "pending",
+     "question": "legacy",
+     "reply": "R"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:03.000Z",
+    "rowid": 43
+   },
+   {
+    "id": "m44",
+    "clientId": "c44",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "answers": [
+      "x",
+      ""
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:04.000Z",
+    "rowid": 44
+   }
+  ]
+ },
+ {
+  "name": "ask null question",
+  "rows": [
+   {
+    "id": "m45",
+    "clientId": "c45",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "questions": [
+      null
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:05.000Z",
+    "rowid": 45
+   }
+  ]
+ },
+ {
+  "name": "thinking",
+  "rows": [
+   {
+    "id": "m46",
+    "clientId": "c46",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "t",
+     "durationMs": 1500,
+     "finishedAt": 1700000099000
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "model": "x"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:06.000Z",
+    "rowid": 46
+   },
+   {
+    "id": "m47",
+    "clientId": "c47",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "s",
+     "durationMs": -5,
+     "finishedAt": "2023-11-14T22:14:10.000Z"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:07.000Z",
+    "rowid": 47
+   },
+   {
+    "id": "m48",
+    "clientId": "c48",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "",
+     "durationMs": 0
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:08.000Z",
+    "rowid": 48
+   },
+   {
+    "id": "m49",
+    "clientId": "c49",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "isRedacted": true,
+     "text": "x"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:09.000Z",
+    "rowid": 49
+   },
+   {
+    "id": "m50",
+    "clientId": "c50",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": " [Reasoning redacted] ",
+     "durationMs": 3
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": "pi",
+    "createdAt": "2023-11-14T22:14:10.000Z",
+    "rowid": 50
+   },
+   {
+    "id": "m51",
+    "clientId": "c51",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "[Reasoning redacted]",
+     "durationMs": 3
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:11.000Z",
+    "rowid": 51
+   },
+   {
+    "id": "m52",
+    "clientId": "c52",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": "string thinking",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:12.000Z",
+    "rowid": 52
+   }
+  ]
+ },
+ {
+  "name": "thinking out of range",
+  "rows": [
+   {
+    "id": "m53",
+    "clientId": "c53",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "huge",
+     "durationMs": 1,
+     "finishedAt": 1e+20
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:13.000Z",
+    "rowid": 53
+   }
+  ]
+ },
+ {
+  "name": "plan review",
+  "rows": [
+   {
+    "id": "m54",
+    "clientId": "c54",
+    "sessionId": "s1",
+    "role": "plan_review",
+    "content": {
+     "status": "approved",
+     "plan": "p",
+     "planFilePath": "/p",
+     "feedback": "f",
+     "requestId": "r"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:14.000Z",
+    "rowid": 54
+   },
+   {
+    "id": "m55",
+    "clientId": "c55",
+    "sessionId": "s1",
+    "role": "plan_review",
+    "content": {
+     "status": "pending"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:15.000Z",
+    "rowid": 55
+   }
+  ]
+ },
+ {
+  "name": "errors",
+  "rows": [
+   {
+    "id": "m56",
+    "clientId": "c56",
+    "sessionId": "s1",
+    "role": "error",
+    "content": "boom",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:16.000Z",
+    "rowid": 56
+   },
+   {
+    "id": "m57",
+    "clientId": "c57",
+    "sessionId": "s1",
+    "role": "error",
+    "content": {
+     "message": "m",
+     "reason": "turn-failed",
+     "toolLoop": {
+      "kind": "pingpong",
+      "count": 3
+     },
+     "outputLimit": {
+      "outputTokens": 10,
+      "reasoningTokens": 11
+     },
+     "providerId": "p",
+     "dismissed": true
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:17.000Z",
+    "rowid": 57
+   },
+   {
+    "id": "m58",
+    "clientId": "c58",
+    "sessionId": "s1",
+    "role": "error",
+    "content": {
+     "reason": "",
+     "toolLoop": {
+      "kind": "x",
+      "count": 1
+     },
+     "outputLimit": {
+      "outputTokens": 4,
+      "reasoningTokens": 2
+     },
+     "providerId": ""
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:18.000Z",
+    "rowid": 58
+   },
+   {
+    "id": "m59",
+    "clientId": "c59",
+    "sessionId": "s1",
+    "role": "error",
+    "content": null,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:19.000Z",
+    "rowid": 59
+   },
+   {
+    "id": "m60",
+    "clientId": "c60",
+    "sessionId": "s1",
+    "role": "error",
+    "content": [
+     1
+    ],
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:20.000Z",
+    "rowid": 60
+   },
+   {
+    "id": "m61",
+    "clientId": "c61",
+    "sessionId": "s1",
+    "role": "error",
+    "content": {
+     "toolLoop": {
+      "kind": "contract",
+      "count": 100001
+     },
+     "outputLimit": [
+      1
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:21.000Z",
+    "rowid": 61
+   }
+  ]
+ },
+ {
+  "name": "cards",
+  "rows": [
+   {
+    "id": "m62",
+    "clientId": "c62",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "",
+    "toolUseId": null,
+    "agentMeta": {
+     "voiceCall": {
+      "version": 1,
+      "callId": "c"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:22.000Z",
+    "rowid": 62
+   },
+   {
+    "id": "m63",
+    "clientId": "c63",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "mcpApp": {
+      "version": 1,
+      "serverId": "s",
+      "serverRevision": "r",
+      "resourceUri": "ui://x",
+      "tool": {
+       "name": "n",
+       "title": "T",
+       "inputSchema": {
+        "type": "object"
+       },
+       "_meta": {
+        "cindy/plugin": {
+         "id": "p"
+        }
+       }
+      },
+      "arguments": {},
+      "result": {
+       "content": [
+        {
+         "type": "text",
+         "text": "a"
+        },
+        {
+         "type": "text",
+         "text": "b"
+        }
+       ]
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "mcpApp": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:23.000Z",
+    "rowid": 63
+   },
+   {
+    "id": "m64",
+    "clientId": "c64",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "mcpAppHistory": {
+      "version": 1,
+      "title": "H",
+      "text": "t"
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "mcpApp": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:24.000Z",
+    "rowid": 64
+   },
+   {
+    "id": "m65",
+    "clientId": "c65",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "cindy-make",
+      "data": {
+       "a": 1
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:25.000Z",
+    "rowid": 65
+   },
+   {
+    "id": "m66",
+    "clientId": "c66",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": [
+      "x"
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:26.000Z",
+    "rowid": 66
+   },
+   {
+    "id": "m67",
+    "clientId": "c67",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "other",
+      "data": "str"
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:27.000Z",
+    "rowid": 67
+   },
+   {
+    "id": "m68",
+    "clientId": "c68",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "modelChange": {
+      "from": "a",
+      "to": "b"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:28.000Z",
+    "rowid": 68
+   },
+   {
+    "id": "m69",
+    "clientId": "c69",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "modelChange": "ab"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:29.000Z",
+    "rowid": 69
+   },
+   {
+    "id": "m70",
+    "clientId": "c70",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "sessionImport": {
+      "source": "codex"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:30.000Z",
+    "rowid": 70
+   },
+   {
+    "id": "m71",
+    "clientId": "c71",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "contextRebuild": {
+      "handoff": "h"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:31.000Z",
+    "rowid": 71
+   },
+   {
+    "id": "m72",
+    "clientId": "c72",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "contextRebuild": {
+      "reason": "manual",
+      "handoff": 1
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:32.000Z",
+    "rowid": 72
+   },
+   {
+    "id": "m73",
+    "clientId": "c73",
+    "sessionId": "s1",
+    "role": "agent_switch",
+    "content": {
+     "fromAgentKind": "cc",
+     "toAgentKind": "codex",
+     "fromModel": "a",
+     "toModel": 2,
+     "handoff": "h",
+     "resumed": true,
+     "nativeHistory": "restored",
+     "toAgentDeviceId": null,
+     "toAgentDeviceName": "Mac",
+     "switchReason": "quota-rebalance"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:33.000Z",
+    "rowid": 73
+   },
+   {
+    "id": "m74",
+    "clientId": "c74",
+    "sessionId": "s1",
+    "role": "agent_switch",
+    "content": null,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:34.000Z",
+    "rowid": 74
+   },
+   {
+    "id": "m75",
+    "clientId": "c75",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "goalCompletion": {
+      "turns": 3
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:35.000Z",
+    "rowid": 75
+   },
+   {
+    "id": "m76",
+    "clientId": "c76",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "cindyMakeCompletion": {
+      "ok": true
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:36.000Z",
+    "rowid": 76
+   },
+   {
+    "id": "m77",
+    "clientId": "c77",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "pluginModelRoute": {
+      "model": "m"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:37.000Z",
+    "rowid": 77
+   },
+   {
+    "id": "m78",
+    "clientId": "c78",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "goalNotice": "usage"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:38.000Z",
+    "rowid": 78
+   },
+   {
+    "id": "m79",
+    "clientId": "c79",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "review text",
+    "toolUseId": null,
+    "agentMeta": {
+     "reviewRun": {
+      "version": 1,
+      "runId": "r",
+      "sourceSessionId": "s",
+      "status": "completed",
+      "targetKind": "changes",
+      "startedAt": 1,
+      "result": "old",
+      "owner": {
+       "instanceId": "i",
+       "processId": 4,
+       "liveness": {
+        "version": 1,
+        "port": 80,
+        "token": "tttttttttttttttt"
+       }
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:39.000Z",
+    "rowid": 79
+   },
+   {
+    "id": "m80",
+    "clientId": "c80",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "bad review",
+    "toolUseId": null,
+    "agentMeta": {
+     "reviewRun": {
+      "version": 1,
+      "runId": "r",
+      "sourceSessionId": "s",
+      "status": "completed",
+      "targetKind": "changes",
+      "startedAt": 1,
+      "failureCode": "nope"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:40.000Z",
+    "rowid": 80
+   }
+  ]
+ },
+ {
+  "name": "bots",
+  "rows": [
+   {
+    "id": "m81",
+    "clientId": "c81",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botCollaboration": {
+      "v": 1,
+      "role": "delegation-result",
+      "delegationId": "d",
+      "fromBotId": "f",
+      "fromBotName": "F",
+      "toBotId": null,
+      "toBotName": "T",
+      "parentSessionId": "p",
+      "childSessionId": null,
+      "objective": "o",
+      "result": {
+       "runSequence": 2,
+       "status": "completed",
+       "text": "done",
+       "artifacts": [
+        {
+         "absolutePath": "/a"
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:41.000Z",
+    "rowid": 81
+   },
+   {
+    "id": "m82",
+    "clientId": "c82",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botCollaboration": {
+      "v": 1,
+      "role": "interjection",
+      "delegationId": "d",
+      "fromBotId": "f",
+      "fromBotName": "F",
+      "toBotId": null,
+      "toBotName": "T",
+      "parentSessionId": "p",
+      "childSessionId": null,
+      "objective": "o",
+      "result": null,
+      "interjectionPreview": "\r\n  first line  \nsecond"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:42.000Z",
+    "rowid": 82
+   },
+   {
+    "id": "m83",
+    "clientId": "c83",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botCollaboration": {
+      "v": 1,
+      "role": "guest-request",
+      "delegationId": "d",
+      "fromBotId": "f",
+      "fromBotName": "F",
+      "toBotId": null,
+      "toBotName": "T",
+      "parentSessionId": "p",
+      "childSessionId": null,
+      "objective": "o",
+      "result": {
+       "runSequence": 2,
+       "status": "completed",
+       "text": "done",
+       "artifacts": [
+        {
+         "absolutePath": "/a"
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:43.000Z",
+    "rowid": 83
+   },
+   {
+    "id": "m84",
+    "clientId": "c84",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botCollaboration": {
+      "v": 1,
+      "role": "delegation-result",
+      "delegationId": "d",
+      "fromBotId": "f",
+      "fromBotName": "F",
+      "toBotId": null,
+      "toBotName": "T",
+      "parentSessionId": "p",
+      "childSessionId": null,
+      "objective": "o",
+      "result": {
+       "runSequence": 0,
+       "status": "completed",
+       "text": "",
+       "artifacts": []
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:44.000Z",
+    "rowid": 84
+   },
+   {
+    "id": "m85",
+    "clientId": "c85",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "plugin",
+       "id": "p",
+       "namespace": "ns-1"
+      },
+      "pluginApprovalToken": "tok",
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:45.000Z",
+    "rowid": 85
+   },
+   {
+    "id": "m86",
+    "clientId": "c86",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "host",
+       "id": "im-feishu"
+      },
+      "pluginApprovalToken": "t",
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:46.000Z",
+    "rowid": 86
+   },
+   {
+    "id": "m87",
+    "clientId": "c87",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "host",
+       "id": "im-feishu"
+      },
+      "pluginApprovalToken": null,
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:47.000Z",
+    "rowid": 87
+   },
+   {
+    "id": "m88",
+    "clientId": "c88",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "host",
+       "id": "grok"
+      },
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:48.000Z",
+    "rowid": 88
+   },
+   {
+    "id": "m89",
+    "clientId": "c89",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "plugin",
+       "id": "p",
+       "namespace": "ns-1"
+      },
+      "pluginApprovalToken": "tok",
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": {
+            "0": {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 1
+            },
+            "length": 1
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:49.000Z",
+    "rowid": 89
+   },
+   {
+    "id": "m90",
+    "clientId": "c90",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botDirectMessage": {
+      "v": 1,
+      "threadId": "t",
+      "viewerBotId": "v",
+      "peerBotId": "p",
+      "peerBotName": "P",
+      "direction": "sent",
+      "sequence": 1,
+      "preview": "hi"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:50.000Z",
+    "rowid": 90
+   },
+   {
+    "id": "m91",
+    "clientId": "c91",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botDirectMessage": {
+      "v": 1,
+      "threadId": "t",
+      "viewerBotId": "v",
+      "peerBotId": "p",
+      "peerBotName": "P",
+      "direction": "sent",
+      "sequence": 1.5,
+      "preview": "hi"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:51.000Z",
+    "rowid": 91
+   }
+  ]
+ },
+ {
+  "name": "assistant",
+  "rows": [
+   {
+    "id": "m92",
+    "clientId": "c92",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.026,
+     "turnCostIsEstimate": true,
+     "turnUsageDetails": {
+      "inputTokens": 1000.7,
+      "outputTokens": 200,
+      "cacheReadTokens": 3000,
+      "cacheCreateTokens": 0,
+      "model": " gpt-5.5 ",
+      "models": [
+       "a",
+       " a ",
+       3,
+       "b"
+      ],
+      "durationMs": 5,
+      "turnDurationMs": 0,
+      "firstUserRound": true,
+      "billingSource": "subscription",
+      "providerId": "openai",
+      "additionalCosts": [
+       {
+        "amount": 1,
+        "currency": "USD",
+        "approximate": false,
+        "kind": "actual-cost"
+       },
+       {
+        "amount": -1
+       }
+      ],
+      "perModelCost": [
+       {
+        "model": "a",
+        "costUsd": 0.5
+       },
+       {
+        "model": "a",
+        "money": {
+         "amount": 0.25,
+         "currency": "USD",
+         "approximate": false,
+         "kind": "actual-cost",
+         "estimateReasons": [
+          "fixed-fx",
+          "nope",
+          "fixed-fx"
+         ]
+        }
+       },
+       {
+        "model": " ",
+        "costUsd": 1
+       },
+       null,
+       {
+        "model": "b",
+        "money": {
+         "amount": 0,
+         "currency": "USD",
+         "approximate": false,
+         "kind": "actual-cost"
+        }
+       }
+      ]
+     },
+     "sourceGroup": {
+      "groupId": "g",
+      "name": " G "
+     },
+     "assistantPhase": "final",
+     "failedSamplingAttempt": 1,
+     "explicitDelivery": true,
+     "botStarterOptions": [
+      "a",
+      "b"
+     ],
+     "botLearning": null,
+     "botPrivateReply": true,
+     "replyToClientId": "r",
+     "turnCompleted": true,
+     "botTaskResults": [
+      {
+       "v": 1,
+       "role": "delegation-result",
+       "delegationId": "d",
+       "fromBotId": "f",
+       "fromBotName": "F",
+       "toBotId": null,
+       "toBotName": "T",
+       "parentSessionId": "p",
+       "childSessionId": null,
+       "objective": "o",
+       "result": {
+        "runSequence": 2,
+        "status": "completed",
+        "text": "done",
+        "artifacts": [
+         {
+          "absolutePath": "/a"
+         }
+        ]
+       }
+      },
+      {
+       "v": 1,
+       "role": "delegation-result",
+       "delegationId": "d",
+       "fromBotId": "f",
+       "fromBotName": "F",
+       "toBotId": null,
+       "toBotName": "T",
+       "parentSessionId": "p",
+       "childSessionId": null,
+       "objective": "o",
+       "result": {
+        "runSequence": 2,
+        "status": "completed",
+        "text": "done",
+        "artifacts": [
+         {
+          "absolutePath": "/a"
+         }
+        ]
+       }
+      },
+      {
+       "v": 1,
+       "role": "interjection",
+       "delegationId": "d",
+       "fromBotId": "f",
+       "fromBotName": "F",
+       "toBotId": null,
+       "toBotName": "T",
+       "parentSessionId": "p",
+       "childSessionId": null,
+       "objective": "o",
+       "result": null,
+       "interjectionPreview": "\r\n  first line  \nsecond"
+      }
+     ],
+     "modelMismatch": {
+      "selected": "a",
+      "actual": "b"
+     },
+     "model": "gpt",
+     "parentUuid": "Task_x12_dup3"
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:52.000Z",
+    "rowid": 92
+   },
+   {
+    "id": "m93",
+    "clientId": "c93",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "blocks": 1
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCost": {
+      "amount": 2,
+      "currency": "CNY",
+      "approximate": true,
+      "kind": "value-estimate"
+     },
+     "userTurnCostUsd": 3,
+     "userTurnCostIsEstimate": true,
+     "botStarterOptions": [
+      "a",
+      ""
+     ],
+     "modelMismatch": {
+      "selected": "a",
+      "actual": ""
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:53.000Z",
+    "rowid": 93
+   },
+   {
+    "id": "m94",
+    "clientId": "c94",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "free",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "inputTokens": 0
+     },
+     "turnCompleted": false
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:54.000Z",
+    "rowid": 94
+   },
+   {
+    "id": "m95",
+    "clientId": "c95",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "seal",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "turnDurationMs": 3
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:55.000Z",
+    "rowid": 95
+   },
+   {
+    "id": "m96",
+    "clientId": "c96",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "plain",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:56.000Z",
+    "rowid": 96
+   },
+   {
+    "id": "m97",
+    "clientId": "c97",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": null,
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:57.000Z",
+    "rowid": 97
+   },
+   {
+    "id": "m98",
+    "clientId": "c98",
+    "sessionId": "s1",
+    "role": "tool_result",
+    "content": {
+     "ok": 1
+    },
+    "toolUseId": "tu1",
+    "agentMeta": {
+     "botPrivateReply": true,
+     "turnCompleted": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:58.000Z",
+    "rowid": 98
+   },
+   {
+    "id": "m99",
+    "clientId": "c99",
+    "sessionId": "s1",
+    "role": "tool_result",
+    "content": "r",
+    "toolUseId": "",
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:14:59.000Z",
+    "rowid": 99
+   }
+  ]
+ },
+ {
+  "name": "model not a string",
+  "rows": [
+   {
+    "id": "m100",
+    "clientId": "c100",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "bad model",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 1,
+     "turnCostIsEstimate": true,
+     "turnUsageDetails": {
+      "inputTokens": 1,
+      "cacheReadTokens": 2
+     },
+     "model": 5
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:00.000Z",
+    "rowid": 100
+   }
+  ]
+ },
+ {
+  "name": "legacy user turn",
+  "rows": [
+   {
+    "id": "m101",
+    "clientId": "c101",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "before",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:01.000Z",
+    "rowid": 101
+   },
+   {
+    "id": "m102",
+    "clientId": "c102",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "q1",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:02.000Z",
+    "rowid": 102
+   },
+   {
+    "id": "m103",
+    "clientId": "c103",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a1",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.5
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:03.000Z",
+    "rowid": 103
+   },
+   {
+    "id": "m104",
+    "clientId": "c104",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a2",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.25,
+     "turnCostIsEstimate": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:04.000Z",
+    "rowid": 104
+   },
+   {
+    "id": "m105",
+    "clientId": "c105",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "resume",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:05.000Z",
+    "rowid": 105
+   },
+   {
+    "id": "m106",
+    "clientId": "c106",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a3",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 1,
+     "userTurnCostUsd": 2
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:06.000Z",
+    "rowid": 106
+   },
+   {
+    "id": "m107",
+    "clientId": "c107",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "q2",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:07.000Z",
+    "rowid": 107
+   },
+   {
+    "id": "m108",
+    "clientId": "c108",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a4",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 1,
+     "userTurnCost": {
+      "amount": 1,
+      "currency": "USD",
+      "approximate": false,
+      "kind": "actual-cost"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:08.000Z",
+    "rowid": 108
+   }
+  ]
+ },
+ {
+  "name": "ordering",
+  "rows": [
+   {
+    "id": "m109",
+    "clientId": "c109",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "late",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:28:20.000Z",
+    "rowid": 1
+   },
+   {
+    "id": "m110",
+    "clientId": "c110",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "same time b",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 9
+   },
+   {
+    "id": "m111",
+    "clientId": "c111",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "same time a",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "m112",
+    "clientId": "c112",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "no time",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": null,
+    "rowid": 2
+   },
+   {
+    "id": "m113",
+    "clientId": "c113",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "bad time",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "soon",
+    "rowid": 4
+   }
+  ]
+ },
+ {
+  "name": "final pass",
+  "rows": [
+   {
+    "id": "m114",
+    "clientId": "c114",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "remoteContentTruncated": true,
+     "remoteRowsTrimmed": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:14.000Z",
+    "rowid": 114,
+    "cacheReceipt": {
+     "r": 1
+    }
+   },
+   {
+    "id": "first",
+    "clientId": "dup",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "dup first",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:15.000Z",
+    "rowid": 115
+   },
+   {
+    "id": "",
+    "clientId": "dup",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "dup second",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:16.000Z",
+    "rowid": 116
+   },
+   {
+    "clientId": "bare",
+    "role": "user",
+    "content": "no fields"
+   },
+   {
+    "clientId": "receipt",
+    "role": "user",
+    "content": "r",
+    "cacheReceipt": 1
+   }
+  ]
+ },
+ {
+  "name": "voice call bad time",
+  "rows": [
+   {
+    "id": "m117",
+    "clientId": "c117",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "",
+    "toolUseId": null,
+    "agentMeta": {
+     "voiceCall": {
+      "version": 1
+     }
+    },
+    "agentKind": null,
+    "createdAt": "nope",
+    "rowid": 117
+   }
+  ]
+ },
+ {
+  "name": "money overflow",
+  "rows": [
+   {
+    "id": "m118",
+    "clientId": "c118",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "q",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:18.000Z",
+    "rowid": 118
+   },
+   {
+    "id": "m119",
+    "clientId": "c119",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 1e+308
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:19.000Z",
+    "rowid": 119
+   },
+   {
+    "id": "m120",
+    "clientId": "c120",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "b",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 1e+308
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:20.000Z",
+    "rowid": 120
+   }
+  ]
+ },
+ {
+  "name": "reference spans",
+  "rows": [
+   {
+    "id": "m121",
+    "clientId": "c121",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "see cindy://session/s%201?message=m1 and [x](cindy://session/abc/) ok xdt-maker://browser-tab/t2?url=ftp%3A%2F%2Fx p cindy://plugin-resource/GH/tool/r q cindy://bot/b2",
+     "agentReferences": [
+      {
+       "kind": "message",
+       "start": 4,
+       "end": 36,
+       "href": "cindy://session/s%201?message=m1",
+       "text": "t"
+      },
+      {
+       "kind": "session",
+       "start": 41,
+       "end": 66,
+       "href": "cindy://session/abc/",
+       "title": "Abc"
+      },
+      {
+       "kind": "browser-tab",
+       "start": 70,
+       "end": 114,
+       "href": "xdt-maker://browser-tab/t2?url=ftp%3A%2F%2Fx",
+       "title": "F"
+      },
+      {
+       "kind": "plugin-resource",
+       "start": 117,
+       "end": 150,
+       "href": "cindy://plugin-resource/GH/tool/r",
+       "pluginName": "P",
+       "label": "L"
+      },
+      {
+       "kind": "bot",
+       "start": 153,
+       "end": 167,
+       "href": "cindy://bot/b2",
+       "name": "B",
+       "hostSnapshot": {
+        "availability": "ready",
+        "activity": "idle",
+        "activeDelegations": 0,
+        "reason": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+       }
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:21.000Z",
+    "rowid": 121
+   }
+  ]
+ },
+ {
+  "name": "nine session references",
+  "rows": [
+   {
+    "id": "m122",
+    "clientId": "c122",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "x",
+     "sessionReferences": [
+      {
+       "sessionId": "s0",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s1",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s2",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s3",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s4",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s5",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s6",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s7",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      },
+      {
+       "sessionId": "s8",
+       "range": "recent",
+       "messageCount": 1,
+       "truncated": false
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:22.000Z",
+    "rowid": 122
+   }
+  ]
+ },
+ {
+  "name": "sweep gaps",
+  "rows": [
+   {
+    "id": "m123",
+    "clientId": "c123",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "",
+     "durationMs": 5
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:23.000Z",
+    "rowid": 123
+   },
+   {
+    "id": "m124",
+    "clientId": "c124",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": "ls"
+     },
+     "turnCompleted": false
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:24.000Z",
+    "rowid": 124
+   },
+   {
+    "id": "m125",
+    "clientId": "c125",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "[UI_ACTION_TRIGGER][Input handoff ended] status=failed steps=99999999999999999999",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:25.000Z",
+    "rowid": 125
+   },
+   {
+    "id": "m126",
+    "clientId": "c126",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "host",
+       "id": "im-slack"
+      },
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:26.000Z",
+    "rowid": 126
+   },
+   {
+    "id": "m127",
+    "clientId": "c127",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "short token",
+    "toolUseId": null,
+    "agentMeta": {
+     "reviewRun": {
+      "version": 1,
+      "runId": "r",
+      "sourceSessionId": "s",
+      "status": "completed",
+      "targetKind": "changes",
+      "startedAt": 1,
+      "owner": {
+       "instanceId": "i",
+       "processId": 4,
+       "liveness": {
+        "version": 1,
+        "port": 80,
+        "token": "ttttt"
+       }
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:27.000Z",
+    "rowid": 127
+   },
+   {
+    "id": "m128",
+    "clientId": "c128",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "reasons",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCost": {
+      "amount": 2,
+      "currency": "CNY",
+      "approximate": true,
+      "kind": "value-estimate",
+      "estimateReasons": [
+       "fixed-fx",
+       "fixed-fx",
+       "nope"
+      ]
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:28.000Z",
+    "rowid": 128
+   },
+   {
+    "id": "m129",
+    "clientId": "c129",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "no match",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.5,
+     "turnCostIsEstimate": true,
+     "turnUsageDetails": {
+      "inputTokens": 1000,
+      "outputTokens": 200,
+      "cacheReadTokens": 3000,
+      "model": "gpt-5.5"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:29.000Z",
+    "rowid": 129
+   },
+   {
+    "id": "m130",
+    "clientId": "c130",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "not estimate",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.026,
+     "turnUsageDetails": {
+      "inputTokens": 1000,
+      "outputTokens": 200,
+      "cacheReadTokens": 3000,
+      "model": "gpt-5.5"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:30.000Z",
+    "rowid": 130
+   },
+   {
+    "id": "m131",
+    "clientId": "c131",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "billing",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "inputTokens": 1,
+      "billingSource": "weird"
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:31.000Z",
+    "rowid": 131
+   },
+   {
+    "id": "m132",
+    "clientId": "c132",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "tool id",
+    "toolUseId": "tx",
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:32.000Z",
+    "rowid": 132
+   },
+   {
+    "id": "m133",
+    "clientId": "c133",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "x",
+    "toolUseId": null,
+    "agentMeta": {
+     "botAuthorization": {
+      "v": 1,
+      "sessionId": "s",
+      "createdAt": 1,
+      "target": {
+       "kind": "host",
+       "id": "im-discord"
+      },
+      "snapshot": {
+       "kind": "plugin_setup",
+       "requestId": "r",
+       "revision": 0,
+       "ghost": {
+        "id": "g",
+        "name": "G"
+       },
+       "steps": [
+        {
+         "id": "s",
+         "groupId": "g",
+         "groupMode": "any_of",
+         "title": "t",
+         "description": "d",
+         "phase": "pending",
+         "action": {
+          "id": "a",
+          "kind": "inline_form",
+          "form": {
+           "fields": [
+            {
+             "type": "secret",
+             "label": "l",
+             "id": "f",
+             "maxLength": 5
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:33.000Z",
+    "rowid": 133
+   }
+  ]
+ },
+ {
+  "name": "legacy after resume",
+  "rows": [
+   {
+    "id": "m134",
+    "clientId": "c134",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "q",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:34.000Z",
+    "rowid": 134
+   },
+   {
+    "id": "m135",
+    "clientId": "c135",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a1",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.5
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:35.000Z",
+    "rowid": 135
+   },
+   {
+    "id": "m136",
+    "clientId": "c136",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "resume",
+    "toolUseId": null,
+    "agentMeta": {
+     "autoResume": true
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:36.000Z",
+    "rowid": 136
+   },
+   {
+    "id": "m137",
+    "clientId": "c137",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "a2",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnCostUsd": 0.25
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:37.000Z",
+    "rowid": 137
+   }
+  ]
+ },
+ {
+  "name": "final pass bare",
+  "rows": [
+   {
+    "clientId": "idonly",
+    "role": "user",
+    "content": "i",
+    "id": "srv"
+   },
+   {
+    "clientId": "rowonly",
+    "role": "user",
+    "content": "r",
+    "rowid": 7
+   }
+  ]
+ },
+ {
+  "name": "summary gaps",
+  "rows": [
+   {
+    "id": "m138",
+    "clientId": "c138",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Read",
+     "input": {
+      "file_path": "",
+      "path": "/p"
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": {
+     "model": ""
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:38.000Z",
+    "rowid": 138
+   },
+   {
+    "id": "m139",
+    "clientId": "c139",
+    "sessionId": "s1",
+    "role": "user",
+    "content": {
+     "text": "x",
+     "sessionReferences": [
+      {
+       "sessionId": "s",
+       "range": "recent",
+       "messageCount": 25,
+       "truncated": false
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:39.000Z",
+    "rowid": 139
+   }
+  ]
+ },
+ {
+  "name": "tool named constructor",
+  "rows": [
+   {
+    "id": "m140",
+    "clientId": "c140",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "constructor",
+     "input": {
+      "a": 1
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:40.000Z",
+    "rowid": 140
+   }
+  ]
+ },
+ {
+  "name": "tool named toString no input",
+  "rows": [
+   {
+    "id": "m141",
+    "clientId": "c141",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "toString",
+     "input": null
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:41.000Z",
+    "rowid": 141
+   },
+   {
+    "id": "m142",
+    "clientId": "c142",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "__proto__",
+     "input": ""
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:42.000Z",
+    "rowid": 142
+   }
+  ]
+ },
+ {
+  "name": "card array []",
+  "rows": [
+   {
+    "id": "m143",
+    "clientId": "c143",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "cindy-make",
+      "data": []
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:43.000Z",
+    "rowid": 143
+   },
+   {
+    "id": "m144",
+    "clientId": "c144",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "x",
+      "data": []
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:44.000Z",
+    "rowid": 144
+   }
+  ]
+ },
+ {
+  "name": "card array [null]",
+  "rows": [
+   {
+    "id": "m145",
+    "clientId": "c145",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "cindy-make",
+      "data": [
+       null
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:45.000Z",
+    "rowid": 145
+   },
+   {
+    "id": "m146",
+    "clientId": "c146",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "x",
+      "data": [
+       null
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:46.000Z",
+    "rowid": 146
+   }
+  ]
+ },
+ {
+  "name": "card array [{\"ok\": true}]",
+  "rows": [
+   {
+    "id": "m147",
+    "clientId": "c147",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "cindy-make",
+      "data": [
+       {
+        "ok": true
+       }
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:47.000Z",
+    "rowid": 147
+   },
+   {
+    "id": "m148",
+    "clientId": "c148",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": {
+     "__cindyMakeCard": {
+      "type": "x",
+      "data": [
+       {
+        "ok": true
+       }
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:48.000Z",
+    "rowid": 148
+   }
+  ]
+ },
+ {
+  "name": "thinking finished Thu, 01 Jan 1970 00:00:01 GMT",
+  "rows": [
+   {
+    "id": "m149",
+    "clientId": "c149",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "analysis",
+     "durationMs": 100,
+     "finishedAt": "Thu, 01 Jan 1970 00:00:01 GMT"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:49.000Z",
+    "rowid": 149
+   }
+  ]
+ },
+ {
+  "name": "thinking finished Wed Jan 01 2020 00:00:01 GMT+0000 (Coordinated Universal Time)",
+  "rows": [
+   {
+    "id": "m150",
+    "clientId": "c150",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "analysis",
+     "durationMs": 100,
+     "finishedAt": "Wed Jan 01 2020 00:00:01 GMT+0000 (Coordinated Universal Time)"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:50.000Z",
+    "rowid": 150
+   }
+  ]
+ },
+ {
+  "name": "thinking finished Jan 5 2020 10:00 GMT-0500",
+  "rows": [
+   {
+    "id": "m151",
+    "clientId": "c151",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "analysis",
+     "durationMs": 100,
+     "finishedAt": "Jan 5 2020 10:00 GMT-0500"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:51.000Z",
+    "rowid": 151
+   }
+  ]
+ },
+ {
+  "name": "thinking finished nonsense",
+  "rows": [
+   {
+    "id": "m152",
+    "clientId": "c152",
+    "sessionId": "s1",
+    "role": "thinking",
+    "content": {
+     "text": "analysis",
+     "durationMs": 100,
+     "finishedAt": "nonsense"
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:52.000Z",
+    "rowid": 152
+   }
+  ]
+ },
+ {
+  "name": "tool coercion {\"toString\": null}",
+  "rows": [
+   {
+    "id": "m153",
+    "clientId": "c153",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": {
+       "toString": null
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:53.000Z",
+    "rowid": 153
+   }
+  ]
+ },
+ {
+  "name": "tool coercion {\"toString\": 1}",
+  "rows": [
+   {
+    "id": "m154",
+    "clientId": "c154",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": {
+       "toString": 1
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:54.000Z",
+    "rowid": 154
+   }
+  ]
+ },
+ {
+  "name": "tool coercion {\"toString\": []}",
+  "rows": [
+   {
+    "id": "m155",
+    "clientId": "c155",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": {
+       "toString": []
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:55.000Z",
+    "rowid": 155
+   }
+  ]
+ },
+ {
+  "name": "tool coercion {\"toString\": \"text\", \"valueOf\": \"x\"}",
+  "rows": [
+   {
+    "id": "m156",
+    "clientId": "c156",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": {
+       "toString": "text",
+       "valueOf": "x"
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:56.000Z",
+    "rowid": 156
+   }
+  ]
+ },
+ {
+  "name": "tool coercion [{\"toString\": null}]",
+  "rows": [
+   {
+    "id": "m157",
+    "clientId": "c157",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": [
+       {
+        "toString": null
+       }
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:57.000Z",
+    "rowid": 157
+   }
+  ]
+ },
+ {
+  "name": "tool coercion {\"valueOf\": 1}",
+  "rows": [
+   {
+    "id": "m158",
+    "clientId": "c158",
+    "sessionId": "s1",
+    "role": "tool_use",
+    "content": {
+     "toolName": "Bash",
+     "input": {
+      "command": {
+       "valueOf": 1
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:58.000Z",
+    "rowid": 158
+   }
+  ]
+ },
+ {
+  "name": "ask answer coercion",
+  "rows": [
+   {
+    "id": "m159",
+    "clientId": "c159",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "questions": [
+      {
+       "question": "Q"
+      }
+     ],
+     "answers": {
+      "Q": {
+       "toString": null
+      }
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:15:59.000Z",
+    "rowid": 159
+   }
+  ]
+ },
+ {
+  "name": "ask question coercion",
+  "rows": [
+   {
+    "id": "m160",
+    "clientId": "c160",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "questions": [
+      {
+       "question": {
+        "toString": null
+       }
+      }
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:00.000Z",
+    "rowid": 160
+   }
+  ]
+ },
+ {
+  "name": "ask null after coercion",
+  "rows": [
+   {
+    "id": "m161",
+    "clientId": "c161",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "questions": [
+      {
+       "question": {
+        "toString": null
+       }
+      },
+      null
+     ]
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:01.000Z",
+    "rowid": 161
+   }
+  ]
+ },
+ {
+  "name": "ask question array",
+  "rows": [
+   {
+    "id": "m162",
+    "clientId": "c162",
+    "sessionId": "s1",
+    "role": "ask_user",
+    "content": {
+     "questions": [
+      {
+       "question": [
+        "a",
+        null,
+        {
+         "b": 1
+        }
+       ]
+      }
+     ],
+     "answers": {
+      "Q": [
+       1,
+       null
+      ]
+     }
+    },
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:02.000Z",
+    "rowid": 162
+   }
+  ]
+ },
+ {
+  "name": "billing source coercion",
+  "rows": [
+   {
+    "id": "m163",
+    "clientId": "c163",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "inputTokens": 1,
+      "billingSource": {
+       "toString": null
+      }
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:03.000Z",
+    "rowid": 163
+   }
+  ]
+ },
+ {
+  "name": "billing source before early return",
+  "rows": [
+   {
+    "id": "m164",
+    "clientId": "c164",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "perModelCost": [
+       {
+        "billingSource": {
+         "toString": null
+        }
+       }
+      ]
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:04.000Z",
+    "rowid": 164
+   }
+  ]
+ },
+ {
+  "name": "billing source empty usage",
+  "rows": [
+   {
+    "id": "m165",
+    "clientId": "c165",
+    "sessionId": "s1",
+    "role": "assistant",
+    "content": "answer",
+    "toolUseId": null,
+    "agentMeta": {
+     "turnUsageDetails": {
+      "billingSource": [
+       {
+        "toString": 1
+       }
+      ]
+     }
+    },
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:16:05.000Z",
+    "rowid": 165
+   }
+  ]
+ },
+ {
+  "name": "timeline not a total order",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 9
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 26
+   },
+   {
+    "id": "6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 39
+   },
+   {
+    "id": "9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 22
+   },
+   {
+    "id": "10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 20
+   },
+   {
+    "id": "13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 33
+   },
+   {
+    "id": "14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 19
+   },
+   {
+    "id": "15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "19",
+    "clientId": "c19",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "20",
+    "clientId": "c20",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "21",
+    "clientId": "c21",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 16
+   },
+   {
+    "id": "22",
+    "clientId": "c22",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "23",
+    "clientId": "c23",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 39
+   }
+  ]
+ },
+ {
+  "name": "timeline mixed rowids 5 seed 5",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 12
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 11
+   }
+  ]
+ },
+ {
+  "name": "timeline mixed rowids 20 seed 18",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 7
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 30
+   },
+   {
+    "id": "8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 23
+   },
+   {
+    "id": "13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 37
+   },
+   {
+    "id": "14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 48
+   },
+   {
+    "id": "15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 23
+   },
+   {
+    "id": "16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 6
+   },
+   {
+    "id": "17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 20
+   },
+   {
+    "id": "19",
+    "clientId": "c19",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   }
+  ]
+ },
+ {
+  "name": "timeline mixed rowids 30 seed 5",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 12
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 11
+   },
+   {
+    "id": "5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 32
+   },
+   {
+    "id": "9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 23
+   },
+   {
+    "id": "11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 17
+   },
+   {
+    "id": "14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 30
+   },
+   {
+    "id": "15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 23
+   },
+   {
+    "id": "16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 22
+   },
+   {
+    "id": "17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 11
+   },
+   {
+    "id": "18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "19",
+    "clientId": "c19",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 9
+   },
+   {
+    "id": "20",
+    "clientId": "c20",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "21",
+    "clientId": "c21",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 11
+   },
+   {
+    "id": "22",
+    "clientId": "c22",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 14
+   },
+   {
+    "id": "23",
+    "clientId": "c23",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 14
+   },
+   {
+    "id": "24",
+    "clientId": "c24",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 26
+   },
+   {
+    "id": "25",
+    "clientId": "c25",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "26",
+    "clientId": "c26",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 5
+   },
+   {
+    "id": "27",
+    "clientId": "c27",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "28",
+    "clientId": "c28",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "29",
+    "clientId": "c29",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   }
+  ]
+ },
+ {
+  "name": "timeline mixed rowids 50 seed 11",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 42
+   },
+   {
+    "id": "5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 5
+   },
+   {
+    "id": "7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 13
+   },
+   {
+    "id": "9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 32
+   },
+   {
+    "id": "12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 33
+   },
+   {
+    "id": "14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 38
+   },
+   {
+    "id": "17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "19",
+    "clientId": "c19",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "20",
+    "clientId": "c20",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 2
+   },
+   {
+    "id": "21",
+    "clientId": "c21",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "22",
+    "clientId": "c22",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 40
+   },
+   {
+    "id": "23",
+    "clientId": "c23",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 48
+   },
+   {
+    "id": "24",
+    "clientId": "c24",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "25",
+    "clientId": "c25",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "26",
+    "clientId": "c26",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 1
+   },
+   {
+    "id": "27",
+    "clientId": "c27",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "28",
+    "clientId": "c28",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 8
+   },
+   {
+    "id": "29",
+    "clientId": "c29",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "30",
+    "clientId": "c30",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 37
+   },
+   {
+    "id": "31",
+    "clientId": "c31",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 36
+   },
+   {
+    "id": "32",
+    "clientId": "c32",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "33",
+    "clientId": "c33",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 29
+   },
+   {
+    "id": "34",
+    "clientId": "c34",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 20
+   },
+   {
+    "id": "35",
+    "clientId": "c35",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "36",
+    "clientId": "c36",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 22
+   },
+   {
+    "id": "37",
+    "clientId": "c37",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "38",
+    "clientId": "c38",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 6
+   },
+   {
+    "id": "39",
+    "clientId": "c39",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "40",
+    "clientId": "c40",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 20
+   },
+   {
+    "id": "41",
+    "clientId": "c41",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 13
+   },
+   {
+    "id": "42",
+    "clientId": "c42",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 7
+   },
+   {
+    "id": "43",
+    "clientId": "c43",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "44",
+    "clientId": "c44",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "45",
+    "clientId": "c45",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 13
+   },
+   {
+    "id": "46",
+    "clientId": "c46",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "47",
+    "clientId": "c47",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 25
+   },
+   {
+    "id": "48",
+    "clientId": "c48",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "49",
+    "clientId": "c49",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 9
+   }
+  ]
+ },
+ {
+  "name": "timeline mixed rowids 70 seed 16",
+  "rows": [
+   {
+    "id": "0",
+    "clientId": "c0",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "1",
+    "clientId": "c1",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 38
+   },
+   {
+    "id": "2",
+    "clientId": "c2",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "3",
+    "clientId": "c3",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "4",
+    "clientId": "c4",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 12
+   },
+   {
+    "id": "5",
+    "clientId": "c5",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "6",
+    "clientId": "c6",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 25
+   },
+   {
+    "id": "7",
+    "clientId": "c7",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "8",
+    "clientId": "c8",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 12
+   },
+   {
+    "id": "9",
+    "clientId": "c9",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "10",
+    "clientId": "c10",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 48
+   },
+   {
+    "id": "11",
+    "clientId": "c11",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "12",
+    "clientId": "c12",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 8
+   },
+   {
+    "id": "13",
+    "clientId": "c13",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 29
+   },
+   {
+    "id": "14",
+    "clientId": "c14",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 6
+   },
+   {
+    "id": "15",
+    "clientId": "c15",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "16",
+    "clientId": "c16",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 16
+   },
+   {
+    "id": "17",
+    "clientId": "c17",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 44
+   },
+   {
+    "id": "18",
+    "clientId": "c18",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "19",
+    "clientId": "c19",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "20",
+    "clientId": "c20",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 25
+   },
+   {
+    "id": "21",
+    "clientId": "c21",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 3
+   },
+   {
+    "id": "22",
+    "clientId": "c22",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "23",
+    "clientId": "c23",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "24",
+    "clientId": "c24",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "25",
+    "clientId": "c25",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "26",
+    "clientId": "c26",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "27",
+    "clientId": "c27",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 47
+   },
+   {
+    "id": "28",
+    "clientId": "c28",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "29",
+    "clientId": "c29",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 36
+   },
+   {
+    "id": "30",
+    "clientId": "c30",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 7
+   },
+   {
+    "id": "31",
+    "clientId": "c31",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "32",
+    "clientId": "c32",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "33",
+    "clientId": "c33",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "34",
+    "clientId": "c34",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "35",
+    "clientId": "c35",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "36",
+    "clientId": "c36",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 35
+   },
+   {
+    "id": "37",
+    "clientId": "c37",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 36
+   },
+   {
+    "id": "38",
+    "clientId": "c38",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "39",
+    "clientId": "c39",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 25
+   },
+   {
+    "id": "40",
+    "clientId": "c40",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 40
+   },
+   {
+    "id": "41",
+    "clientId": "c41",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 39
+   },
+   {
+    "id": "42",
+    "clientId": "c42",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "43",
+    "clientId": "c43",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 33
+   },
+   {
+    "id": "44",
+    "clientId": "c44",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 45
+   },
+   {
+    "id": "45",
+    "clientId": "c45",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 29
+   },
+   {
+    "id": "46",
+    "clientId": "c46",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 28
+   },
+   {
+    "id": "47",
+    "clientId": "c47",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "48",
+    "clientId": "c48",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 47
+   },
+   {
+    "id": "49",
+    "clientId": "c49",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 48
+   },
+   {
+    "id": "50",
+    "clientId": "c50",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "51",
+    "clientId": "c51",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 1
+   },
+   {
+    "id": "52",
+    "clientId": "c52",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "53",
+    "clientId": "c53",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "54",
+    "clientId": "c54",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 21
+   },
+   {
+    "id": "55",
+    "clientId": "c55",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 13
+   },
+   {
+    "id": "56",
+    "clientId": "c56",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 17
+   },
+   {
+    "id": "57",
+    "clientId": "c57",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "58",
+    "clientId": "c58",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 20
+   },
+   {
+    "id": "59",
+    "clientId": "c59",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 30
+   },
+   {
+    "id": "60",
+    "clientId": "c60",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 18
+   },
+   {
+    "id": "61",
+    "clientId": "c61",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 10
+   },
+   {
+    "id": "62",
+    "clientId": "c62",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 27
+   },
+   {
+    "id": "63",
+    "clientId": "c63",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "64",
+    "clientId": "c64",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "65",
+    "clientId": "c65",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 2
+   },
+   {
+    "id": "66",
+    "clientId": "c66",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "67",
+    "clientId": "c67",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z",
+    "rowid": 33
+   },
+   {
+    "id": "68",
+    "clientId": "c68",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   },
+   {
+    "id": "69",
+    "clientId": "c69",
+    "sessionId": "s1",
+    "role": "user",
+    "content": "text",
+    "toolUseId": null,
+    "agentMeta": null,
+    "agentKind": null,
+    "createdAt": "2023-11-14T22:13:20.000Z"
+   }
+  ]
+ }
+]

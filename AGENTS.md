@@ -7,9 +7,8 @@ defines scope and what 1:1 means.
 
 - Rust 1.98, edition 2024, pinned in `rust-toolchain.toml`. One crate, `cindy`, a binary.
 - `ely-gpui-component` from GitHub, pinned by `rev` in `Cargo.toml`.
-- gpui and gpui_platform as `gpui-pre` and `gpui-pre-platform` `=0.3.11`, Ely's pin.
-  gpui_platform takes `font-kit`, `wayland` and `x11`. Ely's default feature turns on
-  `runtime_shaders`.
+- gpui and gpui_platform as `gpui-pre` and `gpui-pre-platform` `=0.3.11`, Ely's pin. gpui_platform
+  takes `font-kit`, `wayland` and `x11`. Ely's default feature turns on `runtime_shaders`.
 - Region is set at build by `CINDY_AUTH_REGION` (`cn`, `global`, `dev`; default `global`) through
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
 - Data owner (`src/session_owner.rs`, Cindy's `appSessionState.ts` read only): `app-session.json`'s
@@ -140,10 +139,16 @@ defines scope and what 1:1 means.
   rows come with 10.0): `page`, `details` and the detail cache. Its tests port Cindy's on a fake.
   Reads run one at a time on the database worker: no in-flight share to join. `controller.rs` is
   `HistoryViewController` (network, disk cache, intents: 20.0) in JS promise order (`settled`).
+  `src/chat_message.rs` is `mapServerMessages` (golden `chat-message`): the store's `ChatMessage`s,
+  Cindy's throws as `Err` with V8's text (`js::try_string` is `String()` where it throws).
+  `src/js_sort.rs` is V8's sort (`array-sort.tq`: TimSort, insertion under 8 items), so a non-total
+  comparator sorts as Cindy's does. `src/js_date.rs` is V8's `Date.parse` (`parser.rs` ports
+  `dateparser*`; local times in the host zone through jiff, as ICU's `FORMER`) and `toISOString`.
+  Goldens `js-sort` and `js-date`, the latter from Cindy's Electron in three zones (31-bit Smis).
   `src/command_output.rs` is `commandOutputPaths.ts`: `js_re` turns JS regex sources into Rust's,
   lookarounds scanned by hand; offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's
-  half is U+FFFD). `src/js_date.rs` is `Date.parse` and `toISOString`. Golden `history-view`
-  records Cindy's tests less two (a lease, `import.meta.env`); `history-artifacts` adds `cases.json`.
+  half is U+FFFD). Golden `history-view` records Cindy's tests less two (a lease, `import.meta.env`);
+  `history-artifacts` adds `cases.json`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
@@ -153,8 +158,7 @@ defines scope and what 1:1 means.
   `/cc-agent/<id>` unless it is shown; a Shift, Mod or Ctrl click waits for 8.6d's selection.
   The active task (`router::active_session`) draws as Cindy's: its pill and ring (an absolute
   bordered overlay stands in for the inset shadow), foreground and tints. The task menu wraps a
-  row while it is renamed too, so the press that commits a rename still lands its click; the
-  field stops its own right press.
+  renamed row too, so a press that commits a rename lands its click; the field stops right presses.
   `sessions/keyboard.rs` hosts that menu (Ely `ContextMenu::manual`) and makes each row, list
   row and card a Tab stop: Enter or Space on the row itself opens it; the menu key (key up on
   Windows) or Shift+F10 (not macOS) opens the menu at the focused row's or More's centre, as
@@ -214,14 +218,13 @@ defines scope and what 1:1 means.
   the root's focus is not a Tab stop, as `body` is not).
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
-  `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
-  parts from micromark: ATX heading text, character classes as micromark reads UTF-16 code
-  units, and laziness at end of file. `src/rich_answer.rs` is
-  `richAnswerText`: `cindy-ui` fences split from Markdown, `stream.rs` replays the ops once,
-  `values.rs` resolves them, `js.rs` parses them as `JSON.parse` does (`Infinity` apart from
-  `null`, no nesting limit: its recursion grows the stack through `stacker`, as V8 nests a
-  million levels). Goldens in `tests/fixtures/preview` come from Cindy's functions; `sync-golden.mjs`
-  stubs Electron, which `mapper.ts` imports.
+  `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts
+  from micromark: ATX heading text, character classes as micromark reads UTF-16 code units, and
+  laziness at end of file. `src/rich_answer.rs` is `richAnswerText`: `cindy-ui` fences split from
+  Markdown, `stream.rs` replays the ops once, `values.rs` resolves them, `js.rs` parses them as
+  `JSON.parse` does (`Infinity` apart from `null`, no nesting limit: its recursion grows the stack
+  through `stacker`, as V8 nests a million levels). Goldens in `tests/fixtures/preview` come from
+  Cindy's functions; `sync-golden.mjs` stubs Electron, which `mapper.ts` imports.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with
@@ -252,13 +255,12 @@ defines scope and what 1:1 means.
   read, strict on write. Unknown fields stay as written. `cindy_json::roundtrip` reads JSON as
   `JSON.parse` then `JSON.stringify` would. Cindy's dev-console `__cindyLayout` is not ported.
 - Layout on screen: `src/layout_root/` ports `LayoutRoot.tsx`. `geometry.rs` holds its sizing math
-  (visible-share ledger, floors, root widths, self-heal, divider room and chat relay);
-  `divider.rs` the divider gestures; `view.rs` the `LayoutRoot` view. The view lays panes out
-  itself, so the widths it paints stand in for Cindy's DOM measurements. Its width is the window
-  less the sidebar column, so the first frame is already right. A divider drag listens on the
-  whole window and writes the store once on release; self-heal runs 120ms after width or tree
-  settle, never mid-drag. The view follows `LayoutStore` through `observe_global`, which stands in
-  for `layout:changed`.
+  (visible-share ledger, floors, root widths, self-heal, divider room and chat relay); `divider.rs`
+  the divider gestures; `view.rs` the `LayoutRoot` view. The view lays panes out itself, so the
+  widths it paints stand in for Cindy's DOM measurements. Its width is the window less the sidebar
+  column, so the first frame is already right. A divider drag listens on the whole window and writes
+  the store once on release; self-heal runs 120ms after width or tree settle, never mid-drag. The
+  view follows `LayoutStore` through `observe_global`, which stands in for `layout:changed`.
 - App shortcuts: `src/app_shortcuts.rs` ports `shared/appShortcuts.ts` (registry, normalize,
   effective map, scope overlap); `store.rs` reads `app-shortcuts.v1.json` at startup into the
   `AppShortcuts` global, normalized from `JSON.parse`-shaped fields (an overflowing flag is
@@ -350,19 +352,17 @@ defines scope and what 1:1 means.
   peek: `src/sidebar/peek.rs` is `useSidebarPeek.ts` as a clock-driven state machine (deadlines,
   `tick`), `peek_view.rs` wakes on its next timer, decides drawer and toggle hits from the pointer
   position, and draws the drawer deferred over the content. `src/tip.rs` draws Cindy's `Tip`
-  through gpui's tooltip (500ms, as Cindy's; gpui places it by the pointer, not under the button). `tip::rich`
-  takes any content.
-  `src/browse_history.rs` is `sessionBrowseHistory.ts` with `useSessionBrowseHistory`: one
-  `History` global (50 task ids, emptied when the data owner changes) that follows the `Router`;
-  a hop waits for its route before it moves the cursor. `chrome/history.rs` is
-  `SessionHistoryButtons` on `ChromeIconButton`, after the toggle; the window root's
-  `capture_key_down` runs the shortcuts and stops a key only when it hopped. `src/press.rs` is a
-  native button's `:hover` and `:active` (hover ignores keys, Space presses while focused) and
-  `src/transition.rs` the CSS transition that `transition::keyed` keeps per element. gpui's div
-  has no `aria-disabled`. Forgetting deleted tasks comes with 18.0; the `.xterm` and `.cm-editor`
-  exclusion with their editors.
-  Lucide icons at Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon`
-  also swaps in Cindy's `strokeWidth`. An `svg` takes no inherited color: set `text_color` on it.
+  through gpui's tooltip (500ms, by the pointer, not under the button); `tip::rich` takes any content.
+  `src/browse_history.rs` is `sessionBrowseHistory.ts` with `useSessionBrowseHistory`: one `History`
+  global (50 task ids, emptied when the data owner changes) that follows the `Router`; a hop waits
+  for its route before it moves the cursor. `chrome/history.rs` is `SessionHistoryButtons` on
+  `ChromeIconButton`, after the toggle; the window root's `capture_key_down` runs the shortcuts and
+  stops a key only when it hopped. `src/press.rs` is a native button's `:hover` and `:active` (hover
+  ignores keys, Space presses while focused) and `src/transition.rs` the CSS transition that
+  `transition::keyed` keeps per element. gpui's div has no `aria-disabled`. Forgetting deleted tasks
+  comes with 18.0; the `.xterm` and `.cm-editor` exclusion with their editors. Lucide icons at
+  Cindy's sizes come from `IconName::svg()` through gpui `svg()`; `lucide::icon` also swaps in
+  Cindy's `strokeWidth`. An `svg` takes no inherited color: set `text_color` on it.
 - Reduced motion: `os_appearance::reduced_motion` reads the system setting Chromium reads for
   `prefers-reduced-motion` (Linux portal `org.gnome.desktop.interface enable-animations`, macOS
   `accessibilityDisplayShouldReduceMotion`, Windows `SPI_GETCLIENTAREAANIMATION`), at start and on

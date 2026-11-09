@@ -325,6 +325,24 @@ pub fn string(value: Option<&Js>) -> String {
     })
 }
 
+/// `String(value)` where V8 throws: JSON never makes an own `toString` callable.
+pub fn try_string(value: Option<&Js>) -> Result<String, String> {
+    stacker::maybe_grow(RED_ZONE, STACK, || match value {
+        Some(Js::Obj(o)) if o.contains_key("toString") => {
+            Err("Cannot convert object to primitive value".into())
+        }
+        Some(Js::Arr(items)) => items
+            .iter()
+            .map(|v| match v {
+                Js::Null => Ok(String::new()),
+                v => try_string(Some(v)),
+            })
+            .collect::<Result<Vec<_>, _>>()
+            .map(|parts| parts.join(",")),
+        v => Ok(string(v)),
+    })
+}
+
 /// `readNonEmptyString`: a string, trimmed, when something is left.
 pub fn non_empty(value: Option<&Js>) -> Option<&str> {
     let text = crate::theme_import::color::js_trim(value?.str()?);

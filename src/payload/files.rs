@@ -45,33 +45,11 @@ static SEMICOLON: LazyLock<Regex> =
 
 const QUOTES: [u8; 3] = *b"\"'`";
 
-/// `decodeURIComponent`, which fails on a bad escape or bad UTF-8.
-fn decode_uri_component(text: &str) -> Option<String> {
-    let b = text.as_bytes();
-    let mut out = Vec::with_capacity(b.len());
-    let mut i = 0;
-    while i < b.len() {
-        if b[i] == b'%' {
-            let hex = std::str::from_utf8(b.get(i + 1..i + 3)?).ok()?;
-            out.push(
-                u8::from_str_radix(hex, 16)
-                    .ok()
-                    .filter(|_| hex.bytes().all(|c| c.is_ascii_hexdigit()))?,
-            );
-            i += 3;
-        } else {
-            out.push(b[i]);
-            i += 1;
-        }
-    }
-    String::from_utf8(out).ok()
-}
-
 /// `absoluteToolFilePath`.
 fn absolute_path(url: &str) -> Option<String> {
     let path = match url.strip_prefix("xdt-file://") {
         Some(rest) if url.starts_with("xdt-file:///") => {
-            decode_uri_component(rest).unwrap_or_else(|| rest.to_owned())
+            crate::cindy_json::decode_uri_component(rest).unwrap_or_else(|| rest.to_owned())
         }
         _ => {
             let parsed = url::Url::parse(url).ok()?;

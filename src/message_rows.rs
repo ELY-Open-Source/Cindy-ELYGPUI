@@ -17,7 +17,7 @@ use crate::{
     theme_import::color::{JS_SPACE, js_space, js_trim},
 };
 
-const UI_ACTION_TRIGGER_PREFIX: &str = "[UI_ACTION_TRIGGER]";
+pub const UI_ACTION_TRIGGER_PREFIX: &str = "[UI_ACTION_TRIGGER]";
 const CONTINUE_COMMON: &str = " Review the conversation above to determine how far the task progressed, then continue from where it left off. Do not repeat steps that already completed and had external effects (messages or comments already sent, commits already pushed, files already written).";
 const APP_EXIT: &str = " The previous turn was interrupted because the app exited mid-run.";
 const ERROR: &str = " The previous turn errored partway through.";
@@ -157,6 +157,19 @@ pub fn is_agent_plan_tool_name(name: &str) -> bool {
         name,
         "TodoWrite" | "update_plan" | "TaskCreate" | "TaskUpdate" | "TaskList" | "TaskGet"
     )
+}
+
+static SUBAGENT_PARENT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(?i)^(?:(?:toolu|call)[_-]|chatcmpl-tool-)").expect("valid pattern")
+});
+static COMPAT_TOOL_USE_ID: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^[A-Za-z][A-Za-z0-9_-]*_x*[0-9]+(?:_dup[0-9]+)?$").expect("valid pattern")
+});
+
+/// `isSubagentParentToolUseId`: an SDK tool-parent id, not a legacy transcript edge.
+pub fn is_subagent_parent_tool_use_id(value: &str) -> bool {
+    let trimmed = js_trim(value);
+    SUBAGENT_PARENT.is_match(trimmed) || COMPAT_TOOL_USE_ID.is_match(trimmed)
 }
 
 /// `isAgentTaskToolName`: a subagent spawn or any Codex `collab:` call.

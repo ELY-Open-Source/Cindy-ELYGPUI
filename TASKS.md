@@ -59,7 +59,7 @@ listed in `tasks/done.md`.
     `invalidate`'s 500ms coalesce, `locate`, `setActive`, `reset`, the latest-read stamps, over a
     `Transport` (9.2c's local one reads through 9.1e's reader); tests from Cindy's controller
     tests. The `expanded` intent, network state, disk cache and cache receipts come with 20.0
-  - [ ] 9.2b `mapServerMessages`: `ChatMessage` as the store builds it from rows (hidden
+  - [x] 9.2b `mapServerMessages`: `ChatMessage` as the store builds it from rows (hidden
     thinking rows, timeline order, the tool, ask, thinking, plan, error and card branches,
     `projectLegacyUserTurnCosts`); golden from Cindy's function, exported in the bundle only
   - [ ] 9.2c The store's slice for a local task: `createRemoteHistoryView`'s local transport,

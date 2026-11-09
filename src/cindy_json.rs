@@ -279,6 +279,28 @@ pub fn encode_uri_component(text: &str) -> String {
     out
 }
 
+/// `decodeURIComponent`, which fails on a bad escape or bad UTF-8.
+pub fn decode_uri_component(text: &str) -> Option<String> {
+    let b = text.as_bytes();
+    let mut out = Vec::with_capacity(b.len());
+    let mut i = 0;
+    while i < b.len() {
+        if b[i] == b'%' {
+            let hex = std::str::from_utf8(b.get(i + 1..i + 3)?).ok()?;
+            out.push(
+                u8::from_str_radix(hex, 16)
+                    .ok()
+                    .filter(|_| hex.bytes().all(|c| c.is_ascii_hexdigit()))?,
+            );
+            i += 3;
+        } else {
+            out.push(b[i]);
+            i += 1;
+        }
+    }
+    String::from_utf8(out).ok()
+}
+
 /// `String(value)` of a `JSON.parse`d value, numbers past f64 included.
 pub fn js_string_raw(raw: &RawValue) -> Result<String> {
     let text = raw.get();

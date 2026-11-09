@@ -7,6 +7,9 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { ARTIFACT_TESTS, ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
+import { chatMessage } from './golden/chatMessage.mjs';
+import { jsDate } from './golden/jsDate.mjs';
+import { jsSort } from './golden/jsSort.mjs';
 import * as workRuns from './golden/workRuns.mjs';
 
 const [cindy, commit] = process.argv.slice(2);
@@ -422,6 +425,9 @@ try {
     extractCommandOutputPathCandidates, withHistoryArtifacts,
   } });
   console.log(`${artifactCases} history artifact cases`);
+  console.log(`${await chatMessage(golden)} chat message cases`);
+  console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);
+  console.log(`${jsSort({ fixtures })} sort cases`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),

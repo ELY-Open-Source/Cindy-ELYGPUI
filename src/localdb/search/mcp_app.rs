@@ -31,7 +31,7 @@ fn text<'a>(o: &'a Obj, key: &str) -> Option<&'a str> {
 }
 
 /// `parseMcpAppRecord`.
-fn record(content: &Js) -> Option<&Obj> {
+pub fn record(content: &Js) -> Option<&Obj> {
     let r = content.obj()?.get("mcpApp")?.obj()?;
     let tool = r.get("tool")?.obj()?;
     let schema_object = tool.get("inputSchema")?.obj()?.get("type")?.str() == Some("object");
@@ -74,7 +74,7 @@ fn history_text(r: &Obj) -> String {
 }
 
 /// `parseMcpAppHistory`: a record, or an already public summary.
-fn history(content: &Js) -> Option<(String, String)> {
+pub fn history(content: &Js) -> Option<(String, String)> {
     if let Some(r) = record(content) {
         let tool = r.get("tool")?.obj()?;
         let title = text(tool, "title").or(text(tool, "name"))?;
