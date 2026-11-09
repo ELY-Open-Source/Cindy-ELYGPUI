@@ -62,11 +62,14 @@ listed in `tasks/done.md`.
   - [x] 9.2b `mapServerMessages`: `ChatMessage` as the store builds it from rows (hidden
     thinking rows, timeline order, the tool, ask, thinking, plan, error and card branches,
     `projectLegacyUserTurnCosts`); golden from Cindy's function, exported in the bundle only
-  - [ ] 9.2c The store's slice for a local task: `createRemoteHistoryView`'s local transport,
+  - [ ] 9.2c `mergeMessages` with `hydratePersistedMessage`, `sortMessagesChronologically` and
+    `collapseConsecutiveAutoResumeRows`, and `remoteUserHandoff.ts`'s `confirmRemoteUsers`;
+    golden from Cindy's functions, exported in the bundle only
+  - [ ] 9.2d The store's slice for a local task: `createRemoteHistoryView`'s local transport,
     `ensureInitialMessages`, `enterView` and `leaveView` (ref-counted views), the snapshot's
-    mirror into `messages` (`mergeMessages`, `confirmRemoteUsers`, retired tool pairs),
-    `loadOlderMessages` through the view, the reload on a database change
-  - [ ] 9.2d Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
+    mirror into `messages` (borrowed detail rows retired; durable tool pairs come with 10.0's
+    echoes), `loadOlderMessages` through the view, the database watcher's `invalidate`
+  - [ ] 9.2e Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
     `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands
 - [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
