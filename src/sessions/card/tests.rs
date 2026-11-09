@@ -24,6 +24,7 @@ fn task(pinned: bool, summary: Option<&str>, preview: Option<&str>) -> Session {
         cost_amount: 0.0,
         cost_currency: None,
         activity_at: 0,
+        updated_at: 0,
         preview: preview.map(Into::into),
         summary: summary.map(Into::into),
     }

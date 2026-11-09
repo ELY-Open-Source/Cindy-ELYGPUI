@@ -32,7 +32,7 @@ use crate::{
 const COLLAPSED_KEY: &str = "cc-agent.sidebar.pinnedSectionCollapsed";
 const FOLD: &str = "pinned-section";
 /// The section's sortable list.
-const LIST: &str = "pinned-sortable";
+pub(super) const LIST: &str = "pinned-sortable";
 
 /// `persistPinnedSectionCollapsed`: `true` stored, expanding removes it; unsaved, it stays.
 fn toggle(collapsed: bool, cx: &mut App) {

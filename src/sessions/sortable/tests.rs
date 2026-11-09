@@ -27,8 +27,12 @@ fn pins(cx: &mut TestAppContext) -> (tempfile::TempDir, PathBuf, &mut VisualTest
     (dir, owner, cx)
 }
 
+fn key(id: &str) -> (&'static str, String) {
+    (crate::sessions::pinned::LIST, id.to_owned())
+}
+
 fn center(cx: &mut VisualTestContext, id: &str) -> Point<Pixels> {
-    cx.update(|_, cx| cx.global::<Sessions>().sortable.bounds[id].center())
+    cx.update(|_, cx| cx.global::<Sessions>().sortable.bounds[&key(id)].center())
 }
 
 fn order(cx: &mut VisualTestContext) -> Vec<String> {
@@ -71,6 +75,7 @@ fn saved(owner: &std::path::Path) -> Vec<String> {
 fn drops_where_it_was_dragged(cx: &mut TestAppContext, mode: Pinned) {
     let (_dir, owner, cx) = pins(cx);
     cx.update(|_, cx| view_mode::set_pinned(mode, cx));
+    cx.update(|_, cx| crate::router::navigate("/cc-agent/d0", cx));
     cx.run_until_parked();
     drag(cx, "a2", "a0");
     assert_eq!(
@@ -84,6 +89,8 @@ fn drops_where_it_was_dragged(cx: &mut TestAppContext, mode: Pinned) {
     assert_eq!(order(cx), want, "{mode:?}: shown at once");
     assert_eq!(saved(&owner), want, "{mode:?}: saved as a reorder");
     assert_eq!(dragging(cx), None);
+    let path = cx.update(|_, cx| crate::router::path(cx).to_owned());
+    assert_eq!(path, "/cc-agent/d0", "{mode:?}: a drop is no click");
 }
 
 #[gpui::test]
@@ -237,8 +244,8 @@ fn an_unpinned_entry_is_forgotten(cx: &mut TestAppContext) {
         cx.update(|_, cx| {
             let state = &cx.global::<Sessions>().sortable;
             (
-                state.bounds.contains_key("a2"),
-                state.tracks.contains_key("a2"),
+                state.bounds.contains_key(&key("a2")),
+                state.tracks.contains_key(&key("a2")),
             )
         })
     };
@@ -313,12 +320,12 @@ fn a_card_slides_across_columns(cx: &mut TestAppContext) {
         cx.update(|_, cx| {
             let now = cx.background_executor().now();
             let state = &cx.global::<Sessions>().sortable;
-            state.bounds["a0"].origin.x + state.tracks["a0"].offset(now, super::SLIDE).x
+            state.bounds[&key("a0")].origin.x + state.tracks[&key("a0")].offset(now, super::SLIDE).x
         })
     };
     let (from, to) = (
         left(cx),
-        cx.update(|_, cx| cx.global::<Sessions>().sortable.bounds["a1"].origin.x),
+        cx.update(|_, cx| cx.global::<Sessions>().sortable.bounds[&key("a1")].origin.x),
     );
     drag(cx, "a0", "a1");
     let start = left(cx);

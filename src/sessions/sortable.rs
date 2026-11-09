@@ -27,13 +27,16 @@ const SLIDE: std::time::Duration = std::time::Duration::from_millis(150);
 pub struct State {
     active: Option<Active>,
     /// Each entry's laid-out bounds, from its last prepaint.
-    bounds: HashMap<String, Bounds<Pixels>>,
+    bounds: HashMap<Key, Bounds<Pixels>>,
     /// Each card column's box, by index.
-    columns: HashMap<usize, Bounds<Pixels>>,
-    tracks: HashMap<String, Track>,
+    columns: HashMap<(&'static str, usize), Bounds<Pixels>>,
+    tracks: HashMap<Key, Track>,
     /// Bumped by each move; an entry slides once per move.
     moves: u64,
 }
+
+/// An entry in its list: a task shown by two lists is two entries.
+type Key = (&'static str, String);
 
 struct Active {
     /// The list it belongs to; another list's moves and drops pass it by.
@@ -161,8 +164,9 @@ fn begin(id: &str, among: &Among, window: &mut Window, cx: &mut App) {
 }
 
 /// The entry under the pointer, else the card column whose empty tail it is in.
-fn target(state: &State, columns: &[Vec<String>], at: Point<Pixels>) -> Option<order::Target> {
-    let bounds = |id: &String| state.bounds.get(id);
+fn target(state: &State, active: &Active, at: Point<Pixels>) -> Option<order::Target> {
+    let (list, columns) = (active.list, &active.columns);
+    let bounds = |id: &String| state.bounds.get(&(list, id.clone()));
     if let Some(id) = columns
         .iter()
         .flatten()
@@ -171,7 +175,7 @@ fn target(state: &State, columns: &[Vec<String>], at: Point<Pixels>) -> Option<o
         return Some(order::Target::Entry(id.clone()));
     }
     columns.iter().enumerate().find_map(|(c, col)| {
-        state.columns.get(&c).filter(|b| b.contains(&at))?;
+        state.columns.get(&(list, c)).filter(|b| b.contains(&at))?;
         let below = col
             .last()
             .and_then(bounds)
@@ -190,7 +194,7 @@ fn moved(list: &str, position: Point<Pixels>, window: &mut Window, cx: &mut App)
     let Some(mut active) = state.active.take() else {
         return;
     };
-    let moved = target(state, &active.columns, position)
+    let moved = target(state, &active, position)
         .is_some_and(|t| order::step(&mut active.columns, &active.id, &t));
     state.active = Some(active);
     if moved {
@@ -232,10 +236,10 @@ pub fn list(
 }
 
 /// A card column; a drag into its empty tail appends there.
-pub fn column(index: usize, body: gpui::Div) -> AnyElement {
+pub fn column(list: &'static str, index: usize, body: gpui::Div) -> AnyElement {
     let record = move |bounds: Bounds<Pixels>, _: &mut Window, cx: &mut App| {
         let state = &mut cx.global_mut::<Sessions>().sortable;
-        state.columns.insert(index, bounds);
+        state.columns.insert((list, index), bounds);
     };
     body.relative()
         .child(gpui::canvas(record, |_, _, _, _| {}).absolute().size_full())
@@ -274,12 +278,13 @@ pub fn item(
     draw: Draw,
     cx: &App,
 ) -> AnyElement {
+    let list = among.list;
     let ghost = cx
         .global::<Sessions>()
         .sortable
         .active
         .as_ref()
-        .is_some_and(|a| a.id == id);
+        .is_some_and(|a| a.list == list && a.id == id);
     let body = div()
         .id(ElementId::Name(format!("sortable-{id}").into()))
         .opacity(if ghost { 0.3 } else { 1.0 })
@@ -292,7 +297,7 @@ pub fn item(
                 .global::<Sessions>()
                 .sortable
                 .bounds
-                .get(&key)
+                .get(&(list, key.clone()))
                 .map(|b| b.size);
             let size = size.unwrap_or_default();
             let hold = |length: Pixels| units::window_px(24.0, cx).min(length / 2.0);
@@ -309,7 +314,7 @@ pub fn item(
         body.into_any_element()
     };
     Slide {
-        id: id.to_owned(),
+        key: (list, id.to_owned()),
         child: body,
     }
     .into_any_element()
@@ -317,7 +322,7 @@ pub fn item(
 
 /// SortableJS's `animateAll`: an entry a move displaced slides from its old place.
 struct Slide {
-    id: String,
+    key: Key,
     child: AnyElement,
 }
 
@@ -363,10 +368,10 @@ impl Element for Slide {
         let now = cx.background_executor().now();
         let length = motion::length(SLIDE, cx);
         let state = &mut cx.global_mut::<Sessions>().sortable;
-        state.bounds.insert(self.id.clone(), bounds);
+        state.bounds.insert(self.key.clone(), bounds);
         let moves = state.moves;
         let origin = bounds.origin;
-        let track = state.tracks.entry(self.id.clone()).or_insert(Track {
+        let track = state.tracks.entry(self.key.clone()).or_insert(Track {
             origin,
             from: Point::default(),
             start: now,

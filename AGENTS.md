@@ -231,13 +231,20 @@ defines scope and what 1:1 means.
   `upper` tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and
   not peeking, and the shown view paints last with `occlude`, standing in for
   `pointer-events-none`. `CollapsedView` holds the New tile (`SidebarIconButton`, its face
-  inset 1px on press), Search and the divider; `RailNav` comes with 8.7e3.
+  inset 1px on press), Search, the divider and `RailNav`.
   `rail/search.rs` is `ConversationSearchBox`: the tile toggles a popover at its right over the
   rail's search, enabled only while open; Escape (`intercept_keystrokes`), a press outside
   (unless the open options menu keeps it), focus leaving the panel or the tile close it and
   reset the query, focus going back to the tile unless the close came from outside. A chosen
   result closes it first. The panel occludes what lies under it and loops Tab in Ely's
   trapping `FocusScope`. The inline search counts the panel and its open menu as poppers.
+  `rail/pinned.rs` is `RailNav`'s Pinned tiles after the divider: pinned tasks (archived and
+  Orca workers left out) by `manualPinnedOrder` rank, `pinnedTileLabel` in UTF-16 units, a
+  click as `handlePinnedClick`, a drag through `sortable` as its own list (bounds, slides and
+  columns keyed by list, so the drawn-but-hidden Pinned section keeps its own) into
+  `reorder::reorder` (`handleRailPinnedReorder` is `handlePinnedReorder`). The hover card,
+  `SessionPreviewCard`, sits at the tile's right from the bounds its prepaint recorded and has
+  no hitbox; running and unread faces come with 10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic
@@ -366,5 +373,6 @@ defines scope and what 1:1 means.
 - Colors, sizes and radii come from Ely's `cx.theme()`. Reuse Ely components before writing new UI.
 - Errors surface: no fallback that hides a failure. Log each key step.
 - No file over 500 lines (vendored upstream code apart). Comments only where needed, one short line.
-- `TASKS.md` is progress truth. One task, one review pass, one commit, one push.
+- `TASKS.md` is progress truth; finished chapters move to `tasks/done.md`, their reviews to
+  `tasks/reviews-done.md`. One task, one review pass, one commit, one push.
 - Update this file when the stack or direction changes.

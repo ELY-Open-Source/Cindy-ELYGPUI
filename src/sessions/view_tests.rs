@@ -49,6 +49,7 @@ pub(super) fn task(id: &str, dir: Option<&str>, dialogue: bool, activity: i64) -
         cost_amount: 0.0,
         cost_currency: None,
         activity_at: activity,
+        updated_at: activity,
         preview: None,
         summary: None,
     }

@@ -104,7 +104,7 @@ pub fn layout(
                 .gap(css(7.0))
                 .children(buckets.into_iter().enumerate().map(|(c, bucket)| {
                     let column = div().flex().flex_1().min_w_0().flex_col().gap(css(7.0));
-                    sortable::column(c, column.children(bucket))
+                    sortable::column(super::pinned::LIST, c, column.children(bucket))
                 }))
         }
     };

@@ -33,6 +33,8 @@ pub struct Session {
     pub cost_currency: Option<String>,
     /// `getSessionListActivityAt`, in ms.
     pub activity_at: i64,
+    /// `updatedAt`, in ms.
+    pub updated_at: i64,
     /// `sessionToCamel`'s `preview`: the latest message as plain text.
     pub preview: Option<String>,
     /// `sessionToCamel`'s `summary`.

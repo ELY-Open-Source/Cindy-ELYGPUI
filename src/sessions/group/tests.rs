@@ -50,6 +50,7 @@ pub(in crate::sessions) fn session(v: &Value) -> Session {
             .or(ms(&v["userSendAt"]))
             .or(ms(&v["updatedAt"]))
             .unwrap_or(0),
+        updated_at: ms(&v["updatedAt"]).unwrap_or(0),
         preview: None,
         summary: None,
     }

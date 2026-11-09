@@ -6,6 +6,7 @@ use gpui::{
     Window, div, prelude::FluentBuilder as _,
 };
 
+pub mod pinned;
 pub mod search;
 
 use crate::{
@@ -45,7 +46,7 @@ pub fn upper(rail: f32, on: bool, window: &mut Window, cx: &mut App) -> AnyEleme
         .into_any_element()
 }
 
-/// `CollapsedView`'s scroller, no scrollbar; the segments land with 8.7e3.
+/// `CollapsedView`'s scroller, no scrollbar; Teammates come with 14.0, Projects and Dialogues with 8.7e3b.
 fn view(window: &mut Window, cx: &mut App) -> AnyElement {
     let label = cx.global::<Translator>().t("ccAgent.layout.new", &[]);
     let new = tile(
@@ -84,6 +85,7 @@ fn view(window: &mut Window, cx: &mut App) -> AnyElement {
                 .w(css(22.0))
                 .bg(border),
         )
+        .children(pinned::section(window, cx))
         .into_any_element()
 }
 
