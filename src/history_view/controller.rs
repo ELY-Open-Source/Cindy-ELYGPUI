@@ -89,7 +89,7 @@ pub fn unavailable(error: &str) -> bool {
     .any(|m| error.contains(m))
 }
 
-type Run = Shared<LocalBoxFuture<'static, ()>>;
+pub type Run = Shared<LocalBoxFuture<'static, ()>>;
 
 /// A reply resumes its reader a turn later, as an awaited settled promise does.
 async fn settled<F: std::future::Future>(reply: F) -> F::Output {
@@ -147,6 +147,24 @@ impl<T> Clone for View<T> {
             foreground: self.foreground.clone(),
             background: self.background.clone(),
         }
+    }
+}
+
+pub struct WeakView<T> {
+    inner: std::rc::Weak<RefCell<Inner<T>>>,
+    transport: Rc<dyn Transport<T>>,
+    foreground: ForegroundExecutor,
+    background: BackgroundExecutor,
+}
+
+impl<T> WeakView<T> {
+    pub fn upgrade(&self) -> Option<View<T>> {
+        Some(View {
+            inner: self.inner.upgrade()?,
+            transport: self.transport.clone(),
+            foreground: self.foreground.clone(),
+            background: self.background.clone(),
+        })
     }
 }
 
@@ -244,6 +262,21 @@ impl<T: Message> View<T> {
 
     pub fn is_active(&self) -> bool {
         self.inner.borrow().active
+    }
+
+    /// `===` between controllers.
+    pub fn same(&self, other: &View<T>) -> bool {
+        Rc::ptr_eq(&self.inner, &other.inner)
+    }
+
+    /// A handle for the view's own listeners, which must not keep it alive.
+    pub fn downgrade(&self) -> WeakView<T> {
+        WeakView {
+            inner: Rc::downgrade(&self.inner),
+            transport: self.transport.clone(),
+            foreground: self.foreground.clone(),
+            background: self.background.clone(),
+        }
     }
 
     pub fn snapshot(&self) -> Snapshot<T> {

@@ -18,7 +18,7 @@ pub mod json;
 pub mod outline;
 pub mod reader;
 pub mod rows;
-mod source;
+pub mod source;
 
 const LIVE: &str = "history-live:";
 

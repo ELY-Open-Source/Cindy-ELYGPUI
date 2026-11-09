@@ -5,6 +5,7 @@ mod atomic_file;
 mod bounded_read;
 mod browse_history;
 mod chat_message;
+mod chat_store;
 mod chrome;
 mod cindy_json;
 mod command_display;
@@ -101,6 +102,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     cx.set_global(startup.translator);
     cx.set_global(startup.preferences);
     cx.set_global(toast::Toasts::default());
+    chat_store::install(cx);
     sessions::install(startup.user_data.clone(), startup.owner_dir.clone(), cx);
     localdb::install(startup.database.clone(), cx);
     router::install(cx);

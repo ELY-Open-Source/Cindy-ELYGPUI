@@ -13,8 +13,7 @@ defines scope and what 1:1 means.
   `build.rs`. The app shares Cindy's userData folder for that region (user decision).
 - Data owner (`src/session_owner.rs`, Cindy's `appSessionState.ts` read only): `app-session.json`'s
   `activeMode`; `local` is the `local-v1` owner with `owners/<first 20 hex of sha256(id)>/`.
-  Signed-out and cloud owners need chapter 13. A file that does not parse is removed, as Cindy's
-  store does.
+  Signed-out and cloud owners need chapter 13. An unparsable file is removed, as Cindy's store does.
 - Local database (`src/localdb.rs`): `cindy-local-v1.db` opens as Cindy's passive instances open
   a shared database, never created or migrated: the reader lease (`lease.rs`, Cindy's
   `schemaMigrationLease.ts`; records and the recovery observation stay byte-compatible), the
@@ -129,26 +128,28 @@ defines scope and what 1:1 means.
   from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
   checked in every locale against `activity.json`.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
-  adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (lazy details:
-  subagent bodies as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
+  adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent
+  bodies as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
   `projectHistorySourceView` (`foldAnswerTail: false`), `json.rs` Cindy's key order. `rows.rs` is
   `readMessagesList` and the reader's anchor, hydrate, validate and revision, rows as
-  `messageToCamelWithRowid`; `outline.rs` the outline SQL, as Cindy's drizzle renders it;
-  `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048). `reader.rs` is `createHistoryViewReader`
-  over `Deps` (`db.rs` the database's; turns and live rows come with 10.0): `page`, `details`, the
-  detail cache; tests ported on a fake. Reads run one at a time on the database worker (no in-flight
-  share). `controller.rs` is `HistoryViewController` (network, disk cache, intents: 20.0) in JS promise
-  order. `src/chat_message.rs` is `mapServerMessages` (`Out` keeps keys set to `undefined`; golden
-  `chat-message`): Cindy's throws as `Err` with V8's text (`js::try_string` is `String()` where it
-  throws). `merge.rs` is `mergeMessages` and `confirmRemoteUsers` on `Rc` rows (`===` is `Rc::ptr_eq`,
-  `None` a key set to `undefined`; golden `merge-messages`). `transport.rs` is the view's local `page`
-  and `details` (a `Reader` per database open). `src/js_sort.rs` is V8's sort (`array-sort.tq`:
-  TimSort, insertion under 8 items), for non-total comparators. `src/js_date.rs` is V8's `Date.parse`
-  (`parser.rs` ports `dateparser*`; local times in the host zone through jiff, as ICU's `FORMER`) and
-  `toISOString`. Goldens `js-sort` and `js-date`, `js-date` from Cindy's Electron, three zones.
-  `src/command_output.rs` is `commandOutputPaths.ts` (`js_re`: JS regex to Rust's, lookarounds by
-  hand); offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's half is U+FFFD). Golden
-  `history-view` is Cindy's tests less a lease and `import.meta.env`; `history-artifacts` adds cases.
+  `messageToCamelWithRowid`; `outline.rs` the outline SQL as drizzle renders it; `artifacts.rs`
+  `withHistoryArtifacts` (its LRU of 2048). `reader.rs` is `createHistoryViewReader` over `Deps`
+  (`db.rs` the database's; turns and live rows come with 10.0): `page`, `details`, the detail cache.
+  Reads take turns on the database worker, unshared. `controller.rs` is `HistoryViewController`
+  (network, cache, intents: 20.0) in JS promise order. `src/chat_message.rs` is `mapServerMessages`
+  (`Out` keeps keys set to `undefined`; golden `chat-message`): throws are `Err` with V8's text
+  (`js::try_string` is a throwing `String()`). `merge.rs` is `mergeMessages` and `confirmRemoteUsers`
+  on `Rc` rows (`===` is `Rc::ptr_eq`, `None` a key set to `undefined`; golden `merge-messages`).
+  `transport.rs` is the view's local `page` and `details` (a `Reader` per database open).
+  `src/chat_store.rs` is the store's local slice: `ensureInitialMessages` and `loadOlderMessages`
+  through the view, an add-only mirror (borrowed thinking and read bodies retire), counted visits, the
+  forced resume read; the watcher invalidates views. `src/js_sort.rs` is V8's sort (`array-sort.tq`:
+  TimSort, insertion under 8 items). `src/js_date.rs` is V8's `Date.parse` (`parser.rs` ports
+  `dateparser*`; local times in the host zone through jiff, as ICU's `FORMER`) and `toISOString`.
+  Goldens `js-sort`, `js-date` (Cindy's Electron, three zones). `src/command_output.rs` is
+  `commandOutputPaths.ts` (`js_re`, lookarounds by hand); offsets in bytes, 240/80 windows in UTF-16
+  units (a cut pair's half is U+FFFD). Golden `history-view` is Cindy's tests less a lease and
+  `import.meta.env`; `history-artifacts` adds cases.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the
@@ -459,8 +460,7 @@ defines scope and what 1:1 means.
 - userData is created at startup, as Electron does.
 - Linux builds need `libxkbcommon-x11-dev` and `libfontconfig-dev`.
 - Local builds run on huacnlee/cargo (`~/.local/bin/cargo`, ahead of the rustup proxy): build
-  output lives in `~/.cargo/targets/` under a size cap, binaries in `./target`. Remove that file
-  to go back.
+  output lives in `~/.cargo/targets/` under a size cap, binaries in `./target`. Remove it to go back.
 - Logging: `log` facade, written by `src/logger.rs` in Cindy's main-log format to
   `main-YYYY-MM-DD.log` (debug builds: `logs/` in the checkout; release: `<userData>/logs`).
   Level: `LOG_LEVEL`, then `log-config.json`, else `trace` in debug and `info` in release; other

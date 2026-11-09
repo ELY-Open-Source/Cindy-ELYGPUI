@@ -211,7 +211,10 @@ fn watch(cx: &mut App) {
     watch_owner(cx);
     cx.spawn(async move |cx| {
         while futures::StreamExt::next(&mut changes).await.is_some() {
-            cx.update(reload);
+            cx.update(|cx| {
+                reload(cx);
+                crate::chat_store::Store::global(cx).invalidate_all();
+            });
         }
     })
     .detach();

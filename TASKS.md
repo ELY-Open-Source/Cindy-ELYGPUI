@@ -69,11 +69,15 @@ listed in `tasks/done.md`.
     worker (`local-db:messages:view` with `lazyDetails`, `work-details`), rows mapped by
     `mapServerMessages` into `HistoryChatMessage` (`mapHistoryViewMessages`), a thrown map an
     error of the read
-  - [ ] 9.2e The store's slice for a local task: `ensureInitialMessages` through the view,
+  - [x] 9.2e The store's slice for a local task: `ensureInitialMessages` through the view,
     `enterView` and `leaveView` (ref-counted views), the snapshot's mirror into `messages`
     (borrowed detail rows retired; durable tool pairs come with 10.0's echoes),
     `loadOlderMessages` through the view, the database watcher's `invalidate`
-  - [ ] 9.2f Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
+  - [ ] 9.2f The raw reads beside the view: `listMessagesFor` and `runRemoteReconcile` (the forced
+    read's fallback when a detail range is incomplete), `loadOlderMessages`' raw pages before the
+    view is ready; `getSessionFor`'s seeding comes with the fields it seeds (9.18), idle plan
+    discovery with `getLatestMessageTodoState` (9.11), pending interactions with 10.0
+  - [ ] 9.2g Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
     `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands
 - [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
