@@ -157,7 +157,8 @@ fn key(cx: &mut VisualTestContext, key: &'static str) {
 fn tab_reaches_more_and_enter_opens_its_menu(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let cx = open(cx, dir.path());
-    // Search, the row, then its More button.
+    // Search, its options, the row, then its More button.
+    key(cx, "tab");
     key(cx, "tab");
     key(cx, "tab");
     key(cx, "tab");
@@ -217,6 +218,7 @@ fn tab_reaches_the_pinned_view_style_and_space_opens_it(cx: &mut TestAppContext)
         window.refresh();
     });
     cx.run_until_parked();
+    key(cx, "tab");
     key(cx, "tab");
     key(cx, "tab");
     key(cx, "space");

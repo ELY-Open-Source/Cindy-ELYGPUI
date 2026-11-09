@@ -118,7 +118,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
     view_mode::install(cx);
     select::install(cx);
     cx.set_global(reveal::Reveal::default());
-    cx.set_global(search::Search::default());
+    search::install(cx);
     cx.observe_global::<LocalDb>(|cx| {
         if matches!(cx.global::<LocalDb>().state, State::Ready(_)) {
             watch(cx);

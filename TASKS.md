@@ -331,12 +331,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       as `conversationSearchContext` shares it, and a press outside the search surface clearing
       a running query; a search from another view returns to the task view
       (`useActiveMainView`'s `navigateToView`) with the first other main view (16.0)
-    - [ ] 8.7b2 The search options as `SearchFilterMenu` offers them (sort, status, agent, last
-      activity, projects, reset, the active count), the sort remembered as
-      `conversationSearchPrefs` keeps it
+    - [x] 8.7b2 The search options as `SearchFilterMenu` offers them (sort, status, agent, last
+      activity, reset, the active count), the sort remembered as `conversationSearchPrefs`
+      keeps it
     - [ ] 8.7c The search results in place of the list (`messages_fts` through `cjk_seg`, sorted
       as `conversationSearchSort` sorts), with the search row sticky over them and the clip
-      below it while a query runs
+      below it while a query runs; the options' Projects submenu, which lists every known
+      project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
       `sidebarNavigationPrefs.ts`; without a data owner the defaults apply and nothing is saved,

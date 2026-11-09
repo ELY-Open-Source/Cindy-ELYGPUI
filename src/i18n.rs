@@ -1,8 +1,3 @@
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the first UI text lands in 6.5")
-)]
-
 mod catalogs;
 
 use std::{cell::RefCell, collections::HashSet, sync::OnceLock};

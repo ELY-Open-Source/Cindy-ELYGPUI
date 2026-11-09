@@ -104,7 +104,11 @@ defines scope and what 1:1 means.
   list's scroller. Focus goes straight to the field, which stands for `forceOpen`; the
   placeholder is drawn over the field in `text-placeholder`, since Ely draws its own in
   `fg_subtle`. A press that does not hit the row (gpui's hit test, so a clipped row misses)
-  clears a running query; hover ignores key presses.
+  clears a running query; hover ignores key presses. `search/options.rs` is `SearchFilterMenu`
+  on Ely's `Menu` (`menu_under`) in the open row: sort (saved under `cc-agent.search.sortBy`),
+  status, agent and last activity, reset and the reminder dot. Focus inside the menu stands for
+  `menuOpen`; a press past the open menu clears the query once the press is done, unless a row
+  took it (Ely chooses on mouse down).
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
@@ -270,6 +274,8 @@ defines scope and what 1:1 means.
 ## Commands
 
 - `cargo run` opens the app.
+- Review verdicts and gate logs go to `logs/review/<task>-r<N>.md` and `-{fmt,clippy,test}.log`.
+  Every file a task makes stays inside this checkout.
 - `scripts/sync-locales.sh <cindy checkout> <commit>` copies Cindy's locale files into `locales/`
   and records the commit in `locales/COMMIT`. Never edit `locales/` by hand.
 - `node scripts/sync-themes.mjs <cindy checkout with node_modules> <commit>` runs Cindy's
