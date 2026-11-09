@@ -127,6 +127,34 @@ fn label_of(entry: &Pinned, lists: &Lists) -> Option<String> {
     }
 }
 
+/// An entry in card mode: sessions as cards, projects framed.
+fn card_element(
+    entry: &Pinned,
+    now: i64,
+    place: &Place,
+    window: &mut Window,
+    cx: &App,
+) -> AnyElement {
+    match entry {
+        Pinned::Session(s) => Card {
+            session: (**s).clone(),
+            now,
+        }
+        .into_any_element(),
+        Pinned::Project(p) => {
+            let appearance = cx.global::<Appearance>();
+            div()
+                .rounded(css(12.0))
+                .border(css(1.0))
+                .border_color(appearance.token("cmd-palette-border"))
+                .bg(appearance.token("surface-elevated"))
+                .p(css(4.0))
+                .child(project(p, place, window, cx).0)
+                .into_any_element()
+        }
+    }
+}
+
 /// An entry in text or list mode, with its drawn height.
 fn entry_element(
     entry: &Pinned,
@@ -247,67 +275,69 @@ pub fn section(
         Mode::Card => 2.0,
     };
     let mut height = top;
-    let entries = sortable::arrange(lists.pinned.clone(), Pinned::id, cx);
-    let ids = Rc::new(entries.iter().map(Pinned::id).collect::<Vec<_>>());
+    let card = mode == Mode::Card;
+    let columns = if card { masonry::columns(cx) } else { 1 };
+    let ids = Rc::new(lists.pinned.iter().map(Pinned::id).collect::<Vec<_>>());
+    let buckets = sortable::arrange(lists.pinned.clone(), columns, Pinned::id, cx);
     let editing = cx
         .global::<Sessions>()
         .editing
         .as_ref()
         .map(|e| e.id.clone());
-    let mut rows: Vec<AnyElement> = Vec::new();
-    for (i, entry) in entries.iter().enumerate() {
-        let label = label_of(entry, lists);
-        let (element, h) = entry_element(entry, i == 0, label.as_deref(), now, &place, window, cx);
-        height += h + if i > 0 { 2.0 } else { 0.0 };
-        if mode == Mode::Card {
-            continue;
+    let mut shown: Vec<Vec<AnyElement>> = Vec::new();
+    for bucket in &buckets {
+        let mut column = Vec::new();
+        for entry in bucket {
+            let first = shown.is_empty() && column.is_empty();
+            let label = label_of(entry, lists);
+            let element = if card {
+                card_element(entry, now, &place, window, cx)
+            } else {
+                let (element, h) =
+                    entry_element(entry, first, label.as_deref(), now, &place, window, cx);
+                height += h + if first { 0.0 } else { 2.0 };
+                element
+            };
+            let draw: sortable::Draw = {
+                let entry = entry.clone();
+                Rc::new(move |window, cx| {
+                    let drawn = RefCell::new(Vec::new());
+                    let place = Place {
+                        list,
+                        section: "pinned",
+                        drawn: &drawn,
+                    };
+                    match card {
+                        true => card_element(&entry, now, &place, window, cx),
+                        false => {
+                            entry_element(&entry, false, label.as_deref(), now, &place, window, cx)
+                                .0
+                        }
+                    }
+                })
+            };
+            let enabled = editing.as_deref() != Some(entry.id().as_str());
+            let id = entry.id();
+            column.push(sortable::item(
+                &id,
+                ids.clone(),
+                columns,
+                enabled,
+                element,
+                draw,
+                cx,
+            ));
         }
-        let draw: sortable::Draw = {
-            let entry = entry.clone();
-            Rc::new(move |window, cx| {
-                let drawn = RefCell::new(Vec::new());
-                let place = Place {
-                    list,
-                    section: "pinned",
-                    drawn: &drawn,
-                };
-                entry_element(&entry, false, label.as_deref(), now, &place, window, cx).0
-            })
-        };
-        let enabled = editing.as_deref() != Some(entry.id().as_str());
-        rows.push(sortable::item(
-            &entry.id(),
-            ids.clone(),
-            enabled,
-            element,
-            draw,
-            cx,
-        ));
+        shown.push(column);
     }
-    // `CardMasonry`: sessions as cards, projects framed; its height is measured.
-    if mode == Mode::Card {
-        let cards: Vec<AnyElement> = lists
-            .pinned
-            .iter()
-            .map(|entry| match entry {
-                Pinned::Session(s) => Card {
-                    session: (**s).clone(),
-                    now,
-                }
-                .into_any_element(),
-                Pinned::Project(p) => div()
-                    .rounded(css(12.0))
-                    .border(css(1.0))
-                    .border_color(appearance.token("cmd-palette-border"))
-                    .bg(appearance.token("surface-elevated"))
-                    .p(css(4.0))
-                    .child(project(p, &place, window, cx).0)
-                    .into_any_element(),
-            })
-            .collect();
-        rows = vec![masonry::layout(cards, &inner, window, cx)];
-        height = top + cx.global::<super::Sessions>().masonry.height;
-    }
+    // `CardMasonry`: its height is measured.
+    let rows = match card {
+        true => {
+            height = top + cx.global::<super::Sessions>().masonry.height;
+            vec![masonry::layout(shown, &inner, window, cx)]
+        }
+        false => shown.into_iter().flatten().collect(),
+    };
     let on_reorder: sortable::OnReorder =
         Rc::new(|order, window, cx| reorder::reorder(order, window, cx));
     let body = move || {

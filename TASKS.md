@@ -298,7 +298,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       drag: the dragged entry's ghost at 0.3, siblings making way in 150ms, a drop outside the
       list or a lost window saving nothing), saved as `handlePinnedReorder` does:
       `buildManualPinnedReorder`, then `savePinnedOrder`'s `reorder` rebased on the file
-    - [ ] 8.5c2e2 Card mode: one column as the list above, two or three as
+    - [x] 8.5c2e2 Card mode: one column as the list above, two or three as
       `DraggableCardColumns` lays a drag across its round-robin columns
 - [ ] 8.6 The router as `router.tsx` declares it for the routes this chapter owns (`/`,
   `MainEntryRedirect`, `/cc-agent` with `CCAgentIndexRedirect` and its last chat view,

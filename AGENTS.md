@@ -69,7 +69,10 @@ defines scope and what 1:1 means.
   `sortable.rs` is `SortableList`'s native drag for the Pinned text and list modes: gpui's
   `on_drag` per entry, the entry under the pointer takes the dragged one's place (`swapThreshold:
   1`), displaced entries slide 150ms, a drop on the list saves; Escape, a drop elsewhere or a lost
-  window put the order back. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
+  window put the order back. Cards drag the same way across `DraggableCardColumns`' round-robin
+  columns (`sortable/order.rs`): into another column an entry goes after a target it sat above,
+  else before; a column's empty tail appends; the drop saves `reorderByDropSlot`'s
+  `row * N + column`. Slides move in x and y. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
   golden `pinned-reorder`) and `settings::save` takes `savePinnedOrder`'s `reorder`, rebased on the
   file as `rebasePinnedReorder` does. A press on a group's tasks does not drag the group.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast

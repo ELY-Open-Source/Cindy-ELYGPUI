@@ -41,7 +41,7 @@ fn order(cx: &mut VisualTestContext) -> Vec<String> {
 fn dragging(cx: &mut VisualTestContext) -> Option<Vec<String>> {
     cx.update(|_, cx| {
         let active = cx.global::<Sessions>().sortable.active.as_ref();
-        active.map(|a| a.order.clone())
+        active.map(|a| a.columns.concat())
     })
 }
 
@@ -257,4 +257,86 @@ fn an_unpinned_entry_is_forgotten(cx: &mut TestAppContext) {
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
     assert_eq!(known(cx), (false, false));
+}
+
+/// Pins in card mode: two columns at the test width, [a2, a0] and [a1].
+fn cards(cx: &mut TestAppContext) -> (tempfile::TempDir, PathBuf, &mut VisualTestContext) {
+    let (dir, owner, cx) = pins(cx);
+    cx.update(|_, cx| view_mode::set_pinned(Pinned::Card, cx));
+    cx.run_until_parked();
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    let (a, b) = (center(cx, "a2"), center(cx, "a1"));
+    assert!(a.y == b.y && a.x < b.x, "two columns: {a:?} {b:?}");
+    (dir, owner, cx)
+}
+
+#[gpui::test]
+fn a_card_dropped_in_another_column_saves_its_slot(cx: &mut TestAppContext) {
+    let (_dir, owner, cx) = cards(cx);
+    drag(cx, "a0", "a1");
+    assert_eq!(
+        dragging(cx),
+        Some(vec!["a2".into(), "a0".into(), "a1".into()]),
+        "lower, so before a1"
+    );
+    let at = center(cx, "a0");
+    release(cx, at);
+    let want = ["a2", "a0", "a1"];
+    assert_eq!(order(cx), want, "row-major from column 1, row 0");
+    assert_eq!(saved(&owner), want);
+}
+
+#[gpui::test]
+fn a_card_dropped_in_a_column_tail_goes_last_there(cx: &mut TestAppContext) {
+    let (_dir, owner, cx) = cards(cx);
+    let tail = point(center(cx, "a1").x, center(cx, "a0").y);
+    drag(cx, "a2", "a0");
+    cx.simulate_mouse_move(tail, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+    let columns = cx.update(|_, cx| {
+        let active = cx.global::<Sessions>().sortable.active.as_ref();
+        active.map(|a| a.columns.clone())
+    });
+    let want: Vec<Vec<String>> = vec![vec!["a0".into()], vec!["a1".into(), "a2".into()]];
+    assert_eq!(columns, Some(want));
+    let at = center(cx, "a2");
+    release(cx, at);
+    assert_eq!(saved(&owner), ["a1", "a0", "a2"]);
+}
+
+#[gpui::test]
+fn a_card_slides_across_columns(cx: &mut TestAppContext) {
+    let (_dir, _owner, cx) = cards(cx);
+    // The drag image draws `task-a0` too, so the ghost is read from its track.
+    let left = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| {
+            let now = cx.background_executor().now();
+            let state = &cx.global::<Sessions>().sortable;
+            state.bounds["a0"].origin.x + state.tracks["a0"].offset(now, super::SLIDE).x
+        })
+    };
+    let (from, to) = (
+        left(cx),
+        cx.update(|_, cx| cx.global::<Sessions>().sortable.bounds["a1"].origin.x),
+    );
+    drag(cx, "a0", "a1");
+    let start = left(cx);
+    cx.executor().advance_clock(Duration::from_millis(50));
+    cx.update(|window, cx| window.simulate_next_frame(cx));
+    cx.run_until_parked();
+    let midway = left(cx);
+    cx.executor().advance_clock(Duration::from_millis(200));
+    cx.update(|window, cx| window.simulate_next_frame(cx));
+    cx.run_until_parked();
+    assert!(
+        (start - from).abs() < px(1.0),
+        "starts in its column: {start:?}"
+    );
+    assert!(midway > from && midway < to, "on its way: {midway:?}");
+    let end = left(cx);
+    assert!(
+        (end - to).abs() < px(1.0),
+        "ends in the other column: {end:?}"
+    );
 }

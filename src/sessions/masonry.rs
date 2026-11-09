@@ -7,7 +7,7 @@ use gpui::{
     div,
 };
 
-use super::Sessions;
+use super::{Sessions, sortable};
 use crate::{
     motion::{self, BASE},
     units::{self, css},
@@ -35,6 +35,11 @@ pub struct State {
 
 /// The `drawn` key that keeps the layout mounted.
 pub const DRAWN: &str = "pinned-cards";
+
+/// The column count the last layout measured.
+pub fn columns(cx: &App) -> usize {
+    cx.global::<Sessions>().masonry.columns.max(1)
+}
 
 /// Measures in prepaint; a mount or a new column count repaints with the fade from 0.
 fn measure(bounds: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
@@ -80,36 +85,28 @@ fn opacity(state: &State, window: &mut Window, cx: &App) -> f32 {
     motion::ease(t)
 }
 
+/// The cards in `columns(cx)` buckets, as `sortable::arrange` lays them.
 pub fn layout(
-    cards: Vec<AnyElement>,
+    buckets: Vec<Vec<AnyElement>>,
     drawn: &RefCell<Vec<String>>,
     window: &mut Window,
     cx: &App,
 ) -> AnyElement {
     drawn.borrow_mut().push(DRAWN.into());
     let state = &cx.global::<Sessions>().masonry;
-    let columns = state.columns.max(1);
     let opacity = opacity(state, window, cx);
-    let body = if columns == 1 {
-        div().flex().flex_col().gap(css(7.0)).children(cards)
-    } else {
-        let mut buckets: Vec<Vec<AnyElement>> = (0..columns).map(|_| Vec::new()).collect();
-        for (i, card) in cards.into_iter().enumerate() {
-            buckets[i % columns].push(card);
+    let body = match <[_; 1]>::try_from(buckets) {
+        Ok([cards]) => div().flex().flex_col().gap(css(7.0)).children(cards),
+        Err(buckets) => {
+            div()
+                .flex()
+                .w_full()
+                .gap(css(7.0))
+                .children(buckets.into_iter().enumerate().map(|(c, bucket)| {
+                    let column = div().flex().flex_1().min_w_0().flex_col().gap(css(7.0));
+                    sortable::column(c, column.children(bucket))
+                }))
         }
-        div()
-            .flex()
-            .w_full()
-            .gap(css(7.0))
-            .children(buckets.into_iter().map(|bucket| {
-                div()
-                    .flex()
-                    .flex_1()
-                    .min_w_0()
-                    .flex_col()
-                    .gap(css(7.0))
-                    .children(bucket)
-            }))
     };
     div()
         .relative()

@@ -375,3 +375,5 @@ effort high, in a Herdr pane.
   the platform only with an external payload, which this drag never sets.
   Fixed: a new slide starts from the painted offset; each list render keeps only painted entries.
 - Round 2: PASS.
+
+- 8.5c2e2: round 1 PASS (/tmp/omx/ely-review-8.5c2e2-r1.md).

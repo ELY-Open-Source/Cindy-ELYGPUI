@@ -1,5 +1,8 @@
-//! `SortableList` with native drag, as `PinnedSection` mounts it: the entry under the pointer
-//! makes way, a drop on the list saves, anything else puts the order back.
+//! `SortableList` with native drag, as `PinnedSection` mounts it, and `DraggableCardColumns`'
+//! columns: the entry under the pointer makes way, a drop on the list saves, anything else puts
+//! the order back.
+
+mod order;
 
 use std::{collections::HashMap, rc::Rc, time::Instant};
 
@@ -25,6 +28,8 @@ pub struct State {
     active: Option<Active>,
     /// Each entry's laid-out bounds, from its last prepaint.
     bounds: HashMap<String, Bounds<Pixels>>,
+    /// Each card column's box, by index.
+    columns: HashMap<usize, Bounds<Pixels>>,
     tracks: HashMap<String, Track>,
     /// Bumped by each move; an entry slides once per move.
     moves: u64,
@@ -32,28 +37,29 @@ pub struct State {
 
 struct Active {
     id: String,
-    order: Vec<String>,
+    /// The shown columns as the drag has them; text and list modes have one.
+    columns: Vec<Vec<String>>,
     start: Vec<String>,
     _escape: Subscription,
 }
 
 struct Track {
-    top: Pixels,
-    from: Pixels,
+    origin: Point<Pixels>,
+    from: Point<Pixels>,
     start: Instant,
     moves: u64,
 }
 
 impl Track {
-    /// Where the slide has the entry now, from its laid-out top.
-    fn offset(&self, now: Instant, length: std::time::Duration) -> Pixels {
+    /// Where the slide has the entry now, from its laid-out origin.
+    fn offset(&self, now: Instant, length: std::time::Duration) -> Point<Pixels> {
         let t = match length.is_zero() {
             true => 1.0,
             false => now.saturating_duration_since(self.start).as_secs_f32() / length.as_secs_f32(),
         };
         match t < 1.0 {
             true => self.from * (1.0 - motion::ease(t)),
-            false => px(0.0),
+            false => Point::default(),
         }
     }
 }
@@ -66,17 +72,28 @@ pub type OnReorder = Rc<dyn Fn(&[String], &mut Window, &mut App)>;
 /// Draws an entry again for the drag image.
 pub type Draw = Rc<dyn Fn(&mut Window, &mut App) -> AnyElement>;
 
-/// The entries in the drag's order while one is dragged.
-pub fn arrange<T>(entries: Vec<T>, id: impl Fn(&T) -> String, cx: &App) -> Vec<T> {
-    let Some(active) = &cx.global::<Sessions>().sortable.active else {
-        return entries;
+/// The entries in `n` round-robin columns, as the drag has them while one is dragged.
+pub fn arrange<T>(entries: Vec<T>, n: usize, id: impl Fn(&T) -> String, cx: &App) -> Vec<Vec<T>> {
+    let active = cx.global::<Sessions>().sortable.active.as_ref();
+    let Some(active) = active.filter(|a| a.columns.len() == n.max(1)) else {
+        return order::buckets(entries, n);
     };
     let mut keyed: Vec<(String, T)> = entries.into_iter().map(|e| (id(&e), e)).collect();
-    if keyed.len() != active.order.len() || keyed.iter().any(|(k, _)| !active.order.contains(k)) {
-        return keyed.into_iter().map(|(_, e)| e).collect();
+    let fits = keyed.len() == active.start.len()
+        && keyed
+            .iter()
+            .all(|(k, _)| order::locate(&active.columns, k).is_some());
+    if !fits {
+        return order::buckets(keyed.into_iter().map(|(_, e)| e).collect(), n);
     }
-    keyed.sort_by_key(|(k, _)| active.order.iter().position(|o| o == k));
-    keyed.into_iter().map(|(_, e)| e).collect()
+    let mut out: Vec<Vec<T>> = active.columns.iter().map(|_| Vec::new()).collect();
+    keyed.sort_by_key(|(k, _)| order::locate(&active.columns, k));
+    for (k, e) in keyed {
+        if let Some((c, _)) = order::locate(&active.columns, &k) {
+            out[c].push(e);
+        }
+    }
+    out
 }
 
 /// Forgets entries not painted since the last list render, and drops a drag that ended off
@@ -85,6 +102,7 @@ pub fn sweep(window: &mut Window, cx: &mut App) {
     let dragging = cx.has_active_drag();
     let state = &mut cx.global_mut::<Sessions>().sortable;
     let bounds = std::mem::take(&mut state.bounds);
+    state.columns.clear();
     state.tracks.retain(|id, _| bounds.contains_key(id));
     let Some(active) = &state.active else {
         return;
@@ -109,60 +127,69 @@ fn cancel(window: &mut Window, cx: &mut App) {
     }
 }
 
-fn begin(id: &str, ids: &[String], window: &mut Window, cx: &mut App) {
+fn begin(id: &str, ids: &[String], n: usize, window: &mut Window, cx: &mut App) {
     let handle = window.window_handle().window_id();
     let escape = cx.intercept_keystrokes(move |event, window, cx| {
         if window.window_handle().window_id() == handle && event.keystroke.key == "escape" {
             cancel(window, cx);
         }
     });
-    log::info!(target: "sessions", "pinned drag of {id} started among {}", ids.len());
+    log::info!(target: "sessions", "pinned drag of {id} started among {} in {n} columns", ids.len());
     cx.global_mut::<Sessions>().sortable.active = Some(Active {
         id: id.to_owned(),
-        order: ids.to_vec(),
+        columns: order::buckets(ids.to_vec(), n),
         start: ids.to_vec(),
         _escape: escape,
     });
+}
+
+/// The entry under the pointer, else the card column whose empty tail it is in.
+fn target(state: &State, columns: &[Vec<String>], at: Point<Pixels>) -> Option<order::Target> {
+    let bounds = |id: &String| state.bounds.get(id);
+    if let Some(id) = columns
+        .iter()
+        .flatten()
+        .find(|id| bounds(id).is_some_and(|b| b.contains(&at)))
+    {
+        return Some(order::Target::Entry(id.clone()));
+    }
+    columns.iter().enumerate().find_map(|(c, col)| {
+        state.columns.get(&c).filter(|b| b.contains(&at))?;
+        let below = col
+            .last()
+            .and_then(bounds)
+            .is_none_or(|b| at.y > b.bottom());
+        below.then_some(order::Target::Tail(c))
+    })
 }
 
 /// SortableJS's `swapThreshold: 1`: entering an entry takes its place.
 fn moved(position: Point<Pixels>, window: &mut Window, cx: &mut App) {
     cx.set_active_drag_cursor_style(CursorStyle::ClosedHand, window);
     let state = &mut cx.global_mut::<Sessions>().sortable;
-    let Some(active) = &mut state.active else {
+    let Some(mut active) = state.active.take() else {
         return;
     };
-    let target = active
-        .order
-        .iter()
-        .find(|id| state.bounds.get(*id).is_some_and(|b| b.contains(&position)))
-        .cloned();
-    let Some(target) = target.filter(|t| *t != active.id) else {
-        return;
-    };
-    let (from, to) = (
-        active.order.iter().position(|o| *o == active.id),
-        active.order.iter().position(|o| *o == target),
-    );
-    let (Some(from), Some(to)) = (from, to) else {
-        return;
-    };
-    let id = active.order.remove(from);
-    active.order.insert(to, id);
-    state.moves += 1;
-    window.refresh();
+    let moved = target(state, &active.columns, position)
+        .is_some_and(|t| order::step(&mut active.columns, &active.id, &t));
+    state.active = Some(active);
+    if moved {
+        state.moves += 1;
+        window.refresh();
+    }
 }
 
 fn dropped(on_reorder: &OnReorder, window: &mut Window, cx: &mut App) {
     let Some(active) = cx.global_mut::<Sessions>().sortable.active.take() else {
         return;
     };
-    if active.order == active.start {
+    let next = order::dropped(&active.start, &active.columns, &active.id);
+    if next == active.start {
         log::info!(target: "sessions", "pinned drag of {} dropped in place", active.id);
         return;
     }
     log::info!(target: "sessions", "pinned drag of {} dropped", active.id);
-    on_reorder(&active.order, window, cx);
+    on_reorder(&next, window, cx);
 }
 
 /// The list: drags move over it and drop on it.
@@ -176,6 +203,17 @@ pub fn list(
         .on_drag_move::<Dragged>(|event, window, cx| moved(event.event.position, window, cx))
         .on_drop::<Dragged>(move |_, window, cx| dropped(&on_reorder, window, cx))
         .children(children)
+}
+
+/// A card column; a drag into its empty tail appends there.
+pub fn column(index: usize, body: gpui::Div) -> AnyElement {
+    let record = move |bounds: Bounds<Pixels>, _: &mut Window, cx: &mut App| {
+        let state = &mut cx.global_mut::<Sessions>().sortable;
+        state.columns.insert(index, bounds);
+    };
+    body.relative()
+        .child(gpui::canvas(record, |_, _, _, _| {}).absolute().size_full())
+        .into_any_element()
 }
 
 /// The drag image: the entry drawn again with `xdt-sortable-drag`'s face, held by the pointer
@@ -201,10 +239,12 @@ impl Render for Image {
     }
 }
 
-/// One entry; `ids` are the shown entries in order. A disabled entry does not drag.
+/// One entry; `ids` are the shown entries in order, laid in `columns`. A disabled entry does
+/// not drag.
 pub fn item(
     id: &str,
     ids: Rc<Vec<String>>,
+    columns: usize,
     enabled: bool,
     child: AnyElement,
     draw: Draw,
@@ -223,7 +263,7 @@ pub fn item(
     let body = if enabled {
         let key = id.to_owned();
         body.on_drag(Dragged, move |_, offset, window, cx| {
-            begin(&key, &ids, window, cx);
+            begin(&key, &ids, columns, window, cx);
             let size = cx
                 .global::<Sessions>()
                 .sortable
@@ -251,7 +291,7 @@ pub fn item(
     .into_any_element()
 }
 
-/// SortableJS's `animateAll`: an entry a move displaced slides from its old top.
+/// SortableJS's `animateAll`: an entry a move displaced slides from its old place.
 struct Slide {
     id: String,
     child: AnyElement,
@@ -301,27 +341,26 @@ impl Element for Slide {
         let state = &mut cx.global_mut::<Sessions>().sortable;
         state.bounds.insert(self.id.clone(), bounds);
         let moves = state.moves;
-        let top = bounds.origin.y;
+        let origin = bounds.origin;
         let track = state.tracks.entry(self.id.clone()).or_insert(Track {
-            top,
-            from: px(0.0),
+            origin,
+            from: Point::default(),
             start: now,
             moves,
         });
-        let shown = track.offset(now, length);
-        if track.moves < moves && (track.top + shown - top).abs() >= px(1.0) && !length.is_zero() {
-            track.from = track.top + shown - top;
+        let from = track.origin + track.offset(now, length) - origin;
+        let far = from.x.abs() >= px(1.0) || from.y.abs() >= px(1.0);
+        if track.moves < moves && far && !length.is_zero() {
+            track.from = from;
             track.start = now;
         }
-        track.top = top;
+        track.origin = origin;
         track.moves = moves;
         let offset = track.offset(now, length);
-        if offset != px(0.0) {
+        if offset != Point::default() {
             window.request_animation_frame();
         }
-        window.with_element_offset(point(px(0.0), offset), |window| {
-            self.child.prepaint(window, cx)
-        });
+        window.with_element_offset(offset, |window| self.child.prepaint(window, cx));
     }
 
     fn paint(
