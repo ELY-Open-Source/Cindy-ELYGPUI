@@ -340,3 +340,39 @@ fn a_card_slides_across_columns(cx: &mut TestAppContext) {
         "ends in the other column: {end:?}"
     );
 }
+
+#[gpui::test]
+fn a_customize_drag_dropped_on_pinned_saves_nothing(cx: &mut TestAppContext) {
+    use crate::sidebar::top_nav::more::More;
+    let (_dir, owner, cx) = pins(cx);
+    crate::sessions::view_tests::click(cx, "nav-more");
+    crate::sessions::view_tests::click(cx, "nav-more-customize");
+    let row = |cx: &mut VisualTestContext, s: &'static str| cx.debug_bounds(s).unwrap().center();
+    let (start, step) = (
+        row(cx, "nav-customize-row-automations"),
+        row(cx, "nav-customize-row-plugins"),
+    );
+    let before = order(cx);
+    let draft =
+        |cx: &mut VisualTestContext| cx.update(|_, cx| cx.global::<More>().customize.clone());
+    let kept = draft(cx);
+    cx.simulate_mouse_down(start, MouseButton::Left, Modifiers::none());
+    let nudge = start + point(px(0.0), px(5.0));
+    cx.simulate_mouse_move(nudge, MouseButton::Left, Modifiers::none());
+    cx.simulate_mouse_move(step, MouseButton::Left, Modifiers::none());
+    cx.run_until_parked();
+    let target = center(cx, "a1");
+    cx.simulate_mouse_move(target, MouseButton::Left, Modifiers::none());
+    assert_eq!(
+        dragging(cx).map(|d| d.len()),
+        Some(3),
+        "Pinned passes the drag by"
+    );
+    release(cx, target);
+    cx.update(|window, _| window.refresh());
+    cx.run_until_parked();
+    assert_eq!(dragging(cx), None);
+    assert_eq!(order(cx), before);
+    assert!(saved(&owner).is_empty(), "no pinned order written");
+    assert_eq!(draft(cx), kept, "a drop off the panel puts the draft back");
+}

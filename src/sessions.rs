@@ -27,7 +27,7 @@ mod row;
 pub(crate) mod search;
 mod select;
 mod settings;
-mod sortable;
+pub(crate) mod sortable;
 mod sweep;
 mod task_menu;
 pub(crate) mod title;

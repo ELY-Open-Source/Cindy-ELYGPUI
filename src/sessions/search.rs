@@ -6,10 +6,10 @@ use ely_gpui_component::{
     primitives::IconName,
 };
 use gpui::{
-    AnyElement, App, AppContext as _, DispatchPhase, Entity, FocusHandle, Global, HitboxBehavior,
-    HoverListenerMode, InteractiveElement as _, IntoElement, MouseDownEvent, ParentElement as _,
-    Role, StatefulInteractiveElement as _, Styled as _, Subscription, Window, canvas, div,
-    prelude::FluentBuilder as _,
+    AnyElement, App, AppContext as _, DispatchPhase, Entity, FocusHandle, Global, Hitbox,
+    HitboxBehavior, HoverListenerMode, InteractiveElement as _, IntoElement, MouseDownEvent,
+    ParentElement as _, Role, StatefulInteractiveElement as _, Styled as _, Subscription, Window,
+    canvas, div, prelude::FluentBuilder as _,
 };
 
 use crate::{
@@ -271,7 +271,7 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
             })
         })
         .when(running, |el| {
-            el.child(outside(menu.clone(), filter.clone()))
+            el.child(outside(Some((menu.clone(), filter.clone()))).inset_0())
         })
         .child(icon(IconName::Search.svg(), 15.0, 1.8).text_color(nav))
         .child(body)
@@ -292,9 +292,15 @@ fn menu_open(menu: &FocusHandle, filter: &FocusHandle, window: &Window, cx: &App
     menu.contains_focused(window, cx) && !filter.is_focused(window)
 }
 
+/// The provider's listener while the row is unmounted, as Customize leaves it: no surface, no menu.
+pub fn listen(cx: &App) -> Option<AnyElement> {
+    let running = !trimmed(cx).is_empty();
+    running.then(|| outside(None).size_0().into_any_element())
+}
+
 /// The provider's pointer-down outside `data-conversation-search-surface`: the query goes.
 /// A press the open menu keeps, as `data-radix-popper-content-wrapper`, leaves it.
-fn outside(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
+fn outside(menu: Option<(FocusHandle, FocusHandle)>) -> gpui::Canvas<Hitbox> {
     canvas(
         |bounds, window, cx| {
             cx.global_mut::<Search>().surface = None;
@@ -310,13 +316,14 @@ fn outside(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
                 if phase != DispatchPhase::Capture || inside {
                     return;
                 }
-                if !menu_open(&menu, &filter, window, cx) {
+                let Some((menu, filter)) =
+                    menu.clone().filter(|(m, f)| menu_open(m, f, window, cx))
+                else {
                     log::info!(target: "search", "a press outside the search");
                     return reset(cx);
-                }
+                };
                 // The menu closes on a press past its panels, or on a choice; once done, see.
                 cx.global_mut::<Search>().chosen = false;
-                let (menu, filter) = (menu.clone(), filter.clone());
                 window.defer(cx, move |window, cx| {
                     let chosen = std::mem::take(&mut cx.global_mut::<Search>().chosen);
                     if !chosen && !menu_open(&menu, &filter, window, cx) {
@@ -328,7 +335,6 @@ fn outside(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
         },
     )
     .absolute()
-    .inset_0()
 }
 
 #[cfg(test)]

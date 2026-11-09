@@ -31,6 +31,8 @@ use crate::{
 
 const COLLAPSED_KEY: &str = "cc-agent.sidebar.pinnedSectionCollapsed";
 const FOLD: &str = "pinned-section";
+/// The section's sortable list.
+const LIST: &str = "pinned-sortable";
 
 /// `persistPinnedSectionCollapsed`: `true` stored, expanding removes it; unsaved, it stays.
 fn toggle(collapsed: bool, cx: &mut App) {
@@ -277,8 +279,12 @@ pub fn section(
     let mut height = top;
     let card = mode == Mode::Card;
     let columns = if card { masonry::columns(cx) } else { 1 };
-    let ids = Rc::new(lists.pinned.iter().map(Pinned::id).collect::<Vec<_>>());
-    let buckets = sortable::arrange(lists.pinned.clone(), columns, Pinned::id, cx);
+    let among = Rc::new(sortable::Among {
+        list: LIST,
+        ids: Rc::new(lists.pinned.iter().map(Pinned::id).collect()),
+        columns,
+    });
+    let buckets = sortable::arrange(LIST, lists.pinned.clone(), columns, Pinned::id, cx);
     let editing = cx
         .global::<Sessions>()
         .editing
@@ -328,8 +334,7 @@ pub fn section(
             let id = entry.id();
             column.push(sortable::item(
                 &id,
-                ids.clone(),
-                columns,
+                among.clone(),
                 enabled,
                 element,
                 draw,
@@ -349,7 +354,7 @@ pub fn section(
     let on_reorder: sortable::OnReorder =
         Rc::new(|order, window, cx| reorder::reorder(order, window, cx));
     let body = move || {
-        sortable::list("pinned-sortable", rows, on_reorder)
+        sortable::list(LIST, rows, on_reorder)
             .flex()
             .flex_col()
             .gap(css(2.0))

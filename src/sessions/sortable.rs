@@ -36,6 +36,8 @@ pub struct State {
 }
 
 struct Active {
+    /// The list it belongs to; another list's moves and drops pass it by.
+    list: &'static str,
     id: String,
     /// The shown columns as the drag has them; text and list modes have one.
     columns: Vec<Vec<String>>,
@@ -64,8 +66,15 @@ impl Track {
     }
 }
 
-/// A pinned entry on the move; `State` knows which.
+/// An entry on the move; `State` knows which and of which list.
 pub struct Dragged;
+
+/// The shown entries in order, laid in `columns`, of the list named `list`.
+pub struct Among {
+    pub list: &'static str,
+    pub ids: Rc<Vec<String>>,
+    pub columns: usize,
+}
 
 /// What a drop does with the new order of the shown entries.
 pub type OnReorder = Rc<dyn Fn(&[String], &mut Window, &mut App)>;
@@ -73,9 +82,15 @@ pub type OnReorder = Rc<dyn Fn(&[String], &mut Window, &mut App)>;
 pub type Draw = Rc<dyn Fn(&mut Window, &mut App) -> AnyElement>;
 
 /// The entries in `n` round-robin columns, as the drag has them while one is dragged.
-pub fn arrange<T>(entries: Vec<T>, n: usize, id: impl Fn(&T) -> String, cx: &App) -> Vec<Vec<T>> {
+pub fn arrange<T>(
+    list: &str,
+    entries: Vec<T>,
+    n: usize,
+    id: impl Fn(&T) -> String,
+    cx: &App,
+) -> Vec<Vec<T>> {
     let active = cx.global::<Sessions>().sortable.active.as_ref();
-    let Some(active) = active.filter(|a| a.columns.len() == n.max(1)) else {
+    let Some(active) = active.filter(|a| a.list == list && a.columns.len() == n.max(1)) else {
         return order::buckets(entries, n);
     };
     let mut keyed: Vec<(String, T)> = entries.into_iter().map(|e| (id(&e), e)).collect();
@@ -112,7 +127,7 @@ pub fn sweep(window: &mut Window, cx: &mut App) {
         (true, false) => "the window lost focus",
         (true, true) => return,
     };
-    log::info!(target: "sessions", "pinned drag of {} cancelled: {reason}", active.id);
+    log::info!(target: "sessions", "{} drag of {} cancelled: {reason}", active.list, active.id);
     state.active = None;
     if dragging {
         cx.stop_active_drag(window);
@@ -122,20 +137,22 @@ pub fn sweep(window: &mut Window, cx: &mut App) {
 fn cancel(window: &mut Window, cx: &mut App) {
     let state = &mut cx.global_mut::<Sessions>().sortable;
     if let Some(active) = state.active.take() {
-        log::info!(target: "sessions", "pinned drag of {} cancelled: escape", active.id);
+        log::info!(target: "sessions", "{} drag of {} cancelled: escape", active.list, active.id);
         cx.stop_active_drag(window);
     }
 }
 
-fn begin(id: &str, ids: &[String], n: usize, window: &mut Window, cx: &mut App) {
+fn begin(id: &str, among: &Among, window: &mut Window, cx: &mut App) {
+    let (ids, n) = (among.ids.as_slice(), among.columns);
     let handle = window.window_handle().window_id();
     let escape = cx.intercept_keystrokes(move |event, window, cx| {
         if window.window_handle().window_id() == handle && event.keystroke.key == "escape" {
             cancel(window, cx);
         }
     });
-    log::info!(target: "sessions", "pinned drag of {id} started among {} in {n} columns", ids.len());
+    log::info!(target: "sessions", "{} drag of {id} started among {} in {n} columns", among.list, ids.len());
     cx.global_mut::<Sessions>().sortable.active = Some(Active {
+        list: among.list,
         id: id.to_owned(),
         columns: order::buckets(ids.to_vec(), n),
         start: ids.to_vec(),
@@ -164,9 +181,12 @@ fn target(state: &State, columns: &[Vec<String>], at: Point<Pixels>) -> Option<o
 }
 
 /// SortableJS's `swapThreshold: 1`: entering an entry takes its place.
-fn moved(position: Point<Pixels>, window: &mut Window, cx: &mut App) {
+fn moved(list: &str, position: Point<Pixels>, window: &mut Window, cx: &mut App) {
     cx.set_active_drag_cursor_style(CursorStyle::ClosedHand, window);
     let state = &mut cx.global_mut::<Sessions>().sortable;
+    if state.active.as_ref().is_none_or(|a| a.list != list) {
+        return;
+    }
     let Some(mut active) = state.active.take() else {
         return;
     };
@@ -179,16 +199,20 @@ fn moved(position: Point<Pixels>, window: &mut Window, cx: &mut App) {
     }
 }
 
-fn dropped(on_reorder: &OnReorder, window: &mut Window, cx: &mut App) {
-    let Some(active) = cx.global_mut::<Sessions>().sortable.active.take() else {
+fn dropped(list: &str, on_reorder: &OnReorder, window: &mut Window, cx: &mut App) {
+    let state = &mut cx.global_mut::<Sessions>().sortable;
+    if state.active.as_ref().is_none_or(|a| a.list != list) {
+        return;
+    }
+    let Some(active) = state.active.take() else {
         return;
     };
     let next = order::dropped(&active.start, &active.columns, &active.id);
     if next == active.start {
-        log::info!(target: "sessions", "pinned drag of {} dropped in place", active.id);
+        log::info!(target: "sessions", "{} drag of {} dropped in place", active.list, active.id);
         return;
     }
-    log::info!(target: "sessions", "pinned drag of {} dropped", active.id);
+    log::info!(target: "sessions", "{} drag of {} dropped", active.list, active.id);
     on_reorder(&next, window, cx);
 }
 
@@ -200,8 +224,10 @@ pub fn list(
 ) -> gpui::Stateful<gpui::Div> {
     div()
         .id(id)
-        .on_drag_move::<Dragged>(|event, window, cx| moved(event.event.position, window, cx))
-        .on_drop::<Dragged>(move |_, window, cx| dropped(&on_reorder, window, cx))
+        .on_drag_move::<Dragged>(move |event, window, cx| {
+            moved(id, event.event.position, window, cx)
+        })
+        .on_drop::<Dragged>(move |_, window, cx| dropped(id, &on_reorder, window, cx))
         .children(children)
 }
 
@@ -239,12 +265,10 @@ impl Render for Image {
     }
 }
 
-/// One entry; `ids` are the shown entries in order, laid in `columns`. A disabled entry does
-/// not drag.
+/// One entry among the shown ones. A disabled entry does not drag.
 pub fn item(
     id: &str,
-    ids: Rc<Vec<String>>,
-    columns: usize,
+    among: Rc<Among>,
     enabled: bool,
     child: AnyElement,
     draw: Draw,
@@ -263,7 +287,7 @@ pub fn item(
     let body = if enabled {
         let key = id.to_owned();
         body.on_drag(Dragged, move |_, offset, window, cx| {
-            begin(&key, &ids, columns, window, cx);
+            begin(&key, &among, window, cx);
             let size = cx
                 .global::<Sessions>()
                 .sortable

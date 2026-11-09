@@ -369,7 +369,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
         - [x] 8.7d1 The More row after Search, opened on hover by `useHoverOpenMenu` (90ms open,
           160ms close, the gap to the menu kept, a click that only opens, no focus taken on
           hover) at its right, with the hidden entries (none under the defaults) and Customize
-        - [ ] 8.7d2 `SidebarNavigationCustomize` in place of the rows: the draft over the
+        - [x] 8.7d2 `SidebarNavigationCustomize` in place of the rows: the draft over the
           built-in entries (round checkbox rows, the grip's drag and arrow moves, Reset), Done
           storing nothing without a data owner, as `setSidebarNavigationPrefs(null)` does
     - [ ] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as

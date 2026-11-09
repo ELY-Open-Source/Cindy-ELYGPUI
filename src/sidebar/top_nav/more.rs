@@ -12,6 +12,7 @@ use gpui::{
     Styled as _, Window, anchored, canvas, deferred, div, point, prelude::FluentBuilder as _,
 };
 
+use super::customize::Draft;
 use crate::{
     appearance_settings::text_size,
     i18n::Translator,
@@ -24,8 +25,8 @@ use crate::{
 #[derive(Default)]
 pub struct More {
     menu: HoverMenu,
-    /// Customize replaces the rows; 8.7d2 draws it.
-    pub customizing: bool,
+    /// Customize's draft while it replaces the rows.
+    pub customize: Option<Draft>,
     trigger: Option<Bounds<Pixels>>,
     /// The open menu's hitbox this frame, part of the search's popper exception.
     panel: Option<Hitbox>,
@@ -271,7 +272,7 @@ fn panel(f: Focus, window: &Window, cx: &mut App) -> AnyElement {
                 .on_click(|_, window, cx| {
                     log::info!(target: "sidebar", "Customize chosen from More");
                     hover_menu::close(menu, false, window, cx);
-                    cx.global_mut::<More>().customizing = true;
+                    cx.global_mut::<More>().customize = Some(Draft::default());
                 })
                 .child(icon(IconName::SlidersHorizontal.svg(), 16.0, 1.8).text_color(muted))
                 .child(label),

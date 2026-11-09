@@ -3,8 +3,9 @@
 use std::cell::RefCell;
 
 use gpui::{
-    AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _, SharedString,
-    StatefulInteractiveElement as _, Styled as _, Window, div, prelude::FluentBuilder as _,
+    AnyElement, App, InteractiveElement as _, IntoElement, ParentElement as _, ScrollHandle,
+    SharedString, StatefulInteractiveElement as _, Styled as _, Window, div,
+    prelude::FluentBuilder as _,
 };
 
 use super::{
@@ -353,14 +354,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .overflow_y_scroll()
         .track_scroll(&handle)
         .child(super::search::scroll::pointer(handle.clone()))
-        .child(super::search::stick::row(
-            super::search::section(window, cx),
-            handle.clone(),
-            pin_search,
-        ))
-        .child(super::search::stick::after(
-            crate::sidebar::top_nav::more::section(window, cx),
-        ))
+        .children(nav(&handle, pin_search, window, cx))
         .children(results.map(super::search::stick::after))
         .child(super::search::stick::after(list.into_any_element()))
         .child(super::select::end());
@@ -374,6 +368,21 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
             .child(scroll)
             .into_any_element(),
     )
+}
+
+/// The Search row and More, or Customize in their place, which no query pins.
+fn nav(handle: &ScrollHandle, pin: bool, window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
+    use super::search::stick;
+    if let Some(panel) = crate::sidebar::top_nav::customize::panel(window, cx) {
+        let row = stick::row(panel, handle.clone(), false).into_any_element();
+        return [Some(row), super::search::listen(cx)]
+            .into_iter()
+            .flatten()
+            .collect();
+    }
+    let search = stick::row(super::search::section(window, cx), handle.clone(), pin);
+    let more = stick::after(crate::sidebar::top_nav::more::section(window, cx));
+    vec![search.into_any_element(), more.into_any_element()]
 }
 
 /// The Pinned section and the main list's body.

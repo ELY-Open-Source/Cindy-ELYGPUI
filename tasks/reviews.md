@@ -474,3 +474,11 @@ gate logs sit in `logs/review/<task>-r<N>*`.
 - Round 2: FAIL. Tab and Shift-Tab left the open menu. Fixed: `capture_action` stops Ely's
   `FocusNext` and `FocusPrev` in the menu.
 - Round 3: PASS.
+
+## 8.7d2 The Customize panel
+
+- Round 1: FAIL. The rows did not make way during a drag; the search's outside press went with
+  its row, so a query run into Customize stayed; a panel drag could drop on Pinned and save.
+  Fixed: the panel lays rows through `sortable::arrange`; `search::listen` keeps the listener
+  while the row is unmounted; a drag belongs to its list, and other lists pass it by.
+- Round 2: PASS.

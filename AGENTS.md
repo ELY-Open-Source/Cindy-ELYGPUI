@@ -217,8 +217,15 @@ defines scope and what 1:1 means.
   `useHoverOpenMenu` on the executor clock: hover ignores key presses, a press on the open
   trigger takes no focus, and a close returns focus to the trigger unless the open was a hover
   or the close a press outside. Escape closes it through `intercept_keystrokes`, wherever focus
-  is; a press on the menu counts as inside the search, as Radix's popper wrapper does. With no data owner nothing is hidden, so it holds
-  Customize alone.
+  is; a press on the menu counts as inside the search, as Radix's popper wrapper does. With no
+  data owner nothing is hidden, so it holds Customize alone.
+  `top_nav/customize.rs` is `SidebarNavigationCustomize` in place of Search and More: the draft
+  lives in `More.customize`, its rows drag through `sessions::sortable` as a list of its own (a
+  drag belongs to its list; others pass it by), a press on the checkbox focuses it and neither
+  drags nor reaches the row, and the grip moves on Up and Down. `search::listen` keeps the
+  search's outside press while its row is gone. Done stores nothing, as
+  `setSidebarNavigationPrefs(null)` does, until 13.0's data owner.
+  Ely's Subtle and Ghost buttons stand in for Cindy's primary and quiet ones; Puzzle for `plug`.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

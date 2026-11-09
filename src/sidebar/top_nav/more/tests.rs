@@ -63,7 +63,7 @@ fn customize_closes_the_menu(cx: &mut TestAppContext) {
     click(cx, "nav-more");
     click(cx, "nav-more-customize");
     assert!(!drawn(cx, "nav-more-menu"));
-    assert!(cx.update(|_, cx| cx.global::<More>().customizing));
+    assert!(cx.update(|_, cx| cx.global::<More>().customize.is_some()));
 }
 
 #[gpui::test]
@@ -136,7 +136,7 @@ fn arrow_down_opens_onto_customize_and_enter_chooses_it(cx: &mut TestAppContext)
     let keystroke = gpui::Keystroke::parse("enter").unwrap();
     cx.simulate_event(gpui::KeyUpEvent { keystroke });
     cx.run_until_parked();
-    assert!(cx.update(|_, cx| cx.global::<More>().customizing));
+    assert!(cx.update(|_, cx| cx.global::<More>().customize.is_some()));
 }
 
 #[gpui::test]
