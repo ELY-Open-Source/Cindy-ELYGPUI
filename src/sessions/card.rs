@@ -11,8 +11,8 @@ use super::{
     group::Session,
     keyboard::{Probe, with_menu},
     open, rename,
-    row::{InfoStyle, ROW_GROUP, info, status_glyph},
-    task_menu, title,
+    row::{InfoStyle, ROW_GROUP, info, selected_ring, status_glyph},
+    select, task_menu, title,
 };
 use crate::{
     appearance_settings::text_size, i18n::Translator, theme::Appearance,
@@ -68,6 +68,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .filter(|e| e.id == s.id);
     let small = text_size(11.0, cx);
     let active = open::is_active(&s.id, cx);
+    let selected = select::is_selected(&s.id, cx);
     let active_fg = appearance.token("sidebar-item-active-foreground");
     // The active card: its own surface and border, its foreground for text and meta.
     let (foreground, secondary, tertiary, meta) = match active {
@@ -184,6 +185,10 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
         .when(editing.is_none(), |el| el.cursor_pointer())
         .when_some(hover, |el, hover| el.hover(|st| st.bg(hover)))
         .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
+        // Inside the border, as an inset ring is.
+        .when(selected, |el| {
+            el.aria_selected(true).child(selected_ring(&s.id, 11.0, cx))
+        })
         .child(
             div()
                 .relative()

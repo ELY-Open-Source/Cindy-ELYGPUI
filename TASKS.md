@@ -312,9 +312,9 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       `SessionStatusIcon` draw it
     - [x] 8.6c The row a Tab stop (`tabIndex=0`) that Enter and Space open, with its task menu on
       the keyboard's context-menu key
-    - [ ] 8.6d Bulk selection: Shift and Mod clicks as `handleSessionClick` select (range over
+    - [x] 8.6d Bulk selection: Shift and Mod clicks as `handleSessionClick` select (range over
       `getVisibleSidebarSessionIds`, anchor, toggle), the selected rows' look, and the bulk bar
-      (`ccAgent.sidebar.bulkSelection`) with its actions
+      (`ccAgent.sidebar.bulkSelection`) with Clear; its Archive and Delete go to 18.0
     - [ ] 8.6e The active row scrolled into view as `scrollIntoNearestView` does (`block:
       nearest`, smooth unless motion is reduced) when it becomes active
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
@@ -393,7 +393,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
 ## 18. Files and git
 
 - [ ] 18.0 Expand from Cindy's code, with the task row's Archive, Unarchive and Delete and the
-  two-step archive button (from 8.5b1)
+  two-step archive button (from 8.5b1), and the bulk bar's Archive and Delete (from 8.6d)
 
 ## 19. Remote
 

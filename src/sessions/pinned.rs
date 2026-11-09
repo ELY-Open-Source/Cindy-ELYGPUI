@@ -21,7 +21,7 @@ use super::{
     main_list::{Place, project, text},
     masonry, reorder,
     row::{ROW_HEIGHT, row},
-    sortable,
+    select, sortable,
     view_mode::{self, Pinned as Mode},
 };
 use crate::{
@@ -287,11 +287,19 @@ pub fn section(
     let mut shown: Vec<Vec<AnyElement>> = Vec::new();
     for bucket in &buckets {
         let mut column = Vec::new();
+        let c = shown.len();
         for entry in bucket {
             let first = shown.is_empty() && column.is_empty();
             let label = label_of(entry, lists);
             let element = if card {
-                card_element(entry, now, &place, window, cx)
+                // `rowMajorRank` for `getVisibleSidebarSessionIds`.
+                div()
+                    .relative()
+                    .w_full()
+                    .child(select::rank(Some(column.len() * columns + c)))
+                    .child(card_element(entry, now, &place, window, cx))
+                    .child(select::rank(None))
+                    .into_any_element()
             } else {
                 let (element, h) =
                     entry_element(entry, first, label.as_deref(), now, &place, window, cx);

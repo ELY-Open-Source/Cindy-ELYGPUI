@@ -304,6 +304,7 @@ pub(super) fn project(
 pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     super::marquee::sweep(cx);
     super::sortable::sweep(window, cx);
+    super::select::begin(cx);
     let drawn = RefCell::new(Vec::new());
     let view_style = pinned::view_style(window, cx);
     // The header stays while the list loads or fails, as `MainListScopeHeader` does.
@@ -327,19 +328,27 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .gap(css(2.0))
         .child(super::header::header(window, cx))
         .children(main);
+    let scroll = div()
+        .id("main-list")
+        .debug_selector(|| "main-list".into())
+        .flex()
+        .flex_col()
+        .flex_1()
+        .min_h_0()
+        .gap(css(8.0))
+        .pb(css(16.0))
+        .overflow_y_scroll()
+        .children(pinned)
+        .child(section)
+        .child(super::select::end());
     Some(
         div()
-            .id("main-list")
-            .debug_selector(|| "main-list".into())
             .flex()
             .flex_col()
             .flex_1()
             .min_h_0()
-            .gap(css(8.0))
-            .pb(css(16.0))
-            .overflow_y_scroll()
-            .children(pinned)
-            .child(section)
+            .children(super::select::bar(window, cx))
+            .child(scroll)
             .into_any_element(),
     )
 }

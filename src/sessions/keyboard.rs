@@ -11,7 +11,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, canvas,
 };
 
-use super::{Sessions, group::Session, open, task_menu};
+use super::{Sessions, group::Session, open, select, task_menu};
 use crate::i18n::Translator;
 
 /// An element's visible bounds, as its last prepaint saw them.
@@ -21,6 +21,19 @@ pub(super) type Probe = Rc<Cell<Option<Bounds<Pixels>>>>;
 pub(super) fn probe(slot: Probe) -> impl IntoElement {
     canvas(
         move |b, window, _| slot.set(Some(b.intersect(&window.content_mask().bounds))),
+        |_, _, _, _| {},
+    )
+    .absolute()
+    .inset_0()
+}
+
+/// The row's probe, which also counts it among the rows drawn.
+fn row_probe(id: String, slot: Probe) -> impl IntoElement {
+    canvas(
+        move |b, window, cx| {
+            slot.set(Some(b.intersect(&window.content_mask().bounds)));
+            select::drawn(&id, cx);
+        },
         |_, _, _, _| {},
     )
     .absolute()
@@ -132,7 +145,7 @@ impl RenderOnce for Host {
                 cx.stop_propagation();
                 ask(&asked, e.position, cx);
             })
-            .child(probe(keys.row.clone()));
+            .child(row_probe(id.clone(), keys.row.clone()));
         ContextMenu::new(
             key("menu"),
             task_menu::menu(&self.session, cx.global::<Translator>()),

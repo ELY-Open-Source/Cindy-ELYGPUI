@@ -10,8 +10,8 @@ use super::{
     group::Session,
     keyboard::{Probe, with_menu},
     marquee, open, rename,
-    row::{ROW_GROUP, Slot, ring, source_label, status_glyph},
-    title,
+    row::{ROW_GROUP, Slot, ring, selected_ring, source_label, status_glyph},
+    select, title,
 };
 use crate::{
     appearance_settings::text_size, i18n::Translator, theme::Appearance,
@@ -34,6 +34,7 @@ pub(super) fn list_row(
     let appearance = cx.global::<Appearance>();
     let xs = text_size(12.0, cx);
     let active = open::is_active(&s.id, cx);
+    let selected = select::is_selected(&s.id, cx);
     let active_fg = appearance.token("sidebar-item-active-foreground");
     let editing = cx
         .global::<Sessions>()
@@ -50,7 +51,7 @@ pub(super) fn list_row(
             .h(css(1.0))
             .map(|el| if top { el.top_0() } else { el.bottom_0() })
             .bg(line)
-            .when(active, |el| el.opacity(0.0))
+            .when(active || selected, |el| el.opacity(0.0))
             .group_hover(ROW_GROUP, |st| st.opacity(0.0))
     };
     let prefix = div()
@@ -151,6 +152,9 @@ pub(super) fn list_row(
                 .bg(appearance.hsl_token("sidebar-item-active"))
                 .child(ring(&s.id, 8.0, cx)),
             false => el.hover(|st| st.bg(appearance.hsl_token("sidebar-item-hover"))),
+        })
+        .when(selected, |el| {
+            el.aria_selected(true).child(selected_ring(&s.id, 8.0, cx))
         })
         .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)

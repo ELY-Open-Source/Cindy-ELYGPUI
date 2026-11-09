@@ -13,7 +13,7 @@ use super::{
     Sessions,
     group::Session,
     keyboard::{Probe, with_menu},
-    marquee, meta, open, rename, task_menu, title,
+    marquee, meta, open, rename, select, task_menu, title,
 };
 use crate::{
     appearance_settings::text_size,
@@ -268,6 +268,7 @@ pub(super) fn row(
     let appearance = cx.global::<Appearance>();
     let title_size = text_size(14.0, cx);
     let active = open::is_active(&row.id, cx);
+    let selected = select::is_selected(&row.id, cx);
     let editing = cx
         .global::<Sessions>()
         .editing
@@ -304,15 +305,22 @@ pub(super) fn row(
         .when(editing.is_none(), |el| el.cursor_pointer())
         .text_size(css(title_size))
         .font_weight(gpui::FontWeight::MEDIUM)
-        .map(|el| match active {
-            true => el
+        .map(|el| match (active, selected) {
+            (true, _) => el
                 .bg(appearance.hsl_token("sidebar-item-active"))
                 .text_color(appearance.token("sidebar-item-active-foreground"))
                 .relative()
                 .child(ring(&row.id, 9999.0, cx)),
-            false => el
+            (false, true) => el
+                .bg(appearance.token("chat-input-chip-bg"))
+                .text_color(appearance.hsl_token("foreground")),
+            (false, false) => el
                 .text_color(appearance.hsl_token("foreground"))
                 .hover(|s| s.bg(appearance.hsl_token("sidebar-item-hover"))),
+        })
+        .when(selected, |el| {
+            el.aria_toggled(gpui::Toggled::True)
+                .child(selected_ring(&row.id, 9999.0, cx))
         })
         .on_click(move |event, window, cx| open::clicked(&id, event, window, cx))
         .hover_listener_mode(HoverListenerMode::InputModalityIndependent)
@@ -378,6 +386,18 @@ pub(super) fn ring(id: &str, radius: f32, cx: &App) -> gpui::Div {
             cx.global::<Appearance>()
                 .token("sidebar-item-active-border"),
         )
+}
+
+/// `ring-1 ring-inset ring-[var(--focus-ring-soft)]` on a selected task, over the active ring.
+pub(super) fn selected_ring(id: &str, radius: f32, cx: &App) -> gpui::Div {
+    let selector = format!("task-selected-{id}");
+    div()
+        .debug_selector(move || selector)
+        .absolute()
+        .inset_0()
+        .rounded(css(radius))
+        .border(css(1.0))
+        .border_color(cx.global::<Appearance>().token("focus-ring-soft"))
 }
 
 /// A double click renames, as `handleDoubleClick` does.

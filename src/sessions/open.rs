@@ -2,7 +2,7 @@
 
 use gpui::{App, ClickEvent, Window};
 
-use super::row::rename_on_double;
+use super::{row::rename_on_double, select};
 use crate::router;
 
 /// `isActive`: the task `/cc-agent/:sessionId` shows.
@@ -15,20 +15,21 @@ fn route(id: &str) -> String {
     format!("/cc-agent/{id}")
 }
 
-/// A click opens the task, as `handleClick` passes it on; a double click then renames. A
-/// rename has ended by then: the press outside its field commits it.
+/// A click opens the task, as `handleClick` passes it on, or selects it with a modifier; a
+/// double click then renames. The press outside a rename field has committed it by then.
 pub(super) fn clicked(id: &str, event: &ClickEvent, window: &mut Window, cx: &mut App) {
     let m = event.modifiers();
-    if m.shift || m.platform || m.control {
-        log::debug!(target: "sessions", "selection click on {id}: bulk selection comes with 8.6d");
-        return;
+    if select::modified(&m) {
+        return select::click(id, &m, cx);
     }
     open(id, cx);
     rename_on_double(id, event, window, cx);
 }
 
-/// `handleSessionClick` without modifiers: no navigation to the task already shown.
+/// `handleSessionClick` without modifiers: the selection clears; no navigation to the task
+/// already shown.
 pub(super) fn open(id: &str, cx: &mut App) {
+    select::plain(id, cx);
     if is_active(id, cx) {
         return;
     }

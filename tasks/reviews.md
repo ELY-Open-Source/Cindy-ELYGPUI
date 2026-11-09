@@ -391,3 +391,9 @@ effort high, in a Herdr pane.
 ## 8.6c The row on the keyboard
 
 - Round 1: PASS.
+
+## 8.6d Bulk selection
+
+- Round 1: FAIL. Selection missing from the accessibility tree (`aria-pressed`, `aria-selected`);
+  Clear had no `focus-visible` ring.
+- Round 2: PASS.

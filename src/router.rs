@@ -30,6 +30,8 @@ pub enum Route<'a> {
     New,
     /// `CCAgentSessionView`.
     Session(&'a str),
+    /// `ScheduledTasksView`.
+    Scheduled,
     /// A route another chapter owns.
     Other,
 }
@@ -51,10 +53,11 @@ pub fn route(path: &str) -> Route<'_> {
         "/" => return Route::Root,
         "/cc-agent" => return Route::Index,
         "/cc-agent/new" => return Route::New,
+        "/cc-agent/scheduled" => return Route::Scheduled,
         _ => {}
     }
     match path.strip_prefix("/cc-agent/") {
-        Some("boot" | "new-dialogue" | "scheduled" | "files" | "orca") => Route::Other,
+        Some("boot" | "new-dialogue" | "files" | "orca") => Route::Other,
         Some(id) if !id.contains('/') => Route::Session(id),
         _ => Route::Other,
     }

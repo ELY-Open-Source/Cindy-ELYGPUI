@@ -9,10 +9,10 @@ fn routes_match_as_router_tsx_declares_them() {
     assert_eq!(route("/cc-agent"), Route::Index);
     assert_eq!(route("/cc-agent/"), Route::Index);
     assert_eq!(route("/cc-agent/new"), Route::New);
+    assert_eq!(route("/cc-agent/scheduled/"), Route::Scheduled);
     assert_eq!(route("/cc-agent/abc"), Route::Session("abc"));
     assert_eq!(route("/cc-agent/abc/"), Route::Session("abc"));
     for other in [
-        "/cc-agent/scheduled",
         "/cc-agent/boot",
         "/cc-agent/files/abc",
         "/cc-agent/orca/abc",

@@ -90,6 +90,10 @@ defines scope and what 1:1 means.
   row and card a Tab stop: Enter or Space on the row itself opens it; the menu key (key up on
   Windows) or Shift+F10 (not macOS) opens the menu at the focused row's or More's centre, as
   Chromium's `ShowNonLocatedContextMenu` does. Prepaint probes record those visible bounds.
+  `select.rs` is the bulk selection of `handleSessionClick`: the row probes also list the rows
+  painted (the `Drawn` global, pinned card slots marked with `rowMajorRank`), which stands in
+  for `getVisibleSidebarSessionIds`; a probe at the list's end prunes the selection, as the
+  MutationObserver does. The bulk bar has Clear; Archive and Delete come with 18.0.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it
