@@ -247,3 +247,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Round 2: FAIL. `tasks/reviews.md` passed 500 lines. Fixed: chapters 1 to 7 moved to
   `tasks/reviews-done.md`.
 - Round 3: PASS.
+
+## 8.7e3b The rail Projects and Dialogues tiles
+- Round 1: PASS.

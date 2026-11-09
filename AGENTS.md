@@ -245,6 +245,11 @@ defines scope and what 1:1 means.
   `reorder::reorder` (`handleRailPinnedReorder` is `handlePinnedReorder`). The hover card,
   `SessionPreviewCard`, sits at the tile's right from the bounds its prepaint recorded and has
   no hitbox; running and unread faces come with 10.0.
+  `rail/sections.rs` is the Projects and Dialogues tiles over `railPanelStore` (the `Panels`
+  global): a hover opens the section at the tile's bounds and hides the pin preview, leaving
+  closes it after 120ms unless a key opened it, a click opens it (`is_keyboard` for the key
+  flag), a pin click closes all. The panels, their close paths and the lamps come with 8.7e3c
+  and 10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

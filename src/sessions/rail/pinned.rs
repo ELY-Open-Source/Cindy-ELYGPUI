@@ -134,9 +134,10 @@ pub fn section(window: &mut Window, cx: &mut App) -> Vec<AnyElement> {
     out
 }
 
-/// `handlePinnedClick`: the preview goes; the task shown stays.
+/// `handlePinnedClick`: the preview and any panel go; the task shown stays.
 fn clicked(id: &str, cx: &mut App) {
     cx.global_mut::<Preview>().shown = None;
+    super::sections::close_all(cx);
     if open::is_active(id, cx) {
         return;
     }
@@ -235,6 +236,17 @@ fn tile(s: &Session, window: &mut Window, cx: &mut App) -> AnyElement {
         .into_any_element()
 }
 
+/// `setPreview(null)`, as opening a panel does.
+pub fn hide_preview(window: &mut Window, cx: &mut App) {
+    if cx
+        .try_global::<Preview>()
+        .is_some_and(|p| p.shown.is_some())
+    {
+        cx.global_mut::<Preview>().shown = None;
+        window.refresh();
+    }
+}
+
 /// `onMouseEnter` and `onMouseLeave`: the card follows the tile under the pointer.
 fn hover_preview(id: &str, on: bool, window: &mut Window, cx: &mut App) {
     let preview = cx.global_mut::<Preview>();
@@ -329,4 +341,4 @@ fn preview_body(s: &Session, cx: &App) -> Option<String> {
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

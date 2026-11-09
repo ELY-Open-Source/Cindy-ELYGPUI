@@ -66,7 +66,7 @@ impl Render for Rail {
 }
 
 /// The rail with a0, a1 and a2 pinned, newest first; no order saved yet.
-fn rail(cx: &mut TestAppContext) -> (tempfile::TempDir, &mut VisualTestContext) {
+pub(crate) fn rail(cx: &mut TestAppContext) -> (tempfile::TempDir, &mut VisualTestContext) {
     let dir = tempfile::tempdir().unwrap();
     install(cx, dir.path());
     let owner = dir.path().join("owner");
@@ -88,13 +88,13 @@ fn rail(cx: &mut TestAppContext) -> (tempfile::TempDir, &mut VisualTestContext) 
     (dir, cx)
 }
 
-fn bounds(cx: &mut VisualTestContext, id: &str) -> Option<gpui::Bounds<Pixels>> {
+pub(crate) fn bounds(cx: &mut VisualTestContext, id: &str) -> Option<gpui::Bounds<Pixels>> {
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
     cx.debug_bounds(Box::leak(format!("rail-pin-{id}").into_boxed_str()))
 }
 
-fn center(cx: &mut VisualTestContext, id: &str) -> Point<Pixels> {
+pub(crate) fn center(cx: &mut VisualTestContext, id: &str) -> Point<Pixels> {
     bounds(cx, id)
         .unwrap_or_else(|| panic!("{id} drawn"))
         .center()
@@ -150,7 +150,7 @@ fn enter_on_a_focused_tile_opens_it(cx: &mut TestAppContext) {
     assert_eq!(path(cx), "/cc-agent/a0");
 }
 
-fn hover(cx: &mut VisualTestContext, at: Point<Pixels>) {
+pub(crate) fn hover(cx: &mut VisualTestContext, at: Point<Pixels>) {
     cx.simulate_mouse_move(at, None, Modifiers::none());
     cx.run_until_parked();
     cx.update(|window, _| window.refresh());

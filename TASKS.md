@@ -221,7 +221,7 @@ listed in `tasks/done.md`.
               `pinnedTileLabel` under it, the active one in the selected pill; a click opens it,
               a hover shows `SessionPreviewCard`, a drag reorders through
               `handleRailPinnedReorder`; the divider after them
-            - [ ] 8.7e3b The Projects and Dialogues tiles opening `railPanelStore`'s panels on
+            - [x] 8.7e3b The Projects and Dialogues tiles opening `railPanelStore`'s panels on
               hover or click; their lamps come with 10.0
             - [ ] 8.7e3c `RailPanels`: the panels' content as `ExpandedView` renders it
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
