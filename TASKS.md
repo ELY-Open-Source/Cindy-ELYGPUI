@@ -53,12 +53,12 @@ listed in `tasks/done.md`.
   `enterView`, older pages (`loadOlderMessages`), work details on demand, the reload on a database
   change (the watcher of 8.3), the soft eviction of idle sessions and the window trim;
   `mapServerMessages`
-  - [ ] 9.2a `HistoryViewController` (`historyViewController.ts`) with `historyView.ts`'s
-    `retainHistoryViewPrefix`, `readContinuousHistoryPage`, `readHistoryWorkDetails` and cache
-    receipts: latest and older pages, details on expand and `retainExpanded`, the collapsed
-    detail trim, `invalidate`'s 500ms coalesce, `locate`, `setActive`, `reset`; reads as jobs on
-    the database worker through 9.1e's reader; tests from Cindy's controller tests. The
-    `expanded` intent, network state and disk cache come with 20.0
+  - [x] 9.2a `HistoryViewController` (`historyViewController.ts`) with `historyView.ts`'s
+    `retainHistoryViewPrefix`, `readContinuousHistoryPage` and `readHistoryWorkDetails`: latest
+    and older pages, details on expand and `retainExpanded`, the collapsed detail trim,
+    `invalidate`'s 500ms coalesce, `locate`, `setActive`, `reset`, the latest-read stamps, over a
+    `Transport` (9.2c's local one reads through 9.1e's reader); tests from Cindy's controller
+    tests. The `expanded` intent, network state, disk cache and cache receipts come with 20.0
   - [ ] 9.2b `mapServerMessages`: `ChatMessage` as the store builds it from rows (hidden
     thinking rows, timeline order, the tool, ask, thinking, plan, error and card branches,
     `projectLegacyUserTurnCosts`); golden from Cindy's function, exported in the bundle only

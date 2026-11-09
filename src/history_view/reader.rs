@@ -41,16 +41,16 @@ pub trait Deps {
 
 /// `HistoryViewPage`.
 #[derive(Debug, PartialEq)]
-pub struct Page {
-    pub items: Vec<Item>,
+pub struct Page<T = Row> {
+    pub items: Vec<Item<T>>,
     pub has_more: bool,
     pub next_cursor: Option<String>,
 }
 
 /// `HistoryDetailPage`.
 #[derive(Debug, PartialEq)]
-pub struct DetailPage {
-    pub messages: Vec<Row>,
+pub struct DetailPage<T = Row> {
+    pub messages: Vec<T>,
     pub has_more: bool,
     pub next_cursor: Option<String>,
 }

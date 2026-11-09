@@ -13,6 +13,7 @@ use crate::{
 };
 
 mod artifacts;
+pub mod controller;
 pub mod json;
 pub mod outline;
 pub mod reader;
@@ -54,17 +55,25 @@ pub struct Stored {
 
 /// `HistoryViewItem`.
 #[derive(Clone, Debug, PartialEq)]
-pub enum Item {
+pub enum Item<T = Row> {
     Messages {
         key: String,
-        messages: Vec<Row>,
+        messages: Vec<T>,
         deferred: Option<Summary>,
     },
     Work {
         key: String,
         summary: Summary,
-        children: Option<Vec<Item>>,
+        children: Option<Vec<Item<T>>>,
     },
+}
+
+impl<T> Item<T> {
+    pub fn key(&self) -> &str {
+        match self {
+            Item::Messages { key, .. } | Item::Work { key, .. } => key,
+        }
+    }
 }
 
 pub fn field<'a>(row: &'a Row, key: &str) -> Option<&'a Js> {
@@ -355,3 +364,31 @@ fn deferred_range(
 
 #[cfg(test)]
 mod tests;
+
+impl controller::Message for Row {
+    fn id(&self) -> &str {
+        text(self, "id")
+    }
+
+    fn client_id(&self) -> &str {
+        text(self, "clientId")
+    }
+
+    fn created_at(&self) -> &str {
+        text(self, "createdAt")
+    }
+
+    fn characters(&self) -> usize {
+        let mut pending = vec![self];
+        let mut size = 0;
+        while let Some(value) = pending.pop() {
+            match value {
+                Js::Str(s) => size += js::utf16_len(s),
+                Js::Arr(items) => pending.extend(items),
+                Js::Obj(fields) => pending.extend(fields.values()),
+                _ => {}
+            }
+        }
+        size
+    }
+}

@@ -1,4 +1,4 @@
-//! `Date.parse` on the ISO strings `toISOString` writes, and `toISOString` itself.
+//! `Date.parse` on the ISO strings `toISOString` writes, `toISOString` itself and `Date.now`.
 
 use std::sync::LazyLock;
 
@@ -24,6 +24,14 @@ fn days_to_month(year: i64, month: i64) -> i64 {
     let doy = (153 * m + 2) / 5;
     let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
     era * 146_097 + doe - 719_468
+}
+
+/// `Date.now()`: whole milliseconds since 1970.
+pub fn now() -> f64 {
+    let since = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .expect("the clock is after 1970");
+    since.as_millis() as f64
 }
 
 /// `Date.parse` on the ECMAScript date-time format, offset-less times read as UTC.

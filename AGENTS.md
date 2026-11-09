@@ -138,7 +138,8 @@ defines scope and what 1:1 means.
   as Cindy's drizzle renders it; `artifacts.rs` `withHistoryArtifacts` (its LRU of 2048).
   `reader.rs` is `createHistoryViewReader` over `Deps` (`db.rs` the database's; turns and live
   rows come with 10.0): `page`, `details` and the detail cache. Its tests port Cindy's on a fake.
-  Reads run one job at a time on the database worker, so the in-flight share has nothing to join.
+  Reads run one at a time on the database worker: no in-flight share to join. `controller.rs` is
+  `HistoryViewController` (network, disk cache, intents: 20.0) in JS promise order (`settled`).
   `src/command_output.rs` is `commandOutputPaths.ts`: `js_re` turns JS regex sources into Rust's,
   lookarounds scanned by hand; offsets in bytes, the 240/80 windows in UTF-16 units (a cut pair's
   half is U+FFFD). `src/js_date.rs` is `Date.parse` and `toISOString`. Golden `history-view`

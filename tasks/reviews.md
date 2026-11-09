@@ -34,3 +34,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 
 ## 9.1e History reader
 - Round 1: PASS. The in-flight share is left out: reads run one job at a time on the database worker.
+
+## 9.2a History view controller
+- Round 1: FAIL. `characters` recursed into deep tool input and overflowed the stack; the reread on a new revision kept `allow_collapsed`, where Cindy's `loadDetails(latest)` checks expansion.
+- Fixed: an explicit stack, as `detailCharacters`; the reread passes `false`. Tests: 50,000 nested arrays, and a recovery read over a new revision.
+- Round 2: PASS.
