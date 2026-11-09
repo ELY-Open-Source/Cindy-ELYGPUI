@@ -4,6 +4,8 @@
 pub(crate) mod hover_menu;
 mod peek;
 mod peek_view;
+#[cfg(test)]
+mod rail_tests;
 mod resize;
 #[cfg(test)]
 mod tests;
@@ -41,6 +43,8 @@ pub struct Sidebar {
     collapsed: bool,
     width: Tween,
     fade: Tween,
+    /// `CollapsedView`'s opacity over the list.
+    upper: Tween,
     handle_hovered: bool,
     peek: peek::Peek,
     peek_wake: Option<gpui::Task<()>>,
@@ -81,6 +85,7 @@ impl Sidebar {
             collapsed,
             width: Tween::still(0.0, at),
             fade: Tween::still(if collapsed { 0.0 } else { 1.0 }, at),
+            upper: Tween::still(if collapsed || rail { 1.0 } else { 0.0 }, at),
             handle_hovered: false,
             peek: peek::Peek::new(collapsed),
             peek_wake: None,
@@ -230,7 +235,14 @@ impl Render for Sidebar {
         let at = now(cx);
         let (width, moving) = self.width.at(at);
         let (opacity, fading) = self.fade.at(at);
-        if moving || fading {
+        // `isCollapsed`: a peek shows the list.
+        let rail_on = !self.peek.visible() && (self.collapsed || self.rail);
+        let fade = motion::length(FADE, cx);
+        let rail_target = if rail_on { 1.0 } else { 0.0 };
+        self.upper
+            .toward_along(rail_target, at, fade, motion::ease_in_out);
+        let (upper, swapping) = self.upper.at(at);
+        if moving || fading || swapping {
             window.request_animation_frame();
         }
         let appearance = cx.global::<Appearance>();
@@ -286,7 +298,7 @@ impl Render for Sidebar {
             .when(peeking || !self.rail, |el| {
                 el.child(top_nav::pinned(window, cx))
             })
-            .children(crate::sessions::list(window, cx))
+            .child(crate::sessions::rail::upper(upper, rail_on, window, cx))
             .into_any_element();
         let (column, drawer) = match peeking {
             true => (div().into_any_element(), self.drawer(column, window, cx)),

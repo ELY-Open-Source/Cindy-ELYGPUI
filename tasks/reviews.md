@@ -482,3 +482,10 @@ gate logs sit in `logs/review/<task>-r<N>*`.
   Fixed: the panel lays rows through `sortable::arrange`; `search::listen` keeps the listener
   while the row is unmounted; a drag belongs to its list, and other lists pass it by.
 - Round 2: PASS.
+
+## 8.7e1 The rail column
+- Round 1: FAIL. The pointer moved at the fade's midpoint, not with the state; the press inset
+  ignored reduced motion; the hover fill dropped on a key press. Fixed: the target state picks
+  the occluding view; no inset under reduced motion; hover held through `on_hover` in
+  modality-independent mode.
+- Round 2: PASS.

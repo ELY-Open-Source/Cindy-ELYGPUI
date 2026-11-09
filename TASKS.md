@@ -362,7 +362,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
               clipped at its bottom edge, as `SidebarTopNav`'s clip-path effect does; the rows
               before Search (Automations, Plugins) come with 15.0 and 16.0
         - [x] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
-    - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
+    - [x] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
       `sidebarNavigationPrefs.ts`; without a data owner the defaults apply and nothing is saved,
       as Cindy does, until 13.0's owner-scoped storage
@@ -374,6 +374,16 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
           storing nothing without a data owner, as `setSidebarNavigationPrefs(null)` does
     - [ ] 8.7e The rail (`SidebarRailNavigation`): the tiles in the saved order, Search as
       `ConversationSearchBox`'s popover, and More
+        - [x] 8.7e1 `CollapsedView` in place of the list while the sidebar is a rail and not
+          peeking, both kept drawn and crossfading 200ms `ease-in-out`, the hidden one taking no
+          pointer: the New tile (`SidebarIconButton`: 36px round, 18px icon, `titlebar-icon`,
+          hover and press face, tip), the nav tiles in the saved order (Automations and Plugins
+          with 15.0 and 16.0), More drawing nothing under the defaults (no hidden entries, no
+          Customize on the rail), the divider; the Teammates tile with 14.0
+        - [ ] 8.7e2 The Search tile as `ConversationSearchBox`: its own search while open, the
+          popover at the tile's right (field, clear, options, results with the empty line),
+          focus on open, reset on close, a chosen result closing it
+        - [ ] 8.7e3 `RailNav`: the Pinned, Projects and Dialogues tiles with their hover panels
 - [ ] 8.8 Interrupted tasks after a restart: the candidates as `interruptedResumeCandidates.ts` and
   `listInterruptedPendingRows` find them (the turn's last message and last tool use), and
   `InterruptedTasksResumeDialog.tsx` once per window and owner (load retries, selection, the

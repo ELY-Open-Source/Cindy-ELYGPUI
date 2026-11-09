@@ -20,6 +20,7 @@ mod pinned;
 pub(crate) mod preview;
 mod projection;
 mod query;
+pub(crate) mod rail;
 mod rename;
 mod reorder;
 mod reveal;

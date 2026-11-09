@@ -15,7 +15,7 @@ use crate::{
 };
 
 pub(super) struct Row {
-    sidebar: Entity<Sidebar>,
+    pub(super) sidebar: Entity<Sidebar>,
     content: Entity<LayoutRoot>,
 }
 

@@ -226,6 +226,11 @@ defines scope and what 1:1 means.
   search's outside press while its row is gone. Done stores nothing, as
   `setSidebarNavigationPrefs(null)` does, until 13.0's data owner.
   Ely's Subtle and Ghost buttons stand in for Cindy's primary and quiet ones; Puzzle for `plug`.
+- Rail: `sessions/rail.rs` is `CCAgentSidebarUpper`'s two views. Both stay drawn; the sidebar's
+  `upper` tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and
+  not peeking, and the shown view paints last with `occlude`, standing in for
+  `pointer-events-none`. `CollapsedView` holds the New tile (`SidebarIconButton`, its face
+  inset 1px on press) and the divider; Search comes with 8.7e2, `RailNav` with 8.7e3.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic
