@@ -338,6 +338,13 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
       as `conversationSearchSort` sorts), with the search row sticky over them and the clip
       below it while a query runs; the options' Projects submenu, which lists every known
       project, archived tasks' included
+        - [ ] 8.7c1a `conversationSearch.pure.ts`: title fuzzy match, keyword ranges, snippets,
+          message text extraction and the sort, checked against golden `tests/fixtures/search`
+        - [ ] 8.7c1b `chatHistorySearch`'s FTS pass over `messages_fts` through `cjk_seg`; the
+          vector pass is skipped as Cindy skips it while the embedding service is down (11.0)
+        - [ ] 8.7c1c `searchConversations`: titles and messages merged, filtered by the options
+        - [ ] 8.7c2 The results list in place of the task list, the search row sticky over it
+        - [ ] 8.7c3 The options' Projects submenu, every known project, archived tasks' included
     - [ ] 8.7d More (`SidebarNavigationMoreMenu` opened on hover by `useHoverOpenMenu`) with its
       hidden entries and Customize (`SidebarNavigationCustomize.tsx`) over
       `sidebarNavigationPrefs.ts`; without a data owner the defaults apply and nothing is saved,
