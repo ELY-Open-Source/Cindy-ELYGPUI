@@ -14,7 +14,7 @@ use crate::{
     preferences::Preferences, theme::Appearance, theme::Mode,
 };
 
-struct Row {
+pub(super) struct Row {
     sidebar: Entity<Sidebar>,
     content: Entity<LayoutRoot>,
 }
@@ -29,7 +29,7 @@ impl Render for Row {
     }
 }
 
-fn open<'a>(
+pub(super) fn open<'a>(
     cx: &'a mut TestAppContext,
     dir: &Path,
     prefs: &str,

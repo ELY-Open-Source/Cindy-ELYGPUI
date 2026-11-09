@@ -403,3 +403,7 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. A reveal that needed no move left the earlier scroll running; a change of look
   kept the row's active record, so the new look did not reveal.
 - Round 2: PASS.
+
+## 8.7a The New row
+
+- Round 1: PASS.

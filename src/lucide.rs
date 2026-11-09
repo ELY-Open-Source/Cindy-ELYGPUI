@@ -26,6 +26,11 @@ fn lucide(body: &str) -> String {
     )
 }
 
+/// `CirclePlus`.
+pub fn circle_plus() -> String {
+    lucide(r#"<circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/>"#)
+}
+
 pub fn users_round() -> String {
     lucide(
         r#"<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>"#,

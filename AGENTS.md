@@ -166,6 +166,7 @@ defines scope and what 1:1 means.
   limits. Width and rail live in the preferences file (`sidebar-width`, `sidebar-rail`), the
   hidden state in the layout tree. The content area's width is the window less the sidebar's
   painted width, read every frame of its 250ms width transition.
+  `sidebar/top_nav.rs` is `SidebarTopNav.tsx`'s fixed section: the New row, off the rail.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

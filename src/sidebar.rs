@@ -6,6 +6,7 @@ mod peek_view;
 mod resize;
 #[cfg(test)]
 mod tests;
+mod top_nav;
 
 use std::time::{Duration, Instant};
 
@@ -281,6 +282,9 @@ impl Render for Sidebar {
                     .w_full()
                     .h(css(chrome::TOP_ROW)),
             )
+            .when(peeking || !self.rail, |el| {
+                el.child(top_nav::pinned(window, cx))
+            })
             .children(crate::sessions::list(window, cx))
             .into_any_element();
         let (column, drawer) = match peeking {

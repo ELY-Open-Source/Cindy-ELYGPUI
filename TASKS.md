@@ -321,10 +321,12 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),
   order and visibility as `sidebarNavigationPrefs.ts` keeps them, rail tiles, with
   `useActiveMainView`'s active view and `navigateToView`
-    - [ ] 8.7a The New row (`handleNew` to `/cc-agent/new`) in the sidebar's fixed top section
-      (`section='pinned'`), the nav rows' pill (`ROW_CLASS`, `ROW_ACTIVE_CLASS`), and the rows
-      `section='scrollable'` draws at the top of the list's scroller, in the saved order
-    - [ ] 8.7b Search at rest and open as `SidebarInlineSearch` draws it (hover or focus opens
+    - [x] 8.7a The New row (`handleNew` to `/cc-agent/new`, drawn as `ROW_CLASS`) in the
+      sidebar's fixed top section (`section='pinned'`), off the rail and in the peek; the
+      route state's computer comes with the New draft (chapter 9), `ROW_ACTIVE_CLASS` with the
+      first row that can be active (15.0)
+    - [ ] 8.7b The rows `section='scrollable'` draws at the top of the list's scroller, in the
+      saved order, and Search at rest and open as `SidebarInlineSearch` draws it (hover or focus opens
       the field), its query and options in `conversationSearchContext` and
       `conversationSearchPrefs`; a search from another view returns to the task view
       (`useActiveMainView`'s `navigateToView`)
