@@ -11,8 +11,8 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, canvas,
 };
 
-use super::{Sessions, group::Session, open, select, task_menu};
-use crate::i18n::Translator;
+use super::{Sessions, group::Session, open, reveal, select, task_menu};
+use crate::{i18n::Translator, router};
 
 /// An element's visible bounds, as its last prepaint saw them.
 pub(super) type Probe = Rc<Cell<Option<Bounds<Pixels>>>>;
@@ -27,12 +27,13 @@ pub(super) fn probe(slot: Probe) -> impl IntoElement {
     .inset_0()
 }
 
-/// The row's probe, which also counts it among the rows drawn.
+/// The row's probe: it counts the row among those drawn and reveals it when asked.
 fn row_probe(id: String, slot: Probe) -> impl IntoElement {
     canvas(
         move |b, window, cx| {
             slot.set(Some(b.intersect(&window.content_mask().bounds)));
             select::drawn(&id, cx);
+            reveal::painted(&id, b, window, cx);
         },
         |_, _, _, _| {},
     )
@@ -56,14 +57,16 @@ fn menu_key(k: &Keystroke, up: bool) -> bool {
 #[derive(IntoElement)]
 pub(super) struct Host {
     session: Session,
+    kind: &'static str,
     body: Stateful<Div>,
     more: Probe,
 }
 
-/// `more` is the More button's probe; `row::Slot` and the card fill it.
-pub(super) fn with_menu(s: &Session, body: Stateful<Div>, more: Probe) -> Host {
+/// `kind` keys the look, as Cindy mounts one component per look; `more` is More's probe.
+pub(super) fn with_menu(s: &Session, kind: &'static str, body: Stateful<Div>, more: Probe) -> Host {
     Host {
         session: s.clone(),
+        kind,
         body,
         more,
     }
@@ -125,6 +128,13 @@ impl RenderOnce for Host {
             .clone();
         let asked = window.use_keyed_state(key("menu-asked"), cx, |_, _| None);
         let request = *asked.read(cx);
+        let active = router::active_session(cx) == Some(id.as_str());
+        let was =
+            window.use_keyed_state(key(&format!("was-active-{}", self.kind)), cx, |_, _| false);
+        if active && !*was.read(cx) {
+            reveal::activated(&id, cx);
+        }
+        was.update(cx, |was, _| *was = active);
         let keys = Rc::new(Keys {
             id: id.clone(),
             focus: focus.clone(),

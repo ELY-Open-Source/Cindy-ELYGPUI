@@ -94,6 +94,11 @@ defines scope and what 1:1 means.
   painted (the `Drawn` global, pinned card slots marked with `rowMajorRank`), which stands in
   for `getVisibleSidebarSessionIds`; a probe at the list's end prunes the selection, as the
   MutationObserver does. The bulk bar has Clear; Archive and Delete come with 18.0.
+  `reveal.rs` is `scrollIntoNearestView`: a row that turns active, or mounts active, is scrolled
+  to CSSOM's `nearest` on the list's `ScrollHandle`, along Chromium 148's desktop programmatic
+  curve (`cubic-bezier(0.4,0,0,1)`, `min(sqrt(|delta|), 90) / 60` s in device pixels); reduced
+  motion jumps, and a scroll by the user or a reveal that needs no move ends it. The active
+  record is keyed by look (text, list, card), since Cindy mounts a new component per look.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

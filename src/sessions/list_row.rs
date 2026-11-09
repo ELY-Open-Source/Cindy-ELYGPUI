@@ -164,5 +164,5 @@ pub(super) fn list_row(
         .when(first, |el| el.child(divider(true)))
         .child(line_one)
         .child(preview);
-    with_menu(s, row, more).into_any_element()
+    with_menu(s, "list", row, more).into_any_element()
 }

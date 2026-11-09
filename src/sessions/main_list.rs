@@ -305,6 +305,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
     super::marquee::sweep(cx);
     super::sortable::sweep(window, cx);
     super::select::begin(cx);
+    super::reveal::step(window, cx);
     let drawn = RefCell::new(Vec::new());
     let view_style = pinned::view_style(window, cx);
     // The header stays while the list loads or fails, as `MainListScopeHeader` does.
@@ -338,6 +339,7 @@ pub fn list(window: &mut Window, cx: &mut App) -> Option<AnyElement> {
         .gap(css(8.0))
         .pb(css(16.0))
         .overflow_y_scroll()
+        .track_scroll(&cx.global::<super::reveal::Reveal>().handle)
         .children(pinned)
         .child(section)
         .child(super::select::end());

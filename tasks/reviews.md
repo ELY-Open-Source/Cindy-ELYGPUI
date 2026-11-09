@@ -397,3 +397,9 @@ effort high, in a Herdr pane.
 - Round 1: FAIL. Selection missing from the accessibility tree (`aria-pressed`, `aria-selected`);
   Clear had no `focus-visible` ring.
 - Round 2: PASS.
+
+## 8.6e The active row scrolled into view
+
+- Round 1: FAIL. A reveal that needed no move left the earlier scroll running; a change of look
+  kept the row's active record, so the new look did not reveal.
+- Round 2: PASS.

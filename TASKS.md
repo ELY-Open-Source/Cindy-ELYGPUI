@@ -315,7 +315,7 @@ and pushed. Reviews: `tasks/reviews.md`, at most three rounds per task.
     - [x] 8.6d Bulk selection: Shift and Mod clicks as `handleSessionClick` select (range over
       `getVisibleSidebarSessionIds`, anchor, toggle), the selected rows' look, and the bulk bar
       (`ccAgent.sidebar.bulkSelection`) with Clear; its Archive and Delete go to 18.0
-    - [ ] 8.6e The active row scrolled into view as `scrollIntoNearestView` does (`block:
+    - [x] 8.6e The active row scrolled into view as `scrollIntoNearestView` does (`block:
       nearest`, smooth unless motion is reduced) when it becomes active
 - [ ] 8.7 The top nav as `SidebarTopNav.tsx` draws it: New, Search with its inline results over the
   list (`messages_fts` through `cjk_seg`), More with Customize (`SidebarNavigationCustomize.tsx`),

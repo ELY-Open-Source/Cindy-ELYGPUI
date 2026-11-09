@@ -201,7 +201,7 @@ fn card(s: &Session, now: i64, window: &mut Window, cx: &mut App) -> AnyElement 
                 .child(meta_row)
                 .children(actions),
         );
-    with_menu(s, card, more).into_any_element()
+    with_menu(s, "card", card, more).into_any_element()
 }
 
 #[cfg(test)]

@@ -80,6 +80,11 @@ pub fn ease_move(x: f32) -> f32 {
     cubic_bezier(0.4, 0.0, 0.2, 1.0, x.clamp(0.0, 1.0))
 }
 
+/// Chromium's desktop `cubic-bezier` for a programmatic smooth scroll.
+pub fn programmatic_scroll(x: f32) -> f32 {
+    cubic_bezier(0.4, 0.0, 0.0, 1.0, x.clamp(0.0, 1.0))
+}
+
 /// CSS `ease`.
 pub fn ease(x: f32) -> f32 {
     cubic_bezier(0.25, 0.1, 0.25, 1.0, x.clamp(0.0, 1.0))

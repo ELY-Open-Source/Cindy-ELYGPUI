@@ -346,7 +346,7 @@ pub(super) fn row(
             more: more.clone(),
         }),
     };
-    with_menu(row, body, more).into_any_element()
+    with_menu(row, "text", body, more).into_any_element()
 }
 
 /// `sourceLabel`, its full text in `title`; 70% of the active foreground on the active row.
