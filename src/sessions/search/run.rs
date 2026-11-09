@@ -100,7 +100,7 @@ pub(super) fn key(w: Which, cx: &App) -> Key {
 
 /// Runs the effect again once the query or an option changed.
 pub fn sync(w: Which, cx: &mut App) {
-    let session_ids = projects::scope(of(w, cx).options.projects.as_deref(), cx);
+    let session_ids = projects::scope(&of(w, cx).options, cx);
     let mut key = Scoped {
         key: key(w, cx),
         session_ids,

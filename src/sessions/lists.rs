@@ -41,6 +41,8 @@ pub struct Lists {
     pub rail_projects: Vec<Project>,
     /// `dialogueSourceLabelMap` for the main list's loose tasks.
     pub main_labels: HashMap<String, String>,
+    /// `dialogueActionSessions`' ids: every dialogue, pinned ones too, for the group's menu.
+    pub dialogue_actions: Vec<String>,
 }
 
 /// `sidebarPinnedEntryComparisonKey`.
@@ -127,7 +129,9 @@ pub fn build(
         .collect();
     // Pins and labels see the whole bucket; the main list sees the last-activity window.
     let plain = group(&sidebar, recent, aliases, platform, false);
-    let all_projects = group(&sidebar, recent, aliases, platform, true).projects;
+    let catalogue = group(&sidebar, recent, aliases, platform, true);
+    let dialogue_actions = catalogue.dialogues.iter().map(|s| s.id.clone()).collect();
+    let all_projects = catalogue.projects;
     let recent_main: &[Recent] = if order.cutoff.is_some() { &[] } else { recent };
     let windowed: Vec<Session> = sidebar
         .iter()
@@ -222,6 +226,7 @@ pub fn build(
         unclassified,
         rail_projects,
         main_labels,
+        dialogue_actions,
     }
 }
 

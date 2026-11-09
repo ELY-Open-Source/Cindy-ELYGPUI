@@ -18,6 +18,7 @@ use crate::{
 
 /// Both views stay drawn; `rail` is the rail's opacity, and `on` picks the one taking the pointer.
 pub fn upper(rail: f32, on: bool, window: &mut Window, cx: &mut App) -> AnyElement {
+    cx.global_mut::<super::search::Search>().rail_shown = on;
     if !on {
         // The rail's tiles are gone: its panels close, as `RailPanels` does once not collapsed.
         sections::rail_ended(window, cx);

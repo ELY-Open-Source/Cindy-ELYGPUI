@@ -21,7 +21,7 @@ use super::{
     keyboard::{self, Probe},
     main_list::{Name, Toggle, header},
     paths::encode_component,
-    pin,
+    pin, search,
 };
 use crate::{
     i18n::Translator,
@@ -56,7 +56,7 @@ fn copy_link(dir: &str, window: &mut Window, cx: &mut App) {
     toast::success(window, message, toast::Options::default(), cx);
 }
 
-/// Search, Show files, the file manager, Import and Archive all come with their tasks.
+/// Show files, the file manager, Import and Archive all come with their tasks.
 fn menu(p: &Project, cx: &App) -> Menu {
     let t = cx.global::<Translator>();
     let label = |key: &str| t.t(&format!("ccAgent.sidebar.projectAction.{key}"), &[]);
@@ -65,6 +65,11 @@ fn menu(p: &Project, cx: &App) -> Menu {
     let pin_key = p.key.clone();
     let (remove_key, remove_name) = (p.key.clone(), p.name.clone());
     let local = p.key.starts_with("local:");
+    let scope = search::lock::Lock::Project {
+        key: p.key.clone(),
+        name: p.name.clone(),
+        ids: p.sessions.iter().map(|s| s.id.clone()).collect(),
+    };
     let menu = Menu::new()
         .item(
             MenuItem::new(label("rename"))
@@ -73,6 +78,11 @@ fn menu(p: &Project, cx: &App) -> Menu {
         .item(
             MenuItem::new(label(if pinned { "unpin" } else { "pin" }))
                 .on_click(move |window, cx| pin::project(&pin_key, pinned, window, cx)),
+        )
+        .separator()
+        .item(
+            MenuItem::new(label("search"))
+                .on_click(move |window, cx| search::lock::request(scope.clone(), window, cx)),
         )
         .separator()
         .item(

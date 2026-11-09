@@ -23,12 +23,8 @@ use super::{
 use ely_gpui_component::primitives::IconName;
 
 use crate::{
-    appearance_settings::text_size,
-    i18n::Translator,
-    lucide::{MESSAGES_SQUARE, icon},
-    preferences::Preferences,
-    theme::Appearance,
-    units::css,
+    appearance_settings::text_size, i18n::Translator, lucide::icon, preferences::Preferences,
+    theme::Appearance, units::css,
 };
 
 const DIALOGUE_COLLAPSED_KEY: &str = "cc-agent.sidebar.dialogueGroupCollapsed";
@@ -417,9 +413,6 @@ fn draw(
     let store = cx.global::<Sessions>();
     let lists = lists(cx)?;
     let limit = fold::limit(text(prefs, PROJECT_LIMIT_KEY), 20);
-    let dialogues = cx
-        .global::<Translator>()
-        .t("ccAgent.sidebar.dialogues", &[]);
     let (visible, hidden) = fold::view(&lists.main, limit, store.show_all_entries, None, |_| 0);
     let now = jiff::Timestamp::now().as_millisecond();
     let mut children: Vec<AnyElement> = visible
@@ -428,15 +421,11 @@ fn draw(
             Entry::Project(p) => project(p, &main_place, window, cx).0,
             Entry::Dialogues(list) => {
                 let collapsed = dialogue_collapsed(prefs);
-                let toggle = toggler(DIALOGUE_FOLD.into(), collapsed);
-                let head = header(
-                    format!("{DIALOGUE_FOLD}-header").into(),
-                    MESSAGES_SQUARE,
-                    (Name::Text(dialogues.clone()), None),
+                let head = super::dialogue::Head {
                     collapsed,
-                    cx,
-                )
-                .on_click(move |_, _, cx| toggle(cx))
+                    toggle: toggler(DIALOGUE_FOLD.into(), collapsed),
+                    ids: lists.dialogue_actions.clone(),
+                }
                 .into_any_element();
                 group(
                     DIALOGUE_FOLD.into(),

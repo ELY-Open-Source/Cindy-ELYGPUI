@@ -289,7 +289,7 @@ listed in `tasks/done.md`.
     menu key: Rename (double click too, `project_aliases`), Pin/Unpin, Copy deep link; New in this
     folder comes with the New draft (chapter 9)
   - [x] 8.10a2 Remove from sidebar: the awaitable confirm and `hiddenProjectKeys`' write
-  - [ ] 8.10b Search in this project with the locked project chip and the scroll freeze, and the
+  - [x] 8.10b Search in this project with the locked project chip and the scroll freeze, and the
     dialogue group's Search
   - [ ] 8.10c Open in the file manager: `filePathPolicy.ts`'s blocklist and an open that reports
     its error

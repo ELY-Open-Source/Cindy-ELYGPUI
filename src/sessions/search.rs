@@ -17,6 +17,8 @@ use crate::{
     theme::Appearance, theme_import::color::js_trim, tip::tip, units::css,
 };
 
+mod chip;
+pub mod lock;
 mod marks;
 pub mod options;
 pub mod projects;
@@ -55,6 +57,10 @@ pub struct Search {
     scroll: scroll::Scroll,
     /// The pinned row's bottom this frame.
     pinned_bottom: Option<gpui::Pixels>,
+    /// `isCollapsed`: the rail's view shows, so its popover takes requests too.
+    pub rail_shown: bool,
+    /// The row's hitbox and its options menu's handles this frame.
+    row: Option<(Hitbox, FocusHandle, FocusHandle)>,
 }
 
 struct Field {
@@ -79,6 +85,8 @@ pub fn install(cx: &mut App) {
         surface: None,
         scroll: scroll::Scroll::default(),
         pinned_bottom: None,
+        rail_shown: false,
+        row: None,
     });
 }
 
@@ -186,13 +194,26 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
         .use_keyed_state("nav-search-menu", cx, |_, cx| cx.focus_handle())
         .read(cx)
         .clone();
+    let unlock = window
+        .use_keyed_state("nav-search-unlock-focus", cx, |_, cx| {
+            cx.focus_handle().tab_stop(true)
+        })
+        .read(cx)
+        .clone();
     if rest.is_focused(window) {
         window.focus(&input_focus, cx);
     }
     let query = query(Which::Inline, cx).to_owned();
+    let chip = of(Which::Inline, cx)
+        .options
+        .lock
+        .as_ref()
+        .map(|l| lock::label(l, true, cx));
     let within = input_focus.is_focused(window)
         || clear_focus.is_focused(window)
+        || unlock.is_focused(window)
         || menu.contains_focused(window, cx);
+    scroll::focused(within, window, cx);
     let expanded = *hovered.read(cx) || within || !query.is_empty();
     let translator = cx.global::<Translator>();
     let (open, placeholder, clear) = (
@@ -296,10 +317,14 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
                 cx.notify();
             })
         })
+        .child(hitbox(menu.clone(), filter.clone()))
         .when(running, |el| {
             el.child(outside(Some((menu.clone(), filter.clone()))).inset_0())
         })
         .child(icon(IconName::Search.svg(), 15.0, 1.8).text_color(nav))
+        .when_some(chip.filter(|_| expanded), |el, label| {
+            el.child(chip::view(label, &unlock, window, cx))
+        })
         .child(body)
         .when(expanded && !query.is_empty(), |el| el.child(clear_button))
         .when(expanded, |el| {
@@ -312,6 +337,19 @@ fn row(window: &mut Window, cx: &mut App) -> AnyElement {
             )))
         })
         .into_any_element()
+}
+
+/// Records the row's hitbox for the frozen list's outside press.
+fn hitbox(menu: FocusHandle, filter: FocusHandle) -> impl IntoElement {
+    canvas(
+        move |bounds, window, cx| {
+            let hitbox = window.insert_hitbox(bounds, HitboxBehavior::Normal);
+            cx.global_mut::<Search>().row = Some((hitbox, menu, filter));
+        },
+        |_, _, _, _| {},
+    )
+    .absolute()
+    .inset_0()
 }
 
 /// Whether the options menu holds focus.

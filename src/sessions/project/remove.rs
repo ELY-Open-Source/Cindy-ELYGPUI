@@ -68,6 +68,7 @@ fn settled(key: &str, result: anyhow::Result<Vec<String>>, window: &mut Window, 
     if let Some(loaded) = cx.global_mut::<Sessions>().loaded.as_mut() {
         loaded.settings.hidden = hidden;
     }
+    super::super::search::projects::loaded(cx);
     super::super::watch_owner(cx);
     select::clear(cx);
     rail::sections::close_all(window, cx);

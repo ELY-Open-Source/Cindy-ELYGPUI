@@ -332,3 +332,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 
 ## 8.10a2 Remove from sidebar
 - Round 1: PASS.
+
+## 8.10b Search in this project and the dialogues' Search
+- Round 1: FAIL. A press outside while the options menu held focus counted as inside, so the
+  frozen list stayed at the top; the chip X's hover followed keyboard modality; three module
+  comments ran to two lines.
+- Fixed: a press outside the row and its poppers past an open menu restores unless the menu
+  chose; the X keeps a hover that ignores input modality (`search/chip.rs`); the comments fit one line.
+- Round 2: PASS.

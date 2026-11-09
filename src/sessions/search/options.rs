@@ -10,7 +10,11 @@ use gpui::{
     prelude::FluentBuilder as _,
 };
 
-use super::{Search, Which, of, of_mut, projects, run};
+use super::{
+    Search, Which,
+    lock::{self, Lock},
+    of, of_mut, projects, run,
+};
 use crate::{
     i18n::{Arg, Translator},
     lucide::icon,
@@ -56,6 +60,7 @@ pub struct Options {
     pub last_activity: &'static str,
     /// `projectSelection`; none is `all`.
     pub projects: Option<Vec<String>>,
+    pub lock: Option<Lock>,
 }
 
 /// `loadSearchSortBy`: an unknown or missing value is `relevance`.
@@ -80,6 +85,7 @@ impl Default for Options {
             agent: "all",
             last_activity: "all",
             projects: None,
+            lock: None,
         }
     }
 }
@@ -88,7 +94,9 @@ impl Options {
     /// `activeFilterCount`; the sort never counts.
     pub fn active_count(&self) -> usize {
         let filters = [self.status, self.agent, self.last_activity];
-        filters.iter().filter(|v| **v != "all").count() + usize::from(self.projects.is_some())
+        let group = matches!(self.lock, Some(Lock::Group { .. }));
+        filters.iter().filter(|v| **v != "all").count()
+            + usize::from(self.projects.is_some() || group)
     }
 }
 
@@ -125,9 +133,15 @@ fn set(w: Which, field: Field, value: &'static str, cx: &mut App) {
     cx.refresh_windows();
 }
 
-/// `resetFilters`.
+/// `resetFilters`: a locked project stays selected.
 fn reset(w: Which, cx: &mut App) {
-    *options(w, cx) = Options::default();
+    let o = options(w, cx);
+    let lock = o.lock.take();
+    *o = Options::default();
+    if let Some(Lock::Project { key, .. }) = &lock {
+        o.projects = Some(vec![key.clone()]);
+    }
+    o.lock = lock;
     log::info!(target: "search", "{w:?} filters reset");
     run::sync(w, cx);
     cx.refresh_windows();
@@ -141,7 +155,10 @@ fn set_projects(w: Which, value: Option<Vec<String>>, cx: &mut App) {
 }
 
 /// `projectValue`.
-fn projects_label(o: &Options, t: &Translator) -> String {
+fn projects_label(o: &Options, t: &Translator, cx: &App) -> String {
+    if let Some(lock) = &o.lock {
+        return lock::label(lock, false, cx);
+    }
     match &o.projects {
         None => t.t("ccAgent.search.filter.allProjects", &[]),
         Some(keys) => t.t(
@@ -153,10 +170,12 @@ fn projects_label(o: &Options, t: &Translator) -> String {
 
 /// The Projects submenu; the task count joins the label.
 fn projects_menu(w: Which, o: &Options, known: &[Project], t: &Translator) -> Menu {
+    let locked = o.lock.is_some();
     let all = MenuItem::check(
         t.t("ccAgent.search.filter.allProjects", &[]),
         o.projects.is_none(),
     )
+    .disabled(locked)
     .on_click(move |_, cx| {
         chosen(cx);
         set_projects(w, None, cx)
@@ -170,6 +189,7 @@ fn projects_menu(w: Which, o: &Options, known: &[Project], t: &Translator) -> Me
         let key = p.key.clone();
         let text = format!("{} · {}", p.name, p.sessions.len());
         let item = MenuItem::check(text, projects::selected(o.projects.as_deref(), &p.key))
+            .disabled(locked)
             .on_click(move |_, cx| {
                 chosen(cx);
                 let next = projects::next(options(w, cx).projects.as_deref(), &key);
@@ -252,7 +272,7 @@ pub fn button(w: Which, focus: &FocusHandle, window: &mut Window, cx: &mut App) 
         label(&STATUSES, o.status, t),
         label(&AGENTS, o.agent, t),
         label(&ACTIVITIES, o.last_activity, t),
-        projects_label(o, t),
+        projects_label(o, t, cx),
     ];
     let names = ["sort", "status", "agent", "lastActivity", "projects"];
     let args: Vec<_> = names

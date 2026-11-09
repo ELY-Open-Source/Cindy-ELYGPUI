@@ -2,6 +2,7 @@
 //! database and read again whenever that database changes on disk.
 
 mod card;
+mod dialogue;
 mod filter;
 mod fold;
 mod group;

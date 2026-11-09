@@ -137,7 +137,19 @@ pub fn chosen(window: &mut Window, cx: &mut App) {
     set_open(false, trigger, window, cx);
 }
 
-/// The tile, `PopoverTrigger`: a click toggles the popover.
+/// `handleProgrammaticOpen`: a search asked from a menu opens the popover.
+pub fn open(window: &mut Window, cx: &mut App) {
+    let Some(f) = cx.try_global::<Popover>().and_then(|p| p.focus.clone()) else {
+        return log::warn!(target: "search", "rail search asked before its tile was drawn");
+    };
+    if cx.global::<Popover>().open {
+        return;
+    }
+    set_open(true, None, window, cx);
+    cx.global_mut::<Popover>()._watch = watch(&f, window, cx);
+}
+
+/// The tile, `PopoverTrigger`: a click clears the lock and toggles the popover.
 pub fn tile(window: &mut Window, cx: &mut App) -> AnyElement {
     if !cx.has_global::<Popover>() {
         cx.set_global(Popover::default());
@@ -149,6 +161,7 @@ pub fn tile(window: &mut Window, cx: &mut App) -> AnyElement {
     let handles = f.clone();
     let tile = super::tile(ID, label, IconName::Search.svg(), open, window, cx)
         .on_click(move |_, window, cx| {
+            search::lock::clear(Which::Rail, cx);
             let open = cx.global::<Popover>().open;
             set_open(!open, Some(handles.trigger.clone()), window, cx);
             if !open {

@@ -2,7 +2,11 @@
 
 use gpui::App;
 
-use super::{Which, of, of_mut, run};
+use super::{
+    Options, Which,
+    lock::{self, Lock},
+    of, of_mut, run,
+};
 use crate::sessions::{
     Sessions,
     group::{self, Project, Recent, Session},
@@ -75,23 +79,43 @@ fn reconcile(selection: &[String], known: &[Project]) -> Vec<String> {
     next
 }
 
-/// `selectedProjectSessionIds`: sorted unique ids of the selected projects' tasks; none for all.
-pub(super) fn scope(selection: Option<&[String]>, cx: &App) -> Option<Vec<String>> {
-    let selection = selection?;
+/// `selectedProjectSessionIds`: the group's ids, else the selected projects' (the lock's own as a fallback).
+pub(super) fn scope(o: &Options, cx: &App) -> Option<Vec<String>> {
+    if let Some(Lock::Group { ids, .. }) = &o.lock {
+        return Some(ids.clone());
+    }
+    let selection = o.projects.as_deref()?;
     let mut ids: Vec<String> = known_of(cx)
         .iter()
         .filter(|p| selected(Some(selection), &p.key))
         .flat_map(|p| p.sessions.iter().map(|s| s.id.clone()))
         .collect();
+    let mut chosen: Vec<String> = selection
+        .iter()
+        .filter_map(|k| compare(k, PLATFORM))
+        .collect();
+    chosen.sort();
+    chosen.dedup();
+    if let Some(Lock::Project {
+        key, ids: locked, ..
+    }) = &o.lock
+        && ids.is_empty()
+        && chosen.len() == 1
+        && selected(Some(selection), key)
+    {
+        ids = locked.clone();
+    }
     ids.sort();
     ids.dedup();
     Some(ids)
 }
 
-/// A read landed: each selection keeps only known projects, then each search follows its scope.
+/// A read landed: a lock may let go, a selection keeps known projects; each search follows its scope.
 pub fn loaded(cx: &mut App) {
     for w in [Which::Inline, Which::Rail] {
-        if let Some(selection) = of(w, cx).options.projects.clone() {
+        if of(w, cx).options.lock.is_some() {
+            lock::released(w, cx);
+        } else if let Some(selection) = of(w, cx).options.projects.clone() {
             let next = reconcile(&selection, known_of(cx));
             if next != selection {
                 log::info!(target: "search", "{w:?} project filter {} -> {} projects", selection.len(), next.len());

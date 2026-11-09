@@ -178,6 +178,17 @@ defines scope and what 1:1 means.
   `search/stick.rs` is `pinSearch`: while a query runs the row's prepaint offsets it to the
   scroller's top (gpui has no `position: sticky`), and the content after it paints and hits
   under a content mask that starts at the row's bottom, as the clip-path effect clips.
+  `search/lock.rs` is `requestConversationSearch` with the lock it brings. The project menu's
+  Search and the dialogues' (`sessions/dialogue.rs`, `SessionGroupNode`'s header: a Tab stop,
+  its menu on a right click, the menu key or Shift+F10 under its left edge) lock the inline
+  search, and the rail's while its view shows (`isCollapsed`), to a project (`[key]` selected,
+  its own ids while none is known) or a task group (sorted ids, counted as a filter). The field
+  takes focus; the inline row shows the chip (`search/chip.rs`), whose X is `clearLock`, as the
+  rail tile's click is. The options disable the project rows and Reset keeps the locked project.
+  A project hidden or not known lets the lock go. While a menu's search opens with no query,
+  `scroll.rs` freezes the list at the top until a press outside the search lifts (a press past
+  an open menu counts unless the menu chose) or a Tab stop outside it takes focus (`focusin`;
+  the root's focus is not a Tab stop, as `body` is not).
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it

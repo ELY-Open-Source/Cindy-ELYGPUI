@@ -297,3 +297,25 @@ fn the_rail_menu_is_a_popper_to_the_inline_search(cx: &mut TestAppContext) {
     assert_eq!(query(cx, Which::Inline), "plan");
     assert!(open(cx));
 }
+
+#[gpui::test]
+fn a_request_opens_the_rail_popover_locked_and_the_tile_unlocks(cx: &mut TestAppContext) {
+    use crate::sessions::search::lock::{Lock, request};
+    let (_dir, cx) = rail(cx);
+    let scope = Lock::Group {
+        name: "Chat".into(),
+        ids: vec!["t".into()],
+    };
+    cx.update(|window, cx| request(scope, window, cx));
+    cx.run_until_parked();
+    assert!(open(cx) && focused_field(cx));
+    let locked = |cx: &mut VisualTestContext| {
+        cx.update(|_, cx| search::of(Which::Rail, cx).options.lock.is_some())
+    };
+    assert!(locked(cx));
+    cx.simulate_input("o");
+    wait(cx, 1000);
+    assert_eq!(found(cx), ["t"], "kept to the group");
+    click(cx, "rail-search");
+    assert!(!open(cx) && !locked(cx));
+}

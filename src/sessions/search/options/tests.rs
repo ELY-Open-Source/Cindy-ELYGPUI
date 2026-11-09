@@ -147,6 +147,7 @@ fn a_project_choice_counts_and_names_its_projects(cx: &mut TestAppContext) {
             super::projects_label(
                 &crate::sessions::search::of(crate::sessions::search::Which::Inline, cx).options,
                 t,
+                cx,
             )
         })
     };
