@@ -327,9 +327,3 @@ pub fn binary_name(token: &str) -> String {
     let base = basename(token);
     if base.is_empty() { token } else { base }.to_lowercase()
 }
-
-/// `readNonEmptyString` on a JSON value.
-pub fn non_empty(value: Option<&crate::rich_answer::js::Js>) -> Option<&str> {
-    let text = js_trim(value?.str()?);
-    (!text.is_empty()).then_some(text)
-}

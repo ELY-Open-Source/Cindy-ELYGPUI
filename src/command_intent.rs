@@ -10,9 +10,12 @@ mod shell;
 mod single;
 mod tools;
 
-use shell::{basename, binary_name, non_empty, split_top_level, strip_prefix_tokens, tokenize};
+use shell::{basename, binary_name, split_top_level, strip_prefix_tokens, tokenize};
 
-use crate::{rich_answer::js::Js, theme_import::color::js_trim};
+use crate::{
+    rich_answer::js::{Js, non_empty},
+    theme_import::color::js_trim,
+};
 
 /// `CommandIntent`: the action's name as Cindy spells it, with its target and path.
 #[derive(Clone, Debug, PartialEq)]
@@ -44,7 +47,7 @@ impl Intent {
 }
 
 /// `basenameRemotePath(file) || file`.
-fn base_or(file: &str) -> &str {
+pub fn base_or(file: &str) -> &str {
     let base = basename(file);
     if base.is_empty() { file } else { base }
 }

@@ -55,6 +55,7 @@ try {
     "export { projectMcpAppContent } from '@cindy/maker-shared/mcp-apps';",
     "export * as commandIntent from '../../../packages/maker-shared/src/commandIntent';",
     "export { normalizeDisplayCommand } from '@cindy/maker-shared/command-display';",
+    "export * as toolUse from '@cindy/maker-shared/tool-use-descriptor';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
@@ -66,7 +67,7 @@ try {
     alias: { '@': path.join(tmp, src, 'renderer'), electron: electronStub },
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, normalizeDisplayCommand, toolUse } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -344,6 +345,26 @@ try {
     actions: commandCases.actions.map((a) => [a, ci.commandIntentFromActions(a) ?? null]),
     intents: commandCases.intents.map((args) => [args, ci.commandIntentsFromActions(...args)]),
     display: commandCases.display.map((c) => [c, normalizeDisplayCommand(c)]),
+  });
+
+  // describeToolUse, kept to the fields the row label reads; a cut pair shows as U+FFFD.
+  const toolDir = path.join(fixtures, 'tool-use');
+  const toolCases = JSON.parse(fs.readFileSync(path.join(toolDir, 'cases.json'), 'utf8'));
+  const labelFields = {
+    command: ['description', 'command', 'intent'], file: ['action', 'fileName'], fileChange: ['changes'],
+    search: ['pattern'], web: ['mode', 'target'], todo: [], task: ['description'],
+    mcp: ['serverLabel', 'toolLabel'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
+  };
+  const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
+  const labelled = (d) => ({
+    kind: d.kind, toolName: d.toolName, ...pick(d, labelFields[d.kind]),
+    ...(d.kind === 'fileChange' ? { changes: d.changes.map((c) => pick(c, ['action', 'fileName', 'moveFileName'])) } : {}),
+  });
+  write(path.join(toolDir, 'expected.json'), {
+    describe: toolCases.describeToolUse.map(([name, input]) => [name, input, labelled(toolUse.describeToolUse(name, input ?? undefined))]),
+    parse: toolCases.parseToolName.map(([name]) => [name, toolUse.parseToolName(name)]),
+    truncate: toolCases.truncateToolText.map(([text, max]) => [text, max, toolUse.truncateToolText(text, max).toWellFormed()]),
+    humanize: toolCases.humanizeToolToken.map(([token]) => [token, toolUse.humanizeToolToken(token)]),
   });
 
   const full = execFileSync('git', ['-C', cindy, 'rev-parse', `${commit}^{commit}`]).toString().trim();

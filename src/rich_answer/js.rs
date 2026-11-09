@@ -322,6 +322,12 @@ pub fn string(value: Option<&Js>) -> String {
     })
 }
 
+/// `readNonEmptyString`: a string, trimmed, when something is left.
+pub fn non_empty(value: Option<&Js>) -> Option<&str> {
+    let text = crate::theme_import::color::js_trim(value?.str()?);
+    (!text.is_empty()).then_some(text)
+}
+
 /// The UTF-16 length JavaScript gives a string.
 pub fn utf16_len(text: &str) -> usize {
     text.encode_utf16().count()

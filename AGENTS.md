@@ -98,6 +98,9 @@ defines scope and what 1:1 means.
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.
   Golden `tests/fixtures/command-intent` holds the literal inputs of Cindy's own tests, run
   through Cindy's functions by `sync-golden.mjs`.
+  `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`,
+  `humanizeToolToken`, `parseMessageToolUse`'s gateway unwrap), kept to the fields the row
+  label reads; golden `tests/fixtures/tool-use` projects Cindy's descriptor to them.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the
   `Router` global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered
   entry needs 13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the

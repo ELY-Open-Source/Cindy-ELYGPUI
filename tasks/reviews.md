@@ -285,3 +285,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`.
 - Fixed: an escaped astral character marks the word as having an unquoted literal; five
   surrogate cases join the display golden.
 - Round 2: PASS.
+
+## 8.8b2 The tool descriptor
+- Round 1: PASS.

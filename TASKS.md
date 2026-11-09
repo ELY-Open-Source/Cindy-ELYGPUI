@@ -253,8 +253,10 @@ listed in `tasks/done.md`.
       `formatToolRowText` with `createLocalizedToolRowWording`, golden from Cindy's functions
         - [x] 8.8b1 `commandIntent.ts`: `commandIntentFromCommand` and `commandIntentFromActions`
           over `commandDisplay.ts`'s `normalizeDisplayCommand`
-        - [ ] 8.8b2 `describeToolUse` with `parseToolName`, `truncateToolText` and the file
-          paths it reads (`basenameRemotePath`, `parseMessageToolUse`)
+        - [x] 8.8b2 `describeToolUse` with `parseToolName`, `truncateToolText`,
+          `humanizeToolToken` and `parseMessageToolUse`'s gateway unwrap; the descriptor keeps
+          the fields the row label reads (details, paths, diffs and created paths come with
+          the chat view, 9.0)
         - [ ] 8.8b3 `formatToolRowText`, `formatIslandToolDetail` and the localized wording
           (`agentActionVerbKeys.ts`); the candidates' `activity` as the IPC makes it
     - [ ] 8.8c `InterruptedTasksResumeDialog`: once per window and owner after the load, the
