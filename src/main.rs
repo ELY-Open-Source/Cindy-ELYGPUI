@@ -40,6 +40,7 @@ mod plan_todos;
 mod preferences;
 mod press;
 mod region;
+mod render_items;
 mod rich_answer;
 mod router;
 mod session_owner;

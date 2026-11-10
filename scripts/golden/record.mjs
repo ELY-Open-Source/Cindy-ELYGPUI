@@ -27,12 +27,12 @@ export async function run() {
 }
 `;
 
-// The renderer's modules import styles, fonts and `?url` files; none of them runs here.
+// The renderer's modules import styles, fonts, pictures and `?url` files; none of them runs here.
 const assetKinds = ['.css', '.woff', '.woff2', '.ttf', '.png', '.svg', '.jpg', '.webp', '.gif', '.mp3', '.wav', '.mp4', '.webm', '.ico'];
 const queried = {
   name: 'queried',
   setup(build) {
-    build.onResolve({ filter: /\?(url|raw|worker)/ }, (args) => ({ path: args.path, namespace: 'queried' }));
+    build.onResolve({ filter: /\?(url|raw|worker)|\.(png|jpg|svg|webp|gif)$/ }, (args) => ({ path: args.path, namespace: 'queried' }));
     build.onLoad({ filter: /.*/, namespace: 'queried' }, () => ({ contents: 'export default "";' }));
   },
 };

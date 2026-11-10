@@ -1,7 +1,7 @@
 //! `AgentActionRow.tsx`'s `extractToolResultMedia`: the media a tool result's JSON names.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "`buildRenderItems` reads them in 9.4c")
+    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
 )]
 
 use std::collections::HashSet;
@@ -195,4 +195,4 @@ pub fn dedupe_by_url(media: Vec<Media>) -> Vec<Media> {
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

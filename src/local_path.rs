@@ -1,7 +1,7 @@
 //! `localPathResolver.ts`'s joins: a tool's path made absolute against the task's folder.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "`buildRenderItems` reads them in 9.4c")
+    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
 )]
 
 use std::borrow::Cow;

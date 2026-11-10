@@ -1,7 +1,7 @@
 //! `messageRender.ts`'s plan timeline: the plan sessions a transcript holds and the latest one.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "`buildRenderItems` reads them in 9.4c")
+    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
 )]
 
 use std::sync::LazyLock;
@@ -142,9 +142,9 @@ fn source_client_id(message: &Js) -> &str {
 }
 
 /// `buildToolResultLookup`.
-fn result_lookup(messages: &[Js]) -> IndexMap<&str, &str> {
+fn result_lookup<'a>(messages: &[&'a Js]) -> IndexMap<&'a str, &'a str> {
     let mut out = IndexMap::new();
-    for message in messages {
+    for &message in messages {
         let Some(id) = tool_use_id(message).filter(|_| is_tool_result(message)) else {
             continue;
         };
@@ -254,7 +254,10 @@ struct Session {
 }
 
 /// `findMessageTodoInsertions`: each plan session's card by its last row's index; `Err` is a throw.
-pub fn insertions(messages: &[Js], key_prefix: &str) -> Result<IndexMap<usize, Insertion>, String> {
+pub fn insertions(
+    messages: &[&Js],
+    key_prefix: &str,
+) -> Result<IndexMap<usize, Insertion>, String> {
     let results = result_lookup(messages);
     let mut sessions: Vec<Session> = Vec::new();
     let mut last_by_source: IndexMap<Source, usize> = IndexMap::new();
@@ -279,7 +282,7 @@ pub fn insertions(messages: &[Js], key_prefix: &str) -> Result<IndexMap<usize, I
             previous.is_some_and(|p| p.todos.iter().all(|t| t.status == Status::Completed));
         let targets = || tasks::targets_existing(message, result, &task_state);
         let continues_completed = source == Source::Task && all_done && targets();
-        let sealed = previous.is_some_and(|p| seal(&messages[p.last]).is_some());
+        let sealed = previous.is_some_and(|p| seal(messages[p.last]).is_some());
         let crosses = previous.is_some_and(|p| last_user > p.user_boundary)
             && !(source == Source::Task && targets());
         let starts_new =
@@ -321,10 +324,7 @@ pub fn insertions(messages: &[Js], key_prefix: &str) -> Result<IndexMap<usize, I
             Some(Js::Num(n)) => Some(*n),
             _ => None,
         };
-        let key = format!(
-            "{key_prefix}-{}",
-            source_client_id(&messages[session.first])
-        );
+        let key = format!("{key_prefix}-{}", source_client_id(messages[session.first]));
         let insertion = Insertion {
             key,
             todos: session.todos,
@@ -343,7 +343,7 @@ pub fn insertions(messages: &[Js], key_prefix: &str) -> Result<IndexMap<usize, I
 
 /// `getLatestMessageTodoState`; `incomplete` is `taskHistoryMayBeIncomplete`.
 pub fn latest_state(
-    messages: &[Js],
+    messages: &[&Js],
     key_prefix: &str,
     incomplete: bool,
 ) -> Result<LatestState, String> {
@@ -355,12 +355,12 @@ pub fn latest_state(
         .max_by_key(|(index, _)| *index)
         .unzip();
     let task_window_resolved = latest_plan.is_none_or(|at| {
-        plan_source(tool_name(&messages[at])) != Some(Source::Task)
+        plan_source(tool_name(messages[at])) != Some(Source::Task)
             || window::is_resolved(messages, at, incomplete)
     });
     let belongs = latest_index == latest_plan && task_window_resolved;
     let clears = latest_plan.is_some_and(|at| {
-        parse::is_explicit_clear(&messages[at]) || window::latest_task_event_clears(messages, at)
+        parse::is_explicit_clear(messages[at]) || window::latest_task_event_clears(messages, at)
     });
     let index = |at: Option<usize>| at.map_or(-1, |at| at as i64);
     Ok(LatestState {
@@ -373,4 +373,4 @@ pub fn latest_state(
 }
 
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;

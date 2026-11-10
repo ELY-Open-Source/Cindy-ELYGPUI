@@ -119,7 +119,7 @@ fn media_source(node: &Node) -> Option<String> {
 /// `richAnswerMediaSources`: what the component blocks show, first seen first.
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "`buildRenderItems` reads it in 9.4c")
+    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
 )]
 pub fn media_sources(source: &str) -> Vec<String> {
     let mut urls: Vec<String> = Vec::new();

@@ -7,6 +7,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { ASSETS } from './golden/record.mjs';
+import { renderItems } from './golden/renderItems.mjs';
 import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
@@ -76,6 +77,7 @@ try {
     "export * as agentTask from '@cindy/maker-shared/agent-task';",
     "export { hasRichAnswer, richAnswerMediaSources } from '@cindy/maker-shared/rich-answer';",
     "export { extractToolResultMedia } from './renderer/components/chat/AgentActionRow';",
+    "export { buildRenderItems, isGeneratedFilesTurnSealed } from './renderer/components/chat/MessageStream';",
     "export * as generatedFiles from './renderer/lib/generatedFiles';",
     "export { resolveLocalPath, resolveToolFilePath } from './renderer/lib/localPathResolver';",
     "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
@@ -94,7 +96,7 @@ try {
     nodePaths, alias, ...ASSETS,
     define,
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -461,6 +463,7 @@ try {
     sourcePathCandidates: (name, raw) => toolUse.sourcePathCandidatesFromDescriptor(toolUse.describeToolUse(name, JSON.parse(raw))),
   } });
   console.log(`${yieldCases} turn yield cases`);
+  console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${await chatMessage(golden)} chat message cases`);
   console.log(`${await mergeMessages(golden)} merge cases`);
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);

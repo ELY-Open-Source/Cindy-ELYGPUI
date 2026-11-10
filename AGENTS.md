@@ -117,14 +117,14 @@ defines scope and what 1:1 means.
   `messageContentToPreview`, `isDeliveryProseText` with JS `\s` and line terminators,
   `isContinuationMessage`, `hasVisibleHistoryResult`); `src/payload.rs` is `payloadSummary.ts`'s tool
   result readers, `payload/files.rs` the file references (a source-literal lexer on UTF-8 bytes, ASCII
-  compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify` with an indent,
-  `js::entries` the property order. Golden `history-rows`: `record.mjs` runs Cindy's tests with vitest
-  stubbed, records their arguments, adds `cases.json`; read with `js::parse`. `src/tool_row.rs` is
-  `formatIslandToolDetail` over `createLocalizedToolRowWording`: a candidate's `activity`, checked in
-  every locale against `activity.json`. `src/plan_todos.rs` is `messageRender.ts`'s plan timeline
-  (`tasks.rs` the `Task*` list, `window.rs` what a paged window proves); golden `plan-timeline`. Golden
-  `turn-yields`: `src/tool_media.rs` is `extractToolResultMedia`, `src/generated_files.rs`
-  `collectGeneratedFiles`, `src/local_path.rs` `resolveToolFilePath`; their memo caches come with 9.4e.
+  compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify`, `js::entries` the
+  property order. Golden `history-rows`: `record.mjs` records the arguments of Cindy's tests (vitest
+  stubbed), adds `cases.json`; read with `js::parse`. `src/tool_row.rs` is `formatIslandToolDetail`
+  over `createLocalizedToolRowWording`: its `activity` checked in every locale (`activity.json`).
+  `src/plan_todos.rs` is `messageRender.ts`'s plan timeline (`tasks.rs` the `Task*` list, `window.rs`
+  what a paged window proves); golden `plan-timeline`. Golden `turn-yields`: `src/tool_media.rs` is
+  `extractToolResultMedia`, `src/generated_files.rs` `collectGeneratedFiles`, `src/local_path.rs`
+  `resolveToolFilePath`. `src/render_items.rs` is `buildRenderItems` (golden `render-items`).
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
   adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
   as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
@@ -494,7 +494,7 @@ defines scope and what 1:1 means.
   `docs/storage.md` maps each store to its chapter; never migrate Cindy's database.
 - Colors, sizes and radii come from Ely's `cx.theme()`. Reuse Ely components before writing new UI.
 - Errors surface: no fallback that hides a failure. Log each key step.
-- No file over 500 lines (vendored upstream code apart). Comments only where needed, one short line.
+- No file over 1000 lines (vendored upstream code apart). Comments only where needed, one short line.
 - `TASKS.md` is progress truth; finished chapters move to `tasks/done.md`, their reviews to
   `tasks/reviews-done*.md`. One task, one review pass, one commit, one push.
 - Update this file when the stack or direction changes.

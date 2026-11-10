@@ -114,12 +114,14 @@ listed in `tasks/done.md`.
     `extractDocumentArtifactMetadata`) over `createdPathsFromDescriptor`,
     `sourcePathCandidatesFromDescriptor` and `resolveToolFilePath`; golden.
     `extractRenderedMarkdownImageTargets` runs the Markdown pipeline and comes with 9.6
-  - [ ] 9.4c `buildRenderItems`: its filters, subagent rows left out, the result lookup, the plan
+  - [x] 9.4c `buildRenderItems`: its filters, subagent rows left out, the result lookup, the plan
     cards with their window check, the linear build (messages, tool segments with the gap split,
     agent tasks with their persisted status, tool media less what the turn shows inline) and the
     turn's end (generated files, hidden subagent media, `isGeneratedFilesTurnSealed`); golden.
     `turn_changes` comes with its store (18.0), ghost cards with 16.0, the Bot order with 14.0,
-    voice rows with 22.0, live task updates and durable subagent status with 10.0
+    voice rows with 22.0, live task updates and durable subagent status with 10.0, Markdown image
+    targets in the inline media with 9.6; the golden leaves out rows with a voice card or a Markdown
+    image (`later` in `scripts/golden/renderItems.mjs`) until then
   - [ ] 9.4d `messageWorkGroups.ts` over 9.1b's grouping: the item adapter (`renderItemStartMs`,
     `renderItemEndMs`, `messageTs`, `isCompletedAssistantMessage`, the work group it makes),
     `collectTurnFinalAssistantClientIds`, `assistantHasFollowingUserBoundary`, the first and last
@@ -127,7 +129,8 @@ listed in `tasks/done.md`.
   - [ ] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
     calls it for a ready view: chunks built by 9.4c and grouped by 9.4d, placeholders, deferred
     work, unique keys; the routed task's items held for the rows of 9.5 to 9.14; the memo caches of
-    9.4b's readers (`getToolResultMetadata`'s LRU, `collectCachedGeneratedFiles`)
+    9.4b's readers (`getToolResultMetadata`'s LRU, `collectCachedGeneratedFiles`); the store's `Rc`
+    rows reach 9.4a to 9.4c's readers, which take `&Js` rows, without a copy of a row
 - [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
@@ -137,7 +140,8 @@ listed in `tasks/done.md`.
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the
   copy and selection behaviour; `repairStreamingMarkdown` and the streaming chunks
   (`streamingMarkdownChunks.ts`) for rows still being written;
-  `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
+  `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads (its
+  golden then takes rows with a Markdown image)
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
 - [ ] 9.8 Math: `remark-math` with `remarkStrictInlineMath` and `math-markdown`, drawn as KaTeX
@@ -270,6 +274,7 @@ listed in `tasks/done.md`.
 
 - [ ] 22.0 Expand from Cindy's code, with the Windows and Linux first-close prompt and close behavior
   (`mainWindowCloseBehavior.ts`, `windowBehavior.ts`), which hide to the tray
+  and `isVisibleVoiceCallMessage` in 9.4c's first filter (its golden then takes voice rows)
 
 ## 23. Distribution
 

@@ -75,7 +75,7 @@ fn shown(a: &Artifact) -> Js {
     ])
 }
 
-fn file(f: &File) -> Js {
+pub fn file(f: &File) -> Js {
     let source = if f.from_command { "command" } else { "tool" };
     object(vec![
         ("path", Some(text(&f.path))),
@@ -93,7 +93,8 @@ fn file(f: &File) -> Js {
 #[test]
 fn generated_files_match_cindys() {
     yields("collectGeneratedFiles", |args| {
-        let files = collect(args[0].arr().unwrap(), args[1].str().unwrap());
+        let rows: Vec<&Js> = args[0].arr().unwrap().iter().collect();
+        let files = collect(&rows, args[1].str().unwrap());
         Js::Arr(files.iter().map(file).collect())
     });
 }

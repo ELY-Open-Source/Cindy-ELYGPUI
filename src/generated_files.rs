@@ -1,7 +1,7 @@
 //! `generatedFiles.ts`'s `collectGeneratedFiles`: the files a turn's tool calls made.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "`buildRenderItems` reads them in 9.4c")
+    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
 )]
 
 use std::collections::{HashMap, HashSet};
@@ -165,10 +165,10 @@ fn call<'a>(row: &'a Js, results: &HashMap<&'a str, &'a str>) -> Option<Call<'a>
     })
 }
 
-fn calls(messages: &[Js]) -> Vec<Call<'_>> {
+fn calls<'a>(messages: &[&'a Js]) -> Vec<Call<'a>> {
     let mut results = HashMap::new();
-    let answers = |row: &&Js| text(row, "role") == Some("tool_result");
-    for row in messages.iter().filter(answers) {
+    let answers = |row: &&&Js| text(row, "role") == Some("tool_result");
+    for &row in messages.iter().filter(answers) {
         let content = row.obj().and_then(|o| o.get("content")?.str());
         if let (Some(id), Some(content)) = (text(row, "toolUseId"), content) {
             results.insert(id, content);
@@ -181,7 +181,7 @@ fn calls(messages: &[Js]) -> Vec<Call<'_>> {
 }
 
 /// `collectGeneratedFiles`: new files in order, one per path.
-pub fn collect(messages: &[Js], working_dir: &str) -> Vec<File> {
+pub fn collect(messages: &[&Js], working_dir: &str) -> Vec<File> {
     let calls = calls(messages);
     let mut turn = Turn {
         dir: working_dir,

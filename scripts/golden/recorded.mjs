@@ -7,12 +7,13 @@ import { record } from './record.mjs';
 const shared = 'packages/maker-shared/src/__tests__';
 const desktop = 'apps/desktop/src';
 
-/** `tests`: test file to `{ specifier: [export names] }`; `fns`: the functions run. */
-export async function recorded({ esbuild, tmp, nodePaths, alias, define, fixtures, write, name, tests, fns }) {
+/** `tests`: test file to `{ specifier: [export names] }`; `fns`: the functions run; `keep` filters inputs. */
+export async function recorded({ esbuild, tmp, nodePaths, alias, define, fixtures, write, name, tests, fns, keep }) {
   const dir = path.join(fixtures, name);
   const cases = JSON.parse(fs.readFileSync(path.join(dir, 'cases.json'), 'utf8'));
   const inputs = Object.fromEntries(Object.keys(fns).map((fn) => [fn, new Map()]));
   const add = (fn, args) => {
+    if (keep && !keep(fn, args)) return;
     const json = JSON.stringify(args);
     // Rust strings hold no lone surrogate.
     if (json !== undefined && !/\\ud[89a-f]/i.test(json)) inputs[fn].set(json, JSON.parse(json));

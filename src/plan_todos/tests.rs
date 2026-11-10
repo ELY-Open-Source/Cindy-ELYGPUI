@@ -12,7 +12,7 @@ fn object(fields: Vec<(&str, Option<Js>)>) -> Js {
     Js::Obj(Obj::from_iter(kept))
 }
 
-fn todos(list: &[Todo]) -> Js {
+pub fn todos(list: &[Todo]) -> Js {
     let todo = |t: &Todo| {
         let status = match t.status {
             Status::Pending => "pending",
@@ -54,13 +54,13 @@ fn insertion(i: &Insertion) -> Js {
 }
 
 /// `messages` and the options object's `keyPrefix` and `taskHistoryMayBeIncomplete`.
-fn arguments(args: &Js) -> (&[Js], &str, bool) {
+fn arguments(args: &Js) -> (Vec<&Js>, &str, bool) {
     let args = args.arr().unwrap();
     let options = args.get(1).and_then(Js::obj);
     let prefix = options.and_then(|o| o.get("keyPrefix")).and_then(Js::str);
     let incomplete = options.and_then(|o| o.get("taskHistoryMayBeIncomplete"));
     (
-        args[0].arr().unwrap(),
+        args[0].arr().unwrap().iter().collect(),
         prefix.unwrap_or("todo"),
         incomplete == Some(&Js::Bool(true)),
     )
@@ -98,7 +98,7 @@ fn insertions_match_cindys() {
         let entry =
             |(index, i): (usize, Insertion)| Js::Arr(vec![Js::Num(index as f64), insertion(&i)]);
         thrown(
-            insertions(messages, prefix).map(|all| Js::Arr(all.into_iter().map(entry).collect())),
+            insertions(&messages, prefix).map(|all| Js::Arr(all.into_iter().map(entry).collect())),
         )
     });
 }
@@ -107,7 +107,7 @@ fn insertions_match_cindys() {
 fn the_latest_state_matches_cindys() {
     golden("getLatestMessageTodoState", |args| {
         let (messages, prefix, incomplete) = arguments(args);
-        thrown(latest_state(messages, prefix, incomplete).map(|state| {
+        thrown(latest_state(&messages, prefix, incomplete).map(|state| {
             object(vec![
                 (
                     "insertion",
@@ -128,7 +128,7 @@ fn the_latest_state_matches_cindys() {
     });
     golden("findLatestMessageTodoInsertion", |args| {
         let (messages, prefix, incomplete) = arguments(args);
-        let state = latest_state(messages, prefix, incomplete);
+        let state = latest_state(&messages, prefix, incomplete);
         thrown(state.map(|state| state.insertion.as_ref().map_or(Js::Null, insertion)))
     });
 }

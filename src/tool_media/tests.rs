@@ -30,7 +30,7 @@ fn kind(kind: Kind) -> &'static str {
     }
 }
 
-fn shown(list: &[Media]) -> Js {
+pub fn shown(list: &[Media]) -> Js {
     let item = |m: &Media| {
         let model = m.model_file.as_ref().map(|model| {
             object(vec![

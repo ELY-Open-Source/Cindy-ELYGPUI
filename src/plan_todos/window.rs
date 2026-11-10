@@ -14,7 +14,7 @@ fn all_done(todos: &[Todo]) -> bool {
 }
 
 /// `latestTaskEventClearsPlan`: the latest task event leaves no task standing.
-pub fn latest_task_event_clears(messages: &[Js], latest: usize) -> bool {
+pub fn latest_task_event_clears(messages: &[&Js], latest: usize) -> bool {
     let results = result_lookup(messages);
     let last = &messages[latest];
     let last_result = result_of(&results, last);
@@ -54,7 +54,7 @@ pub fn latest_task_event_clears(messages: &[Js], latest: usize) -> bool {
 }
 
 /// `isTaskPlanWindowResolved`: every task event ties back to a visible create or list.
-pub fn is_resolved(messages: &[Js], latest: usize, has_earlier: bool) -> bool {
+pub fn is_resolved(messages: &[&Js], latest: usize, has_earlier: bool) -> bool {
     let results = result_lookup(messages);
     let mut state = tasks::State::new();
     let mut unresolved: IndexMap<String, TaskStatus> = IndexMap::new();
