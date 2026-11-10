@@ -157,3 +157,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   direction).
 - Round 3: PASS, on the version corrected while the round ran: the first rewrite read the glyphs in
   the shaper's order, which runs from the right in right-to-left text.
+
+## 9.5h What a file looks like
+
+- Round 1: FAIL. P2: the MIME patterns' dot matched as Rust's does, so a CR between `opendocument`
+  and `text`, or `vnd` and `rar`, gave Document or Archive where Cindy gives file.
+- Fixed: `js_re::regex` refuses a bare dot; the patterns spell it as one UTF-16 unit that is no
+  line terminator. Twelve inputs added to the golden (CR, LF, U+2028, U+2029, an astral character,
+  a letter).
+- Round 2: PASS.

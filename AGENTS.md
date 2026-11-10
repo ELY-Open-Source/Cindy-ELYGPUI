@@ -169,19 +169,20 @@ defines scope and what 1:1 means.
   where the message is drawn, takes an ASCII host's broken `xn--` label unchecked, and Node, where the
   golden runs, reads a host through ada's older IDNA tables (`logs/review/9.5a-r1-url-engines.log`).
   Golden `url-boundary` holds the inputs of Cindy's tests and `cases.json`. `src/js_re.rs` turns a
-  JavaScript regex source without the `u` flag into a Rust regex. `src/deep_link.rs` is
-  `deepLinkSchemes.ts` and `deepLink.ts` for links read from text (the `cindy` and `xdt-maker` schemes,
-  `parse_session`, `parse_project`, `label_start`; a project link's lookahead is `project_ends`).
-  `src/linkify.rs` is `findLinkifyMatches`, ranges in bytes: no two kinds of link start at one place,
-  so its comparator is a sort by start. Golden `linkify`. `src/user_message.rs` is
-  `userMessageDisplayText.ts` (`orca`, `hook_group_context` with `captureImContext`'s group envelope,
-  `display_text` over 8.7's `forwarded::display_text`; the hook source is the stored `Js`) and
-  `collapse.rs` `mayExceedVisualLineThreshold` in UTF-16 units. Golden `user-message`.
-  `src/chat_quotes.rs` is maker-shared `chatQuotes.ts` (`format`, `segments`, `join_text`,
-  `strip_marker_lines`). `src/user_message/sent.rs` is the sent text of `UserMessage.tsx`: `tokens`
-  (`buildSentInlineTokens`, its ranges sorted by `js_sort`, since the comparator is no total order),
-  `pasted_plain` and `inline_plain` with `label` (`sentAgentReferenceDisplayLabel`), `text_starts`,
-  `within` (`projectSentRanges`) and `parts`, the command, mention and path split of
+  JavaScript regex source without the `u` flag into a Rust regex. It refuses a bare dot: a caller
+  spells the units JavaScript's dot takes. `src/deep_link.rs` is `deepLinkSchemes.ts` and `deepLink.ts`
+  for links read from text (the `cindy` and `xdt-maker` schemes, `parse_session`, `parse_project`,
+  `label_start`; a project link's lookahead is `project_ends`). `src/linkify.rs` is
+  `findLinkifyMatches`, ranges in bytes: no two kinds of link start at one place, so its comparator is
+  a sort by start. Golden `linkify`. `src/user_message.rs` is `userMessageDisplayText.ts` (`orca`,
+  `hook_group_context` with `captureImContext`'s group envelope, `display_text` over 8.7's
+  `forwarded::display_text`; the hook source is the stored `Js`) and `collapse.rs`
+  `mayExceedVisualLineThreshold` in UTF-16 units. Golden `user-message`. `src/chat_quotes.rs` is
+  maker-shared `chatQuotes.ts` (`format`, `segments`, `join_text`, `strip_marker_lines`).
+  `src/user_message/sent.rs` is the sent text of `UserMessage.tsx`: `tokens` (`buildSentInlineTokens`,
+  its ranges sorted by `js_sort`, since the comparator is no total order), `pasted_plain` and
+  `inline_plain` with `label` (`sentAgentReferenceDisplayLabel`), `text_starts`, `within`
+  (`projectSentRanges`) and `parts`, the command, mention and path split of
   `renderContentWithoutPastedText`. Golden `sent-text`: `scripts/golden/sentText.mjs` reads `parts` off
   Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`. `src/link_open.rs`
   is `useLinkOpenPreference.ts` (`is_local`, golden `link-open`; `preference` with its memo per kind
@@ -192,7 +193,9 @@ defines scope and what 1:1 means.
   `openURL:configuration:completionHandler:` with `activates`; Windows (`shell.rs`) runs
   `ShellExecuteEx` `open` on a COM thread with the quoted `escape`, Chromium's
   `EscapeExternalHandlerValue`. Native code is checked in a scratch crate
-  (`logs/review/9.5f-r1-native-*.log`).
+  (`logs/review/9.5f-r1-native-*.log`). `src/file_presentation.rs` is maker-shared
+  `filePresentation.ts` (`kind` is `getFileVisualKind`, `glyph` `FILE_VISUAL_GLYPHS`; golden
+  `file-presentation`).
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view

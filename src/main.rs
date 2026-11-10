@@ -19,6 +19,7 @@ mod deep_link;
 mod dev_profile;
 mod dock_icon;
 mod file_path_policy;
+mod file_presentation;
 mod generated_files;
 mod history_render;
 mod history_view;

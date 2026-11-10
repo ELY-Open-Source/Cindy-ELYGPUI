@@ -89,6 +89,10 @@ export const SENT_TEXT_TESTS = {
   [`${shared}/chatQuotes.test.ts`]: { '../chatQuotes': ['formatQuoteForSend', 'parseChatQuoteSegments', 'stripChatQuoteMarkerLines'] },
 };
 
+export const FILE_KIND_TESTS = {
+  'packages/maker-shared/src/filePresentation.test.ts': { './filePresentation': ['getFileVisualKind'] },
+};
+
 export const LINK_OPEN_TESTS = {
   [`${desktop}/renderer/hooks/__tests__/useLinkOpenPreference.test.ts`]: { '../useLinkOpenPreference': ['isLocalOpenUrl'] },
 };

@@ -1,0 +1,2880 @@
+{
+"getFileVisualKind": [
+[
+{
+"name": "a.ts"
+}
+],
+[
+{
+"name": "a.tsx"
+}
+],
+[
+{
+"name": "a.js"
+}
+],
+[
+{
+"name": "a.jsx"
+}
+],
+[
+{
+"name": "a.mjs"
+}
+],
+[
+{
+"name": "a.cjs"
+}
+],
+[
+{
+"name": "a.py"
+}
+],
+[
+{
+"name": "a.rb"
+}
+],
+[
+{
+"name": "a.go"
+}
+],
+[
+{
+"name": "a.rs"
+}
+],
+[
+{
+"name": "a.java"
+}
+],
+[
+{
+"name": "a.kt"
+}
+],
+[
+{
+"name": "a.kts"
+}
+],
+[
+{
+"name": "a.swift"
+}
+],
+[
+{
+"name": "a.c"
+}
+],
+[
+{
+"name": "a.h"
+}
+],
+[
+{
+"name": "a.cpp"
+}
+],
+[
+{
+"name": "a.cc"
+}
+],
+[
+{
+"name": "a.cxx"
+}
+],
+[
+{
+"name": "a.hpp"
+}
+],
+[
+{
+"name": "a.cs"
+}
+],
+[
+{
+"name": "a.php"
+}
+],
+[
+{
+"name": "a.dart"
+}
+],
+[
+{
+"name": "a.lua"
+}
+],
+[
+{
+"name": "a.scala"
+}
+],
+[
+{
+"name": "a.sc"
+}
+],
+[
+{
+"name": "a.groovy"
+}
+],
+[
+{
+"name": "a.gradle"
+}
+],
+[
+{
+"name": "a.pl"
+}
+],
+[
+{
+"name": "a.pm"
+}
+],
+[
+{
+"name": "a.r"
+}
+],
+[
+{
+"name": "a.hs"
+}
+],
+[
+{
+"name": "a.proto"
+}
+],
+[
+{
+"name": "a.sh"
+}
+],
+[
+{
+"name": "a.bash"
+}
+],
+[
+{
+"name": "a.zsh"
+}
+],
+[
+{
+"name": "a.ps1"
+}
+],
+[
+{
+"name": "a.yaml"
+}
+],
+[
+{
+"name": "a.yml"
+}
+],
+[
+{
+"name": "a.toml"
+}
+],
+[
+{
+"name": "a.ini"
+}
+],
+[
+{
+"name": "a.json"
+}
+],
+[
+{
+"name": "a.jsonc"
+}
+],
+[
+{
+"name": "a.xml"
+}
+],
+[
+{
+"name": "a.html"
+}
+],
+[
+{
+"name": "a.htm"
+}
+],
+[
+{
+"name": "a.xhtml"
+}
+],
+[
+{
+"name": "a.vue"
+}
+],
+[
+{
+"name": "a.svelte"
+}
+],
+[
+{
+"name": "a.css"
+}
+],
+[
+{
+"name": "a.scss"
+}
+],
+[
+{
+"name": "a.sass"
+}
+],
+[
+{
+"name": "a.less"
+}
+],
+[
+{
+"name": "a.sql"
+}
+],
+[
+{
+"name": "a.graphql"
+}
+],
+[
+{
+"name": "a.gql"
+}
+],
+[
+{
+"name": "a.diff"
+}
+],
+[
+{
+"name": "a.patch"
+}
+],
+[
+{
+"name": "a.csproj"
+}
+],
+[
+{
+"name": "a.sln"
+}
+],
+[
+{
+"name": "a.shader"
+}
+],
+[
+{
+"name": "a.unityproj"
+}
+],
+[
+{
+"name": "a.asmdef"
+}
+],
+[
+{
+"name": "a.dockerfile"
+}
+],
+[
+{
+"name": "a.makefile"
+}
+],
+[
+{
+"name": "a.mk"
+}
+],
+[
+{
+"name": "a.md"
+}
+],
+[
+{
+"name": "a.mdx"
+}
+],
+[
+{
+"name": "a.markdown"
+}
+],
+[
+{
+"name": "a.mdown"
+}
+],
+[
+{
+"name": "a.mkdn"
+}
+],
+[
+{
+"name": "a.mkd"
+}
+],
+[
+{
+"name": "a.txt"
+}
+],
+[
+{
+"name": "a.text"
+}
+],
+[
+{
+"name": "a.log"
+}
+],
+[
+{
+"name": "a.rst"
+}
+],
+[
+{
+"name": "a.pdf"
+}
+],
+[
+{
+"name": "a.doc"
+}
+],
+[
+{
+"name": "a.docx"
+}
+],
+[
+{
+"name": "a.rtf"
+}
+],
+[
+{
+"name": "a.odt"
+}
+],
+[
+{
+"name": "a.pages"
+}
+],
+[
+{
+"name": "a.xls"
+}
+],
+[
+{
+"name": "a.xlsx"
+}
+],
+[
+{
+"name": "a.xlsm"
+}
+],
+[
+{
+"name": "a.csv"
+}
+],
+[
+{
+"name": "a.tsv"
+}
+],
+[
+{
+"name": "a.ods"
+}
+],
+[
+{
+"name": "a.numbers"
+}
+],
+[
+{
+"name": "a.ppt"
+}
+],
+[
+{
+"name": "a.pptx"
+}
+],
+[
+{
+"name": "a.odp"
+}
+],
+[
+{
+"name": "a.key"
+}
+],
+[
+{
+"name": "a.png"
+}
+],
+[
+{
+"name": "a.jpg"
+}
+],
+[
+{
+"name": "a.jpeg"
+}
+],
+[
+{
+"name": "a.gif"
+}
+],
+[
+{
+"name": "a.webp"
+}
+],
+[
+{
+"name": "a.bmp"
+}
+],
+[
+{
+"name": "a.ico"
+}
+],
+[
+{
+"name": "a.tga"
+}
+],
+[
+{
+"name": "a.tif"
+}
+],
+[
+{
+"name": "a.tiff"
+}
+],
+[
+{
+"name": "a.svg"
+}
+],
+[
+{
+"name": "a.avif"
+}
+],
+[
+{
+"name": "a.heic"
+}
+],
+[
+{
+"name": "a.heif"
+}
+],
+[
+{
+"name": "a.mp3"
+}
+],
+[
+{
+"name": "a.m4a"
+}
+],
+[
+{
+"name": "a.wav"
+}
+],
+[
+{
+"name": "a.flac"
+}
+],
+[
+{
+"name": "a.ogg"
+}
+],
+[
+{
+"name": "a.aac"
+}
+],
+[
+{
+"name": "a.aiff"
+}
+],
+[
+{
+"name": "a.opus"
+}
+],
+[
+{
+"name": "a.mp4"
+}
+],
+[
+{
+"name": "a.mov"
+}
+],
+[
+{
+"name": "a.webm"
+}
+],
+[
+{
+"name": "a.mkv"
+}
+],
+[
+{
+"name": "a.avi"
+}
+],
+[
+{
+"name": "a.m4v"
+}
+],
+[
+{
+"name": "a.mpeg"
+}
+],
+[
+{
+"name": "a.mpg"
+}
+],
+[
+{
+"name": "a.zip"
+}
+],
+[
+{
+"name": "a.7z"
+}
+],
+[
+{
+"name": "a.rar"
+}
+],
+[
+{
+"name": "a.tar"
+}
+],
+[
+{
+"name": "a.gz"
+}
+],
+[
+{
+"name": "a.tgz"
+}
+],
+[
+{
+"name": "a.bz2"
+}
+],
+[
+{
+"name": "a.xz"
+}
+],
+[
+{
+"name": "a.zst"
+}
+],
+[
+{
+"name": "a.db"
+}
+],
+[
+{
+"name": "a.sqlite"
+}
+],
+[
+{
+"name": "a.sqlite3"
+}
+],
+[
+{
+"name": "a.realm"
+}
+],
+[
+{
+"name": "ts"
+}
+],
+[
+{
+"name": "tsx"
+}
+],
+[
+{
+"name": "js"
+}
+],
+[
+{
+"name": "dockerfile"
+}
+],
+[
+{
+"name": "Makefile"
+}
+],
+[
+{
+"name": "GEMFILE"
+}
+],
+[
+{
+"name": "rakefile"
+}
+],
+[
+{
+"name": "Procfile"
+}
+],
+[
+{
+"name": "Vagrantfile"
+}
+],
+[
+{
+"name": "Jenkinsfile"
+}
+],
+[
+{
+"name": "CMakeLists.txt"
+}
+],
+[
+{
+"name": ".gitignore"
+}
+],
+[
+{
+"name": ".gitattributes"
+}
+],
+[
+{
+"name": ".npmrc"
+}
+],
+[
+{
+"name": ".editorconfig"
+}
+],
+[
+{
+"name": ".env"
+}
+],
+[
+{
+"name": ".env."
+}
+],
+[
+{
+"name": ".env.local"
+}
+],
+[
+{
+"name": ".envx"
+}
+],
+[
+{
+"name": "x/.ENV.PROD"
+}
+],
+[
+{
+"name": "readme"
+}
+],
+[
+{
+"name": "README"
+}
+],
+[
+{
+"name": "License"
+}
+],
+[
+{
+"name": "licence"
+}
+],
+[
+{
+"name": "CHANGELOG"
+}
+],
+[
+{
+"name": "Notice"
+}
+],
+[
+{
+"name": "readme.md"
+}
+],
+[
+{
+"name": "readme.xyz"
+}
+],
+[
+{
+"name": "a.b.TS"
+}
+],
+[
+{
+"name": "a."
+}
+],
+[
+{
+"name": "a.."
+}
+],
+[
+{
+"name": "./a"
+}
+],
+[
+{
+"name": "dir/"
+}
+],
+[
+{
+"name": "dir\\"
+}
+],
+[
+{
+"name": "a/b\\c.PNG"
+}
+],
+[
+{
+"name": "a.İ"
+}
+],
+[
+{
+"name": "a.ſql"
+}
+],
+[
+{
+"name": "ΑΒΓ.PDF"
+}
+],
+[
+{
+"name": "a.pdf "
+}
+],
+[
+{
+"name": "a .pdf"
+}
+],
+[
+{
+"name": " a.pdf"
+}
+],
+[
+{
+"name": "a.tar.GZ"
+}
+],
+[
+{
+"name": ".ts"
+}
+],
+[
+{
+"name": "ts."
+}
+],
+[
+{
+"name": "."
+}
+],
+[
+{
+"name": ".."
+}
+],
+[
+{
+"name": "a.dockerfile"
+}
+],
+[
+{
+"name": "dockerfile.x"
+}
+],
+[
+{
+"name": "Makefile.am"
+}
+],
+[
+{
+"name": "a.MK"
+}
+],
+[
+{
+"name": "İ.txt"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "Image/PNG; charset=binary"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "audio/mpeg"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/plain; charset=utf-8"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.ms-excel"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.spreadsheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocumentXspreadsheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/csv"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/tab-separated-values"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "TEXT/CSV"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.ms-powerpoint"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/msword"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.text"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/rtf"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/json"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/xml"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/javascript"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/javascript"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/html"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/css"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/gzip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-tar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-7z-compressed"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vndXrar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-rar-compressed"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zipx"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "x-application/zip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.sqlite3"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-sqlite3"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/markdown"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/octet-stream"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": ""
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": " image/png "
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": " image/png "
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": ";image/png"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "image/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "IMAGE/x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "audio/x;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "video/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "texts/x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/PDF"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf2"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "image/png;;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "﻿image/png"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-excel-thing"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "presentation"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "msword"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "spreadsheet"
+}
+],
+[
+{
+"mimeType": "application/pdf"
+}
+],
+[
+{
+"mimeType": "Image/PNG; charset=binary"
+}
+],
+[
+{
+"mimeType": "audio/mpeg"
+}
+],
+[
+{
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"mimeType": "text/plain; charset=utf-8"
+}
+],
+[
+{
+"mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}
+],
+[
+{}
+],
+[
+{
+"name": "main.ts",
+"mimeType": "image/png"
+}
+],
+[
+{
+"name": "a.unknown",
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"name": "README",
+"mimeType": "application/zip"
+}
+],
+[
+{
+"name": "x\\README"
+}
+],
+[
+{
+"name": "x\\Dockerfile"
+}
+],
+[
+{
+"name": "a.png\\b"
+}
+],
+[
+{
+"name": "a/b.png\\c"
+}
+],
+[
+{
+"name": "x\\.env.local"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf; x=1"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/csv;x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zip; a=b"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/rtf ;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-sqlite3;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/json;charset=utf-8"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocumentXtext"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.text-template"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd-rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-tar "
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument\rtext"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument text"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument text"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument😀text"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument\ntext"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocument\rspreadsheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd\rrar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd😀rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd\nrar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vndxrar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocumentétext"
+}
+]
+],
+"glyph": [
+[
+{
+"name": "a.ts"
+}
+],
+[
+{
+"name": "a.tsx"
+}
+],
+[
+{
+"name": "a.js"
+}
+],
+[
+{
+"name": "a.jsx"
+}
+],
+[
+{
+"name": "a.mjs"
+}
+],
+[
+{
+"name": "a.cjs"
+}
+],
+[
+{
+"name": "a.py"
+}
+],
+[
+{
+"name": "a.rb"
+}
+],
+[
+{
+"name": "a.go"
+}
+],
+[
+{
+"name": "a.rs"
+}
+],
+[
+{
+"name": "a.java"
+}
+],
+[
+{
+"name": "a.kt"
+}
+],
+[
+{
+"name": "a.kts"
+}
+],
+[
+{
+"name": "a.swift"
+}
+],
+[
+{
+"name": "a.c"
+}
+],
+[
+{
+"name": "a.h"
+}
+],
+[
+{
+"name": "a.cpp"
+}
+],
+[
+{
+"name": "a.cc"
+}
+],
+[
+{
+"name": "a.cxx"
+}
+],
+[
+{
+"name": "a.hpp"
+}
+],
+[
+{
+"name": "a.cs"
+}
+],
+[
+{
+"name": "a.php"
+}
+],
+[
+{
+"name": "a.dart"
+}
+],
+[
+{
+"name": "a.lua"
+}
+],
+[
+{
+"name": "a.scala"
+}
+],
+[
+{
+"name": "a.sc"
+}
+],
+[
+{
+"name": "a.groovy"
+}
+],
+[
+{
+"name": "a.gradle"
+}
+],
+[
+{
+"name": "a.pl"
+}
+],
+[
+{
+"name": "a.pm"
+}
+],
+[
+{
+"name": "a.r"
+}
+],
+[
+{
+"name": "a.hs"
+}
+],
+[
+{
+"name": "a.proto"
+}
+],
+[
+{
+"name": "a.sh"
+}
+],
+[
+{
+"name": "a.bash"
+}
+],
+[
+{
+"name": "a.zsh"
+}
+],
+[
+{
+"name": "a.ps1"
+}
+],
+[
+{
+"name": "a.yaml"
+}
+],
+[
+{
+"name": "a.yml"
+}
+],
+[
+{
+"name": "a.toml"
+}
+],
+[
+{
+"name": "a.ini"
+}
+],
+[
+{
+"name": "a.json"
+}
+],
+[
+{
+"name": "a.jsonc"
+}
+],
+[
+{
+"name": "a.xml"
+}
+],
+[
+{
+"name": "a.html"
+}
+],
+[
+{
+"name": "a.htm"
+}
+],
+[
+{
+"name": "a.xhtml"
+}
+],
+[
+{
+"name": "a.vue"
+}
+],
+[
+{
+"name": "a.svelte"
+}
+],
+[
+{
+"name": "a.css"
+}
+],
+[
+{
+"name": "a.scss"
+}
+],
+[
+{
+"name": "a.sass"
+}
+],
+[
+{
+"name": "a.less"
+}
+],
+[
+{
+"name": "a.sql"
+}
+],
+[
+{
+"name": "a.graphql"
+}
+],
+[
+{
+"name": "a.gql"
+}
+],
+[
+{
+"name": "a.diff"
+}
+],
+[
+{
+"name": "a.patch"
+}
+],
+[
+{
+"name": "a.csproj"
+}
+],
+[
+{
+"name": "a.sln"
+}
+],
+[
+{
+"name": "a.shader"
+}
+],
+[
+{
+"name": "a.unityproj"
+}
+],
+[
+{
+"name": "a.asmdef"
+}
+],
+[
+{
+"name": "a.dockerfile"
+}
+],
+[
+{
+"name": "a.makefile"
+}
+],
+[
+{
+"name": "a.mk"
+}
+],
+[
+{
+"name": "a.md"
+}
+],
+[
+{
+"name": "a.mdx"
+}
+],
+[
+{
+"name": "a.markdown"
+}
+],
+[
+{
+"name": "a.mdown"
+}
+],
+[
+{
+"name": "a.mkdn"
+}
+],
+[
+{
+"name": "a.mkd"
+}
+],
+[
+{
+"name": "a.txt"
+}
+],
+[
+{
+"name": "a.text"
+}
+],
+[
+{
+"name": "a.log"
+}
+],
+[
+{
+"name": "a.rst"
+}
+],
+[
+{
+"name": "a.pdf"
+}
+],
+[
+{
+"name": "a.doc"
+}
+],
+[
+{
+"name": "a.docx"
+}
+],
+[
+{
+"name": "a.rtf"
+}
+],
+[
+{
+"name": "a.odt"
+}
+],
+[
+{
+"name": "a.pages"
+}
+],
+[
+{
+"name": "a.xls"
+}
+],
+[
+{
+"name": "a.xlsx"
+}
+],
+[
+{
+"name": "a.xlsm"
+}
+],
+[
+{
+"name": "a.csv"
+}
+],
+[
+{
+"name": "a.tsv"
+}
+],
+[
+{
+"name": "a.ods"
+}
+],
+[
+{
+"name": "a.numbers"
+}
+],
+[
+{
+"name": "a.ppt"
+}
+],
+[
+{
+"name": "a.pptx"
+}
+],
+[
+{
+"name": "a.odp"
+}
+],
+[
+{
+"name": "a.key"
+}
+],
+[
+{
+"name": "a.png"
+}
+],
+[
+{
+"name": "a.jpg"
+}
+],
+[
+{
+"name": "a.jpeg"
+}
+],
+[
+{
+"name": "a.gif"
+}
+],
+[
+{
+"name": "a.webp"
+}
+],
+[
+{
+"name": "a.bmp"
+}
+],
+[
+{
+"name": "a.ico"
+}
+],
+[
+{
+"name": "a.tga"
+}
+],
+[
+{
+"name": "a.tif"
+}
+],
+[
+{
+"name": "a.tiff"
+}
+],
+[
+{
+"name": "a.svg"
+}
+],
+[
+{
+"name": "a.avif"
+}
+],
+[
+{
+"name": "a.heic"
+}
+],
+[
+{
+"name": "a.heif"
+}
+],
+[
+{
+"name": "a.mp3"
+}
+],
+[
+{
+"name": "a.m4a"
+}
+],
+[
+{
+"name": "a.wav"
+}
+],
+[
+{
+"name": "a.flac"
+}
+],
+[
+{
+"name": "a.ogg"
+}
+],
+[
+{
+"name": "a.aac"
+}
+],
+[
+{
+"name": "a.aiff"
+}
+],
+[
+{
+"name": "a.opus"
+}
+],
+[
+{
+"name": "a.mp4"
+}
+],
+[
+{
+"name": "a.mov"
+}
+],
+[
+{
+"name": "a.webm"
+}
+],
+[
+{
+"name": "a.mkv"
+}
+],
+[
+{
+"name": "a.avi"
+}
+],
+[
+{
+"name": "a.m4v"
+}
+],
+[
+{
+"name": "a.mpeg"
+}
+],
+[
+{
+"name": "a.mpg"
+}
+],
+[
+{
+"name": "a.zip"
+}
+],
+[
+{
+"name": "a.7z"
+}
+],
+[
+{
+"name": "a.rar"
+}
+],
+[
+{
+"name": "a.tar"
+}
+],
+[
+{
+"name": "a.gz"
+}
+],
+[
+{
+"name": "a.tgz"
+}
+],
+[
+{
+"name": "a.bz2"
+}
+],
+[
+{
+"name": "a.xz"
+}
+],
+[
+{
+"name": "a.zst"
+}
+],
+[
+{
+"name": "a.db"
+}
+],
+[
+{
+"name": "a.sqlite"
+}
+],
+[
+{
+"name": "a.sqlite3"
+}
+],
+[
+{
+"name": "a.realm"
+}
+],
+[
+{
+"name": "ts"
+}
+],
+[
+{
+"name": "tsx"
+}
+],
+[
+{
+"name": "js"
+}
+],
+[
+{
+"name": "dockerfile"
+}
+],
+[
+{
+"name": "Makefile"
+}
+],
+[
+{
+"name": "GEMFILE"
+}
+],
+[
+{
+"name": "rakefile"
+}
+],
+[
+{
+"name": "Procfile"
+}
+],
+[
+{
+"name": "Vagrantfile"
+}
+],
+[
+{
+"name": "Jenkinsfile"
+}
+],
+[
+{
+"name": "CMakeLists.txt"
+}
+],
+[
+{
+"name": ".gitignore"
+}
+],
+[
+{
+"name": ".gitattributes"
+}
+],
+[
+{
+"name": ".npmrc"
+}
+],
+[
+{
+"name": ".editorconfig"
+}
+],
+[
+{
+"name": ".env"
+}
+],
+[
+{
+"name": ".env."
+}
+],
+[
+{
+"name": ".env.local"
+}
+],
+[
+{
+"name": ".envx"
+}
+],
+[
+{
+"name": "x/.ENV.PROD"
+}
+],
+[
+{
+"name": "readme"
+}
+],
+[
+{
+"name": "README"
+}
+],
+[
+{
+"name": "License"
+}
+],
+[
+{
+"name": "licence"
+}
+],
+[
+{
+"name": "CHANGELOG"
+}
+],
+[
+{
+"name": "Notice"
+}
+],
+[
+{
+"name": "readme.md"
+}
+],
+[
+{
+"name": "readme.xyz"
+}
+],
+[
+{
+"name": "a.b.TS"
+}
+],
+[
+{
+"name": "a."
+}
+],
+[
+{
+"name": "a.."
+}
+],
+[
+{
+"name": "./a"
+}
+],
+[
+{
+"name": "dir/"
+}
+],
+[
+{
+"name": "dir\\"
+}
+],
+[
+{
+"name": "a/b\\c.PNG"
+}
+],
+[
+{
+"name": "a.İ"
+}
+],
+[
+{
+"name": "a.ſql"
+}
+],
+[
+{
+"name": "ΑΒΓ.PDF"
+}
+],
+[
+{
+"name": "a.pdf "
+}
+],
+[
+{
+"name": "a .pdf"
+}
+],
+[
+{
+"name": " a.pdf"
+}
+],
+[
+{
+"name": "a.tar.GZ"
+}
+],
+[
+{
+"name": ".ts"
+}
+],
+[
+{
+"name": "ts."
+}
+],
+[
+{
+"name": "."
+}
+],
+[
+{
+"name": ".."
+}
+],
+[
+{
+"name": "a.dockerfile"
+}
+],
+[
+{
+"name": "dockerfile.x"
+}
+],
+[
+{
+"name": "Makefile.am"
+}
+],
+[
+{
+"name": "a.MK"
+}
+],
+[
+{
+"name": "İ.txt"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "Image/PNG; charset=binary"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "audio/mpeg"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/plain; charset=utf-8"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.ms-excel"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.spreadsheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocumentXspreadsheet"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/csv"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/tab-separated-values"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "TEXT/CSV"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.ms-powerpoint"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/msword"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.text"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/rtf"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/json"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/xml"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/javascript"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/javascript"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/html"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/css"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/gzip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-tar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-7z-compressed"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vndXrar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-rar-compressed"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zipx"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "x-application/zip"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.sqlite3"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-sqlite3"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/markdown"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/octet-stream"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": ""
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": " image/png "
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": " image/png "
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": ";image/png"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "image/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "IMAGE/x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "audio/x;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "video/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "texts/x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/PDF"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf2"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "image/png;;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "﻿image/png"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-excel-thing"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "presentation"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "msword"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "spreadsheet"
+}
+],
+[
+{
+"mimeType": "application/pdf"
+}
+],
+[
+{
+"mimeType": "Image/PNG; charset=binary"
+}
+],
+[
+{
+"mimeType": "audio/mpeg"
+}
+],
+[
+{
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"mimeType": "text/plain; charset=utf-8"
+}
+],
+[
+{
+"mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+}
+],
+[
+{}
+],
+[
+{
+"name": "main.ts",
+"mimeType": "image/png"
+}
+],
+[
+{
+"name": "a.unknown",
+"mimeType": "video/mp4"
+}
+],
+[
+{
+"name": "README",
+"mimeType": "application/zip"
+}
+],
+[
+{
+"name": "x\\README"
+}
+],
+[
+{
+"name": "x\\Dockerfile"
+}
+],
+[
+{
+"name": "a.png\\b"
+}
+],
+[
+{
+"name": "a/b.png\\c"
+}
+],
+[
+{
+"name": "x\\.env.local"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/pdf; x=1"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "text/csv;x"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/zip; a=b"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/rtf ;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-sqlite3;"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/json;charset=utf-8"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/opendocumentXtext"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd.oasis.opendocument.text-template"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/vnd-rar"
+}
+],
+[
+{
+"name": "opaque-id",
+"mimeType": "application/x-tar "
+}
+]
+]
+}

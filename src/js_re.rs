@@ -46,6 +46,7 @@ pub fn regex(source: &str, fold: bool) -> Regex {
             '-' if class && fold && out.ends_with(|p: char| p.is_ascii_alphabetic()) => {
                 panic!("unported folded range in {source}")
             }
+            '.' if !class => panic!("unported dot in {source}"),
             c if fold && c.is_ascii_alphabetic() => {
                 let (lower, upper) = (c.to_ascii_lowercase(), c.to_ascii_uppercase());
                 match class {

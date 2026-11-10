@@ -1,0 +1,4766 @@
+{
+ "getFileVisualKind": [
+  [
+   [
+    {
+     "name": "src/APP.TSX"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "C:\\work\\chart.XLSX"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "docs/README.md"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "photo.SVG"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "audio.flac"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "video.MOV"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "report.pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "letter.docx"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "slides.pptx"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "backup.tar.gz"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "store.sqlite3"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "Dockerfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".env.production"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".gitignore"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "LICENSE"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "/directory.ts/unknown"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "C:\\directory.png\\unknown.xyz"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "unknown"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": ""
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "report#draft.pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "report?v=1.pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "report.pdf#draft"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "main.ts",
+     "mimeType": "text/plain"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "main.ts"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "main.ts",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "photo.svg",
+     "mimeType": "text/plain"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "photo.svg"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "photo.svg",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "report.pdf",
+     "mimeType": "text/plain"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "report.pdf",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "sheet.csv",
+     "mimeType": "text/plain"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "sheet.csv"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "sheet.csv",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "Image/PNG; charset=binary"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "audio/mpeg"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "video/mp4"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/plain; charset=utf-8"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zip"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a.ts"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.tsx"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.js"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.jsx"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.mjs"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.cjs"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.py"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.rb"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.go"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.rs"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.java"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.kt"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.kts"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.swift"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.c"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.h"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.cpp"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.cc"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.cxx"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.hpp"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.cs"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.php"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.dart"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.lua"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.scala"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.sc"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.groovy"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.gradle"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.pl"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.pm"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.r"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.hs"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.proto"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.sh"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.bash"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.zsh"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.ps1"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.yaml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.yml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.toml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.ini"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.json"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.jsonc"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.xml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.html"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.htm"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.xhtml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.vue"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.svelte"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.css"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.scss"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.sass"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.less"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.sql"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.graphql"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.gql"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.diff"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.patch"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.csproj"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.sln"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.shader"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.unityproj"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.asmdef"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.dockerfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.makefile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.mk"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.md"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.mdx"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.markdown"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.mdown"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.mkdn"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.mkd"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.txt"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.text"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.log"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.rst"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "a.pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "a.doc"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "a.docx"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "a.rtf"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "a.odt"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "a.pages"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "a.xls"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.xlsx"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.xlsm"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.csv"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.tsv"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.ods"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.numbers"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "a.ppt"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "a.pptx"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "a.odp"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "a.key"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "a.png"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.jpg"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.jpeg"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.gif"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.webp"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.bmp"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.ico"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.tga"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.tif"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.tiff"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.svg"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.avif"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.heic"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.heif"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.mp3"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.m4a"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.wav"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.flac"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.ogg"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.aac"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.aiff"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.opus"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "a.mp4"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.mov"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.webm"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.mkv"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.avi"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.m4v"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.mpeg"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.mpg"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "a.zip"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.7z"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.rar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.tar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.gz"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.tgz"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.bz2"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.xz"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.zst"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "a.db"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "a.sqlite"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "a.sqlite3"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "a.realm"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "ts"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "tsx"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "js"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "dockerfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "Makefile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "GEMFILE"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "rakefile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "Procfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "Vagrantfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "Jenkinsfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "CMakeLists.txt"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".gitattributes"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".npmrc"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".editorconfig"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".env"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".env."
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".env.local"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": ".envx"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "x/.ENV.PROD"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "readme"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "README"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "License"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "licence"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "CHANGELOG"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "Notice"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "readme.md"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "readme.xyz"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a.b.TS"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a."
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a.."
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "./a"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "dir/"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "dir\\"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a/b\\c.PNG"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "a.İ"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a.ſql"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "ΑΒΓ.PDF"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "a.pdf "
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a .pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": " a.pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "a.tar.GZ"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": ".ts"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "ts."
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "."
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": ".."
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "dockerfile.x"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "Makefile.am"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a.MK"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "İ.txt"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.ms-excel"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.spreadsheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocumentXspreadsheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/csv"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/tab-separated-values"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "TEXT/CSV"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.ms-powerpoint"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/msword"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.text"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/rtf"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/json"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/xml"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/javascript"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/javascript"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/html"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/css"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/gzip"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-tar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-7z-compressed"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.rar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vndXrar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-rar-compressed"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zipx"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "x-application/zip"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.sqlite3"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-sqlite3"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/markdown"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": ""
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": " image/png "
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": " image/png "
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": ";image/png"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "image/"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "IMAGE/x"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "audio/x;"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "video/"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "texts/x"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/PDF"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf2"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "image/png;;"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "﻿image/png"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-excel-thing"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "presentation"
+    }
+   ],
+   "slide"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "msword"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "spreadsheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "mimeType": "application/pdf"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "mimeType": "Image/PNG; charset=binary"
+    }
+   ],
+   "image"
+  ],
+  [
+   [
+    {
+     "mimeType": "audio/mpeg"
+    }
+   ],
+   "audio"
+  ],
+  [
+   [
+    {
+     "mimeType": "video/mp4"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "mimeType": "text/plain; charset=utf-8"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {}
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "main.ts",
+     "mimeType": "image/png"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.unknown",
+     "mimeType": "video/mp4"
+    }
+   ],
+   "video"
+  ],
+  [
+   [
+    {
+     "name": "README",
+     "mimeType": "application/zip"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "x\\README"
+    }
+   ],
+   "text"
+  ],
+  [
+   [
+    {
+     "name": "x\\Dockerfile"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "a.png\\b"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "a/b.png\\c"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "x\\.env.local"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf; x=1"
+    }
+   ],
+   "pdf"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/csv;x"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zip; a=b"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/rtf ;"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-sqlite3;"
+    }
+   ],
+   "database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/json;charset=utf-8"
+    }
+   ],
+   "code"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocumentXtext"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.text-template"
+    }
+   ],
+   "document"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd-rar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-tar "
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument\rtext"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument text"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument text"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument😀text"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument\ntext"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocument\rspreadsheet"
+    }
+   ],
+   "sheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd\rrar"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd rar"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd😀rar"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd\nrar"
+    }
+   ],
+   "file"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vndxrar"
+    }
+   ],
+   "archive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocumentétext"
+    }
+   ],
+   "document"
+  ]
+ ],
+ "glyph": [
+  [
+   [
+    {
+     "name": "a.ts"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.tsx"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.js"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.jsx"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.mjs"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.cjs"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.py"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.rb"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.go"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.rs"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.java"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.kt"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.kts"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.swift"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.c"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.h"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.cpp"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.cc"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.cxx"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.hpp"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.cs"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.php"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.dart"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.lua"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.scala"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.sc"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.groovy"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.gradle"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.pl"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.pm"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.r"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.hs"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.proto"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.sh"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.bash"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.zsh"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.ps1"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.yaml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.yml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.toml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.ini"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.json"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.jsonc"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.xml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.html"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.htm"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.xhtml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.vue"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.svelte"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.css"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.scss"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.sass"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.less"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.sql"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.graphql"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.gql"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.diff"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.patch"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.csproj"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.sln"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.shader"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.unityproj"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.asmdef"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.dockerfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.makefile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.mk"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.md"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.mdx"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.markdown"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.mdown"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.mkdn"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.mkd"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.txt"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.text"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.log"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.rst"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.pdf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.doc"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.docx"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.rtf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.odt"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.pages"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.xls"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.xlsx"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.xlsm"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.csv"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.tsv"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.ods"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.numbers"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "a.ppt"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "a.pptx"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "a.odp"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "a.key"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "a.png"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.jpg"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.jpeg"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.gif"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.webp"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.bmp"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.ico"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.tga"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.tif"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.tiff"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.svg"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.avif"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.heic"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.heif"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.mp3"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.m4a"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.wav"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.flac"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.ogg"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.aac"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.aiff"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.opus"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "a.mp4"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.mov"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.webm"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.mkv"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.avi"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.m4v"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.mpeg"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.mpg"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "a.zip"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.7z"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.rar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.tar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.gz"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.tgz"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.bz2"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.xz"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.zst"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "a.db"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "a.sqlite"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "a.sqlite3"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "a.realm"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "ts"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "tsx"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "js"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "dockerfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "Makefile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "GEMFILE"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "rakefile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "Procfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "Vagrantfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "Jenkinsfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "CMakeLists.txt"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".gitignore"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".gitattributes"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".npmrc"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".editorconfig"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".env"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".env."
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".env.local"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": ".envx"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "x/.ENV.PROD"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "readme"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "README"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "License"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "licence"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "CHANGELOG"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "Notice"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "readme.md"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "readme.xyz"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a.b.TS"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a."
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a.."
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "./a"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "dir/"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "dir\\"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a/b\\c.PNG"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "a.İ"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a.ſql"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "ΑΒΓ.PDF"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.pdf "
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a .pdf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": " a.pdf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "a.tar.GZ"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": ".ts"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "ts."
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "."
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": ".."
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "dockerfile.x"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "Makefile.am"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a.MK"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "İ.txt"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "Image/PNG; charset=binary"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "audio/mpeg"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "video/mp4"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/plain; charset=utf-8"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.ms-excel"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.spreadsheet"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocumentXspreadsheet"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/csv"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/tab-separated-values"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "TEXT/CSV"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.ms-powerpoint"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/msword"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.text"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/rtf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/json"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/xml"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/javascript"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/javascript"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/html"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/css"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zip"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/gzip"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-tar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-7z-compressed"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.rar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vndXrar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-rar-compressed"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zipx"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "x-application/zip"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.sqlite3"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-sqlite3"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/markdown"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/octet-stream"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": ""
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": " image/png "
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": " image/png "
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": ";image/png"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "image/"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "IMAGE/x"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "audio/x;"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "video/"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "texts/x"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/PDF"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf2"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "image/png;;"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "﻿image/png"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-excel-thing"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "presentation"
+    }
+   ],
+   "FileChartColumn"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "msword"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "spreadsheet"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "mimeType": "application/pdf"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "mimeType": "Image/PNG; charset=binary"
+    }
+   ],
+   "FileImage"
+  ],
+  [
+   [
+    {
+     "mimeType": "audio/mpeg"
+    }
+   ],
+   "FileAudio"
+  ],
+  [
+   [
+    {
+     "mimeType": "video/mp4"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "mimeType": "text/plain; charset=utf-8"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {}
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "main.ts",
+     "mimeType": "image/png"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.unknown",
+     "mimeType": "video/mp4"
+    }
+   ],
+   "FileVideo"
+  ],
+  [
+   [
+    {
+     "name": "README",
+     "mimeType": "application/zip"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "x\\README"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "x\\Dockerfile"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "a.png\\b"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "a/b.png\\c"
+    }
+   ],
+   "File"
+  ],
+  [
+   [
+    {
+     "name": "x\\.env.local"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/pdf; x=1"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "text/csv;x"
+    }
+   ],
+   "FileSpreadsheet"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/zip; a=b"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/rtf ;"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-sqlite3;"
+    }
+   ],
+   "Database"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/json;charset=utf-8"
+    }
+   ],
+   "FileCode"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/opendocumentXtext"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd.oasis.opendocument.text-template"
+    }
+   ],
+   "FileText"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/vnd-rar"
+    }
+   ],
+   "FileArchive"
+  ],
+  [
+   [
+    {
+     "name": "opaque-id",
+     "mimeType": "application/x-tar "
+    }
+   ],
+   "FileArchive"
+  ]
+ ]
+}

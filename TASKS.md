@@ -159,14 +159,14 @@ listed in `tasks/done.md`.
     `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; maker-shared `chatQuotes.ts`
     (`formatQuoteForSend`, `parseChatQuoteSegments`, `joinChatQuoteTextSegments`,
     `stripChatQuoteMarkerLines`); golden. `readAgentInputReferences` and `slashCommandDisplayLabel`
-    come with 9.5h's to 9.5l's chips, the outer `renderContent` with the bubble
+    come with 9.5i's to 9.5l's chips, the outer `renderContent` with the bubble
   - [x] 9.5e The bubble: the stream's list (`msg-stream-items`) with the user row drawn from 9.4e's
     items, `ChatBubble` with its wallpaper glass fill, the text of an ordinary message (display
     text, quote text joined), the collapse measured in the frame's layout with its toggle
     (`line-clamp-10`, 3 for an automation message at threshold 4), `chat-rail-compact`'s type
     scale. The measure runs before paint, so Cindy's first-frame estimate and remembered results
     have no reader: `shouldAutoCollapseUserMessageContent` goes. The measured text takes its pasted
-    and reference labels with 9.5h's to 9.5l's chips; text selection comes with 9.6, the scroll's
+    and reference labels with 9.5i's to 9.5l's chips; text selection comes with 9.6, the scroll's
     padding and gutter with 9.14, the action bar with 9.16, ghost cards with 16.0
   - [x] 9.5f Where a link opens: the link open preference (`useLinkOpenPreference.ts`:
     `isLocalOpenUrl` with its golden, the two keys, the memo, the legacy key's migration),
@@ -177,16 +177,16 @@ listed in `tasks/done.md`.
   - [x] 9.5g URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`): the
     underlined links of an unfolded message, `activateMessageUrl` with its toasts, the open-with
     menu (`useOpenWithMenu.tsx`), the keys of `linkInteraction.ts`. The whole text is read for
-    links until 9.5h splits it into parts; the sidebar browser comes with 17.0, so an open there
+    links until 9.5i splits it into parts; the sidebar browser comes with 17.0, so an open there
     fails with Cindy's toast; the mail preview comes with its chapter
-  - [ ] 9.5h The inline flow: the bubble's text as rows the port breaks itself (ICU line break
+  - [x] 9.5h What a file looks like: maker-shared `filePresentation.ts` (`getFileVisualKind`,
+    `FILE_VISUAL_GLYPHS`), golden; the file chip of 9.5i draws it
+  - [ ] 9.5i The inline flow: the bubble's text as rows the port breaks itself (ICU line break
     opportunities over shaped glyphs and fixed-width chips, as gpui's text wraps), so a chip sits
-    in a line of text; `InlineReferenceChip`'s inert face with its tip; the legacy command, agent
-    and folder chips of `renderContentWithoutPastedText` (`sent::parts`), links in the text parts
-    only; the fold counts the plain text's rows and clamps the drawn ones. A file mention stays
-    text until 9.5i
-  - [ ] 9.5i The file chip's inert face: maker-shared `getFileVisualKind` with `FILE_VISUAL_GLYPHS`
-    (golden) and `FileTypeIcon`; `UserFileChip`'s click and menu come with the text lightbox (9.12)
+    in a line of text; `InlineReferenceChip`'s inert face with its tip; the legacy command, agent,
+    folder and file chips of `renderContentWithoutPastedText` (`sent::parts`, `FileTypeIcon`),
+    links in the text parts only; the fold counts the plain text's rows and clamps the drawn ones.
+    `UserFileChip`'s click and menu come with the text lightbox (9.12)
   - [ ] 9.5j The persisted ranges of `renderContent`: pasted text, slash command and agent
     reference chips (`SentAgentReferenceChip`, `readAgentInputReferences`,
     `slashCommandDisplayLabel`), the measured text with their labels; their clicks come with the
