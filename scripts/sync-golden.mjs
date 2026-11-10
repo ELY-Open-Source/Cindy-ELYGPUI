@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { ARTIFACT_TESTS, ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -426,6 +426,18 @@ try {
     extractCommandOutputPathCandidates, withHistoryArtifacts,
   } });
   console.log(`${artifactCases} history artifact cases`);
+  // A throw is recorded as its message.
+  const thrown = (fn) => (...args) => {
+    try { return fn(...args); } catch (error) { return { throws: error.message }; }
+  };
+  const planCases = await recorded({ ...golden, name: 'plan-timeline', tests: PLAN_TESTS, fns: {
+    findMessageTodoInsertions: thrown((...args) => [...messageRender.findMessageTodoInsertions(...args)]),
+    getLatestMessageTodoState: thrown(messageRender.getLatestMessageTodoState),
+    findLatestMessageTodoInsertion: thrown(messageRender.findLatestMessageTodoInsertion),
+    extractPlanTodos: thrown(messageRender.extractPlanTodos),
+    isPlanUserBoundary: messageRender.isPlanUserBoundary,
+  } });
+  console.log(`${planCases} plan timeline cases`);
   console.log(`${await chatMessage(golden)} chat message cases`);
   console.log(`${await mergeMessages(golden)} merge cases`);
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);

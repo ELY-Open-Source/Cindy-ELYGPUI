@@ -1,0 +1,8992 @@
+{
+ "findMessageTodoInsertions": [
+  [
+   []
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:01.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       },
+       {
+        "content": "two",
+        "status": "in_progress"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:02.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:03.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       },
+       {
+        "content": "three",
+        "status": "running"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:04.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:05.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "x",
+        "status": "inProgress"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:06.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "delivery": "steer"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:07.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:08.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "delivery": "steer"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:09.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:10.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:11.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:12.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "automationOrigin": {
+      "k": 1
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:13.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:14.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:15.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:16.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "origin": "scheduler"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:17.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:18.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true,
+     "hookSource": "stop"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:19.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:20.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "hookSource": "stop",
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:21.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:22.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "parentToolUseId": "toolu_x"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:23.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:24.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "call_9"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:25.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:26.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "preceding-user-uuid"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:27.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:28.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "source": {
+      "agentMeta": {
+       "parentUuid": "Bash_5_dup2"
+      }
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:29.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:30.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:31.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:32.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:33.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "0f8fad5b-d9cb-469f-a165-70867728950e"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:34.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:35.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "  "
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:36.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:37.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "odd-edge"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:38.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:39.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "agentMeta": {
+      "parent_tool_use_id": "Task_x1"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:40.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:41.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": null,
+     "agentMeta": {
+      "parentToolUseId": "chatcmpl-tool-1"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:42.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "s1",
+        "status": "completed"
+       },
+       {
+        "step": "s2",
+        "status": "pending"
+       }
+      ]
+     },
+     "terminalPlanSnapshot": true,
+     "terminalPlanAtMs": 5,
+     "planUpdatedAtMs": 4
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:43.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "n1"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true,
+      "terminalPlanAtMs": 9
+     },
+     "createdAt": "2026-01-01T00:00:44.000Z",
+     "toolInput": {
+      "items": [
+       {
+        "text": " t1 "
+       },
+       {
+        "title": ""
+       },
+       {
+        "content": 7
+       },
+       7
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:45.000Z",
+     "toolInput": {
+      "text": "- [x] one\n2) two\r\n\n  * three"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true
+     },
+     "createdAt": "2026-01-01T00:00:46.000Z",
+     "toolInput": {
+      "text": "one"
+     },
+     "terminalPlanSnapshot": false
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:47.000Z",
+     "toolInput": {
+      "text": "two"
+     },
+     "turnCompleted": false
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "turnCompleted": false
+     },
+     "createdAt": "2026-01-01T00:00:48.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:49.000Z",
+     "toolInput": {
+      "text": "  "
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:50.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:51.000Z",
+     "toolInput": {}
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:52.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:53.000Z",
+     "toolInput": {
+      "items": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:54.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:55.000Z",
+     "toolInput": {
+      "plan": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:56.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:57.000Z",
+     "toolInput": {
+      "text": "\n"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:58.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:59.000Z",
+     "toolInput": {
+      "todos": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:60.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": null,
+        "status": "weird",
+        "activeForm": "Doing"
+       },
+       {
+        "content": 3
+       },
+       "x",
+       {
+        "status": "completed"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "m1",
+     "role": "tool_use",
+     "content": {
+      "name": "TodoWrite",
+      "id": "call_1",
+      "input": {
+       "todos": [
+        {
+         "content": "c1",
+         "status": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "m2",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_1",
+      "result": "ok"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:61.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:62.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "Task #2 created successfully: Beta"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:63.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:64.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:65.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:66.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:67.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:68.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:69.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:70.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:71.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:72.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:73.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed",
+      "subject": "Named"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:74.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"subject\": \"A\", \"status\": \"completed\"}, {\"id\": \"2\", \"subject\": \"B\", \"status\": \"in_progress\"}, {\"id\": \"3\", \"status\": \"deleted\", \"subject\": \"C\"}, {\"id\": \"4\"}, 7]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:75.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [completed] Alpha\n#2 [in_progress] Beta [blocked by #1]\n\n#3 [pending]\nnoise\n#x[pending] y"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:76.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "TASK #7 Created Successfully:  Alpha  "
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:77.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"completed\", \"subject\": \"Alpha v2\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:78.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task\t#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:79.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"deleted\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:80.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:81.000Z",
+     "toolInput": {
+      "taskId": "task-create:toolu_c1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:82.000Z",
+     "toolInput": {
+      "description": "From description"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:83.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:84.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:85.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"deleted\"}]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:86.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:87.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}, {\"id\": \"9\", \"status\": \"pending\"}]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:88.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:89.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:90.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:91.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:92.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}]}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:93.000Z",
+     "toolInput": {
+      "subject": "B"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:94.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:95.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:96.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:97.000Z",
+     "toolInput": {
+      "task_id": "2"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"2\", \"status\": \"running\", \"title\": \"Late\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:98.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"subject\": \"From result\", \"status\": \"in_progress\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:99.000Z",
+     "toolInput": {
+      "subject": "   "
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u0",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:100.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:101.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:102.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:103.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "t",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_t",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:104.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "a",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:105.000Z",
+     "toolInput": {
+      "subject": "T"
+     }
+    },
+    {
+     "clientId": "p",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_p",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:106.000Z",
+     "toolInput": {
+      "text": "x\ny"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:01.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       },
+       {
+        "content": "two",
+        "status": "in_progress"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "keyPrefix": "plan"
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:01.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       },
+       {
+        "content": "two",
+        "status": "in_progress"
+       }
+      ]
+     }
+    }
+   ],
+   {}
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_a",
+      "result": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "kind": "tool_result",
+      "id": "call_a",
+      "text": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "toolUseId": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "role": "tool_result",
+      "toolUseId": "call_a",
+      "content": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskGet",
+      "id": "call_b",
+      "input": {
+       "taskId": "7"
+      }
+     }
+    },
+    {
+     "id": "rb",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_b",
+      "result": "{\"task\": {\"id\": \"7\", \"status\": \"in_progress\"}}"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "r",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": "not a result"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": ""
+    },
+    {
+     "clientId": "x",
+     "role": "assistant",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "task_id": "1",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "2",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [pending] Fix [x] now\n#2 [completed] Ship [later]"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "pending"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"deleted\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-v",
+     "role": "tool_result",
+     "toolUseId": "toolu_v",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "subject": "N"
+     }
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"task\": {\"id\": \"2\"}}"
+    },
+    {
+     "clientId": "c3",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c3",
+     "content": "",
+     "toolInput": {
+      "subject": "C"
+     }
+    },
+    {
+     "clientId": "r-c3",
+     "role": "tool_result",
+     "toolUseId": "toolu_c3",
+     "content": "{\"task\": {\"id\": \"3\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "n",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_n",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "subject": "Renamed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "e",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_e",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "X"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"5\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ]
+  ]
+ ],
+ "getLatestMessageTodoState": [
+  [
+   []
+  ],
+  [
+   [],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:01.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       },
+       {
+        "content": "two",
+        "status": "in_progress"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:01.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       },
+       {
+        "content": "two",
+        "status": "in_progress"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:02.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:03.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       },
+       {
+        "content": "three",
+        "status": "running"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:02.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:03.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       },
+       {
+        "content": "three",
+        "status": "running"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:04.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:05.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "x",
+        "status": "inProgress"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:04.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:05.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "x",
+        "status": "inProgress"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:06.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "delivery": "steer"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:07.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:06.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "delivery": "steer"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:07.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "completed"
+       },
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:08.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "delivery": "steer"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:09.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:08.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "delivery": "steer"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:09.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:10.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:11.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:10.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:11.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:12.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "automationOrigin": {
+      "k": 1
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:13.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:12.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "automationOrigin": {
+      "k": 1
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:13.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:14.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:15.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:14.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:15.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:16.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "origin": "scheduler"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:17.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:16.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "origin": "scheduler"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:17.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:18.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true,
+     "hookSource": "stop"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:19.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:18.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "isSyntheticTrigger": true,
+     "hookSource": "stop"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:19.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:20.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "hookSource": "stop",
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:21.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:20.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "hookSource": "stop",
+      "autoResume": true
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:21.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:22.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "parentToolUseId": "toolu_x"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:23.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:22.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "parentToolUseId": "toolu_x"
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:23.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:24.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "call_9"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:25.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:24.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "call_9"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:25.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:26.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "preceding-user-uuid"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:27.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:26.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "agentMeta": {
+      "parentUuid": "preceding-user-uuid"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:27.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:28.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "source": {
+      "agentMeta": {
+       "parentUuid": "Bash_5_dup2"
+      }
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:29.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:28.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "s",
+     "role": "user",
+     "content": "hi",
+     "source": {
+      "agentMeta": {
+       "parentUuid": "Bash_5_dup2"
+      }
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:29.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "two",
+        "status": "pending"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:30.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:31.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:30.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:31.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:32.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:33.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "0f8fad5b-d9cb-469f-a165-70867728950e"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:32.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:33.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "0f8fad5b-d9cb-469f-a165-70867728950e"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:34.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:35.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "  "
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:34.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:35.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "  "
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:36.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:37.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "odd-edge"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:36.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:37.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": "odd-edge"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:38.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:39.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "agentMeta": {
+      "parent_tool_use_id": "Task_x1"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:38.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:39.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "agentMeta": {
+      "parent_tool_use_id": "Task_x1"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:40.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:41.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": null,
+     "agentMeta": {
+      "parentToolUseId": "chatcmpl-tool-1"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:40.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "top",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:41.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "sub",
+        "status": "pending"
+       }
+      ]
+     },
+     "parentToolUseId": null,
+     "agentMeta": {
+      "parentToolUseId": "chatcmpl-tool-1"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:42.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "s1",
+        "status": "completed"
+       },
+       {
+        "step": "s2",
+        "status": "pending"
+       }
+      ]
+     },
+     "terminalPlanSnapshot": true,
+     "terminalPlanAtMs": 5,
+     "planUpdatedAtMs": 4
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:43.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "n1"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:42.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "s1",
+        "status": "completed"
+       },
+       {
+        "step": "s2",
+        "status": "pending"
+       }
+      ]
+     },
+     "terminalPlanSnapshot": true,
+     "terminalPlanAtMs": 5,
+     "planUpdatedAtMs": 4
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:43.000Z",
+     "toolInput": {
+      "plan": [
+       {
+        "step": "n1"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true,
+      "terminalPlanAtMs": 9
+     },
+     "createdAt": "2026-01-01T00:00:44.000Z",
+     "toolInput": {
+      "items": [
+       {
+        "text": " t1 "
+       },
+       {
+        "title": ""
+       },
+       {
+        "content": 7
+       },
+       7
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:45.000Z",
+     "toolInput": {
+      "text": "- [x] one\n2) two\r\n\n  * three"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true,
+      "terminalPlanAtMs": 9
+     },
+     "createdAt": "2026-01-01T00:00:44.000Z",
+     "toolInput": {
+      "items": [
+       {
+        "text": " t1 "
+       },
+       {
+        "title": ""
+       },
+       {
+        "content": 7
+       },
+       7
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:45.000Z",
+     "toolInput": {
+      "text": "- [x] one\n2) two\r\n\n  * three"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true
+     },
+     "createdAt": "2026-01-01T00:00:46.000Z",
+     "toolInput": {
+      "text": "one"
+     },
+     "terminalPlanSnapshot": false
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:47.000Z",
+     "toolInput": {
+      "text": "two"
+     },
+     "turnCompleted": false
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "terminalPlanSnapshot": true
+     },
+     "createdAt": "2026-01-01T00:00:46.000Z",
+     "toolInput": {
+      "text": "one"
+     },
+     "terminalPlanSnapshot": false
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:47.000Z",
+     "toolInput": {
+      "text": "two"
+     },
+     "turnCompleted": false
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "turnCompleted": false
+     },
+     "createdAt": "2026-01-01T00:00:48.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:49.000Z",
+     "toolInput": {
+      "text": "  "
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": {
+      "turnCompleted": false
+     },
+     "createdAt": "2026-01-01T00:00:48.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:49.000Z",
+     "toolInput": {
+      "text": "  "
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:50.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:51.000Z",
+     "toolInput": {}
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:50.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:51.000Z",
+     "toolInput": {}
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:52.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:53.000Z",
+     "toolInput": {
+      "items": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:52.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:53.000Z",
+     "toolInput": {
+      "items": []
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:54.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:55.000Z",
+     "toolInput": {
+      "plan": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:54.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:55.000Z",
+     "toolInput": {
+      "plan": []
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:56.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:57.000Z",
+     "toolInput": {
+      "text": "\n"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:56.000Z",
+     "toolInput": {
+      "text": "one"
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:57.000Z",
+     "toolInput": {
+      "text": "\n"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:58.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:59.000Z",
+     "toolInput": {
+      "todos": []
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:58.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "one",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "b",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_b",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:59.000Z",
+     "toolInput": {
+      "todos": []
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:60.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": null,
+        "status": "weird",
+        "activeForm": "Doing"
+       },
+       {
+        "content": 3
+       },
+       "x",
+       {
+        "status": "completed"
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:60.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": null,
+        "status": "weird",
+        "activeForm": "Doing"
+       },
+       {
+        "content": 3
+       },
+       "x",
+       {
+        "status": "completed"
+       }
+      ]
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "id": "m1",
+     "role": "tool_use",
+     "content": {
+      "name": "TodoWrite",
+      "id": "call_1",
+      "input": {
+       "todos": [
+        {
+         "content": "c1",
+         "status": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "m2",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_1",
+      "result": "ok"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "m1",
+     "role": "tool_use",
+     "content": {
+      "name": "TodoWrite",
+      "id": "call_1",
+      "input": {
+       "todos": [
+        {
+         "content": "c1",
+         "status": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "id": "m2",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_1",
+      "result": "ok"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:61.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:62.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "Task #2 created successfully: Beta"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:63.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:61.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:62.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "Task #2 created successfully: Beta"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:63.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:64.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:65.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:66.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:64.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:65.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:66.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:67.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:68.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:69.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:67.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:68.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:69.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:70.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:71.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:70.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u2",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:71.000Z",
+     "toolInput": {
+      "subject": "Beta"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:72.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:72.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:73.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed",
+      "subject": "Named"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "up",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_up",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:73.000Z",
+     "toolInput": {
+      "taskId": "4",
+      "status": "completed",
+      "subject": "Named"
+     }
+    },
+    {
+     "clientId": "r-up",
+     "role": "tool_result",
+     "toolUseId": "toolu_up",
+     "content": "ok"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:74.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"subject\": \"A\", \"status\": \"completed\"}, {\"id\": \"2\", \"subject\": \"B\", \"status\": \"in_progress\"}, {\"id\": \"3\", \"status\": \"deleted\", \"subject\": \"C\"}, {\"id\": \"4\"}, 7]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:74.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"subject\": \"A\", \"status\": \"completed\"}, {\"id\": \"2\", \"subject\": \"B\", \"status\": \"in_progress\"}, {\"id\": \"3\", \"status\": \"deleted\", \"subject\": \"C\"}, {\"id\": \"4\"}, 7]}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:75.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [completed] Alpha\n#2 [in_progress] Beta [blocked by #1]\n\n#3 [pending]\nnoise\n#x[pending] y"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:75.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [completed] Alpha\n#2 [in_progress] Beta [blocked by #1]\n\n#3 [pending]\nnoise\n#x[pending] y"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:76.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "TASK #7 Created Successfully:  Alpha  "
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:77.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"completed\", \"subject\": \"Alpha v2\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:76.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "TASK #7 Created Successfully:  Alpha  "
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:77.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"completed\", \"subject\": \"Alpha v2\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:78.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task\t#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:79.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"deleted\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:78.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task\t#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:79.000Z",
+     "toolInput": {
+      "taskId": "7"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"7\", \"status\": \"deleted\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:80.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:81.000Z",
+     "toolInput": {
+      "taskId": "task-create:toolu_c1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:80.000Z",
+     "toolInput": {
+      "subject": "Alpha"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "Task#7 created successfully: Alpha"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:81.000Z",
+     "toolInput": {
+      "taskId": "task-create:toolu_c1",
+      "status": "deleted"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:82.000Z",
+     "toolInput": {
+      "description": "From description"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:83.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:82.000Z",
+     "toolInput": {
+      "description": "From description"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:83.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:84.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:85.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"deleted\"}]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:84.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:85.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"deleted\"}]}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:86.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:87.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}, {\"id\": \"9\", \"status\": \"pending\"}]}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:86.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:87.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}, {\"id\": \"9\", \"status\": \"pending\"}]}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:88.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:89.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:88.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:89.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": ""
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:90.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:91.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:92.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}]}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:93.000Z",
+     "toolInput": {
+      "subject": "B"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:90.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:91.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:92.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": [{\"id\": \"1\", \"status\": \"completed\"}]}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:93.000Z",
+     "toolInput": {
+      "subject": "B"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:94.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:95.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:94.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:95.000Z",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:96.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:97.000Z",
+     "toolInput": {
+      "task_id": "2"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"2\", \"status\": \"running\", \"title\": \"Late\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:96.000Z",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:97.000Z",
+     "toolInput": {
+      "task_id": "2"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"2\", \"status\": \"running\", \"title\": \"Late\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:98.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"subject\": \"From result\", \"status\": \"in_progress\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:99.000Z",
+     "toolInput": {
+      "subject": "   "
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:98.000Z",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\", \"subject\": \"From result\", \"status\": \"in_progress\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:99.000Z",
+     "toolInput": {
+      "subject": "   "
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u0",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:100.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:101.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u0",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:100.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:101.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:102.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:103.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:102.000Z",
+     "toolInput": {
+      "taskId": "3",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "u1",
+     "role": "user",
+     "content": "hi"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:103.000Z",
+     "toolInput": {
+      "subject": "New"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"4\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "t",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_t",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:104.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "a",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:105.000Z",
+     "toolInput": {
+      "subject": "T"
+     }
+    },
+    {
+     "clientId": "p",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_p",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:106.000Z",
+     "toolInput": {
+      "text": "x\ny"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "t",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_t",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:104.000Z",
+     "toolInput": {
+      "todos": [
+       {
+        "content": "a",
+        "status": "pending"
+       },
+       {
+        "content": "b",
+        "status": "pending"
+       }
+      ]
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:105.000Z",
+     "toolInput": {
+      "subject": "T"
+     }
+    },
+    {
+     "clientId": "p",
+     "role": "tool_use",
+     "toolName": "update_plan",
+     "toolUseId": "toolu_p",
+     "content": "",
+     "createdAt": "2026-01-01T00:00:106.000Z",
+     "toolInput": {
+      "text": "x\ny"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_a",
+      "result": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_a",
+      "result": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "kind": "tool_result",
+      "id": "call_a",
+      "text": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "id": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "kind": "tool_result",
+      "id": "call_a",
+      "text": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskUpdate",
+      "id": "call_b",
+      "input": {
+       "taskId": "7",
+       "status": "completed"
+      }
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "toolUseId": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "role": "tool_result",
+      "toolUseId": "call_a",
+      "content": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskGet",
+      "id": "call_b",
+      "input": {
+       "taskId": "7"
+      }
+     }
+    },
+    {
+     "id": "rb",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_b",
+      "result": "{\"task\": {\"id\": \"7\", \"status\": \"in_progress\"}}"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "id": "a",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskCreate",
+      "toolUseId": "call_a",
+      "input": {
+       "subject": "A"
+      }
+     }
+    },
+    {
+     "id": "ra",
+     "content": {
+      "role": "tool_result",
+      "toolUseId": "call_a",
+      "content": "{\"task\": {\"id\": \"7\"}}"
+     }
+    },
+    {
+     "id": "b",
+     "role": "tool_use",
+     "content": {
+      "name": "TaskGet",
+      "id": "call_b",
+      "input": {
+       "taskId": "7"
+      }
+     }
+    },
+    {
+     "id": "rb",
+     "content": {
+      "type": "tool_result",
+      "toolUseId": "call_b",
+      "result": "{\"task\": {\"id\": \"7\", \"status\": \"in_progress\"}}"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "r",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": "not a result"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "r",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": "not a result"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": ""
+    },
+    {
+     "clientId": "x",
+     "role": "assistant",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "toolInput": {
+      "subject": "A"
+     },
+     "content": ""
+    },
+    {
+     "clientId": "x",
+     "role": "assistant",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"7\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "toolInput": {
+      "taskId": "7",
+      "status": "completed"
+     },
+     "content": ""
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "task_id": "1",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "task_id": "1",
+      "status": "completed"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "2",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"id\": \"2\", \"subject\": \"Beta\"}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "2",
+      "status": "completed"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [pending] Fix [x] now\n#2 [completed] Ship [later]"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "#1 [pending] Fix [x] now\n#2 [completed] Ship [later]"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"pending\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "pending"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"deleted\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "g",
+     "role": "tool_use",
+     "toolName": "TaskGet",
+     "toolUseId": "toolu_g",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "pending"
+     }
+    },
+    {
+     "clientId": "r-g",
+     "role": "tool_result",
+     "toolUseId": "toolu_g",
+     "content": "{\"task\": {\"id\": \"1\", \"status\": \"deleted\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-v",
+     "role": "tool_result",
+     "toolUseId": "toolu_v",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "r-v",
+     "role": "tool_result",
+     "toolUseId": "toolu_v",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "subject": "N"
+     }
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "subject": "N"
+     }
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "9",
+      "status": "completed"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"task\": {\"id\": \"2\"}}"
+    },
+    {
+     "clientId": "c3",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c3",
+     "content": "",
+     "toolInput": {
+      "subject": "C"
+     }
+    },
+    {
+     "clientId": "r-c3",
+     "role": "tool_result",
+     "toolUseId": "toolu_c3",
+     "content": "{\"task\": {\"id\": \"3\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "c2",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c2",
+     "content": "",
+     "toolInput": {
+      "subject": "B"
+     }
+    },
+    {
+     "clientId": "r-c2",
+     "role": "tool_result",
+     "toolUseId": "toolu_c2",
+     "content": "{\"task\": {\"id\": \"2\"}}"
+    },
+    {
+     "clientId": "c3",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c3",
+     "content": "",
+     "toolInput": {
+      "subject": "C"
+     }
+    },
+    {
+     "clientId": "r-c3",
+     "role": "tool_result",
+     "toolUseId": "toolu_c3",
+     "content": "{\"task\": {\"id\": \"3\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "n",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_n",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "subject": "Renamed"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c1",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c1",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c1",
+     "role": "tool_result",
+     "toolUseId": "toolu_c1",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "n",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_n",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "subject": "Renamed"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "e",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_e",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "A"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"1\"}}"
+    },
+    {
+     "clientId": "d",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_d",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    },
+    {
+     "clientId": "e",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_e",
+     "content": "",
+     "toolInput": {
+      "taskId": "1",
+      "status": "deleted"
+     }
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "l",
+     "role": "tool_use",
+     "toolName": "TaskList",
+     "toolUseId": "toolu_l",
+     "content": "",
+     "toolInput": {}
+    },
+    {
+     "clientId": "r-l",
+     "role": "tool_result",
+     "toolUseId": "toolu_l",
+     "content": "{\"tasks\": []}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "X"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"5\"}}"
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "u",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_u",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "completed"
+     }
+    },
+    {
+     "clientId": "v",
+     "role": "tool_use",
+     "toolName": "TaskUpdate",
+     "toolUseId": "toolu_v",
+     "content": "",
+     "toolInput": {
+      "taskId": "5",
+      "status": "in_progress"
+     }
+    },
+    {
+     "clientId": "c",
+     "role": "tool_use",
+     "toolName": "TaskCreate",
+     "toolUseId": "toolu_c",
+     "content": "",
+     "toolInput": {
+      "subject": "X"
+     }
+    },
+    {
+     "clientId": "r-c",
+     "role": "tool_result",
+     "toolUseId": "toolu_c",
+     "content": "{\"task\": {\"id\": \"5\"}}"
+    }
+   ],
+   {
+    "taskHistoryMayBeIncomplete": true
+   }
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ]
+  ]
+ ],
+ "findLatestMessageTodoInsertion": [
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     }
+    }
+   ]
+  ],
+  [
+   [
+    {
+     "clientId": "a",
+     "role": "tool_use",
+     "toolName": "TodoWrite",
+     "toolUseId": "toolu_a",
+     "content": "",
+     "toolInput": {
+      "todos": [
+       {
+        "content": {
+         "toString": 0
+        }
+       }
+      ]
+     },
+     "parentToolUseId": "toolu_agent"
+    }
+   ]
+  ]
+ ],
+ "extractPlanTodos": [
+  [
+   "TodoWrite",
+   {
+    "todos": [
+     {
+      "content": "a",
+      "status": "pending"
+     }
+    ]
+   }
+  ],
+  [
+   "TodoWrite",
+   {
+    "todos": []
+   }
+  ],
+  [
+   "TodoWrite",
+   null
+  ],
+  [
+   "TodoWrite",
+   "x"
+  ],
+  [
+   "TodoWrite",
+   [
+    1
+   ]
+  ],
+  [
+   "update_plan",
+   {
+    "items": [
+     {
+      "content": " a ",
+      "status": "running"
+     },
+     {
+      "text": "b",
+      "status": "completed"
+     },
+     {
+      "step": "c",
+      "status": "nope"
+     },
+     {
+      "title": "d"
+     },
+     {
+      "content": null,
+      "text": "e"
+     },
+     {
+      "content": ""
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "items": [],
+    "plan": [
+     {
+      "step": "p"
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "items": [
+     {
+      "content": " "
+     }
+    ],
+    "text": "1. one\n- two\n[ ] three\n  [x] four\n+ five\n9) six\n-seven\n　- eight "
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "text": "\r\n \n"
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "text": 7
+   }
+  ],
+  [
+   "update_plan",
+   null
+  ],
+  [
+   "update_plan",
+   {
+    "plan": [
+     {
+      "step": 12
+     },
+     {
+      "step": true
+     },
+     {
+      "step": [
+       1,
+       null,
+       2
+      ]
+     },
+     {
+      "step": {}
+     }
+    ]
+   }
+  ],
+  [
+   "TaskCreate",
+   {
+    "subject": "x"
+   }
+  ],
+  [
+   "Other",
+   {
+    "todos": [
+     {
+      "content": "a",
+      "status": "pending"
+     }
+    ]
+   }
+  ],
+  [
+   "",
+   null
+  ],
+  [
+   "TodoWrite",
+   {
+    "todos": [
+     {
+      "content": {
+       "toString": 0
+      }
+     }
+    ]
+   }
+  ],
+  [
+   "TodoWrite",
+   {
+    "todos": [
+     {
+      "content": [
+       {
+        "toString": 0
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  [
+   "TodoWrite",
+   {
+    "todos": [
+     {
+      "content": {
+       "a": 1
+      }
+     },
+     {
+      "content": [
+       1,
+       [
+        2,
+        null
+       ]
+      ]
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "items": [
+     {
+      "content": {
+       "toString": 0
+      }
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "items": [
+     {
+      "content": " "
+     }
+    ],
+    "plan": [
+     {
+      "step": [
+       {
+        "toString": 0
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "items": [
+     {
+      "content": "ok"
+     }
+    ],
+    "plan": [
+     {
+      "step": {
+       "toString": 0
+      }
+     }
+    ]
+   }
+  ],
+  [
+   "update_plan",
+   {
+    "plan": [
+     {
+      "title": {
+       "toString": 0
+      },
+      "text": null
+     }
+    ]
+   }
+  ]
+ ],
+ "isPlanUserBoundary": [
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi"
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "delivery": "steer"
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "isSyntheticTrigger": true
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "hookSource": "x",
+    "isSyntheticTrigger": true
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "hookSource": null,
+    "isSyntheticTrigger": true
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "automationOrigin": null
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "automationOrigin": 0
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "agentMeta": null
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "agentMeta": {
+     "origin": null
+    }
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "agentMeta": {
+     "origin": ""
+    }
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "agentMeta": {
+     "autoResume": 1
+    }
+   }
+  ],
+  [
+   {
+    "role": "assistant"
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "parentToolUseId": "toolu_1"
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "parentToolUseId": "0F8FAD5B-D9CB-469F-A165-70867728950E"
+   }
+  ],
+  [
+   {
+    "clientId": "u",
+    "role": "user",
+    "content": "hi",
+    "parentToolUseId": 5
+   }
+  ]
+ ]
+}

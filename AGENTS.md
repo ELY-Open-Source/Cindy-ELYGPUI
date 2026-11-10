@@ -112,17 +112,19 @@ defines scope and what 1:1 means.
   Golden `command-intent` holds the literal inputs of Cindy's tests, run through Cindy's code.
   `src/tool_use.rs` is `describeToolUse` (`parseToolName`, `truncateToolText`, `humanizeToolToken`)
   kept to the fields rows and history read; golden `tool-use` projects Cindy's descriptor to them.
-- History rows: `src/message_rows.rs` holds the row checks `projectHistoryView` reads, on rows
-  as `messageToCamel` reads them (`parseMessageToolUse` with its gateway unwrap,
+- History rows: `src/message_rows.rs` holds the row checks `projectHistoryView` reads, on rows as
+  `messageToCamel` reads them (`parseMessageToolUse` with its gateway unwrap,
   `messageContentToPreview`, `isDeliveryProseText` with JS `\s` and line terminators,
-  `isContinuationMessage`, `hasVisibleHistoryResult`); `src/payload.rs` is `payloadSummary.ts`'s
-  tool result readers, `payload/files.rs` the file references (a source-literal lexer on UTF-8
-  bytes, ASCII compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify`
-  with an indent, `js::entries` the property order. Golden `history-rows`: `record.mjs` runs
-  Cindy's tests with vitest stubbed, records their arguments, plus `cases.json`; read with `js::parse`.
-  `src/tool_row.rs` is `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs
-  from `agentActionVerbKeys.ts` through the app's `Translator`): a candidate's `activity`,
-  checked in every locale against `activity.json`.
+  `isContinuationMessage`, `hasVisibleHistoryResult`); `src/payload.rs` is `payloadSummary.ts`'s tool
+  result readers, `payload/files.rs` the file references (a source-literal lexer on UTF-8 bytes, ASCII
+  compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify` with an indent,
+  `js::entries` the property order. Golden `history-rows`: `record.mjs` runs Cindy's tests with vitest
+  stubbed, records their arguments, plus `cases.json`; read with `js::parse`. `src/tool_row.rs` is
+  `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs from `agentActionVerbKeys.ts`
+  through the app's `Translator`): a candidate's `activity`, checked in every locale against
+  `activity.json`. `src/plan_todos.rs` is `messageRender.ts`'s plan timeline
+  (`findMessageTodoInsertions`, `getLatestMessageTodoState`; `tasks.rs` the `Task*` list, `window.rs`
+  what a paged window proves); golden `plan-timeline`.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
   adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
   as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`
@@ -260,46 +262,44 @@ defines scope and what 1:1 means.
   read, strict on write. Unknown fields stay as written. `cindy_json::roundtrip` reads JSON as
   `JSON.parse` then `JSON.stringify` would. Cindy's dev-console `__cindyLayout` is not ported.
 - Layout on screen: `src/layout_root/` ports `LayoutRoot.tsx`. `geometry.rs` holds its sizing math
-  (visible-share ledger, floors, root widths, self-heal, divider room and chat relay); `divider.rs`
-  the divider gestures; `view.rs` the `LayoutRoot` view. The view lays panes out itself, so the
-  widths it paints stand in for Cindy's DOM measurements. Its width is the window less the sidebar
-  column, so the first frame is already right. A divider drag listens on the whole window and writes
-  the store once on release; self-heal runs 120ms after width or tree settle, never mid-drag. The
-  view follows `LayoutStore` through `observe_global`, which stands in for `layout:changed`.
-- App shortcuts: `src/app_shortcuts.rs` ports `shared/appShortcuts.ts` (registry, normalize,
-  effective map, scope overlap); `store.rs` reads `app-shortcuts.v1.json` at startup into the
-  `AppShortcuts` global, normalized from `JSON.parse`-shaped fields (an overflowing flag is
-  `Infinity`, so truthy); `keys.rs` turns a gpui keystroke back into Cindy's `KeyboardEvent.code`.
-  gpui reports the typed key, not the physical one, and drops Shift for a shifted symbol on all
-  three platforms, so a US-layout table restores the code: on AZERTY or Dvorak a shortcut follows
-  the letter. Keypad digits, decimal and Enter reach the app as their main-keyboard twins
-  (`Digit1`, not `Numpad1`): gpui's `keystroke_from_xkb` strips `kp_` and `KeyDownEvent` carries no
-  scancode. Only a gpui change that exposes the physical key closes this; keypad `+` and `-`
-  survive. A shortcut handler sits on the window's root element in `capture_key_down`. The
-  root holds focus while nothing else does (`on_focus_lost` hands it back), so every key's dispatch
-  path runs through it; with nothing focused gpui dispatches to the tree's own root only. Ely's
-  `FocusScope` wraps the root on its own handle, so Tab and Shift-Tab walk gpui's tab stops.
+  (visible-share ledger, floors, root widths, self-heal, divider room and chat relay); `divider.rs` the
+  divider gestures; `view.rs` the `LayoutRoot` view. The view lays panes out itself, so the widths it
+  paints stand in for Cindy's DOM measurements. Its width is the window less the sidebar column, so the
+  first frame is already right. A divider drag listens on the whole window and writes the store once on
+  release; self-heal runs 120ms after width or tree settle, never mid-drag. The view follows
+  `LayoutStore` through `observe_global`, which stands in for `layout:changed`.
+- App shortcuts: `src/app_shortcuts.rs` ports `shared/appShortcuts.ts` (registry, normalize, effective
+  map, scope overlap); `store.rs` reads `app-shortcuts.v1.json` at startup into the `AppShortcuts`
+  global, normalized from `JSON.parse`-shaped fields (an overflowing flag is `Infinity`, so truthy);
+  `keys.rs` turns a gpui keystroke back into Cindy's `KeyboardEvent.code`. gpui reports the typed key,
+  not the physical one, and drops Shift for a shifted symbol on all three platforms, so a US-layout
+  table restores the code: on AZERTY or Dvorak a shortcut follows the letter. Keypad digits, decimal
+  and Enter reach the app as their main-keyboard twins (`Digit1`, not `Numpad1`): gpui's
+  `keystroke_from_xkb` strips `kp_` and `KeyDownEvent` carries no scancode. Only a gpui change that
+  exposes the physical key closes this; keypad `+` and `-` survive. A shortcut handler sits on the
+  window's root element in `capture_key_down`. The root holds focus while nothing else does
+  (`on_focus_lost` hands it back), so every key's dispatch path runs through it; with nothing focused
+  gpui dispatches to the tree's own root only. Ely's `FocusScope` wraps the root on its own handle, so
+  Tab and Shift-Tab walk gpui's tab stops.
 - Sidebar frame: `src/sidebar.rs` ports `Sidebar.tsx` and the width, rail and hidden state
-  `MainLayout.tsx` keeps; `sidebar/resize.rs` ports `useHorizontalResize.ts` with the sidebar's
-  limits. Width and rail live in the preferences file (`sidebar-width`, `sidebar-rail`), the
-  hidden state in the layout tree. The content area's width is the window less the sidebar's
-  painted width, read every frame of its 250ms width transition.
-  `sidebar/top_nav.rs` is `SidebarTopNav.tsx`'s fixed section: the New row, off the rail.
-  `top_nav/more.rs` is the More row after Search with `SidebarNavigationMoreMenu`, drawn by the
-  port (Ely's menus cannot close on leave and take focus) on Ely's `surface`: right of the row,
-  flipped left without room, below the 58px titlebar strip. `sidebar/hover_menu.rs` is
-  `useHoverOpenMenu` on the executor clock: hover ignores key presses, a press on the open
-  trigger takes no focus, and a close returns focus to the trigger unless the open was a hover
-  or the close a press outside. Escape closes it through `intercept_keystrokes`, wherever focus
-  is; a press on the menu counts as inside the search, as Radix's popper wrapper does. With no
-  data owner nothing is hidden, so it holds Customize alone.
-  `top_nav/customize.rs` is `SidebarNavigationCustomize` in place of Search and More: the draft
-  lives in `More.customize`, its rows drag through `sessions::sortable` as a list of its own (a
-  drag belongs to its list; others pass it by), a press on the checkbox focuses it and neither
-  drags nor reaches the row, and the grip moves on Up and Down. `search::listen` keeps the
-  search's outside press while its row is gone. Done stores nothing, as
-  `setSidebarNavigationPrefs(null)` does, until 13.0's data owner.
-  Ely's Subtle and Ghost buttons stand in for Cindy's primary and quiet ones; Puzzle for `plug`.
+  `MainLayout.tsx` keeps; `sidebar/resize.rs` ports `useHorizontalResize.ts` with the sidebar's limits.
+  Width and rail live in the preferences file (`sidebar-width`, `sidebar-rail`), the hidden state in
+  the layout tree. The content area's width is the window less the sidebar's painted width, read every
+  frame of its 250ms width transition. `sidebar/top_nav.rs` is `SidebarTopNav.tsx`'s fixed section: the
+  New row, off the rail. `top_nav/more.rs` is the More row after Search with
+  `SidebarNavigationMoreMenu`, drawn by the port (Ely's menus cannot close on leave and take focus) on
+  Ely's `surface`: right of the row, flipped left without room, below the 58px titlebar strip.
+  `sidebar/hover_menu.rs` is `useHoverOpenMenu` on the executor clock: hover ignores key presses, a
+  press on the open trigger takes no focus, and a close returns focus to the trigger unless the open
+  was a hover or the close a press outside. Escape closes it through `intercept_keystrokes`, wherever
+  focus is; a press on the menu counts as inside the search, as Radix's popper wrapper does. With no
+  data owner nothing is hidden, so it holds Customize alone. `top_nav/customize.rs` is
+  `SidebarNavigationCustomize` in place of Search and More: the draft lives in `More.customize`, its
+  rows drag through `sessions::sortable` as a list of its own (a drag belongs to its list; others pass
+  it by), a press on the checkbox focuses it and neither drags nor reaches the row, and the grip moves
+  on Up and Down. `search::listen` keeps the search's outside press while its row is gone. Done stores
+  nothing, as `setSidebarNavigationPrefs(null)` does, until 13.0's data owner. Ely's Subtle and Ghost
+  buttons stand in for Cindy's primary and quiet ones; Puzzle for `plug`.
 - Rail: `sessions/rail.rs` is `CCAgentSidebarUpper`'s two views. Both stay drawn; the sidebar's `upper`
   tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and not peeking,
   and the shown view paints last with `occlude`, standing in for `pointer-events-none`. `CollapsedView`

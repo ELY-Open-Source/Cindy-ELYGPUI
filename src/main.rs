@@ -34,6 +34,7 @@ mod motion;
 mod open_path;
 mod os_appearance;
 mod payload;
+mod plan_todos;
 mod preferences;
 mod press;
 mod region;

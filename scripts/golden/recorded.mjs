@@ -52,3 +52,9 @@ export const ARTIFACT_TESTS = {
   [`${desktop}/renderer/__tests__/generatedFiles.test.ts`]: { '../lib/generatedFiles': ['extractCommandOutputPathCandidates'] },
   [`${desktop}/main/localDb/ipc/__tests__/historyViewOutline.test.ts`]: { '../historyViewOutline': ['withHistoryArtifacts'] },
 };
+
+export const PLAN_TESTS = {
+  [`${shared}/messageRender.test.ts`]: {
+    '../messageRender': ['findMessageTodoInsertions', 'getLatestMessageTodoState', 'findLatestMessageTodoInsertion', 'extractPlanTodos'],
+  },
+};

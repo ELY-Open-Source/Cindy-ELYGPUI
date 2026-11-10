@@ -89,3 +89,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 
 ## 9.3c The column
 - Round 1: PASS.
+
+## 9.4a The plan timeline
+- Round 1: FAIL. A todo's content went through a `String()` that cannot fail, so an object with an own non-callable `toString` became `[object Object]` where Cindy throws a TypeError.
+- Fixed: the conversion is `js::try_string`; `extract_plan_todos`, `insertions` and `latest_state` return the throw as `Err`; the golden records a throw's message, with cases for `TodoWrite`, `update_plan` items and plan, arrays, and a subagent row that never converts.
+- Round 2: PASS.

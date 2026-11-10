@@ -105,9 +105,10 @@ listed in `tasks/done.md`.
 - [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
   work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
   subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
-  - [ ] 9.4a The plan timeline (`messageRender.ts`): `findMessageTodoInsertions`,
-    `findLatestMessageTodoInsertion`, `getLatestMessageTodoState`, `extractPlanTodos`,
-    `extractTodos`, `extractTodosFromSourceMessage`, `isPlanUserBoundary`; golden
+  - [x] 9.4a The plan timeline (`messageRender.ts`): `findMessageTodoInsertions`,
+    `getLatestMessageTodoState` (`findLatestMessageTodoInsertion` is its `insertion`),
+    `extractPlanTodos` with `extractTodos`, `isPlanUserBoundary`; golden.
+    `extractTodosFromSourceMessage` serves the mobile app alone
   - [ ] 9.4b What a turn's rows yield: `extractToolResultMedia` with `dedupeToolMediaByUrl`,
     `extractRenderedMarkdownImageTargets`, `richAnswerMediaSources`, `collectCachedGeneratedFiles`
     (`generatedFiles.ts`) with `sourcePathCandidatesFromDescriptor` and `resolveToolFilePath`; golden
