@@ -10,6 +10,7 @@ use crate::{
 };
 
 mod entry_error;
+pub mod header;
 
 pub use entry_error::element;
 

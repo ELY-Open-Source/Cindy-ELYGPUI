@@ -5,7 +5,7 @@ use super::{Failure, Gate, gate, session};
 use crate::{chat_store::Store, preferences::Preferences, router, sessions};
 
 /// The list's columns, and the message columns the history view reads.
-fn db() -> Connection {
+pub(super) fn db() -> Connection {
     let db = sessions::tests::db();
     db.execute_batch(
         "DROP TABLE messages;

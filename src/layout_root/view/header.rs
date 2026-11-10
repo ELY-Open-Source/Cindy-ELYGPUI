@@ -48,8 +48,7 @@ impl LayoutRoot {
         }
     }
 
-    /// The header, or none where Cindy hides it: macOS, sidebar shown, nothing injected and no
-    /// right sidebar toggle.
+    /// The header, or none where Cindy hides it: macOS, sidebar shown, nothing injected, no toggle.
     pub(super) fn content_header(
         &self,
         window: &mut Window,
@@ -58,7 +57,8 @@ impl LayoutRoot {
         let mac = cfg!(target_os = "macos");
         let sidebar_visible = (self.sidebar)(cx).visible;
         let right_sidebar_available = false;
-        if mac && sidebar_visible && !right_sidebar_available {
+        let injected = crate::session_view::header::element(window, cx);
+        if mac && sidebar_visible && injected.is_none() && !right_sidebar_available {
             return None;
         }
         let now = cx.background_executor().now();
@@ -89,7 +89,8 @@ impl LayoutRoot {
                     .h_full()
                     .min_w_0()
                     .flex_1()
-                    .items_center(),
+                    .items_center()
+                    .children(injected),
             )
             .children(right.map(|width| div().flex_none().h_full().w(css(width))));
         // The band drags the window; a long press here never drags the panel.

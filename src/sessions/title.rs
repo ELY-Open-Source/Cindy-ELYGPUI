@@ -103,6 +103,14 @@ pub fn display(s: &Session, t: &Translator) -> String {
         .to_owned()
 }
 
+/// `SessionContentHeader`'s `displayTitle`: the display title trimmed, else untitled.
+pub fn header(s: &Session, t: &Translator) -> String {
+    match crate::theme_import::color::js_trim(&display(s, t)) {
+        "" => t.t("ccAgent.sessionHeader.untitled", &[]),
+        trimmed => trimmed.to_owned(),
+    }
+}
+
 /// `toStoredSessionTitle`: an edited display title back to what the row stores.
 pub fn stored(s: &Session, edited: &str) -> String {
     if s.source == MAKE || s.source == MAKE_MERGE {

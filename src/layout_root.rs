@@ -5,7 +5,7 @@ pub mod geometry;
 #[cfg(test)]
 mod panel_tests;
 #[cfg(test)]
-mod screen_tests;
+pub(crate) mod screen_tests;
 #[cfg(test)]
 mod tests;
 pub(super) mod view;

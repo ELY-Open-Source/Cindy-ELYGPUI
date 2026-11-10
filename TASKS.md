@@ -93,7 +93,7 @@ listed in `tasks/done.md`.
     - Open (review r3): `sync` resets the gate's `loaded` with each new task, but Cindy's gate
       keeps its one `{id, source}` across task switches; old (read by the gate), then s1 (listed),
       then old deleted and reopened draws Missing where Cindy keeps the content open (visits 1)
-  - [ ] 9.3b The content header: `SessionContentHeader` in the header slot for the route's task:
+  - [x] 9.3b The content header: `SessionContentHeader` in the header slot for the route's task:
     the pin mark, the title (`max-w-[40vw]`, its manual window drag) with the double-click rename
     (`w-72 h-7`), More (`Ellipsis` 15 in `h-7 w-7`) opening `SessionTaskMenu` with the header's
     handlers; device, schedule, tag, git and migration badges come with their chapters

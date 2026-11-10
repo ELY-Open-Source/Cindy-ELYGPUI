@@ -12,7 +12,7 @@ use super::{LayoutRoot, SidebarSeen};
 use crate::layout_tree::{Layout, LayoutStore, Node};
 use crate::{os_appearance::Initial, theme::Appearance, theme::Mode};
 
-pub(super) fn tree(chat: f64, right: f64) -> Layout {
+pub(crate) fn tree(chat: f64, right: f64) -> Layout {
     tree_in("row", chat, right)
 }
 
@@ -30,7 +30,7 @@ pub(super) fn tree_in(direction: &str, chat: f64, right: f64) -> Layout {
 }
 
 /// A window `width` wide holding only the content area, over a store in `dir`.
-pub(super) fn open<'a>(
+pub(crate) fn open<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,
     layout: Layout,

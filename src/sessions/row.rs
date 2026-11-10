@@ -24,11 +24,12 @@ use crate::{
     units::css,
 };
 
-/// The list that draws a row: the rail's panel draws rows of its own for tasks the sidebar shows.
+/// Where a task's title is drawn: a sidebar row, a rail panel row or the content header.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Scope {
     Sidebar,
     Rail,
+    Header,
 }
 
 impl Scope {
@@ -37,6 +38,7 @@ impl Scope {
         match self {
             Scope::Sidebar => id.to_owned(),
             Scope::Rail => format!("rail-{id}"),
+            Scope::Header => format!("header-{id}"),
         }
     }
 }

@@ -28,7 +28,11 @@ pub struct Editing {
 /// `handleDoubleClick` and `handleRenameSelect`: the field opens on the display title,
 /// selected and focused.
 pub fn start(s: &Session, scope: Scope, window: &mut Window, cx: &mut App) {
-    let display = title::display(s, cx.global::<Translator>());
+    let t = cx.global::<Translator>();
+    let display = match scope {
+        Scope::Header => title::header(s, t),
+        _ => title::display(s, t),
+    };
     let input = cx.new(|cx| {
         let mut input = TextInput::new(window, cx);
         input.set_text(display.clone(), cx);
@@ -63,28 +67,50 @@ pub fn editing<'a>(id: &str, scope: Scope, cx: &'a App) -> Option<&'a Editing> {
     (e.id == id && e.scope == scope).then_some(e)
 }
 
-/// `commitTitle`: once; a blank or unchanged title saves nothing.
+/// The content header's field, whatever task it opened on.
+pub fn header_editing(cx: &App) -> Option<&Editing> {
+    let e = cx.global::<Sessions>().editing.as_ref()?;
+    (e.scope == Scope::Header).then_some(e)
+}
+
+/// The content header unmounted: its edit goes with it, unsaved.
+pub fn drop_header(cx: &mut App) {
+    if header_editing(cx).is_some() {
+        log::info!(target: "sessions", "the header's rename dropped: the header is gone");
+        cx.global_mut::<Sessions>().editing = None;
+    }
+}
+
+/// `commitTitle`: once; blank or unchanged saves nothing. The header's goes to the task shown now.
 fn commit(raw: &str, window: &mut Window, cx: &mut App) {
     let Some(editing) = cx.global_mut::<Sessions>().editing.take() else {
         return;
     };
     cx.refresh_windows();
     let trimmed = js_trim(raw);
-    if trimmed.is_empty() || trimmed == editing.display {
-        log::info!(target: "sessions", "rename {} closed unchanged", editing.id);
-        return;
-    }
-    let Some(session) = cx
-        .global::<Sessions>()
-        .loaded
-        .as_ref()
-        .and_then(|l| l.sessions.iter().find(|s| s.id == editing.id).cloned())
-    else {
-        log::warn!(target: "sessions", "rename {}: the task left the list", editing.id);
+    let header = editing.scope == Scope::Header;
+    let session = match header {
+        true => crate::session_view::header::task(cx).cloned(),
+        false => crate::sessions::find(&editing.id, cx).cloned(),
+    };
+    let Some(session) = session else {
+        log::warn!(target: "sessions", "rename {}: the task is gone", editing.id);
         return;
     };
+    let unchanged = match header {
+        // The header also counts the stored title as unchanged.
+        true => {
+            let shown = title::header(&session, cx.global::<Translator>());
+            trimmed == session.title || trimmed == shown
+        }
+        false => trimmed == editing.display,
+    };
+    if trimmed.is_empty() || unchanged {
+        log::info!(target: "sessions", "rename {} closed unchanged", session.id);
+        return;
+    }
     let stored = title::stored(&session, trimmed);
-    write::apply(&editing.id, write::Meta::Title(stored), window, cx);
+    write::apply(&session.id, write::Meta::Title(stored), window, cx);
 }
 
 /// Escape: the edit ends with nothing saved.
@@ -95,18 +121,40 @@ fn cancel(cx: &mut App) {
     }
 }
 
-/// `min-w-0 flex-1` around `h-6 rounded-full border px-1.5 pr-7 text-sm font-medium`; the
-/// AI rename button that fills `pr-7` comes with 11.0.
-/// The field's type in a row: `text-sm font-medium`.
+/// The field's type: `text-sm font-medium`; the AI rename button in `pr-7` comes with 11.0.
 pub const TEXT: (f32, gpui::FontWeight) = (14.0, gpui::FontWeight::MEDIUM);
 
-/// `activeForeground` on the active row: a 28% foreground border and the active foreground.
+/// A row's field: `min-w-0 flex-1`, in the active foreground on the active row.
 pub fn field(
     editing: &Editing,
-    (size, weight): (f32, gpui::FontWeight),
+    text: (f32, gpui::FontWeight),
     active: bool,
     cx: &App,
 ) -> AnyElement {
+    frame(editing, text, 24.0, active, cx)
+        .flex_1()
+        .min_w_0()
+        .into_any_element()
+}
+
+/// The content header's field: `w-72 max-w-[40vw]` around an `h-7` input.
+pub fn header_field(editing: &Editing, window: &Window, cx: &App) -> AnyElement {
+    frame(editing, TEXT, 28.0, false, cx)
+        // `WINDOW_NO_DRAG_STYLE`: a press here never moves the window.
+        .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+        .w(css(288.0))
+        .max_w(window.viewport_size().width * 0.4)
+        .into_any_element()
+}
+
+/// `SessionRenameInput`: a pill `h-6` or `h-7` tall; the active row borders it at 28%.
+fn frame(
+    editing: &Editing,
+    (size, weight): (f32, gpui::FontWeight),
+    height: f32,
+    active: bool,
+    cx: &App,
+) -> gpui::Stateful<gpui::Div> {
     let appearance = cx.global::<Appearance>();
     let active_fg = appearance.token("sidebar-item-active-foreground");
     let (border, color) = match active {
@@ -122,8 +170,6 @@ pub fn field(
         .debug_selector(|| "task-rename".into())
         .relative()
         .flex()
-        .flex_1()
-        .min_w_0()
         .items_center()
         .capture_key_down(|event, window, cx| {
             if event.keystroke.key == "escape" {
@@ -144,7 +190,7 @@ pub fn field(
                 .items_center()
                 .w_full()
                 .min_w_0()
-                .h(css(24.0))
+                .h(css(height))
                 .pl(css(6.0))
                 .pr(css(28.0))
                 .rounded(css(9999.0))
@@ -155,5 +201,4 @@ pub fn field(
                 .text_color(color)
                 .child(editing.input.clone()),
         )
-        .into_any_element()
 }

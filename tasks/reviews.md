@@ -79,3 +79,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: a change of the listed source cancels the gate's read in flight, as the effect's cleanup does; each content read takes a sequence the mount holds, as `createSessionRefreshSequence` does; both cases are tests.
 - Round 3: FAIL. Each new task reset the gate's `loaded`, while Cindy's gate keeps its last successful `{id, source}` across task switches; returning to a task the gate read before closes the gate where Cindy keeps it open.
 - Left open: marked `- [!]` in TASKS.md.
+
+## 9.3b The content header
+- Round 1: FAIL. The title's press was followed only over the title, so a drag that left it moved nothing and a release outside left a press a later hover turned into a move; More was no Tab stop; a route change hid the header's field, which Cindy keeps with its draft; a test comment ran two lines.
+- Fixed: the press is followed over the whole window in the capture phase until it moves the window, lifts, or a move comes with no button held; More holds a Tab stop and a press focuses it; the header draws its field whatever task opened it, commits to the task shown now (its stored or shown title is no change) and drops the edit when the header goes; the comment is one line; the reviewer's four cases are tests.
+- Round 2: FAIL. Both rename entries looked the task up in any held bucket first, so a stale archived row prefilled the field over the fresh title the header showed.
+- Fixed: the double click and More's Rename start from the task the header shows (`header::task`); rows look theirs up in the list; `session_view::task` is gone; the reviewer's two cases are tests.
+- Round 3: PASS.

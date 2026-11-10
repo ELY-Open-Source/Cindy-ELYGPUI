@@ -34,82 +34,78 @@ defines scope and what 1:1 means.
   `conversations.rs` is `searchConversations` for the owner's own search (no host scope, so no
   source filter or remote aliases): candidates with their companions, title matches on the shown
   title, up to three content pages, then merged results with live message counts.
-- Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the
-  first read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs`
-  reads `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher
-  on the database, its WAL and `owners/<key>/sidebar-settings.json` (`settings.rs`) reloads,
-  single-flight. `lists.rs` builds both lists from one bucket as `CCAgentSidebarUpper.tsx` does:
-  `pinned.rs` draws the Pinned section, `main_list.rs` the main list in `project` or `flat` mode,
-  from `group.rs` (`groupSessions`, `buildMainListEntries`) and `paths.rs` (project keys). All of it
-  is checked against `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row,
-  with `title.rs` (`getSessionDisplayTitle`, golden `display-title.json`) and `meta.rs`
-  (`SessionInfoMeta`, golden `meta.json`; task info read once, as Cindy caches it).
-  `task_menu.rs` is the row's `SessionTaskMenu` (Ely `ContextMenu` on a right click, `menu_under`
-  on the hover More), `rename.rs` the `SessionRenameInput` on Ely's `TextInput`, and `write.rs`
-  `patchMeta`: the row patched first, the `UPDATE` on the database worker, rolled back with a
-  toast on failure. The port writes Cindy's database the way Cindy's own main process does.
-  `pin.rs` is `handleTogglePin`: `pinnedAt` through `write.rs`, and a pin promoted in
-  `sidebar-settings.json`'s `pinnedOrder` by `settings::promote` (`savePinnedOrder` and
-  `updateAtomic`: under the lock, an unreadable file refused, tmp then rename).
-  `project.rs` is `ProjectNode`'s `ProjectHeader`: a Tab stop that folds on a click, Enter or
-  Space, its hover More (`ProjectAction`), and one menu (Ely `ContextMenu::manual`) from More, a
-  right click or the menu key: Rename, Pin or Unpin (`pin::project`, `project:<key>` promoted or
-  removed), Copy deep link (`buildProjectDeepLink`). `project/rename.rs` is the alias field on a
-  double click or Rename, `project/alias.rs` `useProjectAliases.updateAlias` and
-  `upsertProjectAlias` on the database worker. `project/remove.rs` is Remove from sidebar: a
-  confirm, then `settings::hide` (`setProjectHidden`). The other actions come with their tasks.
-  `src/cross_process_lock.rs` is the advisory tier of Cindy's `crossProcessLock.ts`: the
-  `{pid, startedAt, nonce}` file, a 2 s heartbeat, nonce-bound release, and stale takeover
-  under the `.reclaim.d` gate, with owner liveness from `kill(pid, 0)` and `ps` (PowerShell,
-  then WMIC, on Windows). It blocks, so callers run it on the background executor.
-  `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope header and
-  the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or kept-open
-  choice, and lacks some lucide icons; the nearest Ely icon stands in. A right click on the
+- Task list (`src/sessions.rs`, Cindy's `sessionsStore.ts` for the filter's status bucket): the first
+  read sweeps provisional leftovers once per database open (`sweep.rs`), then `query.rs` reads
+  `ordinaryTaskListFilter`'s rows. Cindy's push events never reach the port, so a watcher on the
+  database, its WAL and `owners/<key>/sidebar-settings.json` (`settings.rs`) reloads, single-flight.
+  `lists.rs` builds both lists from one bucket as `CCAgentSidebarUpper.tsx` does: `pinned.rs` draws the
+  Pinned section, `main_list.rs` the main list in `project` or `flat` mode, from `group.rs`
+  (`groupSessions`, `buildMainListEntries`) and `paths.rs` (project keys). All of it is checked against
+  `tests/fixtures/grouping` from `sync-golden.mjs`. `row.rs` is the task row, with `title.rs`
+  (`getSessionDisplayTitle`, golden `display-title.json`) and `meta.rs` (`SessionInfoMeta`, golden
+  `meta.json`; task info read once, as Cindy caches it). `task_menu.rs` is the row's `SessionTaskMenu`
+  (Ely `ContextMenu` on a right click, `menu_under` on the hover More), `rename.rs` the
+  `SessionRenameInput` on Ely's `TextInput`, and `write.rs` `patchMeta`: the row patched first, the
+  `UPDATE` on the database worker, rolled back with a toast on failure. The port writes Cindy's
+  database the way Cindy's own main process does. `pin.rs` is `handleTogglePin`: `pinnedAt` through
+  `write.rs`, and a pin promoted in `sidebar-settings.json`'s `pinnedOrder` by `settings::promote`
+  (`savePinnedOrder` and `updateAtomic`: under the lock, an unreadable file refused, tmp then rename).
+  `project.rs` is `ProjectNode`'s `ProjectHeader`: a Tab stop that folds on a click, Enter or Space,
+  its hover More (`ProjectAction`), and one menu (Ely `ContextMenu::manual`) from More, a right click
+  or the menu key: Rename, Pin or Unpin (`pin::project`, `project:<key>` promoted or removed), Copy
+  deep link (`buildProjectDeepLink`). `project/rename.rs` is the alias field on a double click or
+  Rename, `project/alias.rs` `useProjectAliases.updateAlias` and `upsertProjectAlias` on the database
+  worker. `project/remove.rs` is Remove from sidebar: a confirm, then `settings::hide`
+  (`setProjectHidden`). The other actions come with their tasks. `src/cross_process_lock.rs` is the
+  advisory tier of Cindy's `crossProcessLock.ts`: the `{pid, startedAt, nonce}` file, a 2 s heartbeat,
+  nonce-bound release, and stale takeover under the `.reclaim.d` gate, with owner liveness from
+  `kill(pid, 0)` and `ps` (PowerShell, then WMIC, on Windows). It blocks, so callers run it on the
+  background executor. `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope
+  header and the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or
+  kept-open choice, and lacks some lucide icons; the nearest Ely icon stands in. A right click on the
   list's blank space opens the same menu at the pointer (Ely `ContextMenu` around the scroller,
-  `handleSidebarBlankContextMenu`); rows and headers stop their own right clicks.
-  `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed by section and group and
-  resets once its list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
-  `background_executor().now()` so tests can advance the clock.
-  `preview.rs` is `finalizePlainPreview` (its LRU cache, `stripInternalWebCitations`) and
-  `projection.rs` the list's latest-message extract with `scheduleSessionListProjectionBackfill`:
-  after a read, one `UPDATE` fills the empty `list_preview` and `list_message_count` columns.
-  `view_mode.rs` is `useSidebarCardMode.ts` with `sidebarInstallVintage.ts`: the Pinned mode
-  (`sidebar.cardMode`) and the main list's (`sidebar.mainListMode`), kept in memory as Cindy's
-  module memo, chosen from the filter menu's Display row and the Pinned header's view style menu.
-  `list_row.rs` is `SessionCard`'s `list` variant (dividers, title line, one preview line from
-  `sessionToCamel`'s `preview`), drawn in list mode; groups inset it `pl-2`.
-  `card.rs` is the `card` variant (title, `resolveSessionCardBody`, meta row) and `masonry.rs`
-  `CardMasonry`: one to three round-robin columns from the width measured in prepaint, with
-  `card-col-fade`; card mode's fold height is that measured height.
-  `marquee.rs` is `SidebarTitleMarquee` in the text and list rows: the row's `on_hover` picks one
-  title, prepaint canvases measure it and its track, and the track scrolls on the executor clock.
-  The hover ignores key presses, as CSS `:hover` does. An unmounted row lets go at the next list
-  render; a title back from rename starts again. Tests drive frames with `simulate_next_frame`.
-  `sortable.rs` is `SortableList`'s native drag for the Pinned text and list modes: gpui's
-  `on_drag` per entry, the entry under the pointer takes the dragged one's place (`swapThreshold:
-  1`), displaced entries slide 150ms, a drop on the list saves; Escape, a drop elsewhere or a lost
-  window put the order back. Cards drag the same way across `DraggableCardColumns`' round-robin
-  columns (`sortable/order.rs`): into another column an entry goes after a target it sat above,
-  else before; a column's empty tail appends; the drop saves `reorderByDropSlot`'s
-  `row * N + column`. Slides move in x and y. `reorder.rs` is `handlePinnedReorder` (`buildManualPinnedReorder`,
-  golden `pinned-reorder`) and `settings::save` takes `savePinnedOrder`'s `reorder`, rebased on the
-  file as `rebasePinnedReorder` does. A press on a group's tasks does not drag the group.
+  `handleSidebarBlankContextMenu`); rows and headers stop their own right clicks. `fold.rs` is
+  `SectionCollapse` and the first-N fold. Show all is keyed by section and group and resets once its
+  list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
+  `background_executor().now()` so tests can advance the clock. `preview.rs` is `finalizePlainPreview`
+  (its LRU cache, `stripInternalWebCitations`) and `projection.rs` the list's latest-message extract
+  with `scheduleSessionListProjectionBackfill`: after a read, one `UPDATE` fills the empty
+  `list_preview` and `list_message_count` columns. `view_mode.rs` is `useSidebarCardMode.ts` with
+  `sidebarInstallVintage.ts`: the Pinned mode (`sidebar.cardMode`) and the main list's
+  (`sidebar.mainListMode`), kept in memory as Cindy's module memo, chosen from the filter menu's
+  Display row and the Pinned header's view style menu. `list_row.rs` is `SessionCard`'s `list` variant
+  (dividers, title line, one preview line from `sessionToCamel`'s `preview`), drawn in list mode;
+  groups inset it `pl-2`. `card.rs` is the `card` variant (title, `resolveSessionCardBody`, meta row)
+  and `masonry.rs` `CardMasonry`: one to three round-robin columns from the width measured in prepaint,
+  with `card-col-fade`; card mode's fold height is that measured height. `marquee.rs` is
+  `SidebarTitleMarquee` in the text and list rows: the row's `on_hover` picks one title, prepaint
+  canvases measure it and its track, and the track scrolls on the executor clock. The hover ignores key
+  presses, as CSS `:hover` does. An unmounted row lets go at the next list render; a title back from
+  rename starts again. Tests drive frames with `simulate_next_frame`. `sortable.rs` is `SortableList`'s
+  native drag for the Pinned text and list modes: gpui's `on_drag` per entry, the entry under the
+  pointer takes the dragged one's place (`swapThreshold: 1`), displaced entries slide 150ms, a drop on
+  the list saves; Escape, a drop elsewhere or a lost window put the order back. Cards drag the same way
+  across `DraggableCardColumns`' round-robin columns (`sortable/order.rs`): into another column an
+  entry goes after a target it sat above, else before; a column's empty tail appends; the drop saves
+  `reorderByDropSlot`'s `row * N + column`. Slides move in x and y. `reorder.rs` is
+  `handlePinnedReorder` (`buildManualPinnedReorder`, golden `pinned-reorder`) and `settings::save`
+  takes `savePinnedOrder`'s `reorder`, rebased on the file as `rebasePinnedReorder` does. A press on a
+  group's tasks does not drag the group.
 - Interrupted tasks: `src/sessions/interrupted.rs` is `listInterruptedResumeCandidateRows`: active
-  tasks whose turn started before this process (`cross_process_lock::started_ms`, Cindy's
-  `bootAtMs`) and never ended, companion tasks through the send path's guards and the owner's
-  `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each
-  with its turn's last message time and its last `tool_use` as `activity`. `load` runs once
-  per owner when the database is ready. `interrupted/tasks.rs` is `loadInterruptedTasks` in
-  the same read: `getMany`'s rows (`query::by_ids`), companion names when a companion task is
-  there, newest first. A Cindy beside the port, mid-turn, looks interrupted to it, as to a passive join.
-  `interrupted/dialog.rs` is `InterruptedTasksResumeDialog` on `ConfirmDialog`, drawn from the
-  main window's root: it opens when an owner's load with tasks lands and the window has not
-  handled that owner; closing marks it. Rows reuse `lists::labels` and `row::vendor`.
-  `dialog/check.rs` draws the native box (Space, not Enter; focus on press) in
-  `confirm-btn-primary-bg`, and its `label`: a click focuses the box; box and label set one
-  target state, so a press toggles once. The row's hover ignores keys, as CSS `:hover` does. Continue rechecks the
-  candidates; with no send before 10.0 each picked task still interrupted fails with the
-  `continueFailed` toast. The release notes that suspend it come with their chapter.
+  tasks whose turn started before this process (`cross_process_lock::started_ms`, Cindy's `bootAtMs`)
+  and never ended, companion tasks through the send path's guards and the owner's
+  `companion-cloud/shadowed.json` (read with `atomic_file::read`, `readAtomicFileSync`), each with its
+  turn's last message time and its last `tool_use` as `activity`. `load` runs once per owner when the
+  database is ready. `interrupted/tasks.rs` is `loadInterruptedTasks` in the same read: `getMany`'s
+  rows (`query::by_ids`), companion names when a companion task is there, newest first. A Cindy beside
+  the port, mid-turn, looks interrupted to it, as to a passive join. `interrupted/dialog.rs` is
+  `InterruptedTasksResumeDialog` on `ConfirmDialog`, drawn from the main window's root: it opens when
+  an owner's load with tasks lands and the window has not handled that owner; closing marks it. Rows
+  reuse `lists::labels` and `row::vendor`. `dialog/check.rs` draws the native box (Space, not Enter;
+  focus on press) in `confirm-btn-primary-bg`, and its `label`: a click focuses the box; box and label
+  set one target state, so a press toggles once. The row's hover ignores keys, as CSS `:hover` does.
+  Continue rechecks the candidates; with no send before 10.0 each picked task still interrupted fails
+  with the `continueFailed` toast. The release notes that suspend it come with their chapter.
 - Command intent: `src/command_intent.rs` is `commandIntent.ts` (`from_command`, `from_actions`,
   `intents_from_actions`), actions named as Cindy spells them; `shell.rs` its lexer (JS `\s`,
   `trim`, lengths in UTF-16 units). `src/command_display.rs` is `normalizeDisplayCommand`.
@@ -216,7 +212,12 @@ defines scope and what 1:1 means.
   (a task any held bucket lists opens at once, else `get` reads it; a miss or failure draws
   `SessionEntryError`; a Cindy Make source goes back), the task the view holds (the latest read, else
   the `active` bucket's row; each watcher reload reads it again), a deleted task purged and left, the
-  store's `enterView`, `ensureInitialMessages` and `leaveView` with the route.
+  store's `enterView`, `ensureInitialMessages` and `leaveView` with the route. `header.rs` is
+  `SessionContentHeader` in the header slot (which shows on macOS while it holds one): the pin, the
+  title (its press followed over the whole window, as pointer capture, with a 4px dead zone before it
+  moves the window; a double click renames with `rename::header_field`, whose edit outlives a task
+  switch, commits to the task shown and goes with the header), More (a Tab stop) with `task_menu` under
+  `Scope::Header`, whose pin writes `pinnedAt` alone.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts
@@ -296,48 +297,44 @@ defines scope and what 1:1 means.
   search's outside press while its row is gone. Done stores nothing, as
   `setSidebarNavigationPrefs(null)` does, until 13.0's data owner.
   Ely's Subtle and Ghost buttons stand in for Cindy's primary and quiet ones; Puzzle for `plug`.
-- Rail: `sessions/rail.rs` is `CCAgentSidebarUpper`'s two views. Both stay drawn; the sidebar's
-  `upper` tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and
-  not peeking, and the shown view paints last with `occlude`, standing in for
-  `pointer-events-none`. `CollapsedView` holds the New tile (`SidebarIconButton`, its face
-  inset 1px on press), Search, the divider and `RailNav`.
-  `rail/search.rs` is `ConversationSearchBox`: the tile toggles a popover at its right over the
-  rail's search, enabled only while open; Escape (`intercept_keystrokes`), a press outside
-  (unless the open options menu keeps it), focus leaving the panel or the tile close it and
-  reset the query, focus going back to the tile unless the close came from outside. A chosen
-  result closes it first. The panel occludes what lies under it and loops Tab in Ely's
-  trapping `FocusScope`. The inline search counts the panel and its open menu as poppers.
-  `rail/pinned.rs` is `RailNav`'s Pinned tiles after the divider: pinned tasks (archived and
-  Orca workers left out) by `manualPinnedOrder` rank, `pinnedTileLabel` in UTF-16 units, a
-  click as `handlePinnedClick`, a drag through `sortable` as its own list (bounds, slides and
-  columns keyed by list, so the drawn-but-hidden Pinned section keeps its own) into
-  `reorder::reorder` (`handleRailPinnedReorder` is `handlePinnedReorder`). The hover card,
-  `SessionPreviewCard`, sits at the tile's right from the bounds its prepaint recorded and has
-  no hitbox; running and unread faces come with 10.0.
-  `rail/sections.rs` is the Projects and Dialogues tiles over `railPanelStore` (the `Panels`
-  global): a hover opens the section at the tile's bounds and hides the pin preview, leaving
-  closes it after 120ms unless a key opened it, a click opens it (`is_keyboard` for the key
-  flag), a pin click closes all.
-  `rail/panels.rs` is `RailPanels`: `RailPanelShell` deferred at the tile, the Dialogues panel
-  (`compareDialogueSessions` by recency, `sidebar.collapse.dialogueLimit` 10, its own Show all)
-  and the closes: a pointer move off the panel and tiles schedules one, a press outside or
-  Escape (`intercept_keystrokes`) closes, so do the rail's end and a tile out of view (its
-  prepaint against the content mask stands in for `IntersectionObserver`). A row's field or
-  menu holds the panel: Ely's menus focus a handle outside the tab order, which stands in for
-  Radix's modal overlay; a choice in such a menu marks the press as inside. A keyboard open
-  moves focus in (`focus_next` from the panel; with no stop inside, focus stays) and Escape
-  gives it back to the tile. The tiles' keep-alive is a hit test on their hitboxes; Show all
-  is `fold::ShowAll`, a keyboard button the main list shares.
-  `row::Scope` gives the panel's rows their own rename, marquee and selectors; they neither
-  reveal nor join the selection, and a click only navigates (`handlePanelSessionClick`).
-  `panels/projects.rs` is the Projects panel: `Lists.unclassified` (5, then Show all), then
-  `Lists.rail_projects` (`visibleRailProjectsWithVendor`, pinned projects kept, unpinned tasks
-  only, `sortProjectsForSidebar`; 20, then Show all), each row a tab stop. The Cindy Make group
-  is absent: `CINDY_MAKE_ENABLED` is off, so no such task loads. `panels/level.rs` is the
-  project level (`openProject`, `scheduleProjectClose`): a row's hover or click opens its tasks
-  8px right of the row in a second shell; its grace runs whenever the pointer is off the level
-  and every project row (both hitboxes, recorded in prepaint), so either hover order holds it.
-  A keyboard open on either level takes no grace and moves focus in. The lamps come with 10.0.
+- Rail: `sessions/rail.rs` is `CCAgentSidebarUpper`'s two views. Both stay drawn; the sidebar's `upper`
+  tween fades `CollapsedView` in over 200ms `ease-in-out` while it is a rail or hidden and not peeking,
+  and the shown view paints last with `occlude`, standing in for `pointer-events-none`. `CollapsedView`
+  holds the New tile (`SidebarIconButton`, its face inset 1px on press), Search, the divider and
+  `RailNav`. `rail/search.rs` is `ConversationSearchBox`: the tile toggles a popover at its right over
+  the rail's search, enabled only while open; Escape (`intercept_keystrokes`), a press outside (unless
+  the open options menu keeps it), focus leaving the panel or the tile close it and reset the query,
+  focus going back to the tile unless the close came from outside. A chosen result closes it first. The
+  panel occludes what lies under it and loops Tab in Ely's trapping `FocusScope`. The inline search
+  counts the panel and its open menu as poppers. `rail/pinned.rs` is `RailNav`'s Pinned tiles after the
+  divider: pinned tasks (archived and Orca workers left out) by `manualPinnedOrder` rank,
+  `pinnedTileLabel` in UTF-16 units, a click as `handlePinnedClick`, a drag through `sortable` as its
+  own list (bounds, slides and columns keyed by list, so the drawn-but-hidden Pinned section keeps its
+  own) into `reorder::reorder` (`handleRailPinnedReorder` is `handlePinnedReorder`). The hover card,
+  `SessionPreviewCard`, sits at the tile's right from the bounds its prepaint recorded and has no
+  hitbox; running and unread faces come with 10.0. `rail/sections.rs` is the Projects and Dialogues
+  tiles over `railPanelStore` (the `Panels` global): a hover opens the section at the tile's bounds and
+  hides the pin preview, leaving closes it after 120ms unless a key opened it, a click opens it
+  (`is_keyboard` for the key flag), a pin click closes all. `rail/panels.rs` is `RailPanels`:
+  `RailPanelShell` deferred at the tile, the Dialogues panel (`compareDialogueSessions` by recency,
+  `sidebar.collapse.dialogueLimit` 10, its own Show all) and the closes: a pointer move off the panel
+  and tiles schedules one, a press outside or Escape (`intercept_keystrokes`) closes, so do the rail's
+  end and a tile out of view (its prepaint against the content mask stands in for
+  `IntersectionObserver`). A row's field or menu holds the panel: Ely's menus focus a handle outside
+  the tab order, which stands in for Radix's modal overlay; a choice in such a menu marks the press as
+  inside. A keyboard open moves focus in (`focus_next` from the panel; with no stop inside, focus
+  stays) and Escape gives it back to the tile. The tiles' keep-alive is a hit test on their hitboxes;
+  Show all is `fold::ShowAll`, a keyboard button the main list shares. `row::Scope` gives the panel's
+  rows their own rename, marquee and selectors; they neither reveal nor join the selection, and a click
+  only navigates (`handlePanelSessionClick`). `panels/projects.rs` is the Projects panel:
+  `Lists.unclassified` (5, then Show all), then `Lists.rail_projects` (`visibleRailProjectsWithVendor`,
+  pinned projects kept, unpinned tasks only, `sortProjectsForSidebar`; 20, then Show all), each row a
+  tab stop. The Cindy Make group is absent: `CINDY_MAKE_ENABLED` is off, so no such task loads.
+  `panels/level.rs` is the project level (`openProject`, `scheduleProjectClose`): a row's hover or
+  click opens its tasks 8px right of the row in a second shell; its grace runs whenever the pointer is
+  off the level and every project row (both hitboxes, recorded in prepaint), so either hover order
+  holds it. A keyboard open on either level takes no grace and moves focus in. The lamps come with
+  10.0.
 - Preferences: `src/preferences.rs` is a global; `set` writes the file atomically, as
   `localStorage.setItem` stores strings. `cindy_json::js_to_number` is JavaScript's `Number`.
 - Window chrome: frameless as Cindy opens it. macOS hides the title bar and keeps the traffic

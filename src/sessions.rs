@@ -24,16 +24,16 @@ mod project;
 mod projection;
 pub(crate) mod query;
 pub(crate) mod rail;
-mod rename;
+pub(crate) mod rename;
 mod reorder;
 mod reveal;
-mod row;
+pub(crate) mod row;
 pub(crate) mod search;
 mod select;
 mod settings;
 pub(crate) mod sortable;
 mod sweep;
-mod task_menu;
+pub(crate) mod task_menu;
 pub(crate) mod title;
 mod view_mode;
 mod write;
@@ -165,6 +165,13 @@ pub fn load_for_tests(tasks: &[(&str, &str, &str)], cx: &mut App) {
     load_buckets_for_tests(tasks, &[], cx);
 }
 
+/// The shown `pinnedOrder`.
+#[cfg(test)]
+pub fn pinned_order_for_tests(cx: &App) -> Vec<String> {
+    let loaded = cx.global::<Sessions>().loaded.as_ref().expect("loaded");
+    loaded.settings.pinned_order.clone()
+}
+
 /// The filter's bucket and the `all` one, as `(id, status, source)` tasks.
 #[cfg(test)]
 pub fn load_buckets_for_tests(
@@ -180,7 +187,7 @@ pub fn load_buckets_for_tests(
         };
         tasks.iter().map(row).collect()
     };
-    cx.global_mut::<Sessions>().loaded = Some(Loaded {
+    cx.global_mut::<Sessions>().show(Loaded {
         sessions: rows(tasks),
         recent: Vec::new(),
         aliases: Vec::new(),
@@ -346,9 +353,10 @@ pub fn reload(cx: &mut App) {
 }
 
 impl Sessions {
-    /// A read's rows replace the list; an edit whose task left it ends, as its row unmounts.
+    /// A read's rows replace the list; a row's edit whose task left it ends, as its row unmounts.
     fn show(&mut self, loaded: Loaded) {
         if let Some(editing) = &self.editing
+            && editing.scope != row::Scope::Header
             && !loaded.sessions.iter().any(|s| s.id == editing.id)
         {
             log::info!(target: "sessions", "rename {} dropped: the task left the list", editing.id);

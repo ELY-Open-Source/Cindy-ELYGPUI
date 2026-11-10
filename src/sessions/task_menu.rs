@@ -11,7 +11,6 @@ use gpui::{
 };
 
 use super::{
-    Sessions,
     group::Session,
     keyboard::{self, Probe},
     pin, rename,
@@ -19,11 +18,6 @@ use super::{
     title, write,
 };
 use crate::{i18n::Translator, lucide::icon, theme::Appearance, tip::tip, units::css};
-
-fn session(id: &str, cx: &App) -> Option<Session> {
-    let loaded = cx.global::<Sessions>().loaded.as_ref()?;
-    loaded.sessions.iter().find(|s| s.id == id).cloned()
-}
 
 type Run = Box<dyn Fn(&mut Window, &mut App)>;
 
@@ -43,16 +37,30 @@ pub fn menu(s: &Session, scope: Scope, t: &Translator) -> Menu {
     let id = s.id.clone();
     let rename = item(
         "rename",
-        Box::new(move |window, cx| match session(&id, cx) {
-            Some(s) => rename::start(&s, scope, window, cx),
-            None => log::warn!(target: "sessions", "rename {id}: the task left the list"),
+        Box::new(move |window, cx| {
+            // `startEdit` reads the task its own component shows.
+            let shown = match scope {
+                Scope::Header => crate::session_view::header::task(cx),
+                _ => crate::sessions::find(&id, cx),
+            };
+            match shown.cloned() {
+                Some(s) => rename::start(&s, scope, window, cx),
+                None => log::warn!(target: "sessions", "rename {id}: the task is gone"),
+            }
         }),
     );
     let mut menu = Menu::new();
     if s.status != "archived" && !title::empty_draft(s) {
         let (id, pinned) = (s.id.clone(), s.pinned_at.is_some());
         let key = if pinned { "unpin" } else { "pin" };
-        let toggle = move |window: &mut Window, cx: &mut App| pin::toggle(&id, pinned, window, cx);
+        // The header's `handleTogglePin` writes `pinnedAt` alone.
+        let toggle = move |window: &mut Window, cx: &mut App| match scope {
+            Scope::Header => {
+                let at = (!pinned).then(|| jiff::Timestamp::now().as_millisecond());
+                write::apply(&id, write::Meta::Pinned(at), window, cx)
+            }
+            _ => pin::toggle(&id, pinned, window, cx),
+        };
         menu = menu.item(item(key, Box::new(toggle)));
     }
     menu = menu.item(rename);
