@@ -9,6 +9,7 @@ use gpui::{
 
 use super::{Atom, CHIP, atoms, clamp, rows};
 use crate::{
+    chat_quotes::Quote,
     i18n::Translator,
     linkify,
     session_view::{
@@ -119,24 +120,39 @@ impl Reading {
     }
 }
 
+/// A stretch of the bubble: the user's text with its ranges, or a quote between two.
+pub enum Island<'a> {
+    Text(&'a str, Ranges),
+    Quote(&'a Quote),
+}
+
 /// `renderContent`'s nodes line by line; a final line feed opens no line.
-fn lines(body: &str, ranges: &Ranges, linked: bool, t: &Translator) -> Vec<Line> {
+fn lines(islands: &[Island], linked: bool, t: &Translator) -> Vec<Line> {
     let mut reading = Reading {
         lines: vec![Line::default()],
         links: 0,
         linked,
     };
-    let slash = ranges.slash.as_deref().unwrap_or_default();
-    for token in sent::tokens(body, &ranges.pasted, slash, &ranges.references) {
-        match &token {
-            Token::Text(text) => reading.text(text, ranges.slash.is_none()),
-            Token::Slash(text) => reading.chip(chip::command(&sent::slash_label(text))),
-            Token::Pasted { text, display } => reading.chip(chip::pasted(display, text)),
-            Token::Reference { text, index } => {
-                let reference = &ranges.references[*index];
-                match chip::reference(reference, &sent::label(reference, t)) {
-                    Some(chip) => reading.chip(chip),
-                    None => reading.plain(text),
+    for island in islands {
+        let (body, ranges) = match island {
+            Island::Text(body, ranges) => (body, ranges),
+            Island::Quote(quote) => {
+                reading.chip(chip::quote(quote, true));
+                continue;
+            }
+        };
+        let slash = ranges.slash.as_deref().unwrap_or_default();
+        for token in sent::tokens(body, &ranges.pasted, slash, &ranges.references) {
+            match &token {
+                Token::Text(text) => reading.text(text, ranges.slash.is_none()),
+                Token::Slash(text) => reading.chip(chip::command(&sent::slash_label(text))),
+                Token::Pasted { text, display } => reading.chip(chip::pasted(display, text)),
+                Token::Reference { text, index } => {
+                    let reference = &ranges.references[*index];
+                    match chip::reference(reference, &sent::label(reference, t), !linked) {
+                        Some(chip) => reading.chip(chip),
+                        None => reading.plain(text),
+                    }
                 }
             }
         }
@@ -175,10 +191,7 @@ pub fn count(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> u
 /// Where a row's parts sit: a chip's middle lies half an x-height over the baseline.
 struct Metrics {
     line: Pixels,
-    /// A row with a chip: its height, and its text's and its chip's tops.
-    tall: Pixels,
-    text: Pixels,
-    chip: Pixels,
+    middle: Pixels,
 }
 
 fn metrics(style: &TextStyle, window: &Window) -> Metrics {
@@ -190,14 +203,9 @@ fn metrics(style: &TextStyle, window: &Window) -> Metrics {
     let baseline = (line - probe.ascent - probe.descent) / 2.0 + probe.ascent;
     let system = window.text_system();
     let x_height = system.x_height(system.resolve_font(&style.font()), size);
-    // The chip's margin box is 24px: `leading-5`, `py-0.5`, the border, `-my-[1px]`.
-    let top = baseline - x_height / 2.0 - css(12.0).to_pixels(rem);
-    let (text, chip) = ((-top).max(Pixels::ZERO), top.max(Pixels::ZERO));
     Metrics {
         line,
-        tall: (text + line).max(chip + css(24.0).to_pixels(rem)),
-        text,
-        chip: chip - css(1.0).to_pixels(rem),
+        middle: baseline - x_height / 2.0,
     }
 }
 
@@ -226,15 +234,9 @@ fn words(
     }
 }
 
-/// The message's text: `renderContent` over `body`, broken at `look.width`.
-pub fn text(
-    body: &str,
-    ranges: &Ranges,
-    look: &Look,
-    window: &mut Window,
-    cx: &mut App,
-) -> AnyElement {
-    let lines = lines(body, ranges, look.kept.is_none(), cx.global::<Translator>());
+/// The message's text: `renderContent` over each island, broken at `look.width`.
+pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) -> AnyElement {
+    let lines = lines(islands, look.kept.is_none(), cx.global::<Translator>());
     let links = lines.iter().map(|line| line.links.len()).sum();
     let shared = (links > 0).then(|| links::shared(look.key, links, window, cx));
     let (mut all, mut shaped, mut chips, mut wrapped) = (Vec::new(), Vec::new(), 0, false);
@@ -267,10 +269,17 @@ pub fn text(
         let held = |(_, (at, _)): &(usize, &(usize, Chip))| (row.start..end).contains(at);
         let held: Vec<_> = line.chips.iter().enumerate().filter(held).collect();
         let (mut parts, mut from) = (Vec::new(), row.start);
-        let top = match held.is_empty() {
-            true => Pixels::ZERO,
-            false => metrics.text,
-        };
+        // Blink's line box: the text's line and each chip's margin box about the middle.
+        let rem = window.rem_size();
+        let tall = |chip: &Chip| css(chip.height()).to_pixels(rem);
+        let over = |chip: &Chip| metrics.middle - tall(chip) / 2.0;
+        let chips = held.iter().map(|(_, (_, chip))| chip);
+        let top = chips
+            .clone()
+            .fold(Pixels::ZERO, |top, chip| top.max(-over(chip)));
+        let height = chips.fold(top + metrics.line, |height, chip| {
+            height.max(top + over(chip) + tall(chip))
+        });
         let say = |range: Range<usize>, tail: &str| {
             let words = words(line, range, tail, look.key, shared.as_ref(), window);
             words.map(|words| div().flex_none().mt(top).child(words).into_any_element())
@@ -278,14 +287,10 @@ pub fn text(
         for (k, (at, chip)) in &held {
             parts.extend(say(from..*at, ""));
             let id = format!("{}-chip-{}", look.key, first + k);
-            parts.push(chip.element(id, metrics.chip, look.chip, window, cx));
+            parts.push(chip.element(id, top + over(chip), look.chip, window, cx));
             from = at + CHIP.len_utf8();
         }
         parts.extend(say(from..end, tail));
-        let height = match held.is_empty() {
-            true => metrics.line,
-            false => metrics.tall,
-        };
         div().flex().items_start().h(height).children(parts)
     };
     let rows: Vec<_> = all.into_iter().enumerate().map(row).collect();

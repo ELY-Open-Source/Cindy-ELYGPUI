@@ -2,7 +2,7 @@
 
 use std::time::Duration;
 
-use ely_gpui_component::primitives::IconName;
+use ely_gpui_component::{primitives::IconName, theme::ActiveTheme as _};
 use gpui::{
     AnyElement, App, ElementId, Font, FontWeight, InteractiveElement as _, IntoElement,
     ParentElement as _, Pixels, SharedString, StatefulInteractiveElement as _, Styled as _,
@@ -10,8 +10,11 @@ use gpui::{
 };
 
 use crate::{
+    appearance_settings::text_size,
+    chat_quotes::{self, Quote},
     file_presentation, lucide,
     theme::Appearance,
+    theme_import::color::js_space,
     tip,
     units::{css, to_css},
     user_message::sent::{Kind, Part, Reference},
@@ -33,16 +36,20 @@ pub struct Chip {
     command: bool,
     /// `ariaLabel`.
     named: bool,
+    /// A quote between text islands: `mx-1`, and neither `top-[-1px]` nor `-my-[1px]`.
+    island: bool,
 }
 
 /// How the tip sets its text.
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 enum Face {
     Plain,
     /// `tooltipMono`: a path.
     Mono,
     /// The pasted text itself, in a frame that scrolls.
     Pasted,
+    /// `QuoteChip`'s tip: the quote, then its source's path and label.
+    Quote(Option<(SharedString, SharedString)>),
 }
 
 /// `FileTypeIcon`; Ely's `FileVideoCamera` is not lucide 0.468's `FileVideo`.
@@ -76,6 +83,7 @@ fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip
         face,
         command: false,
         named: false,
+        island: false,
     }
 }
 
@@ -109,9 +117,37 @@ pub fn pasted(display: &str, text: &str) -> Chip {
     }
 }
 
-/// `SentAgentReferenceChip`'s inert face; a message reference's chips come with 9.5k and 9.5l.
-pub fn reference(reference: &Reference, label: &str) -> Option<Chip> {
+/// `QuoteChip`: the quote on one line; `island` sets it between text islands.
+pub fn quote(quote: &Quote, island: bool) -> Chip {
+    let source = chat_quotes::source_label(quote).map(|label| {
+        let path = quote.source_path.clone().unwrap_or_default();
+        (path.into(), label.into())
+    });
+    // `compactText`: JavaScript's white space, which is wider than CSS's.
+    let compact: Vec<&str> = quote.text.split(js_space).collect();
+    Chip {
+        name: quote.text.clone().into(),
+        named: true,
+        island,
+        ..chip(
+            &compact.join(" "),
+            Some(lucide::MESSAGE_SQUARE_QUOTE),
+            &quote.text,
+            Face::Quote(source),
+        )
+    }
+}
+
+/// `SentAgentReferenceChip`'s inert face; a message reference unfolded is 9.5l's link chip.
+pub fn reference(reference: &Reference, label: &str, folded: bool) -> Option<Chip> {
     let icon = match reference.kind {
+        Kind::Message { .. } if folded => {
+            let said = Quote {
+                text: label.to_owned(),
+                ..Default::default()
+            };
+            return Some(quote(&said, false));
+        }
         Kind::Message { .. } => return None,
         Kind::Session { .. } => IconName::CornerDownRight.svg(),
         Kind::Project { .. } => IconName::FolderOpen.svg(),
@@ -125,6 +161,39 @@ pub fn reference(reference: &Reference, label: &str) -> Option<Chip> {
         named: true,
         ..chip(label, Some(icon), label, Face::Plain)
     })
+}
+
+/// `QuoteChip`'s tip: the whole quote in its marks, then where it came from.
+fn quote_tip(
+    text: &SharedString,
+    source: Option<&(SharedString, SharedString)>,
+    cx: &App,
+) -> AnyElement {
+    let muted = cx.global::<Appearance>().token("text-tertiary");
+    let size = text_size(12.0, cx);
+    let source = source.map(|(path, label)| {
+        div()
+            .flex()
+            .items_center()
+            .gap(css(4.0))
+            .min_w_0()
+            .text_size(css(text_size(11.0, cx)))
+            .text_color(muted)
+            .child(lucide::icon(file_icon(path), 12.0, 2.0).text_color(muted))
+            .child(div().truncate().child(label.clone()))
+    });
+    div()
+        .flex()
+        .flex_col()
+        .gap(css(4.0))
+        .child(
+            div()
+                .text_size(css(size))
+                .line_height(css(size * 1.5))
+                .child(format!("\u{201c}{text}\u{201d}")),
+        )
+        .children(source)
+        .into_any_element()
 }
 
 /// `max-w-[min(240px,55vw)]`.
@@ -149,10 +218,20 @@ impl Chip {
             .text_system()
             .shape_line(self.label.clone(), size_px, &[run], None);
         let icon = self.icon.map_or(0.0, |_| ICON);
-        (label.width + css(INSET + icon).to_pixels(rem)).min(most(window, cx))
+        let face = (label.width + css(INSET + icon).to_pixels(rem)).min(most(window, cx));
+        face + css(self.margin() * 2.0).to_pixels(rem)
     }
 
-    /// The chip, its border box `top` under the row's top.
+    fn margin(&self) -> f32 {
+        f32::from(u8::from(self.island)) * 4.0
+    }
+
+    /// The margin box's height: `leading-5`, `py-0.5`, the border, less `-my-[1px]`.
+    pub fn height(&self) -> f32 {
+        24.0 + f32::from(u8::from(self.island)) * 2.0
+    }
+
+    /// The chip, its margin box `top` under the row's top.
     pub fn element(
         &self,
         id: String,
@@ -172,9 +251,13 @@ impl Chip {
             .id(ElementId::Name(id.into()))
             .debug_selector(move || selector)
             .when(self.named, |el| el.aria_label(name))
-            .relative()
-            .top(css(-1.0))
-            .mt(top)
+            .map(|el| match self.island {
+                true => el.mt(top).mx(css(4.0)),
+                false => {
+                    let lift = css(1.0).to_pixels(window.rem_size());
+                    el.relative().top(css(-1.0)).mt(top - lift)
+                }
+            })
             .flex_none()
             .max_w(most(window, cx))
             .flex()
@@ -195,13 +278,23 @@ impl Chip {
             })
             .child(div().min_w_0().truncate().child(label.clone()))
             // `Tip` mounts nothing for empty text.
-            .map(|el| match (tip.is_empty(), self.face) {
+            .map(|el| match (tip.is_empty(), self.face.clone()) {
+                (_, Face::Quote(source)) => el.hoverable_tooltip(tip::framed(move |_, cx| {
+                    quote_tip(&tip, source.as_ref(), cx)
+                })),
                 (true, _) => el,
                 (false, Face::Plain) => el.tooltip(tip::tip(tip)),
                 (false, Face::Mono) => el.tooltip(tip::mono(tip)),
-                (false, Face::Pasted) => el.hoverable_tooltip(tip::pasted(tip)),
+                (false, Face::Pasted) => el.hoverable_tooltip(tip::framed(move |_, cx| {
+                    let family = cx.theme().mono_family.clone();
+                    let text = tip.clone();
+                    div().font_family(family).child(text).into_any_element()
+                })),
             })
             .tooltip_show_delay(Duration::from_millis(300))
             .into_any_element()
     }
 }
+
+#[cfg(test)]
+mod tests;

@@ -293,11 +293,9 @@ fn the_bubble_shows_the_decoded_text(cx: &mut TestAppContext) {
     );
     put(&db, 2, &envelope, None);
     let cx = serve(cx, dir.path(), 2400.0, db);
-    assert_eq!(
-        text_lines(cx, "msg-c0"),
-        1.0,
-        "the quote's lines are no text"
-    );
+    // The quote's lines are a chip in the response's row, which grows about it.
+    assert!(at(cx, "msg-c0-chip-0").is_some());
+    assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, px(31.0));
     assert_eq!(text_lines(cx, "msg-c1"), 9.0, "the envelope decoded");
     assert_eq!(text_lines(cx, "msg-c2"), 3.0);
 }
@@ -363,7 +361,9 @@ fn stored_ranges_move_into_the_shown_text() {
     let slash = r#"[{"start":5,"end":6},{"start":16,"end":17}]"#;
     message.insert("slashCommandRanges".into(), field(slash));
     let (content, shown) = ("é[x] héllo PASTE", "héllo PASTE");
-    let ranges = super::ranges(&message, content, shown, shown);
+    assert_eq!(super::source(content, shown), Some(5));
+    assert_eq!(super::source(content, "decoded"), None);
+    let ranges = super::ranges(&message, Some(5), 11);
     let spans = |all: &[super::Span]| -> Vec<(f64, f64)> {
         all.iter().map(|span| (span.start, span.end)).collect()
     };
@@ -373,12 +373,8 @@ fn stored_ranges_move_into_the_shown_text() {
     assert_eq!(spans(&ranges.slash.unwrap()), [(0.0, 1.0)]);
     assert!(ranges.references.is_empty());
     // A shown text the content does not hold places no range, and none stored stays none.
-    let lost = super::ranges(&message, content, "decoded", "decoded");
+    let lost = super::ranges(&message, None, 7);
     assert!(lost.pasted.is_empty() && lost.slash.unwrap().is_empty());
     message.shift_remove("slashCommandRanges");
-    assert!(
-        super::ranges(&message, content, shown, shown)
-            .slash
-            .is_none()
-    );
+    assert!(super::ranges(&message, Some(5), 11).slash.is_none());
 }

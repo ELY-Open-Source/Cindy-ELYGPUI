@@ -181,3 +181,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: `Reading::plain` splits such words into lines and drops CR; a unit test and a stored
   message cover it.
 - Round 2: PASS.
+
+## 9.5k Quote chips
+
+- Round 1: FAIL. P2: a message of quotes alone drew no bubble, since the joined text was empty;
+  Cindy shows it when `inlineQuoteCount > 0`.
+- Fixed: the row draws when it holds a quote or text; a stored message of two quotes covers it.
+- Round 2: PASS.

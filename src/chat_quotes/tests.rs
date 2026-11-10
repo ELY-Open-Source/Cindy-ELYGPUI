@@ -91,3 +91,10 @@ fn the_text_outside_quotes_joins_as_cindys() {
         text(&strip_marker_lines(args[0].str().unwrap()))
     });
 }
+
+#[test]
+fn a_source_shows_its_file_name_and_lines() {
+    golden("quoteSourceDisplayLabel", |args| {
+        super::source_label(&quote(&args[0])).map_or(Js::Null, |label| text(&label))
+    });
+}

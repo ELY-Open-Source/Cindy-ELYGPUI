@@ -36,6 +36,7 @@ export function sentText({ userMessage, chatQuotes, sentAgentReferenceDisplayLab
     sentAgentReferenceDisplayLabel: (reference) => whole(sentAgentReferenceDisplayLabel(reference)),
     slashCommandDisplayLabel,
     formatQuoteForSend: chatQuotes.formatQuoteForSend,
+    quoteSourceDisplayLabel: chatQuotes.quoteSourceDisplayLabel,
     parseChatQuoteSegments,
     joinChatQuoteTextSegments: (content) => chatQuotes.joinChatQuoteTextSegments(parseChatQuoteSegments(content)),
     stripChatQuoteMarkerLines: chatQuotes.stripChatQuoteMarkerLines,

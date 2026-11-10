@@ -256584,6 +256584,1166 @@
    "> <!-- cindy-composer-quote -->\n> — source: x\n> — source: C:\\w\\f.rs"
   ]
  ],
+ "quoteSourceDisplayLabel": [
+  [
+   [
+    {
+     "text": "q"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts"
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 10
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "a.ts:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 1.5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "a.ts:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "endLine": 5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": -1
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "src/a.ts",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "a.ts:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts"
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 10
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "a.ts:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "a.ts:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 1.5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "a.ts:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "endLine": 5
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": -1
+    }
+   ],
+   "a.ts"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a.ts",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "a.ts:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs"
+    }
+   ],
+   "y.rs"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 10
+    }
+   ],
+   "y.rs:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "y.rs:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "y.rs:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "y.rs:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "y.rs"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 1.5
+    }
+   ],
+   "y.rs"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "y.rs:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "endLine": 5
+    }
+   ],
+   "y.rs"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": -1
+    }
+   ],
+   "y.rs"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "C:\\x\\y.rs",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "y.rs:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/"
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 10
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "dir:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 1.5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "dir:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "endLine": 5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": -1
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir/",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "dir:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\"
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 10
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "dir:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "dir:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 1.5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "dir:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "endLine": 5
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": -1
+    }
+   ],
+   "dir"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "dir\\",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "dir:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/"
+    }
+   ],
+   "/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 10
+    }
+   ],
+   "/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "/:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 1.5
+    }
+   ],
+   "/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "/:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "endLine": 5
+    }
+   ],
+   "/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": -1
+    }
+   ],
+   "/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "/",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "/:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/"
+    }
+   ],
+   "\\/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 10
+    }
+   ],
+   "\\/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "\\/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "\\/:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "\\/:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "\\/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 1.5
+    }
+   ],
+   "\\/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "\\/:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "endLine": 5
+    }
+   ],
+   "\\/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": -1
+    }
+   ],
+   "\\/"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "\\/",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "\\/:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//"
+    }
+   ],
+   "b"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 10
+    }
+   ],
+   "b:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "b:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "b:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "b:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "b"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 1.5
+    }
+   ],
+   "b"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "b:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "endLine": 5
+    }
+   ],
+   "b"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": -1
+    }
+   ],
+   "b"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "a//b//",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "b:L1e+21-L1e+22"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": ""
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 10
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 1.5
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "endLine": 5
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": -1
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   null
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3"
+    }
+   ],
+   "x#L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 10
+    }
+   ],
+   "x#L3:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 10,
+     "endLine": 10
+    }
+   ],
+   "x#L3:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 10,
+     "endLine": 12
+    }
+   ],
+   "x#L3:L10-L12"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 10,
+     "endLine": 9
+    }
+   ],
+   "x#L3:L10"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 0,
+     "endLine": 5
+    }
+   ],
+   "x#L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 1.5
+    }
+   ],
+   "x#L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 3,
+     "endLine": 4.5
+    }
+   ],
+   "x#L3:L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "endLine": 5
+    }
+   ],
+   "x#L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": -1
+    }
+   ],
+   "x#L3"
+  ],
+  [
+   [
+    {
+     "text": "q",
+     "sourcePath": "x#L3",
+     "startLine": 1e+21,
+     "endLine": 1e+22
+    }
+   ],
+   "x#L3:L1e+21-L1e+22"
+  ]
+ ],
  "parseChatQuoteSegments": [
   [
    [

@@ -9,7 +9,7 @@ use gpui::{
 
 use super::{
     SessionView,
-    flow::draw::{self, Look, Ranges},
+    flow::draw::{self, Island, Look, Ranges},
     width::Widths,
 };
 use crate::{
@@ -157,10 +157,13 @@ impl RenderOnce for Toggle {
     }
 }
 
-/// `projectSentRanges` over the stored ranges: each moved into the bubble's text, or dropped.
-fn ranges(message: &Fields, content: &str, display: &str, body: &str) -> Ranges {
-    let start = content.find(display).map(|at| utf16_len(&content[..at]));
-    let length = utf16_len(body);
+/// Where the shown text starts in the content, in UTF-16 units: `content.indexOf`.
+fn source(content: &str, shown: &str) -> Option<usize> {
+    content.find(shown).map(|at| utf16_len(&content[..at]))
+}
+
+/// `projectSentRanges` over the stored ranges: each moved into the text at `start`, or dropped.
+fn ranges(message: &Fields, start: Option<usize>, length: usize) -> Ranges {
     let list = |key| get(message, key).and_then(Js::arr);
     let moved = |span| sent::within(span, start, length);
     let pasted = list("pastedTextRanges").unwrap_or_default().iter();
@@ -204,7 +207,11 @@ pub fn element(
         Some(segments) => chat_quotes::join_text(segments),
         None => display.clone(),
     };
-    if js_trim(&body).is_empty() {
+    let quoted = segments.as_deref().filter(|all| {
+        let quote = |segment: &Segment| matches!(segment, Segment::Quote(_));
+        all.iter().any(quote)
+    });
+    if quoted.is_none() && js_trim(&body).is_empty() {
         return None;
     }
     let fold = fold(origin);
@@ -213,20 +220,34 @@ pub fn element(
     let rem = window.rem_size();
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
     let style = draw::style(css(size).to_pixels(rem), window);
-    // A message with quote chips draws its ranges with them (9.5k).
-    let quoted = segments.is_some_and(|all| all.iter().any(|s| matches!(s, Segment::Quote(_))));
-    let ranges = match quoted {
-        true => Ranges {
-            slash: get(message, "slashCommandRanges").map(|_| Vec::new()),
-            ..Default::default()
-        },
-        false => ranges(message, content, &display, &body),
+    let source = source(content, &display);
+    // Each text island takes the ranges that lie in it; one text takes them all.
+    let islands: Vec<Island> = match quoted {
+        Some(segments) => {
+            let starts = sent::text_starts(&display, segments);
+            let pairs = segments.iter().zip(starts);
+            let island = pairs.map(|(segment, start)| match segment {
+                Segment::Quote(quote) => Island::Quote(quote),
+                Segment::Text(text) => {
+                    let start = source.zip(start).map(|(source, start)| source + start);
+                    Island::Text(text, ranges(message, start, utf16_len(text)))
+                }
+            });
+            island.collect()
+        }
+        None => vec![Island::Text(
+            &body,
+            ranges(message, source, utf16_len(&body)),
+        )],
     };
     // The mirror reads chips as their words while the text is the message's own.
     let plain = match body == display {
         true => {
             let t = cx.global::<Translator>();
             let label = |reference: &Reference| sent::label(reference, t);
+            let [Island::Text(_, ranges)] = islands.as_slice() else {
+                unreachable!("a text with quote chips is not the display text")
+            };
             sent::inline_plain(&body, &ranges.pasted, &ranges.references, label)
         }
         false => body.clone(),
@@ -241,7 +262,7 @@ pub fn element(
         width,
         kept: (folds && !open).then_some(fold.kept),
     };
-    let text = draw::text(&body, &ranges, &look, window, cx);
+    let text = draw::text(&islands, &look, window, cx);
     let appearance = cx.global::<Appearance>();
     let selector = format!("{key}-bubble");
     let text_selector = format!("{key}-text");

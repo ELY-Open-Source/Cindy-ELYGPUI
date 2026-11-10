@@ -80,22 +80,16 @@ pub fn rich(
     }
 }
 
-/// The pasted chip's tip: the whole text in the code face, `w-80 max-w-[70vw] max-h-64`.
-pub fn pasted(text: impl Into<SharedString>) -> impl Fn(&mut Window, &mut App) -> AnyView {
-    use ely_gpui_component::theme::ActiveTheme as _;
-    let text = text.into();
+/// A tip in a frame, `w-80 max-w-[70vw] max-h-64 overflow-y-auto`: hoverable, so it scrolls.
+pub fn framed(
+    build: impl Fn(&mut Window, &mut App) -> AnyElement + 'static,
+) -> impl Fn(&mut Window, &mut App) -> AnyView {
+    let build: Build = Rc::new(build);
     move |window, cx| {
-        let (family, text) = (cx.theme().mono_family.clone(), text.clone());
         let tip = Tip {
             max_width: to_css(window.viewport_size().width, cx) * 0.7,
             frame: Some((320.0, 256.0)),
-            build: Rc::new(move |_, _| {
-                let text = text.clone();
-                div()
-                    .font_family(family.clone())
-                    .child(text)
-                    .into_any_element()
-            }),
+            build: build.clone(),
         };
         cx.new(|_| tip).into()
     }

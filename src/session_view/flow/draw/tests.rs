@@ -2,9 +2,10 @@ use std::time::Duration;
 
 use gpui::{Modifiers, TestAppContext, VisualTestContext, px};
 
-use super::super::super::user_row::tests::{at, lines, open, open_json};
-use super::{CHIP, Ranges, lines as read};
+use super::super::super::user_row::tests::{at, lines, open, open_json, settle};
+use super::{CHIP, Island, Ranges, lines as read};
 use crate::{
+    chat_quotes::Quote,
     i18n::Translator,
     open_external::tests as opener,
     rich_answer::js,
@@ -39,7 +40,7 @@ fn ranges(legacy: bool) -> Ranges {
 
 fn read_lines(body: &str, legacy: bool) -> Vec<Read> {
     let t = Translator::new("en").unwrap();
-    flat(read(body, &ranges(legacy), true, &t))
+    flat(read(&[Island::Text(body, ranges(legacy))], true, &t))
 }
 
 #[test]
@@ -71,7 +72,11 @@ fn a_line_holds_its_chips_and_links() {
     // The stand-in typed by hand is text, and a folded message reads no link.
     assert_eq!(read_lines(&chip, true), [(chip, vec![], vec![])]);
     let t = Translator::new("en").unwrap();
-    assert!(read(WEB, &ranges(true), false, &t)[0].links.is_empty());
+    assert!(
+        read(&[Island::Text(WEB, ranges(true))], false, &t)[0]
+            .links
+            .is_empty()
+    );
 }
 
 #[test]
@@ -94,7 +99,7 @@ fn saved_ranges_draw_their_chips() {
     // A message reference keeps its text until 9.5k and 9.5l; `/no` is no stored command.
     let body = "/go tab msg a\nb\n/no @a.rs";
     assert_eq!(
-        flat(read(body, &ranges, true, &t)),
+        flat(read(&[Island::Text(body, ranges)], true, &t)),
         [
             (format!("{chip} {chip} msg {chip}"), vec![0, 4, 12], vec![]),
             (format!("/no {chip}"), vec![4], vec![]),
@@ -111,7 +116,7 @@ fn a_message_reference_over_two_lines_draws_two() {
         ..Default::default()
     };
     assert_eq!(
-        flat(read("x [a\r\nb] y", &ranges, true, &t)),
+        flat(read(&[Island::Text("x [a\r\nb] y", ranges)], true, &t)),
         [
             ("x [a".to_owned(), vec![], vec![]),
             ("b] y".to_owned(), vec![], vec![])
@@ -394,17 +399,97 @@ fn a_chip_whose_words_run_long_folds_the_message(cx: &mut TestAppContext) {
     assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, snapped(29.88));
 }
 
+#[test]
+fn a_quote_stands_between_its_text_islands() {
+    let t = Translator::new("en").unwrap();
+    let chip = CHIP.to_string();
+    let quote = Quote {
+        text: "said".to_owned(),
+        ..Default::default()
+    };
+    let islands = [
+        Island::Text("/go a\n", ranges(true)),
+        Island::Quote(&quote),
+        Island::Text("/on b", ranges(false)),
+    ];
+    // Each island reads its own line start and keeps its own ranges.
+    assert_eq!(
+        flat(read(&islands, true, &t)),
+        [
+            (format!("{chip} a"), vec![0], vec![]),
+            (format!("{chip}/on b"), vec![0], vec![]),
+        ]
+    );
+}
+
 #[gpui::test]
-fn a_message_with_quote_chips_draws_no_range_yet(cx: &mut TestAppContext) {
+fn quote_chips_stand_among_the_text_with_its_ranges(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
-    let text = "PASTE\n> <!-- cindy-composer-quote -->\n> first quote\n\n/go on";
+    let text = "PASTE and\n> <!-- cindy-composer-quote -->\n> first  quote\n> — source: src/a.rs#L3\n\n/go on";
+    let at_go = text.find("/go").unwrap();
     let content = serde_json::json!({
         "text": text,
         "quotesEncoded": true,
         "pastedTextRanges": [{ "start": 0, "end": 5, "display": "Pasted" }],
-        "slashCommandRanges": [],
+        "slashCommandRanges": [{ "start": at_go, "end": at_go + 3 }],
     });
     let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
-    assert!(at(cx, "msg-c0-text").is_some());
-    assert!(at(cx, "msg-c0-chip-0").is_none());
+    let chip = |cx: &mut VisualTestContext, n: usize| at(cx, &format!("msg-c0-chip-{n}")).unwrap();
+    let (pasted, quote, command) = (chip(cx, 0), chip(cx, 1), chip(cx, 2));
+    let text = at(cx, "msg-c0-text").unwrap();
+    // One row: the islands' own line feeds are gone, and `mx-1` parts the quote from them.
+    assert_eq!(pasted.left(), text.left());
+    assert_eq!(quote.left(), pasted.right() + px(4.0 * 9.0 + 4.0));
+    assert_eq!(command.left(), quote.right() + px(4.0));
+    // `first quote` on one line, with its icon; `/go` from its range in the second island.
+    assert_eq!(quote.size, gpui::size(px(118.0), px(26.0)));
+    assert_eq!(command.size.width, px(40.0));
+    // The quote's 26px box sits a pixel under a 24px chip, which `top-[-1px]` lifts.
+    assert_eq!(quote.top(), pasted.top() + px(1.0));
+    assert_eq!(text.size.height, snapped(21.75 - 0.516 * 7.5 + 13.0));
+    cx.simulate_mouse_move(quote.center(), None, Modifiers::none());
+    cx.executor().advance_clock(Duration::from_millis(300));
+    cx.run_until_parked();
+    assert_eq!(at(cx, "tip").unwrap().size.width, px(320.0));
+}
+
+#[gpui::test]
+fn a_folded_message_reference_is_a_quote_chip(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let href = "cindy://session/s?message=m";
+    let content = serde_json::json!({
+        "text": format!("{href}\n{}", lines(15)),
+        "agentReferences": [{ "kind": "message", "start": 0, "end": href.len(), "href": href, "text": "hi there" }],
+    });
+    let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
+    let chip = at(cx, "msg-c0-chip-0").unwrap();
+    let text = at(cx, "msg-c0-text").unwrap();
+    // `hi there` with the quote's icon, set as the other chips of a line.
+    assert_eq!(chip.size.width, px(96.0));
+    assert_eq!(chip.top() - text.top(), px(4.0));
+    let fold = at(cx, "msg-c0-fold").unwrap();
+    cx.simulate_click(fold.center(), Modifiers::none());
+    settle(cx);
+    assert!(
+        at(cx, "msg-c0-chip-0").is_none(),
+        "unfolded, it waits for its link chip"
+    );
+}
+
+#[gpui::test]
+fn a_message_of_quotes_alone_draws_them(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let mark = "> <!-- cindy-composer-quote -->";
+    let content = serde_json::json!({
+        "text": format!("{mark}\n> hello\n\n{mark}\n> there"),
+        "quotesEncoded": true,
+    });
+    let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
+    let (first, second) = (
+        at(cx, "msg-c0-chip-0").unwrap(),
+        at(cx, "msg-c0-chip-1").unwrap(),
+    );
+    assert_eq!(second.left(), first.right() + px(8.0));
+    // The line's strut holds the baseline the chips centre on.
+    assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, px(31.0));
 }

@@ -178,21 +178,21 @@ defines scope and what 1:1 means.
   `hook_group_context` with `captureImContext`'s group envelope, `display_text` over 8.7's
   `forwarded::display_text`; the hook source is the stored `Js`) and `collapse.rs`
   `mayExceedVisualLineThreshold` in UTF-16 units. Golden `user-message`. `src/chat_quotes.rs` is
-  maker-shared `chatQuotes.ts` (`format`, `segments`, `join_text`, `strip_marker_lines`).
-  `src/user_message/sent.rs` is the sent text of `UserMessage.tsx`: `tokens` (`buildSentInlineTokens`,
-  its ranges sorted by `js_sort`, since the comparator is no total order), `inline_plain` with `label`
-  (`sentAgentReferenceDisplayLabel`), `slash_label` (`slashCommandDisplayLabel`), `Span::read`,
-  `Pasted::read` and `Reference::read` over the stored ranges, `text_starts`, `within`
-  (`projectSentRanges`) and `parts`, the command, mention and path split of
-  `renderContentWithoutPastedText`. Golden `sent-text`: `scripts/golden/sentText.mjs` reads `parts` off
-  Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`. `src/link_open.rs`
-  is `useLinkOpenPreference.ts` (`is_local`, golden `link-open`; `preference` with its memo per kind
-  and the legacy key's one migration, in the `LinkOpen` global) and `linkInteraction.ts`'s `separate`.
-  `src/open_external.rs` is the `shell:open-external` handler for `http:` and `https:`, then Electron
-  42's `shell.openExternal`: Linux starts `xdg-open` with `MM_NOTTTY=1` and answers once it started;
-  macOS (`workspace.rs`) asks `NSWorkspace` for an application, then
-  `openURL:configuration:completionHandler:` with `activates`; Windows (`shell.rs`) runs
-  `ShellExecuteEx` `open` on a COM thread with the quoted `escape`, Chromium's
+  maker-shared `chatQuotes.ts` (`format`, `segments`, `join_text`, `strip_marker_lines`, `source_label`
+  for `quoteSourceDisplayLabel`). `src/user_message/sent.rs` is the sent text of `UserMessage.tsx`:
+  `tokens` (`buildSentInlineTokens`, its ranges sorted by `js_sort`, since the comparator is no total
+  order), `inline_plain` with `label` (`sentAgentReferenceDisplayLabel`), `slash_label`
+  (`slashCommandDisplayLabel`), `Span::read`, `Pasted::read` and `Reference::read` over the stored
+  ranges, `text_starts`, `within` (`projectSentRanges`) and `parts`, the command, mention and path
+  split of `renderContentWithoutPastedText`. Golden `sent-text`: `scripts/golden/sentText.mjs` reads
+  `parts` off Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`.
+  `src/link_open.rs` is `useLinkOpenPreference.ts` (`is_local`, golden `link-open`; `preference` with
+  its memo per kind and the legacy key's one migration, in the `LinkOpen` global) and
+  `linkInteraction.ts`'s `separate`. `src/open_external.rs` is the `shell:open-external` handler for
+  `http:` and `https:`, then Electron 42's `shell.openExternal`: Linux starts `xdg-open` with
+  `MM_NOTTTY=1` and answers once it started; macOS (`workspace.rs`) asks `NSWorkspace` for an
+  application, then `openURL:configuration:completionHandler:` with `activates`; Windows (`shell.rs`)
+  runs `ShellExecuteEx` `open` on a COM thread with the quoted `escape`, Chromium's
   `EscapeExternalHandlerValue`. Native code is checked in a scratch crate
   (`logs/review/9.5f-r1-native-*.log`). `src/file_presentation.rs` is maker-shared
   `filePresentation.ts` (`kind` is `getFileVisualKind`, `glyph` `FILE_VISUAL_GLYPHS`; golden
@@ -286,7 +286,7 @@ defines scope and what 1:1 means.
   style, which no element above the text changes. The fold counts the plain text's rows while the row
   is built, so Cindy's estimate and remembered results are not ported; a folded message draws its first
   rows and `clamp` ends the last with the ellipsis. A row with a chip grows as Blink's line box does:
-  the chip's 24px margin box centres half an x-height over the baseline
+  each chip's margin box (24px, a quote island's 26px) centres half an x-height over the baseline
   (`logs/review/9.5i-r1-blink-chip.log`). `chip.rs` is `InlineReferenceChip`'s inert face for the
   legacy command, agent, folder and file chips (`FileTypeIcon` through `file_presentation`; lucide
   0.468's `FileChartColumn` and `FileVideo` live in `lucide.rs`), sized by layout up to
@@ -294,23 +294,27 @@ defines scope and what 1:1 means.
   collapses to single spaces, as `truncate`'s `nowrap` draws it. `UserFileChip`'s click and menu come
   with 9.12. `renderContent`'s stored ranges (`user_row::ranges`, `projectSentRanges` from where the
   shown text starts in the content) cut the text first (`sent::tokens`): a slash range draws the
-  command chip, a pasted range its words with `tip::pasted` (the text in a frame 320 wide that scrolls
+  command chip, a pasted range its words with `tip::framed` (the text in a frame 320 wide that scrolls
   past 256, hoverable), a reference `SentAgentReferenceChip`'s inert face. The fold's measure reads
-  those chips as their words (`inline_plain`). A session or project reference keeps the inert face
-  unfolded until 9.5l's link chips, a message reference its text until 9.5k and 9.5l, and a message
-  with quote chips draws no range until 9.5k; the chips' clicks come with 9.12. gpui snaps a line's
-  height to the device pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live
-  with the mounted content, as the component's state does. `links.rs` is `UserMessageUrlLink` with
-  `useOpenWithMenu`: an unfolded message's text pieces are each read for web addresses (`linkify`),
-  underlined by text highlights, and a canvas after a piece lays a hit box over each stretch of a
-  link's glyphs, ordered by x since the shaper lists right-to-left text from the right
-  (`prepaint_as_root` at the laid-out text's positions). A link's boxes on every row share its Tab stop
-  (the first box), the menu and the record of boxes the menu key reads. A click is `activateMessageUrl`
-  (a modifier or the middle button opens the system browser, else the preference; the sidebar browser
-  comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate on key down with
-  their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
-  Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
-  tests `open_external` records the address and starts no program.
+  those chips as their words (`inline_plain`). A `quotesEncoded` message is a list of `draw::Island`s:
+  each text island takes the ranges that lie in it (`sent::text_starts`, then `projectSentRanges` from
+  the island's start in the content), and a quote between two draws `QuoteChip` (`chip::quote`: `mx-1`,
+  no lift, the label through JavaScript's white space, the tip the quote in its marks over its source's
+  `chat_quotes::source_label`). A folded message reference draws that chip in line. A session or
+  project reference keeps the inert face unfolded until 9.5l's link chips, a message reference its
+  text; the chips' clicks come with 9.12. gpui snaps a line's height to the device pixel, so a compact
+  line is 22.5px for Cindy's 22.4. The unfolded messages live with the mounted content, as the
+  component's state does. `links.rs` is `UserMessageUrlLink` with `useOpenWithMenu`: an unfolded
+  message's text pieces are each read for web addresses (`linkify`), underlined by text highlights, and
+  a canvas after a piece lays a hit box over each stretch of a link's glyphs, ordered by x since the
+  shaper lists right-to-left text from the right (`prepaint_as_root` at the laid-out text's positions).
+  A link's boxes on every row share its Tab stop (the first box), the menu and the record of boxes the
+  menu key reads. A click is `activateMessageUrl` (a modifier or the middle button opens the system
+  browser, else the preference; the sidebar browser comes with 17.0, so that open fails with Cindy's
+  toast), Enter and Space activate on key down with their modifiers, a right click, the menu key or
+  Shift+F10 opens the menu (Ely `ContextMenu::manual`; Ely's `Link` for `link-2`). gpui places an
+  underline itself, so `underline-offset-2` has no port. In tests `open_external` records the address
+  and starts no program.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts

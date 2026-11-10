@@ -2,7 +2,7 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "9.5k's quote chips read the rest")
+    expect(dead_code, reason = "9.14's message rail reads the rest")
 )]
 
 use std::sync::LazyLock;
@@ -58,6 +58,21 @@ fn source_line(quote: &Quote) -> Option<String> {
     Some(match end.filter(|end| *end != start) {
         Some(end) => format!("{path}#L{}-L{}", js_number(start), js_number(end)),
         None => format!("{path}#L{}", js_number(start)),
+    })
+}
+
+/// `quoteSourceDisplayLabel`: the source's file name, then its lines.
+pub fn source_label(quote: &Quote) -> Option<String> {
+    let path = quote.source_path.as_deref().filter(|p| !p.is_empty())?;
+    let name = path.rsplit(['\\', '/']).find(|part| !part.is_empty());
+    let name = name.unwrap_or(path);
+    let Some(start) = valid(quote.start_line) else {
+        return Some(name.to_owned());
+    };
+    let end = valid(quote.end_line).filter(|end| *end > start);
+    Some(match end {
+        Some(end) => format!("{name}:L{}-L{}", js_number(start), js_number(end)),
+        None => format!("{name}:L{}", js_number(start)),
     })
 }
 

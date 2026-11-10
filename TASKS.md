@@ -192,7 +192,7 @@ listed in `tasks/done.md`.
     `slashCommandDisplayLabel`), the measured text with their labels. A session or project
     reference keeps the inert face unfolded until 9.5l, a message reference its text until 9.5k and
     9.5l; their clicks come with the lightboxes (9.12)
-  - [ ] 9.5k Quote chips (`QuoteChip`) between the text islands of a `quotesEncoded` message, with
+  - [x] 9.5k Quote chips (`QuoteChip`) between the text islands of a `quotesEncoded` message, with
     `locateChatQuoteTextSegmentStarts` and `projectSentRanges` per island, and a folded message
     reference's quote chip
   - [ ] 9.5l Session and project link chips (`SessionLinkChip`, `ProjectLinkChip`), in the text and
