@@ -73,3 +73,8 @@ export const PLAN_TESTS = {
 export const BOUNDARY_TESTS = {
   [`${shared}/urlTextBoundary.test.ts`]: { '../urlTextBoundary': ['clipBareHttpAutolinkText'] },
 };
+
+export const LINKIFY_TESTS = {
+  [`${renderer}/userMessageLinkify.test.ts`]: { '../components/chat/userMessageLinkify': ['findLinkifyMatches'] },
+  [`${renderer}/sessionDeepLink.test.ts`]: { '../lib/deepLink': ['parseSessionDeepLinkHref', 'parseProjectDeepLinkHref'] },
+};

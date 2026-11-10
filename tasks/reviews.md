@@ -121,3 +121,5 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   (`logs/review/9.5a-r1-url-engines.log`); AGENTS.md records where each engine parts from the
   standard.
 - Round 2: PASS.
+## 9.5b Linkify
+- Round 1: PASS.

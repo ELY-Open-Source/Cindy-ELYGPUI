@@ -145,7 +145,7 @@ listed in `tasks/done.md`.
   - [x] 9.5a The bare URL's end (`urlTextBoundary.ts`): `BARE_HTTP_URL_RE_SOURCE`,
     `clipBareHttpAutolink` with its cuts (unbalanced parentheses, code host notes, path brackets,
     Markdown wraps, IDN dots, trailing junk); golden on the inputs of Cindy's tests
-  - [ ] 9.5b Linkify (`userMessageLinkify.ts`): `findLinkifyMatches` over URLs, image paths,
+  - [x] 9.5b Linkify (`userMessageLinkify.ts`): `findLinkifyMatches` over URLs, image paths,
     session and project deep links in bare and Markdown form (`deepLink.ts`'s sources and parsers,
     `findMarkdownLabelStart`, `deepLinkSchemes.ts`); golden
   - [ ] 9.5c Display text and collapse estimates: `userMessageDisplayText.ts`

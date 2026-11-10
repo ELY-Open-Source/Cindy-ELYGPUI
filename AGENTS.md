@@ -169,7 +169,11 @@ defines scope and what 1:1 means.
   where the message is drawn, takes an ASCII host's broken `xn--` label unchecked, and Node, where the
   golden runs, reads a host through ada's older IDNA tables (`logs/review/9.5a-r1-url-engines.log`).
   Golden `url-boundary` holds the inputs of Cindy's tests and `cases.json`. `src/js_re.rs` turns a
-  JavaScript regex source without the `u` flag into a Rust regex.
+  JavaScript regex source without the `u` flag into a Rust regex. `src/deep_link.rs` is
+  `deepLinkSchemes.ts` and `deepLink.ts` for links read from text (the `cindy` and `xdt-maker` schemes,
+  `parse_session`, `parse_project`, `label_start`; a project link's lookahead is `project_ends`).
+  `src/linkify.rs` is `findLinkifyMatches`, ranges in bytes: no two kinds of link start at one place,
+  so its comparator is a sort by start. Golden `linkify`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view
