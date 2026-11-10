@@ -613,7 +613,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool",
@@ -624,21 +624,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "first",
       "role": "assistant",
       "content": "first",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -668,7 +668,7 @@
      "resultTsMap": [
       [
        "tool",
-       1794287851849
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -695,7 +695,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool",
@@ -706,28 +706,28 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "first",
       "role": "assistant",
       "content": "first",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "second",
       "role": "assistant",
       "content": "second",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.850Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -757,7 +757,7 @@
      "resultTsMap": [
       [
        "tool",
-       1794287851849
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -789,7 +789,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool",
@@ -800,28 +800,28 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "first",
       "role": "assistant",
       "content": "first",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.849Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "second",
       "role": "assistant",
       "content": "second",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.850Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "turnCompleted": true
      }
     ]
@@ -852,7 +852,7 @@
      "resultTsMap": [
       [
        "tool",
-       1794287851849
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -944,7 +944,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -974,7 +974,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-0",
@@ -985,14 +985,14 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1022,7 +1022,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1044,7 +1044,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-0",
@@ -1055,21 +1055,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1099,7 +1099,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1126,7 +1126,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-0",
@@ -1137,21 +1137,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-1",
@@ -1162,14 +1162,14 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1199,7 +1199,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1226,7 +1226,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1248,7 +1248,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-0",
@@ -1259,21 +1259,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-1",
@@ -1284,21 +1284,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-2",
       "role": "assistant",
       "content": "这是最终答复",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1328,7 +1328,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1355,7 +1355,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1382,7 +1382,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.851Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-0",
@@ -1393,21 +1393,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "tool-1",
@@ -1418,21 +1418,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-2",
       "role": "assistant",
       "content": "这是最终答复",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "turnCompleted": true
      }
     ]
@@ -1463,7 +1463,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1490,7 +1490,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1517,7 +1517,8 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      }
     ]
    ],
@@ -1547,7 +1548,8 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      },
      {
       "clientId": "tool-0",
@@ -1558,14 +1560,14 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1595,7 +1597,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1617,7 +1619,8 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      },
      {
       "clientId": "tool-0",
@@ -1628,21 +1631,22 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      }
     ]
    ],
@@ -1672,7 +1676,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1699,7 +1703,8 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      },
      {
       "clientId": "tool-0",
@@ -1710,21 +1715,22 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      },
      {
       "clientId": "tool-1",
@@ -1735,14 +1741,14 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ]
    ],
@@ -1772,7 +1778,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1799,7 +1805,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851852
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -1821,7 +1827,8 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z",
+      "assistantPhase": "commentary"
      },
      {
       "clientId": "tool-0",
@@ -1832,477 +1839,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "tool-1",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "result-1",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "answer-2",
-      "role": "assistant",
-      "content": "这是最终答复",
-      "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-0",
-     "toolCalls": [
-      2
-     ],
-     "resultMap": [
-      [
-       "tool-0",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-0",
-       1794287851852
-      ]
-     ],
-     "settledIds": [
-      "tool-0"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-1",
-     "message": 4
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-1",
-     "toolCalls": [
-      5
-     ],
-     "resultMap": [
-      [
-       "tool-1",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-1",
-       1794287851852
-      ]
-     ],
-     "settledIds": [
-      "tool-1"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-2",
-     "message": 7
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "tool-0",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "result-0",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "answer-1",
-      "role": "assistant",
-      "content": "已找到线索，继续核实",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "tool-1",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "result-1",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.852Z"
-     },
-     {
-      "clientId": "answer-2",
-      "role": "assistant",
-      "content": "这是最终答复",
-      "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.852Z",
-      "turnCompleted": true
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-0",
-     "toolCalls": [
-      2
-     ],
-     "resultMap": [
-      [
-       "tool-0",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-0",
-       1794287851852
-      ]
-     ],
-     "settledIds": [
-      "tool-0"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-1",
-     "message": 4
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-1",
-     "toolCalls": [
-      5
-     ],
-     "resultMap": [
-      [
-       "tool-1",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-1",
-       1794287851852
-      ]
-     ],
-     "settledIds": [
-      "tool-1"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-2",
-     "message": 7
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     },
-     {
-      "clientId": "tool-0",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "result-0",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-0",
-     "toolCalls": [
-      2
-     ],
-     "resultMap": [
-      [
-       "tool-0",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-0",
-       1794287851853
-      ]
-     ],
-     "settledIds": [
-      "tool-0"
-     ]
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     },
-     {
-      "clientId": "tool-0",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "result-0",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "answer-1",
-      "role": "assistant",
-      "content": "已找到线索，继续核实",
-      "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-0",
-     "toolCalls": [
-      2
-     ],
-     "resultMap": [
-      [
-       "tool-0",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-0",
-       1794287851853
-      ]
-     ],
-     "settledIds": [
-      "tool-0"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-1",
-     "message": 4
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     },
-     {
-      "clientId": "tool-0",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "result-0",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "answer-1",
-      "role": "assistant",
-      "content": "已找到线索，继续核实",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "commentary"
      },
      {
@@ -2314,145 +1865,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     }
-    ]
-   ],
-   [
-    {
-     "type": "message",
-     "key": "msg-u1",
-     "message": 0
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-0",
-     "message": 1
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-0",
-     "toolCalls": [
-      2
-     ],
-     "resultMap": [
-      [
-       "tool-0",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-0",
-       1794287851853
-      ]
-     ],
-     "settledIds": [
-      "tool-0"
-     ]
-    },
-    {
-     "type": "message",
-     "key": "msg-answer-1",
-     "message": 4
-    },
-    {
-     "type": "tool_segment",
-     "key": "seg-tool-1",
-     "toolCalls": [
-      5
-     ],
-     "resultMap": [
-      [
-       "tool-1",
-       ""
-      ]
-     ],
-     "resultTsMap": [
-      [
-       "tool-1",
-       1794287851853
-      ]
-     ],
-     "settledIds": [
-      "tool-1"
-     ]
-    }
-   ]
-  ],
-  [
-   [
-    [
-     {
-      "clientId": "u1",
-      "role": "user",
-      "content": "..."
-     },
-     {
-      "clientId": "answer-0",
-      "role": "assistant",
-      "content": "我查一下：",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     },
-     {
-      "clientId": "tool-0",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "result-0",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "answer-1",
-      "role": "assistant",
-      "content": "已找到线索，继续核实",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
-      "assistantPhase": "commentary"
-     },
-     {
-      "clientId": "tool-1",
-      "role": "tool_use",
-      "content": "()",
-      "toolName": "",
-      "toolInput": {
-       "command": "echo ok"
-      },
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
-     },
-     {
-      "clientId": "result-1",
-      "role": "tool_result",
-      "content": "",
-      "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-2",
       "role": "assistant",
       "content": "这是",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "final_answer"
      }
     ]
@@ -2483,7 +1910,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -2510,7 +1937,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -2537,7 +1964,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "commentary"
      },
      {
@@ -2549,21 +1976,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "commentary"
      },
      {
@@ -2575,21 +2002,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-2",
       "role": "assistant",
       "content": "这是最终答复",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "final_answer"
      }
     ]
@@ -2620,7 +2047,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -2647,7 +2074,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -2674,7 +2101,7 @@
       "role": "assistant",
       "content": "我查一下：",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "commentary"
      },
      {
@@ -2686,21 +2113,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-0",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-1",
       "role": "assistant",
       "content": "已找到线索，继续核实",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "commentary"
      },
      {
@@ -2712,21 +2139,21 @@
        "command": "echo ok"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "result-1",
       "role": "tool_result",
       "content": "",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:31.853Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      },
      {
       "clientId": "answer-2",
       "role": "assistant",
       "content": "这是最终答复",
       "isStreaming": true,
-      "createdAt": "2026-11-10T05:17:31.853Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "assistantPhase": "final_answer",
       "turnCompleted": true
      }
@@ -2758,7 +2185,7 @@
      "resultTsMap": [
       [
        "tool-0",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -2785,7 +2212,7 @@
      "resultTsMap": [
       [
        "tool-1",
-       1794287851853
+       1792454400000
       ]
      ],
      "settledIds": [
@@ -23910,7 +23337,7 @@
    [
     [
      {
-      "clientId": "0fac8115-17aa-4be9-ae76-655ab1942cc8",
+      "clientId": "61d3848d-b394-4ca2-99cf-a18985d1514e",
       "role": "tool_use",
       "content": "mcp:cindy:ghost_call()",
       "toolUseId": "tu-pi",
@@ -23920,7 +23347,7 @@
        "tool": "show_card"
       },
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:33.193Z"
+      "createdAt": "2026-10-20T00:00:00.000Z"
      }
     ],
     null,
@@ -23944,7 +23371,7 @@
    [
     {
      "type": "tool_segment",
-     "key": "seg-0fac8115-17aa-4be9-ae76-655ab1942cc8",
+     "key": "seg-61d3848d-b394-4ca2-99cf-a18985d1514e",
      "toolCalls": [
       0
      ],
@@ -26138,7 +25565,7 @@
       "role": "assistant",
       "content": "Main answer",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:34.404Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "model": "tencent/hy4"
      },
      {
@@ -26146,7 +25573,7 @@
       "role": "assistant",
       "content": "Let me check the remaining details.",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:34.404Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "model": "tencent/hy4",
       "parentToolUseId": "chatcmpl-tool-a1b2c3d4e5f60718"
      },
@@ -26155,7 +25582,7 @@
       "role": "assistant",
       "content": "Legacy answer",
       "isStreaming": false,
-      "createdAt": "2026-11-10T05:17:34.404Z",
+      "createdAt": "2026-10-20T00:00:00.000Z",
       "parentToolUseId": "preceding-user-uuid"
      }
     ]
@@ -26229,7 +25656,7 @@
       "isStreaming": false,
       "createdAt": "2026-09-08T00:00:00Z",
       "cacheReceipt": {
-       "run": "jvd58ab686-kz3lui2p9r",
+       "run": "5es5sme3m0c-a9c0l4is8vk",
        "order": 5
       }
      }
@@ -26260,7 +25687,7 @@
       "isStreaming": true,
       "createdAt": "2026-09-08T00:00:00Z",
       "cacheReceipt": {
-       "run": "jvd58ab686-kz3lui2p9r",
+       "run": "5es5sme3m0c-a9c0l4is8vk",
        "order": 8
       }
      }
@@ -26285,7 +25712,7 @@
       "isStreaming": false,
       "createdAt": "2026-09-08T00:00:00Z",
       "cacheReceipt": {
-       "run": "jvd58ab686-kz3lui2p9r",
+       "run": "5es5sme3m0c-a9c0l4is8vk",
        "order": 11
       }
      },
@@ -26323,7 +25750,7 @@
       "isStreaming": false,
       "createdAt": "2026-09-08T00:00:00Z",
       "cacheReceipt": {
-       "run": "jvd58ab686-kz3lui2p9r",
+       "run": "5es5sme3m0c-a9c0l4is8vk",
        "order": 14
       }
      }

@@ -110,6 +110,7 @@ fn shown(item: &Item) -> Js {
             ("turnSealed", Some(Js::Bool(*turn_sealed))),
             ("files", Some(Js::Arr(files.iter().map(file).collect()))),
         ]),
+        Item::WorkGroup { .. } | Item::ForkOrigin { .. } => panic!("`build` makes neither"),
     }
 }
 

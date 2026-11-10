@@ -124,7 +124,9 @@ defines scope and what 1:1 means.
   `src/plan_todos.rs` is `messageRender.ts`'s plan timeline (`tasks.rs` the `Task*` list, `window.rs`
   what a paged window proves); golden `plan-timeline`. Golden `turn-yields`: `src/tool_media.rs` is
   `extractToolResultMedia`, `src/generated_files.rs` `collectGeneratedFiles`, `src/local_path.rs`
-  `resolveToolFilePath`. `src/render_items.rs` is `buildRenderItems` (golden `render-items`).
+  `resolveToolFilePath`. `src/render_items.rs` is `buildRenderItems` (golden `render-items`),
+  `src/work_groups.rs` `messageWorkGroups.ts` on `Rc` items (golden `work-groups`); the recorder's
+  clock is fixed.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
   adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
   as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`

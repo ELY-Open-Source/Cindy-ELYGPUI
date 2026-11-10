@@ -103,3 +103,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: FAIL. A history artifact with no `ready` came out unready: the file's `ready` took the truthy read where Cindy copies the field and treats only `false` as unready.
 - Fixed: the file is unready only for `ready: false`; the exclude checks keep the truthy read. The golden holds an artifact with `ready` absent, `true`, `false`, `0`, `null` and `''`.
 - Round 2: PASS.
+## 9.4d Work groups over the render items
+- Round 1: FAIL. A sealed answer with no `clientId` entered the final-assistant set as the string
+  `undefined`, where Cindy's set holds `undefined`.
+- Fixed: the set holds `Option<String>`, `None` for a missing id; golden cases for a missing id
+  alone, beside the literal id `undefined`, and as an unsealed last answer.
+- Round 2: PASS.

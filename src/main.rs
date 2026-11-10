@@ -59,6 +59,7 @@ mod units;
 mod wallpaper;
 mod window_material;
 mod window_state;
+mod work_groups;
 mod work_runs;
 
 use std::path::PathBuf;

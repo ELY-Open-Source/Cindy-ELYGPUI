@@ -4,7 +4,10 @@
     expect(dead_code, reason = "`renderHistoryView` builds with it in 9.4e")
 )]
 
-use std::collections::{HashMap, HashSet};
+use std::{
+    collections::{HashMap, HashSet},
+    rc::Rc,
+};
 
 use indexmap::{IndexMap, IndexSet};
 
@@ -66,6 +69,18 @@ pub enum Item {
         turn_end_ms: Option<f64>,
         turn_sealed: bool,
     },
+    WorkGroup {
+        key: String,
+        children: Vec<Rc<Item>>,
+        duration_ms: Option<f64>,
+        is_streaming: bool,
+        started_at_ms: Option<f64>,
+    },
+    ForkOrigin {
+        key: String,
+        parent_session_id: String,
+        forked_at_message_id: String,
+    },
 }
 
 /// The options of `buildRenderItems` a local task's history uses.
@@ -76,19 +91,19 @@ pub struct Options<'a> {
     pub history_artifacts: &'a [Js],
 }
 
-fn field<'a>(row: &'a Js, key: &str) -> Option<&'a Js> {
+pub(crate) fn field<'a>(row: &'a Js, key: &str) -> Option<&'a Js> {
     row.obj()?.get(key)
 }
 
-fn text<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
+pub(crate) fn text<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
     field(row, key)?.str()
 }
 
-fn role(row: &Js) -> &str {
+pub(crate) fn role(row: &Js) -> &str {
     text(row, "role").unwrap_or_default()
 }
 
-fn content(row: &Js) -> &str {
+pub(crate) fn content(row: &Js) -> &str {
     text(row, "content").unwrap_or_default()
 }
 
@@ -98,17 +113,17 @@ fn filled<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
 }
 
 /// The row's `clientId` as a template string writes it.
-fn client_id(row: &Js) -> String {
+pub(crate) fn client_id(row: &Js) -> String {
     js::string(field(row, "clientId"))
 }
 
 /// `Date.parse(value ?? '')`, when it is a time.
-fn time(value: Option<&Js>) -> Option<f64> {
+pub(crate) fn time(value: Option<&Js>) -> Option<f64> {
     let ms = js_date::parse(value.and_then(Js::str).unwrap_or_default());
     ms.is_finite().then_some(ms)
 }
 
-fn created_ms(row: &Js) -> Option<f64> {
+pub(crate) fn created_ms(row: &Js) -> Option<f64> {
     time(field(row, "createdAt"))
 }
 

@@ -19,6 +19,9 @@ const media = (m) => pick(m, ['kind', 'url', 'modelFile', 'audioTrack', 'audioIn
 // A file that is ready reads the same with the key or without it.
 const file = (f) => pick({ ...f, ready: f.ready === false ? false : undefined }, ['path', 'name', 'source', 'ready', 'artifact', 'artifactConfirmed']);
 
+/** The options a local task's history passes. */
+export const options = (opts) => pick(opts ?? {}, ['historyWindowIncomplete', 'workingDir', 'historyArtifacts']);
+
 /** An item with rows as indices into `rows` and maps as entry lists. */
 function shown(item, rows) {
   const at = (row) => rows.indexOf(row);
@@ -45,7 +48,7 @@ export function renderItems(golden, { buildRenderItems, isGeneratedFilesTurnSeal
   return recorded({ ...golden, name: 'render-items', tests: TESTS, keep, fns: {
     // Task updates, ghost cards and the other options come with their chapters.
     buildRenderItems: (rows, _updates, _cards, opts) => {
-      const kept = pick(opts ?? {}, ['historyWindowIncomplete', 'workingDir', 'historyArtifacts']);
+      const kept = options(opts);
       try {
         return buildRenderItems(rows, undefined, undefined, kept).items.map((item) => shown(item, rows));
       } catch (error) {

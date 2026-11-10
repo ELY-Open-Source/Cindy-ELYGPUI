@@ -122,10 +122,12 @@ listed in `tasks/done.md`.
     voice rows with 22.0, live task updates and durable subagent status with 10.0, Markdown image
     targets in the inline media with 9.6; the golden leaves out rows with a voice card or a Markdown
     image (`later` in `scripts/golden/renderItems.mjs`) until then
-  - [ ] 9.4d `messageWorkGroups.ts` over 9.1b's grouping: the item adapter (`renderItemStartMs`,
+  - [x] 9.4d `messageWorkGroups.ts` over 9.1b's grouping: the item adapter (`renderItemStartMs`,
     `renderItemEndMs`, `messageTs`, `isCompletedAssistantMessage`, the work group it makes),
     `collectTurnFinalAssistantClientIds`, `assistantHasFollowingUserBoundary`, the first and last
-    user message ids, `insertForkOriginItem`, `renderItemContainsClientId`; golden
+    user message ids, `insertForkOriginItem`, `renderItemContainsClientId`; golden. A live task
+    update's status, launch receipts and times (`deriveAgentTaskStatus` past the persisted status)
+    come with 10.0, ghost cards' times with 16.0, a group's deferred work with 9.4e
   - [ ] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
     calls it for a ready view: chunks built by 9.4c and grouped by 9.4d, placeholders, deferred
     work, unique keys; the routed task's items held for the rows of 9.5 to 9.14; the memo caches of

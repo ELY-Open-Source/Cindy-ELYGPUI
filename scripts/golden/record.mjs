@@ -38,6 +38,8 @@ const queried = {
 };
 export const ASSETS = { loader: Object.fromEntries(assetKinds.map((kind) => [kind, 'empty'])), plugins: [queried] };
 
+const CLOCK = Date.UTC(2026, 9, 20);
+
 /** `targets`: import specifier as the test writes it, to the export names recorded. */
 export async function record({ esbuild, tmp, nodePaths, alias, define, test, targets }) {
   const dir = fs.mkdtempSync(path.join(tmp, 'record-'));
@@ -74,8 +76,19 @@ export async function record({ esbuild, tmp, nodePaths, alias, define, test, tar
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
     nodePaths, alias, define, loader: ASSETS.loader, plugins: [plugin, ...ASSETS.plugins],
   });
-  const mod = await import(pathToFileURL(bundle).href);
-  const { ran, failed } = await mod.run();
+  // A test's `new Date()` reads one fixed clock, so a recording repeats.
+  const Real = Date;
+  globalThis.Date = class extends Real {
+    constructor(...args) { super(...(args.length ? args : [CLOCK])); }
+    static now() { return CLOCK; }
+  };
+  let mod, ran, failed;
+  try {
+    mod = await import(pathToFileURL(bundle).href);
+    ({ ran, failed } = await mod.run());
+  } finally {
+    globalThis.Date = Real;
+  }
   console.log(`recorded ${mod.calls.length} calls from ${path.basename(test)} (${ran} tests, ${failed} threw)`);
   return mod.calls;
 }
