@@ -1,6 +1,6 @@
 //! `deepLinkSchemes.ts` and `deepLink.ts`: Cindy's deep links as text carries them.
 
-#![cfg_attr(not(test), expect(dead_code, reason = "9.5h's chips read them"))]
+#![cfg_attr(not(test), expect(dead_code, reason = "9.5l's chips read them"))]
 
 use crate::cindy_json::decode_uri_component;
 

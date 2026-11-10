@@ -127,7 +127,7 @@ fn links_move_with_the_text_they_lie_in() {
         ranges(body, &map),
         [url(3, "https://x.y"), url(17, "http://q.r/")]
     );
-    // Session links and image paths are 9.5h's chips.
+    // Session links and image paths are 9.5l's chips.
     let body = "cindy://session/abc /tmp/a.png https://x.y";
     assert_eq!(ranges(body, &[(0, 0)]), [url(31, "https://x.y")]);
 }
