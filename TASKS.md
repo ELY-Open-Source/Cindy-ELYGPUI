@@ -85,11 +85,14 @@ listed in `tasks/done.md`.
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
   chapter owns), the message column with its width rules, the composer dock; loading, empty, not
   found and archived states; `useTrackLastView` keeps the slot
-  - [ ] 9.3a The route's task: `CindyMakeSessionGate` for a local task (the list's source, else
+  - [!] 9.3a The route's task: `CindyMakeSessionGate` for a local task (the list's source, else
     `getSessionFor`; missing or failed draws `SessionEntryError` with Back, failed adds Retry), the
     task as the view resolves it (the database's `get` over the list row, archived ones kept), a
     deleted task purged and left for `/cc-agent`, the store's `ensureInitialMessages`,
     `enterView` and `leaveView` with the route; the provisional draft's redirect comes with 9.15
+    - Open (review r3): `sync` resets the gate's `loaded` with each new task, but Cindy's gate
+      keeps its one `{id, source}` across task switches; old (read by the gate), then s1 (listed),
+      then old deleted and reopened draws Missing where Cindy keeps the content open (visits 1)
   - [ ] 9.3b The content header: `SessionContentHeader` in the header slot for the route's task:
     the pin mark, the title (`max-w-[40vw]`, its manual window drag) with the double-click rename
     (`w-72 h-7`), More (`Ellipsis` 15 in `h-7 w-7`) opening `SessionTaskMenu` with the header's

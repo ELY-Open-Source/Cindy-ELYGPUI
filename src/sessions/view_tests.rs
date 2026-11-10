@@ -94,6 +94,7 @@ pub(crate) fn install(cx: &mut TestAppContext, dir: &Path) {
             aliases: Vec::new(),
             settings: Default::default(),
             known,
+            all: Vec::new(),
         });
         crate::router::install(cx);
     });

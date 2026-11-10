@@ -5,7 +5,7 @@ mod card;
 mod dialogue;
 mod filter;
 mod fold;
-mod group;
+pub(crate) mod group;
 mod header;
 pub mod interrupted;
 mod keyboard;
@@ -22,7 +22,7 @@ mod pinned;
 pub(crate) mod preview;
 mod project;
 mod projection;
-mod query;
+pub(crate) mod query;
 pub(crate) mod rail;
 mod rename;
 mod reorder;
@@ -60,6 +60,8 @@ pub struct Loaded {
     settings: settings::Settings,
     /// `allKnownProjects`: every status's projects, for the search's Projects filter.
     known: Vec<group::Project>,
+    /// The `all` bucket the search loads.
+    all: Vec<Session>,
 }
 
 pub struct Sessions {
@@ -150,23 +152,41 @@ pub fn active_task_ids(cx: &App) -> Option<Vec<&str>> {
     Some(ids.collect())
 }
 
+/// `sessionsStore.findById`: the filter's bucket, then the `all` one.
+pub fn find<'a>(id: &str, cx: &'a App) -> Option<&'a Session> {
+    let loaded = cx.global::<Sessions>().loaded.as_ref()?;
+    let mut buckets = loaded.sessions.iter().chain(&loaded.all);
+    buckets.find(|s| s.id == id)
+}
+
 /// A loaded list of `(id, status, source)` tasks.
 #[cfg(test)]
 pub fn load_for_tests(tasks: &[(&str, &str, &str)], cx: &mut App) {
-    let sessions = tasks
-        .iter()
-        .map(|(id, status, source)| Session {
+    load_buckets_for_tests(tasks, &[], cx);
+}
+
+/// The filter's bucket and the `all` one, as `(id, status, source)` tasks.
+#[cfg(test)]
+pub fn load_buckets_for_tests(
+    tasks: &[(&str, &str, &str)],
+    all: &[(&str, &str, &str)],
+    cx: &mut App,
+) {
+    let rows = |tasks: &[(&str, &str, &str)]| {
+        let row = |(id, status, source): &(&str, &str, &str)| Session {
             status: (*status).into(),
             source: (*source).into(),
             ..view_tests::task(id, None, false, 0)
-        })
-        .collect();
+        };
+        tasks.iter().map(row).collect()
+    };
     cx.global_mut::<Sessions>().loaded = Some(Loaded {
-        sessions,
+        sessions: rows(tasks),
         recent: Vec::new(),
         aliases: Vec::new(),
         settings: Default::default(),
         known: Vec::new(),
+        all: rows(all),
     });
 }
 
@@ -214,6 +234,7 @@ fn watch(cx: &mut App) {
             cx.update(|cx| {
                 reload(cx);
                 crate::chat_store::Store::global(cx).invalidate_all();
+                crate::session_view::reread(cx);
             });
         }
     })
@@ -290,6 +311,7 @@ pub fn reload(cx: &mut App) {
             aliases,
             settings,
             known,
+            all,
         };
         Ok::<_, rusqlite::Error>((loaded, backfill))
     });
@@ -352,6 +374,6 @@ mod menu_tests;
 #[cfg(test)]
 mod pin_tests;
 #[cfg(test)]
-mod tests;
+pub(crate) mod tests;
 #[cfg(test)]
 pub(crate) mod view_tests;

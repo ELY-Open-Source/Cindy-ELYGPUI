@@ -40,6 +40,7 @@ mod region;
 mod rich_answer;
 mod router;
 mod session_owner;
+mod session_view;
 mod sessions;
 mod sidebar;
 mod theme;
@@ -106,6 +107,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     sessions::install(startup.user_data.clone(), startup.owner_dir.clone(), cx);
     localdb::install(startup.database.clone(), cx);
     router::install(cx);
+    session_view::install(cx);
     browse_history::install(cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());

@@ -140,7 +140,13 @@ impl Store {
         }
     }
 
-    fn epoch(&self, id: &str) -> u64 {
+    /// The views open on `id`, for tests outside the store.
+    #[cfg(test)]
+    pub fn visits(&self, id: &str) -> usize {
+        self.0.borrow().active.get(id).copied().unwrap_or(0)
+    }
+
+    pub(crate) fn epoch(&self, id: &str) -> u64 {
         self.0.borrow().epochs.get(id).copied().unwrap_or(0)
     }
 

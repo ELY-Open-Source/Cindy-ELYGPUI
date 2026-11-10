@@ -119,8 +119,8 @@ impl Store {
         }
     }
 
-    /// `_purgeSession`, for the parts the store holds so far.
-    fn purge(&self, id: &str) {
+    /// `purgeSession`, for the parts the store holds so far.
+    pub fn purge(&self, id: &str) {
         self.release_view(id);
         self.invalidate_window(id);
         let mut inner = self.0.borrow_mut();

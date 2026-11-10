@@ -3,7 +3,7 @@ use rusqlite::Connection;
 use super::{filter::Filter, fold, group, meta, query, row, settings, sweep, write};
 
 /// The columns of Cindy's schema this chapter reads.
-pub(super) fn db() -> Connection {
+pub(crate) fn db() -> Connection {
     let db = Connection::open_in_memory().unwrap();
     db.execute_batch(
         "CREATE TABLE sessions (id text PRIMARY KEY, title text NOT NULL DEFAULT 'New Maker',
@@ -25,7 +25,7 @@ pub(super) fn db() -> Connection {
     db
 }
 
-pub(super) fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
+pub(crate) fn add(db: &Connection, id: &str, source: &str, status: &str, updated: i64) {
     db.execute(
         "INSERT INTO sessions (id, title, status, source, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
         (id, format!("task {id}"), status, source, updated, updated),

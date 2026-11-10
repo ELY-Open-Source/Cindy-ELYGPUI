@@ -71,3 +71,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: FAIL. `set` re-inserted a slice the full cache had just pushed out, even when its update was a no-op, so the cache held 21 slices and the access order 20.
 - Fixed: `set` reads through `get_or_create` and writes only a real update, as `setState` returns before `sessions.set`; the reviewer's full-cache case is a test.
 - Round 2: PASS.
+
+## 9.3a The route's task
+- Round 1: FAIL. One read served both the gate and the content, so a deleted task's first read purged it before the visit loaded it again, a content row kept the gate open after the task left list and database, and an error gate left the visit open; two module comments ran two lines.
+- Fixed: the gate reads only while the list does not know the task and opens on its own result; the content mounts and unmounts with the gate (its read, then the visit; unmount leaves the store); the deleted exit runs when the content's read lands; comments are one line; the reviewer's three cases are tests.
+- Round 2: FAIL. The listed source arriving did not cancel the gate's read, so its late answer left a `loaded` that later hid a missing task; content reads matched only the id, so a read from an earlier mount of the same task purged its remount.
+- Fixed: a change of the listed source cancels the gate's read in flight, as the effect's cleanup does; each content read takes a sequence the mount holds, as `createSessionRefreshSequence` does; both cases are tests.
+- Round 3: FAIL. Each new task reset the gate's `loaded`, while Cindy's gate keeps its last successful `{id, source}` across task switches; returning to a task the gate read before closes the gate where Cindy keeps it open.
+- Left open: marked `- [!]` in TASKS.md.

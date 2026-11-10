@@ -32,6 +32,8 @@ fn open_zoomed(cx: &mut TestAppContext, dir: &std::path::Path, zoom: f32) -> Vis
         cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::router::install(cx);
+        crate::chat_store::install(cx);
+        crate::session_view::install(cx);
         crate::browse_history::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());

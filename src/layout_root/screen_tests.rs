@@ -80,6 +80,8 @@ pub(super) fn open_beside<'a>(
         cx.set_global(crate::preferences::Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::router::install(cx);
+        crate::chat_store::install(cx);
+        crate::session_view::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
@@ -243,4 +245,32 @@ fn the_chat_pane_says_loading_until_the_index_resolves(cx: &mut TestAppContext) 
         "/cc-agent/t"
     );
     assert!(!shown(cx), "the task's place");
+}
+
+#[gpui::test]
+fn a_task_that_cannot_load_offers_the_way_back(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path(), tree(0.6, 0.4), 1200.0);
+    cx.update(|_, cx| crate::sessions::load_for_tests(&[("t", "active", "desktop")], cx));
+    cx.run_until_parked();
+    assert!(
+        cx.debug_bounds("session-view").is_some(),
+        "a listed task opens"
+    );
+    cx.update(|_, cx| crate::router::navigate("/cc-agent/elsewhere", cx));
+    cx.run_until_parked();
+    // No database: the read fails, so Retry joins Back.
+    assert!(cx.debug_bounds("session-view").is_none());
+    assert!(cx.debug_bounds("session-entry-failed").is_some());
+    assert!(cx.debug_bounds("session-entry-retry").is_some());
+    let back = cx
+        .debug_bounds("session-entry-back")
+        .expect("Back is drawn");
+    cx.simulate_click(back.center(), gpui::Modifiers::none());
+    cx.run_until_parked();
+    assert_eq!(
+        cx.update(|_, cx| crate::router::path(cx).to_owned()),
+        "/cc-agent/t"
+    );
+    assert!(cx.debug_bounds("session-entry-failed").is_none());
 }

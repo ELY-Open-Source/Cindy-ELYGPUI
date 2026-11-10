@@ -235,18 +235,13 @@ fn settle(w: Which, seq: u64, pass: Pass, page: Option<Response>, sort: &str, cx
     cx.refresh_windows();
 }
 
-/// `isCindyMakeSource`, with `CINDY_MAKE_ENABLED` false.
-fn cindy_make(source: &str) -> bool {
-    source == "cindy-make" || source == "cindy-make-merge"
-}
-
 /// `mergeConversationSearchFanout` over the local page and the keyword page's empty remote one.
 fn fanout(local: &Response, keyword_capped: bool, sort: &str) -> Response {
     let mut kept: Vec<&Item> = Vec::new();
     for item in local
         .results
         .iter()
-        .filter(|i| !cindy_make(&i.session.source))
+        .filter(|i| !crate::session_view::cindy_make(&i.session.source))
     {
         match kept.iter().position(|k| k.session.id == item.session.id) {
             Some(at) if item.rank > kept[at].rank => kept[at] = item,

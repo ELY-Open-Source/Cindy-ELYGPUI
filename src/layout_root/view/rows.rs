@@ -31,7 +31,7 @@ impl LayoutRoot {
             .children(header)
             .children(
                 (pane.panel_kind == CHAT)
-                    .then(|| index_redirect(cx))
+                    .then(|| index_redirect(cx).or_else(|| crate::session_view::element(cx)))
                     .flatten(),
             )
             .child(panel_drag::recorder(&self.rects, true, &pane.panel_kind))

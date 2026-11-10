@@ -48,6 +48,8 @@ pub(super) fn open<'a>(
         cx.set_global(Preferences::load(dir).unwrap());
         crate::sessions::install(std::path::PathBuf::new(), None, cx);
         crate::router::install(cx);
+        crate::chat_store::install(cx);
+        crate::session_view::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());
