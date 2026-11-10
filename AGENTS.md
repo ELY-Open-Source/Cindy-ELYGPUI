@@ -119,12 +119,12 @@ defines scope and what 1:1 means.
   result readers, `payload/files.rs` the file references (a source-literal lexer on UTF-8 bytes, ASCII
   compares; `searchParams` is the `url` crate). `js::stringify` is `JSON.stringify` with an indent,
   `js::entries` the property order. Golden `history-rows`: `record.mjs` runs Cindy's tests with vitest
-  stubbed, records their arguments, plus `cases.json`; read with `js::parse`. `src/tool_row.rs` is
-  `formatIslandToolDetail` over `createLocalizedToolRowWording` (verbs from `agentActionVerbKeys.ts`
-  through the app's `Translator`): a candidate's `activity`, checked in every locale against
-  `activity.json`. `src/plan_todos.rs` is `messageRender.ts`'s plan timeline
-  (`findMessageTodoInsertions`, `getLatestMessageTodoState`; `tasks.rs` the `Task*` list, `window.rs`
-  what a paged window proves); golden `plan-timeline`.
+  stubbed, records their arguments, adds `cases.json`; read with `js::parse`. `src/tool_row.rs` is
+  `formatIslandToolDetail` over `createLocalizedToolRowWording`: a candidate's `activity`, checked in
+  every locale against `activity.json`. `src/plan_todos.rs` is `messageRender.ts`'s plan timeline
+  (`tasks.rs` the `Task*` list, `window.rs` what a paged window proves); golden `plan-timeline`. Golden
+  `turn-yields`: `src/tool_media.rs` is `extractToolResultMedia`, `src/generated_files.rs`
+  `collectGeneratedFiles`, `src/local_path.rs` `resolveToolFilePath`; their memo caches come with 9.4e.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
   adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
   as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`

@@ -848,7 +848,10 @@
     "toolName": "mcp__cindy_docs__render_pdf",
     "serverLabel": "cindy_docs",
     "toolLabel": "render pdf",
-    "createdPath": "documents/report.pdf"
+    "createdPath": "documents/report.pdf",
+    "sourceCandidates": [
+     "tmp/design.html"
+    ]
    }
   ],
   [
@@ -890,7 +893,10 @@
     "toolName": "mcp:docs:make_pptx",
     "serverLabel": "docs",
     "toolLabel": "make pptx",
-    "createdPath": "/a.pptx"
+    "createdPath": "/a.pptx",
+    "sourceCandidates": [
+     "Q3"
+    ]
    }
   ],
   [
@@ -1379,7 +1385,10 @@
     "toolName": "mcp__art__make",
     "serverLabel": "art",
     "toolLabel": "make",
-    "createdPath": "/tmp/c.png"
+    "createdPath": "/tmp/c.png",
+    "sourceCandidates": [
+     "/tmp/d.png"
+    ]
    }
   ],
   [
@@ -1434,6 +1443,65 @@
     "serverLabel": "docs",
     "toolLabel": "pdf",
     "createdPath": "/tmp/g.pdf"
+   }
+  ],
+  [
+   "mcp__x__copy",
+   {
+    "out_path": " copy.bin ",
+    "from": " /a/b ",
+    "same": "copy.bin",
+    "n": 5,
+    "long": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+    "edge": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+    "over": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀z",
+    "blank": "  ",
+    "nested": {
+     "p": "q"
+    }
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__x__copy",
+    "serverLabel": "x",
+    "toolLabel": "copy",
+    "createdPath": "copy.bin",
+    "sourceCandidates": [
+     "/a/b",
+     "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+    ]
+   }
+  ],
+  [
+   "mcp__x__read",
+   {
+    "path": "keep.html",
+    "other": "s"
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__x__read",
+    "serverLabel": "x",
+    "toolLabel": "read"
+   }
+  ],
+  [
+   "mcp__x__w",
+   {
+    "outputPath": "o",
+    "outPath": "",
+    "a": "o",
+    "b": "p"
+   },
+   {
+    "kind": "mcp",
+    "toolName": "mcp__x__w",
+    "serverLabel": "x",
+    "toolLabel": "w",
+    "createdPath": "o",
+    "sourceCandidates": [
+     "p"
+    ]
    }
   ]
  ],

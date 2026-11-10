@@ -6,7 +6,8 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, recorded } from './golden/recorded.mjs';
+import { ASSETS } from './golden/record.mjs';
+import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -73,7 +74,10 @@ try {
     "export * as messageNormalize from '@cindy/maker-shared/message-normalize';",
     "export * as messageRender from '@cindy/maker-shared/message-render';",
     "export * as agentTask from '@cindy/maker-shared/agent-task';",
-    "export { hasRichAnswer } from '@cindy/maker-shared/rich-answer';",
+    "export { hasRichAnswer, richAnswerMediaSources } from '@cindy/maker-shared/rich-answer';",
+    "export { extractToolResultMedia } from './renderer/components/chat/AgentActionRow';",
+    "export * as generatedFiles from './renderer/lib/generatedFiles';",
+    "export { resolveLocalPath, resolveToolFilePath } from './renderer/lib/localPathResolver';",
     "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
     "export { extractCommandOutputPathCandidates } from './shared/commandOutputPaths';",
     "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
@@ -82,14 +86,15 @@ try {
   const electronStub = path.join(tmp, 'electron-stub.cjs');
   fs.writeFileSync(electronStub, 'const any = new Proxy(function () {}, { get: (_, key) => key === Symbol.toPrimitive ? () => "" : any, apply: () => any, construct: () => any });\nmodule.exports = any;\n');
   const bundle = path.join(tmp, 'bundle.mjs');
+  const define = { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) };
   const nodePaths = [links, path.join(path.resolve(cindy), 'node_modules')];
   const alias = { '@': path.join(tmp, src, 'renderer'), electron: electronStub };
   await esbuild.build({
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
-    nodePaths, alias,
-    define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
+    nodePaths, alias, ...ASSETS,
+    define,
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -375,7 +380,7 @@ try {
   const labelFields = {
     command: ['description', 'command', 'intent'], file: ['action', 'filePath', 'fileName'], fileChange: ['changes'],
     search: ['pattern'], web: ['mode', 'target'], todo: [], task: ['description'],
-    mcp: ['serverLabel', 'toolLabel', 'createdPath'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
+    mcp: ['serverLabel', 'toolLabel', 'createdPath', 'sourceCandidates'], dynamic: ['namespace', 'toolLabel'], collab: ['toolLabel'], generic: [],
   };
   const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
   const labelled = (d) => ({
@@ -438,6 +443,24 @@ try {
     isPlanUserBoundary: messageRender.isPlanUserBoundary,
   } });
   console.log(`${planCases} plan timeline cases`);
+  // Keys in one order, a cut pair as U+FFFD, `undefined` for an absent argument.
+  const keyed = (keys) => (o) => JSON.parse(JSON.stringify(Object.fromEntries(keys.map((k) => [k, o[k]])),
+    (_, v) => (typeof v === 'string' ? v.toWellFormed() : v)));
+  const media = keyed(['kind', 'url', 'modelFile', 'audioTrack', 'audioInCard', 'imageInCard']);
+  const yieldCases = await recorded({ ...golden, define, name: 'turn-yields', tests: YIELD_TESTS, fns: {
+    extractToolResultMedia: (result) => extractToolResultMedia(result).map(media),
+    dedupeToolMediaByUrl: (list) => messageRender.dedupeToolMediaByUrl(list).map(media),
+    richAnswerMediaSources: (source) => [...richAnswerMediaSources(source)],
+    collectGeneratedFiles: (rows, dir) => generatedFiles.collectGeneratedFiles(rows, dir)
+      .map(keyed(['path', 'name', 'source', 'ready', 'artifact', 'artifactConfirmed'])),
+    extractDocumentArtifactMetadata: (name, input, result) =>
+      keyed(['value'])({ value: generatedFiles.extractDocumentArtifactMetadata(name, input, result ?? undefined) }).value ?? null,
+    isExplicitFailedToolResult: (content) => generatedFiles.isExplicitFailedToolResult(content ?? undefined),
+    resolveLocalPath, resolveToolFilePath,
+    // The input as JSON text: its key order is the case.
+    sourcePathCandidates: (name, raw) => toolUse.sourcePathCandidatesFromDescriptor(toolUse.describeToolUse(name, JSON.parse(raw))),
+  } });
+  console.log(`${yieldCases} turn yield cases`);
   console.log(`${await chatMessage(golden)} chat message cases`);
   console.log(`${await mergeMessages(golden)} merge cases`);
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);

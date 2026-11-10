@@ -15,6 +15,7 @@ use stream::{Doc, Node, text_prop};
 use values::{Value, Values, string};
 
 const LANGUAGE: &str = "cindy-ui";
+const MEDIA: [&str; 3] = ["image", "video", "audio"];
 
 static OPEN: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^ {0,3}(`{3,}|~{3,})([^\r\n]*)$").expect("valid pattern"));
@@ -91,6 +92,48 @@ pub fn has(source: &str) -> bool {
     split(source)
         .iter()
         .any(|part| matches!(part, Part::Rich(_)))
+}
+
+static ALLOWED_SCHEME: LazyLock<Regex> = LazyLock::new(|| {
+    let schemes = "https?|file|xdt-(?:file|image|video|audio)|cindy-(?:remote-)?media";
+    Regex::new(&format!("^(?i-u)({schemes})://")).expect("valid pattern")
+});
+static SCHEME: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^[a-zA-Z][A-Za-z0-9_+.-]*:").expect("valid pattern"));
+static DRIVE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^[a-zA-Z]:[\\/]").expect("valid pattern"));
+
+/// `richMediaSource`: a media node's `src`, its scheme lowered; other schemes are refused.
+fn media_source(node: &Node) -> Option<String> {
+    let src = js_trim(string(node, "src", ""));
+    if src.is_empty() || src.contains(['\r', '\n']) {
+        return None;
+    }
+    match ALLOWED_SCHEME.captures(src) {
+        Some(found) => Some(found[1].to_lowercase() + &src[found[1].len()..]),
+        None if SCHEME.is_match(src) && !DRIVE.is_match(src) => None,
+        None => Some(src.to_owned()),
+    }
+}
+
+/// `richAnswerMediaSources`: what the component blocks show, first seen first.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "`buildRenderItems` reads it in 9.4c")
+)]
+pub fn media_sources(source: &str) -> Vec<String> {
+    let mut urls: Vec<String> = Vec::new();
+    for part in split(source) {
+        let Part::Rich(ops) = part else { continue };
+        let doc = Doc::replay(ops);
+        let media = doc.nodes.values().filter(|node| MEDIA.contains(&node.kind));
+        for url in media.filter_map(media_source) {
+            if !urls.contains(&url) {
+                urls.push(url);
+            }
+        }
+    }
+    urls
 }
 
 /// `richAnswerText`.

@@ -27,8 +27,19 @@ export async function run() {
 }
 `;
 
+// The renderer's modules import styles, fonts and `?url` files; none of them runs here.
+const assetKinds = ['.css', '.woff', '.woff2', '.ttf', '.png', '.svg', '.jpg', '.webp', '.gif', '.mp3', '.wav', '.mp4', '.webm', '.ico'];
+const queried = {
+  name: 'queried',
+  setup(build) {
+    build.onResolve({ filter: /\?(url|raw|worker)/ }, (args) => ({ path: args.path, namespace: 'queried' }));
+    build.onLoad({ filter: /.*/, namespace: 'queried' }, () => ({ contents: 'export default "";' }));
+  },
+};
+export const ASSETS = { loader: Object.fromEntries(assetKinds.map((kind) => [kind, 'empty'])), plugins: [queried] };
+
 /** `targets`: import specifier as the test writes it, to the export names recorded. */
-export async function record({ esbuild, tmp, nodePaths, alias, test, targets }) {
+export async function record({ esbuild, tmp, nodePaths, alias, define, test, targets }) {
   const dir = fs.mkdtempSync(path.join(tmp, 'record-'));
   const vitest = path.join(dir, 'vitest.mjs');
   fs.writeFileSync(vitest, VITEST);
@@ -61,7 +72,7 @@ export async function record({ esbuild, tmp, nodePaths, alias, test, targets }) 
   const bundle = path.join(dir, 'bundle.mjs');
   await esbuild.build({
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
-    nodePaths, alias, plugins: [plugin],
+    nodePaths, alias, define, loader: ASSETS.loader, plugins: [plugin, ...ASSETS.plugins],
   });
   const mod = await import(pathToFileURL(bundle).href);
   const { ran, failed } = await mod.run();

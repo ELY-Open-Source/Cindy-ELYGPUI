@@ -43,3 +43,12 @@ fn parses_nine_hundred_thousand_levels_as_v8_json_parse_does() {
     drop(parsed.clone());
     assert_eq!(text(&format!("```cindy-ui\n{line}\n```")), "top");
 }
+
+#[test]
+fn media_sources_match_cindys() {
+    use crate::generated_files::tests::{text, yields};
+    yields("richAnswerMediaSources", |args| {
+        let urls = super::media_sources(args[0].str().unwrap());
+        super::js::Js::Arr(urls.iter().map(|url| text(url)).collect())
+    });
+}

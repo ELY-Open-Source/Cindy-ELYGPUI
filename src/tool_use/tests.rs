@@ -79,9 +79,12 @@ fn shown(name: &str, input: &Value) -> Value {
             server,
             tool_label,
             created_path,
+            source_candidates,
         } => {
             (out["serverLabel"], out["toolLabel"]) = (json!(server), json!(tool_label));
             put(&mut out, "createdPath", opt(created_path));
+            let sources = (!source_candidates.is_empty()).then(|| json!(source_candidates));
+            put(&mut out, "sourceCandidates", sources);
             "mcp"
         }
         Kind::Dynamic {
@@ -149,4 +152,14 @@ fn text_trims_and_cuts_as_cindys_does() {
         let token = case[0].as_str().unwrap();
         assert_eq!(humanize(token), case[1].as_str().unwrap(), "{token:?}");
     }
+}
+
+#[test]
+fn source_candidates_come_in_javascripts_key_order() {
+    use crate::generated_files::tests::{text, yields};
+    yields("sourcePathCandidates", |args| {
+        let input = js::parse(args[1].str().unwrap()).unwrap();
+        let tool = describe(args[0].str().unwrap(), Some(&input));
+        js::Js::Arr(tool.source_candidates().iter().map(|c| text(c)).collect())
+    });
 }

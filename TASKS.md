@@ -109,9 +109,11 @@ listed in `tasks/done.md`.
     `getLatestMessageTodoState` (`findLatestMessageTodoInsertion` is its `insertion`),
     `extractPlanTodos` with `extractTodos`, `isPlanUserBoundary`; golden.
     `extractTodosFromSourceMessage` serves the mobile app alone
-  - [ ] 9.4b What a turn's rows yield: `extractToolResultMedia` with `dedupeToolMediaByUrl`,
-    `extractRenderedMarkdownImageTargets`, `richAnswerMediaSources`, `collectCachedGeneratedFiles`
-    (`generatedFiles.ts`) with `sourcePathCandidatesFromDescriptor` and `resolveToolFilePath`; golden
+  - [x] 9.4b What a turn's rows yield: `extractToolResultMedia` with `dedupeToolMediaByUrl`,
+    `richAnswerMediaSources`, `collectGeneratedFiles` (`generatedFiles.ts`, with
+    `extractDocumentArtifactMetadata`) over `createdPathsFromDescriptor`,
+    `sourcePathCandidatesFromDescriptor` and `resolveToolFilePath`; golden.
+    `extractRenderedMarkdownImageTargets` runs the Markdown pipeline and comes with 9.6
   - [ ] 9.4c `buildRenderItems`: its filters, subagent rows left out, the result lookup, the plan
     cards with their window check, the linear build (messages, tool segments with the gap split,
     agent tasks with their persisted status, tool media less what the turn shows inline) and the
@@ -124,7 +126,8 @@ listed in `tasks/done.md`.
     user message ids, `insertForkOriginItem`, `renderItemContainsClientId`; golden
   - [ ] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
     calls it for a ready view: chunks built by 9.4c and grouped by 9.4d, placeholders, deferred
-    work, unique keys; the routed task's items held for the rows of 9.5 to 9.14
+    work, unique keys; the routed task's items held for the rows of 9.5 to 9.14; the memo caches of
+    9.4b's readers (`getToolResultMetadata`'s LRU, `collectCachedGeneratedFiles`)
 - [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
@@ -133,7 +136,8 @@ listed in `tasks/done.md`.
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the
   copy and selection behaviour; `repairStreamingMarkdown` and the streaming chunks
-  (`streamingMarkdownChunks.ts`) for rows still being written
+  (`streamingMarkdownChunks.ts`) for rows still being written;
+  `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
 - [ ] 9.8 Math: `remark-math` with `remarkStrictInlineMath` and `math-markdown`, drawn as KaTeX

@@ -1,0 +1,4367 @@
+{
+ "extractToolResultMedia": [
+  [
+   [
+    ""
+   ],
+   []
+  ],
+  [
+   [
+    "plain text not json"
+   ],
+   []
+  ],
+  [
+   [
+    "{ broken json"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"ok\":true,\"xdt_image_urls\":[\"xdt-image://lizi-art-media-images/a.png\",\"xdt-image://lizi-art-media-images/b.png\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://lizi-art-media-images/a.png"
+    },
+    {
+     "kind": "image",
+     "url": "xdt-image://lizi-art-media-images/b.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_url\":\"xdt-image://feishu-media-images/x.jpg\"}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://feishu-media-images/x.jpg"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"ok\":true,\"xdt_video_urls\":[\"xdt-video://lizi-art-media-videos/v.mp4\"]}"
+   ],
+   [
+    {
+     "kind": "video",
+     "url": "xdt-video://lizi-art-media-videos/v.mp4"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_url\":\"xdt-image://x/a.png\",\"xdt_image_urls\":[\"xdt-image://x/b.png\"],\"xdt_video_urls\":[\"xdt-video://x/c.mp4\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://x/a.png"
+    },
+    {
+     "kind": "image",
+     "url": "xdt-image://x/b.png"
+    },
+    {
+     "kind": "video",
+     "url": "xdt-video://x/c.mp4"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"_xdt_render_image\":false,\"xdt_image_urls\":[\"xdt-image://x/a.png\"],\"xdt_video_urls\":[\"xdt-video://x/v.mp4\"]}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_url\":\"http://evil.example/a.png\",\"xdt_video_urls\":[\"file:///etc/passwd\",\"xdt-image://wrong/scheme.mp4\"]}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"xdt-image://x/a.png\",\"xdt-image://x/a.png\",\"xdt-image://x/b.png\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://x/a.png"
+    },
+    {
+     "kind": "image",
+     "url": "xdt-image://x/b.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"ok\":true,\"xdt_image_urls\":[\"xdt-image://lizi-art-media-images/preview.png\"],\"_xdt_model_files\":[{\"provider\":\"mivo\",\"fileId\":\"aaaaaaaaaaaaaaaaaaaaaaaa\",\"format\":\"GLB\",\"targetFormat\":\"GLB\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://lizi-art-media-images/preview.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"xdt-image://x/a.png\"],\"_xdt_model_files\":[{\"provider\":\"wrong\",\"fileId\":\"aaaaaaaaaaaaaaaaaaaaaaaa\"},{\"provider\":\"mivo\",\"fileId\":\"short\"},{\"provider\":\"mivo\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://x/a.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"xdt-image://x/a.png\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://x/a.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"ok\":true,\"xdt_image_urls\":[\"cindy-media://blobs/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png\"],\"_xdt_model_files\":[{\"provider\":\"cindy\",\"url\":\"cindy-media://blobs/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.glb\",\"format\":\"GLB\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+     "modelFile": {
+      "provider": "cindy",
+      "url": "cindy-media://blobs/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.glb",
+      "format": "GLB"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"ok\":true,\"xdt_audio_tracks\":[{\"kind\":\"music\",\"xdt_audio_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3\",\"cover_url\":\"cindy-media://blobs/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.jpg\",\"title\":\"雨后城市\",\"tags\":\"pop, upbeat\",\"lyrics\":\"第一行\\n第二行\",\"duration_seconds\":176,\"suno_id\":\"suno-1\"},{\"kind\":\"sound_effect\",\"xdt_audio_url\":\"cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.mp3\",\"title\":\"开门声\"}]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+      "coverUrl": "cindy-media://blobs/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.jpg",
+      "title": "雨后城市",
+      "tags": "pop, upbeat",
+      "lyrics": "第一行\n第二行",
+      "durationSeconds": 176,
+      "sunoId": "suno-1"
+     }
+    },
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.mp3",
+     "audioTrack": {
+      "kind": "sound_effect",
+      "audioUrl": "cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.mp3",
+      "title": "开门声",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"_xdt_audio_tracks\":[{\"kind\":\"music\",\"xdt_audio_url\":\"xdt-audio://local/?path=C%3A%5Ca.mp3\",\"title\":\"old\"}]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "xdt-audio://local/?path=C%3A%5Ca.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "xdt-audio://local/?path=C%3A%5Ca.mp3",
+      "title": "old",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_in_card\":true,\"xdt_audio_tracks\":[{\"kind\":\"music\",\"xdt_audio_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3\"}],\"xdt_image_urls\":[\"cindy-media://blobs/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png"
+    },
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     },
+     "audioInCard": true
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\":[{\"kind\":\"music\",\"xdt_audio_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3\"}]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp3",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png\"],\"xdt_images_in_card\":true}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png",
+     "imageInCard": true
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png\"],\"xdt_images_in_card\":\"yes\"}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\":[{\"kind\":\"music\",\"xdt_audio_url\":\"https://evil.example/a.mp3\"}]}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_audio_urls\":[\"cindy-media://blobs/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.mp3\",\"xdt-audio://local/?path=x\",\"file:///etc/passwd.mp3\"]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.mp3",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    },
+    {
+     "kind": "audio",
+     "url": "xdt-audio://local/?path=x",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "xdt-audio://local/?path=x",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\":[\"cindy-media://blobs/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png\"],\"_xdt_model_files\":[{\"provider\":\"cindy\",\"url\":\"https://evil.example/x.glb\"},{\"provider\":\"cindy\",\"url\":\"cindy-media://blobs/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.fbx\"},{\"provider\":\"cindy\",\"url\":\"cindy-media://blobs/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.gltf\"},{\"provider\":\"cindy\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_url\": \"cindy-media://blobs/a.png\", \"xdt_image_urls\": [\"cindy-media://blobs/a.png\", \"xdt-image://b.png\", 5, null, \"https://x/c.png\", \"cindy-media://blobs/d.png\"], \"_xdt_model_files\": [{\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/m1.GLB\", \"format\": \"\"}, {\"provider\": \"other\", \"url\": \"cindy-media://blobs/m.glb\"}, [1], null, \"s\", {\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/m2.glb\", \"format\": 7}, {\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/m3.glb\", \"format\": \"OBJ\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/a.png",
+     "modelFile": {
+      "provider": "cindy",
+      "url": "cindy-media://blobs/m1.GLB",
+      "format": "GLB"
+     }
+    },
+    {
+     "kind": "image",
+     "url": "xdt-image://b.png",
+     "modelFile": {
+      "provider": "cindy",
+      "url": "cindy-media://blobs/m3.glb",
+      "format": "OBJ"
+     }
+    },
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/d.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_url\": \"https://nope/a.png\", \"xdt_image_urls\": [\"cindy-media://blobs/z.png\"], \"_xdt_model_files\": [{\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/only.glb\"}], \"xdt_images_in_card\": true}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/z.png",
+     "modelFile": {
+      "provider": "cindy",
+      "url": "cindy-media://blobs/only.glb",
+      "format": "GLB"
+     },
+     "imageInCard": true
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_image_urls\": [\"cindy-media://blobs/z.png\"], \"xdt_images_in_card\": \"true\", \"_xdt_model_files\": {\"provider\": \"cindy\"}}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/z.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"_xdt_render_image\": false, \"xdt_image_url\": \"cindy-media://blobs/a.png\", \"xdt_video_url\": \"xdt-video://v.mp4\"}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"_xdt_render_image\": 0, \"xdt_image_url\": \"cindy-media://blobs/a.png\"}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/a.png"
+    }
+   ]
+  ],
+  [
+   [
+    "[\"xdt_image_url\", \"cindy-media://blobs/a.png\"]"
+   ],
+   []
+  ],
+  [
+   [
+    "\"xdt_image_url\""
+   ],
+   []
+  ],
+  [
+   [
+    "{\"note\": \"xdt_image_url\"}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_url\": \"cindy-media://a.png\""
+   ],
+   []
+  ],
+  [
+   [
+    "xdt_video_url"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_video_url\": \"cindy-media://blobs/v.mp4\", \"xdt_video_urls\": [\"xdt-video://w.mp4\", \"cindy-media://blobs/v.mp4\", \"xdt-image://no.mp4\", 3]}"
+   ],
+   [
+    {
+     "kind": "video",
+     "url": "cindy-media://blobs/v.mp4"
+    },
+    {
+     "kind": "video",
+     "url": "xdt-video://w.mp4"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_video_url\": 5, \"xdt_video_urls\": \"xdt-video://w.mp4\"}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\": null, \"_xdt_audio_tracks\": [{\"xdt_audio_url\": \"xdt-audio://local/?path=a\", \"cover_url\": \"https://c\", \"kind\": \"sound_effect\", \"title\": 1, \"tags\": \"t\", \"lyrics\": \"l\", \"duration_seconds\": \"9\", \"suno_id\": \"\"}]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "xdt-audio://local/?path=a",
+     "audioTrack": {
+      "kind": "sound_effect",
+      "audioUrl": "xdt-audio://local/?path=a",
+      "title": "",
+      "tags": "t",
+      "lyrics": "l",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\": [], \"_xdt_audio_tracks\": [{\"xdt_audio_url\": \"cindy-media://blobs/never.mp3\"}], \"xdt_audio_urls\": [\"cindy-media://blobs/u.mp3\", \"xdt-audio://u2\", \"cindy-media://blobs/u.mp3\", \"http://no\", 1], \"xdt_audio_in_card\": true}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/u.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/u.mp3",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     },
+     "audioInCard": true
+    },
+    {
+     "kind": "audio",
+     "url": "xdt-audio://u2",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "xdt-audio://u2",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     },
+     "audioInCard": true
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\": [{\"xdt_audio_url\": \"cindy-media://blobs/t.mp3\", \"cover_url\": \"xdt-image://c.png\", \"kind\": \"music\", \"title\": \"T\", \"tags\": \"a,b\", \"lyrics\": \"la\", \"duration_seconds\": 12.5, \"suno_id\": \"s1\"}, {\"xdt_audio_url\": \"https://no\"}, [1], null, {\"xdt_audio_url\": \"cindy-media://blobs/t.mp3\", \"title\": \"dup\"}, {\"xdt_audio_url\": \"cindy-media://blobs/t2.mp3\", \"cover_url\": \"cindy-media://blobs/c.png\", \"kind\": \"other\"}], \"xdt_audio_urls\": [\"cindy-media://blobs/ignored.mp3\"], \"xdt_audio_in_card\": true}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/t.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/t.mp3",
+      "coverUrl": "xdt-image://c.png",
+      "title": "T",
+      "tags": "a,b",
+      "lyrics": "la",
+      "durationSeconds": 12.5,
+      "sunoId": "s1"
+     },
+     "audioInCard": true
+    },
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/t2.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/t2.mp3",
+      "coverUrl": "cindy-media://blobs/c.png",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     },
+     "audioInCard": true
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\": \"x\", \"xdt_audio_urls\": [\"cindy-media://blobs/u.mp3\"]}"
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "cindy-media://blobs/u.mp3",
+     "audioTrack": {
+      "kind": "music",
+      "audioUrl": "cindy-media://blobs/u.mp3",
+      "title": "",
+      "tags": "",
+      "lyrics": "",
+      "durationSeconds": 0
+     }
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_tracks\": [{\"xdt_audio_url\": 5}], \"xdt_audio_urls\": {\"0\": \"cindy-media://blobs/u.mp3\"}}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_url\": \"cindy-media://blobs/same\", \"xdt_video_url\": \"cindy-media://blobs/same\", \"xdt_audio_urls\": [\"cindy-media://blobs/same\"]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/same"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_audio_url\": \"cindy-media://blobs/top.mp3\"}"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_urls\": [\"cindy-media://blobs/a.png\", \"cindy-media://blobs/b.png\", \"cindy-media://blobs/c.png\"], \"_xdt_model_files\": [{\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/İ.GLB\"}, {\"provider\": \"cindy\", \"url\": \"cindy-media://blobs/x.glb?v=1\"}, {\"provider\": \"cindy\", \"url\": \"CINDY-MEDIA://x.glb\"}]}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/a.png",
+     "modelFile": {
+      "provider": "cindy",
+      "url": "cindy-media://blobs/İ.GLB",
+      "format": "GLB"
+     }
+    },
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/b.png"
+    },
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/c.png"
+    }
+   ]
+  ],
+  [
+   [
+    " {\"xdt_image_url\": \"cindy-media://blobs/a.png\"}\n"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "cindy-media://blobs/a.png"
+    }
+   ]
+  ],
+  [
+   [
+    "{\"xdt_card_id\": \"c\", \"xdt_anchor_card_id\": \"a\"}"
+   ],
+   []
+  ],
+  [
+   [
+    "null xdt_image_url"
+   ],
+   []
+  ],
+  [
+   [
+    "{\"xdt_image_url\":\"cindy-media://a\",\"xdt_image_url\":\"xdt-image://b\"}"
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://b"
+    }
+   ]
+  ]
+ ],
+ "dedupeToolMediaByUrl": [
+  [
+   [
+    [
+     {
+      "kind": "image",
+      "url": "xdt-image://a.png",
+      "title": "first"
+     },
+     {
+      "kind": "image",
+      "url": ""
+     },
+     {
+      "kind": "image",
+      "url": "xdt-image://a.png",
+      "title": "dup"
+     },
+     {
+      "kind": "video",
+      "url": "xdt-video://v.mp4"
+     }
+    ]
+   ],
+   [
+    {
+     "kind": "image",
+     "url": "xdt-image://a.png"
+    },
+    {
+     "kind": "video",
+     "url": "xdt-video://v.mp4"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "kind": "audio",
+      "url": "a"
+     },
+     {
+      "kind": "video",
+      "url": "a"
+     },
+     {
+      "kind": "image",
+      "url": ""
+     },
+     {
+      "kind": "image",
+      "url": "b"
+     },
+     {
+      "kind": "image",
+      "url": "b"
+     }
+    ]
+   ],
+   [
+    {
+     "kind": "audio",
+     "url": "a"
+    },
+    {
+     "kind": "image",
+     "url": "b"
+    }
+   ]
+  ],
+  [
+   [
+    []
+   ],
+   []
+  ]
+ ],
+ "richAnswerMediaSources": [
+  [
+   [
+    "```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"n0\", \"kind\": \"image\", \"props\": {\"src\": \"HTTPſ://File.PNG\"}}\n{\"seq\": 2, \"op\": \"create\", \"id\": \"n1\", \"kind\": \"video\", \"props\": {\"src\": \"XDT-FILE://ſ\"}}\n{\"seq\": 3, \"op\": \"create\", \"id\": \"n2\", \"kind\": \"audio\", \"props\": {\"src\": \"cindy-media://K\"}}\n{\"seq\": 4, \"op\": \"create\", \"id\": \"n3\", \"kind\": \"image\", \"props\": {\"src\": \"ﬁle:///x\"}}\n{\"seq\": 5, \"op\": \"create\", \"id\": \"n4\", \"kind\": \"video\", \"props\": {\"src\": \"HTTPS://X/a.png\"}}\n{\"seq\": 6, \"op\": \"create\", \"id\": \"n5\", \"kind\": \"audio\", \"props\": {\"src\": \"javascript:alert(1)\"}}\n{\"seq\": 7, \"op\": \"create\", \"id\": \"n6\", \"kind\": \"image\", \"props\": {\"src\": \"C:\\\\a.png\"}}\n{\"seq\": 8, \"op\": \"create\", \"id\": \"n7\", \"kind\": \"video\", \"props\": {\"src\": \"c:/b.png\"}}\n{\"seq\": 9, \"op\": \"create\", \"id\": \"n8\", \"kind\": \"audio\", \"props\": {\"src\": \"a/b.png\"}}\n{\"seq\": 10, \"op\": \"create\", \"id\": \"n9\", \"kind\": \"image\", \"props\": {\"src\": \"  http://t/trim.png \\n\"}}\n{\"seq\": 11, \"op\": \"create\", \"id\": \"n10\", \"kind\": \"video\", \"props\": {\"src\": \"http://x/a\\nb\"}}\n{\"seq\": 12, \"op\": \"create\", \"id\": \"n11\", \"kind\": \"audio\", \"props\": {\"src\": \"data:image/png;base64,AA\"}}\n{\"seq\": 13, \"op\": \"create\", \"id\": \"n12\", \"kind\": \"image\", \"props\": {\"src\": \"xdt-image://i\"}}\n{\"seq\": 14, \"op\": \"create\", \"id\": \"n13\", \"kind\": \"video\", \"props\": {\"src\": \"XDT-File://f\"}}\n{\"seq\": 15, \"op\": \"create\", \"id\": \"n14\", \"kind\": \"audio\", \"props\": {\"src\": \"CINDY-REMOTE-MEDIA://r\"}}\n{\"seq\": 16, \"op\": \"create\", \"id\": \"n15\", \"kind\": \"image\", \"props\": {\"src\": \"cindy-media://m\"}}\n{\"seq\": 17, \"op\": \"create\", \"id\": \"n16\", \"kind\": \"video\", \"props\": {\"src\": \"mailto:x\"}}\n{\"seq\": 18, \"op\": \"create\", \"id\": \"n17\", \"kind\": \"audio\", \"props\": {\"src\": \"foo\"}}\n{\"seq\": 19, \"op\": \"create\", \"id\": \"n18\", \"kind\": \"image\", \"props\": {\"src\": \"http:/x\"}}\n{\"seq\": 20, \"op\": \"create\", \"id\": \"n19\", \"kind\": \"video\", \"props\": {\"src\": \"a:b\"}}\n{\"seq\": 21, \"op\": \"create\", \"id\": \"n20\", \"kind\": \"audio\", \"props\": {\"src\": \"1a:b\"}}\n{\"seq\": 22, \"op\": \"create\", \"id\": \"n21\", \"kind\": \"image\", \"props\": {\"src\": \"é:x\"}}\n{\"seq\": 23, \"op\": \"create\", \"id\": \"n22\", \"kind\": \"video\", \"props\": {\"src\": \"x_y:z\"}}\n{\"seq\": 24, \"op\": \"create\", \"id\": \"n23\", \"kind\": \"audio\", \"props\": {\"src\": \"file:///abs\"}}\n{\"seq\": 25, \"op\": \"create\", \"id\": \"n24\", \"kind\": \"image\", \"props\": {\"src\": \"FILE://abs\"}}\n{\"seq\": 26, \"op\": \"create\", \"id\": \"n25\", \"kind\": \"video\", \"props\": {\"src\": \"xdt-other://x\"}}\n{\"seq\": 27, \"op\": \"create\", \"id\": \"n26\", \"kind\": \"audio\", \"props\": {\"src\": \"\"}}\n{\"seq\": 28, \"op\": \"create\", \"id\": \"n27\", \"kind\": \"image\", \"props\": {\"src\": \" \"}}\n{\"seq\": 29, \"op\": \"create\", \"id\": \"n28\", \"kind\": \"video\", \"props\": {\"src\": \"x+y.z-w:q\"}}\n{\"seq\": 30, \"op\": \"create\", \"id\": \"n29\", \"kind\": \"audio\", \"props\": {\"src\": \"C:\"}}\n{\"seq\": 31, \"op\": \"create\", \"id\": \"n30\", \"kind\": \"image\", \"props\": {\"src\": \"c:\\\\\"}}\n{\"seq\": 32, \"op\": \"create\", \"id\": \"n31\", \"kind\": \"video\", \"props\": {\"src\": \"//host/x\"}}\n{\"seq\": 33, \"op\": \"create\", \"id\": \"n32\", \"kind\": \"audio\", \"props\": {\"src\": \"ftp://x\"}}\n{\"seq\": 34, \"op\": \"create\", \"id\": \"n33\", \"kind\": \"image\", \"props\": {\"src\": \"https:/x\"}}\n```"
+   ],
+   [
+    "HTTPſ://File.PNG",
+    "xdt-file://ſ",
+    "cindy-media://K",
+    "ﬁle:///x",
+    "https://X/a.png",
+    "C:\\a.png",
+    "c:/b.png",
+    "a/b.png",
+    "http://t/trim.png",
+    "xdt-image://i",
+    "xdt-file://f",
+    "cindy-remote-media://r",
+    "cindy-media://m",
+    "foo",
+    "1a:b",
+    "é:x",
+    "file:///abs",
+    "file://abs",
+    "c:\\",
+    "//host/x"
+   ]
+  ],
+  [
+   [
+    "```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"a\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/a.png\"}}\n{\"seq\": 2, \"op\": \"create\", \"id\": \"b\", \"kind\": \"text\", \"props\": {\"text\": \"t\", \"src\": \"https://x/text.png\"}}\n{\"seq\": 3, \"op\": \"create\", \"id\": \"c\", \"kind\": \"video\", \"props\": {\"src\": 5}}\n{\"seq\": 4, \"op\": \"create\", \"id\": \"d\", \"kind\": \"audio\", \"props\": {}}\n{\"seq\": 5, \"op\": \"create\", \"id\": \"e\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/a.png\"}}\n{\"seq\": 6, \"op\": \"create\", \"id\": \"f\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/gone.png\"}}\n{\"seq\": 7, \"op\": \"remove\", \"id\": \"f\"}\n{\"seq\": 8, \"op\": \"patch\", \"id\": \"a\", \"props\": {\"src\": \"https://x/patched.png\"}}\n```"
+   ],
+   [
+    "https://x/patched.png",
+    "https://x/a.png"
+   ]
+  ],
+  [
+   [
+    "before\n\n```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"a\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/1.png\"}}\n```\n\nmiddle\n\n```json\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"z\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/code.png\"}}\n```\n\n```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"a\", \"kind\": \"video\", \"props\": {\"src\": \"HTTP://x/2.mp4\"}}\n{\"seq\": 2, \"op\": \"create\", \"id\": \"b\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/1.png\"}}\n```"
+   ],
+   [
+    "https://x/1.png",
+    "http://x/2.mp4"
+   ]
+  ],
+  [
+   [
+    "plain ![x](https://x/md.png)"
+   ],
+   []
+  ],
+  [
+   [
+    ""
+   ],
+   []
+  ],
+  [
+   [
+    "```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"g\", \"kind\": \"stack\", \"props\": {}}\n{\"seq\": 2, \"op\": \"create\", \"id\": \"i\", \"kind\": \"image\", \"props\": {\"src\": \"rel.png\"}, \"parent\": \"g\"}\n```"
+   ],
+   [
+    "rel.png"
+   ]
+  ],
+  [
+   [
+    "````md\n```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"a\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/nested.png\"}}\n```\n````"
+   ],
+   []
+  ],
+  [
+   [
+    "```cindy-ui\n{\"version\": 1, \"seq\": 1, \"op\": \"create\", \"id\": \"a\", \"kind\": \"image\", \"props\": {\"src\": \"https://x/open.png\"}}"
+   ],
+   [
+    "https://x/open.png"
+   ]
+  ]
+ ],
+ "collectGeneratedFiles": [
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "mcp__cindy_docs__make_pptx",
+      "toolUseId": "ppt-1",
+      "toolInput": {
+       "outPath": "documents/roadmap.pptx",
+       "title": "产品路线图",
+       "theme": "navy",
+       "slides": [
+        {
+         "title": "封面",
+         "layout": "cover"
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "ppt-1",
+      "content": "{\"ok\":true,\"artifact\":{\"format\":\"pptx\",\"title\":\"产品路线图\",\"theme\":\"navy\",\"summary\":{\"kind\":\"slides\",\"value\":5}}}"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/documents/roadmap.pptx",
+     "name": "roadmap.pptx",
+     "source": "tool",
+     "artifact": {
+      "format": "pptx",
+      "title": "产品路线图",
+      "theme": "navy",
+      "summary": {
+       "kind": "slides",
+       "value": 5
+      },
+      "preview": {
+       "kind": "slide",
+       "title": "封面"
+      }
+     },
+     "artifactConfirmed": true
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolUseId": "w-fail",
+      "toolInput": {
+       "file_path": "a.md",
+       "content": "x"
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w-fail",
+      "content": "{\"ok\":false,\"errorCode\":\"FILE_EXISTS\"}"
+     }
+    ],
+    "/work"
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolUseId": "w1",
+      "toolInput": {
+       "file_path": "new.txt",
+       "content": "hi"
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w1",
+      "content": "ok"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolUseId": "d1",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.txt",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": "-hi"
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d1",
+      "content": "<tool_use_error>delete new.txt</tool_use_error>"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/new.txt",
+     "name": "new.txt",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "new.txt",
+       "content": "hi"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.txt",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": "-hi"
+        }
+       ]
+      }
+     }
+    ],
+    "/work"
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "new.txt",
+       "content": "old"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.txt",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": "-old"
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "new.txt",
+       "content": "new"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/new.txt",
+     "name": "new.txt",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "make_xlsx",
+      "toolUseId": "x1",
+      "toolInput": {
+       "outPath": "documents/progress.xlsx",
+       "sheets": [
+        {
+         "name": "旧表",
+         "header": [
+          "A"
+         ]
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "x1",
+      "content": "{\"ok\":true}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "make_xlsx",
+      "toolUseId": "x2",
+      "toolInput": {
+       "outPath": "documents/progress.xlsx",
+       "sheets": [
+        {
+         "name": "新表",
+         "header": [
+          "B"
+         ]
+        }
+       ]
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/documents/progress.xlsx",
+     "name": "progress.xlsx",
+     "source": "tool",
+     "artifact": {
+      "format": "xlsx",
+      "title": "旧表",
+      "summary": {
+       "kind": "sheets",
+       "value": 1
+      },
+      "preview": {
+       "kind": "sheet",
+       "rows": [
+        [
+         "A"
+        ]
+       ],
+       "hasHeader": true
+      }
+     },
+     "artifactConfirmed": true
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolUseId": "w1",
+      "toolInput": {
+       "file_path": "new.txt",
+       "content": "hi"
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w1",
+      "content": "ok"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolUseId": "d1",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.txt",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": "-hi"
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d1",
+      "content": "{\"ok\":false,\"status\":\"failed\"}"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/new.txt",
+     "name": "new.txt",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolUseId": "w1",
+      "toolInput": {
+       "file_path": "a.md",
+       "content": "x"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/a.md",
+     "name": "a.md",
+     "source": "tool",
+     "ready": false
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolUseId": "w1",
+      "toolInput": {
+       "file_path": "a.md",
+       "content": "x"
+      }
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w1",
+      "content": "ok"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/a.md",
+     "name": "a.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "report.md",
+       "content": "x"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "write",
+      "toolInput": {
+       "path": "data/out.csv",
+       "content": "y"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/report.md",
+     "name": "report.md",
+     "source": "tool"
+    },
+    {
+     "path": "/work/data/out.csv",
+     "name": "out.csv",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.txt",
+         "kind": {
+          "type": "add"
+         },
+         "diff": "+hi"
+        },
+        {
+         "path": "existing.txt",
+         "kind": {
+          "type": "update"
+         },
+         "diff": "-a\n+b"
+        }
+       ]
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/new.txt",
+     "name": "new.txt",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "a.ts",
+       "old_string": "a",
+       "new_string": "b"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Read",
+      "toolInput": {
+       "file_path": "b.ts"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Grep",
+      "toolInput": {
+       "pattern": "foo"
+      }
+     }
+    ],
+    "/work"
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "dup.md",
+       "content": "1"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "other.md",
+       "content": "2"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "dup.md",
+       "content": "3"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/dup.md",
+     "name": "dup.md",
+     "source": "tool"
+    },
+    {
+     "path": "/work/other.md",
+     "name": "other.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:/work/A.md",
+       "content": "1"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c:/work/a.md",
+       "content": "2"
+      }
+     }
+    ],
+    "C:/work"
+   ],
+   [
+    {
+     "path": "C:\\work\\A.md",
+     "name": "A.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "write",
+      "toolInput": {
+       "path": "/w/A.txt",
+       "content": "1"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "write",
+      "toolInput": {
+       "path": "/w/a.txt",
+       "content": "2"
+      }
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/A.txt",
+     "name": "A.txt",
+     "source": "tool"
+    },
+    {
+     "path": "/w/a.txt",
+     "name": "a.txt",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "assistant",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "no.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "yes.md",
+       "content": "x"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/yes.md",
+     "name": "yes.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python -c \"\nimport openpyxl\nwb = openpyxl.Workbook()\nwb.save(r'C:\\Users\\Admin\\Documents\\测试表格.xlsx')\nprint('done')\n\"\n"
+      }
+     }
+    ],
+    "C:/work"
+   ],
+   [
+    {
+     "path": "C:\\Users\\Admin\\Documents\\测试表格.xlsx",
+     "name": "测试表格.xlsx",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:\\work\\report.docx",
+       "content": "x"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "open 'C:/work/report.docx'"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "save 'C:/work/输出/表格.xlsx'"
+      }
+     }
+    ],
+    "C:\\work"
+   ],
+   [
+    {
+     "path": "C:\\work\\report.docx",
+     "name": "report.docx",
+     "source": "tool"
+    },
+    {
+     "path": "C:\\work\\输出\\表格.xlsx",
+     "name": "表格.xlsx",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "node -e \"save('C:\\\\Users\\\\U\\\\pr-watch\\\\registry.json')\""
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "node -e \"save('C:/Users/U/pr-watch/registry.json')\""
+      }
+     }
+    ],
+    "C:\\Users\\U\\pr-watch"
+   ],
+   [
+    {
+     "path": "C:\\Users\\U\\pr-watch\\registry.json",
+     "name": "registry.json",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "copy out '\\\\server\\share\\\\dir\\report.csv'"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "open '\\\\server\\share\\dir\\report.csv'"
+      }
+     }
+    ],
+    "C:\\work"
+   ],
+   [
+    {
+     "path": "\\\\server\\share\\\\dir\\report.csv",
+     "name": "report.csv",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "pnpm vitest run C:/work/src/openWithApps.test.ts"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "C:/work/src/openWithApps.test.ts",
+       "old_string": "a",
+       "new_string": "b"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python gen.py > 'C:/work/out/report.csv'"
+      }
+     }
+    ],
+    "C:/work"
+   ],
+   [
+    {
+     "path": "C:\\work\\out\\report.csv",
+     "name": "report.csv",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "ls C:/work/report.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:/work/report.md",
+       "content": "x"
+      }
+     }
+    ],
+    "C:/work"
+   ],
+   [
+    {
+     "path": "C:\\work\\report.md",
+     "name": "report.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "src/x.ts"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "vitest run src/x.ts > src/x.ts && python gen.py > out/report.csv"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "/work/out/report.csv",
+     "name": "report.csv",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "out/a.csv"
+      },
+      "toolUseId": "w1"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python gen.py > out/a.csv"
+      },
+      "toolUseId": "b1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "b1",
+      "content": "ok"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "b.md"
+      },
+      "toolUseId": "w2"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/out/a.csv",
+     "name": "a.csv",
+     "source": "tool"
+    },
+    {
+     "path": "/work/b.md",
+     "name": "b.md",
+     "source": "tool",
+     "ready": false
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python gen.py > out/a.csv"
+      },
+      "toolUseId": "b1"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/work/out/a.csv"
+      },
+      "toolUseId": "w1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w1",
+      "content": "done"
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/out/a.csv",
+     "name": "a.csv",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python gen.py > out/a.csv"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/work/out/a.csv"
+      }
+     }
+    ],
+    "/work/"
+   ],
+   [
+    {
+     "path": "/work/out/a.csv",
+     "name": "a.csv",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "a.md"
+      },
+      "toolUseId": "w1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w1",
+      "content": "{\"ok\":false}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "b.md"
+      },
+      "toolUseId": "w2"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w2",
+      "content": "<tool_use_error>no</tool_use_error>"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c.md"
+      },
+      "toolUseId": "w3"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w3",
+      "content": "{\"status\":\"Failed\"}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "d.md"
+      },
+      "toolUseId": "w4"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w4",
+      "content": {
+       "ok": false
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "e.md"
+      },
+      "toolUseId": "w5"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "w5",
+      "content": ""
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/d.md",
+     "name": "d.md",
+     "source": "tool",
+     "ready": false
+    },
+    {
+     "path": "/work/e.md",
+     "name": "e.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "out/x.json"
+      },
+      "toolUseId": "e1"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python g.py > out/x.json"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "out/y.json"
+      },
+      "toolUseId": "e2"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "e2",
+      "content": "{\"success\":false}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python g.py > out/y.json"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "MultiEdit",
+      "toolInput": {
+       "path": "out/z.json"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python g.py > out/z.json"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/out/x.json",
+     "name": "x.json",
+     "source": "command"
+    },
+    {
+     "path": "/work/out/y.json",
+     "name": "y.json",
+     "source": "command"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "new.rs",
+         "kind": {
+          "type": "add"
+         },
+         "diff": ""
+        },
+        {
+         "path": "old.rs",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": ""
+        },
+        {
+         "path": "up.rs",
+         "kind": {
+          "type": "update"
+         },
+         "diff": ""
+        },
+        {
+         "path": "from.rs",
+         "kind": {
+          "type": "update",
+          "move_path": "to.rs"
+         },
+         "diff": ""
+        },
+        {
+         "path": "odd.rs",
+         "kind": {
+          "type": "weird"
+         },
+         "diff": ""
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "exec",
+      "toolInput": {
+       "command": "cat x > up.rs; cat x > odd.rs; cat y > fresh.txt; cat z > new.rs"
+      }
+     }
+    ],
+    "/repo"
+   ],
+   [
+    {
+     "path": "/repo/new.rs",
+     "name": "new.rs",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "gone.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "moved.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "kept.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "pend.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "gone.md",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": ""
+        },
+        {
+         "path": "moved.md",
+         "kind": {
+          "type": "update",
+          "movePath": "x.md"
+         },
+         "diff": ""
+        }
+       ]
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "kept.md",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": ""
+        }
+       ]
+      },
+      "toolUseId": "f1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "f1",
+      "content": "{\"ok\":false}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "pend.md",
+         "kind": {
+          "type": "delete"
+         },
+         "diff": ""
+        }
+       ]
+      },
+      "toolUseId": "f2"
+     }
+    ],
+    "/repo"
+   ],
+   [
+    {
+     "path": "/repo/kept.md",
+     "name": "kept.md",
+     "source": "tool"
+    },
+    {
+     "path": "/repo/pend.md",
+     "name": "pend.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:/x/A.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c:\\x\\a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:\\\\x\\\\\\b.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c:/x//B.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\\\server\\share\\a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\\\\\SERVER\\\\share/A.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\single\\a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "C:/Ä.MD"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c:/ä.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/posix/A.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/posix/a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/posix/with\\Back.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/posix/with\\back.md"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "C:\\x\\A.md",
+     "name": "A.md",
+     "source": "tool"
+    },
+    {
+     "path": "C:\\x\\b.md",
+     "name": "b.md",
+     "source": "tool"
+    },
+    {
+     "path": "\\\\server\\share\\a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "/work/\\single\\a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "C:\\Ä.MD",
+     "name": "Ä.MD",
+     "source": "tool"
+    },
+    {
+     "path": "/posix/A.md",
+     "name": "A.md",
+     "source": "tool"
+    },
+    {
+     "path": "/posix/a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "/posix/with\\Back.md",
+     "name": "Back.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "sub/a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "SUB\\A.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "/abs/b.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "file:///abs/c%20d.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "D:x.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "dir/"
+      }
+     }
+    ],
+    "C:\\proj\\"
+   ],
+   [
+    {
+     "path": "C:\\proj\\sub\\a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "/abs/b.md",
+     "name": "b.md",
+     "source": "tool"
+    },
+    {
+     "path": "/abs/c d.md",
+     "name": "c d.md",
+     "source": "tool"
+    },
+    {
+     "path": "C:\\proj\\D:x.md",
+     "name": "D:x.md",
+     "source": "tool"
+    },
+    {
+     "path": "C:\\proj\\dir\\",
+     "name": "C:\\proj\\dir\\",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "rel/a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "echo > rel/b.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "rel/c.docx"
+      }
+     }
+    ],
+    ""
+   ],
+   [
+    {
+     "path": "rel/a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "rel/b.md",
+     "name": "b.md",
+     "source": "command"
+    },
+    {
+     "path": "rel/c.docx",
+     "name": "c.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "tmp/design.html"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__cindy_docs__render_pdf",
+      "toolInput": {
+       "htmlPath": "tmp/design.html",
+       "outPath": "documents/report.pdf",
+       "html": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "toolUseId": "p1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "p1",
+      "content": "{\"ok\":true,\"bytes\":1234}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "keep.html"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__x__read",
+      "toolInput": {
+       "path": "keep.html"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__x__copy",
+      "toolInput": {
+       "out_path": "copy.bin",
+       "from": " /work/documents/report.pdf ",
+       "same": "copy.bin"
+      }
+     }
+    ],
+    "/work"
+   ],
+   [
+    {
+     "path": "/work/keep.html",
+     "name": "keep.html",
+     "source": "tool"
+    },
+    {
+     "path": "/work/copy.bin",
+     "name": "copy.bin",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "First"
+      },
+      "toolUseId": "d1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d1",
+      "content": "{\"ok\":true,\"bytes\":10}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "Second"
+      },
+      "toolUseId": "d2"
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/a.docx",
+     "name": "a.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx",
+      "title": "First",
+      "summary": {
+       "kind": "bytes",
+       "value": 10
+      }
+     },
+     "artifactConfirmed": true
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "First"
+      },
+      "toolUseId": "d1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d1",
+      "content": "{\"ok\":true,\"bytes\":10}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "Second"
+      },
+      "toolUseId": "d2"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d2",
+      "content": "{\"ok\":true,\"status\":\"error\"}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "b.docx"
+      },
+      "toolUseId": "d3"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d3",
+      "content": "{\"ok\":true,\"status\":\"error\"}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "c.docx"
+      },
+      "toolUseId": "d4"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d4",
+      "content": "not json"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "d.docx"
+      },
+      "toolUseId": "d5"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "e.docx"
+      }
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/a.docx",
+     "name": "a.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx",
+      "title": "First",
+      "summary": {
+       "kind": "bytes",
+       "value": 10
+      }
+     },
+     "artifactConfirmed": true
+    },
+    {
+     "path": "/w/b.docx",
+     "name": "b.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx"
+     },
+     "artifactConfirmed": true
+    },
+    {
+     "path": "/w/c.docx",
+     "name": "c.docx",
+     "source": "tool"
+    },
+    {
+     "path": "/w/d.docx",
+     "name": "d.docx",
+     "source": "tool",
+     "ready": false
+    },
+    {
+     "path": "/w/e.docx",
+     "name": "e.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "Old"
+      },
+      "toolUseId": "d1"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d1",
+      "content": "{\"ok\":true}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": "a.docx",
+       "title": "New"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_pptx",
+      "toolInput": {
+       "outPath": " pad.pptx ",
+       "slides": []
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_xlsx",
+      "toolInput": {
+       "outPath": 5
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_xlsx",
+      "toolInput": {
+       "outPath": ""
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_xlsx",
+      "toolInput": [
+       "outPath"
+      ]
+     },
+     {
+      "role": "tool_use",
+      "toolName": "make_docx",
+      "toolInput": {
+       "outPath": "plain.docx"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "output_path": "snake.docx"
+      }
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/a.docx",
+     "name": "a.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx",
+      "title": "New"
+     },
+     "artifactConfirmed": true
+    },
+    {
+     "path": "/w/pad.pptx",
+     "name": "pad.pptx",
+     "source": "tool"
+    },
+    {
+     "path": "/w/ pad.pptx ",
+     "name": " pad.pptx ",
+     "source": "tool",
+     "artifact": {
+      "format": "pptx",
+      "summary": {
+       "kind": "slides",
+       "value": 0
+      },
+      "preview": {
+       "kind": "slide"
+      }
+     }
+    },
+    {
+     "path": "/w/plain.docx",
+     "name": "plain.docx",
+     "source": "tool",
+     "artifact": {
+      "format": "docx"
+     }
+    },
+    {
+     "path": "/w/snake.docx",
+     "name": "snake.docx",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "assistant",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "no.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolInput": {
+       "file_path": "no2.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "",
+      "toolInput": {
+       "file_path": "no3.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": null
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "path": "yes.md"
+      }
+     },
+     {
+      "role": "tool_result",
+      "content": "x"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "write",
+      "toolInput": {
+       "file_path": "last.md"
+      },
+      "toolUseId": "dup"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "dup",
+      "content": "{\"ok\":false}"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "dup",
+      "content": "fine"
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/yes.md",
+     "name": "yes.md",
+     "source": "tool"
+    },
+    {
+     "path": "/w/last.md",
+     "name": "last.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [],
+    "/w"
+   ],
+   []
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": " a.docx ",
+       "title": "One"
+      },
+      "toolUseId": "d1"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": " b.docx "
+      },
+      "toolUseId": "d0"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "mcp__d__make_docx",
+      "toolInput": {
+       "outPath": " a.docx ",
+       "title": "Two"
+      },
+      "toolUseId": "d2"
+     },
+     {
+      "role": "tool_result",
+      "toolUseId": "d2",
+      "content": "{\"ok\":true}"
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/a.docx",
+     "name": "a.docx",
+     "source": "tool"
+    },
+    {
+     "path": "/w/ a.docx ",
+     "name": " a.docx ",
+     "source": "tool",
+     "artifact": {
+      "format": "docx",
+      "title": "Two"
+     },
+     "artifactConfirmed": true
+    },
+    {
+     "path": "/w/b.docx",
+     "name": "b.docx",
+     "source": "tool",
+     "ready": false
+    },
+    {
+     "path": "/w/ b.docx ",
+     "name": " b.docx ",
+     "source": "tool",
+     "ready": false,
+     "artifact": {
+      "format": "docx"
+     }
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Edit",
+      "toolInput": {
+       "file_path": "out/p.json"
+      },
+      "toolUseId": "e1"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python g.py > out/p.json"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python g.py > out/new.json"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "other.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "file_change",
+      "toolInput": {
+       "changes": [
+        {
+         "path": "out/new.json",
+         "kind": {
+          "type": "add"
+         },
+         "diff": ""
+        }
+       ]
+      }
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/out/p.json",
+     "name": "p.json",
+     "source": "command"
+    },
+    {
+     "path": "/w/out/new.json",
+     "name": "new.json",
+     "source": "tool"
+    },
+    {
+     "path": "/w/other.md",
+     "name": "other.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "self.md"
+      },
+      "toolUseId": "w1",
+      "content": "{\"ok\":false}"
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "self2.md"
+      },
+      "toolUseId": "w2",
+      "content": "fine"
+     }
+    ],
+    "/w"
+   ],
+   [
+    {
+     "path": "/w/self.md",
+     "name": "self.md",
+     "source": "tool",
+     "ready": false
+    },
+    {
+     "path": "/w/self2.md",
+     "name": "self2.md",
+     "source": "tool",
+     "ready": false
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\x\\a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\\\x\\a.md"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "\\\\\\X\\\\A.md"
+      }
+     }
+    ],
+    ""
+   ],
+   [
+    {
+     "path": "\\x\\a.md",
+     "name": "a.md",
+     "source": "tool"
+    },
+    {
+     "path": "\\\\x\\a.md",
+     "name": "a.md",
+     "source": "tool"
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "role": "tool_use",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "python make.py --output C:\\\\out\\\\Report.XLSX"
+      }
+     },
+     {
+      "role": "tool_use",
+      "toolName": "Write",
+      "toolInput": {
+       "file_path": "c:/out/report.xlsx"
+      }
+     }
+    ],
+    "C:\\proj"
+   ],
+   [
+    {
+     "path": "C:\\out\\Report.XLSX",
+     "name": "Report.XLSX",
+     "source": "tool"
+    }
+   ]
+  ]
+ ],
+ "extractDocumentArtifactMetadata": [
+  [
+   [
+    "make_xlsx",
+    {
+     "outPath": "documents/progress.xlsx",
+     "sheets": [
+      {
+       "name": "交付进度表",
+       "header": [
+        "项目",
+        "状态",
+        "完成率"
+       ],
+       "rows": [
+        [
+         "文档工坊",
+         "进行中",
+         0.82
+        ],
+        [
+         "作品卡",
+         "已完成",
+         {
+          "formula": "1",
+          "result": "100%"
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "title": "交付进度表",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       "项目",
+       "状态",
+       "完成率"
+      ],
+      [
+       "文档工坊",
+       "进行中",
+       "0.82"
+      ],
+      [
+       "作品卡",
+       "已完成",
+       "100%"
+      ]
+     ],
+     "hasHeader": true
+    }
+   }
+  ],
+  [
+   [
+    "mcp:cindy_docs:make_docx",
+    {
+     "outPath": "documents/report.docx",
+     "title": "季度报告",
+     "subtitle": "内部版",
+     "theme": "light"
+    }
+   ],
+   {
+    "format": "docx",
+    "title": "季度报告",
+    "subtitle": "内部版",
+    "theme": "light"
+   }
+  ],
+  [
+   [
+    "render_pdf",
+    {
+     "outPath": "documents/report.pdf",
+     "html": "<h1>报告</h1>"
+    },
+    "{\"ok\":true,\"bytes\":1536}"
+   ],
+   {
+    "format": "pdf",
+    "summary": {
+     "kind": "bytes",
+     "value": 1536
+    }
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "outPath": "documents/report.docx",
+     "markdown": "# 报告"
+    },
+    "{\"ok\":true,\"artifact\":{\"format\":\"docx\",\"summary\":{\"kind\":\"bytes\",\"value\":2048}}}"
+   ],
+   {
+    "format": "docx",
+    "summary": {
+     "kind": "bytes",
+     "value": 2048
+    }
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "outPath": "documents/report.docx",
+     "title": "季度报告",
+     "theme": "light"
+    },
+    "{\"ok\":false,\"errorCode\":\"FILE_EXISTS\"}"
+   ],
+   null
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "outPath": "documents/report.docx",
+     "title": "季度报告",
+     "theme": "light"
+    },
+    "not-json"
+   ],
+   null
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "outPath": "documents/report.docx",
+     "title": "季度报告",
+     "theme": "light"
+    }
+   ],
+   {
+    "format": "docx",
+    "title": "季度报告",
+    "theme": "light"
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "title": " T "
+    }
+   ],
+   {
+    "format": "docx",
+    "title": "T"
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "title": "in",
+     "subtitle": "in"
+    },
+    "{\"ok\":true,\"title\":\"res\",\"subtitle\":\"res\",\"theme\":\"dark\",\"artifact\":{\"title\":\"art\",\"theme\":\"navy\"}}"
+   ],
+   {
+    "format": "docx",
+    "title": "art",
+    "subtitle": "res",
+    "theme": "navy"
+   }
+  ],
+  [
+   [
+    "mcp:x:render_pdf",
+    {
+     "title": "T"
+    },
+    "{\"ok\":true,\"bytes\":99,\"summary\":{\"kind\":\"pages\",\"value\":3}}"
+   ],
+   {
+    "format": "pdf",
+    "title": "T",
+    "summary": {
+     "kind": "pages",
+     "value": 3
+    }
+   }
+  ],
+  [
+   [
+    "mcp__a__b__make_xlsx",
+    {
+     "sheets": [
+      {}
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    }
+   }
+  ],
+  [
+   [
+    "x__make_pptx",
+    {
+     "slides": [
+      {
+       "title": " S ",
+       "subtitle": " U "
+      },
+      {}
+     ]
+    }
+   ],
+   {
+    "format": "pptx",
+    "title": "S",
+    "summary": {
+     "kind": "slides",
+     "value": 2
+    },
+    "preview": {
+     "kind": "slide",
+     "title": "S",
+     "subtitle": "U"
+    }
+   }
+  ],
+  [
+   [
+    "make_pptxx",
+    {}
+   ],
+   null
+  ],
+  [
+   [
+    "mcp__make_pptx",
+    {
+     "slides": "no"
+    }
+   ],
+   {
+    "format": "pptx",
+    "preview": {
+     "kind": "slide"
+    }
+   }
+  ],
+  [
+   [
+    "Write",
+    {
+     "outPath": "a.docx"
+    }
+   ],
+   null
+  ],
+  [
+   [
+    "make_docx",
+    null
+   ],
+   {
+    "format": "docx"
+   }
+  ],
+  [
+   [
+    "make_docx",
+    [
+     1
+    ]
+   ],
+   {
+    "format": "docx"
+   }
+  ],
+  [
+   [
+    "render_pdf",
+    {},
+    ""
+   ],
+   null
+  ],
+  [
+   [
+    "render_pdf",
+    {},
+    "[]"
+   ],
+   null
+  ],
+  [
+   [
+    "render_pdf",
+    {},
+    "{\"ok\":1}"
+   ],
+   null
+  ],
+  [
+   [
+    "render_pdf",
+    {},
+    "{\"ok\":false}"
+   ],
+   null
+  ],
+  [
+   [
+    "render_pdf",
+    {
+     "theme": "navy",
+     "cover": true,
+     "subtitle": "in"
+    },
+    "{\"ok\":true,\"theme\":\"pink\",\"artifact\":{\"theme\":\" \",\"cover\":\"yes\",\"title\":\"  \",\"subtitle\":\"art\"},\"title\":\"res\",\"bytes\":1e999}"
+   ],
+   {
+    "format": "pdf",
+    "title": "res",
+    "subtitle": "art",
+    "cover": true
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {
+     "theme": "dark",
+     "cover": false
+    },
+    "{\"ok\":true,\"artifact\":{\"theme\":\"light\",\"cover\":true,\"summary\":{\"kind\":\"bytes\",\"value\":\"7\"}},\"summary\":{\"kind\":\"rows\",\"value\":2.5},\"bytes\":8}"
+   ],
+   {
+    "format": "docx",
+    "theme": "light",
+    "cover": true,
+    "summary": {
+     "kind": "bytes",
+     "value": 8
+    }
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {},
+    "{\"ok\":true,\"artifact\":[1],\"summary\":{\"kind\":\"words\",\"value\":2},\"bytes\":\"8\"}"
+   ],
+   {
+    "format": "docx"
+   }
+  ],
+  [
+   [
+    "make_docx",
+    {},
+    "{\"ok\":true,\"summary\":{\"kind\":\"pages\",\"value\":1e999},\"bytes\":0}"
+   ],
+   {
+    "format": "docx",
+    "summary": {
+     "kind": "bytes",
+     "value": 0
+    }
+   }
+  ],
+  [
+   [
+    "make_pptx",
+    {
+     "slides": [
+      null,
+      {
+       "title": "second"
+      }
+     ]
+    },
+    "{\"ok\":true}"
+   ],
+   {
+    "format": "pptx",
+    "summary": {
+     "kind": "slides",
+     "value": 2
+    },
+    "preview": {
+     "kind": "slide"
+    }
+   }
+  ],
+  [
+   [
+    "make_pptx",
+    {
+     "slides": []
+    }
+   ],
+   {
+    "format": "pptx",
+    "summary": {
+     "kind": "slides",
+     "value": 0
+    },
+    "preview": {
+     "kind": "slide"
+    }
+   }
+  ],
+  [
+   [
+    "make_pptx",
+    {
+     "slides": [
+      {
+       "title": 5
+      }
+     ]
+    },
+    "{\"ok\":true,\"artifact\":{\"summary\":{\"kind\":\"slides\",\"value\":9}}}"
+   ],
+   {
+    "format": "pptx",
+    "summary": {
+     "kind": "slides",
+     "value": 9
+    },
+    "preview": {
+     "kind": "slide"
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "rows": [
+        [
+         1,
+         2,
+         3,
+         4
+        ],
+        "no",
+        [
+         true,
+         null,
+         0
+        ],
+        [
+         1e+21,
+         0.30000000000000004,
+         "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx😀tail"
+        ],
+        [
+         "fifth"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       "1",
+       "2",
+       "3"
+      ],
+      [
+       "true",
+       "",
+       "0"
+      ],
+      [
+       "1e+21",
+       "0.30000000000000004",
+       "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx�"
+      ]
+     ],
+     "hasHeader": false
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "header": [
+        "h1",
+        {
+         "result": {
+          "text": 5
+         }
+        },
+        {
+         "text": null,
+         "result": "r"
+        },
+        "h4"
+       ],
+       "rows": [
+        [
+         "a"
+        ],
+        [
+         "b"
+        ],
+        [
+         "c"
+        ],
+        [
+         "d"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       "h1",
+       "5",
+       "r"
+      ],
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "c"
+      ]
+     ],
+     "hasHeader": true
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "header": [],
+       "rows": [
+        [
+         {
+          "other": 1
+         },
+         [
+          1
+         ],
+         {
+          "text": {
+           "result": false
+          }
+         }
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       "",
+       "",
+       "false"
+      ]
+     ],
+     "hasHeader": false
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "header": "nope"
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      "s"
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "name": " Named ",
+       "rows": []
+      },
+      {}
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "title": "Named",
+    "summary": {
+     "kind": "sheets",
+     "value": 2
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "header": [
+        null
+       ],
+       "rows": []
+      }
+     ]
+    },
+    "{\"ok\":true,\"title\":\"R\"}"
+   ],
+   {
+    "format": "xlsx",
+    "title": "R",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       ""
+      ]
+     ],
+     "hasHeader": true
+    }
+   }
+  ],
+  [
+   [
+    "make_xlsx",
+    {
+     "sheets": [
+      {
+       "rows": [
+        [
+         "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx😀z"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   {
+    "format": "xlsx",
+    "summary": {
+     "kind": "sheets",
+     "value": 1
+    },
+    "preview": {
+     "kind": "sheet",
+     "rows": [
+      [
+       "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx�"
+      ]
+     ],
+     "hasHeader": false
+    }
+   }
+  ]
+ ],
+ "isExplicitFailedToolResult": [
+  [
+   [
+    "{\"ok\":false}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"success\":false}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"status\":\"error\"}"
+   ],
+   true
+  ],
+  [
+   [
+    "<tool_use_error>denied</tool_use_error>"
+   ],
+   true
+  ],
+  [
+   [
+    "Wrote a.md"
+   ],
+   false
+  ],
+  [
+   [
+    "{\"ok\":true}"
+   ],
+   false
+  ],
+  [
+   [
+    null
+   ],
+   false
+  ],
+  [
+   [
+    "{\"status\":\"FAILED\"}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"status\":\"Failure\"}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"status\":5}"
+   ],
+   false
+  ],
+  [
+   [
+    "{\"ok\":0}"
+   ],
+   false
+  ],
+  [
+   [
+    "[{\"ok\":false}]"
+   ],
+   false
+  ],
+  [
+   [
+    ""
+   ],
+   false
+  ],
+  [
+   [
+    "x <tool_use_error> y"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"ok\":null,\"success\":false}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"status\":\"errors\"}"
+   ],
+   false
+  ],
+  [
+   [
+    "{\"ok\":true,\"status\":\"error\"}"
+   ],
+   true
+  ],
+  [
+   [
+    "{\"ok\":false"
+   ],
+   false
+  ],
+  [
+   [
+    "false"
+   ],
+   false
+  ]
+ ],
+ "resolveLocalPath": [
+  [
+   [
+    "/E:",
+    "C:/repo"
+   ],
+   "E:/"
+  ],
+  [
+   [
+    "/E:",
+    "/home/user"
+   ],
+   "/E:"
+  ],
+  [
+   [
+    "/E:/demo",
+    "E:/repo"
+   ],
+   "E:/demo"
+  ],
+  [
+   [
+    "/E:\\demo\\a.ts",
+    "C:\\repo"
+   ],
+   "E:\\demo\\a.ts"
+  ],
+  [
+   [
+    "/E:/demo",
+    "\\\\server\\share"
+   ],
+   "E:/demo"
+  ],
+  [
+   [
+    "/E:/demo",
+    "//server/share"
+   ],
+   "E:/demo"
+  ],
+  [
+   [
+    "/E:/demo",
+    "/home/user"
+   ],
+   "/E:/demo"
+  ],
+  [
+   [
+    "/E:/demo",
+    ""
+   ],
+   "/E:/demo"
+  ],
+  [
+   [
+    "/home/a.ts",
+    "C:/repo"
+   ],
+   "/home/a.ts"
+  ],
+  [
+   [
+    "//server/share/a.ts",
+    "C:/repo"
+   ],
+   "//server/share/a.ts"
+  ],
+  [
+   [
+    "//E:/demo",
+    "C:/repo"
+   ],
+   "//E:/demo"
+  ],
+  [
+   [
+    "/d:/docs/app.tsx",
+    "C:/repo"
+   ],
+   "d:/docs/app.tsx"
+  ],
+  [
+   [
+    "/abs/x.tsx",
+    "C:\\proj"
+   ],
+   "/abs/x.tsx"
+  ],
+  [
+   [
+    "C:\\x\\a.tsx",
+    "/cwd"
+   ],
+   "C:\\x\\a.tsx"
+  ],
+  [
+   [
+    "src/App.tsx",
+    "C:\\proj"
+   ],
+   "C:\\proj\\src\\App.tsx"
+  ],
+  [
+   [
+    "src/App.tsx",
+    "/home/user"
+   ],
+   "/home/user/src/App.tsx"
+  ],
+  [
+   [
+    "file:///C:/x.png",
+    "/cwd"
+   ],
+   "C:/x.png"
+  ],
+  [
+   [
+    "file:///abs/x.png",
+    "/cwd"
+   ],
+   "/abs/x.png"
+  ],
+  [
+   [
+    "file:///abs/with%20space.png",
+    "/cwd"
+   ],
+   "/abs/with space.png"
+  ],
+  [
+   [
+    "file:///abs/100%done.md",
+    "/cwd"
+   ],
+   "/abs/100%done.md"
+  ],
+  [
+   [
+    "file:///C:/x/%APPDATA%/a.txt",
+    "/cwd"
+   ],
+   "C:/x/%APPDATA%/a.txt"
+  ],
+  [
+   [
+    "a.txt",
+    "/home/user/"
+   ],
+   "/home/user/a.txt"
+  ],
+  [
+   [
+    "a.txt",
+    "C:\\proj\\"
+   ],
+   "C:\\proj\\a.txt"
+  ],
+  [
+   [
+    "\\\\server\\share\\a.ts",
+    "C:\\proj"
+   ],
+   "\\\\server\\share\\a.ts"
+  ],
+  [
+   [
+    "/C:",
+    "C:\\proj"
+   ],
+   "C:/"
+  ],
+  [
+   [
+    "/C:/x",
+    "/posix"
+   ],
+   "/C:/x"
+  ],
+  [
+   [
+    "/c:\\x",
+    "//server/share"
+   ],
+   "c:\\x"
+  ],
+  [
+   [
+    "a\\b",
+    "//server/share/"
+   ],
+   "//server/share/a\\b"
+  ],
+  [
+   [
+    "src/a.ts",
+    "C:/proj"
+   ],
+   "C:/proj/src/a.ts"
+  ],
+  [
+   [
+    "src/a.ts",
+    "C:/proj\\"
+   ],
+   "C:/proj\\src\\a.ts"
+  ],
+  [
+   [
+    "file://%E0%A4%A",
+    "/cwd"
+   ],
+   "%E0%A4%A"
+  ],
+  [
+   [
+    "file://C:/x",
+    "/cwd"
+   ],
+   "C:/x"
+  ],
+  [
+   [
+    "file:///c:",
+    "/cwd"
+   ],
+   "c:/"
+  ],
+  [
+   [
+    "file:///a%2Fb%E4%B8%AD",
+    "/cwd"
+   ],
+   "/a/b中"
+  ],
+  [
+   [
+    "a.txt",
+    "/home//\\/"
+   ],
+   "/home\\a.txt"
+  ],
+  [
+   [
+    "a\\b.txt",
+    "/home"
+   ],
+   "/home/a\\b.txt"
+  ],
+  [
+   [
+    "",
+    "/home"
+   ],
+   "/home/"
+  ],
+  [
+   [
+    "x",
+    ""
+   ],
+   "/x"
+  ],
+  [
+   [
+    "/C:x",
+    "C:\\p"
+   ],
+   "/C:x"
+  ],
+  [
+   [
+    "\\\\srv\\a",
+    "/home"
+   ],
+   "\\\\srv\\a"
+  ],
+  [
+   [
+    "\\one",
+    "/home"
+   ],
+   "/home/\\one"
+  ],
+  [
+   [
+    "C:a",
+    "/home"
+   ],
+   "/home/C:a"
+  ],
+  [
+   [
+    "file://",
+    "/cwd"
+   ],
+   ""
+  ],
+  [
+   [
+    "FILE:///x",
+    "/cwd"
+   ],
+   "/cwd/FILE:///x"
+  ],
+  [
+   [
+    "/1:/x",
+    "C:\\p"
+   ],
+   "/1:/x"
+  ]
+ ],
+ "resolveToolFilePath": [
+  [
+   [
+    "/E:/demo/a.ts",
+    "E:/repo"
+   ],
+   "/E:/demo/a.ts"
+  ],
+  [
+   [
+    "packages\\maker-core\\src\\env-builder.ts",
+    "E:\\github_code\\cindy"
+   ],
+   "E:\\github_code\\cindy\\packages\\maker-core\\src\\env-builder.ts"
+  ],
+  [
+   [
+    "src/a.ts",
+    "/home/user/proj"
+   ],
+   "/home/user/proj/src/a.ts"
+  ],
+  [
+   [
+    "packages/maker-core/a.ts",
+    "E:\\repo"
+   ],
+   "E:\\repo\\packages\\maker-core\\a.ts"
+  ],
+  [
+   [
+    "/abs/x.ts",
+    "C:\\proj"
+   ],
+   "/abs/x.ts"
+  ],
+  [
+   [
+    "C:\\x\\a.ts",
+    "/cwd"
+   ],
+   "C:\\x\\a.ts"
+  ],
+  [
+   [
+    "\\\\server\\share\\a.ts",
+    "C:\\proj"
+   ],
+   "\\\\server\\share\\a.ts"
+  ],
+  [
+   [
+    "src/a.ts",
+    ""
+   ],
+   "src/a.ts"
+  ],
+  [
+   [
+    "",
+    "C:\\proj"
+   ],
+   ""
+  ],
+  [
+   [
+    "file:///abs/a%20b.txt",
+    "/dir"
+   ],
+   "/abs/a b.txt"
+  ],
+  [
+   [
+    "C:/x",
+    "/dir"
+   ],
+   "C:/x"
+  ],
+  [
+   [
+    "\\\\srv\\a",
+    "C:\\p"
+   ],
+   "\\\\srv\\a"
+  ],
+  [
+   [
+    "~/.x",
+    "/dir"
+   ],
+   "/dir/~/.x"
+  ],
+  [
+   [
+    "./a",
+    "/dir/"
+   ],
+   "/dir/./a"
+  ],
+  [
+   [
+    "a",
+    "\\"
+   ],
+   "\\a"
+  ],
+  [
+   [
+    "/C:",
+    "C:\\p"
+   ],
+   "/C:"
+  ],
+  [
+   [
+    "x/y",
+    "C:\\"
+   ],
+   "C:\\x\\y"
+  ],
+  [
+   [
+    "",
+    ""
+   ],
+   ""
+  ],
+  [
+   [
+    "file:///a",
+    ""
+   ],
+   "file:///a"
+  ]
+ ],
+ "sourcePathCandidates": [
+  [
+   [
+    "mcp__docs__render_pdf",
+    "{\"2\":\"second.html\",\"1\":\"first.html\",\"outPath\":\"made.pdf\"}"
+   ],
+   [
+    "first.html",
+    "second.html"
+   ]
+  ],
+  [
+   [
+    "mcp__docs__render_pdf",
+    "{\"10\":\"ten.html\",\"2\":\"two.html\",\"label\":\"middle\",\"outPath\":\"made.pdf\"}"
+   ],
+   [
+    "two.html",
+    "ten.html",
+    "middle"
+   ]
+  ],
+  [
+   [
+    "mcp__d__x",
+    "{\"b\":\"b\",\"01\":\"lead\",\"4294967295\":\"max\",\"4294967294\":\"big\",\"-1\":\"neg\",\"1.5\":\"frac\",\"0\":\"zero\",\"a\":\"a\",\"out_path\":\"o\"}"
+   ],
+   [
+    "zero",
+    "big",
+    "b",
+    "lead",
+    "max",
+    "neg",
+    "frac",
+    "a"
+   ]
+  ],
+  [
+   [
+    "mcp__d__x",
+    "{\"1\":\"no out\"}"
+   ],
+   []
+  ]
+ ]
+}

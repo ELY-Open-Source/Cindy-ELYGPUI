@@ -4,12 +4,15 @@ use crate::{
     command_display,
     command_intent::{self, Intent, base_or},
     message_rows::unwrap_gateway,
-    rich_answer::js::{Js, Obj, non_empty},
+    rich_answer::js::{Js, Obj, entries, non_empty, utf16_len},
     theme_import::color::{js_space, js_trim},
 };
 
 /// `MCP_OUTPUT_PATH_KEYS`: where an MCP tool names the file it makes.
 const OUTPUT_PATH_KEYS: [&str; 4] = ["outPath", "out_path", "outputPath", "output_path"];
+
+/// `MCP_SOURCE_CANDIDATE_MAX_CHARS`, in UTF-16 units.
+const SOURCE_MAX_CHARS: usize = 512;
 
 /// `ParsedToolName`; a plain name is the caller's own.
 #[derive(Debug, PartialEq)]
@@ -145,6 +148,7 @@ pub enum Kind {
         server: String,
         tool_label: String,
         created_path: Option<String>,
+        source_candidates: Vec<String>,
     },
     Dynamic {
         namespace: Option<String>,
@@ -168,14 +172,17 @@ pub fn describe(name: &str, input: Option<&Js>) -> ToolUse {
     let (tool_name, input) = unwrap_gateway(name, input);
     let inp = input.as_ref().and_then(Js::obj);
     let kind = match parse_name(&tool_name) {
-        Parsed::Mcp { server, tool } => Kind::Mcp {
-            server,
-            tool_label: humanize(&tool),
-            created_path: OUTPUT_PATH_KEYS
+        Parsed::Mcp { server, tool } => {
+            let created_path = OUTPUT_PATH_KEYS
                 .iter()
-                .find_map(|key| non_empty(inp.and_then(|o| o.get(*key))))
-                .map(str::to_owned),
-        },
+                .find_map(|key| non_empty(inp.and_then(|o| o.get(*key))));
+            Kind::Mcp {
+                server,
+                tool_label: humanize(&tool),
+                source_candidates: created_path.map_or_else(Vec::new, |made| sources(inp, made)),
+                created_path: created_path.map(str::to_owned),
+            }
+        }
         Parsed::Dynamic { namespace, tool } => Kind::Dynamic {
             namespace,
             tool_label: humanize(&tool),
@@ -186,6 +193,50 @@ pub fn describe(name: &str, input: Option<&Js>) -> ToolUse {
         Parsed::Plain => plain(&tool_name, inp),
     };
     ToolUse { tool_name, kind }
+}
+
+/// `mcpSourceCandidates`: the top-level strings a call that makes a file may have read.
+fn sources(inp: Option<&Obj>, created_path: &str) -> Vec<String> {
+    let values = inp.into_iter().flat_map(entries);
+    values
+        .filter_map(|(_, value)| non_empty(Some(value)))
+        .filter(|text| *text != created_path && utf16_len(text) <= SOURCE_MAX_CHARS)
+        .map(str::to_owned)
+        .collect()
+}
+
+impl ToolUse {
+    /// `createdPathsFromDescriptor`: the files this call made new.
+    #[cfg_attr(not(test), expect(dead_code, reason = "9.4c's generated files"))]
+    pub fn created_paths(&self) -> Vec<&str> {
+        match &self.kind {
+            Kind::File {
+                action: "create",
+                file_path,
+                ..
+            } => vec![file_path],
+            Kind::FileChange(changes) => {
+                let added = changes.iter().filter(|c| c.action == "add");
+                added.map(|c| c.path.as_str()).collect()
+            }
+            Kind::Mcp {
+                created_path: Some(path),
+                ..
+            } => vec![path],
+            _ => Vec::new(),
+        }
+    }
+
+    /// `sourcePathCandidatesFromDescriptor`.
+    #[cfg_attr(not(test), expect(dead_code, reason = "9.4c's generated files"))]
+    pub fn source_candidates(&self) -> &[String] {
+        match &self.kind {
+            Kind::Mcp {
+                source_candidates, ..
+            } => source_candidates,
+            _ => &[],
+        }
+    }
 }
 
 fn plain(name: &str, inp: Option<&Obj>) -> Kind {

@@ -8,7 +8,7 @@ const shared = 'packages/maker-shared/src/__tests__';
 const desktop = 'apps/desktop/src';
 
 /** `tests`: test file to `{ specifier: [export names] }`; `fns`: the functions run. */
-export async function recorded({ esbuild, tmp, nodePaths, alias, fixtures, write, name, tests, fns }) {
+export async function recorded({ esbuild, tmp, nodePaths, alias, define, fixtures, write, name, tests, fns }) {
   const dir = path.join(fixtures, name);
   const cases = JSON.parse(fs.readFileSync(path.join(dir, 'cases.json'), 'utf8'));
   const inputs = Object.fromEntries(Object.keys(fns).map((fn) => [fn, new Map()]));
@@ -19,7 +19,7 @@ export async function recorded({ esbuild, tmp, nodePaths, alias, fixtures, write
   };
   for (const [file, targets] of Object.entries(tests)) {
     const test = path.join(tmp, file);
-    for (const [fn, args] of await record({ esbuild, tmp, nodePaths, alias, test, targets })) add(fn, args);
+    for (const [fn, args] of await record({ esbuild, tmp, nodePaths, alias, define, test, targets })) add(fn, args);
   }
   for (const [fn, list] of Object.entries(cases)) for (const args of list) add(fn, args);
   const expected = Object.fromEntries(Object.entries(inputs).map(([fn, map]) =>
@@ -51,6 +51,16 @@ export const VIEW_TESTS = {
 export const ARTIFACT_TESTS = {
   [`${desktop}/renderer/__tests__/generatedFiles.test.ts`]: { '../lib/generatedFiles': ['extractCommandOutputPathCandidates'] },
   [`${desktop}/main/localDb/ipc/__tests__/historyViewOutline.test.ts`]: { '../historyViewOutline': ['withHistoryArtifacts'] },
+};
+
+const renderer = `${desktop}/renderer/__tests__`;
+export const YIELD_TESTS = {
+  [`${renderer}/extractToolResultMedia.test.ts`]: { '@/components/chat/AgentActionRow': ['extractToolResultMedia'] },
+  [`${renderer}/generatedFiles.test.ts`]: {
+    '../lib/generatedFiles': ['collectGeneratedFiles', 'extractDocumentArtifactMetadata', 'isExplicitFailedToolResult'],
+  },
+  [`${renderer}/localPathResolver.test.ts`]: { '@/lib/localPathResolver': ['resolveLocalPath', 'resolveToolFilePath'] },
+  [`${shared}/messageRender.test.ts`]: { '../messageRender': ['dedupeToolMediaByUrl'] },
 };
 
 export const PLAN_TESTS = {
