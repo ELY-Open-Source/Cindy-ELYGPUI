@@ -14,7 +14,7 @@ use crate::{
     theme::Appearance,
     tip,
     units::{css, to_css},
-    user_message::sent::Part,
+    user_message::sent::{Kind, Part, Reference},
 };
 
 /// The border and `px-2`, on both sides.
@@ -24,14 +24,25 @@ const ICON: f32 = 20.0;
 
 pub struct Chip {
     label: SharedString,
+    /// The label as given, for `ariaLabel`.
+    name: SharedString,
     icon: Option<&'static [u8]>,
     tip: SharedString,
-    /// `tooltipMono`: the tip is a path.
-    mono: bool,
+    face: Face,
     /// The slash chip keeps the message's own colour.
     command: bool,
     /// `ariaLabel`.
     named: bool,
+}
+
+/// How the tip sets its text.
+#[derive(Clone, Copy)]
+enum Face {
+    Plain,
+    /// `tooltipMono`: a path.
+    Mono,
+    /// The pasted text itself, in a frame that scrolls.
+    Pasted,
 }
 
 /// `FileTypeIcon`; Ely's `FileVideoCamera` is not lucide 0.468's `FileVideo`.
@@ -51,28 +62,68 @@ fn file_icon(name: &str) -> &'static [u8] {
     }
 }
 
-/// The chip a part of `renderContentWithoutPastedText` draws; text draws none.
-pub fn of(part: &Part) -> Option<Chip> {
-    let chip = |label: &str, icon, tip: &str, mono| Chip {
-        label: label.to_owned().into(),
+fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip {
+    // `truncate` is `white-space: nowrap`: white space collapses to single spaces.
+    let drawn: Vec<&str> = label
+        .split([' ', '\t', '\n', '\r', '\x0c'])
+        .filter(|word| !word.is_empty())
+        .collect();
+    Chip {
+        label: drawn.join(" ").into(),
+        name: label.to_owned().into(),
         icon,
         tip: tip.to_owned().into(),
-        mono,
+        face,
         command: false,
         named: false,
-    };
+    }
+}
+
+/// The slash chip, of the heuristic or of a stored range.
+pub fn command(label: &str) -> Chip {
+    Chip {
+        command: true,
+        ..chip(label, None, label, Face::Plain)
+    }
+}
+
+/// The chip a part of `renderContentWithoutPastedText` draws; text draws none.
+pub fn of(part: &Part) -> Option<Chip> {
     Some(match part {
         Part::Text(_) => return None,
-        Part::Command(label) => Chip {
-            command: true,
-            ..chip(label, None, label, false)
-        },
-        Part::Agent(name) => chip(name, Some(IconName::Sparkles.svg()), name, false),
-        Part::Dir { label, path } => chip(label, Some(IconName::Folder.svg()), path, true),
+        Part::Command(label) => command(label),
+        Part::Agent(name) => chip(name, Some(IconName::Sparkles.svg()), name, Face::Plain),
+        Part::Dir { label, path } => chip(label, Some(IconName::Folder.svg()), path, Face::Mono),
         Part::File { name, path } => Chip {
             named: true,
-            ..chip(name, Some(file_icon(name)), path, true)
+            ..chip(name, Some(file_icon(name)), path, Face::Mono)
         },
+    })
+}
+
+/// A pasted run's chip: its saved words, and the pasted text as the tip.
+pub fn pasted(display: &str, text: &str) -> Chip {
+    Chip {
+        named: true,
+        ..chip(display, Some(IconName::FileText.svg()), text, Face::Pasted)
+    }
+}
+
+/// `SentAgentReferenceChip`'s inert face; a message reference's chips come with 9.5k and 9.5l.
+pub fn reference(reference: &Reference, label: &str) -> Option<Chip> {
+    let icon = match reference.kind {
+        Kind::Message { .. } => return None,
+        Kind::Session { .. } => IconName::CornerDownRight.svg(),
+        Kind::Project { .. } => IconName::FolderOpen.svg(),
+        Kind::BrowserTab { .. } => lucide::EARTH,
+        Kind::DesktopWindow { .. } => IconName::Monitor.svg(),
+        Kind::Bot { .. } => IconName::Bot.svg(),
+        Kind::Todo { .. } => IconName::ListTodo.svg(),
+        Kind::PluginResource { .. } => lucide::PLUG,
+    };
+    Some(Chip {
+        named: true,
+        ..chip(label, Some(icon), label, Face::Plain)
     })
 }
 
@@ -116,10 +167,11 @@ impl Chip {
             false => "text-primary",
         });
         let (selector, label, tip) = (id.clone(), self.label.clone(), self.tip.clone());
+        let name = self.name.clone();
         div()
             .id(ElementId::Name(id.into()))
             .debug_selector(move || selector)
-            .when(self.named, |el| el.aria_label(label.clone()))
+            .when(self.named, |el| el.aria_label(name))
             .relative()
             .top(css(-1.0))
             .mt(top)
@@ -143,10 +195,11 @@ impl Chip {
             })
             .child(div().min_w_0().truncate().child(label.clone()))
             // `Tip` mounts nothing for empty text.
-            .map(|el| match (tip.is_empty(), self.mono) {
+            .map(|el| match (tip.is_empty(), self.face) {
                 (true, _) => el,
-                (false, true) => el.tooltip(tip::mono(tip)),
-                (false, false) => el.tooltip(tip::tip(tip)),
+                (false, Face::Plain) => el.tooltip(tip::tip(tip)),
+                (false, Face::Mono) => el.tooltip(tip::mono(tip)),
+                (false, Face::Pasted) => el.hoverable_tooltip(tip::pasted(tip)),
             })
             .tooltip_show_delay(Duration::from_millis(300))
             .into_any_element()

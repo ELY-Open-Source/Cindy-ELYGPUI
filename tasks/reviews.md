@@ -173,3 +173,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   Cindy's `Tip` mounts nothing for empty text.
 - Fixed: the chip registers no tooltip for an empty tip; a test hovers such a chip.
 - Round 2: PASS.
+
+## 9.5j The persisted ranges
+
+- Round 1: FAIL. P2: a message reference whose `[label](href)` holds a line feed, drawn as text
+  until its chips, reached the one-line shaper with the line feed and failed its assertion.
+- Fixed: `Reading::plain` splits such words into lines and drops CR; a unit test and a stored
+  message cover it.
+- Round 2: PASS.

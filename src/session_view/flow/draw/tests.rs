@@ -3,8 +3,13 @@ use std::time::Duration;
 use gpui::{Modifiers, TestAppContext, VisualTestContext, px};
 
 use super::super::super::user_row::tests::{at, lines, open, open_json};
-use super::{CHIP, lines as read};
-use crate::open_external::tests as opener;
+use super::{CHIP, Ranges, lines as read};
+use crate::{
+    i18n::Translator,
+    open_external::tests as opener,
+    rich_answer::js,
+    user_message::sent::{Pasted, Reference, Span},
+};
 
 const WEB: &str = "https://example.com/a";
 
@@ -16,13 +21,25 @@ fn snapped(length: f32) -> gpui::Pixels {
 /// A line's text, where its chips stand, and its links as `(nth, start, end)`.
 type Read = (String, Vec<usize>, Vec<(usize, usize, usize)>);
 
-fn read_lines(body: &str, legacy: bool) -> Vec<Read> {
+fn flat(lines: Vec<super::Line>) -> Vec<Read> {
     let line = |line: super::Line| {
         let chips = line.chips.iter().map(|(at, _)| *at).collect();
         let link = |link: &super::Link| (link.nth, link.range.start, link.range.end);
         (line.text, chips, line.links.iter().map(link).collect())
     };
-    read(body, legacy, true).into_iter().map(line).collect()
+    lines.into_iter().map(line).collect()
+}
+
+fn ranges(legacy: bool) -> Ranges {
+    Ranges {
+        slash: (!legacy).then(Vec::new),
+        ..Default::default()
+    }
+}
+
+fn read_lines(body: &str, legacy: bool) -> Vec<Read> {
+    let t = Translator::new("en").unwrap();
+    flat(read(body, &ranges(legacy), true, &t))
 }
 
 #[test]
@@ -53,7 +70,113 @@ fn a_line_holds_its_chips_and_links() {
     assert_eq!(read_lines(other, true)[0].2, [(0, 31, 42)]);
     // The stand-in typed by hand is text, and a folded message reads no link.
     assert_eq!(read_lines(&chip, true), [(chip, vec![], vec![])]);
-    assert!(read(WEB, true, false)[0].links.is_empty());
+    let t = Translator::new("en").unwrap();
+    assert!(read(WEB, &ranges(true), false, &t)[0].links.is_empty());
+}
+
+#[test]
+fn saved_ranges_draw_their_chips() {
+    let t = Translator::new("en").unwrap();
+    let chip = CHIP.to_string();
+    let parsed = |source: &str| js::parse(source).unwrap();
+    let tab = r#"{"kind":"browser-tab","start":4,"end":7,"url":"https://x.y","title":"X"}"#;
+    let message = r#"{"kind":"message","start":8,"end":11,"text":"hi"}"#;
+    let ranges = Ranges {
+        pasted: vec![Pasted::read(&parsed(
+            r#"{"start":12,"end":15,"display":"3 lines"}"#,
+        ))],
+        slash: Some(vec![Span::read(&parsed(r#"{"start":0,"end":3}"#))]),
+        references: vec![
+            Reference::read(&parsed(tab)),
+            Reference::read(&parsed(message)),
+        ],
+    };
+    // A message reference keeps its text until 9.5k and 9.5l; `/no` is no stored command.
+    let body = "/go tab msg a\nb\n/no @a.rs";
+    assert_eq!(
+        flat(read(body, &ranges, true, &t)),
+        [
+            (format!("{chip} {chip} msg {chip}"), vec![0, 4, 12], vec![]),
+            (format!("/no {chip}"), vec![4], vec![]),
+        ]
+    );
+}
+
+#[test]
+fn a_message_reference_over_two_lines_draws_two() {
+    let t = Translator::new("en").unwrap();
+    let parsed = js::parse(r#"{"kind":"message","start":2,"end":9}"#).unwrap();
+    let ranges = Ranges {
+        references: vec![Reference::read(&parsed)],
+        ..Default::default()
+    };
+    assert_eq!(
+        flat(read("x [a\r\nb] y", &ranges, true, &t)),
+        [
+            ("x [a".to_owned(), vec![], vec![]),
+            ("b] y".to_owned(), vec![], vec![])
+        ]
+    );
+}
+
+#[gpui::test]
+fn a_stored_reference_with_a_line_feed_draws(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let content = serde_json::json!({
+        "text": "[a\nb](cindy://session/s?message=m)",
+        "agentReferences": [{ "kind": "message", "start": 0, "end": 34, "href": "cindy://session/s?message=m" }],
+    });
+    let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
+    assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, px(48.0));
+}
+
+#[gpui::test]
+fn stored_ranges_show_as_chips(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let ranged = concat!(
+        r#"{"text":"/skill:git fix PASTE cindy://session/abc cindy://session/abc?message=m1","#,
+        r#""slashCommandRanges":[{"start":0,"end":10}],"#,
+        r#""pastedTextRanges":[{"start":15,"end":20,"display":"Pasted"}],"#,
+        r#""agentReferences":[{"kind":"session","start":21,"end":40,"href":"cindy://session/abc","title":"Plan"},"#,
+        r#"{"kind":"message","start":41,"end":71,"href":"cindy://session/abc?message=m1","text":"hi"}]}"#
+    );
+    let cx = open_json(cx, dir.path(), 2400.0, &[ranged]);
+    let chip = |cx: &mut VisualTestContext, n: usize| at(cx, &format!("msg-c0-chip-{n}")).unwrap();
+    let (command, pasted, session) = (chip(cx, 0), chip(cx, 1), chip(cx, 2));
+    assert!(
+        at(cx, "msg-c0-chip-3").is_none(),
+        "a message reference waits for its chip"
+    );
+    // `/git`, `Pasted` and `Plan` at 7.2 pixels a letter, the last two with an icon.
+    let wide = |chip: gpui::Bounds<gpui::Pixels>, letters: f32, rest: f32| {
+        let over = f32::from(chip.size.width) - (letters * 7.2 + rest);
+        assert!((0.0..1.0).contains(&over), "{letters} letters: {over}");
+    };
+    wide(command, 4.0, 18.0);
+    wide(pasted, 6.0, 38.0);
+    wide(session, 4.0, 38.0);
+    assert!(command.right() < pasted.left() && pasted.right() < session.left());
+    // The pasted chip tells its text in a frame 320 wide.
+    cx.simulate_mouse_move(pasted.center(), None, Modifiers::none());
+    cx.executor().advance_clock(Duration::from_millis(300));
+    cx.run_until_parked();
+    assert_eq!(at(cx, "tip").unwrap().size.width, px(320.0));
+}
+
+#[gpui::test]
+fn the_fold_reads_a_pasted_run_as_its_chip(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let pasted = lines(20);
+    let text = serde_json::to_string(&pasted).unwrap();
+    let ranged = format!(
+        r#"{{"text":{text},"pastedTextRanges":[{{"start":0,"end":{},"display":"Pasted 20 lines"}}]}}"#,
+        pasted.len()
+    );
+    let plain = format!(r#"{{"text":{text}}}"#);
+    let cx = open_json(cx, dir.path(), 2400.0, &[&ranged, &plain]);
+    assert!(at(cx, "msg-c0-chip-0").is_some());
+    assert!(at(cx, "msg-c0-fold").is_none(), "one chip is one row");
+    assert!(at(cx, "msg-c1-fold").is_some());
 }
 
 #[gpui::test]
@@ -188,7 +311,7 @@ fn a_narrow_window_narrows_the_widest_chip(cx: &mut TestAppContext) {
 #[gpui::test]
 fn stored_command_ranges_end_the_heuristic(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
-    let ranged = r#"{"text":"/compact now","slashCommandRanges":[{"start":0,"end":8}]}"#;
+    let ranged = r#"{"text":"/compact now","slashCommandRanges":[]}"#;
     let cx = open_json(
         cx,
         dir.path(),
@@ -252,4 +375,36 @@ fn a_chip_with_nothing_to_tell_shows_no_tip(cx: &mut TestAppContext) {
     cx.executor().advance_clock(Duration::from_millis(600));
     cx.run_until_parked();
     assert!(at(cx, "tip").is_none());
+}
+
+#[gpui::test]
+fn a_chip_whose_words_run_long_folds_the_message(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let display = serde_json::to_string(&lines(20)).unwrap();
+    let ranged = format!(
+        r#"{{"text":"PASTE","pastedTextRanges":[{{"start":0,"end":5,"display":{display}}}]}}"#
+    );
+    let cx = open_json(cx, dir.path(), 2400.0, &[&ranged]);
+    assert!(
+        at(cx, "msg-c0-fold").is_some(),
+        "the mirror reads the chip's words"
+    );
+    // The chip draws them on one line: `truncate` collapses the line feeds.
+    assert_eq!(at(cx, "msg-c0-chip-0").unwrap().size.width, px(240.0));
+    assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, snapped(29.88));
+}
+
+#[gpui::test]
+fn a_message_with_quote_chips_draws_no_range_yet(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let text = "PASTE\n> <!-- cindy-composer-quote -->\n> first quote\n\n/go on";
+    let content = serde_json::json!({
+        "text": text,
+        "quotesEncoded": true,
+        "pastedTextRanges": [{ "start": 0, "end": 5, "display": "Pasted" }],
+        "slashCommandRanges": [],
+    });
+    let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
+    assert!(at(cx, "msg-c0-text").is_some());
+    assert!(at(cx, "msg-c0-chip-0").is_none());
 }

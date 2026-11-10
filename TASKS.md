@@ -187,14 +187,17 @@ listed in `tasks/done.md`.
     folder and file chips of `renderContentWithoutPastedText` (`sent::parts`, `FileTypeIcon`),
     links in the text parts only; the fold counts the plain text's rows and clamps the drawn ones.
     `UserFileChip`'s click and menu come with the text lightbox (9.12)
-  - [ ] 9.5j The persisted ranges of `renderContent`: pasted text, slash command and agent
-    reference chips (`SentAgentReferenceChip`, `readAgentInputReferences`,
-    `slashCommandDisplayLabel`), the measured text with their labels; their clicks come with the
-    lightboxes (9.12)
+  - [x] 9.5j The persisted ranges of `renderContent`: pasted text, slash command and agent
+    reference chips (`SentAgentReferenceChip`'s inert face, `readAgentInputReferences`,
+    `slashCommandDisplayLabel`), the measured text with their labels. A session or project
+    reference keeps the inert face unfolded until 9.5l, a message reference its text until 9.5k and
+    9.5l; their clicks come with the lightboxes (9.12)
   - [ ] 9.5k Quote chips (`QuoteChip`) between the text islands of a `quotesEncoded` message, with
-    `locateChatQuoteTextSegmentStarts` and `projectSentRanges`
-  - [ ] 9.5l Session and project link chips (`SessionLinkChip`, `ProjectLinkChip`) and image path
-    links (`UserMessageImageLink.tsx`)
+    `locateChatQuoteTextSegmentStarts` and `projectSentRanges` per island, and a folded message
+    reference's quote chip
+  - [ ] 9.5l Session and project link chips (`SessionLinkChip`, `ProjectLinkChip`), in the text and
+    for an unfolded session, project or message reference, and image path links
+    (`UserMessageImageLink.tsx`)
   - [ ] 9.5m Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
     face, `UserFileChip`)
   - [ ] 9.5n What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the

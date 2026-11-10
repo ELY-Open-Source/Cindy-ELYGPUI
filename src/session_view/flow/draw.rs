@@ -9,13 +9,14 @@ use gpui::{
 
 use super::{Atom, CHIP, atoms, clamp, rows};
 use crate::{
+    i18n::Translator,
     linkify,
     session_view::{
         chip::{self, Chip},
         links::{self, Link, Shared},
     },
     units::css,
-    user_message::sent::{self, Part},
+    user_message::sent::{self, Part, Pasted, Reference, Span, Token},
 };
 
 /// How the text is drawn; `chip` is the chip label's size in CSS pixels.
@@ -52,35 +53,95 @@ struct Line {
     links: Vec<Link>,
 }
 
-/// `renderContentWithoutPastedText`'s nodes line by line; a final line feed opens no line.
-fn lines(body: &str, legacy: bool, linked: bool) -> Vec<Line> {
-    let (mut out, mut nth) = (vec![Line::default()], 0);
-    for part in sent::parts(body, legacy) {
-        if part == Part::Text("\n".to_owned()) {
-            out.push(Line::default());
-            continue;
-        }
-        let line = out.last_mut().expect("a line is open");
-        let Part::Text(text) = &part else {
-            let chip = chip::of(&part).expect("a part that is no text draws a chip");
-            line.chips.push((line.text.len(), chip));
-            line.text.push(CHIP);
-            continue;
-        };
-        // `renderTextWithLinks`: each piece is read alone; Blink draws no CR.
-        let found = linkify::find(text).into_iter().filter(|_| linked);
-        for found in found.filter(|found| matches!(found.link, linkify::Link::Url)) {
-            let gone = text[..found.range.start].matches('\r').count();
-            let start = line.text.len() + found.range.start - gone;
-            line.links.push(Link {
-                nth,
-                range: start..start + found.range.len(),
-                url: text[found.range].to_owned().into(),
-            });
-            nth += 1;
-        }
-        line.text.push_str(&text.replace('\r', ""));
+/// The message's saved ranges in the drawn text's own units; no `slash` leaves the heuristic.
+#[derive(Default)]
+pub struct Ranges {
+    pub pasted: Vec<Pasted>,
+    pub slash: Option<Vec<Span>>,
+    pub references: Vec<Reference>,
+}
+
+/// The lines being read, and how many links they hold so far.
+struct Reading {
+    lines: Vec<Line>,
+    links: usize,
+    linked: bool,
+}
+
+impl Reading {
+    fn line(&mut self) -> &mut Line {
+        self.lines.last_mut().expect("a line is open")
     }
+
+    fn chip(&mut self, chip: Chip) {
+        let line = self.line();
+        line.chips.push((line.text.len(), chip));
+        line.text.push(CHIP);
+    }
+
+    /// Words that draw as they stand, line by line.
+    fn plain(&mut self, text: &str) {
+        for (nth, piece) in text.split('\n').enumerate() {
+            if nth > 0 {
+                self.lines.push(Line::default());
+            }
+            self.line().text.push_str(&piece.replace('\r', ""));
+        }
+    }
+
+    /// `renderContentWithoutPastedText`'s nodes for a text token.
+    fn text(&mut self, text: &str, legacy: bool) {
+        for part in sent::parts(text, legacy) {
+            if part == Part::Text("\n".to_owned()) {
+                self.lines.push(Line::default());
+                continue;
+            }
+            let Part::Text(text) = &part else {
+                self.chip(chip::of(&part).expect("a part that is no text draws a chip"));
+                continue;
+            };
+            // `renderTextWithLinks`: each piece is read alone; Blink draws no CR.
+            let linked = self.linked;
+            let found = linkify::find(text).into_iter().filter(|_| linked);
+            for found in found.filter(|found| matches!(found.link, linkify::Link::Url)) {
+                let gone = text[..found.range.start].matches('\r').count();
+                let start = self.line().text.len() + found.range.start - gone;
+                let link = Link {
+                    nth: self.links,
+                    range: start..start + found.range.len(),
+                    url: text[found.range].to_owned().into(),
+                };
+                self.line().links.push(link);
+                self.links += 1;
+            }
+            self.line().text.push_str(&text.replace('\r', ""));
+        }
+    }
+}
+
+/// `renderContent`'s nodes line by line; a final line feed opens no line.
+fn lines(body: &str, ranges: &Ranges, linked: bool, t: &Translator) -> Vec<Line> {
+    let mut reading = Reading {
+        lines: vec![Line::default()],
+        links: 0,
+        linked,
+    };
+    let slash = ranges.slash.as_deref().unwrap_or_default();
+    for token in sent::tokens(body, &ranges.pasted, slash, &ranges.references) {
+        match &token {
+            Token::Text(text) => reading.text(text, ranges.slash.is_none()),
+            Token::Slash(text) => reading.chip(chip::command(&sent::slash_label(text))),
+            Token::Pasted { text, display } => reading.chip(chip::pasted(display, text)),
+            Token::Reference { text, index } => {
+                let reference = &ranges.references[*index];
+                match chip::reference(reference, &sent::label(reference, t)) {
+                    Some(chip) => reading.chip(chip),
+                    None => reading.plain(text),
+                }
+            }
+        }
+    }
+    let mut out = reading.lines;
     if out.len() > 1 && out.last().is_some_and(|line| line.text.is_empty()) {
         out.pop();
     }
@@ -165,15 +226,15 @@ fn words(
     }
 }
 
-/// The message's text: `body` through `sent::parts`, broken at `look.width`.
+/// The message's text: `renderContent` over `body`, broken at `look.width`.
 pub fn text(
     body: &str,
-    legacy: bool,
+    ranges: &Ranges,
     look: &Look,
     window: &mut Window,
     cx: &mut App,
 ) -> AnyElement {
-    let lines = lines(body, legacy, look.kept.is_none());
+    let lines = lines(body, ranges, look.kept.is_none(), cx.global::<Translator>());
     let links = lines.iter().map(|line| line.links.len()).sum();
     let shared = (links > 0).then(|| links::shared(look.key, links, window, cx));
     let (mut all, mut shaped, mut chips, mut wrapped) = (Vec::new(), Vec::new(), 0, false);

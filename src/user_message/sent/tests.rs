@@ -1,80 +1,26 @@
 use super::{
-    Kind, Part, Pasted, Reference, Span, Token, inline_plain, label, parts, pasted_plain,
-    text_starts, tokens, within,
+    Part, Pasted, Reference, Span, Token, inline_plain, label, parts, slash_label, text_starts,
+    tokens, within,
 };
 use crate::{
     chat_quotes::{
         self,
-        tests::{golden, number, object, segment, string, text},
+        tests::{golden, object, segment, text},
     },
     i18n::Translator,
     rich_answer::js::Js,
 };
-
-fn span(value: &Js) -> Span {
-    Span {
-        start: number(value, "start").unwrap(),
-        end: number(value, "end").unwrap(),
-    }
-}
 
 fn list<T>(args: &[Js], at: usize, read: fn(&Js) -> T) -> Vec<T> {
     let items = args.get(at).and_then(Js::arr).unwrap_or_default();
     items.iter().map(read).collect()
 }
 
-fn pasted(value: &Js) -> Pasted {
-    Pasted {
-        span: span(value),
-        display: string(value, "display").unwrap(),
-    }
-}
-
-fn reference(value: &Js) -> Reference {
-    let field = |key: &str| string(value, key);
-    let kind = match field("kind").unwrap().as_str() {
-        "message" => Kind::Message {
-            text: field("text"),
-        },
-        "session" => Kind::Session {
-            title: field("title"),
-        },
-        "project" => Kind::Project {
-            name: field("name").unwrap(),
-            working_dir: field("workingDir").unwrap(),
-        },
-        "browser-tab" => Kind::BrowserTab {
-            title: field("title"),
-            url: field("url").unwrap(),
-        },
-        "desktop-window" => Kind::DesktopWindow {
-            title: field("title"),
-            app_name: field("appName").unwrap(),
-        },
-        "plugin-resource" => Kind::PluginResource {
-            label: field("label").unwrap(),
-            resource_id: field("resourceId").unwrap(),
-        },
-        "bot" => Kind::Bot {
-            name: field("name").unwrap(),
-            bot_id: field("botId").unwrap(),
-        },
-        _ => Kind::Todo {
-            title: field("title").unwrap(),
-            todo_id: field("todoId").unwrap(),
-        },
-    };
-    Reference {
-        span: span(value),
-        kind,
-    }
-}
-
 #[test]
 fn saved_ranges_cut_the_text_as_cindys() {
     golden("buildSentInlineTokens", |args| {
-        let (pasted, slash) = (list(args, 1, pasted), list(args, 2, span));
-        let references = list(args, 3, reference);
+        let (pasted, slash) = (list(args, 1, Pasted::read), list(args, 2, Span::read));
+        let references = list(args, 3, Reference::read);
         let shown = |token: Token| match token {
             Token::Text(body) => object(vec![("kind", text("text")), ("text", text(&body))]),
             Token::Slash(body) => object(vec![("kind", text("slash")), ("text", text(&body))]),
@@ -98,19 +44,20 @@ fn saved_ranges_cut_the_text_as_cindys() {
 }
 
 #[test]
+fn a_stored_command_drops_its_runtime_prefix() {
+    golden("slashCommandDisplayLabel", |args| {
+        text(&slash_label(args[0].str().unwrap()))
+    });
+}
+
+#[test]
 fn chips_read_as_their_words_as_cindys() {
     let t = Translator::new("en").unwrap();
     golden("sentAgentReferenceDisplayLabel", |args| {
-        text(&label(&reference(&args[0]), &t))
-    });
-    golden("projectSentPastedPlainText", |args| {
-        text(&pasted_plain(
-            args[0].str().unwrap(),
-            &list(args, 1, pasted),
-        ))
+        text(&label(&Reference::read(&args[0]), &t))
     });
     golden("projectSentInlinePlainText", |args| {
-        let (pasted, references) = (list(args, 1, pasted), list(args, 2, reference));
+        let (pasted, references) = (list(args, 1, Pasted::read), list(args, 2, Reference::read));
         let content = args[0].str().unwrap();
         text(&inline_plain(content, &pasted, &references, |r| {
             label(r, &t)
@@ -135,7 +82,7 @@ fn ranges_move_into_their_segment_as_cindys() {
     });
     golden("projectSentRanges", |args| {
         let start = args[1].integer().map(|at| at as usize);
-        let moved = list(args, 0, span).into_iter().filter_map(|span| {
+        let moved = list(args, 0, Span::read).into_iter().filter_map(|span| {
             let span = within(span, start, args[2].integer().unwrap() as usize)?;
             Some(object(vec![
                 ("start", Js::Num(span.start)),

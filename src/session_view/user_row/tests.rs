@@ -351,3 +351,34 @@ fn other_white_space_keeps_its_room(cx: &mut TestAppContext) {
     // Fifteen lines, the last all spaces: one line it stays, so the message folds.
     assert!(at(cx, "msg-c3-fold").is_some());
 }
+
+#[test]
+fn stored_ranges_move_into_the_shown_text() {
+    use crate::rich_answer::js;
+    let field = |source: &str| Some(std::rc::Rc::new(js::parse(source).unwrap()));
+    let mut message = crate::chat_message::merge::Fields::new();
+    // The shown text starts five units in; a range past its end or before its start goes.
+    let pasted = r#"[{"start":1,"end":3,"display":"no"},{"start":11,"end":16,"display":"yes"}]"#;
+    message.insert("pastedTextRanges".into(), field(pasted));
+    let slash = r#"[{"start":5,"end":6},{"start":16,"end":17}]"#;
+    message.insert("slashCommandRanges".into(), field(slash));
+    let (content, shown) = ("é[x] héllo PASTE", "héllo PASTE");
+    let ranges = super::ranges(&message, content, shown, shown);
+    let spans = |all: &[super::Span]| -> Vec<(f64, f64)> {
+        all.iter().map(|span| (span.start, span.end)).collect()
+    };
+    let pasted: Vec<super::Span> = ranges.pasted.iter().map(|p| p.span).collect();
+    assert_eq!(spans(&pasted), [(6.0, 11.0)]);
+    assert_eq!(ranges.pasted[0].display, "yes");
+    assert_eq!(spans(&ranges.slash.unwrap()), [(0.0, 1.0)]);
+    assert!(ranges.references.is_empty());
+    // A shown text the content does not hold places no range, and none stored stays none.
+    let lost = super::ranges(&message, content, "decoded", "decoded");
+    assert!(lost.pasted.is_empty() && lost.slash.unwrap().is_empty());
+    message.shift_remove("slashCommandRanges");
+    assert!(
+        super::ranges(&message, content, shown, shown)
+            .slash
+            .is_none()
+    );
+}

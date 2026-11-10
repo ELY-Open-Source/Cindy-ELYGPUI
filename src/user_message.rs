@@ -2,7 +2,10 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "9.5j's chips and 9.5n's hook card read the rest")
+    expect(
+        dead_code,
+        reason = "9.5k's quote chips and 9.5n's hook card read the rest"
+    )
 )]
 
 use std::sync::LazyLock;

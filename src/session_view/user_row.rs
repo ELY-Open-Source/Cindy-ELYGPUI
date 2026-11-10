@@ -9,21 +9,24 @@ use gpui::{
 
 use super::{
     SessionView,
-    flow::draw::{self, Look},
+    flow::draw::{self, Look, Ranges},
     width::Widths,
 };
 use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
-    chat_quotes,
+    chat_quotes::{self, Segment},
     i18n::Translator,
     lucide, motion, press,
-    rich_answer::js::{Js, truthy},
+    rich_answer::js::{Js, truthy, utf16_len},
     theme::Appearance,
     theme_import::color::js_trim,
     transition::{self, Curve},
     units::{css, window_px},
-    user_message::{self, collapse},
+    user_message::{
+        self, collapse,
+        sent::{self, Pasted, Reference, Span},
+    },
     wallpaper,
 };
 
@@ -154,6 +157,30 @@ impl RenderOnce for Toggle {
     }
 }
 
+/// `projectSentRanges` over the stored ranges: each moved into the bubble's text, or dropped.
+fn ranges(message: &Fields, content: &str, display: &str, body: &str) -> Ranges {
+    let start = content.find(display).map(|at| utf16_len(&content[..at]));
+    let length = utf16_len(body);
+    let list = |key| get(message, key).and_then(Js::arr);
+    let moved = |span| sent::within(span, start, length);
+    let pasted = list("pastedTextRanges").unwrap_or_default().iter();
+    let pasted = pasted.map(Pasted::read).filter_map(|pasted| {
+        let span = moved(pasted.span)?;
+        Some(Pasted { span, ..pasted })
+    });
+    let references = list("agentReferences").unwrap_or_default().iter();
+    let references = references.map(Reference::read).filter_map(|reference| {
+        let span = moved(reference.span)?;
+        Some(Reference { span, ..reference })
+    });
+    let slash = |all: &[Js]| all.iter().map(Span::read).filter_map(moved).collect();
+    Ranges {
+        pasted: pasted.collect(),
+        slash: list("slashCommandRanges").map(slash),
+        references: references.collect(),
+    }
+}
+
 /// The row of an ordinary message; the Orca and hook forms come with 9.5g.
 pub fn element(
     key: &str,
@@ -171,9 +198,11 @@ pub fn element(
     let origin = get(message, "automationOrigin");
     let forwarded = origin.and_then(Js::obj).and_then(|o| o.get("kind")?.str()) == Some("session");
     let display = user_message::display_text(content, None, forwarded, None);
-    let body = match get(message, "quotesEncoded") == Some(&Js::Bool(true)) {
-        true => chat_quotes::join_text(&chat_quotes::segments(&display)),
-        false => display,
+    let segments = (get(message, "quotesEncoded") == Some(&Js::Bool(true)))
+        .then(|| chat_quotes::segments(&display));
+    let body = match &segments {
+        Some(segments) => chat_quotes::join_text(segments),
+        None => display.clone(),
     };
     if js_trim(&body).is_empty() {
         return None;
@@ -184,8 +213,26 @@ pub fn element(
     let rem = window.rem_size();
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
     let style = draw::style(css(size).to_pixels(rem), window);
-    let folds = collapse::may_exceed(&body, fold.threshold)
-        && draw::count(&body, &style, width, window) > fold.threshold;
+    // A message with quote chips draws its ranges with them (9.5k).
+    let quoted = segments.is_some_and(|all| all.iter().any(|s| matches!(s, Segment::Quote(_))));
+    let ranges = match quoted {
+        true => Ranges {
+            slash: get(message, "slashCommandRanges").map(|_| Vec::new()),
+            ..Default::default()
+        },
+        false => ranges(message, content, &display, &body),
+    };
+    // The mirror reads chips as their words while the text is the message's own.
+    let plain = match body == display {
+        true => {
+            let t = cx.global::<Translator>();
+            let label = |reference: &Reference| sent::label(reference, t);
+            sent::inline_plain(&body, &ranges.pasted, &ranges.references, label)
+        }
+        false => body.clone(),
+    };
+    let folds = collapse::may_exceed(&plain, fold.threshold)
+        && draw::count(&plain, &style, width, window) > fold.threshold;
     let open = unfolded(key, cx);
     let look = Look {
         key,
@@ -194,9 +241,7 @@ pub fn element(
         width,
         kept: (folds && !open).then_some(fold.kept),
     };
-    // The persisted ranges, which end the `/command` heuristic, come with 9.5j.
-    let legacy = get(message, "slashCommandRanges").is_none();
-    let text = draw::text(&body, legacy, &look, window, cx);
+    let text = draw::text(&body, &ranges, &look, window, cx);
     let appearance = cx.global::<Appearance>();
     let selector = format!("{key}-bubble");
     let text_selector = format!("{key}-text");

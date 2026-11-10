@@ -8,7 +8,7 @@ use crate::{
     chat_quotes::{self, Segment},
     i18n::Translator,
     js_re, js_sort,
-    rich_answer::js::utf16_len,
+    rich_answer::js::{Js, utf16_len},
     theme_import::color::js_space,
 };
 
@@ -63,6 +63,83 @@ pub enum Kind {
 pub struct Reference {
     pub span: Span,
     pub kind: Kind,
+}
+
+fn field<'a>(value: &'a Js, key: &str) -> Option<&'a Js> {
+    value.obj()?.get(key)
+}
+
+fn word(value: &Js, key: &str) -> Option<String> {
+    field(value, key)?.str().map(str::to_owned)
+}
+
+impl Span {
+    /// A range as `mapServerMessages` kept it.
+    pub fn read(value: &Js) -> Span {
+        let number = |key| match field(value, key) {
+            Some(Js::Num(n)) => *n,
+            other => panic!("a stored range's {key} is {other:?}"),
+        };
+        Span {
+            start: number("start"),
+            end: number("end"),
+        }
+    }
+}
+
+impl Pasted {
+    pub fn read(value: &Js) -> Pasted {
+        Pasted {
+            span: Span::read(value),
+            display: word(value, "display").expect("a pasted range has its words"),
+        }
+    }
+}
+
+impl Reference {
+    /// A reference as `readAgentInputReferences` kept it.
+    pub fn read(value: &Js) -> Reference {
+        let own = |key: &str| {
+            word(value, key).unwrap_or_else(|| panic!("a stored reference lacks {key}"))
+        };
+        let kind = match own("kind").as_str() {
+            "message" => Kind::Message {
+                text: word(value, "text"),
+            },
+            "session" => Kind::Session {
+                title: word(value, "title"),
+            },
+            "project" => Kind::Project {
+                name: own("name"),
+                working_dir: own("workingDir"),
+            },
+            "browser-tab" => Kind::BrowserTab {
+                title: word(value, "title"),
+                url: own("url"),
+            },
+            "desktop-window" => Kind::DesktopWindow {
+                title: word(value, "title"),
+                app_name: own("appName"),
+            },
+            "plugin-resource" => Kind::PluginResource {
+                label: own("label"),
+                resource_id: own("resourceId"),
+            },
+            "bot" => Kind::Bot {
+                name: own("name"),
+                bot_id: own("botId"),
+            },
+            "todo" => Kind::Todo {
+                title: own("title"),
+                todo_id: own("todoId"),
+            },
+            other => panic!("a stored reference of kind {other}"),
+        };
+        Reference {
+            span: Span::read(value),
+            kind,
+        }
+    }
 }
 
 /// `SentInlineToken`; a reference is its place in the list given.
@@ -194,9 +271,17 @@ pub fn label(reference: &Reference, t: &Translator) -> String {
     }
 }
 
-/// `projectSentPastedPlainText`: each pasted run as its chip's words.
-pub fn pasted_plain(content: &str, pasted: &[Pasted]) -> String {
-    inline_plain(content, pasted, &[], |_| unreachable!("no reference given"))
+/// `slashCommandDisplayLabel`: a stored command without its runtime prefix.
+pub fn slash_label(command: &str) -> String {
+    static PREFIX: LazyLock<Regex> =
+        LazyLock::new(|| js_re::regex(r"^(?:skill|cindy|cindy-plugin-[^\s:/]+):", true));
+    let name = command.strip_prefix('/');
+    let rest = name.and_then(|name| Some(&name[PREFIX.find(name)?.end()..]));
+    // The pattern's `(?=\S+$)`.
+    match rest.filter(|rest| !rest.is_empty() && !rest.contains(js_space)) {
+        Some(rest) => format!("/{rest}"),
+        None => command.to_owned(),
+    }
 }
 
 /// `projectSentInlinePlainText`: pasted runs and references as their chips' words.

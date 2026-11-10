@@ -180,8 +180,9 @@ defines scope and what 1:1 means.
   `mayExceedVisualLineThreshold` in UTF-16 units. Golden `user-message`. `src/chat_quotes.rs` is
   maker-shared `chatQuotes.ts` (`format`, `segments`, `join_text`, `strip_marker_lines`).
   `src/user_message/sent.rs` is the sent text of `UserMessage.tsx`: `tokens` (`buildSentInlineTokens`,
-  its ranges sorted by `js_sort`, since the comparator is no total order), `pasted_plain` and
-  `inline_plain` with `label` (`sentAgentReferenceDisplayLabel`), `text_starts`, `within`
+  its ranges sorted by `js_sort`, since the comparator is no total order), `inline_plain` with `label`
+  (`sentAgentReferenceDisplayLabel`), `slash_label` (`slashCommandDisplayLabel`), `Span::read`,
+  `Pasted::read` and `Reference::read` over the stored ranges, `text_starts`, `within`
   (`projectSentRanges`) and `parts`, the command, mention and path split of
   `renderContentWithoutPastedText`. Golden `sent-text`: `scripts/golden/sentText.mjs` reads `parts` off
   Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`. `src/link_open.rs`
@@ -289,20 +290,27 @@ defines scope and what 1:1 means.
   (`logs/review/9.5i-r1-blink-chip.log`). `chip.rs` is `InlineReferenceChip`'s inert face for the
   legacy command, agent, folder and file chips (`FileTypeIcon` through `file_presentation`; lucide
   0.468's `FileChartColumn` and `FileVideo` live in `lucide.rs`), sized by layout up to
-  `max-w-[min(240px,55vw)]`, with `Tip` after 300ms (`tip::mono` for a path). `UserFileChip`'s click
-  and menu come with 9.12, the persisted ranges with 9.5j. gpui snaps a line's height to the device
-  pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live with the mounted
-  content, as the component's state does. `links.rs` is `UserMessageUrlLink` with `useOpenWithMenu`: an
-  unfolded message's text pieces are each read for web addresses (`linkify`), underlined by text
-  highlights, and a canvas after a piece lays a hit box over each stretch of a link's glyphs, ordered
-  by x since the shaper lists right-to-left text from the right (`prepaint_as_root` at the laid-out
-  text's positions). A link's boxes on every row share its Tab stop (the first box), the menu and the
-  record of boxes the menu key reads. A click is `activateMessageUrl` (a modifier or the middle button
-  opens the system browser, else the preference; the sidebar browser comes with 17.0, so that open
-  fails with Cindy's toast), Enter and Space activate on key down with their modifiers, a right click,
-  the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`; Ely's `Link` for `link-2`). gpui
-  places an underline itself, so `underline-offset-2` has no port. In tests `open_external` records the
-  address and starts no program.
+  `max-w-[min(240px,55vw)]`, with `Tip` after 300ms (`tip::mono` for a path). A label's white space
+  collapses to single spaces, as `truncate`'s `nowrap` draws it. `UserFileChip`'s click and menu come
+  with 9.12. `renderContent`'s stored ranges (`user_row::ranges`, `projectSentRanges` from where the
+  shown text starts in the content) cut the text first (`sent::tokens`): a slash range draws the
+  command chip, a pasted range its words with `tip::pasted` (the text in a frame 320 wide that scrolls
+  past 256, hoverable), a reference `SentAgentReferenceChip`'s inert face. The fold's measure reads
+  those chips as their words (`inline_plain`). A session or project reference keeps the inert face
+  unfolded until 9.5l's link chips, a message reference its text until 9.5k and 9.5l, and a message
+  with quote chips draws no range until 9.5k; the chips' clicks come with 9.12. gpui snaps a line's
+  height to the device pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live
+  with the mounted content, as the component's state does. `links.rs` is `UserMessageUrlLink` with
+  `useOpenWithMenu`: an unfolded message's text pieces are each read for web addresses (`linkify`),
+  underlined by text highlights, and a canvas after a piece lays a hit box over each stretch of a
+  link's glyphs, ordered by x since the shaper lists right-to-left text from the right
+  (`prepaint_as_root` at the laid-out text's positions). A link's boxes on every row share its Tab stop
+  (the first box), the menu and the record of boxes the menu key reads. A click is `activateMessageUrl`
+  (a modifier or the middle button opens the system browser, else the preference; the sidebar browser
+  comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate on key down with
+  their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
+  Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
+  tests `open_external` records the address and starts no program.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts

@@ -22,7 +22,7 @@ function parts(userMessage, content, legacy) {
   return out;
 }
 
-export function sentText({ userMessage, chatQuotes, sentAgentReferenceDisplayLabel }) {
+export function sentText({ userMessage, chatQuotes, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel }) {
   const { parseChatQuoteSegments } = chatQuotes;
   return {
     buildSentInlineTokens: (content, pasted, slash, references) =>
@@ -32,9 +32,9 @@ export function sentText({ userMessage, chatQuotes, sentAgentReferenceDisplayLab
         ...(token.kind === 'pasted' ? { display: token.display } : {}),
         ...(token.kind === 'agent-reference' ? { index: references.indexOf(token.reference) } : {}),
       })),
-    projectSentPastedPlainText: (...args) => whole(userMessage.projectSentPastedPlainText(...args)),
     projectSentInlinePlainText: (...args) => whole(userMessage.projectSentInlinePlainText(...args)),
     sentAgentReferenceDisplayLabel: (reference) => whole(sentAgentReferenceDisplayLabel(reference)),
+    slashCommandDisplayLabel,
     formatQuoteForSend: chatQuotes.formatQuoteForSend,
     parseChatQuoteSegments,
     joinChatQuoteTextSegments: (content) => chatQuotes.joinChatQuoteTextSegments(parseChatQuoteSegments(content)),
