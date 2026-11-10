@@ -15,6 +15,7 @@ mod column;
 mod entry_error;
 mod flow;
 pub mod header;
+mod images;
 mod items;
 mod link_chip;
 mod links;
@@ -55,6 +56,8 @@ struct Content {
     unfolded: std::collections::HashSet<String>,
     /// What its link chips read.
     links: link_chip::Found,
+    /// Its messages' images, by address.
+    images: images::Held,
 }
 
 #[derive(Default)]
@@ -191,6 +194,7 @@ fn mount(id: &str, cx: &mut App) {
         stream: None,
         unfolded: Default::default(),
         links: Default::default(),
+        images: Default::default(),
     });
     content_read(cx);
     let store = Store::global(cx);

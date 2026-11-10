@@ -39,6 +39,7 @@ mod logger;
 mod lucide;
 mod main_window;
 mod markdown_text;
+mod media_store;
 mod message_rows;
 mod motion;
 mod open_external;

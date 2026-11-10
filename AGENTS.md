@@ -282,8 +282,19 @@ defines scope and what 1:1 means.
   text: the chips wrap and stand right, each at most `min(280px, 100%)`, lit under the pointer, the
   native `title` as gpui's tooltip; `src/attachment_safety.rs` (`attachmentSafety.ts` with
   `isSafetyDowngradedAttachment`, golden `attachment-safety`) picks Download for a file the chat only
-  saves. Its click and menus come with 9.13, the images with 9.5o. `flow.rs` breaks a line into rows
-  itself, since gpui's text holds no element: Blink's break opportunities (`breaks` is
+  saves. Its click and menus come with 9.13. `images.rs` is `ChatImageView`'s `user-attached` face,
+  each image a child of the column before the files: `src/media_store.rs` resolves `xdt-image://` and
+  `cindy-media://blobs/` as the two stores' `resolveSafe` do (golden `media-store`, whose Electron stub
+  answers `app.getPath`) and reads as the protocol handlers' `fs.readFile` does; the read and the
+  decode (by the bytes' own format, through gpui's `Image`, so a GIF plays) run on the background
+  executor, once per address for the mounted content (`Content.images`). While it loads
+  `ChatLoadingImage`'s 280 by 180 frame with Ely's `Spinner` stands in; the image then fades in within
+  280 by 180 at its ratio and dims to 0.9 under the pointer. A long image (over three times as tall as
+  wide) draws its square top, cropped at decode since gpui's `cover` centres, in a 240 box with the
+  hint pill. A read that finds no file draws `ImageMissingPlaceholder` as missing, any other failure as
+  unavailable; its retry, the lightbox and the menu come with 9.13. The decode keeps the image's full
+  size; AVIF and animated WebP or PNG are not decoded as Chromium does. `flow.rs` breaks a line into
+  rows itself, since gpui's text holds no element: Blink's break opportunities (`breaks` is
   `NextBreakablePosition`: a break after a run of spaces, the pair table
   `resources/line-break-pairs.txt` for U+0021 to U+00FF, which `scripts/blink-line-breaks.js` reads off
   Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen before a letter past ASCII, with LB20a,

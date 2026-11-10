@@ -103,6 +103,11 @@ pub struct Sessions {
 
 impl gpui::Global for Sessions {}
 
+/// The userData folder the lists read.
+pub fn user_data(cx: &App) -> PathBuf {
+    cx.global::<Sessions>().user_data.clone()
+}
+
 /// Reads the list whenever the database opens, and after each change Cindy writes.
 pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
     cx.set_global(Sessions {

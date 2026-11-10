@@ -217,3 +217,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 
 - Round 1: PASS. The reviewer ran Cindy's `attachmentExtension` against the port over every
   Unicode scalar, and laid the chip's styles out in Chromium 148. No live pointer check.
+
+## 9.5o Image attachments over the bubble
+
+- Round 1: FAIL. P2: a failed image whose name holds a line feed panicked in the placeholder's
+  one-line measure; Cindy's `truncate` draws it on one line.
+- Fixed: the placeholder measures and draws the name through `chip::nowrap`; the tip keeps the
+  stored name. Test `a_failed_images_name_draws_on_one_line`.
+- Round 2: PASS.

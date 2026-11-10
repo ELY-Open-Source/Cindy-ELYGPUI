@@ -10,6 +10,7 @@ use gpui::{
 use super::{
     SessionView, attachments,
     flow::draw::{self, Island, Look, Ranges},
+    images,
     width::Widths,
 };
 use crate::{
@@ -216,9 +217,11 @@ pub fn element(
     let room = COLUMN.min(widths.message);
     let files = attachments::files(message);
     let files = (!files.is_empty()).then(|| attachments::row(key, &files, room, window, cx));
+    let images = images::elements(key, &images::images(message), window, cx);
+    let mut over: Vec<AnyElement> = images.into_iter().chain(files).collect();
     // A message with no text and no quote draws no bubble.
     if quoted.is_none() && js_trim(&body).is_empty() {
-        return files.map(|files| column(vec![files]));
+        return (!over.is_empty()).then(|| column(over));
     }
     let fold = fold(origin);
     let compact = f32::from(u8::from(widths.compact));
@@ -296,8 +299,8 @@ pub fn element(
                 compact: widths.compact,
             }))
         });
-    let bubble = bubble.into_any_element();
-    Some(column(files.into_iter().chain([bubble]).collect()))
+    over.push(bubble.into_any_element());
+    Some(column(over))
 }
 
 /// The message's column, set right: what stands over the bubble, then the bubble.

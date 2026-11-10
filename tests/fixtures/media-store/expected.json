@@ -1,0 +1,576 @@
+{
+ "cached": [
+  [
+   [
+    "xdt-image://s1/a.png"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://S1/A.PNG"
+   ],
+   "cc-agent/images/S1/A.PNG"
+  ],
+  [
+   [
+    "xdt-image://s1/a%20b.png"
+   ],
+   "cc-agent/images/s1/a b.png"
+  ],
+  [
+   [
+    "xdt-image://s%31/a.png"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/a.png?x=1"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/a.png#f"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/dir/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/dir%2Fa.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/a%5Cb.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/.."
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/a..b.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/%2E%2E"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://../a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s..1/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://./a.png"
+   ],
+   "cc-agent/images/a.png"
+  ],
+  [
+   [
+    "xdt-image:///a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/%zz.png"
+   ],
+   "refused: xdt-image: malformed url"
+  ],
+  [
+   [
+    "xdt-image://s1/%ff.png"
+   ],
+   "refused: xdt-image: malformed url"
+  ],
+  [
+   [
+    "xdt-image://s1/%00.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s%001/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s:1/a.png"
+   ],
+   "cc-agent/images/s/a.png"
+  ],
+  [
+   [
+    "xdt-image://s%3A1/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s%2F1/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s%5C1/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://user@s1/a.png"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1:80/a.png"
+   ],
+   "cc-agent/images/s1/a.png"
+  ],
+  [
+   [
+    "xdt-image://feishu-media-images/a.png"
+   ],
+   "cc-agent/feishu-media/images/a.png"
+  ],
+  [
+   [
+    "xdt-image://feishu-media-files/a.pdf"
+   ],
+   "cc-agent/feishu-media/files/a.pdf"
+  ],
+  [
+   [
+    "xdt-image://lizi-art-media-images/x.webp"
+   ],
+   "cc-agent/lizi-art-media/images/x.webp"
+  ],
+  [
+   [
+    "xdt-image://lizi-confluence-attachments/a"
+   ],
+   "cc-agent/lizi-confluence/attachments/a"
+  ],
+  [
+   [
+    "xdt-image://lizi-jira-attachments/a.b"
+   ],
+   "cc-agent/lizi-jira/attachments/a.b"
+  ],
+  [
+   [
+    "xdt-image://feishu-media-images/.."
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://feishu-media-images/."
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://Feishu-Media-Images/a.png"
+   ],
+   "cc-agent/images/Feishu-Media-Images/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/."
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/a:b.png"
+   ],
+   "cc-agent/images/s1/a:b.png"
+  ],
+  [
+   [
+    "xdt-image://s 1/a.png"
+   ],
+   "refused: xdt-image: malformed url"
+  ],
+  [
+   [
+    "xdt-image://s1/a b.png"
+   ],
+   "cc-agent/images/s1/a b.png"
+  ],
+  [
+   [
+    "xdt-image://s1/é.png"
+   ],
+   "cc-agent/images/s1/é.png"
+  ],
+  [
+   [
+    "xdt-image://é/a.png"
+   ],
+   "cc-agent/images/é/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/%E4%BD%A0.png"
+   ],
+   "cc-agent/images/s1/你.png"
+  ],
+  [
+   [
+    "xdt-image:/s1/a.png"
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    "xdt-image:s1/a.png"
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    "XDT-IMAGE://s1/a.png"
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    "http://s1/a.png"
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    ""
+   ],
+   "refused: xdt-image: invalid url"
+  ],
+  [
+   [
+    "xdt-image://[::1]/a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1//a.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/a.png/"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://s1/a%2e%2e.png"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ],
+  [
+   [
+    "xdt-image://%2e/a.png"
+   ],
+   "cc-agent/images/a.png"
+  ],
+  [
+   [
+    "xdt-image://s1/%2e"
+   ],
+   "refused: xdt-image: path out of bounds"
+  ]
+ ],
+ "blob": [
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.jpg"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.jpg"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.jpeg"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.jpeg"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.gif"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.gif"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.webp"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.webp"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mp4"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mp4"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.webm"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.webm"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mov"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mov"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mp3"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.mp3"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.wav"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.wav"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.m4a"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.m4a"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.ogg"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.ogg"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.glb"
+   ],
+   "cindy-media/blobs/ab/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.glb"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.PNG"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.svg"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.bin"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd."
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/AB0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCD.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abc.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd0.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcg.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png?x"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png#x"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png/"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/x/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs//ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://client-wallpaper/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://BLOBS/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs:80/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://u@blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media:/blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "CINDY-MEDIA://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd.tar.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789%61bcd.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "xdt-image://s1/a.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    ""
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/ab0123456789abcdef0123456789abcdef0123456789abcdef0123456789abé.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ],
+  [
+   [
+    "cindy-media://blobs/éab0123456789abcdef0123456789abcdef0123456789abcdef0123456789ab.png"
+   ],
+   "refused: cindy-media: invalid url"
+  ]
+ ]
+}

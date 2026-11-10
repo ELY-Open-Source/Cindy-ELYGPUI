@@ -95,6 +95,8 @@ try {
     "export * as userMessage from './renderer/components/chat/UserMessage';",
     "export * as chatQuotes from '@cindy/maker-shared/chat-quotes';",
     "export * as linkOpen from './renderer/hooks/useLinkOpenPreference';",
+    "export { resolveSafe as resolveCachedImage } from './main/imageCacheStore';",
+    "export { resolveSafe as resolveBlob } from './main/cindy-media/blobStore';",
     "export * as attachmentSafety from './shared/attachmentSafety';",
     "export { isSafetyDowngradedAttachment } from './renderer/lib/chatAttachmentSave';",
     "export * as filePresentation from '../../../packages/maker-shared/src/filePresentation';",
@@ -102,9 +104,9 @@ try {
     "export { slashCommandDisplayLabel } from '../../../packages/maker-shared/src/composerPalette';",
     "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
   ].join('\n'));
-  // mapper.ts imports Electron's main-process modules; the functions run here never call them.
+  // Main-process modules import Electron: `app` is a named export, `getPath` a fixed folder.
   const electronStub = path.join(tmp, 'electron-stub.cjs');
-  fs.writeFileSync(electronStub, 'const any = new Proxy(function () {}, { get: (_, key) => key === Symbol.toPrimitive ? () => "" : any, apply: () => any, construct: () => any });\nmodule.exports = any;\n');
+  fs.writeFileSync(electronStub, 'const target = Object.assign(function () {}, { app: 0 });\nconst any = new Proxy(target, { get: (_, key) => key === Symbol.toPrimitive ? () => "" : key === "getPath" ? () => "/user-data" : any, apply: () => any, construct: () => any });\nmodule.exports = any;\n');
   const bundle = path.join(tmp, 'bundle.mjs');
   const define = { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) };
   const nodePaths = [links, path.join(path.resolve(cindy), 'node_modules')];
@@ -115,7 +117,7 @@ try {
     // The sent-text golden runs `renderContent`, whose JSX needs its runtime.
     define, jsx: 'automatic',
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -525,6 +527,13 @@ try {
     isSafetyDowngradedAttachment,
   } });
   console.log(`${attachmentCases} attachment safety cases`);
+  // Where an address resolves under the stub's userData, or why it does not.
+  const placed = (resolveSafe) => (url) => {
+    try { return path.relative('/user-data', resolveSafe(url).absPath); } catch (error) { return `refused: ${error.message}`; }
+  };
+  const mediaCases = await recorded({ ...golden, name: 'media-store', tests: {},
+    fns: { cached: placed(resolveCachedImage), blob: placed(resolveBlob) } });
+  console.log(`${mediaCases} media store cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);

@@ -78,7 +78,7 @@ pub(super) fn open_beside<'a>(
         cx.set_global(crate::window_material::Material::load());
         crate::wallpaper::none_for_tests(cx);
         cx.set_global(crate::preferences::Preferences::load(dir).unwrap());
-        crate::sessions::install(std::path::PathBuf::new(), None, cx);
+        crate::sessions::install(dir.to_path_buf(), None, cx);
         crate::router::install(cx);
         crate::chat_store::install(cx);
         crate::session_view::install(cx);
