@@ -125,3 +125,5 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: PASS.
 ## 9.5c Display text and collapse estimates
 - Round 1: PASS.
+## 9.5d The sent text's tokens
+- Round 1: PASS.

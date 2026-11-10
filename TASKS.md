@@ -153,9 +153,13 @@ listed in `tasks/done.md`.
     `resolveUserDisplayText`), `shouldAutoCollapseUserMessageContent` and
     `mayExceedVisualLineThreshold`; golden. An automation message's threshold (4) comes with its
     caller in 9.5e
-  - [ ] 9.5d The sent text's tokens (`UserMessage.tsx`): `looksLikePath`, `looksLikeCommand`, the
+  - [x] 9.5d The sent text's tokens (`UserMessage.tsx`): `looksLikePath`, `looksLikeCommand`, the
     command and mention split, `buildSentInlineTokens`, `projectSentPastedPlainText`,
-    `projectSentInlinePlainText`, `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; golden
+    `projectSentInlinePlainText` with `sentAgentReferenceDisplayLabel`,
+    `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; maker-shared `chatQuotes.ts`
+    (`formatQuoteForSend`, `parseChatQuoteSegments`, `joinChatQuoteTextSegments`,
+    `stripChatQuoteMarkerLines`); golden. `readAgentInputReferences` and `slashCommandDisplayLabel`
+    come with 9.5f's chips, the outer `renderContent` with the bubble
   - [ ] 9.5e The bubble: the user row drawn from 9.4e's items, text with URL links
     (`UserMessageUrlLink.tsx`, `message-link-clickability.md`), the measured collapse with its
     cache and toggle, `chat-rail-compact`'s type scale

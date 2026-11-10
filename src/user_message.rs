@@ -16,6 +16,7 @@ use crate::{
 };
 
 pub mod collapse;
+pub mod sent;
 
 /// `OrcaCommunicationContent`.
 #[derive(Debug, PartialEq)]

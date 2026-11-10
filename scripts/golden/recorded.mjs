@@ -84,3 +84,7 @@ export const USER_MESSAGE_TESTS = {
   [`${renderer}/hookGroupContext.test.ts`]: displayText,
   [`${renderer}/messageNavRailModel.test.ts`]: displayText,
 };
+
+export const SENT_TEXT_TESTS = {
+  [`${shared}/chatQuotes.test.ts`]: { '../chatQuotes': ['formatQuoteForSend', 'parseChatQuoteSegments', 'stripChatQuoteMarkerLines'] },
+};

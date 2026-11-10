@@ -177,7 +177,14 @@ defines scope and what 1:1 means.
   `userMessageDisplayText.ts` (`orca`, `hook_group_context` with `captureImContext`'s group envelope,
   `display_text` over 8.7's `forwarded::display_text`; the hook source is the stored `Js`) and
   `collapse.rs` the estimates of `userMessageCollapse.ts` in UTF-16 units; the measured collapse comes
-  with the bubble. Golden `user-message`.
+  with the bubble. Golden `user-message`. `src/chat_quotes.rs` is maker-shared `chatQuotes.ts`
+  (`format`, `segments`, `join_text`, `strip_marker_lines`). `src/user_message/sent.rs` is the sent
+  text of `UserMessage.tsx`: `tokens` (`buildSentInlineTokens`, its ranges sorted by `js_sort`, since
+  the comparator is no total order), `pasted_plain` and `inline_plain` with `label`
+  (`sentAgentReferenceDisplayLabel`), `text_starts`, `within` (`projectSentRanges`) and `parts`, the
+  command, mention and path split of `renderContentWithoutPastedText`. Golden `sent-text`:
+  `scripts/golden/sentText.mjs` reads `parts` off Cindy's own `renderContent`, so the golden bundle
+  builds with `jsx: 'automatic'`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view

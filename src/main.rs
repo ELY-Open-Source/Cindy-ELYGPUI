@@ -5,6 +5,7 @@ mod atomic_file;
 mod bounded_read;
 mod browse_history;
 mod chat_message;
+mod chat_quotes;
 mod chat_store;
 mod chrome;
 mod cindy_json;
