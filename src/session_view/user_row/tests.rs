@@ -44,6 +44,20 @@ pub(in crate::session_view) fn open<'a>(
     serve(cx, dir, width, db)
 }
 
+/// As `open`, each row's `content` column this JSON as it stands.
+pub(in crate::session_view) fn open_json<'a>(
+    cx: &'a mut TestAppContext,
+    dir: &std::path::Path,
+    width: f32,
+    rows: &[&str],
+) -> &'a mut VisualTestContext {
+    let db = super::super::tests::db();
+    for (n, content) in rows.iter().enumerate() {
+        put(&db, n as i64, content, None);
+    }
+    serve(cx, dir, width, db)
+}
+
 fn serve<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,

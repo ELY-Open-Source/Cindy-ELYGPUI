@@ -273,22 +273,36 @@ defines scope and what 1:1 means.
   composer's row at `inputWidth`) at `inputPad`. `stream.rs` is `MessageStream`'s list: the scroller,
   the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only an ordinary
   user message draws so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text
-  joined), `ChatBubble`'s user face, and the long message's fold. gpui shapes the text at the bubble's
-  widest content box while the row is built, so the fold is measured before paint and Cindy's estimate
-  and remembered results are not ported; the text is laid out as Blink lays `pre-wrap` out (no CR, a
-  final line feed ends its line, spaces, tabs and U+3000 at a wrap hang unseen;
-  `logs/review/9.5e-r1-blink-lines.log`, `-blink-spaces.log`). gpui snaps a line's height to the device
+  joined), `ChatBubble`'s user face, and the long message's fold. `flow.rs` breaks a line into rows
+  itself, since gpui's text holds no element: ICU's line break opportunities over the shaped glyphs'
+  advances (`atoms`, read in x order, so right-to-left text keeps its advances), a chip a fixed-width
+  atom at U+FFFC, Blink's own stand-in; a word too long breaks where it overflows (`overflow-wrap:
+  anywhere`), and spaces, tabs and U+3000 at a wrap hang unseen (`logs/review/9.5e-r1-blink-lines.log`,
+  `-blink-spaces.log`). `flow/draw.rs` draws `renderContentWithoutPastedText`'s nodes (`sent::parts`,
+  each text piece apart) row by row, each row a flex row of words, links and chips: no CR, a final line
+  feed ends its line, a line that wraps fills the bubble. A row's parts stand left to right; Blink's
+  reordering of mixed directions across a chip is not ported. The measure shapes with the window's text
+  style, which no element above the text changes. The fold counts the plain text's rows while the row
+  is built, so Cindy's estimate and remembered results are not ported; a folded message draws its first
+  rows and `clamp` ends the last with the ellipsis. A row with a chip grows as Blink's line box does:
+  the chip's 24px margin box centres half an x-height over the baseline
+  (`logs/review/9.5i-r1-blink-chip.log`). `chip.rs` is `InlineReferenceChip`'s inert face for the
+  legacy command, agent, folder and file chips (`FileTypeIcon` through `file_presentation`; lucide
+  0.468's `FileChartColumn` and `FileVideo` live in `lucide.rs`), sized by layout up to
+  `max-w-[min(240px,55vw)]`, with `Tip` after 300ms (`tip::mono` for a path). `UserFileChip`'s click
+  and menu come with 9.12, the persisted ranges with 9.5j. gpui snaps a line's height to the device
   pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live with the mounted
   content, as the component's state does. `links.rs` is `UserMessageUrlLink` with `useOpenWithMenu`: an
-  unfolded message's web addresses (`linkify`, moved through `laid_out`'s offset map) are underlined by
-  text highlights, and a canvas after the text lays a hit box over each stretch of a link's glyphs on a
-  row, ordered by x since the shaper lists right-to-left text from the right (`prepaint_as_root` at the
-  laid-out text's positions); the first box is the link's Tab stop. A click is `activateMessageUrl` (a
-  modifier or the middle button opens the system browser, else the preference; the sidebar browser
-  comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate on key down with
-  their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
-  Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
-  tests `open_external` records the address and starts no program.
+  unfolded message's text pieces are each read for web addresses (`linkify`), underlined by text
+  highlights, and a canvas after a piece lays a hit box over each stretch of a link's glyphs, ordered
+  by x since the shaper lists right-to-left text from the right (`prepaint_as_root` at the laid-out
+  text's positions). A link's boxes on every row share its Tab stop (the first box), the menu and the
+  record of boxes the menu key reads. A click is `activateMessageUrl` (a modifier or the middle button
+  opens the system browser, else the preference; the sidebar browser comes with 17.0, so that open
+  fails with Cindy's toast), Enter and Space activate on key down with their modifiers, a right click,
+  the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`; Ely's `Link` for `link-2`). gpui
+  places an underline itself, so `underline-offset-2` has no port. In tests `open_external` records the
+  address and starts no program.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts

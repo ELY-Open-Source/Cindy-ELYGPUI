@@ -156,7 +156,14 @@ fn words_name_their_chips_as_cindys() {
             Part::Dir { label, path } => object(vec![("dir", text(&label)), ("path", text(&path))]),
             Part::File { name, path } => object(vec![("file", text(&name)), ("path", text(&path))]),
         };
-        let found = parts(args[0].str().unwrap(), args[1] == Js::Bool(true));
-        Js::Arr(found.into_iter().map(shown).collect())
+        // The golden joins neighbouring strings.
+        let mut joined: Vec<Part> = Vec::new();
+        for part in parts(args[0].str().unwrap(), args[1] == Js::Bool(true)) {
+            match (joined.last_mut(), part) {
+                (Some(Part::Text(last)), Part::Text(next)) => last.push_str(&next),
+                (_, part) => joined.push(part),
+            }
+        }
+        Js::Arr(joined.into_iter().map(shown).collect())
     });
 }

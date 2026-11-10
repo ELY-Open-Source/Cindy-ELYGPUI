@@ -9,10 +9,12 @@ use crate::{
     sessions::{self, group::Session, query},
 };
 
+mod chip;
 mod column;
 mod entry_error;
+mod flow;
 pub mod header;
-pub mod items;
+mod items;
 mod links;
 mod stream;
 mod user_row;

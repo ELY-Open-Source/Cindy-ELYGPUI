@@ -999,6 +999,7 @@ dependencies = [
  "icu_decimal",
  "icu_locale_core",
  "icu_plurals",
+ "icu_segmenter",
  "image",
  "indexmap",
  "jiff",

@@ -181,7 +181,7 @@ listed in `tasks/done.md`.
     fails with Cindy's toast; the mail preview comes with its chapter
   - [x] 9.5h What a file looks like: maker-shared `filePresentation.ts` (`getFileVisualKind`,
     `FILE_VISUAL_GLYPHS`), golden; the file chip of 9.5i draws it
-  - [ ] 9.5i The inline flow: the bubble's text as rows the port breaks itself (ICU line break
+  - [x] 9.5i The inline flow: the bubble's text as rows the port breaks itself (ICU line break
     opportunities over shaped glyphs and fixed-width chips, as gpui's text wraps), so a chip sits
     in a line of text; `InlineReferenceChip`'s inert face with its tip; the legacy command, agent,
     folder and file chips of `renderContentWithoutPastedText` (`sent::parts`, `FileTypeIcon`),

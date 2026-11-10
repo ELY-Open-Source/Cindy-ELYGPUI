@@ -3,11 +3,15 @@
 use ely_gpui_component::primitives::IconName;
 use gpui::{
     AnyElement, App, BoxShadow, ElementId, InteractiveElement as _, IntoElement,
-    ParentElement as _, Pixels, RenderOnce, Role, SharedString, StatefulInteractiveElement as _,
-    Styled as _, Window, div, point, prelude::FluentBuilder as _, px, relative,
+    ParentElement as _, RenderOnce, Role, StatefulInteractiveElement as _, Styled as _, Window,
+    div, point, prelude::FluentBuilder as _, px, relative,
 };
 
-use super::{SessionView, links, width::Widths};
+use super::{
+    SessionView,
+    flow::draw::{self, Look},
+    width::Widths,
+};
 use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
@@ -50,59 +54,6 @@ fn fold(origin: Option<&Js>) -> Fold {
             kept: 10,
         },
     }
-}
-
-/// White space that hangs past a line's end in `pre-wrap`.
-fn hangs(c: char) -> bool {
-    matches!(c, ' ' | '\t' | '\u{3000}')
-}
-
-/// Where gpui wraps one line of text at `width`, in bytes.
-fn wraps(line: &str, size: Pixels, width: Pixels, window: &Window) -> Vec<usize> {
-    let run = window.text_style().to_run(line.len());
-    let text = SharedString::from(line.to_owned());
-    let shaped = window
-        .text_system()
-        .shape_text(text, size, &[run], Some(width), None);
-    let shaped =
-        shaped.unwrap_or_else(|error| panic!("the user message does not shape: {error:#}"));
-    let line = shaped.first().expect("one line shapes to one");
-    let at = |b: &gpui::WrapBoundary| line.unwrapped_layout.runs[b.run_ix].glyphs[b.glyph_ix].index;
-    line.wrap_boundaries().iter().map(at).collect()
-}
-
-/// The laid-out text, its visual lines, and where each kept stretch (CR gone) starts in it.
-type Laid = (String, usize, Vec<(usize, usize)>);
-
-/// The text as Blink lays `pre-wrap` out at `width`.
-fn laid_out(body: &str, size: Pixels, width: Pixels, window: &Window) -> Laid {
-    let text = body.replace('\r', "");
-    let text = text.strip_suffix('\n').unwrap_or(&text);
-    let (mut out, mut count, mut map, mut at) = (Vec::new(), 0, Vec::new(), 0);
-    let mut keep = |kept: &str| {
-        map.push((kept.as_ptr() as usize - text.as_ptr() as usize, at));
-        at += kept.len() + 1;
-    };
-    for mut rest in text.split('\n') {
-        loop {
-            let wraps = wraps(rest, size, width, window);
-            let hung = wraps.iter().position(|at| rest[*at..].starts_with(hangs));
-            let Some(hung) = hung else {
-                count += wraps.len() + 1;
-                keep(rest);
-                out.push(rest);
-                break;
-            };
-            count += hung + 1;
-            keep(&rest[..wraps[hung]]);
-            out.push(&rest[..wraps[hung]]);
-            rest = rest[wraps[hung]..].trim_start_matches(hangs);
-            if rest.is_empty() {
-                break;
-            }
-        }
-    }
-    (out.join("\n"), count, map)
 }
 
 fn unfolded(key: &str, cx: &App) -> bool {
@@ -232,27 +183,24 @@ pub fn element(
     let size = text_size(15.0, cx) - compact;
     let rem = window.rem_size();
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
-    let (text, lines, map) = laid_out(&body, css(size).to_pixels(rem), width, window);
-    let folds = collapse::may_exceed(&body, fold.threshold) && lines > fold.threshold;
+    let style = draw::style(css(size).to_pixels(rem), window);
+    let folds = collapse::may_exceed(&body, fold.threshold)
+        && draw::count(&body, &style, width, window) > fold.threshold;
     let open = unfolded(key, cx);
-    // A folded message draws plain text, as `interactive` false does.
-    let links = match folds && !open {
-        true => Vec::new(),
-        false => links::place(&body, &map),
+    let look = Look {
+        key,
+        style,
+        chip: text_size(12.0, cx) - compact,
+        width,
+        kept: (folds && !open).then_some(fold.kept),
     };
-    let text = match links.is_empty() {
-        true => text.into_any_element(),
-        false => links::text(key, text, links, window, cx),
-    };
+    // The persisted ranges, which end the `/command` heuristic, come with 9.5j.
+    let legacy = get(message, "slashCommandRanges").is_none();
+    let text = draw::text(&body, legacy, &look, window, cx);
     let appearance = cx.global::<Appearance>();
     let selector = format!("{key}-bubble");
     let text_selector = format!("{key}-text");
-    let text = div()
-        .debug_selector(move || text_selector)
-        .when(folds && !open, |el| {
-            el.text_ellipsis().line_clamp(fold.kept)
-        })
-        .child(text);
+    let text = div().debug_selector(move || text_selector).child(text);
     // `ChatBubble`'s user face over `CHAT_BODY_CLASS`.
     let bubble = div()
         .debug_selector(move || selector)

@@ -166,3 +166,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   line terminator. Twelve inputs added to the golden (CR, LF, U+2028, U+2029, an astral character,
   a letter).
 - Round 2: PASS.
+
+## 9.5i The inline flow
+
+- Round 1: FAIL. P3: an agent chip with an empty name (`@.claude/agents/.md`) showed an empty tip;
+  Cindy's `Tip` mounts nothing for empty text.
+- Fixed: the chip registers no tooltip for an empty tip; a test hovers such a chip.
+- Round 2: PASS.

@@ -1,7 +1,5 @@
 //! maker-shared `filePresentation.ts`: what a file looks like, never what may open it.
 
-#![cfg_attr(not(test), expect(dead_code, reason = "9.5i's file chip draws it"))]
-
 use std::sync::LazyLock;
 
 use regex::Regex;

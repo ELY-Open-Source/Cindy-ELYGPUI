@@ -1,6 +1,6 @@
-//! `UserMessageUrlLink`: the web addresses of an unfolded message, with `useOpenWithMenu`.
+//! `UserMessageUrlLink`: a message's web addresses over its text, with `useOpenWithMenu`.
 
-use std::ops::Range;
+use std::{cell::RefCell, ops::Range, rc::Rc};
 
 use ely_gpui_component::{
     menus::{ContextMenu, Menu, MenuItem},
@@ -8,21 +8,22 @@ use ely_gpui_component::{
 };
 use gpui::{
     AnyElement, App, Bounds, ClickEvent, ClipboardItem, ElementId, Entity, FocusHandle,
-    HighlightStyle, InteractiveElement as _, IntoElement, Modifiers, MouseButton,
+    HighlightStyle, InteractiveElement as _, IntoElement, LineLayout, Modifiers, MouseButton,
     ParentElement as _, Pixels, Point, Role, SharedString, StatefulInteractiveElement as _,
-    Styled as _, StyledText, TextLayout, UnderlineStyle, Window, WrappedLineLayout, canvas, div,
-    point, prelude::FluentBuilder as _, size,
+    Styled as _, StyledText, TextLayout, UnderlineStyle, Window, canvas, div, point,
+    prelude::FluentBuilder as _, px, size,
 };
 
 use crate::{
     i18n::Translator,
     link_open::{self, Target},
-    linkify, open_external, toast,
+    open_external, toast,
     units::css,
 };
 
-/// A web address and where its text lies in the drawn text.
+/// A web address and the bytes of it a piece of text holds; `nth` counts the message's links.
 pub struct Link {
+    pub nth: usize,
     pub range: Range<usize>,
     pub url: SharedString,
 }
@@ -34,61 +35,39 @@ struct Asked {
     url: SharedString,
 }
 
-/// The web links of `body`, moved to where the drawn text keeps them; `map` pairs offsets.
-pub fn place(body: &str, map: &[(usize, usize)]) -> Vec<Link> {
-    let urls = linkify::find(body)
-        .into_iter()
-        .filter(|found| matches!(found.link, linkify::Link::Url));
-    urls.map(|found| {
-        let url = &body[found.range.clone()];
-        let start = found.range.start - body[..found.range.start].matches('\r').count();
-        let (from, to) = map[map.partition_point(|(from, _)| *from <= start) - 1];
-        let start = to + start - from;
-        Link {
-            range: start..start + url.len(),
-            url: url.to_owned().into(),
-        }
-    })
-    .collect()
+/// A link's boxes in the window, in the order they were placed.
+type Spots = Rc<RefCell<Vec<Bounds<Pixels>>>>;
+
+/// What a message's links share: the menu's ask, and each link's Tab stop and boxes.
+pub struct Shared {
+    asked: Entity<Asked>,
+    focus: Vec<FocusHandle>,
+    spots: Vec<Spots>,
 }
 
-/// A box per stretch of the range's glyphs on a visual line, from the shaped line's origin.
-fn boxes(line: &WrappedLineLayout, range: Range<usize>, height: Pixels) -> Vec<Bounds<Pixels>> {
-    let runs = line.unwrapped_layout.runs.iter().enumerate();
-    let glyphs =
-        runs.flat_map(|(run, shaped)| shaped.glyphs.iter().enumerate().map(move |g| (run, g)));
-    let cuts: Vec<(usize, usize)> = line
-        .wrap_boundaries()
-        .iter()
-        .map(|b| (b.run_ix, b.glyph_ix))
+/// A box per stretch of the range's glyphs, from the shaped line's origin.
+fn boxes(line: &LineLayout, range: Range<usize>, height: Pixels) -> Vec<Bounds<Pixels>> {
+    let glyphs = line.runs.iter().flat_map(|run| run.glyphs.iter());
+    let mut placed: Vec<(Pixels, bool)> = glyphs
+        .map(|glyph| (glyph.position.x, range.contains(&glyph.index)))
         .collect();
-    // Each glyph's x, its row with that row's first x, and whether the link holds it.
-    let (mut placed, mut row, mut origin) = (Vec::new(), 0, Pixels::ZERO);
-    for (run, (nth, glyph)) in glyphs {
-        if cuts.get(row) == Some(&(run, nth)) {
-            (row, origin) = (row + 1, glyph.position.x);
-        }
-        let inside = range.contains(&glyph.index);
-        placed.push((glyph.position.x, (row, origin), inside));
-    }
     // The shaper lists right-to-left text from the right: x gives the visual order.
     placed.sort_by(|a, b| f32::from(a.0).total_cmp(&f32::from(b.0)));
     let (mut out, mut open) = (Vec::new(), None);
-    let mut close = |from: Pixels, to: Pixels, (row, origin): (usize, Pixels)| {
-        let at = point(from - origin, height * row as f32);
-        out.push(Bounds::new(at, size(to - from, height)));
+    let mut close = |from: Pixels, to: Pixels| {
+        out.push(Bounds::new(point(from, px(0.0)), size(to - from, height)));
     };
-    for (x, row, inside) in placed {
-        if let Some((from, on)) = open.filter(|(_, on)| !inside || *on != row) {
-            close(from, x, on);
+    for (x, inside) in placed {
+        if let Some(from) = open.filter(|_| !inside) {
+            close(from, x);
             open = None;
         }
         if inside && open.is_none() {
-            open = Some((x, row));
+            open = Some(x);
         }
     }
-    if let Some((from, on)) = open {
-        close(from, line.unwrapped_layout.width, on);
+    if let Some(from) = open {
+        close(from, line.width);
     }
     out
 }
@@ -174,7 +153,7 @@ fn ask(asked: &Entity<Asked>, url: &SharedString, at: Point<Pixels>, cx: &mut Ap
     });
 }
 
-/// One visual line of a link; the first is its Tab stop.
+/// One box of a link; the first is its Tab stop.
 struct Piece {
     id: String,
     first: bool,
@@ -182,8 +161,7 @@ struct Piece {
     url: SharedString,
     focus: FocusHandle,
     asked: Entity<Asked>,
-    /// `linkMenuPosition` for a key: the link's left and bottom.
-    under: Point<Pixels>,
+    spots: Spots,
 }
 
 impl Piece {
@@ -195,7 +173,7 @@ impl Piece {
             url,
             focus,
             asked,
-            under,
+            spots,
         } = self;
         let selector = id.clone();
         let (left, middle, right, keys) = (url.clone(), url.clone(), url.clone(), url);
@@ -215,6 +193,11 @@ impl Piece {
                         if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
                             window.prevent_default();
                             cx.stop_propagation();
+                            // `linkMenuPosition` for a key: the link's left and bottom.
+                            let spots = spots.borrow();
+                            let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
+                            let bottom = spots.last().map(Bounds::bottom);
+                            let under = point(left.unwrap_or_default(), bottom.unwrap_or_default());
                             ask(&by_key, &keys, under, cx);
                         } else if matches!(k.key.as_str(), "enter" | "space") {
                             window.prevent_default();
@@ -248,40 +231,43 @@ impl Piece {
     }
 }
 
-/// The links' hit boxes over the text, placed once the text is laid out.
-fn overlay(
-    key: String,
-    links: Vec<Link>,
-    layout: TextLayout,
-    focus: Vec<FocusHandle>,
-    asked: Entity<Asked>,
-) -> impl IntoElement {
+/// The links' hit boxes over a piece of text, placed once the text is laid out.
+fn overlay(key: String, links: Vec<Link>, layout: TextLayout, shared: &Shared) -> impl IntoElement {
+    let asked = shared.asked.clone();
+    let stops = |link: &Link| {
+        (
+            shared.focus[link.nth].clone(),
+            shared.spots[link.nth].clone(),
+        )
+    };
+    let stops: Vec<(FocusHandle, Spots)> = links.iter().map(stops).collect();
     let prepaint = move |_, window: &mut Window, cx: &mut App| {
-        let text = layout.text();
+        let line = layout.line_layout_for_index(0);
+        let line = line.expect("a piece with a link is drawn");
+        let origin = layout.position_for_index(0);
+        let origin = origin.expect("a drawn line has its origin");
         let mut drawn = Vec::new();
-        for (n, (link, focus)) in links.iter().zip(focus).enumerate() {
-            let start = text[..link.range.start].rfind('\n').map_or(0, |at| at + 1);
-            let line = layout.line_layout_for_index(link.range.start);
-            let line = line.expect("a link lies in a drawn line");
-            let origin = layout.position_for_index(start);
-            let origin = origin.expect("a drawn line has its origin");
-            let within = link.range.start - start..link.range.end - start;
-            let boxes = boxes(&line, within, layout.line_height());
-            let left = boxes.iter().map(|b| b.left()).reduce(Pixels::min);
-            let bottom = boxes.last().map(Bounds::bottom);
-            let under = origin + point(left.unwrap_or_default(), bottom.unwrap_or_default());
-            for (row, bounds) in boxes.into_iter().enumerate() {
+        for (link, (focus, spots)) in links.iter().zip(stops) {
+            let found = boxes(
+                &line.unwrapped_layout,
+                link.range.clone(),
+                layout.line_height(),
+            );
+            for bounds in found {
+                let at = origin + bounds.origin;
+                let row = spots.borrow().len();
+                spots.borrow_mut().push(Bounds::new(at, bounds.size));
                 let piece = Piece {
-                    id: format!("{key}-link-{n}-{row}"),
+                    id: format!("{key}-link-{}-{row}", link.nth),
                     first: row == 0,
                     size: bounds.size,
                     url: link.url.clone(),
                     focus: focus.clone(),
                     asked: asked.clone(),
-                    under,
+                    spots: spots.clone(),
                 };
                 let mut piece = piece.element();
-                piece.prepaint_as_root(origin + bounds.origin, bounds.size.into(), window, cx);
+                piece.prepaint_as_root(at, bounds.size.into(), window, cx);
                 drawn.push(piece);
             }
         }
@@ -295,14 +281,8 @@ fn overlay(
     canvas(prepaint, paint).absolute().size_full()
 }
 
-/// The text with its links underlined, and the menu they share.
-pub fn text(
-    key: &str,
-    text: String,
-    links: Vec<Link>,
-    window: &mut Window,
-    cx: &mut App,
-) -> AnyElement {
+/// The state `count` links of the message at `key` share.
+pub fn shared(key: &str, count: usize, window: &mut Window, cx: &mut App) -> Shared {
     let state = |name: String| ElementId::Name(name.into());
     let asked = window.use_keyed_state(state(format!("{key}-link-asked")), cx, |_, _| {
         Asked::default()
@@ -312,7 +292,21 @@ pub fn text(
         let stop = window.use_keyed_state(id, cx, |_, cx| cx.focus_handle().tab_stop(true));
         stop.read(cx).clone()
     };
-    let focus: Vec<FocusHandle> = (0..links.len()).map(stop).collect();
+    Shared {
+        asked,
+        focus: (0..count).map(stop).collect(),
+        spots: (0..count).map(|_| Spots::default()).collect(),
+    }
+}
+
+/// A piece of the message's text with its links underlined.
+pub fn piece(
+    key: &str,
+    text: String,
+    links: Vec<Link>,
+    shared: &Shared,
+    window: &Window,
+) -> AnyElement {
     // `underline`; gpui places the line itself, so `underline-offset-2` has no port.
     let underline = HighlightStyle {
         underline: Some(UnderlineStyle {
@@ -324,14 +318,24 @@ pub fn text(
     let marks = links.iter().map(|link| (link.range.clone(), underline));
     let styled = StyledText::new(text).with_highlights(marks);
     let layout = styled.layout().clone();
+    div()
+        .relative()
+        .flex_none()
+        .child(styled)
+        .child(overlay(key.to_owned(), links, layout, shared))
+        .into_any_element()
+}
+
+/// The menu the message's links share, around its text.
+pub fn host(key: &str, shared: &Shared, text: AnyElement, cx: &App) -> AnyElement {
     let (request, url) = {
-        let asked = asked.read(cx);
+        let asked = shared.asked.read(cx);
         (asked.request, asked.url.clone())
     };
-    ContextMenu::new(state(format!("{key}-link-menu")), menu(&url, cx))
+    let id = ElementId::Name(format!("{key}-link-menu").into());
+    ContextMenu::new(id, menu(&url, cx))
         .manual(request)
-        .child(styled)
-        .child(overlay(key.to_owned(), links, layout, focus, asked))
+        .child(text)
         .into_any_element()
 }
 

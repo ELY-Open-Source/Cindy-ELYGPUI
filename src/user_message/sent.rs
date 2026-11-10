@@ -320,10 +320,11 @@ pub fn parts(content: &str, legacy: bool) -> Vec<Part> {
         js_re::regex(&format!(r#"@"(?:\\{line}|[^"\\])*"|@\S+"#), false)
     });
     let mut out: Vec<Part> = Vec::new();
-    let text = |out: &mut Vec<Part>, piece: &str| match out.last_mut() {
-        _ if piece.is_empty() => {}
-        Some(Part::Text(last)) => last.push_str(piece),
-        _ => out.push(Part::Text(piece.to_owned())),
+    // Each piece stays apart, as each is scanned for links alone.
+    let text = |out: &mut Vec<Part>, piece: &str| {
+        if !piece.is_empty() {
+            out.push(Part::Text(piece.to_owned()));
+        }
     };
     for (at, mut line) in content.split('\n').enumerate() {
         if at > 0 {

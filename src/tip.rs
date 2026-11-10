@@ -3,8 +3,8 @@
 use std::rc::Rc;
 
 use gpui::{
-    AnyElement, AnyView, App, AppContext, Context, IntoElement, ParentElement, Render,
-    SharedString, Styled, Window, div,
+    AnyElement, AnyView, App, AppContext, Context, InteractiveElement as _, IntoElement,
+    ParentElement, Render, SharedString, Styled, Window, div,
 };
 
 use crate::units::css;
@@ -22,6 +22,7 @@ impl Render for Tip {
         let appearance = cx.global::<Appearance>();
         let size = text_size(13.0, cx);
         div()
+            .debug_selector(|| "tip".into())
             .max_w(css(self.max_width))
             .rounded(css(12.0))
             .px(css(10.0))
@@ -39,6 +40,20 @@ impl Render for Tip {
 pub fn tip(text: impl Into<SharedString>) -> impl Fn(&mut Window, &mut App) -> AnyView {
     let text = text.into();
     rich(420.0, move |_, _| text.clone().into_any_element())
+}
+
+/// `Tip`'s `mono`: a path or a command in the code face.
+pub fn mono(text: impl Into<SharedString>) -> impl Fn(&mut Window, &mut App) -> AnyView {
+    use ely_gpui_component::theme::ActiveTheme as _;
+    let text = text.into();
+    rich(420.0, move |_, cx| {
+        let family = cx.theme().mono_family.clone();
+        div()
+            .debug_selector(|| "tip-mono".into())
+            .font_family(family)
+            .child(text.clone())
+            .into_any_element()
+    })
 }
 
 /// A tip of other content, `max-w-[N]` wide.
