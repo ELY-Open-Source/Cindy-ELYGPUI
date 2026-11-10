@@ -16,6 +16,7 @@ fn open(cx: &mut TestAppContext, dir: &std::path::Path, width: f32) -> Parts {
 struct Parts {
     view: Bounds<Pixels>,
     messages: Bounds<Pixels>,
+    scroll: Bounds<Pixels>,
     fade: Bounds<Pixels>,
     zone: Bounds<Pixels>,
     slot: Bounds<Pixels>,
@@ -28,6 +29,7 @@ fn parts(cx: &mut VisualTestContext) -> Parts {
     Parts {
         view: at("session-view"),
         messages: at("session-messages"),
+        scroll: at("session-scroll"),
         fade: at("session-composer-fade"),
         zone: at("session-composer-zone"),
         slot: at("session-composer-slot"),
@@ -39,7 +41,8 @@ fn check(p: &Parts, message: f32, input: f32, pad: f32) {
     assert_eq!(p.messages.size.width, px(message));
     let margin = (p.view.size.width - px(message)) / 2.0;
     assert_eq!(p.messages.left(), p.view.left() + margin, "mx-auto");
-    assert_eq!(p.messages.size.height, p.view.size.height);
+    assert_eq!(p.scroll.size, p.view.size, "the scroller fills the view");
+    assert_eq!(p.messages.size.height, px(28.0), "pt-7 over no row");
     assert_eq!(p.slot.size.width, px(input));
     assert_eq!(p.zone.left(), p.view.left() + px(pad));
     assert_eq!(p.zone.right(), p.view.right() - px(pad));

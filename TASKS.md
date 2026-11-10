@@ -159,11 +159,20 @@ listed in `tasks/done.md`.
     `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; maker-shared `chatQuotes.ts`
     (`formatQuoteForSend`, `parseChatQuoteSegments`, `joinChatQuoteTextSegments`,
     `stripChatQuoteMarkerLines`); golden. `readAgentInputReferences` and `slashCommandDisplayLabel`
-    come with 9.5f's chips, the outer `renderContent` with the bubble
-  - [ ] 9.5e The bubble: the user row drawn from 9.4e's items, text with URL links
-    (`UserMessageUrlLink.tsx`, `message-link-clickability.md`), the measured collapse with its
-    cache and toggle, `chat-rail-compact`'s type scale
-  - [ ] 9.5f The chips: attachments, quotes, inline references, command, mention, session and
+    come with 9.5g's chips, the outer `renderContent` with the bubble
+  - [x] 9.5e The bubble: the stream's list (`msg-stream-items`) with the user row drawn from 9.4e's
+    items, `ChatBubble` with its wallpaper glass fill, the text of an ordinary message (display
+    text, quote text joined), the collapse measured in the frame's layout with its toggle
+    (`line-clamp-10`, 3 for an automation message at threshold 4), `chat-rail-compact`'s type
+    scale. The measure runs before paint, so Cindy's first-frame estimate and remembered results
+    have no reader: `shouldAutoCollapseUserMessageContent` goes. The measured text takes its pasted
+    and reference labels with 9.5g's chips; text selection comes with 9.6, the scroll's padding and
+    gutter with 9.14, the action bar with 9.16, ghost cards with 16.0
+  - [ ] 9.5f URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`):
+    `activateMessageUrl` with `isSeparateLinkActivation`, the link open preference
+    (`useLinkOpenPreference.ts`), `shell:open-external`, the open-with menu
+    (`useOpenWithMenu.tsx`); the sidebar browser and mail preview come with their chapters
+  - [ ] 9.5g The chips: attachments, quotes, inline references, command, mention, session and
     project links, image path links (`UserMessageImageLink.tsx`), the Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,

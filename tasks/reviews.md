@@ -127,3 +127,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: PASS.
 ## 9.5d The sent text's tokens
 - Round 1: PASS.
+## 9.5e The bubble
+- Round 1, cut short: the reviewer stopped before its verdict, having named two findings. White
+  space at a line's end wrapped into lines Blink never makes, and the fold's button lacked
+  `aria-expanded`.
+- Fixed before the round ran again: white space at a wrap hangs, as Blink's `pre-wrap` hangs it
+  (`logs/review/9.5e-r1-blink-spaces.log`), in the drawn text and the line count alike; the button
+  carries `aria-expanded`.
+- Round 1, run again: PASS.

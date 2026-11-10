@@ -1,6 +1,6 @@
 //! `userMessageLinkify.ts`: the links in a user message's plain text. Ranges are bytes.
 
-#![cfg_attr(not(test), expect(dead_code, reason = "9.5e's bubble draws the links"))]
+#![cfg_attr(not(test), expect(dead_code, reason = "9.5f draws the links"))]
 
 use std::{ops::Range, sync::LazyLock};
 

@@ -94,7 +94,6 @@ pub(super) fn render(cx: &mut App) {
 }
 
 /// The routed task's items, once its view is ready; `Err` is the projection's throw.
-#[cfg_attr(not(test), expect(dead_code, reason = "the rows of 9.5 draw them"))]
 pub fn items(cx: &App) -> Option<&Result<Rc<Projection>, String>> {
     let shown = cx.global::<SessionView>().shown.as_ref()?;
     shown.content.as_ref()?.stream.as_ref()?.items.as_ref()

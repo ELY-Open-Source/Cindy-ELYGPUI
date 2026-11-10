@@ -2,7 +2,7 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "9.5e's bubble and 9.5f's chips read the links")
+    expect(dead_code, reason = "9.5f's links and 9.5g's chips read them")
 )]
 
 use crate::cindy_json::decode_uri_component;

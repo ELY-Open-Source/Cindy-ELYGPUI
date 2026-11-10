@@ -500,7 +500,6 @@ try {
     resolveUserDisplayText: userDisplay.resolveUserDisplayText,
     resolveHookGroupContext: userDisplay.resolveHookGroupContext,
     parseOrcaCommunicationContent: userDisplay.parseOrcaCommunicationContent,
-    shouldAutoCollapseUserMessageContent: userCollapse.shouldAutoCollapseUserMessageContent,
     mayExceedVisualLineThreshold: userCollapse.mayExceedVisualLineThreshold,
   } });
   console.log(`${userMessageCases} user message cases`);

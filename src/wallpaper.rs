@@ -8,7 +8,7 @@ use std::path::Path;
 
 use crate::cindy_json::{self, Fields, js_round, number, string};
 
-pub use canvas::{Wallpaper, active, canvas, clear};
+pub use canvas::{Wallpaper, active, canvas, clear, glass};
 
 /// A hidden window renders nothing, so its video pauses here.
 pub fn visibility_changed(window: &mut gpui::Window, cx: &mut gpui::App) {

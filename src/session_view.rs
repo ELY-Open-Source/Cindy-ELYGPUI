@@ -13,6 +13,8 @@ mod column;
 mod entry_error;
 pub mod header;
 pub mod items;
+mod stream;
+mod user_row;
 mod width;
 
 pub use entry_error::element;
@@ -44,6 +46,8 @@ struct Content {
     read: u64,
     /// The task's view and its render items.
     stream: Option<items::Watch>,
+    /// The long messages shown in full, by item key.
+    unfolded: std::collections::HashSet<String>,
 }
 
 #[derive(Default)]
@@ -178,6 +182,7 @@ fn mount(id: &str, cx: &mut App) {
         found: None,
         read: 0,
         stream: None,
+        unfolded: Default::default(),
     });
     content_read(cx);
     let store = Store::global(cx);

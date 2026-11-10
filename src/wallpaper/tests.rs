@@ -346,3 +346,43 @@ fn no_wallpaper_paints_nothing(cx: &mut gpui::TestAppContext) {
     assert!(vcx.debug_bounds("wallpaper-canvas").is_none());
     vcx.update(|_, cx| assert!(!super::active(cx)));
 }
+
+fn appear(cx: &mut gpui::App, family: &str, os: gpui::WindowAppearance) {
+    let initial = crate::os_appearance::Initial {
+        os,
+        gpui_agrees: true,
+    };
+    let appearance =
+        crate::theme::Appearance::new(crate::theme::Mode::System, Some(family), initial, None);
+    cx.set_global(appearance.unwrap());
+}
+
+#[gpui::test]
+fn raised_surfaces_tint_the_wallpaper_under_cindys_themes(cx: &mut gpui::TestAppContext) {
+    use gpui::WindowAppearance::{Dark, Light};
+    let fill = gpui::hsla(0.5, 0.5, 0.5, 0.5);
+    let glass = |cx: &mut gpui::TestAppContext, text: &str| {
+        let mut vcx = paint(cx, text);
+        vcx.update(|_, cx| super::glass(fill, cx).a)
+    };
+    // Dark keeps 64% of the fill until the wallpaper's share would pass 16%.
+    let dim = r#"{"wallpaperId": "dune-dawn", "wallpaperVisibility": 0.3}"#;
+    assert_eq!(glass(cx, dim), 0.5 * 0.64);
+    let hidden = r#"{"wallpaperId": "dune-dawn", "wallpaperVisibility": 0}"#;
+    assert_eq!(glass(cx, hidden), 0.5 * 0.64);
+    let full = r#"{"wallpaperId": "dune-dawn", "wallpaperVisibility": 1}"#;
+    assert_eq!(glass(cx, full), 0.5 * 0.84);
+    assert_eq!(glass(cx, "{}"), 0.5, "no wallpaper");
+    let mut vcx = paint(cx, dim);
+    vcx.update(|_, cx| {
+        appear(cx, "cindy", Light);
+        assert_eq!(super::glass(fill, cx).a, 0.5 * 0.72);
+        appear(cx, "default", Dark);
+        assert!(!crate::window_material::cindy_theme(cx.global()));
+        assert_eq!(
+            super::glass(fill, cx),
+            fill,
+            "other themes keep solid surfaces"
+        );
+    });
+}

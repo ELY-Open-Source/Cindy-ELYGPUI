@@ -83,13 +83,7 @@ fn threshold(args: &[Js]) -> usize {
 }
 
 #[test]
-fn the_estimates_are_cindys() {
-    golden("shouldAutoCollapseUserMessageContent", |args| {
-        Js::Bool(collapse::should_collapse(
-            args[0].str().unwrap(),
-            threshold(args),
-        ))
-    });
+fn the_coarse_filter_is_cindys() {
     golden("mayExceedVisualLineThreshold", |args| {
         Js::Bool(collapse::may_exceed(
             args[0].str().unwrap(),

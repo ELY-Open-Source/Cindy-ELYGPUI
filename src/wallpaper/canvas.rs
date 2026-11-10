@@ -226,6 +226,25 @@ pub fn clear(color: Hsla, cx: &App) -> Hsla {
     }
 }
 
+/// `GLASS_MAX_WALLPAPER_SHARE`.
+const GLASS_SHARE: f64 = 0.16;
+
+/// An in-page raised surface: under a wallpaper Cindy's own themes tint it with its fill.
+pub fn glass(fill: Hsla, cx: &App) -> Hsla {
+    let appearance = cx.global::<Appearance>();
+    if !active(cx) || !crate::window_material::cindy_theme(appearance) {
+        return fill;
+    }
+    let dark = appearance.kind() == Kind::Dark;
+    let visibility = cx.global::<Wallpaper>().settings.visibility(dark);
+    let floor = match visibility > 0.0 {
+        true => ((1.0 - GLASS_SHARE / visibility).max(0.0) * 100.0).ceil(),
+        false => 0.0,
+    };
+    let share = floor.max(if dark { 64.0 } else { 72.0 }) / 100.0;
+    fill.opacity(share as f32)
+}
+
 /// `body::before` and `.app-wallpaper-video`: the surface, the cover image, the veil, then the
 /// video. A blur overscans the box by three radii, as the CSS does.
 pub fn canvas(window: &mut Window, cx: &mut App) -> Option<AnyElement> {

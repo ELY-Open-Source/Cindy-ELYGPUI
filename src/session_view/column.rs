@@ -2,7 +2,7 @@
 
 use gpui::{
     AnyElement, App, AvailableSpace, InteractiveElement as _, IntoElement as _, ParentElement as _,
-    Styled as _, canvas, div, linear_color_stop, linear_gradient, size,
+    Styled as _, Window, canvas, div, linear_color_stop, linear_gradient, size,
 };
 
 use super::width::{Widths, widths};
@@ -16,7 +16,7 @@ pub fn element() -> AnyElement {
     canvas(
         |bounds, window, cx| {
             let widths = widths(units::to_css(bounds.size.width, cx))?;
-            let mut section = section(widths, cx);
+            let mut section = section(widths, window, cx);
             let space = size(
                 AvailableSpace::Definite(bounds.size.width),
                 AvailableSpace::Definite(bounds.size.height),
@@ -37,16 +37,10 @@ pub fn element() -> AnyElement {
 }
 
 /// `section`: the message viewport, and the dock over its foot.
-fn section(widths: Widths, cx: &App) -> AnyElement {
+fn section(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement {
     let area = cx.global::<Appearance>().hsl_token("content-area");
     let area = crate::wallpaper::clear(area, cx);
-    // Rows come with 9.4 to 9.14: `mx-auto` at `messageWidth`.
-    let messages = div()
-        .debug_selector(|| "session-messages".into())
-        .mx_auto()
-        .h_full()
-        .w_full()
-        .max_w(css(widths.message));
+    let messages = super::stream::element(widths, window, cx);
     let viewport = div().relative().min_h_0().flex_1().child(messages);
     // `bg-gradient-to-t from-content-area to-transparent`, `h-8`.
     let fade = div()

@@ -2,7 +2,7 @@
 
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "9.5e's bubble shows the text and folds it")
+    expect(dead_code, reason = "9.5g's chips and hook card read the rest")
 )]
 
 use std::sync::LazyLock;
