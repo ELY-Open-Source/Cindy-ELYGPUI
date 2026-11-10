@@ -168,6 +168,15 @@ pub fn find<'a>(id: &str, cx: &'a App) -> Option<&'a Session> {
     buckets.find(|s| s.id == id)
 }
 
+/// `sessionsStore.getTitleById`: the first held title of the task, trimmed.
+pub fn held_title(id: &str, cx: &App) -> Option<String> {
+    let loaded = cx.global::<Sessions>().loaded.as_ref()?;
+    let mut buckets = loaded.sessions.iter().chain(&loaded.all);
+    let held = buckets.find(|s| s.id == id && !s.title.is_empty())?;
+    let title = crate::theme_import::color::js_trim(&held.title);
+    (!title.is_empty()).then(|| title.to_owned())
+}
+
 /// A loaded list of `(id, status, source)` tasks.
 #[cfg(test)]
 pub fn load_for_tests(tasks: &[(&str, &str, &str)], cx: &mut App) {

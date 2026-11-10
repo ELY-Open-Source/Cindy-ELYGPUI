@@ -200,25 +200,30 @@ defines scope and what 1:1 means.
   (`logs/review/9.5f-r1-native-*.log`). `src/file_presentation.rs` is maker-shared
   `filePresentation.ts` (`kind` is `getFileVisualKind`, `glyph` `FILE_VISUAL_GLYPHS`; golden
   `file-presentation`).
-- Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
-  global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
-  13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view
-  (`lastViewStore`'s chat slot, kept by `navigate` as `useTrackLastView` does), the first task, or
-  `/cc-agent/new`. The chat pane shows its loading line meanwhile. `sessions/open.rs` is
-  `handleSessionClick`: a plain click on a row, list row or card opens `/cc-agent/<id>` unless it is
-  shown; a Shift, Mod or Ctrl click waits for 8.6d's selection. The active task
-  (`router::active_session`) draws as Cindy's: its pill and ring (an absolute bordered overlay stands
-  in for the inset shadow), foreground and tints. The task menu wraps a renamed row too, so a press
-  that commits a rename lands its click; the field stops right presses. `sessions/keyboard.rs` hosts
-  that menu (Ely `ContextMenu::manual`) and makes each row, list row and card a Tab stop: Enter or
-  Space on the row itself opens it; the menu key (key up on Windows) or Shift+F10 (not macOS) opens the
-  menu at the focused row's or More's centre, as Chromium's `ShowNonLocatedContextMenu` does. Prepaint
-  probes record those visible bounds. `select.rs` is the bulk selection of `handleSessionClick`: the
-  row probes also list the rows painted (the `Drawn` global, pinned card slots marked with
-  `rowMajorRank`), which stands in for `getVisibleSidebarSessionIds`; a probe at the list's end prunes
-  the selection, as the MutationObserver does. The bulk bar has Clear; Archive and Delete come with
-  18.0. `reveal.rs` is `scrollIntoNearestView`: a row that turns active, or mounts active, is scrolled
-  to CSSOM's `nearest` on the list's `ScrollHandle`, along Chromium 148's desktop programmatic curve
+- Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one location in the `Router`
+  global, starting at `/`: its pathname, which the routes match, and the search a link carries for the
+  page it opens. `route` is React Router 7.18's `matchRoutes`: `decodePath` decodes each segment first
+  (a pathname that does not decode stays as written) and a param's `%2F` comes back a slash, so
+  `active_session` is the task's own id. The last chat view is `useTrackLastView`'s `matchPath` on the
+  pathname as it stands (`matched`), so an id with escapes is kept escaped, as Cindy keeps it. `/` goes
+  to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs 13.0's owner-scoped storage);
+  `/cc-agent` waits for the task list, then opens the last chat view (`lastViewStore`'s chat slot, kept
+  by `navigate` as `useTrackLastView` does), the first task, or `/cc-agent/new`. The chat pane shows
+  its loading line meanwhile. `sessions/open.rs` is `handleSessionClick`: a plain click on a row, list
+  row or card opens `/cc-agent/<id>` unless it is shown; a Shift, Mod or Ctrl click waits for 8.6d's
+  selection. The active task (`router::active_session`) draws as Cindy's: its pill and ring (an
+  absolute bordered overlay stands in for the inset shadow), foreground and tints. The task menu wraps
+  a renamed row too, so a press that commits a rename lands its click; the field stops right presses.
+  `sessions/keyboard.rs` hosts that menu (Ely `ContextMenu::manual`) and makes each row, list row and
+  card a Tab stop: Enter or Space on the row itself opens it; the menu key (key up on Windows) or
+  Shift+F10 (not macOS) opens the menu at the focused row's or More's centre, as Chromium's
+  `ShowNonLocatedContextMenu` does. Prepaint probes record those visible bounds. `select.rs` is the
+  bulk selection of `handleSessionClick`: the row probes also list the rows painted (the `Drawn`
+  global, pinned card slots marked with `rowMajorRank`), which stands in for
+  `getVisibleSidebarSessionIds`; a probe at the list's end prunes the selection, as the
+  MutationObserver does. The bulk bar has Clear; Archive and Delete come with 18.0. `reveal.rs` is
+  `scrollIntoNearestView`: a row that turns active, or mounts active, is scrolled to CSSOM's `nearest`
+  on the list's `ScrollHandle`, along Chromium 148's desktop programmatic curve
   (`cubic-bezier(0.4,0,0,1)`, `min(sqrt(|delta|), 90) / 60` s in device pixels); reduced motion jumps,
   and a scroll by the user or a reveal that needs no move ends it. The active record is keyed by look
   (text, list, card), since Cindy mounts a new component per look. `search.rs` is the conversation
@@ -293,23 +298,32 @@ defines scope and what 1:1 means.
   wide) draws its square top, cropped at decode since gpui's `cover` centres, in a 240 box with the
   hint pill. A read that finds no file draws `ImageMissingPlaceholder` as missing, any other failure as
   unavailable; its retry, the lightbox and the menu come with 9.13. The decode keeps the image's full
-  size; AVIF and animated WebP or PNG are not decoded as Chromium does. `flow.rs` breaks a line into
-  rows itself, since gpui's text holds no element: Blink's break opportunities (`breaks` is
-  `NextBreakablePosition`: a break after a run of spaces, the pair table
-  `resources/line-break-pairs.txt` for U+0021 to U+00FF, which `scripts/blink-line-breaks.js` reads off
-  Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen before a letter past ASCII, with LB20a,
-  which ICU4X lacks) over the shaped glyphs' advances (`atoms`, read in x order, so right-to-left text
-  keeps its advances), a chip a fixed-width atom at U+FFFC, Blink's own stand-in; a word too long
-  breaks where it overflows (`overflow-wrap: anywhere`), and spaces, tabs and U+3000 at a wrap hang
-  unseen (`logs/review/9.5e-r1-blink-lines.log`, `-blink-spaces.log`). `flow/draw.rs` draws
-  `renderContentWithoutPastedText`'s nodes (`sent::parts`, each text piece apart) row by row, each row
-  a flex row of words, links and chips: no CR, a final line feed ends its line, a line that wraps fills
-  the bubble. A row's parts stand left to right; Blink's reordering of mixed directions across a chip
-  is not ported. The measure shapes with the window's text style, which no element above the text
-  changes. The fold counts the plain text's rows while the row is built, so Cindy's estimate and
-  remembered results are not ported; a folded message draws its first rows and `clamp` ends the last
-  with the ellipsis. A row with a chip grows as Blink's line box does: each chip's margin box (24px, a
-  quote island's 26px) centres half an x-height over the baseline
+  size; AVIF and animated WebP or PNG are not decoded as Chromium does. `source_labels.rs` is what
+  stands over those: `MessageSourceLabels`' row (who sent it, at most one, then the device) and the
+  `/goal` badge. `src/source_label.rs` holds each label's words, tooltip and route as
+  `AutomationOriginBadge` and the plugin and device badges give them, golden `source-labels`:
+  `scripts/golden/sourceLabels.mjs` mounts Cindy's own component in jsdom with Cindy's English strings,
+  reads each label off the DOM and clicks it for its route. A label that opens something is a Tab stop
+  with the button role and lights to `foreground`; its `title` is gpui's tooltip. A task's label reads
+  the title the task list holds (`sessions::held_title`, `getTitleById`). With no device list and no
+  signed-in device before 13.0 every device label shows and opens My devices; a teammate's mark is
+  `BotAvatar`'s tint and initial, its profile coming with the bots' chapter; remote tasks and the
+  embedded view come with theirs. `flow.rs` breaks a line into rows itself, since gpui's text holds no
+  element: Blink's break opportunities (`breaks` is `NextBreakablePosition`: a break after a run of
+  spaces, the pair table `resources/line-break-pairs.txt` for U+0021 to U+00FF, which
+  `scripts/blink-line-breaks.js` reads off Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen
+  before a letter past ASCII, with LB20a, which ICU4X lacks) over the shaped glyphs' advances (`atoms`,
+  read in x order, so right-to-left text keeps its advances), a chip a fixed-width atom at U+FFFC,
+  Blink's own stand-in; a word too long breaks where it overflows (`overflow-wrap: anywhere`), and
+  spaces, tabs and U+3000 at a wrap hang unseen (`logs/review/9.5e-r1-blink-lines.log`,
+  `-blink-spaces.log`). `flow/draw.rs` draws `renderContentWithoutPastedText`'s nodes (`sent::parts`,
+  each text piece apart) row by row, each row a flex row of words, links and chips: no CR, a final line
+  feed ends its line, a line that wraps fills the bubble. A row's parts stand left to right; Blink's
+  reordering of mixed directions across a chip is not ported. The measure shapes with the window's text
+  style, which no element above the text changes. The fold counts the plain text's rows while the row
+  is built, so Cindy's estimate and remembered results are not ported; a folded message draws its first
+  rows and `clamp` ends the last with the ellipsis. A row with a chip grows as Blink's line box does:
+  each chip's margin box (24px, a quote island's 26px) centres half an x-height over the baseline
   (`logs/review/9.5i-r1-blink-chip.log`). `chip.rs` is `InlineReferenceChip`'s inert face for the
   legacy command, agent, folder and file chips (`FileTypeIcon` through `file_presentation`; lucide
   0.468's `FileChartColumn` and `FileVideo` live in `lucide.rs`), sized by layout up to

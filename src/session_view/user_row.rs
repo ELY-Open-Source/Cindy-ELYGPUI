@@ -10,7 +10,7 @@ use gpui::{
 use super::{
     SessionView, attachments,
     flow::draw::{self, Island, Look, Ranges},
-    images,
+    images, source_labels,
     width::Widths,
 };
 use crate::{
@@ -187,7 +187,7 @@ fn ranges(message: &Fields, start: Option<usize>, length: usize) -> Ranges {
     }
 }
 
-/// The row of an ordinary message; the Orca and hook forms come with 9.5g.
+/// The row of an ordinary message; the Orca and hook forms come with 9.5q and 9.5r.
 pub fn element(
     key: &str,
     message: &Fields,
@@ -218,7 +218,10 @@ pub fn element(
     let files = attachments::files(message);
     let files = (!files.is_empty()).then(|| attachments::row(key, &files, room, window, cx));
     let images = images::elements(key, &images::images(message), window, cx);
-    let mut over: Vec<AnyElement> = images.into_iter().chain(files).collect();
+    let labels = source_labels::row(key, message, cx);
+    let goal = source_labels::goal(key, message, cx);
+    let badges = labels.into_iter().chain(goal);
+    let mut over: Vec<AnyElement> = badges.chain(images).chain(files).collect();
     // A message with no text and no quote draws no bubble.
     if quoted.is_none() && js_trim(&body).is_empty() {
         return (!over.is_empty()).then(|| column(over));

@@ -1,0 +1,1014 @@
+[
+ [
+  [
+   {},
+   {}
+  ],
+  []
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "job-1",
+     "scheduleName": "Daily digest"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation \"Daily digest\"",
+    "tip": "View automation task\nAutomation ID: job-1",
+    "open": "/cc-agent/scheduled?focus=job-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "  job 2/α?&  "
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation",
+    "tip": "View automation task\nAutomation ID: job 2/α?&",
+    "open": "/cc-agent/scheduled?focus=job%202%2F%CE%B1%3F%26"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "   ",
+     "scheduleName": "Blank id"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation \"Blank id\"",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleName": ""
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:slack-1",
+     "scheduleName": "Hook · Team Slack"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From Team Slack",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:x",
+     "scheduleName": "  Hook·X  "
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From X",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:x",
+     "scheduleName": "Hook 　· "
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From Hook",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:x",
+     "scheduleName": "Hooked · up"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From Hooked · up",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:x",
+     "scheduleName": "My Hook · up"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From My Hook · up",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "hook:x"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "hook",
+    "icon": "message-square",
+    "text": "From Hook",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": " hook:x",
+     "scheduleName": "Not a hook"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation \"Not a hook\"",
+    "tip": "View automation task\nAutomation ID: hook:x",
+    "open": "/cc-agent/scheduled?focus=hook%3Ax"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": null,
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "View source session\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderSessionTitle": "Stored title"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"Stored title\"",
+    "tip": "View source session\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderSessionTitle": "Stored title"
+    }
+   },
+   {
+    "s2": "  Live title "
+   }
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"Live title\"",
+    "tip": "View source session\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderSessionTitle": "Stored title"
+    }
+   },
+   {
+    "s2": "   "
+   }
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"Stored title\"",
+    "tip": "View source session\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderSessionTitle": "Stored title"
+    }
+   },
+   {
+    "s3": "Another task"
+   }
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"Stored title\"",
+    "tip": "View source session\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "a b/c?d"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "View source session\nSession ID: a b/c?d",
+    "open": "/cc-agent/a%20b%2Fc%3Fd"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "device-1::s2",
+     "senderSessionTitle": "Far away"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"Far away\"",
+    "tip": "Session ID: device-1::s2",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "::s2"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "View source session\nSession ID: ::s2",
+    "open": "/cc-agent/%3A%3As2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "device-1::"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "View source session\nSession ID: device-1::",
+    "open": "/cc-agent/device-1%3A%3A"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "dé::s"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "Session ID: dé::s",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderBotId": "bot-1",
+     "senderBotName": "ada"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "bot",
+    "icon": "bot",
+    "initial": "A",
+    "tint": "var(--bot-avatar-violet-bg)",
+    "text": "Sent by teammate \"ada\"",
+    "tip": "View source session\nTeammate ID: bot-1\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderBotId": "bot-1"
+    }
+   },
+   {
+    "s2": "Live title"
+   }
+  ],
+  [
+   {
+    "kind": "bot",
+    "icon": "bot",
+    "initial": "B",
+    "tint": "var(--bot-avatar-violet-bg)",
+    "text": "Sent by teammate \"bot-1\"",
+    "tip": "View source session\nTeammate ID: bot-1\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderBotId": "bot-1",
+     "senderBotName": "  é́clair"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "bot",
+    "icon": "bot",
+    "initial": "É́",
+    "tint": "var(--bot-avatar-violet-bg)",
+    "text": "Sent by teammate \"  é́clair\"",
+    "tip": "View source session\nTeammate ID: bot-1\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "d::s2",
+     "senderBotId": "bot-1",
+     "senderBotName": "ßeta"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "bot",
+    "icon": "bot",
+    "initial": "SS",
+    "tint": "var(--bot-avatar-violet-bg)",
+    "text": "Sent by teammate \"ßeta\"",
+    "tip": "Teammate ID: bot-1\nSession ID: d::s2",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2",
+     "senderBotId": "bot-1",
+     "senderBotName": "👩‍💻 dev"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "bot",
+    "icon": "bot",
+    "initial": "👩‍💻",
+    "tint": "var(--bot-avatar-violet-bg)",
+    "text": "Sent by teammate \"👩‍💻 dev\"",
+    "tip": "View source session\nTeammate ID: bot-1\nSession ID: s2",
+    "open": "/cc-agent/s2"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "orca": true,
+     "orcaSenderLabel": "developer"
+    }
+   },
+   {}
+  ],
+  []
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "orca": true,
+     "senderSessionId": "lead-1",
+     "orcaSenderLabel": "developer"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by another session",
+    "tip": "View source session\nSession ID: lead-1",
+    "open": "/cc-agent/lead-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "automationOrigin": {
+     "kind": "session",
+     "orca": true,
+     "senderSessionId": "lead-1"
+    }
+   },
+   {
+    "lead-1": "The lead"
+   }
+  ],
+  [
+   {
+    "kind": "session",
+    "icon": "send",
+    "text": "Sent by session \"The lead\"",
+    "tip": "View source session\nSession ID: lead-1",
+    "open": "/cc-agent/lead-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "cindy-github"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by plugin",
+    "tip": "View plugin\nPlugin ID: cindy-github",
+    "open": "/plugins?ghost=cindy-github"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "cindy-github",
+     "name": "GitHub"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by plugin \"GitHub\"",
+    "tip": "View plugin\nPlugin ID: cindy-github",
+    "open": "/plugins?ghost=cindy-github"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "a b&c",
+     "name": "Odd id"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by plugin \"Odd id\"",
+    "tip": "View plugin\nPlugin ID: a b&c",
+    "open": "/plugins?ghost=a%20b%26c"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "mcp-app:server-1"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by MCP App “server-1”",
+    "tip": "MCP Server ID: server-1",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "mcp-app:server-1",
+     "name": "Board"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by MCP App “Board”",
+    "tip": "MCP Server ID: server-1",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "local-app:notes"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by local app “notes”",
+    "tip": "App ID: notes",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "local-app:notes",
+     "name": "Notes"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by local app “Notes”",
+    "tip": "App ID: notes",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "local-app:"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by local app “”",
+    "tip": "App ID: ",
+    "open": null
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourcePlugin": {
+     "pluginId": "cindy-github",
+     "name": "GitHub"
+    },
+    "automationOrigin": {
+     "kind": "session",
+     "senderSessionId": "s2"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by plugin \"GitHub\"",
+    "tip": "View plugin\nPlugin ID: cindy-github",
+    "open": "/plugins?ghost=cindy-github"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "mobile"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "device",
+    "icon": "smartphone",
+    "text": "Sent from phone",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "mobile",
+     "name": "Pixel"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "device",
+    "icon": "smartphone",
+    "text": "Sent from phone \"Pixel\"",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "desktop"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "device",
+    "icon": "monitor",
+    "text": "Sent from computer",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev 1/&",
+     "platform": "desktop",
+     "name": "Studio"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "device",
+    "icon": "monitor",
+    "text": "Sent from computer \"Studio\"",
+    "tip": "View in My devices\nDevice ID: dev 1/&",
+    "open": "/settings?tab=remote-control&section=devices&device=dev%201%2F%26"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "mobile",
+     "name": "Pixel"
+    },
+    "automationOrigin": {
+     "kind": "scheduler",
+     "scheduleId": "job-1"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "scheduler",
+    "icon": "timer",
+    "text": "Sent by automation",
+    "tip": "View automation task\nAutomation ID: job-1",
+    "open": "/cc-agent/scheduled?focus=job-1"
+   },
+   {
+    "kind": "device",
+    "icon": "smartphone",
+    "text": "Sent from phone \"Pixel\"",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "desktop"
+    },
+    "sourcePlugin": {
+     "pluginId": "p"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "plugin",
+    "icon": "puzzle",
+    "text": "Sent by plugin",
+    "tip": "View plugin\nPlugin ID: p",
+    "open": "/plugins?ghost=p"
+   },
+   {
+    "kind": "device",
+    "icon": "monitor",
+    "text": "Sent from computer",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ],
+ [
+  [
+   {
+    "sourceDevice": {
+     "deviceId": "dev-1",
+     "platform": "desktop"
+    },
+    "automationOrigin": {
+     "kind": "session",
+     "orca": true,
+     "orcaSenderLabel": "dev"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "kind": "device",
+    "icon": "monitor",
+    "text": "Sent from computer",
+    "tip": "View in My devices\nDevice ID: dev-1",
+    "open": "/settings?tab=remote-control&section=devices&device=dev-1"
+   }
+  ]
+ ]
+]

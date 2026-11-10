@@ -1,6 +1,6 @@
 use gpui::{App, TestAppContext};
 
-use super::{CHAT_KEY, Route, install, navigate, path, route};
+use super::{CHAT_KEY, Route, install, location, navigate, path, route};
 use crate::{preferences::Preferences, sessions};
 
 #[test]
@@ -10,8 +10,20 @@ fn routes_match_as_router_tsx_declares_them() {
     assert_eq!(route("/cc-agent/"), Route::Index);
     assert_eq!(route("/cc-agent/new"), Route::New);
     assert_eq!(route("/cc-agent/scheduled/"), Route::Scheduled);
-    assert_eq!(route("/cc-agent/abc"), Route::Session("abc"));
-    assert_eq!(route("/cc-agent/abc/"), Route::Session("abc"));
+    assert_eq!(route("/cc-agent/abc"), Route::Session("abc".into()));
+    assert_eq!(route("/cc-agent/abc/"), Route::Session("abc".into()));
+    // `decodePath`, then the param's `%2F` back to a slash.
+    for (path, id) in [
+        ("/cc-agent/a%20b%2Fc%3Fd", "a b/c?d"),
+        ("/cc-agent/%E4%BB%BB", "任"),
+        ("/cc-agent/a%252Fb", "a/b"),
+        ("/cc-agent/a%FF%2Fb", "a%FF/b"),
+        ("/cc-agent/50%", "50%"),
+    ] {
+        assert_eq!(route(path), Route::Session(id.into()), "{path}");
+    }
+    assert_eq!(route("/cc-agent/%6Eew"), Route::New);
+    assert_eq!(route("/cc-agent/a%2Fb/c"), Route::Other);
     for other in [
         "/cc-agent/boot",
         "/cc-agent/files/abc",
@@ -120,4 +132,59 @@ fn chat_views_are_tracked_and_old_links_redirect(cx: &mut TestAppContext) {
     assert_eq!(saved(cx).as_deref(), Some(r#"{"kind":"new"}"#));
     cx.update(|cx| navigate("/cc-agent", cx));
     assert_eq!(here(cx), "/cc-agent/new", "the index reopens the draft");
+}
+
+#[gpui::test]
+fn a_search_rides_the_location_and_the_routes_match_the_pathname(cx: &mut TestAppContext) {
+    let _dir = start(cx, None);
+    load(cx, &TASKS);
+    let go = |cx: &mut TestAppContext, to: &str| {
+        cx.update(|cx| {
+            navigate(to, cx);
+            (location(cx).to_owned(), path(cx).to_owned())
+        })
+    };
+    let scheduled = "/cc-agent/scheduled?focus=job%201";
+    assert_eq!(
+        go(cx, scheduled),
+        (scheduled.into(), "/cc-agent/scheduled".into())
+    );
+    // Another search on the same pathname is another location.
+    let other = "/cc-agent/scheduled?focus=b";
+    assert_eq!(go(cx, other).0, other);
+    // The redirects and the last chat view read the pathname.
+    assert_eq!(go(cx, "/?from=link").0, "/cc-agent/first");
+    // The view takes the decoded id; the last chat view keeps `matchPath`'s on the raw pathname.
+    for (to, id, kept) in [
+        ("/cc-agent/job%201", Some("job 1"), "job%201"),
+        ("/cc-agent/a%20b%2Fc%3Fd", Some("a b/c?d"), "a%20b/c%3Fd"),
+        ("/cc-agent/a%252Fb", Some("a/b"), "a%252Fb"),
+        ("/cc-agent/a%FF%2Fb", Some("a%FF/b"), "a%FF/b"),
+        ("/cc-agent/%6Eew", None, "%6Eew"),
+    ] {
+        go(cx, to);
+        let found = cx.update(|cx| {
+            let saved = cx.global::<Preferences>().text(CHAT_KEY).unwrap();
+            (super::active_session(cx), saved.map(str::to_owned))
+        });
+        let last = serde_json::json!({ "kind": "session", "sessionId": kept }).to_string();
+        assert_eq!(found, (id.map(str::to_owned), Some(last)), "{to}");
+    }
+    // The index looks the kept id up among the tasks: an escaped one is no task's.
+    assert_eq!(go(cx, "/cc-agent").0, "/cc-agent/first");
+    go(cx, "/cc-agent/second?worker=w");
+    let saved = cx.update(|cx| {
+        cx.global::<Preferences>()
+            .text(CHAT_KEY)
+            .unwrap()
+            .map(str::to_owned)
+    });
+    assert_eq!(
+        saved.as_deref(),
+        Some(r#"{"kind":"session","sessionId":"second"}"#)
+    );
+    assert_eq!(
+        cx.update(|cx| super::active_session(cx)).as_deref(),
+        Some("second")
+    );
 }

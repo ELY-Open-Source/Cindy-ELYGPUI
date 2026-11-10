@@ -10,7 +10,7 @@ use crate::router;
 
 /// `isActive`: the task `/cc-agent/:sessionId` shows.
 pub(super) fn is_active(id: &str, cx: &App) -> bool {
-    router::active_session(cx) == Some(id)
+    router::active_session(cx).as_deref() == Some(id)
 }
 
 /// `resolveSessionRoute` for a listed task: its own page; a companion's chat comes with 14.0.

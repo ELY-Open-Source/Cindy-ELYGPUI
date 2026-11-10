@@ -19,6 +19,7 @@ mod images;
 mod items;
 mod link_chip;
 mod links;
+mod source_labels;
 mod stream;
 mod user_row;
 mod width;
@@ -114,7 +115,7 @@ fn next_read(cx: &mut App) -> u64 {
 
 /// Follows the route and the list: the gate first, then the content it mounts.
 fn sync(cx: &mut App) {
-    let id = router::active_session(cx).map(str::to_owned);
+    let id = router::active_session(cx);
     let shown_id = cx
         .global::<SessionView>()
         .shown

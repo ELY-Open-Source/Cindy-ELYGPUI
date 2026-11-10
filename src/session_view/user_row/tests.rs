@@ -51,9 +51,20 @@ pub(in crate::session_view) fn open_json<'a>(
     width: f32,
     rows: &[&str],
 ) -> &'a mut VisualTestContext {
+    let rows: Vec<(&str, Option<&str>)> = rows.iter().map(|row| (*row, None)).collect();
+    open_meta(cx, dir, width, &rows)
+}
+
+/// As `open_json`, each row with its `agent_meta`.
+pub(in crate::session_view) fn open_meta<'a>(
+    cx: &'a mut TestAppContext,
+    dir: &std::path::Path,
+    width: f32,
+    rows: &[(&str, Option<&str>)],
+) -> &'a mut VisualTestContext {
     let db = super::super::tests::db();
-    for (n, content) in rows.iter().enumerate() {
-        put(&db, n as i64, content, None);
+    for (n, (content, meta)) in rows.iter().enumerate() {
+        put(&db, n as i64, content, *meta);
     }
     serve(cx, dir, width, db)
 }

@@ -218,8 +218,10 @@ listed in `tasks/done.md`.
     `xdt-image://` and `cindy-media://` (`ChatLoadingImage`'s frame while it loads, the long
     image's preview, `ImageMissingPlaceholder`'s face for a missing or unreadable image); its
     retry, the lightbox and the menu come with 9.13
-  - [ ] 9.5p What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
-    Orca and hook forms
+  - [x] 9.5p Over the bubble: the goal badge and `MessageSourceLabels` (`AutomationOriginBadge`,
+    the plugin, group and device labels with their tooltips; `messageSourceLabel.ts`)
+  - [ ] 9.5q The Orca form: the Lead and Worker card in place of the bubble, its source labels
+  - [ ] 9.5r The hook form: `HookTaskCard` with its attachments, fold and attached context
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the

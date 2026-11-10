@@ -9,6 +9,7 @@ import { pathToFileURL } from 'node:url';
 import { ASSETS } from './golden/record.mjs';
 import { renderItems } from './golden/renderItems.mjs';
 import { sentText } from './golden/sentText.mjs';
+import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
 import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
@@ -534,6 +535,7 @@ try {
   const mediaCases = await recorded({ ...golden, name: 'media-store', tests: {},
     fns: { cached: placed(resolveCachedImage), blob: placed(resolveBlob) } });
   console.log(`${mediaCases} media store cases`);
+  console.log(`${await sourceLabels({ ...golden, define, assets: ASSETS, cindy, src })} source label cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);
@@ -555,3 +557,5 @@ try {
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
 }
+// The stores the source-labels golden mounted keep timers; the work is done.
+process.exit(0);

@@ -225,3 +225,20 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: the placeholder measures and draws the name through `chip::nowrap`; the tip keeps the
   stored name. Test `a_failed_images_name_draws_on_one_line`.
 - Round 2: PASS.
+
+## 9.5p The goal badge and the source labels over the bubble
+- Round 1: FAIL. P2: a source task whose id needs escapes did not open: the label navigates to the
+  encoded route, as Cindy does, but the router handed the encoded parameter on as the task's id,
+  where React Router decodes it. P3: the golden's `expected.json` has 1014 lines.
+- Fixed: `router::route` decodes the session parameter (`safelyDecodeURIComponent`: one that does
+  not decode stays as written), so `active_session` and the last chat view hold the task's own id.
+  Tests `a_task_label_opens_a_task_whose_id_needs_escapes` and the router's. P3 not taken: goldens
+  are generated data, and the other goldens run to 400,000 lines.
+- Round 2: FAIL. P2: the last chat view must keep what `useTrackLastView`'s `matchPath` gives on
+  the raw pathname (`job%201`), not the decoded id. P2: React Router decodes the pathname by
+  segment (`decodePath`) before it matches and gives a param's `%2F` back as a slash, so
+  `/cc-agent/a%252Fb` is task `a/b`. The fixture's length was dropped as a finding.
+- Fixed: `router::route` is `matchRoutes` (`decode_path`, then `matched`); the tracker calls
+  `matched` on the pathname as it stands. Router tests hold the values Cindy's own code gave
+  (`logs/review/9.5p-r2-route-repro.log`).
+- Round 3: PASS.

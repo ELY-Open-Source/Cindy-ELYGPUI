@@ -462,3 +462,22 @@ fn card_mode_lays_pins_out_in_columns(cx: &mut TestAppContext) {
         "one column when narrow: {a:?} {b:?}"
     );
 }
+
+#[gpui::test]
+fn a_held_title_is_the_first_one_named_and_trimmed(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    install(cx, dir.path());
+    cx.update(|cx| {
+        let tasks = [("a", "active", "desktop"), ("b", "active", "desktop")];
+        let all = [("a", "active", "desktop"), ("c", "active", "desktop")];
+        super::load_buckets_for_tests(&tasks, &all, cx);
+        let loaded = cx.global_mut::<Sessions>().loaded.as_mut().unwrap();
+        loaded.sessions[0].title = String::new();
+        loaded.all[0].title = "  From all\u{3000}".into();
+        loaded.sessions[1].title = " \n".into();
+        assert_eq!(super::held_title("a", cx).as_deref(), Some("From all"));
+        assert_eq!(super::held_title("b", cx), None, "a blank title");
+        assert_eq!(super::held_title("c", cx).as_deref(), Some("c"));
+        assert_eq!(super::held_title("d", cx), None);
+    });
+}

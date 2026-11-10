@@ -1,9 +1,12 @@
 //! `router.tsx`'s routes this chapter owns, with the redirects at `/` and `/cc-agent` and
 //! `useTrackLastView`'s chat slot.
 
+use std::borrow::Cow;
+
 use gpui::{App, Global};
 
 use crate::{
+    cindy_json::decode_uri_component,
     preferences::Preferences,
     rich_answer::js::{self, Js},
     sessions,
@@ -13,23 +16,23 @@ use crate::{
 const CHAT_KEY: &str = "cc-agent.lastChatView.v1";
 const NEW: &str = "/cc-agent/new";
 
-/// The hash route's pathname.
+/// The hash route's location: its pathname and its search.
 pub struct Router {
-    path: String,
+    location: String,
 }
 
 impl Global for Router {}
 
 #[derive(Debug, PartialEq)]
-pub enum Route<'a> {
+pub enum Route {
     /// `MainEntryRedirect`.
     Root,
     /// `CCAgentIndexRedirect`.
     Index,
     /// `NewMakerDraftRoute`.
     New,
-    /// `CCAgentSessionView`.
-    Session(&'a str),
+    /// `CCAgentSessionView` with its `sessionId` param.
+    Session(String),
     /// `ScheduledTasksView`.
     Scheduled,
     /// A route another chapter owns.
@@ -43,8 +46,29 @@ enum LastChat {
     Session(String),
 }
 
-/// React Router's match, a trailing slash ignored.
-pub fn route(path: &str) -> Route<'_> {
+/// `matchRoutes`: the pathname decoded first, as the rendered route and `useParams` see it.
+pub fn route(path: &str) -> Route {
+    matched(&decode_path(path))
+}
+
+/// `decodePath`: each segment decoded, its own slashes kept apart as `%2F`.
+fn decode_path(path: &str) -> Cow<'_, str> {
+    if !path.contains('%') {
+        return Cow::Borrowed(path);
+    }
+    let segment = |raw: &str| Some(decode_uri_component(raw)?.replace('/', "%2F"));
+    let decoded: Option<Vec<String>> = path.split('/').map(segment).collect();
+    match decoded {
+        Some(segments) => Cow::Owned(segments.join("/")),
+        None => {
+            log::warn!(target: "router", "pathname {path} does not decode");
+            Cow::Borrowed(path)
+        }
+    }
+}
+
+/// `matchPath` on a pathname as it stands, a trailing slash ignored.
+fn matched(path: &str) -> Route {
     let path = match path.strip_suffix('/') {
         Some(rest) if !rest.is_empty() => rest,
         _ => path,
@@ -58,23 +82,35 @@ pub fn route(path: &str) -> Route<'_> {
     }
     match path.strip_prefix("/cc-agent/") {
         Some("boot" | "new-dialogue" | "files" | "orca") => Route::Other,
-        Some(id) if !id.contains('/') => Route::Session(id),
+        // `matchPathImpl` gives a param its slashes back.
+        Some(id) if !id.contains('/') => Route::Session(id.replace("%2F", "/")),
         _ => Route::Other,
     }
 }
 
 pub fn install(cx: &mut App) {
-    cx.set_global(Router { path: "/".into() });
+    cx.set_global(Router {
+        location: "/".into(),
+    });
     cx.observe_global::<sessions::Sessions>(settle).detach();
     settle(cx);
 }
 
+pub fn location(cx: &App) -> &str {
+    &cx.global::<Router>().location
+}
+
+/// The location's pathname, which the routes match.
 pub fn path(cx: &App) -> &str {
-    &cx.global::<Router>().path
+    pathname(location(cx))
+}
+
+fn pathname(location: &str) -> &str {
+    location.split_once('?').map_or(location, |(path, _)| path)
 }
 
 /// The task `/cc-agent/:sessionId` shows, as the sidebar's `useMatch` reads it.
-pub fn active_session(cx: &App) -> Option<&str> {
+pub fn active_session(cx: &App) -> Option<String> {
     match route(path(cx)) {
         Route::Session(id) => Some(id),
         _ => None,
@@ -82,12 +118,12 @@ pub fn active_session(cx: &App) -> Option<&str> {
 }
 
 pub fn navigate(to: &str, cx: &mut App) {
-    if path(cx) == to {
+    if location(cx) == to {
         return;
     }
     log::info!(target: "router", "navigate to {to}");
-    cx.global_mut::<Router>().path = to.to_owned();
-    track_last_view(to, cx);
+    cx.global_mut::<Router>().location = to.to_owned();
+    track_last_view(pathname(to), cx);
     settle(cx);
 }
 
@@ -136,9 +172,9 @@ fn last_chat(prefs: &Preferences) -> Option<LastChat> {
     }
 }
 
-/// `useTrackLastView` for the chat slot.
+/// `useTrackLastView` for the chat slot: `matchPath` on the pathname, which decodes nothing.
 fn track_last_view(to: &str, cx: &mut App) {
-    let view = match route(to) {
+    let view = match matched(to) {
         Route::New => serde_json::json!({ "kind": "new" }),
         Route::Session(id) => serde_json::json!({ "kind": "session", "sessionId": id }),
         _ => return,

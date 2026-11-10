@@ -133,7 +133,7 @@ impl RenderOnce for Host {
             .clone();
         let asked = window.use_keyed_state(key("menu-asked"), cx, |_, _| None);
         let request = *asked.read(cx);
-        let active = router::active_session(cx) == Some(id.as_str());
+        let active = router::active_session(cx).as_deref() == Some(id.as_str());
         let was =
             window.use_keyed_state(key(&format!("was-active-{}", self.kind)), cx, |_, _| false);
         // The rail's panel rows are not the sidebar list's, which reveals and selects.

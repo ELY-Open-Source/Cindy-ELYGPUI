@@ -57,6 +57,7 @@ mod session_owner;
 mod session_view;
 mod sessions;
 mod sidebar;
+mod source_label;
 mod theme;
 mod theme_import;
 mod tip;
