@@ -78,3 +78,9 @@ export const LINKIFY_TESTS = {
   [`${renderer}/userMessageLinkify.test.ts`]: { '../components/chat/userMessageLinkify': ['findLinkifyMatches'] },
   [`${renderer}/sessionDeepLink.test.ts`]: { '../lib/deepLink': ['parseSessionDeepLinkHref', 'parseProjectDeepLinkHref'] },
 };
+
+const displayText = { '@/components/chat/userMessageDisplayText': ['resolveUserDisplayText', 'resolveHookGroupContext'] };
+export const USER_MESSAGE_TESTS = {
+  [`${renderer}/hookGroupContext.test.ts`]: displayText,
+  [`${renderer}/messageNavRailModel.test.ts`]: displayText,
+};

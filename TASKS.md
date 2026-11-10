@@ -148,10 +148,11 @@ listed in `tasks/done.md`.
   - [x] 9.5b Linkify (`userMessageLinkify.ts`): `findLinkifyMatches` over URLs, image paths,
     session and project deep links in bare and Markdown form (`deepLink.ts`'s sources and parsers,
     `findMarkdownLabelStart`, `deepLinkSchemes.ts`); golden
-  - [ ] 9.5c Display text and collapse estimates: `userMessageDisplayText.ts`
+  - [x] 9.5c Display text and collapse estimates: `userMessageDisplayText.ts`
     (`parseOrcaCommunicationContent`, `resolveHookGroupContext` with `captureImContext`,
     `resolveUserDisplayText`), `shouldAutoCollapseUserMessageContent` and
-    `mayExceedVisualLineThreshold`; golden
+    `mayExceedVisualLineThreshold`; golden. An automation message's threshold (4) comes with its
+    caller in 9.5e
   - [ ] 9.5d The sent text's tokens (`UserMessage.tsx`): `looksLikePath`, `looksLikeCommand`, the
     command and mention split, `buildSentInlineTokens`, `projectSentPastedPlainText`,
     `projectSentInlinePlainText`, `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; golden

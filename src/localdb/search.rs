@@ -6,7 +6,7 @@
 )]
 
 pub mod conversations;
-mod forwarded;
+pub mod forwarded;
 pub mod fts;
 pub mod fuzzy;
 pub mod history;

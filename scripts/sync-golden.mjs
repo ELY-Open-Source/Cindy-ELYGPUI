@@ -10,7 +10,7 @@ import { ASSETS } from './golden/record.mjs';
 import { renderItems } from './golden/renderItems.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
-import { ARTIFACT_TESTS, BOUNDARY_TESTS, LINKIFY_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, BOUNDARY_TESTS, LINKIFY_TESTS, PLAN_TESTS, ROW_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -89,6 +89,8 @@ try {
     "export * as urlBoundary from '../../../packages/maker-shared/src/urlTextBoundary';",
     "export { findLinkifyMatches } from './renderer/components/chat/userMessageLinkify';",
     "export * as deepLink from './renderer/lib/deepLink';",
+    "export * as userDisplay from './renderer/components/chat/userMessageDisplayText';",
+    "export * as userCollapse from './renderer/components/chat/userMessageCollapse';",
     "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
@@ -103,7 +105,7 @@ try {
     nodePaths, alias, ...ASSETS,
     define,
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -489,6 +491,14 @@ try {
     unescapeMarkdownLabelBrackets: deepLink.unescapeMarkdownLabelBrackets,
   } });
   console.log(`${linkifyCases} linkify cases`);
+  const userMessageCases = await recorded({ ...golden, name: 'user-message', tests: USER_MESSAGE_TESTS, fns: {
+    resolveUserDisplayText: userDisplay.resolveUserDisplayText,
+    resolveHookGroupContext: userDisplay.resolveHookGroupContext,
+    parseOrcaCommunicationContent: userDisplay.parseOrcaCommunicationContent,
+    shouldAutoCollapseUserMessageContent: userCollapse.shouldAutoCollapseUserMessageContent,
+    mayExceedVisualLineThreshold: userCollapse.mayExceedVisualLineThreshold,
+  } });
+  console.log(`${userMessageCases} user message cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);

@@ -173,7 +173,11 @@ defines scope and what 1:1 means.
   `deepLinkSchemes.ts` and `deepLink.ts` for links read from text (the `cindy` and `xdt-maker` schemes,
   `parse_session`, `parse_project`, `label_start`; a project link's lookahead is `project_ends`).
   `src/linkify.rs` is `findLinkifyMatches`, ranges in bytes: no two kinds of link start at one place,
-  so its comparator is a sort by start. Golden `linkify`.
+  so its comparator is a sort by start. Golden `linkify`. `src/user_message.rs` is
+  `userMessageDisplayText.ts` (`orca`, `hook_group_context` with `captureImContext`'s group envelope,
+  `display_text` over 8.7's `forwarded::display_text`; the hook source is the stored `Js`) and
+  `collapse.rs` the estimates of `userMessageCollapse.ts` in UTF-16 units; the measured collapse comes
+  with the bubble. Golden `user-message`.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view

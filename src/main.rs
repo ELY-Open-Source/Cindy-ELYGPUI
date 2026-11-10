@@ -61,6 +61,7 @@ mod tool_use;
 mod transition;
 mod units;
 mod url_boundary;
+mod user_message;
 mod v8_classes;
 mod wallpaper;
 mod window_material;
