@@ -12,10 +12,11 @@ use gpui::{
 use crate::{
     appearance_settings::text_size,
     chat_quotes::{self, Quote},
-    file_presentation, lucide,
+    file_presentation, lucide, motion,
     theme::Appearance,
     theme_import::color::js_space,
     tip,
+    transition::{self, Curve},
     units::{css, to_css},
     user_message::sent::{Kind, Part, Reference},
 };
@@ -36,8 +37,20 @@ pub struct Chip {
     command: bool,
     /// `ariaLabel`.
     named: bool,
-    /// A quote between text islands: `mx-1`, and neither `top-[-1px]` nor `-my-[1px]`.
-    island: bool,
+    stand: Stand,
+    /// `interactive`: a click acts, so the chip is underlined and lights under the pointer.
+    clicked: bool,
+}
+
+/// How a chip stands in its line.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Stand {
+    /// `relative top-[-1px] -my-[1px]`.
+    Line,
+    /// A quote between text islands: `mx-1`.
+    Island,
+    /// A message link's quote: underlined.
+    Link,
 }
 
 /// How the tip sets its text.
@@ -83,7 +96,8 @@ fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip
         face,
         command: false,
         named: false,
-        island: false,
+        stand: Stand::Line,
+        clicked: false,
     }
 }
 
@@ -117,8 +131,8 @@ pub fn pasted(display: &str, text: &str) -> Chip {
     }
 }
 
-/// `QuoteChip`: the quote on one line; `island` sets it between text islands.
-pub fn quote(quote: &Quote, island: bool) -> Chip {
+/// `QuoteChip`: the quote on one line.
+pub fn quote(quote: &Quote, stand: Stand) -> Chip {
     let source = chat_quotes::source_label(quote).map(|label| {
         let path = quote.source_path.clone().unwrap_or_default();
         (path.into(), label.into())
@@ -128,7 +142,7 @@ pub fn quote(quote: &Quote, island: bool) -> Chip {
     Chip {
         name: quote.text.clone().into(),
         named: true,
-        island,
+        stand,
         ..chip(
             &compact.join(" "),
             Some(lucide::MESSAGE_SQUARE_QUOTE),
@@ -138,17 +152,16 @@ pub fn quote(quote: &Quote, island: bool) -> Chip {
     }
 }
 
-/// `SentAgentReferenceChip`'s inert face; a message reference unfolded is 9.5l's link chip.
-pub fn reference(reference: &Reference, label: &str, folded: bool) -> Option<Chip> {
+/// `SentAgentReferenceChip`'s inert face.
+pub fn reference(reference: &Reference, label: &str) -> Chip {
     let icon = match reference.kind {
-        Kind::Message { .. } if folded => {
+        Kind::Message { .. } => {
             let said = Quote {
                 text: label.to_owned(),
                 ..Default::default()
             };
-            return Some(quote(&said, false));
+            return quote(&said, Stand::Line);
         }
-        Kind::Message { .. } => return None,
         Kind::Session { .. } => IconName::CornerDownRight.svg(),
         Kind::Project { .. } => IconName::FolderOpen.svg(),
         Kind::BrowserTab { .. } => lucide::EARTH,
@@ -157,10 +170,15 @@ pub fn reference(reference: &Reference, label: &str, folded: bool) -> Option<Chi
         Kind::Todo { .. } => IconName::ListTodo.svg(),
         Kind::PluginResource { .. } => lucide::PLUG,
     };
-    Some(Chip {
+    link(label, icon)
+}
+
+/// A chip that names what it links to: the label is its tip and its name.
+pub fn link(label: &str, icon: &'static [u8]) -> Chip {
+    Chip {
         named: true,
         ..chip(label, Some(icon), label, Face::Plain)
-    })
+    }
 }
 
 /// `QuoteChip`'s tip: the whole quote in its marks, then where it came from.
@@ -196,6 +214,20 @@ fn quote_tip(
         .into_any_element()
 }
 
+impl Chip {
+    #[cfg(test)]
+    pub fn label(&self) -> &str {
+        &self.label
+    }
+
+    pub fn clicked(self) -> Chip {
+        Chip {
+            clicked: true,
+            ..self
+        }
+    }
+}
+
 /// `max-w-[min(240px,55vw)]`.
 fn most(window: &Window, cx: &App) -> Pixels {
     let most = (to_css(window.viewport_size().width, cx) * 0.55).min(240.0);
@@ -223,12 +255,12 @@ impl Chip {
     }
 
     fn margin(&self) -> f32 {
-        f32::from(u8::from(self.island)) * 4.0
+        f32::from(u8::from(self.stand == Stand::Island)) * 4.0
     }
 
     /// The margin box's height: `leading-5`, `py-0.5`, the border, less `-my-[1px]`.
     pub fn height(&self) -> f32 {
-        24.0 + f32::from(u8::from(self.island)) * 2.0
+        24.0 + f32::from(u8::from(self.stand != Stand::Line)) * 2.0
     }
 
     /// The chip, its margin box `top` under the row's top.
@@ -237,9 +269,27 @@ impl Chip {
         id: String,
         top: Pixels,
         size: f32,
-        window: &Window,
-        cx: &App,
+        window: &mut Window,
+        cx: &mut App,
     ) -> AnyElement {
+        let element = ElementId::Name(id.clone().into());
+        // `transition-colors hover:bg-[var(--surface-hover)]`; hover ignores key presses.
+        let child = |name: &'static str| {
+            ElementId::NamedChild(std::sync::Arc::new(element.clone()), name.into())
+        };
+        let hovered = window.use_keyed_state(child("hover"), cx, |_, _| false);
+        let appearance = cx.global::<Appearance>();
+        let lit = *hovered.read(cx) && self.clicked;
+        let fill = appearance.token(match lit {
+            true => "surface-hover",
+            false => "surface-chip",
+        });
+        let curve = Curve {
+            length: motion::length(motion::FAST, cx),
+            easing: motion::ease_move,
+            lerp: transition::mix_srgb,
+        };
+        let fill = transition::keyed(child("fill"), fill, curve, window, cx);
         let appearance = cx.global::<Appearance>();
         let color = appearance.token(match self.command {
             true => "msg-user-text",
@@ -248,12 +298,24 @@ impl Chip {
         let (selector, label, tip) = (id.clone(), self.label.clone(), self.tip.clone());
         let name = self.name.clone();
         div()
-            .id(ElementId::Name(id.into()))
+            .id(element)
             .debug_selector(move || selector)
+            .when(self.clicked, |el| {
+                el.cursor_pointer()
+                    .underline()
+                    .hover_listener_mode(gpui::HoverListenerMode::InputModalityIndependent)
+                    .on_hover(move |over, _, cx| {
+                        hovered.update(cx, |hovered, cx| {
+                            *hovered = *over;
+                            cx.notify();
+                        })
+                    })
+            })
             .when(self.named, |el| el.aria_label(name))
-            .map(|el| match self.island {
-                true => el.mt(top).mx(css(4.0)),
-                false => {
+            .map(|el| match self.stand {
+                Stand::Island => el.mt(top).mx(css(4.0)),
+                Stand::Link => el.mt(top).cursor_pointer().underline(),
+                Stand::Line => {
                     let lift = css(1.0).to_pixels(window.rem_size());
                     el.relative().top(css(-1.0)).mt(top - lift)
                 }
@@ -266,7 +328,7 @@ impl Chip {
             .rounded(css(9999.0))
             .border(css(1.0))
             .border_color(appearance.token("border-default"))
-            .bg(appearance.token("surface-chip"))
+            .bg(fill)
             .px(css(8.0))
             .py(css(2.0))
             .text_size(css(size))

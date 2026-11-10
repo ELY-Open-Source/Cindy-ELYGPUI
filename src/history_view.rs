@@ -23,7 +23,7 @@ pub mod reader;
 pub mod rows;
 pub mod source;
 
-const LIVE: &str = "history-live:";
+pub const LIVE: &str = "history-live:";
 
 /// A row as `HistoryMessageSource` carries it, the whole object `messageToCamel` built.
 pub type Row = Js;

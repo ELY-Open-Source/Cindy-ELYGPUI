@@ -15,6 +15,7 @@ mod entry_error;
 mod flow;
 pub mod header;
 mod items;
+mod link_chip;
 mod links;
 mod stream;
 mod user_row;
@@ -51,6 +52,8 @@ struct Content {
     stream: Option<items::Watch>,
     /// The long messages shown in full, by item key.
     unfolded: std::collections::HashSet<String>,
+    /// What its link chips read.
+    links: link_chip::Found,
 }
 
 #[derive(Default)]
@@ -186,6 +189,7 @@ fn mount(id: &str, cx: &mut App) {
         read: 0,
         stream: None,
         unfolded: Default::default(),
+        links: Default::default(),
     });
     content_read(cx);
     let store = Store::global(cx);

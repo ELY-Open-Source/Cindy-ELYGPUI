@@ -186,21 +186,27 @@ listed in `tasks/done.md`.
     in a line of text; `InlineReferenceChip`'s inert face with its tip; the legacy command, agent,
     folder and file chips of `renderContentWithoutPastedText` (`sent::parts`, `FileTypeIcon`),
     links in the text parts only; the fold counts the plain text's rows and clamps the drawn ones.
-    `UserFileChip`'s click and menu come with the text lightbox (9.12)
+    `UserFileChip`'s click and menu come with the text lightbox (9.13)
   - [x] 9.5j The persisted ranges of `renderContent`: pasted text, slash command and agent
     reference chips (`SentAgentReferenceChip`'s inert face, `readAgentInputReferences`,
     `slashCommandDisplayLabel`), the measured text with their labels. A session or project
     reference keeps the inert face unfolded until 9.5l, a message reference its text until 9.5k and
-    9.5l; their clicks come with the lightboxes (9.12)
+    9.5l; their clicks come with 9.5m
   - [x] 9.5k Quote chips (`QuoteChip`) between the text islands of a `quotesEncoded` message, with
     `locateChatQuoteTextSegmentStarts` and `projectSentRanges` per island, and a folded message
     reference's quote chip
-  - [ ] 9.5l Session and project link chips (`SessionLinkChip`, `ProjectLinkChip`), in the text and
-    for an unfolded session, project or message reference, and image path links
-    (`UserMessageImageLink.tsx`)
-  - [ ] 9.5m Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
+  - [x] 9.5l The faces of session and project link chips (`SessionLinkChip`, `ProjectLinkChip`), in
+    the text and for an unfolded session, project or message reference, with the task's title and
+    the message's text read from the database (`resolveSessionMessageText`); image path links'
+    face (`UserMessageImageLink.tsx`, `break-all`); Blink's line breaks between Latin-1 letters
+    and after spaces in the bubble's flow
+  - [ ] 9.5m What the link chips do: a session link opens its task (`useSessionLinkTarget`; the
+    message anchor's `searchJump` lands with 9.14, a new window with its chapter), a project link
+    focuses its project (`requestProjectFocus`), their Tab stops, keys and menu
+    (`useLinkContextMenu`: open, copy link); an image path's click and menu come with 9.13
+  - [ ] 9.5n Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
     face, `UserFileChip`)
-  - [ ] 9.5n What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
+  - [ ] 9.5o What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
     Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,

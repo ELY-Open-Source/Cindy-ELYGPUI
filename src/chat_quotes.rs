@@ -1,10 +1,5 @@
 //! `chatQuotes.ts`: quoted selections as Markdown block quotes in a message's text.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "9.14's message rail reads the rest")
-)]
-
 use std::sync::LazyLock;
 
 use regex::Regex;

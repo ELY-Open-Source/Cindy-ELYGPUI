@@ -7,7 +7,7 @@ fn even(line: &str) -> Vec<Atom> {
 }
 
 fn broken(line: &str, width: f32) -> Vec<&str> {
-    let rows = rows(line, &even(line), width);
+    let rows = rows(line, &even(line), width, &[]);
     rows.into_iter().map(|row| &line[row]).collect()
 }
 
@@ -42,7 +42,7 @@ fn a_chip_breaks_as_a_word() {
     let line = "aa \u{fffc} bb";
     let mut atoms = even(line);
     atoms[3].advance = 40.0;
-    let rows = rows(line, &atoms, 60.0);
+    let rows = rows(line, &atoms, 60.0, &[]);
     let rows: Vec<&str> = rows.into_iter().map(|row| &line[row]).collect();
     assert_eq!(rows, ["aa", "\u{fffc}", "bb"]);
 }
@@ -97,4 +97,77 @@ fn a_clamped_row_ends_where_the_ellipsis_fits() {
     // Atoms of other rows take no room.
     assert_eq!(clamp(7..11, 10.0, 50.0), 11);
     assert_eq!(clamp(7..11, 10.0, 40.0), 10);
+}
+
+/// Blink's `word-break: break-all` over a path, probed in Cindy's Electron.
+#[test]
+fn an_image_path_breaks_where_blink_breaks_it() {
+    let log = include_str!("../../../tests/fixtures/line-breaks/break-all.jsonl");
+    for case in log.lines() {
+        let case: serde_json::Value = serde_json::from_str(case).unwrap();
+        let word = |key: &str| case[key].as_str().unwrap().to_owned();
+        let (before, path, after) = (word("before"), word("path"), word("after"));
+        let line = format!("{before}{path}{after}");
+        let span = before.len()..before.len() + path.len();
+        let units = |at: usize| line[..at].encode_utf16().count() as u64;
+        let found: Vec<u64> = super::breaks(&line, &[span])
+            .into_iter()
+            .filter(|at| *at > 0 && *at < line.len())
+            .map(units)
+            .collect();
+        let blink: Vec<u64> = case["breaks"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|at| at.as_u64().unwrap())
+            .collect();
+        assert_eq!(found, blink, "{line}");
+    }
+}
+
+#[test]
+fn a_line_breaks_where_blink_breaks_it() {
+    let breaks = |line: &str| super::breaks(line, &[]);
+    // After a run of spaces whatever follows, which UAX 14 denies before `/` and `!`.
+    assert_eq!(breaks("see  /home !"), [5, 11]);
+    assert_eq!(breaks("a\tb"), [2]);
+    assert_eq!(breaks("a\u{1}b"), [] as [usize; 0]);
+    // The pair table: an address breaks after `?` and a hyphen, not after `/`, `.` or `:`.
+    assert_eq!(breaks("a/b.c:d\\e"), [] as [usize; 0]);
+    assert_eq!(breaks("a?b x-y"), [2, 4, 6]);
+    // A hyphen before a digit is a minus unless a letter or digit stands before it.
+    assert_eq!(breaks("a-1 -1 9-2"), [2, 4, 7, 9]);
+    // A hyphen before a letter past ASCII is the Unicode rules' too: they read what stands before.
+    let log = include_str!("../../../tests/fixtures/line-breaks/hyphen.jsonl");
+    for case in log.lines() {
+        let case: serde_json::Value = serde_json::from_str(case).unwrap();
+        let line = case["text"].as_str().unwrap();
+        let units = |at: usize| line[..at].encode_utf16().count() as u64;
+        let found: Vec<u64> = breaks(line).into_iter().map(units).collect();
+        let blink: Vec<u64> = case["breaks"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|at| at.as_u64().unwrap())
+            .collect();
+        assert_eq!(found, blink, "{line}");
+    }
+    // A chip before the hyphen opens a word as a space does.
+    assert_eq!(breaks("\u{fffc}-\u{e9}"), [3]);
+    // Past U+00FF the Unicode rules decide.
+    assert_eq!(breaks("\u{4f60}\u{597d}a"), [3, 6]);
+    assert_eq!(breaks("a\u{2014}b"), [1, 4]);
+}
+
+#[test]
+fn break_all_adds_the_table_s_breaks() {
+    use super::break_all::breaks;
+    // `+` is a letter here; a hyphen parts from the letter before it and the digit after.
+    assert_eq!(breaks("a+b"), [1, 2]);
+    assert_eq!(breaks("x-1"), [1, 2]);
+    assert_eq!(breaks("$5%"), [] as [usize; 0]);
+    assert_eq!(breaks("$%"), [1]);
+    // A combining mark keeps the class before it.
+    assert_eq!(breaks("a\u{301}b"), [3]);
+    assert_eq!(breaks("a.b:c"), [2, 4]);
 }

@@ -19,6 +19,7 @@ icu_collator = "2"
 icu_decimal = "2"
 icu_locale_core = "2"
 icu_plurals = "2"
+icu_properties = "2"
 icu_segmenter = { version = "2.3.0", default-features = false, features = ["compiled_data"] }
 image = { version = "0.25.10", default-features = false, features = ["webp"] }
 jiff = "0.2"

@@ -188,3 +188,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   Cindy shows it when `inlineQuoteCount > 0`.
 - Fixed: the row draws when it holds a quote or text; a stored message of two quotes covers it.
 - Round 2: PASS.
+
+## 9.5l Link chips' faces
+
+- Round 1: FAIL. P2: the pair table answered for a hyphen before a Latin-1 letter past ASCII,
+  where Blink asks the Unicode rules, which read the text before: `x a-é` broke only at the space.
+- Fixed: that pair goes to the Unicode rules again, with UAX 14's LB20a, which ICU4X lacks: no
+  break after a hyphen that starts a word. A Blink probe of 18 lines is the test
+  (`tests/fixtures/line-breaks/hyphen.jsonl`).
+- Round 2: PASS.

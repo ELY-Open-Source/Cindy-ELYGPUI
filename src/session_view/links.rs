@@ -299,24 +299,34 @@ pub fn shared(key: &str, count: usize, window: &mut Window, cx: &mut App) -> Sha
     }
 }
 
-/// A piece of the message's text with its links underlined.
-pub fn piece(
-    key: &str,
-    text: String,
-    links: Vec<Link>,
-    shared: &Shared,
-    window: &Window,
-) -> AnyElement {
-    // `underline`; gpui places the line itself, so `underline-offset-2` has no port.
-    let underline = HighlightStyle {
+/// `underline`; gpui places the line itself, so `underline-offset-2` has no port.
+pub fn underline(window: &Window) -> HighlightStyle {
+    HighlightStyle {
         underline: Some(UnderlineStyle {
             thickness: css(1.0).to_pixels(window.rem_size()),
             ..Default::default()
         }),
         ..Default::default()
-    };
-    let marks = links.iter().map(|link| (link.range.clone(), underline));
-    let styled = StyledText::new(text).with_highlights(marks);
+    }
+}
+
+/// `text` with `marks` underlined.
+pub fn marked(text: String, mut marks: Vec<Range<usize>>, window: &Window) -> StyledText {
+    marks.sort_by_key(|mark| mark.start);
+    let underline = underline(window);
+    StyledText::new(text).with_highlights(marks.into_iter().map(|mark| (mark, underline)))
+}
+
+/// A piece of the message's text with its links and `marks` underlined.
+pub fn piece(
+    key: &str,
+    (text, mut marks): (String, Vec<Range<usize>>),
+    links: Vec<Link>,
+    shared: &Shared,
+    window: &Window,
+) -> AnyElement {
+    marks.extend(links.iter().map(|link| link.range.clone()));
+    let styled = marked(text, marks, window);
     let layout = styled.layout().clone();
     div()
         .relative()

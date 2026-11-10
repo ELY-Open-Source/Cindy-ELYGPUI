@@ -3,7 +3,7 @@ use std::time::Duration;
 use gpui::{Modifiers, TestAppContext, VisualTestContext, px};
 
 use super::super::super::user_row::tests::{at, lines, open, open_json, settle};
-use super::{CHIP, Island, Ranges, lines as read};
+use super::{CHIP, Island, Line, Ranges};
 use crate::{
     chat_quotes::Quote,
     i18n::Translator,
@@ -13,6 +13,11 @@ use crate::{
 };
 
 const WEB: &str = "https://example.com/a";
+
+/// The lines read with nothing known of any link.
+fn read(islands: &[Island], linked: bool, t: &Translator) -> Vec<Line> {
+    super::lines(islands, linked, (&Default::default(), t)).0
+}
 
 /// A length as layout snaps it to the test window's half pixel.
 fn snapped(length: f32) -> gpui::Pixels {
@@ -66,12 +71,15 @@ fn a_line_holds_its_chips_and_links() {
     assert_eq!(read_lines("\n", true), [(String::new(), vec![], vec![])]);
     assert_eq!(read_lines("a\n\n", true).len(), 2);
     assert_eq!(read_lines("", true), [(String::new(), vec![], vec![])]);
-    // Session links and image paths are 9.5l's chips.
+    // A session link is a chip and an image path a marked stretch of the words.
     let other = "cindy://session/abc /tmp/a.png https://x.y";
-    assert_eq!(read_lines(other, true)[0].2, [(0, 31, 42)]);
+    let t = Translator::new("en").unwrap();
+    let line = read(&[Island::Text(other, ranges(true))], true, &t).remove(0);
+    assert_eq!(line.text, format!("{chip} /tmp/a.png https://x.y"));
+    assert_eq!(line.paths.first(), Some(&(4..14)));
+    assert_eq!(read_lines(other, true)[0].2, [(0, 15, 26)]);
     // The stand-in typed by hand is text, and a folded message reads no link.
     assert_eq!(read_lines(&chip, true), [(chip, vec![], vec![])]);
-    let t = Translator::new("en").unwrap();
     assert!(
         read(&[Island::Text(WEB, ranges(true))], false, &t)[0]
             .links
@@ -84,8 +92,9 @@ fn saved_ranges_draw_their_chips() {
     let t = Translator::new("en").unwrap();
     let chip = CHIP.to_string();
     let parsed = |source: &str| js::parse(source).unwrap();
-    let tab = r#"{"kind":"browser-tab","start":4,"end":7,"url":"https://x.y","title":"X"}"#;
-    let message = r#"{"kind":"message","start":8,"end":11,"text":"hi"}"#;
+    let tab = r#"{"kind":"browser-tab","start":4,"end":7,"href":"cindy://browser-tab/1?url=https%3A%2F%2Fx.y","url":"https://x.y","title":"X"}"#;
+    let message =
+        r#"{"kind":"message","start":8,"end":11,"href":"cindy://session/s?message=m","text":"hi"}"#;
     let ranges = Ranges {
         pasted: vec![Pasted::read(&parsed(
             r#"{"start":12,"end":15,"display":"3 lines"}"#,
@@ -96,21 +105,54 @@ fn saved_ranges_draw_their_chips() {
             Reference::read(&parsed(message)),
         ],
     };
-    // A message reference keeps its text until 9.5k and 9.5l; `/no` is no stored command.
+    // `/no` is no stored command.
     let body = "/go tab msg a\nb\n/no @a.rs";
     assert_eq!(
         flat(read(&[Island::Text(body, ranges)], true, &t)),
         [
-            (format!("{chip} {chip} msg {chip}"), vec![0, 4, 12], vec![]),
+            (
+                format!("{chip} {chip} {chip} {chip}"),
+                vec![0, 4, 8, 12],
+                vec![]
+            ),
             (format!("/no {chip}"), vec![4], vec![]),
         ]
     );
 }
 
 #[test]
-fn a_message_reference_over_two_lines_draws_two() {
+fn an_unfolded_reference_is_its_link_chip_under_its_own_name() {
     let t = Translator::new("en").unwrap();
-    let parsed = js::parse(r#"{"kind":"message","start":2,"end":9}"#).unwrap();
+    let parsed = |source: &str| Reference::read(&js::parse(source).unwrap());
+    let stored = || Ranges {
+        references: vec![
+            parsed(
+                r#"{"kind":"project","start":0,"end":1,"href":"cindy://project/%2Fa%2Fwork","name":"Mine","workingDir":"/a/work"}"#,
+            ),
+            parsed(
+                r#"{"kind":"session","start":2,"end":3,"href":"cindy://session/s","title":"Plan"}"#,
+            ),
+        ],
+        ..Default::default()
+    };
+    let labels = |linked: bool| {
+        let lines = read(&[Island::Text("p s", stored())], linked, &t);
+        let chips = lines[0]
+            .chips
+            .iter()
+            .map(|(_, chip)| chip.label().to_owned());
+        chips.collect::<Vec<_>>()
+    };
+    assert_eq!(labels(true), ["Mine", "Plan"]);
+    assert_eq!(labels(false), ["Mine", "Plan"]);
+}
+
+#[test]
+fn a_link_that_names_nothing_stays_its_words() {
+    let t = Translator::new("en").unwrap();
+    let broken =
+        r#"{"kind":"message","start":2,"end":8,"href":"cindy://session/","text":"[a\r\nb]"}"#;
+    let parsed = js::parse(broken).unwrap();
     let ranges = Ranges {
         references: vec![Reference::read(&parsed)],
         ..Default::default()
@@ -125,14 +167,21 @@ fn a_message_reference_over_two_lines_draws_two() {
 }
 
 #[gpui::test]
-fn a_stored_reference_with_a_line_feed_draws(cx: &mut TestAppContext) {
+fn an_unfolded_message_reference_is_its_link_chip(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let content = serde_json::json!({
         "text": "[a\nb](cindy://session/s?message=m)",
         "agentReferences": [{ "kind": "message", "start": 0, "end": 34, "href": "cindy://session/s?message=m" }],
     });
     let cx = open_json(cx, dir.path(), 2400.0, &[&content.to_string()]);
-    assert_eq!(at(cx, "msg-c0-text").unwrap().size.height, px(48.0));
+    // No task `s`: `Quoted message`, with the quote's icon, not lifted as a line's chip is.
+    let (chip, text) = (
+        at(cx, "msg-c0-chip-0").unwrap(),
+        at(cx, "msg-c0-text").unwrap(),
+    );
+    assert_eq!(chip.size.width, px(139.0));
+    assert_eq!(chip.top() - text.top(), px(5.0));
+    assert_eq!(text.size.height, px(31.0));
 }
 
 #[gpui::test]
@@ -148,10 +197,8 @@ fn stored_ranges_show_as_chips(cx: &mut TestAppContext) {
     let cx = open_json(cx, dir.path(), 2400.0, &[ranged]);
     let chip = |cx: &mut VisualTestContext, n: usize| at(cx, &format!("msg-c0-chip-{n}")).unwrap();
     let (command, pasted, session) = (chip(cx, 0), chip(cx, 1), chip(cx, 2));
-    assert!(
-        at(cx, "msg-c0-chip-3").is_none(),
-        "a message reference waits for its chip"
-    );
+    // The message reference's own text is its label: `hi` under the quote's icon.
+    assert_eq!(chip(cx, 3).size.width, px(53.0));
     // `/git`, `Pasted` and `Plan` at 7.2 pixels a letter, the last two with an icon.
     let wide = |chip: gpui::Bounds<gpui::Pixels>, letters: f32, rest: f32| {
         let over = f32::from(chip.size.width) - (letters * 7.2 + rest);
@@ -470,10 +517,13 @@ fn a_folded_message_reference_is_a_quote_chip(cx: &mut TestAppContext) {
     let fold = at(cx, "msg-c0-fold").unwrap();
     cx.simulate_click(fold.center(), Modifiers::none());
     settle(cx);
-    assert!(
-        at(cx, "msg-c0-chip-0").is_none(),
-        "unfolded, it waits for its link chip"
+    // Unfolded it is the link's chip, a pixel lower with the same words.
+    let (link, text) = (
+        at(cx, "msg-c0-chip-0").unwrap(),
+        at(cx, "msg-c0-text").unwrap(),
     );
+    assert_eq!(link.size, chip.size);
+    assert_eq!(link.top() - text.top(), px(5.0));
 }
 
 #[gpui::test]

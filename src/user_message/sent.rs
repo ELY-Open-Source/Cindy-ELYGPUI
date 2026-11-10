@@ -62,6 +62,7 @@ pub enum Kind {
 /// `AgentInputReference`.
 pub struct Reference {
     pub span: Span,
+    pub href: String,
     pub kind: Kind,
 }
 
@@ -137,6 +138,7 @@ impl Reference {
         };
         Reference {
             span: Span::read(value),
+            href: own("href"),
             kind,
         }
     }

@@ -26,7 +26,7 @@ mod tool;
 pub mod transport;
 mod usage;
 mod user;
-mod user_content;
+pub mod user_content;
 
 /// A `ChatMessage`: `None` is a key Cindy's literal sets to `undefined`.
 #[derive(Clone, Debug, Default, PartialEq)]

@@ -3,6 +3,7 @@
 use std::ops::Range;
 
 use gpui::LineLayout;
+use icu_properties::{CodePointMapData, props::LineBreak};
 use icu_segmenter::LineSegmenter;
 
 /// A chip's place in a line's text: Blink's own stand-in for an atomic inline.
@@ -58,10 +59,82 @@ pub fn hangs(c: char) -> bool {
     matches!(c, ' ' | '\t' | '\u{3000}')
 }
 
-/// The rows of `line` at `width`, as byte ranges; white space at a wrap hangs unseen.
-pub fn rows(line: &str, atoms: &[Atom], width: f32) -> Vec<Range<usize>> {
+/// Blink's breaks between two characters of U+0021 to U+00FF (`scripts/blink-line-breaks.js`).
+const PAIRS: &str = include_str!("../../resources/line-break-pairs.txt");
+
+/// `ShouldBreakFast`: the pair table's answer, or `None` where the Unicode rules decide.
+fn fast(before: Option<char>, last: char, ch: char) -> Option<bool> {
+    let (low, high) = ('!', '\u{ff}');
+    if last < low || ch < low {
+        return Some(false);
+    }
+    if last == '-' && ch.is_ascii_digit() {
+        return Some(before.is_some_and(|ch| ch.is_ascii_alphanumeric()));
+    }
+    if last > high || ch > high || (last == '-' && !ch.is_ascii()) {
+        return None;
+    }
+    let side = high as usize - low as usize + 2;
+    let at = (last as usize - low as usize) * side + (ch as usize - low as usize);
+    Some(PAIRS.as_bytes()[at] == b'1')
+}
+
+/// UAX 14's LB20a, which ICU4X's rules lack: no break after a hyphen that starts a word.
+fn starts_word(before: Option<char>, last: char, ch: char) -> bool {
+    let class = |ch| CodePointMapData::<LineBreak>::new().get(ch);
+    let letter = [
+        LineBreak::Alphabetic,
+        LineBreak::Ambiguous,
+        LineBreak::HebrewLetter,
+    ];
+    let open = [
+        LineBreak::MandatoryBreak,
+        LineBreak::CarriageReturn,
+        LineBreak::LineFeed,
+        LineBreak::NextLine,
+        LineBreak::Space,
+        LineBreak::ZWSpace,
+        LineBreak::ContingentBreak,
+        LineBreak::Glue,
+    ];
+    let first = before.is_none_or(|before| open.contains(&class(before)));
+    matches!(last, '-' | '\u{2010}') && letter.contains(&class(ch)) && first
+}
+
+/// `NextBreakablePosition`: where `line` may break; `all` are its `break-all` stretches.
+fn breaks(line: &str, all: &[Range<usize>]) -> Vec<usize> {
     let segmenter = LineSegmenter::new_for_non_complex_scripts(Default::default());
-    let breaks: Vec<usize> = segmenter.segment_str(line).collect();
+    let unicode: Vec<usize> = segmenter.segment_str(line).collect();
+    let mut added = Vec::new();
+    for span in all {
+        let inside = break_all::breaks(&line[span.clone()]);
+        added.extend(inside.into_iter().map(|at| span.start + at));
+    }
+    let space = |ch: char| matches!(ch, ' ' | '\t');
+    let (mut breaks, mut before, mut last) = (Vec::new(), None, None::<char>);
+    for (at, ch) in line.char_indices() {
+        let breaks_here = match last {
+            _ if space(ch) => false,
+            None => false,
+            Some(last) if space(last) => true,
+            Some(last) => match fast(before, last, ch) {
+                Some(true) => true,
+                _ if added.contains(&at) => true,
+                Some(false) => false,
+                None => unicode.binary_search(&at).is_ok() && !starts_word(before, last, ch),
+            },
+        };
+        if breaks_here {
+            breaks.push(at);
+        }
+        (before, last) = (last, Some(ch));
+    }
+    breaks
+}
+
+/// The rows of `line` at `width`, in bytes; white space at a wrap hangs; `all` is `break-all`.
+pub fn rows(line: &str, atoms: &[Atom], width: f32, all: &[Range<usize>]) -> Vec<Range<usize>> {
+    let breaks = breaks(line, all);
     let (mut rows, mut first) = (Vec::new(), 0);
     let (mut used, mut candidate, mut segment) = (0.0, None, None::<Range<usize>>);
     for (nth, atom) in atoms.iter().enumerate() {
@@ -89,6 +162,7 @@ pub fn rows(line: &str, atoms: &[Atom], width: f32) -> Vec<Range<usize>> {
     rows
 }
 
+mod break_all;
 pub mod draw;
 
 #[cfg(test)]

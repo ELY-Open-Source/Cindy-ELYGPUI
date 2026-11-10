@@ -1,7 +1,5 @@
 //! `deepLinkSchemes.ts` and `deepLink.ts`: Cindy's deep links as text carries them.
 
-#![cfg_attr(not(test), expect(dead_code, reason = "9.5l's chips read them"))]
-
 use crate::cindy_json::decode_uri_component;
 
 /// `DEEP_LINK_URL_PREFIXES`: the scheme links are built with, then the historic one.

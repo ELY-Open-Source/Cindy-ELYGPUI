@@ -13,11 +13,12 @@ use crate::{
     i18n::Translator,
     linkify,
     session_view::{
-        chip::{self, Chip},
+        chip::{self, Chip, Stand},
+        link_chip::{self, Found, Want},
         links::{self, Link, Shared},
     },
     units::css,
-    user_message::sent::{self, Part, Pasted, Reference, Span, Token},
+    user_message::sent::{self, Kind, Part, Pasted, Reference, Span, Token},
 };
 
 /// How the text is drawn; `chip` is the chip label's size in CSS pixels.
@@ -52,6 +53,8 @@ struct Line {
     text: String,
     chips: Vec<(usize, Chip)>,
     links: Vec<Link>,
+    /// Image paths: underlined, and `break-all`.
+    paths: Vec<Range<usize>>,
 }
 
 /// The message's saved ranges in the drawn text's own units; no `slash` leaves the heuristic.
@@ -63,13 +66,15 @@ pub struct Ranges {
 }
 
 /// The lines being read, and how many links they hold so far.
-struct Reading {
+struct Reading<'a> {
     lines: Vec<Line>,
     links: usize,
     linked: bool,
+    known: (&'a Found, &'a Translator),
+    wants: Vec<Want>,
 }
 
-impl Reading {
+impl Reading<'_> {
     fn line(&mut self) -> &mut Line {
         self.lines.last_mut().expect("a line is open")
     }
@@ -103,19 +108,75 @@ impl Reading {
             };
             // `renderTextWithLinks`: each piece is read alone; Blink draws no CR.
             let linked = self.linked;
-            let found = linkify::find(text).into_iter().filter(|_| linked);
-            for found in found.filter(|found| matches!(found.link, linkify::Link::Url)) {
-                let gone = text[..found.range.start].matches('\r').count();
-                let start = self.line().text.len() + found.range.start - gone;
-                let link = Link {
-                    nth: self.links,
-                    range: start..start + found.range.len(),
-                    url: text[found.range].to_owned().into(),
-                };
-                self.line().links.push(link);
-                self.links += 1;
+            let mut from = 0;
+            for found in linkify::find(text).into_iter().filter(|_| linked) {
+                let range = found.range.clone();
+                self.line()
+                    .text
+                    .push_str(&text[from..range.start].replace('\r', ""));
+                let start = self.line().text.len();
+                from = range.start;
+                match &found.link {
+                    linkify::Link::Url => {
+                        let link = Link {
+                            nth: self.links,
+                            range: start..start + range.len(),
+                            url: text[range].to_owned().into(),
+                        };
+                        self.line().links.push(link);
+                        self.links += 1;
+                    }
+                    linkify::Link::Img => self.line().paths.push(start..start + range.len()),
+                    linkify::Link::Session(to) => {
+                        let label = to.label.as_deref();
+                        let chip = link_chip::session(&to.href, label, self.known, &mut self.wants);
+                        self.link(chip, label.unwrap_or(&to.href));
+                        from = range.end;
+                    }
+                    linkify::Link::Project(to) => {
+                        let label = to.label.as_deref();
+                        self.link(
+                            link_chip::project(&to.href, label),
+                            label.unwrap_or(&to.href),
+                        );
+                        from = range.end;
+                    }
+                }
             }
-            self.line().text.push_str(&text.replace('\r', ""));
+            self.line().text.push_str(&text[from..].replace('\r', ""));
+        }
+    }
+
+    /// A link's chip, or the words of one that names nothing.
+    fn link(&mut self, chip: Option<Chip>, words: &str) {
+        match chip {
+            Some(chip) => self.chip(chip),
+            None => self.plain(words),
+        }
+    }
+
+    /// `SentAgentReferenceChip`: the link chips of an unfolded message, else the inert face.
+    fn reference(&mut self, reference: &Reference) {
+        let chip = match &reference.kind {
+            _ if !self.linked => None,
+            Kind::Message { text } => Some((text.as_deref(), true)),
+            Kind::Session { title } => Some((title.as_deref(), true)),
+            Kind::Project { name, .. } => Some((Some(name.as_str()), false)),
+            _ => None,
+        };
+        let href = &reference.href;
+        match chip {
+            Some((label, true)) => {
+                let chip = link_chip::session(href, label, self.known, &mut self.wants);
+                self.link(chip, label.unwrap_or(href));
+            }
+            Some((label, false)) => {
+                self.link(link_chip::project(href, label), label.unwrap_or(href))
+            }
+            None => {
+                let label = sent::label(reference, self.known.1);
+                self.chip(chip::reference(reference, &label));
+            }
         }
     }
 }
@@ -127,17 +188,19 @@ pub enum Island<'a> {
 }
 
 /// `renderContent`'s nodes line by line; a final line feed opens no line.
-fn lines(islands: &[Island], linked: bool, t: &Translator) -> Vec<Line> {
+fn lines(islands: &[Island], linked: bool, known: (&Found, &Translator)) -> (Vec<Line>, Vec<Want>) {
     let mut reading = Reading {
         lines: vec![Line::default()],
         links: 0,
         linked,
+        known,
+        wants: Vec::new(),
     };
     for island in islands {
         let (body, ranges) = match island {
             Island::Text(body, ranges) => (body, ranges),
             Island::Quote(quote) => {
-                reading.chip(chip::quote(quote, true));
+                reading.chip(chip::quote(quote, Stand::Island));
                 continue;
             }
         };
@@ -147,13 +210,7 @@ fn lines(islands: &[Island], linked: bool, t: &Translator) -> Vec<Line> {
                 Token::Text(text) => reading.text(text, ranges.slash.is_none()),
                 Token::Slash(text) => reading.chip(chip::command(&sent::slash_label(text))),
                 Token::Pasted { text, display } => reading.chip(chip::pasted(display, text)),
-                Token::Reference { text, index } => {
-                    let reference = &ranges.references[*index];
-                    match chip::reference(reference, &sent::label(reference, t), !linked) {
-                        Some(chip) => reading.chip(chip),
-                        None => reading.plain(text),
-                    }
-                }
+                Token::Reference { index, .. } => reading.reference(&ranges.references[*index]),
             }
         }
     }
@@ -161,12 +218,12 @@ fn lines(islands: &[Island], linked: bool, t: &Translator) -> Vec<Line> {
     if out.len() > 1 && out.last().is_some_and(|line| line.text.is_empty()) {
         out.pop();
     }
-    out
+    (out, reading.wants)
 }
 
 /// The line's atoms, each chip as wide as its face, and the rows they break into.
 fn broken(
-    text: &str,
+    (text, paths): (&str, &[Range<usize>]),
     chips: &[(usize, Pixels)],
     (style, width): (&TextStyle, Pixels),
     window: &Window,
@@ -176,7 +233,7 @@ fn broken(
         let atom = atoms.iter_mut().find(|atom| atom.at == *at);
         atom.expect("a chip's stand-in is shaped").advance = f32::from(*width);
     }
-    let rows = rows(text, &atoms, width.into());
+    let rows = rows(text, &atoms, width.into(), paths);
     (atoms, rows)
 }
 
@@ -184,7 +241,7 @@ fn broken(
 pub fn count(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> usize {
     let text = body.replace('\r', "");
     let text = text.strip_suffix('\n').unwrap_or(&text);
-    let rows = |line| broken(line, &[], (style, width), window).1.len();
+    let rows = |line| broken((line, &[]), &[], (style, width), window).1.len();
     text.split('\n').map(rows).sum()
 }
 
@@ -219,24 +276,35 @@ fn words(
     window: &Window,
 ) -> Option<AnyElement> {
     let text = format!("{}{tail}", &line.text[range.clone()]);
-    let reaches = |link: &&Link| link.range.start < range.end && range.start < link.range.end;
-    let held = |link: &Link| Link {
-        nth: link.nth,
-        range: link.range.start.max(range.start) - range.start
-            ..link.range.end.min(range.end) - range.start,
-        url: link.url.clone(),
+    // The stretch of `span` these words hold, in their own bytes.
+    let within = |span: &Range<usize>| {
+        let (start, end) = (span.start.max(range.start), span.end.min(range.end));
+        (start < end).then(|| start - range.start..end - range.start)
     };
-    let held: Vec<Link> = line.links.iter().filter(reaches).map(held).collect();
+    let held = |link: &Link| {
+        Some(Link {
+            nth: link.nth,
+            range: within(&link.range)?,
+            url: link.url.clone(),
+        })
+    };
+    let held: Vec<Link> = line.links.iter().filter_map(held).collect();
+    let paths: Vec<Range<usize>> = line.paths.iter().filter_map(within).collect();
     match shared.filter(|_| !held.is_empty()) {
         _ if text.is_empty() => None,
-        Some(shared) => Some(links::piece(key, text, held, shared, window)),
-        None => Some(SharedString::from(text).into_any_element()),
+        Some(shared) => Some(links::piece(key, (text, paths), held, shared, window)),
+        None if paths.is_empty() => Some(SharedString::from(text).into_any_element()),
+        None => Some(links::marked(text, paths, window).into_any_element()),
     }
 }
 
 /// The message's text: `renderContent` over each island, broken at `look.width`.
 pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) -> AnyElement {
-    let lines = lines(islands, look.kept.is_none(), cx.global::<Translator>());
+    let known = (link_chip::held(cx), cx.global::<Translator>());
+    let (lines, wants) = lines(islands, look.kept.is_none(), known);
+    if !wants.is_empty() {
+        cx.defer(move |cx| link_chip::fetch(wants, cx));
+    }
     let links = lines.iter().map(|line| line.links.len()).sum();
     let shared = (links > 0).then(|| links::shared(look.key, links, window, cx));
     let (mut all, mut shaped, mut chips, mut wrapped) = (Vec::new(), Vec::new(), 0, false);
@@ -244,7 +312,8 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
         let width =
             |(at, chip): &(usize, Chip)| (*at, chip.width(look.chip, &look.style, window, cx));
         let widths: Vec<(usize, Pixels)> = line.chips.iter().map(width).collect();
-        let (atoms, rows) = broken(&line.text, &widths, (&look.style, look.width), window);
+        let text = (line.text.as_str(), line.paths.as_slice());
+        let (atoms, rows) = broken(text, &widths, (&look.style, look.width), window);
         wrapped |= rows.len() > 1;
         all.extend(rows.into_iter().map(|row| (n, row)));
         shaped.push((atoms, chips));
@@ -280,17 +349,17 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
         let height = chips.fold(top + metrics.line, |height, chip| {
             height.max(top + over(chip) + tall(chip))
         });
-        let say = |range: Range<usize>, tail: &str| {
+        let say = |range: Range<usize>, tail: &str, window: &Window| {
             let words = words(line, range, tail, look.key, shared.as_ref(), window);
             words.map(|words| div().flex_none().mt(top).child(words).into_any_element())
         };
         for (k, (at, chip)) in &held {
-            parts.extend(say(from..*at, ""));
+            parts.extend(say(from..*at, "", window));
             let id = format!("{}-chip-{}", look.key, first + k);
             parts.push(chip.element(id, top + over(chip), look.chip, window, cx));
             from = at + CHIP.len_utf8();
         }
-        parts.extend(say(from..end, tail));
+        parts.extend(say(from..end, tail, window));
         div().flex().items_start().h(height).children(parts)
     };
     let rows: Vec<_> = all.into_iter().enumerate().map(row).collect();

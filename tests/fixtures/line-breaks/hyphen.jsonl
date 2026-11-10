@@ -1,0 +1,18 @@
+{"text":"x -é","breaks":[2]}
+{"text":"x a-é","breaks":[2,4]}
+{"text":"-é","breaks":[]}
+{"text":"a -é","breaks":[]}
+{"text":"x ‐é","breaks":[2]}
+{"text":"a‐é","breaks":[2]}
+{"text":"x -א","breaks":[2]}
+{"text":"a-א","breaks":[2]}
+{"text":"x -你","breaks":[2,3]}
+{"text":"x -д","breaks":[2]}
+{"text":"a-д","breaks":[2]}
+{"text":"9-é","breaks":[2]}
+{"text":")-é","breaks":[2]}
+{"text":"x ‐a","breaks":[2]}
+{"text":"a‐b","breaks":[2]}
+{"text":"你-é","breaks":[2]}
+{"text":"x -×","breaks":[2]}
+{"text":"a-×","breaks":[2]}

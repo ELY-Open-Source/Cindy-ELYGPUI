@@ -93,7 +93,8 @@ fn a_link_past_a_hung_space_keeps_its_place(cx: &mut TestAppContext) {
 #[gpui::test]
 fn a_wrapped_link_has_a_box_a_line(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
-    let body = format!("go {WEB}/{}", "path".repeat(60));
+    // Blink breaks an address after its `?`, not after a `/`.
+    let body = format!("go {WEB}?{}", "path".repeat(60));
     let cx = open(cx, dir.path(), 2400.0, &[(&body, None)]);
     let text = at(cx, "msg-c0-text").unwrap();
     let (first, second) = (at(cx, FIRST).unwrap(), at(cx, "msg-c0-link-0-1").unwrap());
@@ -277,7 +278,7 @@ fn the_menu_key_opens_the_menu_under_the_link(cx: &mut TestAppContext) {
 #[gpui::test]
 fn the_menu_key_reads_every_row_of_a_wrapped_link(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
-    let body = format!("go {WEB}/{}", "path".repeat(60));
+    let body = format!("go {WEB}?{}", "path".repeat(60));
     let cx = open(cx, dir.path(), 2400.0, &[(&body, None)]);
     focus(cx, FIRST);
     cx.simulate_keystrokes("shift-f10");
