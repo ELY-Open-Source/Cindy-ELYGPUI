@@ -9,6 +9,7 @@ use crate::{
     sessions::{self, group::Session, query},
 };
 
+mod attachments;
 mod chip;
 mod column;
 mod entry_error;

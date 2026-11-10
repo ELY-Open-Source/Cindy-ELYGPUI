@@ -211,9 +211,13 @@ listed in `tasks/done.md`.
       and an earlier link that grows keeps an ask Cindy ends (the second chip of
       `cindy://session/a cindy://session/old` after the first becomes `cindy://session/aaaa`).
       `logs/review/9.5m-r3.md`
-  - [ ] 9.5n Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
-    face, `UserFileChip`)
-  - [ ] 9.5o What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
+  - [x] 9.5n File attachments over the bubble: `UserAttachmentChip`'s face (the file's icon, or
+    Download for `isSafetyDowngradedAttachment`; `attachmentSafety.ts`, golden `attachment-safety`),
+    also for a message with no text; its click and menus come with 9.13
+  - [ ] 9.5o Image attachments over the bubble: `ChatImageView`'s `user-attached` face read from
+    `xdt-image://` and `cindy-media://`, the long image's preview; lightbox, menu and the
+    missing-media placeholder come with 9.13
+  - [ ] 9.5p What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
     Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,

@@ -212,3 +212,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: FAIL. P2: the chip's mark is its drawn line and UTF-8 byte, not Cindy's key (the text
   piece and the match's UTF-16 index): a rewritten row can end an ask Cindy keeps, or keep one
   Cindy ends. Left open; the entry is `- [!]`.
+
+## 9.5n File attachments over the bubble
+
+- Round 1: PASS. The reviewer ran Cindy's `attachmentExtension` against the port over every
+  Unicode scalar, and laid the chip's styles out in Chromium 148. No live pointer check.

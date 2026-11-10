@@ -8,7 +8,7 @@ use gpui::{
 };
 
 use super::{
-    SessionView,
+    SessionView, attachments,
     flow::draw::{self, Island, Look, Ranges},
     width::Widths,
 };
@@ -213,8 +213,12 @@ pub fn element(
         let quote = |segment: &Segment| matches!(segment, Segment::Quote(_));
         all.iter().any(quote)
     });
+    let room = COLUMN.min(widths.message);
+    let files = attachments::files(message);
+    let files = (!files.is_empty()).then(|| attachments::row(key, &files, room, window, cx));
+    // A message with no text and no quote draws no bubble.
     if quoted.is_none() && js_trim(&body).is_empty() {
-        return None;
+        return files.map(|files| column(vec![files]));
     }
     let fold = fold(origin);
     let compact = f32::from(u8::from(widths.compact));
@@ -292,6 +296,12 @@ pub fn element(
                 compact: widths.compact,
             }))
         });
+    let bubble = bubble.into_any_element();
+    Some(column(files.into_iter().chain([bubble]).collect()))
+}
+
+/// The message's column, set right: what stands over the bubble, then the bubble.
+fn column(parts: Vec<AnyElement>) -> AnyElement {
     let column = div()
         .flex()
         .flex_col()
@@ -299,15 +309,13 @@ pub fn element(
         .gap(css(8.0))
         .min_w_0()
         .max_w(css(COLUMN))
-        .child(bubble);
-    Some(
-        div()
-            .flex()
-            .w_full()
-            .justify_end()
-            .child(column)
-            .into_any_element(),
-    )
+        .children(parts);
+    div()
+        .flex()
+        .w_full()
+        .justify_end()
+        .child(column)
+        .into_any_element()
 }
 
 #[cfg(test)]

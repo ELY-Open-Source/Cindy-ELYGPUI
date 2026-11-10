@@ -71,7 +71,7 @@ enum Face {
 }
 
 /// `FileTypeIcon`; Ely's `FileVideoCamera` is not lucide 0.468's `FileVideo`.
-fn file_icon(name: &str) -> &'static [u8] {
+pub(super) fn file_icon(name: &str) -> &'static [u8] {
     match file_presentation::glyph(file_presentation::kind(name, "")) {
         "FileCode" => IconName::FileCode.svg(),
         "FileText" => IconName::FileText.svg(),
@@ -87,14 +87,18 @@ fn file_icon(name: &str) -> &'static [u8] {
     }
 }
 
-fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip {
-    // `truncate` is `white-space: nowrap`: white space collapses to single spaces.
+/// `truncate` is `white-space: nowrap`: white space collapses to single spaces.
+pub(super) fn nowrap(label: &str) -> String {
     let drawn: Vec<&str> = label
         .split([' ', '\t', '\n', '\r', '\x0c'])
         .filter(|word| !word.is_empty())
         .collect();
+    drawn.join(" ")
+}
+
+fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip {
     Chip {
-        label: drawn.join(" ").into(),
+        label: nowrap(label).into(),
         name: label.to_owned().into(),
         icon,
         tip: tip.to_owned().into(),

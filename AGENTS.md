@@ -277,7 +277,12 @@ defines scope and what 1:1 means.
   composer's row at `inputWidth`) at `inputPad`. `stream.rs` is `MessageStream`'s list: the scroller,
   the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only an ordinary
   user message draws so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text
-  joined), `ChatBubble`'s user face, and the long message's fold. `flow.rs` breaks a line into rows
+  joined), `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is
+  `UserAttachmentChip`'s inert face in `fileAttachmentNodes`, over the bubble and for a message with no
+  text: the chips wrap and stand right, each at most `min(280px, 100%)`, lit under the pointer, the
+  native `title` as gpui's tooltip; `src/attachment_safety.rs` (`attachmentSafety.ts` with
+  `isSafetyDowngradedAttachment`, golden `attachment-safety`) picks Download for a file the chat only
+  saves. Its click and menus come with 9.13, the images with 9.5o. `flow.rs` breaks a line into rows
   itself, since gpui's text holds no element: Blink's break opportunities (`breaks` is
   `NextBreakablePosition`: a break after a run of spaces, the pair table
   `resources/line-break-pairs.txt` for U+0021 to U+00FF, which `scripts/blink-line-breaks.js` reads off

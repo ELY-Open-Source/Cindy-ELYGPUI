@@ -93,6 +93,10 @@ export const FILE_KIND_TESTS = {
   'packages/maker-shared/src/filePresentation.test.ts': { './filePresentation': ['getFileVisualKind'] },
 };
 
+export const ATTACHMENT_TESTS = {
+  [`${desktop}/shared/__tests__/attachmentSafety.test.ts`]: { '../attachmentSafety': ['attachmentExtension', 'isDangerousAttachmentName'] },
+};
+
 export const LINK_OPEN_TESTS = {
   [`${desktop}/renderer/hooks/__tests__/useLinkOpenPreference.test.ts`]: { '../useLinkOpenPreference': ['isLocalOpenUrl'] },
 };

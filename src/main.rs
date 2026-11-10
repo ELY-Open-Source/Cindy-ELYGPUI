@@ -2,6 +2,7 @@ mod activation_click;
 mod app_shortcuts;
 mod appearance_settings;
 mod atomic_file;
+mod attachment_safety;
 mod bounded_read;
 mod browse_history;
 mod chat_message;
