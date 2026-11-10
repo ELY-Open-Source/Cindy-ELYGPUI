@@ -105,6 +105,25 @@ listed in `tasks/done.md`.
 - [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
   work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
   subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
+  - [ ] 9.4a The plan timeline (`messageRender.ts`): `findMessageTodoInsertions`,
+    `findLatestMessageTodoInsertion`, `getLatestMessageTodoState`, `extractPlanTodos`,
+    `extractTodos`, `extractTodosFromSourceMessage`, `isPlanUserBoundary`; golden
+  - [ ] 9.4b What a turn's rows yield: `extractToolResultMedia` with `dedupeToolMediaByUrl`,
+    `extractRenderedMarkdownImageTargets`, `richAnswerMediaSources`, `collectCachedGeneratedFiles`
+    (`generatedFiles.ts`) with `sourcePathCandidatesFromDescriptor` and `resolveToolFilePath`; golden
+  - [ ] 9.4c `buildRenderItems`: its filters, subagent rows left out, the result lookup, the plan
+    cards with their window check, the linear build (messages, tool segments with the gap split,
+    agent tasks with their persisted status, tool media less what the turn shows inline) and the
+    turn's end (generated files, hidden subagent media, `isGeneratedFilesTurnSealed`); golden.
+    `turn_changes` comes with its store (18.0), ghost cards with 16.0, the Bot order with 14.0,
+    voice rows with 22.0, live task updates and durable subagent status with 10.0
+  - [ ] 9.4d `messageWorkGroups.ts` over 9.1b's grouping: the item adapter (`renderItemStartMs`,
+    `renderItemEndMs`, `messageTs`, `isCompletedAssistantMessage`, the work group it makes),
+    `collectTurnFinalAssistantClientIds`, `assistantHasFollowingUserBoundary`, the first and last
+    user message ids, `insertForkOriginItem`, `renderItemContainsClientId`; golden
+  - [ ] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
+    calls it for a ready view: chunks built by 9.4c and grouped by 9.4d, placeholders, deferred
+    work, unique keys; the routed task's items held for the rows of 9.5 to 9.14
 - [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
