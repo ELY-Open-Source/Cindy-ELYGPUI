@@ -14,14 +14,11 @@ use crate::{
     appearance_settings::text_size, i18n::Translator, router, theme::Appearance, units::css,
 };
 
-/// The view's body, which 9.3c lays out.
+/// The route's body.
 pub fn element(cx: &App) -> Option<AnyElement> {
     let failure = match super::gate(cx)? {
         Gate::Waiting => return None,
-        Gate::Open => {
-            let view = div().debug_selector(|| "session-view".into());
-            return Some(view.flex_1().min_h_0().into_any_element());
-        }
+        Gate::Open => return Some(super::column::element()),
         Gate::Failed(failure) => failure,
     };
     let t = cx.global::<Translator>();

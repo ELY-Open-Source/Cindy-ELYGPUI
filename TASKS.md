@@ -49,7 +49,7 @@ listed in `tasks/done.md`.
     `details` (subagent, live and plain ranges, detail cache); tests from `historyViewReader.test.ts`.
     Work lines and page shapes come with 19.0, the first page's import with 10.0,
     `restoreTaskImageRows` and `recoverGeneratedImagesForHistory` with 9.13, legacy turn costs with 9.11
-- [ ] 9.2 The session slice as `makerChatStore.ts` keeps it for a local task: the first page on
+- [x] 9.2 The session slice as `makerChatStore.ts` keeps it for a local task: the first page on
   `enterView`, older pages (`loadOlderMessages`), work details on demand, the reload on a database
   change (the watcher of 8.3), the soft eviction of idle sessions and the window trim;
   `mapServerMessages`
@@ -81,7 +81,7 @@ listed in `tasks/done.md`.
   - [x] 9.2g Memory: the soft eviction (budget, the 30s check, leave times), the LRU cap of
     `_evictLruIfNeeded` and `_trimMessagesIfNeeded` with its window islands; the runtime's busy
     guard comes with 10.0, warm reading windows with 9.14's scroll memory
-- [ ] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
+- [!] 9.3 The route `/cc-agent/:sessionId` as `CCAgentSessionView.tsx` lays it out: the content
   header (`SessionContentHeader.tsx`: title and its rename, project chip, vendor, the actions this
   chapter owns), the message column with its width rules, the composer dock; loading, empty, not
   found and archived states; `useTrackLastView` keeps the slot
@@ -97,13 +97,16 @@ listed in `tasks/done.md`.
     the pin mark, the title (`max-w-[40vw]`, its manual window drag) with the double-click rename
     (`w-72 h-7`), More (`Ellipsis` 15 in `h-7 w-7`) opening `SessionTaskMenu` with the header's
     handlers; device, schedule, tag, git and migration badges come with their chapters
-  - [ ] 9.3c The column: `useProportionalWidth` (the 914 floor, `compact` under 700), the message
+  - [x] 9.3c The column: `useProportionalWidth` (the 914 cap, `compact` under 700), the message
     area at `messageWidth` (rows come with 9.4 to 9.14), the composer dock (the `h-8` fade, the
-    `pb-5` zone at `inputPad`) that 9.15 fills
+    `pb-5` zone at `inputPad`) that 9.15 fills; `chat-rail-compact`'s type scale comes with the
+    rows it shrinks (9.5), the stream's loading and empty states, its `overlayHeight` padding and
+    the dock over scrolled rows (its hit blocking, the wallpaper copy and mask) with 9.14
 - [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
   work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
   subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
-- [ ] 9.5 The user message (`UserMessage.tsx`): `userMessageDisplayText.ts`, linkify and URL links
+- [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
+  `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
   quote, inline reference and session link chips, the forwarded-request text of 8.7
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
@@ -136,7 +139,9 @@ listed in `tasks/done.md`.
   (`RENDER_WINDOW_INITIAL_ITEMS`, first-paint budget), scroll anchoring and restore per session,
   auto follow, older pages on scroll, `JumpToBottomChip`, `NewMessageIndicator`,
   `PrevMessageJumpChip`, `MessageNavRail.tsx`, navigation keys; the search hit's `searchJump`
-  lands here (from 8.7, `searchJumpTargeting.ts`)
+  lands here (from 8.7, `searchJumpTargeting.ts`); from 9.3c, the loading and empty states, the
+  stream's bottom padding from the dock's height (`useComposerOverlayMetrics`), the dock's hit
+  blocking over rows, and under a wallpaper its fixed copy or the stream's mask
 - [ ] 9.15 The composer (`ChatInput.tsx`, `composerDocState.ts`): the document as Tiptap keeps it
   (paragraphs, hard breaks, list and quote nodes, mention, pasted-text and slash chips), history,
   placeholder, IME and CJK punctuation, the paste pipeline, `SlashCommandPalette.tsx`,

@@ -86,3 +86,6 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: FAIL. Both rename entries looked the task up in any held bucket first, so a stale archived row prefilled the field over the fresh title the header showed.
 - Fixed: the double click and More's Rename start from the task the header shows (`header::task`); rows look theirs up in the list; `session_view::task` is gone; the reviewer's two cases are tests.
 - Round 3: PASS.
+
+## 9.3c The column
+- Round 1: PASS.

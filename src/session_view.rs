@@ -9,8 +9,10 @@ use crate::{
     sessions::{self, group::Session, query},
 };
 
+mod column;
 mod entry_error;
 pub mod header;
+mod width;
 
 pub use entry_error::element;
 

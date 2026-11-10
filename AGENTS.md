@@ -217,7 +217,10 @@ defines scope and what 1:1 means.
   title (its press followed over the whole window, as pointer capture, with a 4px dead zone before it
   moves the window; a double click renames with `rename::header_field`, whose edit outlives a task
   switch, commits to the task shown and goes with the header), More (a Tab stop) with `task_menu` under
-  `Scope::Header`, whose pin writes `pinnedAt` alone.
+  `Scope::Header`, whose pin writes `pinnedAt` alone. `width.rs` is `useProportionalWidth(914)` and
+  `column.rs` the view's section: a canvas measures the container and lays the section out in the same
+  frame (`prepaint_as_root`), the message column at `messageWidth`, the dock (fade, `pb-5` zone, the
+  composer's row at `inputWidth`) at `inputPad`.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts
