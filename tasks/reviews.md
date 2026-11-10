@@ -111,3 +111,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS.
 ## 9.4e `renderHistoryView` for a ready view
 - Round 1: PASS.
+## 9.5a The bare URL's end
+- Round 1: FAIL. P2: `\p{P}`, `\p{Z}` and `\p{L}` came from the `regex` crate's Unicode 16 tables,
+  V8's are Unicode 17 (`https://x/a\u{10ED0}b`, `https://x。\u{088F}国中国`). P2: the `url` crate
+  refuses `https://ab\u{088F}`, which Node's `new URL` takes, so `[x]` after it stays.
+- Fixed: the three classes are V8's, from `resources/url-classes.json`; the reviewer's inputs and
+  more Unicode 17 characters are golden cases. The second finding is Node's parser alone: Blink,
+  where the message is drawn, refuses that host as the `url` crate does
+  (`logs/review/9.5a-r1-url-engines.log`); AGENTS.md records where each engine parts from the
+  standard.
+- Round 2: PASS.

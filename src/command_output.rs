@@ -3,14 +3,13 @@
 mod converters;
 mod explicit;
 mod index;
-mod js_re;
 mod tokens;
 
 use std::{borrow::Cow, collections::HashSet, sync::LazyLock};
 
 use regex::Regex;
 
-use crate::rich_answer::js::utf16_len;
+use crate::{js_re, rich_answer::js::utf16_len};
 
 /// `EXT_RE`.
 static EXT: LazyLock<Regex> = LazyLock::new(|| js_re::regex(r"\.[A-Za-z][A-Za-z0-9]{0,7}$", false));

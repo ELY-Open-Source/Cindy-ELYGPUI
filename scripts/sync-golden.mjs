@@ -10,7 +10,7 @@ import { ASSETS } from './golden/record.mjs';
 import { renderItems } from './golden/renderItems.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
-import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, BOUNDARY_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -86,6 +86,7 @@ try {
     "export { resolveLocalPath, resolveToolFilePath } from './renderer/lib/localPathResolver';",
     "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
     "export { extractCommandOutputPathCandidates } from './shared/commandOutputPaths';",
+    "export * as urlBoundary from '../../../packages/maker-shared/src/urlTextBoundary';",
     "export { SQLiteSyncDialect } from 'drizzle-orm/sqlite-core';",
   ].join('\n'));
   // mapper.ts imports Electron's main-process modules; the functions run here never call them.
@@ -100,7 +101,7 @@ try {
     nodePaths, alias, ...ASSETS,
     define,
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -218,6 +219,11 @@ try {
     han: ranges(/\p{Script=Han}/u),
     letterOrNumber: ranges(/[\p{L}\p{N}]/u),
     mark: ranges(/\p{M}/u),
+  });
+  write(path.join(fixtures, '..', '..', 'resources', 'url-classes.json'), {
+    unicode: process.versions.unicode,
+    boundary: ranges(/[\p{P}\p{Z}]/u),
+    letter: ranges(/\p{L}/u),
   });
   const segDir = path.join(fixtures, 'cjk-seg');
   const segInput = JSON.parse(fs.readFileSync(path.join(segDir, 'input.json'), 'utf8'));
@@ -467,6 +473,12 @@ try {
     sourcePathCandidates: (name, raw) => toolUse.sourcePathCandidatesFromDescriptor(toolUse.describeToolUse(name, JSON.parse(raw))),
   } });
   console.log(`${yieldCases} turn yield cases`);
+  const boundaryCases = await recorded({ ...golden, name: 'url-boundary', tests: BOUNDARY_TESTS, fns: {
+    clipBareHttpAutolinkText: urlBoundary.clipBareHttpAutolinkText,
+    matchBareHttp: (text) => text.match(new RegExp(urlBoundary.BARE_HTTP_URL_RE_SOURCE, 'g')) ?? [],
+    markdownWrapMarkerFromPrefix: urlBoundary.markdownWrapMarkerFromPrefix,
+  } });
+  console.log(`${boundaryCases} URL boundary cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);

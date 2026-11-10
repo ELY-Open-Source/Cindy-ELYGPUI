@@ -69,3 +69,7 @@ export const PLAN_TESTS = {
     '../messageRender': ['findMessageTodoInsertions', 'getLatestMessageTodoState', 'findLatestMessageTodoInsertion', 'extractPlanTodos'],
   },
 };
+
+export const BOUNDARY_TESTS = {
+  [`${shared}/urlTextBoundary.test.ts`]: { '../urlTextBoundary': ['clipBareHttpAutolinkText'] },
+};

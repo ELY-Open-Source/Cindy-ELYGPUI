@@ -4,6 +4,8 @@ use std::sync::OnceLock;
 
 use rusqlite::{Connection, functions::FunctionFlags, types::ValueRef};
 
+use crate::v8_classes::within;
+
 const ROLES: &str = "('user', 'assistant', 'ask_user', 'plan_review')";
 
 /// V8's `\p{Script=Han}`, `[\p{L}\p{N}]` and `\p{M}`, from `scripts/sync-golden.mjs`.
@@ -21,12 +23,6 @@ fn classes() -> &'static Classes {
         let text = include_str!("../../resources/cjk-classes.json");
         serde_json::from_str(text).expect("the bundled character classes parse")
     })
-}
-
-fn within(ranges: &[[u32; 2]], ch: char) -> bool {
-    let cp = u32::from(ch);
-    let at = ranges.partition_point(|[_, end]| *end < cp);
-    ranges.get(at).is_some_and(|[start, _]| *start <= cp)
 }
 
 /// V8's `[\p{L}\p{N}]`.

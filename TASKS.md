@@ -102,7 +102,7 @@ listed in `tasks/done.md`.
     `pb-5` zone at `inputPad`) that 9.15 fills; `chat-rail-compact`'s type scale comes with the
     rows it shrinks (9.5), the stream's loading and empty states, its `overlayHeight` padding and
     the dock over scrolled rows (its hit blocking, the wallpaper copy and mask) with 9.14
-- [ ] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
+- [x] 9.4 Render items: `buildRenderItems` and `messageWorkGroups.ts` (messages, tool segments,
   work groups, agent plans and tasks, fork origin, turn changes, generated files, tool media),
   subagent rows left out, `collectTurnFinalAssistantClientIds`; golden from Cindy's functions
   - [x] 9.4a The plan timeline (`messageRender.ts`): `findMessageTodoInsertions`,
@@ -142,6 +142,24 @@ listed in `tasks/done.md`.
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
   quote, inline reference and session link chips, the forwarded-request text of 8.7
+  - [x] 9.5a The bare URL's end (`urlTextBoundary.ts`): `BARE_HTTP_URL_RE_SOURCE`,
+    `clipBareHttpAutolink` with its cuts (unbalanced parentheses, code host notes, path brackets,
+    Markdown wraps, IDN dots, trailing junk); golden on the inputs of Cindy's tests
+  - [ ] 9.5b Linkify (`userMessageLinkify.ts`): `findLinkifyMatches` over URLs, image paths,
+    session and project deep links in bare and Markdown form (`deepLink.ts`'s sources and parsers,
+    `findMarkdownLabelStart`, `deepLinkSchemes.ts`); golden
+  - [ ] 9.5c Display text and collapse estimates: `userMessageDisplayText.ts`
+    (`parseOrcaCommunicationContent`, `resolveHookGroupContext` with `captureImContext`,
+    `resolveUserDisplayText`), `shouldAutoCollapseUserMessageContent` and
+    `mayExceedVisualLineThreshold`; golden
+  - [ ] 9.5d The sent text's tokens (`UserMessage.tsx`): `looksLikePath`, `looksLikeCommand`, the
+    command and mention split, `buildSentInlineTokens`, `projectSentPastedPlainText`,
+    `projectSentInlinePlainText`, `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; golden
+  - [ ] 9.5e The bubble: the user row drawn from 9.4e's items, text with URL links
+    (`UserMessageUrlLink.tsx`, `message-link-clickability.md`), the measured collapse with its
+    cache and toggle, `chat-rail-compact`'s type scale
+  - [ ] 9.5f The chips: attachments, quotes, inline references, command, mention, session and
+    project links, image path links (`UserMessageImageLink.tsx`), the Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the

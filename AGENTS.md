@@ -160,6 +160,16 @@ defines scope and what 1:1 means.
   (Cindy's Electron, three zones). `src/command_output.rs` is `commandOutputPaths.ts` (`js_re`,
   lookarounds by hand); offsets in bytes, 240/80 windows in UTF-16 units (a cut pair's half is U+FFFD).
   Goldens `history-view` (Cindy's tests less a lease and `import.meta.env`), `history-artifacts`.
+- User message: `src/url_boundary.rs` is `urlTextBoundary.ts` (`clip` is `clipBareHttpAutolink`,
+  `bare_http` the scanner's `BARE_HTTP_URL_RE_SOURCE`, `host.rs` the prose boundary with the IDN dots a
+  hostname keeps): it works in UTF-16 units and answers in bytes. `\p{P}`, `\p{Z}` and `\p{L}` are
+  V8's, read from `resources/url-classes.json` (`sync-golden.mjs` writes it; `v8_classes::within` looks
+  a character up), since the `regex` crate's tables trail V8's Unicode. `new URL` is the `url` crate,
+  which follows the URL standard on Unicode 17 data. Cindy's two engines each part from it: Blink,
+  where the message is drawn, takes an ASCII host's broken `xn--` label unchecked, and Node, where the
+  golden runs, reads a host through ada's older IDNA tables (`logs/review/9.5a-r1-url-engines.log`).
+  Golden `url-boundary` holds the inputs of Cindy's tests and `cases.json`. `src/js_re.rs` turns a
+  JavaScript regex source without the `u` flag into a Rust regex.
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view
