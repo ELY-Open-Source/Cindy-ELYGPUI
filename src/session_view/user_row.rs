@@ -69,7 +69,7 @@ fn unfolded(key: &str, cx: &App) -> bool {
 }
 
 /// `setLongMessageExpanded((expanded) => !expanded)`.
-fn toggle(key: &str, cx: &mut App) {
+pub(super) fn toggle(key: &str, cx: &mut App) {
     let shown = cx.global_mut::<SessionView>().shown.as_mut();
     let Some(content) = shown.and_then(|s| s.content.as_mut()) else {
         return;
@@ -77,6 +77,8 @@ fn toggle(key: &str, cx: &mut App) {
     let open = !content.unfolded.remove(key);
     if open {
         content.unfolded.insert(key.to_owned());
+    } else {
+        super::link_chip::folded(key, cx);
     }
     log::info!(target: "sessionView", "message {key} unfolded: {open}");
     cx.refresh_windows();

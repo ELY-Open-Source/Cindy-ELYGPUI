@@ -14,7 +14,7 @@ use crate::{
     linkify,
     session_view::{
         chip::{self, Chip, Stand},
-        link_chip::{self, Found, Want},
+        link_chip::{self, Act, Found, Want},
         links::{self, Link, Shared},
     },
     units::css,
@@ -306,7 +306,10 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
         cx.defer(move |cx| link_chip::fetch(wants, cx));
     }
     let links = lines.iter().map(|line| line.links.len()).sum();
-    let shared = (links > 0).then(|| links::shared(look.key, links, window, cx));
+    // The links and the chips that act share one menu.
+    let acts = |line: &Line| line.chips.iter().any(|(_, chip)| chip.act().is_some());
+    let menu = links > 0 || lines.iter().any(acts);
+    let shared = menu.then(|| links::shared(look.key, links, window, cx));
     let (mut all, mut shaped, mut chips, mut wrapped) = (Vec::new(), Vec::new(), 0, false);
     for (n, line) in lines.iter().enumerate() {
         let width =
@@ -356,7 +359,11 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
         for (k, (at, chip)) in &held {
             parts.extend(say(from..*at, "", window));
             let id = format!("{}-chip-{}", look.key, first + k);
-            parts.push(chip.element(id, top + over(chip), look.chip, window, cx));
+            if let Some(Act::Session(href)) = chip.act().filter(|_| shared.is_some()) {
+                link_chip::drawn(&id, (n, *at), href, cx);
+            }
+            let place = (top + over(chip), look.chip);
+            parts.push(chip.element(id, place, shared.as_ref(), window, cx));
             from = at + CHIP.len_utf8();
         }
         parts.extend(say(from..end, tail, window));

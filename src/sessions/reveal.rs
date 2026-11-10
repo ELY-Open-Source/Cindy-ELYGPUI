@@ -12,6 +12,8 @@ use crate::motion::{self, Tween};
 pub struct Reveal {
     pub handle: ScrollHandle,
     wanted: Option<String>,
+    /// A project asked for, and whether a frame has drawn since: it waits one frame, as a RAF.
+    project: Option<(String, bool)>,
     run: Option<Run>,
 }
 
@@ -48,14 +50,35 @@ fn duration(delta: f32) -> Duration {
     Duration::from_secs_f32(delta.abs().sqrt().min(1.5 * 60.0) / 60.0)
 }
 
+/// The focused project's node, as the effect's `scrollIntoView` in the next frame finds it.
+pub fn project(key: &str, cx: &mut App) {
+    log::debug!(target: "sessions", "project {key} focused: reveal asked");
+    cx.global_mut::<Reveal>().project = Some((key.to_owned(), false));
+}
+
 /// The row's prepaint: a wanted row starts its scroll from where the list sits now.
 pub fn painted(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
     if cx.global::<Reveal>().wanted.as_deref() != Some(id) {
         return;
     }
+    cx.global_mut::<Reveal>().wanted = None;
+    scroll(id, row, window, cx);
+}
+
+/// The project node's prepaint.
+pub fn project_painted(key: &str, node: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
+    let wanted = cx.global::<Reveal>().project.as_ref();
+    if wanted.is_none_or(|(wanted, _)| wanted != key) {
+        return;
+    }
+    cx.global_mut::<Reveal>().project = None;
+    scroll(key, node, window, cx);
+}
+
+/// `scrollIntoView({ block: 'nearest' })` for the box drawn at `row`.
+fn scroll(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
     let now = cx.background_executor().now();
     let reveal = cx.global_mut::<Reveal>();
-    reveal.wanted = None;
     let port = reveal.handle.bounds();
     let delta = nearest(
         row.top().into(),
@@ -69,13 +92,13 @@ pub fn painted(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App)
     if to == from {
         // `CancelProgrammaticScrollAnimation` on a no-op offset.
         reveal.run = None;
-        return log::debug!(target: "sessions", "task {id} already in view");
+        return log::debug!(target: "sessions", "{id} already in view");
     }
     let length = duration(f32::from(to - from) * window.scale_factor());
     let length = motion::length(length, cx);
     let mut tween = Tween::still(from.into(), now);
     tween.toward_along(to.into(), now, length, motion::programmatic_scroll);
-    log::info!(target: "sessions", "task {id} revealed: {:.1}px over {}ms", f32::from(to - from), length.as_millis());
+    log::info!(target: "sessions", "{id} revealed: {:.1}px over {}ms", f32::from(to - from), length.as_millis());
     cx.global_mut::<Reveal>().run = Some(Run { tween, set: from });
     window.request_animation_frame();
 }
@@ -84,6 +107,11 @@ pub fn painted(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App)
 pub fn step(window: &mut Window, cx: &mut App) {
     let now = cx.background_executor().now();
     let reveal = cx.global_mut::<Reveal>();
+    // A project whose node no frame drew is let go, as the one `querySelector` misses it.
+    reveal.project = match reveal.project.take() {
+        Some((key, false)) => Some((key, true)),
+        _ => None,
+    };
     let Some(run) = reveal.run.as_mut() else {
         return;
     };

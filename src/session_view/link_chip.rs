@@ -3,7 +3,7 @@
 use std::collections::HashMap;
 
 use ely_gpui_component::primitives::IconName;
-use gpui::App;
+use gpui::{App, SharedString};
 
 use super::{
     SessionView,
@@ -21,11 +21,75 @@ use crate::{
     theme_import::color::{js_space, js_trim},
 };
 
+pub mod act;
+
+/// What a click on a link chip does, by the link's address.
+#[derive(Clone, Debug, PartialEq)]
+pub enum Act {
+    Session(SharedString),
+    Project(SharedString),
+}
+
 /// What the mounted chips read: a task's title, a message's text; a key held is a read asked.
 #[derive(Default)]
 pub struct Found {
     titles: HashMap<String, Option<String>>,
     texts: HashMap<(String, String), Option<String>>,
+    /// `navigationRequestVersionRef` by chip: its latest open asked, which alone may navigate.
+    opening: HashMap<String, u64>,
+    /// The session chips the stream drew last.
+    drawn: Vec<String>,
+    /// Each mounted session chip as Cindy keys it and its hook reads it.
+    marks: HashMap<String, Mark>,
+}
+
+/// A session chip's place in its message (line and byte) and its link's target.
+type Mark = ((usize, usize), deep_link::Session);
+
+/// Before the stream's rows draw: no chip is mounted yet.
+pub fn begin(cx: &mut App) {
+    if let Some(found) = held_mut(cx) {
+        found.drawn.clear();
+    }
+}
+
+/// A session chip was drawn at `place`; a new place or target ends what the chip asked.
+pub fn drawn(id: &str, place: (usize, usize), href: &str, cx: &mut App) {
+    let Some(target) = deep_link::parse_session(href) else {
+        return;
+    };
+    let Some(found) = held_mut(cx) else {
+        return;
+    };
+    found.drawn.push(id.to_owned());
+    let mark = (place, target);
+    let was = found.marks.insert(id.to_owned(), mark);
+    if was.is_some_and(|was| Some(&was) != found.marks.get(id)) {
+        log::info!(target: "sessionView", "link chip {id} changed: its ask ends");
+        found.opening.remove(id);
+    }
+}
+
+/// After the rows: a chip no longer drawn has unmounted, which ends what it asked.
+pub fn end(cx: &mut App) {
+    if let Some(found) = held_mut(cx) {
+        let Found {
+            opening,
+            drawn,
+            marks,
+            ..
+        } = found;
+        opening.retain(|id, _| drawn.contains(id));
+        marks.retain(|id, _| drawn.contains(id));
+    }
+}
+
+/// A message folded: its link chips unmount at once.
+pub fn folded(key: &str, cx: &mut App) {
+    let prefix = format!("{key}-chip-");
+    if let Some(found) = held_mut(cx) {
+        found.opening.retain(|id, _| !id.starts_with(&prefix));
+    }
 }
 
 /// A read a chip still lacks.
@@ -74,7 +138,8 @@ pub fn session(
             text,
             ..Default::default()
         };
-        return Some(chip::quote(&said, Stand::Link));
+        let act = Act::Session(href.to_owned().into());
+        return Some(chip::quote(&said, Stand::Link).acts(act));
     }
     let display = label.map(str::to_owned).unwrap_or_else(|| {
         // A task of another device has no row here; its mirror comes with the device link.
@@ -93,7 +158,8 @@ pub fn session(
             None => t.t("chat.userMessage.sessionLinkFallback", &[]),
         }
     });
-    Some(chip::link(&display, IconName::CornerDownRight.svg()).clicked())
+    let act = Act::Session(href.to_owned().into());
+    Some(chip::link(&display, IconName::CornerDownRight.svg()).acts(act))
 }
 
 /// `projectDisplayName`: the folder's last name.
@@ -109,7 +175,8 @@ fn folder(dir: &str) -> &str {
 pub fn project(href: &str, label: Option<&str>) -> Option<Chip> {
     let dir = deep_link::parse_project(href)?;
     let display = explicit(label).unwrap_or_else(|| folder(&dir));
-    Some(chip::link(display, IconName::FolderOpen.svg()).clicked())
+    let act = Act::Project(href.to_owned().into());
+    Some(chip::link(display, IconName::FolderOpen.svg()).acts(act))
 }
 
 /// A field that holds text which is not empty.
@@ -161,7 +228,7 @@ pub fn held(cx: &App) -> &Found {
     &content.expect("a row draws in mounted content").links
 }
 
-fn held_mut(cx: &mut App) -> Option<&mut Found> {
+pub(super) fn held_mut(cx: &mut App) -> Option<&mut Found> {
     let shown = cx.global_mut::<SessionView>().shown.as_mut();
     shown?.content.as_mut().map(|content| &mut content.links)
 }

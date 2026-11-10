@@ -12,7 +12,7 @@ const WEB: &str = "https://example.com/a";
 const LOCAL: &str = "http://localhost:3000/";
 const FIRST: &str = "msg-c0-link-0-0";
 
-fn toasts(cx: &mut VisualTestContext) -> Vec<String> {
+pub(in crate::session_view) fn toasts(cx: &mut VisualTestContext) -> Vec<String> {
     cx.update(|window, cx| {
         let items = cx
             .global::<Toasts>()
@@ -21,13 +21,21 @@ fn toasts(cx: &mut VisualTestContext) -> Vec<String> {
     })
 }
 
-fn click(cx: &mut VisualTestContext, selector: &str, modifiers: Modifiers) {
+pub(in crate::session_view) fn click(
+    cx: &mut VisualTestContext,
+    selector: &str,
+    modifiers: Modifiers,
+) {
     let centre = at(cx, selector).unwrap().center();
     cx.simulate_click(centre, modifiers);
     settle(cx);
 }
 
-fn press(cx: &mut VisualTestContext, selector: &str, button: MouseButton) {
+pub(in crate::session_view) fn press(
+    cx: &mut VisualTestContext,
+    selector: &str,
+    button: MouseButton,
+) {
     let centre = at(cx, selector).unwrap().center();
     cx.simulate_mouse_down(centre, button, Modifiers::none());
     cx.simulate_mouse_up(centre, button, Modifiers::none());
@@ -35,7 +43,7 @@ fn press(cx: &mut VisualTestContext, selector: &str, button: MouseButton) {
 }
 
 /// A key down and up, where gpui's keyboard click would land.
-fn key(cx: &mut VisualTestContext, name: &'static str) {
+pub(in crate::session_view) fn key(cx: &mut VisualTestContext, name: &'static str) {
     let keystroke = Keystroke::parse(name).unwrap();
     cx.simulate_event(KeyDownEvent {
         keystroke: keystroke.clone(),
@@ -47,7 +55,7 @@ fn key(cx: &mut VisualTestContext, name: &'static str) {
 }
 
 /// A press that ends off the link: it takes focus and clicks nothing.
-fn focus(cx: &mut VisualTestContext, selector: &str) {
+pub(in crate::session_view) fn focus(cx: &mut VisualTestContext, selector: &str) {
     let link = at(cx, selector).unwrap();
     cx.simulate_mouse_down(link.center(), MouseButton::Left, Modifiers::none());
     cx.simulate_mouse_up(
@@ -233,6 +241,22 @@ fn a_right_click_opens_the_menu_at_the_pointer(cx: &mut TestAppContext) {
     settle(cx);
     assert_eq!(opener::take(), [LOCAL]);
     assert!(at(cx, COPY).is_none(), "a choice closes the menu");
+}
+
+#[gpui::test]
+fn a_right_press_focuses_the_link(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cx = open(cx, dir.path(), 2400.0, &[(WEB, None)]);
+    press(cx, FIRST, MouseButton::Right);
+    cx.simulate_keystrokes("escape");
+    settle(cx);
+    cx.simulate_keystrokes("enter");
+    settle(cx);
+    assert_eq!(
+        opener::take(),
+        [WEB],
+        "the menu hands focus back to the link"
+    );
 }
 
 #[gpui::test]

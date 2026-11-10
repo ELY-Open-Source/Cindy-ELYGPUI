@@ -192,3 +192,23 @@ fn pinned_cards_reveal_after_text(cx: &mut TestAppContext) {
     );
     assert!(in_view(cx, "a4"));
 }
+
+#[gpui::test]
+fn a_project_no_frame_draws_is_let_go(cx: &mut TestAppContext) {
+    let (_dir, cx) = short(cx);
+    cx.update(|_, cx| super::project("local:/work/nowhere", cx));
+    assert_eq!(frame(cx, 16), 0.0);
+    let waiting =
+        |cx: &mut VisualTestContext| cx.update(|_, cx| cx.global::<Reveal>().project.clone());
+    assert_eq!(waiting(cx), Some(("local:/work/nowhere".into(), true)));
+    cx.update(|window, _| window.refresh());
+    assert_eq!(frame(cx, 16), 0.0);
+    assert_eq!(waiting(cx), None, "one frame, as the effect's one RAF");
+    // A node that is drawn takes the ask in its first frame.
+    cx.update(|window, cx| {
+        super::project("local:/work/app", cx);
+        window.refresh();
+    });
+    frame(cx, 16);
+    assert_eq!(waiting(cx), None);
+}

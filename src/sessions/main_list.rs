@@ -280,7 +280,19 @@ pub(super) fn project(
     let collapsed = cx.global::<Sessions>().collapsed.contains(&fold_id);
     let toggle = toggler(fold_id.clone(), collapsed);
     let head = super::project::Head::new(p, collapsed, toggle).into_any_element();
-    group(fold_id, head, &p.sessions, collapsed, place, window, cx)
+    let (node, height) = group(fold_id, head, &p.sessions, collapsed, place, window, cx);
+    // `data-project-workingdir`: the node a project link scrolls to.
+    let key = p.key.clone();
+    let probe = gpui::canvas(
+        move |bounds, window, cx| super::reveal::project_painted(&key, bounds, window, cx),
+        |_, _, _, _| {},
+    );
+    let node = div()
+        .relative()
+        .w_full()
+        .child(node)
+        .child(probe.absolute().inset_0());
+    (node.into_any_element(), height)
 }
 
 /// `CCAgentSidebarUpper`'s scroll body: the Pinned section above the main list; 8.4c draws the

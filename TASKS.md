@@ -200,10 +200,17 @@ listed in `tasks/done.md`.
     the message's text read from the database (`resolveSessionMessageText`); image path links'
     face (`UserMessageImageLink.tsx`, `break-all`); Blink's line breaks between Latin-1 letters
     and after spaces in the bubble's flow
-  - [ ] 9.5m What the link chips do: a session link opens its task (`useSessionLinkTarget`; the
+  - [!] 9.5m What the link chips do: a session link opens its task (`useSessionLinkTarget`; the
     message anchor's `searchJump` lands with 9.14, a new window with its chapter), a project link
     focuses its project (`requestProjectFocus`), their Tab stops, keys and menu
     (`useLinkContextMenu`: open, copy link); an image path's click and menu come with 9.13
+    - Open after round 3 (P2): a pending open is tied to its chip by the drawn line and UTF-8
+      byte, where Cindy keys the chip by its text piece and the match's UTF-16 index. While a
+      read is on its way and a history read rewrites the same row: a non-ASCII letter before
+      the link ends an ask Cindy keeps (`a cindy://session/old` to `é cindy://session/old`),
+      and an earlier link that grows keeps an ask Cindy ends (the second chip of
+      `cindy://session/a cindy://session/old` after the first becomes `cindy://session/aaaa`).
+      `logs/review/9.5m-r3.md`
   - [ ] 9.5n Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
     face, `UserFileChip`)
   - [ ] 9.5o What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the

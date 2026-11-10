@@ -5,7 +5,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, div,
 };
 
-use super::{items::items, user_row, width::Widths};
+use super::{items::items, link_chip, user_row, width::Widths};
 use crate::{
     chat_message::merge::get, history_render::Projection, render_items::Item, rich_answer::js::Js,
     units::css,
@@ -41,11 +41,13 @@ fn row(
 /// The scroll container, `mx-auto pt-7` at `messageWidth`, then `msg-stream-items`.
 pub fn element(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement {
     let projection = items(cx).and_then(|items| items.as_ref().ok()).cloned();
+    link_chip::begin(cx);
     let rows: Vec<AnyElement> = projection
         .iter()
         .flat_map(|p| p.items.iter().map(move |i| (i, p)))
         .filter_map(|(item, p)| row(item, p, widths, window, cx))
         .collect();
+    link_chip::end(cx);
     let list = div().flex().flex_col().gap(css(14.0)).children(rows);
     let content = div()
         .debug_selector(|| "session-messages".into())

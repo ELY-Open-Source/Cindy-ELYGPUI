@@ -1,4 +1,4 @@
-//! `InlineReferenceChip`'s inert face in a sent message, with its tip.
+//! `InlineReferenceChip` in a sent message: its face, its tip and, for a link, its act.
 
 use std::time::Duration;
 
@@ -7,6 +7,11 @@ use gpui::{
     AnyElement, App, ElementId, Font, FontWeight, InteractiveElement as _, IntoElement,
     ParentElement as _, Pixels, SharedString, StatefulInteractiveElement as _, Styled as _,
     TextRun, TextStyle, Window, div, prelude::FluentBuilder as _,
+};
+
+use super::{
+    link_chip::{Act, act},
+    links::Shared,
 };
 
 use crate::{
@@ -38,8 +43,8 @@ pub struct Chip {
     /// `ariaLabel`.
     named: bool,
     stand: Stand,
-    /// `interactive`: a click acts, so the chip is underlined and lights under the pointer.
-    clicked: bool,
+    /// What a click does; `interactive` underlines the chip and lights it under the pointer.
+    act: Option<Act>,
 }
 
 /// How a chip stands in its line.
@@ -97,7 +102,7 @@ fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip
         command: false,
         named: false,
         stand: Stand::Line,
-        clicked: false,
+        act: None,
     }
 }
 
@@ -220,11 +225,15 @@ impl Chip {
         &self.label
     }
 
-    pub fn clicked(self) -> Chip {
+    pub fn acts(self, act: Act) -> Chip {
         Chip {
-            clicked: true,
+            act: Some(act),
             ..self
         }
+    }
+
+    pub fn act(&self) -> Option<&Act> {
+        self.act.as_ref()
     }
 }
 
@@ -263,12 +272,12 @@ impl Chip {
         24.0 + f32::from(u8::from(self.stand != Stand::Line)) * 2.0
     }
 
-    /// The chip, its margin box `top` under the row's top.
+    /// The chip, its margin box `top` under the row's top; `shared` holds its menu.
     pub fn element(
         &self,
         id: String,
-        top: Pixels,
-        size: f32,
+        (top, size): (Pixels, f32),
+        shared: Option<&Shared>,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyElement {
@@ -279,7 +288,9 @@ impl Chip {
         };
         let hovered = window.use_keyed_state(child("hover"), cx, |_, _| false);
         let appearance = cx.global::<Appearance>();
-        let lit = *hovered.read(cx) && self.clicked;
+        // A message link's quote is no `interactive` chip: its button underlines it.
+        let interactive = self.act.is_some() && self.stand != Stand::Link;
+        let lit = *hovered.read(cx) && interactive;
         let fill = appearance.token(match lit {
             true => "surface-hover",
             false => "surface-chip",
@@ -297,10 +308,15 @@ impl Chip {
         });
         let (selector, label, tip) = (id.clone(), self.label.clone(), self.tip.clone());
         let name = self.name.clone();
+        let border = appearance.token("border-default");
+        let acting = self.act.as_ref().zip(shared);
         div()
-            .id(element)
+            .id(element.clone())
             .debug_selector(move || selector)
-            .when(self.clicked, |el| {
+            .when_some(acting, |el, (to, shared)| {
+                act::listen(el, &element, to, shared, window, cx)
+            })
+            .when(interactive, |el| {
                 el.cursor_pointer()
                     .underline()
                     .hover_listener_mode(gpui::HoverListenerMode::InputModalityIndependent)
@@ -327,7 +343,7 @@ impl Chip {
             .gap(css(6.0))
             .rounded(css(9999.0))
             .border(css(1.0))
-            .border_color(appearance.token("border-default"))
+            .border_color(border)
             .bg(fill)
             .px(css(8.0))
             .py(css(2.0))

@@ -197,3 +197,18 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   break after a hyphen that starts a word. A Blink probe of 18 lines is the test
   (`tests/fixtures/line-breaks/hyphen.jsonl`).
 - Round 2: PASS.
+
+## 9.5m What the link chips do
+- Round 1: FAIL. P2: the latest-ask rule counted asks per mounted content, where Cindy's
+  `navigationRequestVersionRef` lives in each chip: another chip's ask ended the first, and a
+  folded message's chip still navigated when its read landed.
+- Fixed: asks count per chip (`Found.opening` by the chip's element name). A fold ends its
+  message's asks at once; a chip the stream no longer draws loses its ask at that render.
+- Round 2: FAIL. P2: a chip kept at its place lost no ask when its link's target changed, as a
+  history read may rewrite a held row; Cindy's hook ends the ask when the task, the message or
+  the device changes, and keys the chip by its place in the text.
+- Fixed: each drawn session chip records its line, its byte and its parsed target
+  (`Found.marks`); a render that draws the chip with another ends what it asked.
+- Round 3: FAIL. P2: the chip's mark is its drawn line and UTF-8 byte, not Cindy's key (the text
+  piece and the match's UTF-16 index): a rewritten row can end an ask Cindy keeps, or keep one
+  Cindy ends. Left open; the entry is `- [!]`.

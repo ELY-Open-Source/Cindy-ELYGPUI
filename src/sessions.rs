@@ -4,6 +4,7 @@
 mod card;
 mod dialogue;
 mod filter;
+pub(crate) mod focus;
 mod fold;
 pub(crate) mod group;
 mod header;
@@ -71,6 +72,8 @@ pub struct Sessions {
     folds: HashMap<String, crate::motion::Tween>,
     show_all: HashSet<String>,
     show_all_entries: bool,
+    /// `pendingProjectFocus`: the project a link asked for.
+    focus: Option<focus::Pending>,
     /// `useTaskInfoFields`' memory copy.
     task_info: Vec<&'static str>,
     /// The row whose title is being edited.
@@ -108,6 +111,7 @@ pub fn install(user_data: PathBuf, owner_dir: Option<PathBuf>, cx: &mut App) {
         folds: HashMap::new(),
         show_all: HashSet::new(),
         show_all_entries: false,
+        focus: None,
         task_info: meta::fields(cx.global::<crate::preferences::Preferences>()),
         editing: None,
         project_editing: None,
@@ -343,6 +347,7 @@ pub fn reload(cx: &mut App) {
             }
             let again = std::mem::take(&mut store.dirty);
             search::projects::loaded(cx);
+            focus::settle(cx);
             if again {
                 reload(cx);
             }

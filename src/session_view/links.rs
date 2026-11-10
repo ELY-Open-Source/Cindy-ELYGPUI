@@ -14,6 +14,7 @@ use gpui::{
     prelude::FluentBuilder as _, px, size,
 };
 
+use super::link_chip::{Act, act};
 use crate::{
     i18n::Translator,
     link_open::{self, Target},
@@ -28,11 +29,18 @@ pub struct Link {
     pub url: SharedString,
 }
 
-/// `useOpenWithMenu`'s state: the numbered ask and the address it is for.
+/// What a menu was asked for: a web address, or a link chip by its element's name.
+#[derive(Clone)]
+pub enum What {
+    Url(SharedString),
+    Chip(Act, SharedString),
+}
+
+/// `useOpenWithMenu`'s and `useLinkContextMenu`'s state: the numbered ask and what it is for.
 #[derive(Default)]
-struct Asked {
+pub struct Asked {
     request: Option<(u64, Point<Pixels>)>,
-    url: SharedString,
+    what: Option<What>,
 }
 
 /// A link's boxes in the window, in the order they were placed.
@@ -72,7 +80,7 @@ fn boxes(line: &LineLayout, range: Range<usize>, height: Pixels) -> Vec<Bounds<P
     out
 }
 
-fn failed(key: &str, window: &Window, cx: &mut App) {
+pub fn failed(key: &str, window: &Window, cx: &mut App) {
     let message = cx.global::<Translator>().t(key, &[]);
     toast::error(window, message, toast::Options::default(), cx);
 }
@@ -120,11 +128,25 @@ fn copy(url: &str, window: &Window, cx: &mut App) {
     toast::success(window, message, toast::Options::default(), cx);
 }
 
-/// The open-with menu; Ely's `Link` stands in for lucide's `link-2`.
-fn menu(url: &SharedString, cx: &App) -> Menu {
+/// The asked menu, Copy link last; Ely's `Link` stands in for lucide's `link-2`.
+fn menu(what: Option<&What>, cx: &App) -> Menu {
     let t = cx.global::<Translator>();
     let label = |key: &str| t.t(&format!("chat.markdownRenderer.{key}"), &[]);
-    let (out, copied) = (url.clone(), url.clone());
+    let copy = |href: &SharedString| {
+        let copied = href.clone();
+        MenuItem::new(label("copyLink"))
+            .icon(IconName::Link)
+            .on_click(move |window, cx| copy(&copied, window, cx))
+    };
+    let url = match what {
+        None => return Menu::new(),
+        Some(What::Chip(to, id)) => {
+            let (Act::Session(href) | Act::Project(href)) = to;
+            return act::menu(to, id, cx).separator().item(copy(href));
+        }
+        Some(What::Url(url)) => url,
+    };
+    let out = url.clone();
     let sidebar = MenuItem::new(label("openInSidebarBrowser"))
         .icon(IconName::PanelRight)
         .on_click(|window, cx| sidebar(window, cx));
@@ -132,22 +154,19 @@ fn menu(url: &SharedString, cx: &App) -> Menu {
         .icon(IconName::Globe)
         .keys(label("shiftClick"))
         .on_click(move |window, cx| external(&out, window, cx));
-    let copy = MenuItem::new(label("copyLink"))
-        .icon(IconName::Link)
-        .on_click(move |window, cx| copy(&copied, window, cx));
     Menu::new()
         .item(sidebar)
         .item(browser)
         .separator()
-        .item(copy)
+        .item(copy(url))
 }
 
-fn ask(asked: &Entity<Asked>, url: &SharedString, at: Point<Pixels>, cx: &mut App) {
+pub fn ask(asked: &Entity<Asked>, what: What, at: Point<Pixels>, cx: &mut App) {
     asked.update(cx, |asked, cx| {
         let number = asked.request.map_or(1, |(number, _)| number + 1);
         *asked = Asked {
             request: Some((number, at)),
-            url: url.clone(),
+            what: Some(what),
         };
         cx.notify();
     });
@@ -178,6 +197,7 @@ impl Piece {
         let selector = id.clone();
         let (left, middle, right, keys) = (url.clone(), url.clone(), url.clone(), url);
         let (pressed, menu, by_key) = (focus.clone(), asked.clone(), asked);
+        let back = focus.clone();
         div()
             .id(ElementId::Name(id.into()))
             .debug_selector(move || selector)
@@ -198,7 +218,7 @@ impl Piece {
                             let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
                             let bottom = spots.last().map(Bounds::bottom);
                             let under = point(left.unwrap_or_default(), bottom.unwrap_or_default());
-                            ask(&by_key, &keys, under, cx);
+                            ask(&by_key, What::Url(keys.clone()), under, cx);
                         } else if matches!(k.key.as_str(), "enter" | "space") {
                             window.prevent_default();
                             activate(&keys, k.modifiers, MouseButton::Left, window, cx);
@@ -225,7 +245,9 @@ impl Piece {
             .on_mouse_down(MouseButton::Right, move |event, window, cx| {
                 window.prevent_default();
                 cx.stop_propagation();
-                ask(&menu, &right, event.position, cx);
+                // The stop keeps the press from the listener above: the menu hands focus back here.
+                back.focus(window, cx);
+                ask(&menu, What::Url(right.clone()), event.position, cx);
             })
             .into_any_element()
     }
@@ -279,6 +301,12 @@ fn overlay(key: String, links: Vec<Link>, layout: TextLayout, shared: &Shared) -
         }
     };
     canvas(prepaint, paint).absolute().size_full()
+}
+
+impl Shared {
+    pub fn asked(&self) -> &Entity<Asked> {
+        &self.asked
+    }
 }
 
 /// The state `count` links of the message at `key` share.
@@ -338,16 +366,16 @@ pub fn piece(
 
 /// The menu the message's links share, around its text.
 pub fn host(key: &str, shared: &Shared, text: AnyElement, cx: &App) -> AnyElement {
-    let (request, url) = {
+    let (request, what) = {
         let asked = shared.asked.read(cx);
-        (asked.request, asked.url.clone())
+        (asked.request, asked.what.clone())
     };
     let id = ElementId::Name(format!("{key}-link-menu").into());
-    ContextMenu::new(id, menu(&url, cx))
+    ContextMenu::new(id, menu(what.as_ref(), cx))
         .manual(request)
         .child(text)
         .into_any_element()
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

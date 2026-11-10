@@ -56,22 +56,25 @@ defines scope and what 1:1 means.
   deep link (`buildProjectDeepLink`). `project/rename.rs` is the alias field on a double click or
   Rename, `project/alias.rs` `useProjectAliases.updateAlias` and `upsertProjectAlias` on the database
   worker. `project/remove.rs` is Remove from sidebar: a confirm, then `settings::hide`
-  (`setProjectHidden`). The other actions come with their tasks. `src/cross_process_lock.rs` is the
-  advisory tier of Cindy's `crossProcessLock.ts`: the `{pid, startedAt, nonce}` file, a 2 s heartbeat,
-  nonce-bound release, and stale takeover under the `.reclaim.d` gate, with owner liveness from
-  `kill(pid, 0)` and `ps` (PowerShell, then WMIC, on Windows). It blocks, so callers run it on the
-  background executor. `filter.rs` reads and writes the filter preferences; `header.rs` draws the scope
-  header and the filter menu on Ely's `Menu` (`menu_under`). Ely's menu has no row value, tip or
-  kept-open choice, and lacks some lucide icons; the nearest Ely icon stands in. A right click on the
-  list's blank space opens the same menu at the pointer (Ely `ContextMenu` around the scroller,
-  `handleSidebarBlankContextMenu`); rows and headers stop their own right clicks. `fold.rs` is
-  `SectionCollapse` and the first-N fold. Show all is keyed by section and group and resets once its
-  list is no longer drawn, as each `SessionEntryList` holds its own. Animations read
-  `background_executor().now()` so tests can advance the clock. `preview.rs` is `finalizePlainPreview`
-  (its LRU cache, `stripInternalWebCitations`) and `projection.rs` the list's latest-message extract
-  with `scheduleSessionListProjectionBackfill`: after a read, one `UPDATE` fills the empty
-  `list_preview` and `list_message_count` columns. `view_mode.rs` is `useSidebarCardMode.ts` with
-  `sidebarInstallVintage.ts`: the Pinned mode (`sidebar.cardMode`) and the main list's
+  (`setProjectHidden`). The other actions come with their tasks. `focus.rs` is `pendingProjectFocus.ts`
+  with the sidebar's effect on it: once the list has loaded, the folder's key is matched among the
+  drawn projects (`findProjectRepresentativeKey`), its project unfolds and `reveal::project` scrolls
+  its node into view in the next frame drawn, else a warning toast says the project was not found.
+  `src/cross_process_lock.rs` is the advisory tier of Cindy's `crossProcessLock.ts`: the `{pid,
+  startedAt, nonce}` file, a 2 s heartbeat, nonce-bound release, and stale takeover under the
+  `.reclaim.d` gate, with owner liveness from `kill(pid, 0)` and `ps` (PowerShell, then WMIC, on
+  Windows). It blocks, so callers run it on the background executor. `filter.rs` reads and writes the
+  filter preferences; `header.rs` draws the scope header and the filter menu on Ely's `Menu`
+  (`menu_under`). Ely's menu has no row value, tip or kept-open choice, and lacks some lucide icons;
+  the nearest Ely icon stands in. A right click on the list's blank space opens the same menu at the
+  pointer (Ely `ContextMenu` around the scroller, `handleSidebarBlankContextMenu`); rows and headers
+  stop their own right clicks. `fold.rs` is `SectionCollapse` and the first-N fold. Show all is keyed
+  by section and group and resets once its list is no longer drawn, as each `SessionEntryList` holds
+  its own. Animations read `background_executor().now()` so tests can advance the clock. `preview.rs`
+  is `finalizePlainPreview` (its LRU cache, `stripInternalWebCitations`) and `projection.rs` the list's
+  latest-message extract with `scheduleSessionListProjectionBackfill`: after a read, one `UPDATE` fills
+  the empty `list_preview` and `list_message_count` columns. `view_mode.rs` is `useSidebarCardMode.ts`
+  with `sidebarInstallVintage.ts`: the Pinned mode (`sidebar.cardMode`) and the main list's
   (`sidebar.mainListMode`), kept in memory as Cindy's module memo, chosen from the filter menu's
   Display row and the Pinned header's view style menu. `list_row.rs` is `SessionCard`'s `list` variant
   (dividers, title line, one preview line from `sessionToCamel`'s `preview`), drawn in list mode;
@@ -315,19 +318,28 @@ defines scope and what 1:1 means.
   task or folder stays its words. An image path is underlined and breaks as `word-break: break-all`
   (`flow/break_all.rs`, Blink's `kBreakAllLineBreakClassTable`;
   `logs/review/9.5l-r1-blink-breakall.log`). The message link's native `title` has no port: gpui holds
-  one tooltip. What the link chips do comes with 9.5m, an image path's click with 9.13. gpui snaps a
-  line's height to the device pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded
-  messages live with the mounted content, as the component's state does. `links.rs` is
-  `UserMessageUrlLink` with `useOpenWithMenu`: an unfolded message's text pieces are each read for web
-  addresses (`linkify`), underlined by text highlights, and a canvas after a piece lays a hit box over
-  each stretch of a link's glyphs, ordered by x since the shaper lists right-to-left text from the
-  right (`prepaint_as_root` at the laid-out text's positions). A link's boxes on every row share its
-  Tab stop (the first box), the menu and the record of boxes the menu key reads. A click is
-  `activateMessageUrl` (a modifier or the middle button opens the system browser, else the preference;
-  the sidebar browser comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate
-  on key down with their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely
-  `ContextMenu::manual`; Ely's `Link` for `link-2`). gpui places an underline itself, so
-  `underline-offset-2` has no port. In tests `open_external` records the address and starts no program.
+  one tooltip. `link_chip/act.rs` is what those chips do, each a Tab stop with the button role: a
+  session link is `useSessionLinkTarget` (`resolveSessionRoute` read on the database worker: a Cindy
+  Make task goes to `/cc-agent`, an Orca worker to its lead, whose `?worker=` hint the router gains
+  with Orca's chapter; a chip's latest ask alone navigates, and only while the chip is mounted: a fold
+  ends its message's asks, and so does a stream render that draws the chip no more, at another place or
+  with another target (`Found.marks`); a modifier or the middle button asks for a task window, which
+  fails with `openLinkFailed` until that chapter; the message anchor's `searchJump` lands with 9.14), a
+  project link `sessions::focus::request`. Enter and Space act on key down with their modifiers; a
+  right click, the menu key or Shift+F10 opens `useLinkContextMenu`'s rows in the message's one menu
+  (`links::What`), Copy link last. An image path's click comes with 9.13. gpui snaps a line's height to
+  the device pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live with the
+  mounted content, as the component's state does. `links.rs` is `UserMessageUrlLink` with
+  `useOpenWithMenu`: an unfolded message's text pieces are each read for web addresses (`linkify`),
+  underlined by text highlights, and a canvas after a piece lays a hit box over each stretch of a
+  link's glyphs, ordered by x since the shaper lists right-to-left text from the right
+  (`prepaint_as_root` at the laid-out text's positions). A link's boxes on every row share its Tab stop
+  (the first box), the menu and the record of boxes the menu key reads. A click is `activateMessageUrl`
+  (a modifier or the middle button opens the system browser, else the preference; the sidebar browser
+  comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate on key down with
+  their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
+  Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
+  tests `open_external` records the address and starts no program.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts

@@ -43,6 +43,8 @@ pub struct Lists {
     pub main_labels: HashMap<String, String>,
     /// `dialogueActionSessions`' ids: every dialogue, pinned ones too, for the group's menu.
     pub dialogue_actions: Vec<String>,
+    /// `groupsWithPinnedProjects`' keys: the projects a project link can focus.
+    pub focusable: Vec<String>,
 }
 
 /// `sidebarPinnedEntryComparisonKey`.
@@ -176,6 +178,7 @@ pub fn build(
         kept.then(|| unpinned(Project { sessions, ..p }))
     };
     let visible: Vec<Project> = main_with_pins.into_iter().filter(shown).collect();
+    let focusable = visible.iter().map(|p| p.key.clone()).collect();
     let rail_projects = for_sidebar(
         visible.iter().cloned().filter_map(narrowed).collect(),
         order,
@@ -227,6 +230,7 @@ pub fn build(
         rail_projects,
         main_labels,
         dialogue_actions,
+        focusable,
     }
 }
 
