@@ -13,6 +13,7 @@ mod column;
 mod entry_error;
 pub mod header;
 pub mod items;
+mod links;
 mod stream;
 mod user_row;
 mod width;

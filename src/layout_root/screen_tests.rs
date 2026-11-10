@@ -82,6 +82,7 @@ pub(super) fn open_beside<'a>(
         crate::router::install(cx);
         crate::chat_store::install(cx);
         crate::session_view::install(cx);
+        crate::link_open::install(cx);
         crate::localdb::install(None, cx);
         cx.set_global(Appearance::new(Mode::System, None, initial, None).unwrap());
         cx.set_global(crate::i18n::Translator::new("en").unwrap());

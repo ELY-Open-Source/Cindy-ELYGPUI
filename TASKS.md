@@ -174,10 +174,11 @@ listed in `tasks/done.md`.
     `shell.openExternal` per platform (`xdg-open`, `NSWorkspace`, `ShellExecuteEx` with Chromium's
     `EscapeExternalHandlerValue`). The billing mail and the macOS privacy panes come with their
     callers
-  - [ ] 9.5g URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`): the
+  - [x] 9.5g URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`): the
     underlined links of an unfolded message, `activateMessageUrl` with its toasts, the open-with
-    menu (`useOpenWithMenu.tsx`), the keys of `linkInteraction.ts`; the sidebar browser comes with
-    17.0, the mail preview with its chapter
+    menu (`useOpenWithMenu.tsx`), the keys of `linkInteraction.ts`. The whole text is read for
+    links until 9.5h splits it into parts; the sidebar browser comes with 17.0, so an open there
+    fails with Cindy's toast; the mail preview comes with its chapter
   - [ ] 9.5h The chips: attachments, quotes, inline references, command, mention, session and
     project links, image path links (`UserMessageImageLink.tsx`), the Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task

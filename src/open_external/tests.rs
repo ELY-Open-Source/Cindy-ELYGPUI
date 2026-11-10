@@ -1,5 +1,25 @@
 use super::{escape, open, web};
 use gpui::TestAppContext;
+use std::cell::{Cell, RefCell};
+
+thread_local! {
+    static OPENED: RefCell<Vec<String>> = const { RefCell::new(Vec::new()) };
+    static FAILS: Cell<bool> = const { Cell::new(false) };
+}
+
+pub fn opened(url: &str) -> bool {
+    OPENED.with_borrow_mut(|opened| opened.push(url.to_owned()));
+    !FAILS.get()
+}
+
+/// The addresses handed out on this thread since the last call.
+pub fn take() -> Vec<String> {
+    OPENED.take()
+}
+
+pub fn fail(fails: bool) {
+    FAILS.set(fails);
+}
 
 #[test]
 fn only_web_addresses_leave() {
@@ -47,6 +67,11 @@ fn the_windows_escape_is_chromiums() {
 #[gpui::test]
 fn a_refused_address_starts_nothing(cx: &mut TestAppContext) {
     use futures::FutureExt as _;
-    let refused = cx.update(|cx| open("no address", cx));
+    let (refused, file) = cx.update(|cx| (open("no address", cx), open("file:///etc/hosts", cx)));
     assert_eq!(refused.now_or_never(), Some(false));
+    assert_eq!(file.now_or_never(), Some(false));
+    assert_eq!(take(), Vec::<String>::new());
+    let web = cx.update(|cx| open("https://Example.com/a b", cx));
+    assert_eq!(web.now_or_never(), Some(true));
+    assert_eq!(take(), ["https://example.com/a%20b"]);
 }

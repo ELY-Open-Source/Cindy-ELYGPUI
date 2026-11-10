@@ -143,3 +143,17 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   mutant survives (the write's error dropped): a test cannot fail the write and pass the removal
   without a file-size limit on the whole process; the reviewer's quota probe covers it
   (`logs/review/9.5f-r1.md`).
+
+## 9.5g URL links in the text
+- Round 1: FAIL. The link's Tab stop had the link role and no name, where Cindy's anchor is named
+  by its address.
+- Fixed: the first hit box carries the address as its `aria-label`. No test in this crate reads the
+  accessibility tree, so none covers it.
+- Round 2: FAIL. A hit box took its width from the x of its first and last bytes, so a link among
+  right-to-left words got a negative width and no click.
+- Fixed: `boxes` orders the shaped glyphs by x (the native shaper lists right-to-left text from the
+  right) and makes a box per stretch of the link's glyphs on a row; unit tests feed it
+  cosmic-text's recorded glyphs for Hebrew and Arabic lines (gpui's test shaper knows no
+  direction).
+- Round 3: PASS, on the version corrected while the round ran: the first rewrite read the glyphs in
+  the shaper's order, which runs from the right in right-to-left text.

@@ -19,14 +19,14 @@ fn put(db: &Connection, n: i64, content: &str, meta: Option<&str>) {
     .unwrap();
 }
 
-fn settle(cx: &mut VisualTestContext) {
+pub(in crate::session_view) fn settle(cx: &mut VisualTestContext) {
     cx.run_until_parked();
     cx.update(|window, _| window.refresh());
     cx.run_until_parked();
 }
 
 /// The content area `width` wide with `s1` open on these user messages, `c0` onwards.
-fn open<'a>(
+pub(in crate::session_view) fn open<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,
     width: f32,
@@ -59,11 +59,14 @@ fn serve<'a>(
     cx
 }
 
-fn at(cx: &mut VisualTestContext, selector: &str) -> Option<Bounds<Pixels>> {
+pub(in crate::session_view) fn at(
+    cx: &mut VisualTestContext,
+    selector: &str,
+) -> Option<Bounds<Pixels>> {
     cx.debug_bounds(Box::leak(selector.to_owned().into_boxed_str()))
 }
 
-fn lines(n: usize) -> String {
+pub(in crate::session_view) fn lines(n: usize) -> String {
     vec!["line"; n].join("\n")
 }
 

@@ -1,10 +1,5 @@
 //! The `shell:open-external` handler: a web address handed to the system, as Electron hands it.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "9.5g's links open in the system browser")
-)]
-
 use gpui::{App, Task};
 use url::Url;
 
@@ -25,7 +20,7 @@ pub fn open(value: &str, cx: &App) -> Task<bool> {
 }
 
 /// `XDGOpen` without waiting: a started `xdg-open` is the success.
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", not(test)))]
 fn shell_open(url: Url, _: &App) -> Task<bool> {
     let spawned = std::process::Command::new("xdg-open")
         .arg(url.as_str())
@@ -47,7 +42,7 @@ fn shell_open(url: Url, _: &App) -> Task<bool> {
 }
 
 /// `NSWorkspace openURL:configuration:completionHandler:`, once an application takes the address.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", not(test)))]
 fn shell_open(url: Url, cx: &App) -> Task<bool> {
     let opened = match workspace::open(url.as_str()) {
         Ok(opened) => opened,
@@ -66,7 +61,7 @@ fn shell_open(url: Url, cx: &App) -> Task<bool> {
 }
 
 /// `OpenExternalOnWorkerThread`: `ShellExecuteEx` on a COM thread.
-#[cfg(target_os = "windows")]
+#[cfg(all(target_os = "windows", not(test)))]
 fn shell_open(url: Url, cx: &App) -> Task<bool> {
     cx.background_spawn(async move {
         let opened = shell::open(&format!("\"{}\"", escape(url.as_str())));
@@ -94,11 +89,17 @@ fn escape(spec: &str) -> String {
     out
 }
 
-#[cfg(target_os = "windows")]
+/// Tests start no program: the address is recorded and the answer scripted.
+#[cfg(test)]
+fn shell_open(url: Url, _: &App) -> Task<bool> {
+    Task::ready(tests::opened(url.as_str()))
+}
+
+#[cfg(all(target_os = "windows", not(test)))]
 mod shell;
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", not(test)))]
 mod workspace;
 
 #[cfg(test)]
-mod tests;
+pub mod tests;

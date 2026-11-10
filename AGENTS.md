@@ -276,7 +276,16 @@ defines scope and what 1:1 means.
   final line feed ends its line, spaces, tabs and U+3000 at a wrap hang unseen;
   `logs/review/9.5e-r1-blink-lines.log`, `-blink-spaces.log`). gpui snaps a line's height to the device
   pixel, so a compact line is 22.5px for Cindy's 22.4. The unfolded messages live with the mounted
-  content, as the component's state does.
+  content, as the component's state does. `links.rs` is `UserMessageUrlLink` with `useOpenWithMenu`: an
+  unfolded message's web addresses (`linkify`, moved through `laid_out`'s offset map) are underlined by
+  text highlights, and a canvas after the text lays a hit box over each stretch of a link's glyphs on a
+  row, ordered by x since the shaper lists right-to-left text from the right (`prepaint_as_root` at the
+  laid-out text's positions); the first box is the link's Tab stop. A click is `activateMessageUrl` (a
+  modifier or the middle button opens the system browser, else the preference; the sidebar browser
+  comes with 17.0, so that open fails with Cindy's toast), Enter and Space activate on key down with
+  their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
+  Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
+  tests `open_external` records the address and starts no program.
 - Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
   (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
   `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts

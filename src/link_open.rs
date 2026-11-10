@@ -1,10 +1,5 @@
 //! `useLinkOpenPreference.ts` and `linkInteraction.ts`: where a message's link opens.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "9.5g's links read where they open")
-)]
-
 use std::cell::Cell;
 
 use gpui::{App, Modifiers, MouseButton};

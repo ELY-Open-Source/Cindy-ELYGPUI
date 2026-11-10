@@ -7,7 +7,7 @@ use gpui::{
     Styled as _, Window, div, point, prelude::FluentBuilder as _, px, relative,
 };
 
-use super::{SessionView, width::Widths};
+use super::{SessionView, links, width::Widths};
 use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
@@ -71,21 +71,30 @@ fn wraps(line: &str, size: Pixels, width: Pixels, window: &Window) -> Vec<usize>
     line.wrap_boundaries().iter().map(at).collect()
 }
 
-/// The text as Blink lays `pre-wrap` out at `width`, with its visual lines.
-fn laid_out(body: &str, size: Pixels, width: Pixels, window: &Window) -> (String, usize) {
+/// The laid-out text, its visual lines, and where each kept stretch (CR gone) starts in it.
+type Laid = (String, usize, Vec<(usize, usize)>);
+
+/// The text as Blink lays `pre-wrap` out at `width`.
+fn laid_out(body: &str, size: Pixels, width: Pixels, window: &Window) -> Laid {
     let text = body.replace('\r', "");
     let text = text.strip_suffix('\n').unwrap_or(&text);
-    let (mut out, mut count) = (Vec::new(), 0);
+    let (mut out, mut count, mut map, mut at) = (Vec::new(), 0, Vec::new(), 0);
+    let mut keep = |kept: &str| {
+        map.push((kept.as_ptr() as usize - text.as_ptr() as usize, at));
+        at += kept.len() + 1;
+    };
     for mut rest in text.split('\n') {
         loop {
             let wraps = wraps(rest, size, width, window);
             let hung = wraps.iter().position(|at| rest[*at..].starts_with(hangs));
             let Some(hung) = hung else {
                 count += wraps.len() + 1;
+                keep(rest);
                 out.push(rest);
                 break;
             };
             count += hung + 1;
+            keep(&rest[..wraps[hung]]);
             out.push(&rest[..wraps[hung]]);
             rest = rest[wraps[hung]..].trim_start_matches(hangs);
             if rest.is_empty() {
@@ -93,7 +102,7 @@ fn laid_out(body: &str, size: Pixels, width: Pixels, window: &Window) -> (String
             }
         }
     }
-    (out.join("\n"), count)
+    (out.join("\n"), count, map)
 }
 
 fn unfolded(key: &str, cx: &App) -> bool {
@@ -223,9 +232,18 @@ pub fn element(
     let size = text_size(15.0, cx) - compact;
     let rem = window.rem_size();
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
-    let (text, lines) = laid_out(&body, css(size).to_pixels(rem), width, window);
+    let (text, lines, map) = laid_out(&body, css(size).to_pixels(rem), width, window);
     let folds = collapse::may_exceed(&body, fold.threshold) && lines > fold.threshold;
     let open = unfolded(key, cx);
+    // A folded message draws plain text, as `interactive` false does.
+    let links = match folds && !open {
+        true => Vec::new(),
+        false => links::place(&body, &map),
+    };
+    let text = match links.is_empty() {
+        true => text.into_any_element(),
+        false => links::text(key, text, links, window, cx),
+    };
     let appearance = cx.global::<Appearance>();
     let selector = format!("{key}-bubble");
     let text_selector = format!("{key}-text");
@@ -277,4 +295,4 @@ pub fn element(
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;
