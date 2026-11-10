@@ -159,14 +159,14 @@ listed in `tasks/done.md`.
     `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; maker-shared `chatQuotes.ts`
     (`formatQuoteForSend`, `parseChatQuoteSegments`, `joinChatQuoteTextSegments`,
     `stripChatQuoteMarkerLines`); golden. `readAgentInputReferences` and `slashCommandDisplayLabel`
-    come with 9.5h's chips, the outer `renderContent` with the bubble
+    come with 9.5h's to 9.5k's chips, the outer `renderContent` with the bubble
   - [x] 9.5e The bubble: the stream's list (`msg-stream-items`) with the user row drawn from 9.4e's
     items, `ChatBubble` with its wallpaper glass fill, the text of an ordinary message (display
     text, quote text joined), the collapse measured in the frame's layout with its toggle
     (`line-clamp-10`, 3 for an automation message at threshold 4), `chat-rail-compact`'s type
     scale. The measure runs before paint, so Cindy's first-frame estimate and remembered results
     have no reader: `shouldAutoCollapseUserMessageContent` goes. The measured text takes its pasted
-    and reference labels with 9.5h's chips; text selection comes with 9.6, the scroll's padding and
+    and reference labels with 9.5h's to 9.5k's chips; text selection comes with 9.6, the scroll's padding and
     gutter with 9.14, the action bar with 9.16, ghost cards with 16.0
   - [x] 9.5f Where a link opens: the link open preference (`useLinkOpenPreference.ts`:
     `isLocalOpenUrl` with its golden, the two keys, the memo, the legacy key's migration),
@@ -179,8 +179,23 @@ listed in `tasks/done.md`.
     menu (`useOpenWithMenu.tsx`), the keys of `linkInteraction.ts`. The whole text is read for
     links until 9.5h splits it into parts; the sidebar browser comes with 17.0, so an open there
     fails with Cindy's toast; the mail preview comes with its chapter
-  - [ ] 9.5h The chips: attachments, quotes, inline references, command, mention, session and
-    project links, image path links (`UserMessageImageLink.tsx`), the Orca and hook forms
+  - [ ] 9.5h The inline flow: the bubble's text as rows the port breaks itself (gpui's
+    `LineWrapper::wrap_line` over text and fixed-width fragments), so a chip sits in a line of
+    text; `InlineReferenceChip`'s inert face; the legacy command, agent, folder and file chips of
+    `renderContentWithoutPastedText` (`sent::parts`), links in the text parts only; the fold counts
+    and clamps these rows
+  - [ ] 9.5i The persisted ranges of `renderContent`: pasted text, slash command and agent
+    reference chips (`SentAgentReferenceChip`, `readAgentInputReferences`,
+    `slashCommandDisplayLabel`), the measured text with their labels; their clicks come with the
+    lightboxes (9.12)
+  - [ ] 9.5j Quote chips (`QuoteChip`) between the text islands of a `quotesEncoded` message, with
+    `locateChatQuoteTextSegmentStarts` and `projectSentRanges`
+  - [ ] 9.5k Session and project link chips (`SessionLinkChip`, `ProjectLinkChip`) and image path
+    links (`UserMessageImageLink.tsx`)
+  - [ ] 9.5l Attachments over the bubble: image and file chips (`ChatImageView`'s `user-attached`
+    face, `UserFileChip`)
+  - [ ] 9.5m What stands over and beside the bubble: `MessageSourceLabels`, the goal badge, the
+    Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the
