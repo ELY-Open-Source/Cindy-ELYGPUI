@@ -183,7 +183,16 @@ defines scope and what 1:1 means.
   `pasted_plain` and `inline_plain` with `label` (`sentAgentReferenceDisplayLabel`), `text_starts`,
   `within` (`projectSentRanges`) and `parts`, the command, mention and path split of
   `renderContentWithoutPastedText`. Golden `sent-text`: `scripts/golden/sentText.mjs` reads `parts` off
-  Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`.
+  Cindy's own `renderContent`, so the golden bundle builds with `jsx: 'automatic'`. `src/link_open.rs`
+  is `useLinkOpenPreference.ts` (`is_local`, golden `link-open`; `preference` with its memo per kind
+  and the legacy key's one migration, in the `LinkOpen` global) and `linkInteraction.ts`'s `separate`.
+  `src/open_external.rs` is the `shell:open-external` handler for `http:` and `https:`, then Electron
+  42's `shell.openExternal`: Linux starts `xdg-open` with `MM_NOTTTY=1` and answers once it started;
+  macOS (`workspace.rs`) asks `NSWorkspace` for an application, then
+  `openURL:configuration:completionHandler:` with `activates`; Windows (`shell.rs`) runs
+  `ShellExecuteEx` `open` on a COM thread with the quoted `escape`, Chromium's
+  `EscapeExternalHandlerValue`. Native code is checked in a scratch crate
+  (`logs/review/9.5f-r1-native-*.log`).
 - Router: `src/router.rs` is `router.tsx`'s hash routes for chapter 8: one pathname in the `Router`
   global, starting at `/`. `/` goes to `/cc-agent` (`MainEntryRedirect`; the remembered entry needs
   13.0's owner-scoped storage); `/cc-agent` waits for the task list, then opens the last chat view

@@ -88,3 +88,7 @@ export const USER_MESSAGE_TESTS = {
 export const SENT_TEXT_TESTS = {
   [`${shared}/chatQuotes.test.ts`]: { '../chatQuotes': ['formatQuoteForSend', 'parseChatQuoteSegments', 'stripChatQuoteMarkerLines'] },
 };
+
+export const LINK_OPEN_TESTS = {
+  [`${desktop}/renderer/hooks/__tests__/useLinkOpenPreference.test.ts`]: { '../useLinkOpenPreference': ['isLocalOpenUrl'] },
+};

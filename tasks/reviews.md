@@ -135,3 +135,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   (`logs/review/9.5e-r1-blink-spaces.log`), in the drawn text and the line count alike; the button
   carries `aria-expanded`.
 - Round 1, run again: PASS.
+
+## 9.5f Where a link opens
+- Round 1: FAIL, then PASS on the fix made while it ran. The old choice's move went on after a
+  failed write and removed the old key, where Cindy's `try` leaves it.
+- Fixed: `migrate` stops at its first failed read or write, logs it and keeps the old key. One
+  mutant survives (the write's error dropped): a test cannot fail the write and pass the removal
+  without a file-size limit on the whole process; the reviewer's quota probe covers it
+  (`logs/review/9.5f-r1.md`).

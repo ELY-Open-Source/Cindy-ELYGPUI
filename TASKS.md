@@ -159,20 +159,26 @@ listed in `tasks/done.md`.
     `locateChatQuoteTextSegmentStarts`, `projectSentRanges`; maker-shared `chatQuotes.ts`
     (`formatQuoteForSend`, `parseChatQuoteSegments`, `joinChatQuoteTextSegments`,
     `stripChatQuoteMarkerLines`); golden. `readAgentInputReferences` and `slashCommandDisplayLabel`
-    come with 9.5g's chips, the outer `renderContent` with the bubble
+    come with 9.5h's chips, the outer `renderContent` with the bubble
   - [x] 9.5e The bubble: the stream's list (`msg-stream-items`) with the user row drawn from 9.4e's
     items, `ChatBubble` with its wallpaper glass fill, the text of an ordinary message (display
     text, quote text joined), the collapse measured in the frame's layout with its toggle
     (`line-clamp-10`, 3 for an automation message at threshold 4), `chat-rail-compact`'s type
     scale. The measure runs before paint, so Cindy's first-frame estimate and remembered results
     have no reader: `shouldAutoCollapseUserMessageContent` goes. The measured text takes its pasted
-    and reference labels with 9.5g's chips; text selection comes with 9.6, the scroll's padding and
+    and reference labels with 9.5h's chips; text selection comes with 9.6, the scroll's padding and
     gutter with 9.14, the action bar with 9.16, ghost cards with 16.0
-  - [ ] 9.5f URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`):
-    `activateMessageUrl` with `isSeparateLinkActivation`, the link open preference
-    (`useLinkOpenPreference.ts`), `shell:open-external`, the open-with menu
-    (`useOpenWithMenu.tsx`); the sidebar browser and mail preview come with their chapters
-  - [ ] 9.5g The chips: attachments, quotes, inline references, command, mention, session and
+  - [x] 9.5f Where a link opens: the link open preference (`useLinkOpenPreference.ts`:
+    `isLocalOpenUrl` with its golden, the two keys, the memo, the legacy key's migration),
+    `isSeparateLinkActivation`, and the `shell:open-external` handler on Electron's
+    `shell.openExternal` per platform (`xdg-open`, `NSWorkspace`, `ShellExecuteEx` with Chromium's
+    `EscapeExternalHandlerValue`). The billing mail and the macOS privacy panes come with their
+    callers
+  - [ ] 9.5g URL links in the text (`UserMessageUrlLink.tsx`, `message-link-clickability.md`): the
+    underlined links of an unfolded message, `activateMessageUrl` with its toasts, the open-with
+    menu (`useOpenWithMenu.tsx`), the keys of `linkInteraction.ts`; the sidebar browser comes with
+    17.0, the mail preview with its chapter
+  - [ ] 9.5h The chips: attachments, quotes, inline references, command, mention, session and
     project links, image path links (`UserMessageImageLink.tsx`), the Orca and hook forms
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,

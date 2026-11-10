@@ -44,7 +44,7 @@ rusqlite = { version = "0.41.1", features = ["limits"] }
 tempfile = "3"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSAccessibility", "NSWorkspace", "NSApplication", "NSResponder", "NSImage", "NSView", "NSVisualEffectView", "NSWindow", "NSGraphics"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "block2", "NSAccessibility", "NSRunningApplication", "NSWorkspace", "NSApplication", "NSResponder", "NSImage", "NSView", "NSVisualEffectView", "NSWindow", "NSGraphics"] }
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSData", "NSArray", "NSEnumerator", "NSGeometry", "NSValue", "NSURL", "NSError", "NSString", "NSDictionary"] }
 objc2-av-foundation = { version = "0.3.2", default-features = false, features = ["std", "AVAsset", "AVAssetReader", "AVAssetReaderOutput", "AVAssetTrack", "AVMediaFormat", "block2", "objc2-core-media", "objc2-core-video"] }
 objc2-core-media = { version = "0.3.2", default-features = false, features = ["std", "CMSampleBuffer", "CMTime", "CMTimeRange", "objc2-core-video"] }
