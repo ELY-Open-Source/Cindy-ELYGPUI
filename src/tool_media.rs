@@ -1,10 +1,8 @@
 //! `AgentActionRow.tsx`'s `extractToolResultMedia`: the media a tool result's JSON names.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
-)]
 
-use std::collections::HashSet;
+use std::{cell::RefCell, collections::HashSet};
+
+use indexmap::IndexMap;
 
 use crate::rich_answer::js::{self, Js, Obj};
 
@@ -125,12 +123,51 @@ fn bare_track(url: &str) -> AudioTrack {
     }
 }
 
-/// `extractToolResultMedia`.
+const MAX_ENTRIES: usize = 512;
+const MAX_CHARACTERS: usize = 32 * 1024 * 1024;
+
+/// `toolMetadataCache`: results by their text, with its UTF-16 length; the oldest first.
+#[derive(Default)]
+struct Cache {
+    results: IndexMap<String, (Vec<Media>, usize)>,
+    characters: usize,
+}
+
+thread_local! {
+    static CACHE: RefCell<Cache> = RefCell::default();
+}
+
+/// `extractToolResultMedia` through `getToolResultMetadata`'s cache.
 pub fn extract(result: &str) -> Vec<Media> {
     let named = ["xdt_image_url", "xdt_video_url", "xdt_audio_url"];
     if !named.iter().any(|key| result.contains(key)) {
         return Vec::new();
     }
+    let hit = CACHE.with_borrow_mut(|cache| {
+        let entry = cache.results.shift_remove(result)?;
+        cache.results.insert(result.to_owned(), entry.clone());
+        Some(entry.0)
+    });
+    if let Some(media) = hit {
+        return media;
+    }
+    let media = read(result);
+    let characters = result.encode_utf16().count();
+    if characters <= MAX_CHARACTERS {
+        CACHE.with_borrow_mut(|cache| {
+            let entry = (media.clone(), characters);
+            cache.results.insert(result.to_owned(), entry);
+            cache.characters += characters;
+            while cache.results.len() > MAX_ENTRIES || cache.characters > MAX_CHARACTERS {
+                let (_, (_, oldest)) = cache.results.shift_remove_index(0).expect("an entry");
+                cache.characters -= oldest;
+            }
+        });
+    }
+    media
+}
+
+fn read(result: &str) -> Vec<Media> {
     let parsed = js::parse(result).ok();
     let Some(parsed) = parsed.as_ref().and_then(Js::obj) else {
         return Vec::new();

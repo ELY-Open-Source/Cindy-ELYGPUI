@@ -1,12 +1,33 @@
 use super::{
     Artifact, File,
     artifact::{self, Preview},
-    collect, failed,
+    collect, collect_cached, failed,
 };
-use crate::rich_answer::js::{self, Js, Obj};
+use std::rc::Rc;
+
+use crate::{
+    chat_message::merge::{Fields, Message},
+    rich_answer::js::{self, Js, Obj},
+};
 
 pub fn text(value: &str) -> Js {
     Js::Str(value.to_owned())
+}
+
+/// A fixture's rows as the store holds them.
+pub fn rows(list: &Js) -> Vec<Message> {
+    let row = |row: &Js| {
+        let fields = row.obj().into_iter().flatten();
+        Rc::new(Fields::from_iter(
+            fields.map(|(k, v)| (k.clone(), Some(Rc::new(v.clone())))),
+        ))
+    };
+    list.arr().unwrap().iter().map(row).collect()
+}
+
+/// Rows by reference, as the turn readers take them.
+pub fn refs(rows: &[Message]) -> Vec<&Fields> {
+    rows.iter().map(|row| &**row).collect()
 }
 
 /// An object of the fields that hold a value, as `JSON.stringify` drops `undefined`.
@@ -93,8 +114,8 @@ pub fn file(f: &File) -> Js {
 #[test]
 fn generated_files_match_cindys() {
     yields("collectGeneratedFiles", |args| {
-        let rows: Vec<&Js> = args[0].arr().unwrap().iter().collect();
-        let files = collect(&rows, args[1].str().unwrap());
+        let rows = rows(&args[0]);
+        let files = collect(&refs(&rows), args[1].str().unwrap());
         Js::Arr(files.iter().map(file).collect())
     });
 }
@@ -113,4 +134,31 @@ fn failed_results_match_cindys() {
     yields("isExplicitFailedToolResult", |args| {
         Js::Bool(failed(args[0].str()))
     });
+}
+
+#[test]
+fn a_turn_is_read_once_while_its_rows_live() {
+    let write = |path: &str| {
+        let input = object(vec![("file_path", Some(text(path)))]);
+        object(vec![
+            ("role", Some(text("tool_use"))),
+            ("toolName", Some(text("Write"))),
+            ("toolInput", Some(input)),
+        ])
+    };
+    let turn = rows(&Js::Arr(vec![write("/w/a.md"), write("/w/b.md")]));
+    let all: Vec<&Message> = turn.iter().collect();
+    let held = super::cache::held();
+    let first = collect_cached(&all, "/w");
+    assert_eq!(first.len(), 2);
+    assert_eq!(super::cache::held(), held + 1);
+    assert_eq!(collect_cached(&all, "/w"), first);
+    assert_eq!(super::cache::held(), held + 1);
+    assert_eq!(collect_cached(&all[..1], "/w").len(), 1);
+    assert_eq!(collect_cached(&all, "/x"), collect(&refs(&turn), "/x"));
+    assert_eq!(super::cache::held(), held + 1);
+    drop(turn);
+    let other = rows(&Js::Arr(vec![write("/w/c.md")]));
+    collect_cached(&other.iter().collect::<Vec<_>>(), "/w");
+    assert_eq!(super::cache::held(), held + 1);
 }

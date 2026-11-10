@@ -6,6 +6,7 @@ use regex::Regex;
 
 use super::{Status, Todo, present, record, tool_input, tool_name};
 use crate::{
+    chat_message::merge::Fields,
     rich_answer::js::{self, Js, Obj},
     theme_import::color::{JS_SPACE, js_trim},
 };
@@ -123,7 +124,7 @@ pub(super) fn extract_plan_todos(
 }
 
 /// `isExplicitPlanClearEvent`.
-pub(super) fn is_explicit_clear(message: &Js) -> bool {
+pub(super) fn is_explicit_clear(message: &Fields) -> bool {
     let input = record(tool_input(message));
     let empty_list = |key| {
         input

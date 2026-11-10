@@ -92,7 +92,7 @@ pub fn unavailable(error: &str) -> bool {
 pub type Run = Shared<LocalBoxFuture<'static, ()>>;
 
 /// A reply resumes its reader a turn later, as an awaited settled promise does.
-async fn settled<F: std::future::Future>(reply: F) -> F::Output {
+pub async fn settled<F: std::future::Future>(reply: F) -> F::Output {
     let value = reply.await;
     let mut yielded = false;
     std::future::poll_fn(|cx| {
@@ -306,7 +306,7 @@ impl<T: Message> View<T> {
     }
 
     /// `subscribe`; the returned closure unsubscribes.
-    pub fn subscribe(&self, listener: impl Fn() + 'static) -> impl FnOnce() {
+    pub fn subscribe<F: Fn() + 'static>(&self, listener: F) -> impl FnOnce() + use<T, F> {
         let mut inner = self.inner.borrow_mut();
         let id = inner.next_listener;
         inner.next_listener += 1;

@@ -319,3 +319,75 @@ fn write(cx: &mut TestAppContext, sql: &'static str) {
     });
     assert!(futures::executor::block_on(done).unwrap().is_ok());
 }
+
+type Stream = (Vec<String>, Option<(bool, usize)>);
+
+fn stream(cx: &mut TestAppContext) -> Option<Stream> {
+    use crate::render_items::Item;
+    cx.update(|cx| {
+        let shown = super::items::items(cx)?.as_ref().unwrap();
+        let keys = shown.items.iter().map(|item| item.key().to_owned());
+        let group = shown.items.iter().find_map(|item| match &**item {
+            Item::WorkGroup {
+                children, deferred, ..
+            } => Some((deferred.as_ref()?.expanded, children.len())),
+            _ => None,
+        });
+        Some((keys.collect(), group))
+    })
+}
+
+fn deferred(
+    cx: &mut TestAppContext,
+    run: impl FnOnce(&crate::render_items::Deferred, &mut gpui::App),
+) {
+    use crate::render_items::Item;
+    cx.update(|cx| {
+        let shown = super::items::items(cx).unwrap().as_ref().unwrap().clone();
+        let work = shown.items.iter().find_map(|item| match &**item {
+            Item::WorkGroup { deferred, .. } => deferred.as_ref(),
+            _ => None,
+        });
+        run(work.unwrap(), cx);
+    });
+    cx.run_until_parked();
+}
+
+#[gpui::test]
+fn the_ready_view_renders_and_its_folded_work_opens(cx: &mut TestAppContext) {
+    let _dir = install(cx);
+    cx.update(|cx| {
+        let db = db();
+        let put = crate::chat_store::tests::put;
+        put(&db, 0, "user", "\"Look\"", None);
+        let call = r#"{"toolName":"Bash","toolUseId":"b","input":{"command":"ls"}}"#;
+        put(&db, 1, "tool_use", call, Some("b"));
+        put(&db, 2, "tool_result", "\"ok\"", Some("b"));
+        put(&db, 3, "assistant", "\"Done\"", None);
+        crate::localdb::serve(db, cx);
+    });
+    assert_eq!(stream(cx), None);
+    go("/cc-agent/s1", cx);
+    let folded = Some((
+        vec!["msg-c0".into(), "work-c1".into(), "msg-c3".into()],
+        Some((false, 0)),
+    ));
+    assert_eq!(stream(cx), folded);
+    let view = |cx: &gpui::App| Store::global(cx).view("s1").unwrap();
+    let mut release = None;
+    deferred(cx, |work, cx| {
+        release = Some(work.set_visible(&view(cx), true, false))
+    });
+    let open = stream(cx).unwrap().1;
+    assert_eq!(open, Some((true, 1)));
+    cx.update(|_| release.take().unwrap()());
+    cx.run_until_parked();
+    // The small body stays read once its hold lets go.
+    assert_eq!(stream(cx).unwrap().1, Some((false, 1)));
+    deferred(cx, |work, cx| work.toggle(&view(cx)));
+    assert_eq!(stream(cx).unwrap().1, open);
+    deferred(cx, |work, cx| work.retry(&view(cx)));
+    assert_eq!(stream(cx).unwrap().1, open);
+    go("/cc-agent/new", cx);
+    assert_eq!(stream(cx), None);
+}

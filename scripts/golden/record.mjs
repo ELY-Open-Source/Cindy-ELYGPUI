@@ -82,12 +82,25 @@ export async function record({ esbuild, tmp, nodePaths, alias, define, test, tar
     constructor(...args) { super(...(args.length ? args : [CLOCK])); }
     static now() { return CLOCK; }
   };
+  // Random ids come from one seed, for the same reason.
+  const [random, uuid] = [Math.random, crypto.randomUUID];
+  let seed = 94;
+  Math.random = () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const hex = (n) => Array.from({ length: n }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+  crypto.randomUUID = () => `${hex(8)}-${hex(4)}-4${hex(3)}-8${hex(3)}-${hex(12)}`;
   let mod, ran, failed;
   try {
     mod = await import(pathToFileURL(bundle).href);
     ({ ran, failed } = await mod.run());
   } finally {
     globalThis.Date = Real;
+    Math.random = random;
+    crypto.randomUUID = uuid;
   }
   console.log(`recorded ${mod.calls.length} calls from ${path.basename(test)} (${ran} tests, ${failed} threw)`);
   return mod.calls;

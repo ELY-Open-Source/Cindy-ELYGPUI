@@ -1,8 +1,4 @@
 //! `messageRender.ts`'s plan timeline: the plan sessions a transcript holds and the latest one.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
-)]
 
 use std::sync::LazyLock;
 
@@ -10,6 +6,7 @@ use indexmap::IndexMap;
 use regex::Regex;
 
 use crate::{
+    chat_message::merge::{self, Fields},
     message_rows::{is_agent_plan_tool_name, is_subagent_parent_tool_use_id},
     rich_answer::js::{Js, Obj},
     theme_import::color::js_trim,
@@ -69,8 +66,12 @@ pub struct LatestState {
     pub latest_insertion_index: i64,
 }
 
-fn field<'a>(message: &'a Js, key: &str) -> Option<&'a Js> {
-    message.obj()?.get(key)
+fn field<'a>(message: &'a Fields, key: &str) -> Option<&'a Js> {
+    merge::get(message, key)
+}
+
+fn own<'a>(message: &'a Fields, key: &str) -> Option<&'a str> {
+    field(message, key)?.str()
 }
 
 /// A value that is neither `undefined` nor `null`.
@@ -83,7 +84,7 @@ fn record(value: Option<&Js>) -> Option<&Obj> {
     value?.obj()
 }
 
-fn content(message: &Js) -> Option<&Obj> {
+fn content(message: &Fields) -> Option<&Obj> {
     record(field(message, "content"))
 }
 
@@ -92,16 +93,16 @@ fn text<'a>(fields: Option<&'a Obj>, key: &str) -> Option<&'a str> {
 }
 
 /// `toolNameOf`.
-fn tool_name(message: &Js) -> &str {
+fn tool_name(message: &Fields) -> &str {
     let content = content(message);
-    text(message.obj(), "toolName")
+    own(message, "toolName")
         .or_else(|| text(content, "toolName"))
         .or_else(|| text(content, "name"))
         .unwrap_or("")
 }
 
 /// `toolInputOf`.
-fn tool_input(message: &Js) -> Option<&Js> {
+fn tool_input(message: &Fields) -> Option<&Js> {
     field(message, "toolInput").or_else(|| content(message)?.get("input"))
 }
 
@@ -110,39 +111,39 @@ fn filled(value: Option<&str>) -> Option<&str> {
 }
 
 /// `toolUseIdOf`.
-fn tool_use_id(message: &Js) -> Option<&str> {
+fn tool_use_id(message: &Fields) -> Option<&str> {
     let content = content(message);
-    filled(text(message.obj(), "toolUseId"))
+    filled(own(message, "toolUseId"))
         .or_else(|| filled(text(content, "toolUseId")))
         .or_else(|| filled(text(content, "id")))
 }
 
 /// `isToolResultSource`.
-fn is_tool_result(message: &Js) -> bool {
+fn is_tool_result(message: &Fields) -> bool {
     let content = content(message);
-    text(message.obj(), "role") == Some("tool_result")
+    own(message, "role") == Some("tool_result")
         || ["role", "type", "kind"]
             .iter()
             .any(|key| text(content, key) == Some("tool_result"))
 }
 
 /// `toolResultTextOf`.
-fn tool_result_text(message: &Js) -> Option<&str> {
+fn tool_result_text(message: &Fields) -> Option<&str> {
     let content = content(message);
-    text(message.obj(), "content")
+    own(message, "content")
         .or_else(|| text(content, "content"))
         .or_else(|| text(content, "result"))
         .or_else(|| text(content, "text"))
 }
 
 /// `sourceClientId`.
-fn source_client_id(message: &Js) -> &str {
-    let id = |key| filled(text(message.obj(), key));
+fn source_client_id(message: &Fields) -> &str {
+    let id = |key| filled(own(message, key));
     id("clientId").or_else(|| id("id")).unwrap_or("unknown")
 }
 
 /// `buildToolResultLookup`.
-fn result_lookup<'a>(messages: &[&'a Js]) -> IndexMap<&'a str, &'a str> {
+fn result_lookup<'a>(messages: &[&'a Fields]) -> IndexMap<&'a str, &'a str> {
     let mut out = IndexMap::new();
     for &message in messages {
         let Some(id) = tool_use_id(message).filter(|_| is_tool_result(message)) else {
@@ -155,7 +156,7 @@ fn result_lookup<'a>(messages: &[&'a Js]) -> IndexMap<&'a str, &'a str> {
     out
 }
 
-fn result_of<'a>(lookup: &IndexMap<&str, &'a str>, message: &Js) -> Option<&'a str> {
+fn result_of<'a>(lookup: &IndexMap<&str, &'a str>, message: &Fields) -> Option<&'a str> {
     lookup.get(tool_use_id(message).unwrap_or("")).copied()
 }
 
@@ -175,7 +176,7 @@ static LEGACY_UUID: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 /// `hasSubagentParent`.
-fn has_subagent_parent(message: &Js) -> bool {
+fn has_subagent_parent(message: &Fields) -> bool {
     let meta = record(field(message, "agentMeta"));
     let explicit = present(field(message, "parentToolUseId"))
         .or_else(|| present(meta?.get("parentToolUseId")))
@@ -195,7 +196,7 @@ fn has_subagent_parent(message: &Js) -> bool {
 }
 
 /// `isSyntheticUserRow`.
-fn is_synthetic_user_row(message: &Js) -> bool {
+fn is_synthetic_user_row(message: &Fields) -> bool {
     let meta = record(field(message, "agentMeta"));
     let meta_field = |key| present(meta.and_then(|m| m.get(key)));
     if present(field(message, "hookSource")).is_some() || meta_field("hookSource").is_some() {
@@ -212,12 +213,12 @@ fn is_synthetic_user_row(message: &Js) -> bool {
 }
 
 /// `isPlanUserBoundary`: a user row that opens a new turn for plans.
-pub fn is_plan_user_boundary(message: &Js) -> bool {
-    text(message.obj(), "role") == Some("user") && !is_synthetic_user_row(message)
+pub fn is_plan_user_boundary(message: &Fields) -> bool {
+    own(message, "role") == Some("user") && !is_synthetic_user_row(message)
 }
 
 /// `planRowSealOf`: the host's seal, on the row or in its stored content.
-fn seal(message: &Js) -> Option<Option<f64>> {
+fn seal(message: &Fields) -> Option<Option<f64>> {
     let on = Js::Bool(true);
     let content = content(message);
     let sealed = match field(message, "terminalPlanSnapshot") {
@@ -235,7 +236,7 @@ fn seal(message: &Js) -> Option<Option<f64>> {
 }
 
 /// `planRowTurnFailed`.
-fn turn_failed(message: &Js) -> bool {
+fn turn_failed(message: &Fields) -> bool {
     let off = Js::Bool(false);
     match field(message, "turnCompleted") {
         Some(top) => *top == off,
@@ -255,7 +256,7 @@ struct Session {
 
 /// `findMessageTodoInsertions`: each plan session's card by its last row's index; `Err` is a throw.
 pub fn insertions(
-    messages: &[&Js],
+    messages: &[&Fields],
     key_prefix: &str,
 ) -> Result<IndexMap<usize, Insertion>, String> {
     let results = result_lookup(messages);
@@ -264,7 +265,7 @@ pub fn insertions(
     let mut task_state = tasks::State::new();
     let mut last_user: Option<usize> = None;
     for (index, message) in messages.iter().enumerate() {
-        if text(message.obj(), "role") == Some("user") {
+        if own(message, "role") == Some("user") {
             if is_plan_user_boundary(message) {
                 last_user = Some(index);
             }
@@ -329,7 +330,7 @@ pub fn insertions(
             key,
             todos: session.todos,
             source_client_ids: session.source_client_ids,
-            created_at: text(last.obj(), "createdAt").map(str::to_owned),
+            created_at: own(last, "createdAt").map(str::to_owned),
             updated_at_ms: updated,
             source: session.source,
             sealed: seal.is_some(),
@@ -343,7 +344,7 @@ pub fn insertions(
 
 /// `getLatestMessageTodoState`; `incomplete` is `taskHistoryMayBeIncomplete`.
 pub fn latest_state(
-    messages: &[&Js],
+    messages: &[&Fields],
     key_prefix: &str,
     incomplete: bool,
 ) -> Result<LatestState, String> {

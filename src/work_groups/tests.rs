@@ -4,7 +4,7 @@ use super::{
     turn_final_assistant_client_ids,
 };
 use crate::{
-    generated_files::tests::{object, text},
+    generated_files::tests::{self, object, refs, text},
     render_items::{Item, Options, build, created_ms},
     rich_answer::js::{self, Js},
 };
@@ -117,7 +117,7 @@ fn groups_match_cindys() {
             _ => panic!("reference shape"),
         };
         let what = js::stringify(reference, "");
-        let rows = rows.arr().unwrap();
+        let rows = &tests::rows(rows);
         let grouped = both(|streaming| {
             let items = build(rows, options(opts)).unwrap();
             let grouped = group(items, rows, streaming);
@@ -129,7 +129,7 @@ fn groups_match_cindys() {
             )
         });
         same(&grouped, groups, &what);
-        let scan: Vec<&Js> = rows.iter().collect();
+        let scan = refs(rows);
         let ids = turn_final_assistant_client_ids(&scan);
         same(
             &Js::Arr(
@@ -157,8 +157,8 @@ fn client_ids_are_found_as_cindy_finds_them() {
     assert_eq!(own.len(), all.len());
     for (index, (case, ids)) in own.iter().zip(all).enumerate() {
         let args = case.arr().unwrap();
-        let rows = args[0].arr().unwrap();
-        let scan: Vec<&Js> = rows.iter().collect();
+        let rows = &tests::rows(&args[0]);
+        let scan = refs(rows);
         let found = ids.arr().unwrap().iter().map(|entry| {
             let id = entry.arr().unwrap()[0].str().unwrap();
             let holds = both(|streaming| {
@@ -184,7 +184,7 @@ fn fork_origins_land_where_cindys_do() {
     assert_eq!(own.len(), all.len());
     for (index, (case, keys)) in own.iter().zip(all).enumerate() {
         let args = case.arr().unwrap();
-        let rows = args[0].arr().unwrap();
+        let rows = &tests::rows(&args[0]);
         let field = |key: &str| args[2].obj().map(|fork| fork[key].str().unwrap());
         let fork = field("parentSessionId").map(|parent| ForkOrigin {
             parent_session_id: parent,
@@ -221,7 +221,7 @@ fn message_times_match_cindys() {
     assert_eq!(rows.len(), all.len());
     for (row, expected) in rows.iter().zip(all) {
         same(
-            &ms(created_ms(row)).unwrap(),
+            &ms(created_ms(&tests::rows(&Js::Arr(vec![row.clone()]))[0])).unwrap(),
             expected,
             &js::stringify(row, ""),
         );

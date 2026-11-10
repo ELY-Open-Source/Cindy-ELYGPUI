@@ -1,14 +1,11 @@
 //! `generatedFiles.ts`'s `collectGeneratedFiles`: the files a turn's tool calls made.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
-)]
 
 use std::collections::{HashMap, HashSet};
 
 use indexmap::IndexMap;
 
 use crate::{
+    chat_message::merge::{self, Fields},
     command_output,
     local_path::{basename, drive, resolve_tool},
     rich_answer::js::Js,
@@ -16,8 +13,10 @@ use crate::{
 };
 
 mod artifact;
+mod cache;
 
 pub use artifact::{Artifact, failed};
+pub use cache::collect_cached;
 
 /// `GeneratedFileRef`: `ready` is false while the call that makes it still runs.
 #[derive(Clone, Debug, PartialEq)]
@@ -61,8 +60,8 @@ fn canonical(abs: String) -> String {
     }
 }
 
-fn text<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
-    row.obj()?.get(key)?.str().filter(|text| !text.is_empty())
+fn text<'a>(row: &'a Fields, key: &str) -> Option<&'a str> {
+    merge::get(row, key)?.str().filter(|text| !text.is_empty())
 }
 
 /// A `tool_use` row with its descriptor and the result that answers it.
@@ -150,9 +149,9 @@ impl Turn<'_> {
     }
 }
 
-fn call<'a>(row: &'a Js, results: &HashMap<&'a str, &'a str>) -> Option<Call<'a>> {
+fn call<'a>(row: &'a Fields, results: &HashMap<&'a str, &'a str>) -> Option<Call<'a>> {
     let name = text(row, "toolName").filter(|_| text(row, "role") == Some("tool_use"))?;
-    let input = row.obj()?.get("toolInput");
+    let input = merge::get(row, "toolInput");
     let id = text(row, "toolUseId");
     let result = id.and_then(|id| results.get(id).copied());
     Some(Call {
@@ -165,11 +164,11 @@ fn call<'a>(row: &'a Js, results: &HashMap<&'a str, &'a str>) -> Option<Call<'a>
     })
 }
 
-fn calls<'a>(messages: &[&'a Js]) -> Vec<Call<'a>> {
+fn calls<'a>(messages: &[&'a Fields]) -> Vec<Call<'a>> {
     let mut results = HashMap::new();
-    let answers = |row: &&&Js| text(row, "role") == Some("tool_result");
+    let answers = |row: &&&Fields| text(row, "role") == Some("tool_result");
     for &row in messages.iter().filter(answers) {
-        let content = row.obj().and_then(|o| o.get("content")?.str());
+        let content = merge::get(row, "content").and_then(Js::str);
         if let (Some(id), Some(content)) = (text(row, "toolUseId"), content) {
             results.insert(id, content);
         }
@@ -181,7 +180,7 @@ fn calls<'a>(messages: &[&'a Js]) -> Vec<Call<'a>> {
 }
 
 /// `collectGeneratedFiles`: new files in order, one per path.
-pub fn collect(messages: &[&Js], working_dir: &str) -> Vec<File> {
+pub fn collect(messages: &[&Fields], working_dir: &str) -> Vec<File> {
     let calls = calls(messages);
     let mut turn = Turn {
         dir: working_dir,

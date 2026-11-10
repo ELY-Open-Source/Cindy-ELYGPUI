@@ -7,14 +7,14 @@ use super::{
     tasks::{self, TaskStatus},
     tool_input, tool_name,
 };
-use crate::rich_answer::js::Js;
+use crate::chat_message::merge::Fields;
 
 fn all_done(todos: &[Todo]) -> bool {
     todos.iter().all(|todo| todo.status == Status::Completed)
 }
 
 /// `latestTaskEventClearsPlan`: the latest task event leaves no task standing.
-pub fn latest_task_event_clears(messages: &[&Js], latest: usize) -> bool {
+pub fn latest_task_event_clears(messages: &[&Fields], latest: usize) -> bool {
     let results = result_lookup(messages);
     let last = &messages[latest];
     let last_result = result_of(&results, last);
@@ -54,7 +54,7 @@ pub fn latest_task_event_clears(messages: &[&Js], latest: usize) -> bool {
 }
 
 /// `isTaskPlanWindowResolved`: every task event ties back to a visible create or list.
-pub fn is_resolved(messages: &[&Js], latest: usize, has_earlier: bool) -> bool {
+pub fn is_resolved(messages: &[&Fields], latest: usize, has_earlier: bool) -> bool {
     let results = result_lookup(messages);
     let mut state = tasks::State::new();
     let mut unresolved: IndexMap<String, TaskStatus> = IndexMap::new();

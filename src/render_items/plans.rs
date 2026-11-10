@@ -6,14 +6,14 @@ use indexmap::{IndexMap, IndexSet};
 
 use super::{filled, role, text};
 use crate::{
+    chat_message::merge::Fields,
     message_rows::is_agent_plan_tool_name,
     plan_todos::{self, Insertion, Source},
-    rich_answer::js::Js,
 };
 
 /// The plan cards by row; with older pages unread, a `Task*` card must prove itself whole.
 pub(super) fn cards(
-    messages: &[&Js],
+    messages: &[&Fields],
     incomplete: bool,
 ) -> Result<IndexMap<usize, Insertion>, String> {
     let mut plans = plan_todos::insertions(messages, "todo")?;

@@ -76,3 +76,25 @@ fn media_dedupes_as_cindys() {
         shown(&dedupe_by_url(list))
     });
 }
+
+#[test]
+fn the_cache_keeps_the_latest_results() {
+    let result = |n: usize| format!(r#"{{"xdt_image_url":"cindy-media://blobs/{n}.png"}}"#);
+    let held = |n: usize| super::CACHE.with_borrow(|cache| cache.results.contains_key(&result(n)));
+    for n in 0..super::MAX_ENTRIES {
+        assert_eq!(extract(&result(n)).len(), 1);
+    }
+    assert_eq!(extract(&result(0)), extract(&result(0)));
+    extract(&result(super::MAX_ENTRIES));
+    assert!(held(0) && !held(1) && held(super::MAX_ENTRIES));
+    let characters: usize = (0..=super::MAX_ENTRIES)
+        .filter(|n| *n != 1)
+        .map(|n| result(n).len())
+        .sum();
+    assert_eq!(
+        super::CACHE.with_borrow(|cache| cache.characters),
+        characters
+    );
+    assert!(extract("plain text").is_empty());
+    assert!(!super::CACHE.with_borrow(|cache| cache.results.contains_key("plain text")));
+}

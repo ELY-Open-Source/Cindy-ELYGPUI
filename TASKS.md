@@ -128,11 +128,16 @@ listed in `tasks/done.md`.
     user message ids, `insertForkOriginItem`, `renderItemContainsClientId`; golden. A live task
     update's status, launch receipts and times (`deriveAgentTaskStatus` past the persisted status)
     come with 10.0, ghost cards' times with 16.0, a group's deferred work with 9.4e
-  - [ ] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
+  - [x] 9.4e `renderHistoryView` (`historyViewRender.ts`) as `buildMessageStreamRenderProjection`
     calls it for a ready view: chunks built by 9.4c and grouped by 9.4d, placeholders, deferred
     work, unique keys; the routed task's items held for the rows of 9.5 to 9.14; the memo caches of
     9.4b's readers (`getToolResultMetadata`'s LRU, `collectCachedGeneratedFiles`); the store's `Rc`
-    rows reach 9.4a to 9.4c's readers, which take `&Js` rows, without a copy of a row
+    rows reach 9.4a to 9.4c's readers, which take `&Js` rows, without a copy of a row. The live
+    rows (`projectRemoteUsers`, `HistoryViewHandoff`'s `pending` and `tail`, the session's
+    streaming flag) come with 10.0, so the view renders with none; the raw projection of a view not
+    yet ready (`buildRaw`, `buildCachedRenderItems`) with 9.14's loading states; `historyAfter`
+    with the side chat, which 10.0's expansion places; `reuseGeneratedFilesRenderItems` with 9.13's
+    card; the caches' reset on a new data owner with 13.0; the fork marker's place with 9.12
 - [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,

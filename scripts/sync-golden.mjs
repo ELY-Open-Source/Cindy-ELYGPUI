@@ -8,9 +8,10 @@ import { pathToFileURL } from 'node:url';
 
 import { ASSETS } from './golden/record.mjs';
 import { renderItems } from './golden/renderItems.mjs';
+import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
 import { ARTIFACT_TESTS, PLAN_TESTS, ROW_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
-import { chatMessage } from './golden/chatMessage.mjs';
+import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
 import { mergeMessages } from './golden/mergeMessages.mjs';
@@ -468,7 +469,9 @@ try {
   console.log(`${yieldCases} turn yield cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
-  console.log(`${await chatMessage(golden)} chat message cases`);
+  const mapServerMessages = await mapper(golden);
+  console.log(`${historyRender(golden, { stream, messageWindow, mapServerMessages })} history render cases`);
+  console.log(`${chatMessage(golden, mapServerMessages)} chat message cases`);
   console.log(`${await mergeMessages(golden)} merge cases`);
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);
   console.log(`${jsSort({ fixtures })} sort cases`);

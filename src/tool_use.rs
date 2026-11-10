@@ -207,10 +207,6 @@ fn sources(inp: Option<&Obj>, created_path: &str) -> Vec<String> {
 
 impl ToolUse {
     /// `createdPathsFromDescriptor`: the files this call made new.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
-    )]
     pub fn created_paths(&self) -> Vec<&str> {
         match &self.kind {
             Kind::File {
@@ -231,10 +227,6 @@ impl ToolUse {
     }
 
     /// `sourcePathCandidatesFromDescriptor`.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
-    )]
     pub fn source_candidates(&self) -> &[String] {
         match &self.kind {
             Kind::Mcp {

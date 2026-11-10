@@ -12,7 +12,8 @@ const wellFormed = (value) => {
   return value;
 };
 
-export async function chatMessage({ esbuild, tmp, nodePaths, alias, fixtures, write }) {
+/** The store's private mapper, from its own bundle. */
+export async function mapper({ esbuild, tmp, nodePaths, alias }) {
   const store = path.join(tmp, 'apps/desktop/src/renderer/lib/makerChatStore.ts');
   fs.appendFileSync(store, '\nexport { mapServerMessages };\n');
   const entry = path.join(tmp, 'apps/desktop/src/chat-message-entry.ts');
@@ -24,7 +25,10 @@ export async function chatMessage({ esbuild, tmp, nodePaths, alias, fixtures, wr
     nodePaths, alias, loader: empty,
     define: { 'import.meta.env': JSON.stringify({ PROD: true, DEV: false, MODE: 'production' }) },
   });
-  const { mapServerMessages } = await import(pathToFileURL(bundle).href);
+  return (await import(pathToFileURL(bundle).href)).mapServerMessages;
+}
+
+export function chatMessage({ fixtures, write }, mapServerMessages) {
   const dir = path.join(fixtures, 'chat-message');
   const cases = JSON.parse(fs.readFileSync(path.join(dir, 'cases.json'), 'utf8'));
   const expected = cases.map(({ name, rows }) => {

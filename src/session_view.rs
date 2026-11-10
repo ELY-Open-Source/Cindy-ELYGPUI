@@ -12,6 +12,7 @@ use crate::{
 mod column;
 mod entry_error;
 pub mod header;
+pub mod items;
 mod width;
 
 pub use entry_error::element;
@@ -41,6 +42,8 @@ struct Shown {
 struct Content {
     found: Option<Session>,
     read: u64,
+    /// The task's view and its render items.
+    stream: Option<items::Watch>,
 }
 
 #[derive(Default)]
@@ -174,11 +177,19 @@ fn mount(id: &str, cx: &mut App) {
     shown.content = Some(Content {
         found: None,
         read: 0,
+        stream: None,
     });
     content_read(cx);
     let store = Store::global(cx);
     store.enter_view(id, cx);
     store.ensure_initial_messages(id, cx);
+    let stream = items::watch(id, cx);
+    let shown = cx.global_mut::<SessionView>().shown.as_mut();
+    shown
+        .and_then(|s| s.content.as_mut())
+        .expect("mounted")
+        .stream = stream;
+    items::render(cx);
 }
 
 /// The content unmounts: `enterView`'s dispose runs and its reads stop counting.
@@ -269,6 +280,7 @@ fn content_read(cx: &mut App) {
         if let Ok(Some(session)) = row {
             content.found = Some(session);
             leave_deleted(&id, cx);
+            items::render(cx);
         }
     });
 }

@@ -1,8 +1,4 @@
 //! `MessageStream.tsx`'s `buildRenderItems`: a task's rows as the items the stream draws.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "`renderHistoryView` builds with it in 9.4e")
-)]
 
 use std::{
     collections::{HashMap, HashSet},
@@ -12,7 +8,9 @@ use std::{
 use indexmap::{IndexMap, IndexSet};
 
 use crate::{
+    chat_message::merge::{self, Fields, Message},
     generated_files::File,
+    history_view::Summary,
     js_date,
     message_rows::{
         is_agent_plan_tool_name, is_agent_task_tool_name, is_orca_communication_tool,
@@ -75,12 +73,43 @@ pub enum Item {
         duration_ms: Option<f64>,
         is_streaming: bool,
         started_at_ms: Option<f64>,
+        deferred: Option<Deferred>,
     },
+    #[cfg_attr(not(test), expect(dead_code, reason = "9.12 places the fork marker"))]
     ForkOrigin {
         key: String,
         parent_session_id: String,
         forked_at_message_id: String,
     },
+}
+
+impl Item {
+    pub fn key(&self) -> &str {
+        match self {
+            Item::Message { key, .. }
+            | Item::AgentPlan { key, .. }
+            | Item::ToolSegment { key, .. }
+            | Item::AgentTask { key, .. }
+            | Item::ToolMedia { key, .. }
+            | Item::GeneratedFiles { key, .. }
+            | Item::WorkGroup { key, .. }
+            | Item::ForkOrigin { key, .. } => key,
+        }
+    }
+}
+
+/// `DeferredHistoryWork`: the ranges a group stands for; its actions take the view.
+#[derive(Debug, PartialEq)]
+pub struct Deferred {
+    pub summaries: Vec<Summary>,
+    pub key: String,
+    pub expanded: bool,
+    pub revision: String,
+    pub preview_complete: bool,
+    pub live_preview: bool,
+    pub awaiting_details: bool,
+    pub loading: bool,
+    pub failed: bool,
 }
 
 /// The options of `buildRenderItems` a local task's history uses.
@@ -91,29 +120,34 @@ pub struct Options<'a> {
     pub history_artifacts: &'a [Js],
 }
 
-pub(crate) fn field<'a>(row: &'a Js, key: &str) -> Option<&'a Js> {
-    row.obj()?.get(key)
+pub(crate) fn field<'a>(row: &'a Fields, key: &str) -> Option<&'a Js> {
+    merge::get(row, key)
 }
 
-pub(crate) fn text<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
+/// `value[key]` of a row's object field.
+pub(crate) fn prop<'a>(value: &'a Js, key: &str) -> Option<&'a Js> {
+    value.obj()?.get(key)
+}
+
+pub(crate) fn text<'a>(row: &'a Fields, key: &str) -> Option<&'a str> {
     field(row, key)?.str()
 }
 
-pub(crate) fn role(row: &Js) -> &str {
+pub(crate) fn role(row: &Fields) -> &str {
     text(row, "role").unwrap_or_default()
 }
 
-pub(crate) fn content(row: &Js) -> &str {
+pub(crate) fn content(row: &Fields) -> &str {
     text(row, "content").unwrap_or_default()
 }
 
 /// A string field that is not empty.
-fn filled<'a>(row: &'a Js, key: &str) -> Option<&'a str> {
+fn filled<'a>(row: &'a Fields, key: &str) -> Option<&'a str> {
     text(row, key).filter(|text| !text.is_empty())
 }
 
 /// The row's `clientId` as a template string writes it.
-pub(crate) fn client_id(row: &Js) -> String {
+pub(crate) fn client_id(row: &Fields) -> String {
     js::string(field(row, "clientId"))
 }
 
@@ -123,17 +157,17 @@ pub(crate) fn time(value: Option<&Js>) -> Option<f64> {
     ms.is_finite().then_some(ms)
 }
 
-pub(crate) fn created_ms(row: &Js) -> Option<f64> {
+pub(crate) fn created_ms(row: &Fields) -> Option<f64> {
     time(field(row, "createdAt"))
 }
 
 /// `isSubagentInternalMessage`.
-fn is_subagent_internal(row: &Js) -> bool {
+fn is_subagent_internal(row: &Fields) -> bool {
     filled(row, "parentToolUseId").is_some_and(is_subagent_parent_tool_use_id)
 }
 
 /// `isRenderTurnBoundary`.
-fn is_turn_boundary(row: &Js) -> bool {
+fn is_turn_boundary(row: &Fields) -> bool {
     match role(row) {
         "user" => {
             text(row, "delivery") != Some("steer") && !truthy(field(row, "isSyntheticTrigger"))
@@ -147,9 +181,9 @@ fn is_turn_boundary(row: &Js) -> bool {
 }
 
 /// `isCompletedAssistantMessage`.
-pub fn is_completed_assistant(row: &Js) -> bool {
+pub fn is_completed_assistant(row: &Fields) -> bool {
     let positive = |value: Option<&Js>| matches!(value, Some(Js::Num(n)) if *n > 0.0);
-    let money = field(row, "turnMoney").and_then(|money| field(money, "amount"));
+    let money = field(row, "turnMoney").and_then(|money| prop(money, "amount"));
     !truthy(field(row, "failedSamplingAttempt"))
         && (field(row, "turnCompleted") == Some(&Js::Bool(true))
             || positive(money)
@@ -200,7 +234,7 @@ impl Segment {
 
 struct Build<'a> {
     /// The rows past the first filter, each with its index in the rows given.
-    all: Vec<(usize, &'a Js)>,
+    all: Vec<(usize, &'a Message)>,
     /// The rows a reader sees, as indices into `all`.
     visible: Vec<usize>,
     opts: Options<'a>,
@@ -213,7 +247,7 @@ struct Build<'a> {
 }
 
 impl<'a> Build<'a> {
-    fn row(&self, at: usize) -> &'a Js {
+    fn row(&self, at: usize) -> &'a Fields {
         self.all[self.visible[at]].1
     }
 
@@ -402,12 +436,12 @@ impl<'a> Build<'a> {
 }
 
 /// `buildRenderItems` for a local task's history; `Err` is a throw.
-pub fn build(rows: &[Js], opts: Options) -> Result<Vec<Item>, String> {
-    let modal = |row: &Js| {
+pub fn build(rows: &[Message], opts: Options) -> Result<Vec<Item>, String> {
+    let modal = |row: &Fields| {
         let data = field(row, "systemCardData");
-        data.and_then(|data| field(data, "modalOnly")) == Some(&Js::Bool(true))
+        data.and_then(|data| prop(data, "modalOnly")) == Some(&Js::Bool(true))
     };
-    let all: Vec<(usize, &Js)> = rows.iter().enumerate().filter(|(_, r)| !modal(r)).collect();
+    let all: Vec<(usize, &Message)> = rows.iter().enumerate().filter(|(_, r)| !modal(r)).collect();
     let visible: Vec<usize> = (0..all.len())
         .filter(|at| !is_subagent_internal(all[*at].1))
         .collect();
@@ -422,7 +456,7 @@ pub fn build(rows: &[Js], opts: Options) -> Result<Vec<Item>, String> {
         turn_start: 0,
         items: Vec::new(),
     };
-    let messages: Vec<&Js> = (0..build.visible.len()).map(|at| build.row(at)).collect();
+    let messages: Vec<&Fields> = (0..build.visible.len()).map(|at| build.row(at)).collect();
     let mut start = 0;
     for (index, row) in messages.iter().enumerate() {
         if is_turn_boundary(row) && index > start {

@@ -6,9 +6,10 @@ use indexmap::IndexMap;
 
 use super::{
     Build, Item, client_id, content, created_ms, field, is_completed_assistant,
-    is_subagent_internal, role, text, time,
+    is_subagent_internal, prop, role, text, time,
 };
 use crate::{
+    chat_message::merge::Message,
     generated_files::{self, File},
     local_path::{basename, drive, resolve_tool},
     rich_answer::js::{Js, truthy},
@@ -25,11 +26,11 @@ fn path_key(value: &str) -> String {
 }
 
 /// `isGeneratedFilesTurnSealed`: nothing works after the turn's last terminal row.
-pub fn is_turn_sealed(slice: &[&Js], has_following_user: bool) -> bool {
+pub fn is_turn_sealed(slice: &[&Message], has_following_user: bool) -> bool {
     if has_following_user {
         return true;
     }
-    let terminal = |row: &&Js| {
+    let terminal = |row: &&Message| {
         field(row, "turnCompleted") == Some(&Js::Bool(false)) || is_completed_assistant(row)
     };
     let Some(last) = slice.iter().rposition(terminal) else {
@@ -45,17 +46,17 @@ pub fn is_turn_sealed(slice: &[&Js], has_following_user: bool) -> bool {
 
 impl<'a> Build<'a> {
     /// `originalTurnSlice`: the visible turn with the subagent rows it hides.
-    fn turn_slice(&self, lo: usize, hi: usize) -> Vec<&'a Js> {
+    fn turn_slice(&self, lo: usize, hi: usize) -> Vec<&'a Message> {
         let end = self.visible.get(hi).copied().unwrap_or(self.all.len());
         let rows = &self.all[self.visible[lo]..end];
         rows.iter().map(|(_, row)| *row).collect()
     }
 
     /// The media of the turn's hidden subagent results.
-    fn hidden_media(&mut self, lo: usize, slice: &[&Js], anchor: &str) {
+    fn hidden_media(&mut self, lo: usize, slice: &[&Message], anchor: &str) {
         let mut seen = HashSet::new();
         let mut items = Vec::new();
-        let hidden = |row: &&&Js| role(row) == "tool_result" && is_subagent_internal(row);
+        let hidden = |row: &&&Message| role(row) == "tool_result" && is_subagent_internal(row);
         for row in slice.iter().filter(hidden) {
             for item in tool_media::extract(content(row)) {
                 if !self.turn_shows(lo, &item.url) && seen.insert(item.url.clone()) {
@@ -70,7 +71,7 @@ impl<'a> Build<'a> {
     }
 
     /// The turn's new files: the history's artifacts, then what its rows record.
-    fn generated(&self, lo: usize, hi: usize, slice: &[&Js]) -> Vec<File> {
+    fn generated(&self, lo: usize, hi: usize, slice: &[&Message]) -> Vec<File> {
         let dir = self.opts.working_dir;
         let mut files: IndexMap<String, File> = IndexMap::new();
         if dir.is_empty() {
@@ -79,24 +80,27 @@ impl<'a> Build<'a> {
         let start = created_ms(self.row(lo));
         let end = self.visible.get(hi).and_then(|_| created_ms(self.row(hi)));
         let in_turn = |artifact: &&Js| {
-            let at = time(field(artifact, "createdAt")).unwrap_or(f64::NAN);
+            let at = time(prop(artifact, "createdAt")).unwrap_or(f64::NAN);
             !(start.is_some_and(|start| at < start) || end.is_some_and(|end| at >= end))
         };
         let artifacts: Vec<&Js> = self.opts.history_artifacts.iter().filter(in_turn).collect();
         let key = |artifact: &Js| {
-            let path = resolve_tool(text(artifact, "path").unwrap_or_default(), dir);
+            let path = resolve_tool(
+                prop(artifact, "path").and_then(Js::str).unwrap_or_default(),
+                dir,
+            );
             (path_key(&path), path)
         };
-        let ready = |artifact: &Js| truthy(field(artifact, "ready"));
+        let ready = |artifact: &Js| truthy(prop(artifact, "ready"));
         let edits = artifacts
             .iter()
-            .filter(|a| truthy(field(a, "exclude")) && ready(a));
+            .filter(|a| truthy(prop(a, "exclude")) && ready(a));
         let edited: HashSet<String> = edits.map(|a| key(a).0).collect();
         for artifact in &artifacts {
             let (normalized, path) = key(artifact);
-            let from_command = text(artifact, "source") == Some("command");
-            if truthy(field(artifact, "exclude")) {
-                if text(artifact, "exclude") == Some("all") && ready(artifact) {
+            let from_command = prop(artifact, "source").and_then(Js::str) == Some("command");
+            if truthy(prop(artifact, "exclude")) {
+                if prop(artifact, "exclude").and_then(Js::str) == Some("all") && ready(artifact) {
                     files.shift_remove(&normalized);
                 }
                 continue;
@@ -109,13 +113,13 @@ impl<'a> Build<'a> {
                 name: basename(&path).to_owned(),
                 path,
                 from_command,
-                ready: field(artifact, "ready") != Some(&Js::Bool(false)),
+                ready: prop(artifact, "ready") != Some(&Js::Bool(false)),
                 artifact: None,
                 artifact_confirmed: false,
             };
             files.insert(normalized, file);
         }
-        for file in generated_files::collect(slice, dir) {
+        for file in generated_files::collect_cached(slice, dir) {
             files.insert(path_key(&file.path), file);
         }
         for row in slice.iter().filter(|row| role(row) == "tool_use") {

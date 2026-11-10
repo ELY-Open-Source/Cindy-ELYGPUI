@@ -125,8 +125,18 @@ defines scope and what 1:1 means.
   what a paged window proves); golden `plan-timeline`. Golden `turn-yields`: `src/tool_media.rs` is
   `extractToolResultMedia`, `src/generated_files.rs` `collectGeneratedFiles`, `src/local_path.rs`
   `resolveToolFilePath`. `src/render_items.rs` is `buildRenderItems` (golden `render-items`),
-  `src/work_groups.rs` `messageWorkGroups.ts` on `Rc` items (golden `work-groups`); the recorder's
-  clock is fixed.
+  `src/work_groups.rs` `messageWorkGroups.ts` on `Rc` items (golden `work-groups`); the recorder's clock
+  and random ids are fixed. These readers take the store's rows (`merge::Fields`), so no row is copied;
+  `render_items::prop` reads a field's own object. `tool_media::extract` keeps
+  `getToolResultMetadata`'s LRU (512 results, 32M UTF-16 units; a result that names no media is not
+  kept, since its check costs less than its copy) and `generated_files/cache.rs` is
+  `collectCachedGeneratedFiles`, weak on its rows. `src/history_render.rs` is `renderHistoryView` as
+  `buildMessageStreamRenderProjection` calls it for a ready view (`bind.rs` its `bind` with the
+  stream's `structure`; golden `history-render`, run through Cindy's own projection):
+  `render_items::Deferred` holds a group's ranges and its actions take the view.
+  `session_view/items.rs` holds the routed task's projection and renders again after each change of its
+  view. A local read (`transport.rs`) leaves its caller's stack before it borrows the app, so a click
+  may call the view.
 - History view: `src/work_runs.rs` is `groupWorkRuns` behind an `Adapter` (golden `work-runs`, toy
   adapter `scripts/golden/workRuns.mjs`). `src/history_view.rs` is `projectHistoryView` (subagent bodies
   as a `deferred` range), `historySubagentScopes`, `completesHistoryTurn`; `source.rs`

@@ -59,7 +59,7 @@ fn same(a: Option<&Rc<Js>>, b: Option<&Rc<Js>>, strict: bool) -> bool {
     }
 }
 
-fn strict_field(a: &Fields, b: &Fields, key: &str) -> bool {
+pub fn strict_field(a: &Fields, b: &Fields, key: &str) -> bool {
     same(
         a.get(key).and_then(Option::as_ref),
         b.get(key).and_then(Option::as_ref),

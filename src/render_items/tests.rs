@@ -1,6 +1,6 @@
 use super::{Item, Options, build, turn_end::is_turn_sealed};
 use crate::{
-    generated_files::tests::{file, object, text},
+    generated_files::tests::{file, object, rows, text},
     plan_todos::tests::todos,
     rich_answer::js::{self, Js},
     tool_media::tests::shown as media,
@@ -126,7 +126,7 @@ fn render_items_match_cindys() {
                 .and_then(Js::arr)
                 .unwrap_or_default(),
         };
-        match build(args[0].arr().unwrap(), options) {
+        match build(&rows(&args[0]), options) {
             Ok(items) => Js::Arr(items.iter().map(shown).collect()),
             Err(message) => object(vec![("throws", Some(text(&message)))]),
         }
@@ -136,7 +136,26 @@ fn render_items_match_cindys() {
 #[test]
 fn sealed_turns_match_cindys() {
     golden("isGeneratedFilesTurnSealed", |args| {
-        let slice: Vec<&Js> = args[0].arr().unwrap().iter().collect();
-        Js::Bool(is_turn_sealed(&slice, args.get(1) == Some(&Js::Bool(true))))
+        let slice = rows(&args[0]);
+        Js::Bool(is_turn_sealed(
+            &slice.iter().collect::<Vec<_>>(),
+            args.get(1) == Some(&Js::Bool(true)),
+        ))
     });
+}
+
+impl Item {
+    /// The item's `type`.
+    pub fn kind(&self) -> &'static str {
+        match self {
+            Item::Message { .. } => "message",
+            Item::AgentPlan { .. } => "agent_plan",
+            Item::ToolSegment { .. } => "tool_segment",
+            Item::AgentTask { .. } => "agent_task",
+            Item::ToolMedia { .. } => "tool_media",
+            Item::GeneratedFiles { .. } => "generated_files",
+            Item::WorkGroup { .. } => "work_group",
+            Item::ForkOrigin { .. } => "fork_origin",
+        }
+    }
 }

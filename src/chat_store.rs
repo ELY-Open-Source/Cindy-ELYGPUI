@@ -151,7 +151,7 @@ impl Store {
     }
 
     /// `getRemoteHistoryView`: a local entry is current while it holds its view.
-    fn view(&self, id: &str) -> Option<View<Message>> {
+    pub fn view(&self, id: &str) -> Option<View<Message>> {
         self.0.borrow().views.get(id)?.view.clone()
     }
 
@@ -176,4 +176,4 @@ impl Store {
 }
 
 #[cfg(test)]
-mod tests;
+pub mod tests;

@@ -6,6 +6,7 @@ use super::{
     Status, Todo, parse::lines, record, source_client_id, tool_input, tool_name, tool_use_id,
 };
 use crate::{
+    chat_message::merge::Fields,
     rich_answer::js::{self, Js, Obj},
     theme_import::color::{js_space, js_trim},
 };
@@ -195,7 +196,7 @@ fn snapshot_line(line: &str) -> Option<Obj> {
 }
 
 /// `taskToolStatus`.
-pub fn tool_status(message: &Js, result: Option<&str>) -> Option<TaskStatus> {
+pub fn tool_status(message: &Fields, result: Option<&str>) -> Option<TaskStatus> {
     let records = records(result);
     let result_task = records.first();
     if tool_name(message) == "TaskGet"
@@ -208,7 +209,7 @@ pub fn tool_status(message: &Js, result: Option<&str>) -> Option<TaskStatus> {
 }
 
 /// `taskToolTargetsExistingTask`.
-pub fn targets_existing(message: &Js, result: Option<&str>, state: &State) -> bool {
+pub fn targets_existing(message: &Fields, result: Option<&str>, state: &State) -> bool {
     let known = |fields: Option<&Obj>| task_id(fields).is_some_and(|id| state.contains_key(id));
     let records = records(result);
     match tool_name(message) {
@@ -241,7 +242,7 @@ fn todo(content: &str, status: Status) -> Todo {
 }
 
 /// `applyTaskPlanTool`: the list after this call, or none when the call cannot be placed.
-pub fn apply(state: &mut State, message: &Js, result: Option<&str>) -> Option<Vec<Todo>> {
+pub fn apply(state: &mut State, message: &Fields, result: Option<&str>) -> Option<Vec<Todo>> {
     let name = tool_name(message);
     if !matches!(name, "TaskCreate" | "TaskUpdate" | "TaskList" | "TaskGet") {
         return None;

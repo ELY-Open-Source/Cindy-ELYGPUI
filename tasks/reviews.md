@@ -109,3 +109,5 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: the set holds `Option<String>`, `None` for a missing id; golden cases for a missing id
   alone, beside the literal id `undefined`, and as an unsealed last answer.
 - Round 2: PASS.
+## 9.4e `renderHistoryView` for a ready view
+- Round 1: PASS.

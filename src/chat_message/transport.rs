@@ -49,6 +49,8 @@ impl Local {
     ) -> LocalBoxFuture<'static, Result<R, String>> {
         let (cx, session) = (self.cx.clone(), self.session.clone());
         async move {
+            // An invoke leaves its caller's stack, which may hold the app, before it reads.
+            controller::settled(std::future::ready(())).await;
             let (db, labels, readers) = cx.update(|cx| {
                 let State::Ready(db) = &cx.global::<LocalDb>().state else {
                     return Err("DbClient not ready".to_owned());
@@ -126,7 +128,7 @@ impl controller::Transport<Message> for Local {
 }
 
 /// `mapHistoryViewMessages` with the view's `mapRows`.
-fn items(items: Vec<Item>) -> Result<Vec<Item<Message>>, String> {
+pub(crate) fn items(items: Vec<Item>) -> Result<Vec<Item<Message>>, String> {
     items
         .into_iter()
         .map(|item| {
@@ -155,7 +157,7 @@ fn items(items: Vec<Item>) -> Result<Vec<Item<Message>>, String> {
 }
 
 /// `mapRows`: `{ ...row, id: row.id ?? row.clientId, createdAt: row.createdAt ?? '' }`.
-fn map_rows(rows: &[Js]) -> Result<Vec<Message>, String> {
+pub(crate) fn map_rows(rows: &[Js]) -> Result<Vec<Message>, String> {
     let mapped = map_server_messages(rows)?;
     Ok(mapped
         .into_iter()

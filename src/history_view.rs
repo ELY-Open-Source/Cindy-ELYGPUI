@@ -1,7 +1,10 @@
 //! `historyView.ts`'s items and `historyViewProjection.ts`'s `projectHistoryView`.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "the session slice reads them in 9.2")
+    expect(
+        dead_code,
+        reason = "9.11's work groups, 9.14's jump and 10.0's reads use the rest"
+    )
 )]
 
 use std::collections::{HashMap, HashSet};

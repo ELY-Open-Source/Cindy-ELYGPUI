@@ -1,5 +1,9 @@
 use super::{Insertion, Source, Status, Todo, insertions, is_plan_user_boundary, latest_state};
-use crate::rich_answer::js::{self, Js, Obj};
+use crate::{
+    chat_message::merge::Message,
+    generated_files::tests::{refs, rows},
+    rich_answer::js::{self, Js, Obj},
+};
 
 fn text(value: &str) -> Js {
     Js::Str(value.to_owned())
@@ -54,13 +58,13 @@ fn insertion(i: &Insertion) -> Js {
 }
 
 /// `messages` and the options object's `keyPrefix` and `taskHistoryMayBeIncomplete`.
-fn arguments(args: &Js) -> (Vec<&Js>, &str, bool) {
+fn arguments(args: &Js) -> (Vec<Message>, &str, bool) {
     let args = args.arr().unwrap();
     let options = args.get(1).and_then(Js::obj);
     let prefix = options.and_then(|o| o.get("keyPrefix")).and_then(Js::str);
     let incomplete = options.and_then(|o| o.get("taskHistoryMayBeIncomplete"));
     (
-        args[0].arr().unwrap().iter().collect(),
+        rows(&args[0]),
         prefix.unwrap_or("todo"),
         incomplete == Some(&Js::Bool(true)),
     )
@@ -98,7 +102,8 @@ fn insertions_match_cindys() {
         let entry =
             |(index, i): (usize, Insertion)| Js::Arr(vec![Js::Num(index as f64), insertion(&i)]);
         thrown(
-            insertions(&messages, prefix).map(|all| Js::Arr(all.into_iter().map(entry).collect())),
+            insertions(&refs(&messages), prefix)
+                .map(|all| Js::Arr(all.into_iter().map(entry).collect())),
         )
     });
 }
@@ -107,28 +112,30 @@ fn insertions_match_cindys() {
 fn the_latest_state_matches_cindys() {
     golden("getLatestMessageTodoState", |args| {
         let (messages, prefix, incomplete) = arguments(args);
-        thrown(latest_state(&messages, prefix, incomplete).map(|state| {
-            object(vec![
-                (
-                    "insertion",
-                    Some(state.insertion.as_ref().map_or(Js::Null, insertion)),
-                ),
-                ("hasPlanEvent", Some(Js::Bool(state.has_plan_event))),
-                ("isResolved", Some(Js::Bool(state.is_resolved))),
-                (
-                    "latestPlanIndex",
-                    Some(Js::Num(state.latest_plan_index as f64)),
-                ),
-                (
-                    "latestInsertionIndex",
-                    Some(Js::Num(state.latest_insertion_index as f64)),
-                ),
-            ])
-        }))
+        thrown(
+            latest_state(&refs(&messages), prefix, incomplete).map(|state| {
+                object(vec![
+                    (
+                        "insertion",
+                        Some(state.insertion.as_ref().map_or(Js::Null, insertion)),
+                    ),
+                    ("hasPlanEvent", Some(Js::Bool(state.has_plan_event))),
+                    ("isResolved", Some(Js::Bool(state.is_resolved))),
+                    (
+                        "latestPlanIndex",
+                        Some(Js::Num(state.latest_plan_index as f64)),
+                    ),
+                    (
+                        "latestInsertionIndex",
+                        Some(Js::Num(state.latest_insertion_index as f64)),
+                    ),
+                ])
+            }),
+        )
     });
     golden("findLatestMessageTodoInsertion", |args| {
         let (messages, prefix, incomplete) = arguments(args);
-        let state = latest_state(&messages, prefix, incomplete);
+        let state = latest_state(&refs(&messages), prefix, incomplete);
         thrown(state.map(|state| state.insertion.as_ref().map_or(Js::Null, insertion)))
     });
 }
@@ -147,6 +154,6 @@ fn plan_todos_match_cindys() {
 #[test]
 fn user_boundaries_match_cindys() {
     golden("isPlanUserBoundary", |args| {
-        Js::Bool(is_plan_user_boundary(&args.arr().unwrap()[0]))
+        Js::Bool(is_plan_user_boundary(&rows(args)[0]))
     });
 }

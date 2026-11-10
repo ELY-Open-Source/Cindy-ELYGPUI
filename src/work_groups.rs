@@ -1,7 +1,10 @@
 //! `messageWorkGroups.ts`: items in work groups; `messageTs` is `render_items::created_ms`.
 #![cfg_attr(
     not(test),
-    expect(dead_code, reason = "`renderHistoryView` builds in 9.4e")
+    expect(
+        dead_code,
+        reason = "the rows of 9.5 to 9.14 read the scans and place the fork marker"
+    )
 )]
 
 use std::rc::Rc;
@@ -9,10 +12,11 @@ use std::rc::Rc;
 use indexmap::IndexSet;
 
 use crate::{
+    chat_message::merge::{Fields, Message},
     js_date,
     message_rows::{is_continuation_message, is_delivery_prose_text},
     render_items::{
-        Item, client_id, content, created_ms, field, is_completed_assistant, role, text,
+        Item, client_id, content, created_ms, field, is_completed_assistant, prop, role, text,
     },
     rich_answer::js::{Js, truthy},
     theme_import::color::js_trim,
@@ -26,30 +30,30 @@ pub struct ForkOrigin<'a> {
     pub forked_session_created_at: &'a str,
 }
 
-fn steer(row: &Js) -> bool {
-    let meta = field(row, "agentMeta").and_then(|meta| field(meta, "delivery"));
+fn steer(row: &Fields) -> bool {
+    let meta = field(row, "agentMeta").and_then(|meta| prop(meta, "delivery"));
     text(row, "delivery") == Some("steer") || meta.and_then(Js::str) == Some("steer")
 }
 
-fn card(row: &Js) -> bool {
+fn card(row: &Fields) -> bool {
     truthy(field(row, "systemCardType"))
 }
 
-fn failed(row: &Js) -> bool {
+fn failed(row: &Fields) -> bool {
     truthy(field(row, "failedSamplingAttempt"))
 }
 
 /// A user row that opens a turn, as the stream's row scans read it.
-fn opens_turn(row: &Js) -> bool {
+fn opens_turn(row: &Fields) -> bool {
     role(row) == "user" && text(row, "delivery") != Some("steer")
 }
 
-fn spoken(row: &Js) -> bool {
+fn spoken(row: &Fields) -> bool {
     role(row) == "assistant" && !card(row) && !js_trim(content(row)).is_empty()
 }
 
 /// `assistantHasFollowingUserBoundary`.
-pub fn assistant_has_following_user_boundary(rows: &[&Js], assistant: &str) -> bool {
+pub fn assistant_has_following_user_boundary(rows: &[&Fields], assistant: &str) -> bool {
     let at = rows
         .iter()
         .position(|row| text(row, "clientId") == Some(assistant));
@@ -57,7 +61,7 @@ pub fn assistant_has_following_user_boundary(rows: &[&Js], assistant: &str) -> b
 }
 
 /// `collectTurnFinalAssistantClientIds`; `None` is a sealed answer with no `clientId`.
-pub fn turn_final_assistant_client_ids(rows: &[&Js]) -> IndexSet<Option<String>> {
+pub fn turn_final_assistant_client_ids(rows: &[&Fields]) -> IndexSet<Option<String>> {
     let mut out = IndexSet::new();
     let mut sealed = false;
     let mut fallback: Option<&str> = None;
@@ -79,37 +83,37 @@ pub fn turn_final_assistant_client_ids(rows: &[&Js]) -> IndexSet<Option<String>>
     out
 }
 
-fn typed(row: &&&Js) -> bool {
+fn typed(row: &&&Fields) -> bool {
     role(row) == "user" && !truthy(field(row, "isSyntheticTrigger"))
 }
 
 /// `findFirstUserMessageClientId`: unknown while older pages wait.
-pub fn first_user_message_client_id<'a>(rows: &[&'a Js], has_older: bool) -> Option<&'a Js> {
+pub fn first_user_message_client_id<'a>(rows: &[&'a Fields], has_older: bool) -> Option<&'a Js> {
     let first = rows.iter().find(typed).filter(|_| !has_older)?;
     field(first, "clientId")
 }
 
 /// `findLastUserMessageClientId`.
-pub fn last_user_message_client_id<'a>(rows: &[&'a Js]) -> Option<&'a Js> {
+pub fn last_user_message_client_id<'a>(rows: &[&'a Fields]) -> Option<&'a Js> {
     field(rows.iter().rfind(typed)?, "clientId")
 }
 
 /// The rows behind the items, for `groupWorkRuns`' adapter.
-struct Rows<'a>(&'a [Js]);
+struct Rows<'a>(&'a [Message]);
 
 fn latest(all: impl Iterator<Item = Option<f64>>) -> Option<f64> {
     all.flatten().reduce(f64::max)
 }
 
 impl<'a> Rows<'a> {
-    fn message(&self, item: &Item) -> Option<&'a Js> {
+    fn message(&self, item: &Item) -> Option<&'a Fields> {
         match item {
             Item::Message { message, .. } => Some(&self.0[*message]),
             _ => None,
         }
     }
 
-    fn says(&self, item: &Item, role_is: &str) -> Option<&'a Js> {
+    fn says(&self, item: &Item, role_is: &str) -> Option<&'a Fields> {
         self.message(item).filter(|row| role(row) == role_is)
     }
 
@@ -189,7 +193,7 @@ impl<'a> Rows<'a> {
 
     /// `isDeliveryProseItem`.
     fn delivery_prose(&self, item: &Item) -> bool {
-        let attached = |row: &Js, key: &str| {
+        let attached = |row: &Fields, key: &str| {
             field(row, key)
                 .and_then(Js::arr)
                 .is_some_and(|all| !all.is_empty())
@@ -293,7 +297,8 @@ impl Adapter for Rows<'_> {
     }
 
     fn is_activity(&self, item: &Rc<Item>) -> bool {
-        let failed_answer = |row: &Js| field(row, "failedSamplingAttempt") == Some(&Js::Bool(true));
+        let failed_answer =
+            |row: &Fields| field(row, "failedSamplingAttempt") == Some(&Js::Bool(true));
         !self.running_task(item)
             && !self.workflow(item)
             && (matches!(**item, Item::ToolSegment { .. } | Item::AgentTask { .. })
@@ -338,6 +343,7 @@ impl Adapter for Rows<'_> {
             duration_ms,
             is_streaming: streaming,
             started_at_ms,
+            deferred: None,
         })
     }
 
@@ -379,18 +385,19 @@ impl Adapter for Rows<'_> {
             duration_ms,
             is_streaming: false,
             started_at_ms,
+            deferred: None,
         })
     }
 }
 
 /// `groupWorkRuns` over the items `render_items::build` made from `rows`.
-pub fn group(items: Vec<Item>, rows: &[Js], streaming: bool) -> Vec<Rc<Item>> {
+pub fn group(items: Vec<Item>, rows: &[Message], streaming: bool) -> Vec<Rc<Item>> {
     let items = items.into_iter().map(Rc::new).collect();
     work_runs::group(items, streaming, &Rows(rows))
 }
 
-/// `renderItemContainsClientId`; a group's deferred work comes with 9.4e.
-pub fn contains_client_id(item: &Item, rows: &[Js], id: &str) -> bool {
+/// `renderItemContainsClientId`.
+pub fn contains_client_id(item: &Item, rows: &[Message], id: &str) -> bool {
     let is = |row: &usize| text(&rows[*row], "clientId") == Some(id);
     match item {
         Item::ForkOrigin { .. } => false,
@@ -400,9 +407,20 @@ pub fn contains_client_id(item: &Item, rows: &[Js], id: &str) -> bool {
         Item::AgentPlan {
             source_client_ids, ..
         } => source_client_ids.iter().any(|source| source == id),
-        Item::WorkGroup { children, .. } => children
-            .iter()
-            .any(|child| contains_client_id(child, rows, id)),
+        Item::WorkGroup {
+            children, deferred, ..
+        } => {
+            let stands_for = |key: &str| {
+                key.strip_prefix("work-summary-") == Some(id)
+                    || key.strip_prefix("work-") == Some(id)
+            };
+            deferred
+                .as_ref()
+                .is_some_and(|d| d.key.split('|').any(stands_for))
+                || children
+                    .iter()
+                    .any(|child| contains_client_id(child, rows, id))
+        }
         Item::ToolMedia { key, .. } | Item::GeneratedFiles { key, .. } => {
             key.ends_with(&format!("-{id}"))
         }
@@ -412,7 +430,7 @@ pub fn contains_client_id(item: &Item, rows: &[Js], id: &str) -> bool {
 /// `insertForkOriginItem`: the marker before the first item the fork made.
 pub fn insert_fork_origin(
     mut items: Vec<Rc<Item>>,
-    rows: &[Js],
+    rows: &[Message],
     fork: Option<&ForkOrigin>,
 ) -> Vec<Rc<Item>> {
     let Some(fork) = fork else {
