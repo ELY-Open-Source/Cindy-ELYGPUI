@@ -17,10 +17,13 @@ futures = "0.3.34"
 gpui = { package = "gpui-pre", version = "=0.3.11" }
 gpui_platform = { package = "gpui-pre-platform", version = "=0.3.11", features = ["font-kit", "wayland", "x11"] }
 icu_collator = "2"
+icu_collections = "2"
 icu_decimal = "2"
 icu_locale_core = "2"
+icu_normalizer = "2"
 icu_plurals = "2"
 icu_properties = "2"
+icu_provider = "2"
 icu_segmenter = { version = "2.3.0", default-features = false, features = ["compiled_data"] }
 image = { version = "0.25.10", default-features = false, features = ["webp", "png", "jpeg"] }
 jiff = "0.2"

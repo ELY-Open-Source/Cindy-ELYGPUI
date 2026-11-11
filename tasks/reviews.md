@@ -463,3 +463,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   936,964 inputs run through Cindy's functions and the port; the golden regenerated alike.
 - Round 2: PASS. AGENTS.md states the exception for data under `tests/fixtures`. No desktop,
   streamed row, timer or word fade was checked: the functions have no caller yet.
+
+## 9.6j2a The word cut under `splitWords`
+- Round 1: FAIL. P2: ICU4X's Unicode 18 data gave a class to characters V8's Unicode 17 holds
+  unassigned (10,216 of 402,266 texts differed, all with such a character).
+- Round 2: PASS. V8's unassigned code points and pictographs come from a table V8 wrote; the
+  402,266 texts, 438,924 CJK cases and 14,751 further cases match V8. Stated limits: ICU's
+  Thai, Lao, Khmer and Burmese engines are not ported. No desktop or fade check was made.

@@ -93,6 +93,7 @@ mod wallpaper;
 mod web_image;
 mod window_material;
 mod window_state;
+mod word_break;
 mod work_groups;
 mod work_runs;
 mod workspace_media;

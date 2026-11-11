@@ -322,9 +322,9 @@ listed in `tasks/done.md`.
     - [x] 9.6j1 `repairStreamingMarkdown`, `splitStreamingMarkdownChunks` and
         `getStreamingMarkdownThrottleInterval`, with their golden
     - [ ] 9.6j2 `rehypeStreamWordFade`: the fade segments, their keys and the timeline
-      - [ ] 9.6j2a `splitWords`: `Intl.Segmenter`'s words as Chromium's ICU rules cut them
-          (`word.txt`: a full stop and a colon break between letters, Hangul apart from letters),
-          checked against V8 on every locale string; Han and kana runs go to a dictionary
+      - [x] 9.6j2a `splitWords`' cut: `Intl.Segmenter`'s words as Chromium's ICU cuts them (the
+          rules of `word.txt`, the CJK dictionary engine), checked against V8; its cache comes
+          with the state that holds it
       - [ ] 9.6j2b The fade state: `assignKeys`, the timeline (`scheduleWordFadeSegment`), the
           candidates and the transform on the renderer tree
     - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`

@@ -277,6 +277,23 @@ defines scope and what 1:1 means.
   UTF-16 unit). JavaScript's `\s`, `.` and multiline `^` are spelled by hand. Golden
   `streaming-markdown`: `scripts/golden/streamingMarkdown.mjs` runs Cindy's functions on every
   prefix of Cindy's test inputs, crafted texts and 240 seeded mixes. Nothing reads it before 9.6j3.
+- Word break: `src/word_break.rs` is `Intl.Segmenter`'s word granularity as V8 answers in Cindy's
+  renderer (`words`; `split` is `splitWordsUncached`). ICU4X's own segmenter follows UAX 29 and a
+  longest-match dictionary, where Chromium's ICU 78 parts from both, so the port spells Chromium's
+  `word.txt` by hand as pair rules over ICU4X's properties (a full stop is `$MidNum`, a colon no
+  `$MidLetter`, Hangul syllables and Han, kana apart from letters) and `cjk.rs` ports
+  `CjkBreakEngine::divideUpDictionaryRange` (the cheapest path over `cjdict`'s costs, read from
+  ICU4X's baked data through `icu_provider`; the katakana run costs; NFKC with ICU's map back)
+  with `populateDictionary`'s choice of engine per call (a Common-script kana mark goes to the
+  unhandled engine and takes the Common characters after it). ICU's sources read for it are in
+  `.scratch/9.6j2/`. ICU's Thai, Lao, Khmer and Burmese engines are not ported: ICU4X's dictionary
+  segmenter cuts a run of those scripts, alike in about half of the probes
+  (`logs/review/9.6j2a-complex.log`). A run that starts with U+30FC before the process met any Han
+  or kana is cut as after. ICU4X 2.4 carries Unicode 18 where V8 carries 17: `resources/word-classes.json`
+  holds V8's unassigned code points, which get no class, and its pictographs. Golden `word-break`:
+  `ELECTRON_RUN_AS_NODE=1 <cindy checkout>/node_modules/.bin/electron scripts/v8-words.js` writes
+  that table and V8's cuts of 25,679 texts (locale strings, seeded mixes of every class, CJK text spliced with
+  characters NFKC changes).
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
