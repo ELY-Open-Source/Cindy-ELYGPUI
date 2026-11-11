@@ -335,3 +335,15 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS. On POSIX the entries sort by their names' bytes, as libuv's `scandir` hands
   them over (libuv 1.52.1 `src/unix/fs.c`; its Windows half does not sort). 139 resolver
   requests agree with Cindy in order, names past ASCII among them. No Windows or macOS run.
+
+## 9.6h2 The renderer's resolver
+- Round 1: FAIL. A mounted target read the cache at every draw, so an eviction unlit it and
+  asked again; Cindy's hook keeps its state. Stamps were exact instants where Cindy's are whole
+  milliseconds. 1026 lookup hrefs agreed.
+- Round 2: FAIL. Both closed; 11 hook transitions agreed. New: a waiting hook read the cache at
+  its next draw, where Cindy's reads in the callback of the lookup it joined, so a later batch
+  or recheck in between changed what it kept.
+- Round 3: PASS. `ask` takes the promise's callback, run once the batch of the lookup it
+  joined has settled; a hook's run number drops a callback its effect cancelled. The delayed
+  eviction and recheck, 501 mounted targets, the millisecond controls, 11 transitions and 1026
+  lookup conversions agree with Cindy's hook under React. No live desktop check was made.

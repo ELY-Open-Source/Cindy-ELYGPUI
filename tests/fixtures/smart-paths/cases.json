@@ -1,0 +1,991 @@
+[
+ {
+  "name": "a cold peek, then a cached answer",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "peek",
+      "src/App.tsx"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "src/App.tsx"
+     ],
+     [
+      "peek",
+      "src/App.tsx"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "src/App.tsx"
+     ]
+    ]
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "src/App.tsx"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "src/App.tsx"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "one batch of several hrefs",
+  "files": [
+   "workspace/src/A.tsx",
+   "workspace/pkg/src/B.tsx",
+   "workspace/a/pkg.json",
+   "workspace/b/pkg.json",
+   "workspace/Skills/x.md"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "src/A.tsx"
+     ],
+     [
+      "ask",
+      "src/B.tsx"
+     ],
+     [
+      "ask",
+      "pkg.json"
+     ],
+     [
+      "ask",
+      "ghost/x.ts"
+     ],
+     [
+      "ask",
+      "Skills"
+     ],
+     [
+      "ask",
+      "src/A.tsx"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "src/A.tsx"
+     ],
+     [
+      "peek",
+      "src/B.tsx"
+     ],
+     [
+      "peek",
+      "pkg.json"
+     ],
+     [
+      "peek",
+      "ghost/x.ts"
+     ],
+     [
+      "peek",
+      "Skills"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a cached miss stays",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "ghost/x.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/ghost/x.ts"
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "ghost/x.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "ghost/x.ts"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a key per folder",
+  "files": [
+   "workspace/a/x.ts",
+   "workspace/b/x.ts"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "x.ts",
+      null,
+      "<root>/workspace/a"
+     ],
+     [
+      "ask",
+      "x.ts",
+      null,
+      "<root>/workspace/b"
+     ],
+     [
+      "ask",
+      "x.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "x.ts",
+      null,
+      "<root>/workspace/a"
+     ],
+     [
+      "peek",
+      "x.ts",
+      null,
+      "<root>/workspace/b"
+     ],
+     [
+      "peek",
+      "x.ts"
+     ],
+     [
+      "peek",
+      "x.ts",
+      null,
+      "relative"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "hrefs the lookup rewrites",
+  "files": [
+   "workspace/a%20b.pdf",
+   "workspace/D:/app.tsx",
+   "workspace/src/App.tsx",
+   "workspace/dir/in.md"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "file://<root>/workspace/a%2520b.pdf"
+     ],
+     [
+      "ask",
+      "file://<root>/workspace/src/App.tsx"
+     ],
+     [
+      "ask",
+      "/D:/app.tsx"
+     ],
+     [
+      "ask",
+      "D:/app.tsx"
+     ],
+     [
+      "ask",
+      "a%2520b.pdf"
+     ],
+     [
+      "ask",
+      "a%20b.pdf"
+     ],
+     [
+      "ask",
+      "<root>/workspace/dir"
+     ],
+     [
+      "ask",
+      "file://<root>/workspace/ghost.txt"
+     ],
+     [
+      "ask",
+      "src/App.tsx",
+      null,
+      "relative"
+     ],
+     [
+      "ask",
+      "x.ts",
+      null,
+      ""
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "file://<root>/workspace/a%2520b.pdf"
+     ],
+     [
+      "peek",
+      "file://<root>/workspace/src/App.tsx"
+     ],
+     [
+      "peek",
+      "/D:/app.tsx"
+     ],
+     [
+      "peek",
+      "D:/app.tsx"
+     ],
+     [
+      "peek",
+      "a%2520b.pdf"
+     ],
+     [
+      "peek",
+      "a%20b.pdf"
+     ],
+     [
+      "peek",
+      "<root>/workspace/dir"
+     ],
+     [
+      "peek",
+      "file://<root>/workspace/ghost.txt"
+     ],
+     [
+      "peek",
+      "src/App.tsx",
+      null,
+      "relative"
+     ],
+     [
+      "peek",
+      "x.ts",
+      null,
+      ""
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a direct lookup keeps nothing",
+  "files": [
+   "workspace/report.pdf",
+   "workspace/a%20b.pdf"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "direct",
+      "report.pdf",
+      false
+     ],
+     [
+      "direct",
+      "ghost.pdf",
+      false
+     ],
+     [
+      "direct",
+      "file://<root>/workspace/a%2520b.pdf",
+      true
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "report.pdf"
+     ]
+    ]
+   },
+   {
+    "write": "workspace/ghost.pdf"
+   },
+   {
+    "do": [
+     [
+      "direct",
+      "ghost.pdf",
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "direct",
+      "ghost.pdf",
+      true
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "direct",
+      "ghost.pdf",
+      false
+     ],
+     [
+      "ask",
+      "ghost.pdf"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "ghost.pdf"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a recheck with nothing to check",
+  "files": [
+   "workspace/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "recheck",
+      "src/App.tsx"
+     ],
+     [
+      "recheck",
+      "src/App.tsx",
+      "now"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "src/App.tsx"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "src/App.tsx"
+     ],
+     [
+      "recheck",
+      "src/App.tsx",
+      "now"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a young negative answer",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/film/media/clip.mp4"
+   },
+   {
+    "tick": 1999
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "tick": 1
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ],
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a boundary always rechecks",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/film/media/clip.mp4"
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a recheck that stays negative",
+  "files": [
+   "workspace/a/p.json",
+   "workspace/b/p.json"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "p.json"
+     ],
+     [
+      "ask",
+      "ghost.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "tick": 2000
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "p.json"
+     ],
+     [
+      "recheck",
+      "ghost.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "p.json"
+     ],
+     [
+      "peek",
+      "ghost.ts"
+     ]
+    ]
+   },
+   {
+    "tick": 1000
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "p.json"
+     ]
+    ]
+   },
+   {
+    "tick": 1000
+   },
+   {
+    "remove": "workspace/b/p.json"
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "p.json"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "p.json"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a lookup sent at the boundary",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ],
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a lookup sent after the boundary",
+  "steps": [
+   {
+    "do": [
+     [
+      "mark"
+     ]
+    ]
+   },
+   {
+    "tick": 100
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "mark"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a lookup still queued at the boundary",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a recheck in flight at a boundary",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ],
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "the oldest answer leaves",
+  "files": [
+   "workspace/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "src/App.tsx"
+     ],
+     [
+      "ask",
+      "ghost.ts"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 498
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "src/App.tsx"
+     ],
+     [
+      "peek",
+      "ghost.ts"
+     ],
+     [
+      "peek",
+      "flood-0.ts"
+     ]
+    ]
+   },
+   {
+    "flood": 499
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "src/App.tsx"
+     ],
+     [
+      "peek",
+      "ghost.ts"
+     ],
+     [
+      "peek",
+      "flood-0.ts"
+     ],
+     [
+      "peek",
+      "flood-498.ts"
+     ]
+    ]
+   },
+   {
+    "flood": 500
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "ghost.ts"
+     ],
+     [
+      "peek",
+      "flood-0.ts"
+     ],
+     [
+      "peek",
+      "flood-1.ts"
+     ],
+     [
+      "peek",
+      "flood-499.ts"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a plain lookup joins a recheck the cache dropped",
+  "steps": [
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "tick": 3000
+   },
+   {
+    "write": "workspace/film/media/clip.mp4"
+   },
+   {
+    "do": [
+     [
+      "recheck",
+      "media/clip.mp4",
+      "now"
+     ]
+    ]
+   },
+   {
+    "do": [
+     [
+      "ask",
+      "media/clip.mp4"
+     ],
+     [
+      "recheck",
+      "media/clip.mp4"
+     ],
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "do": [
+     [
+      "peek",
+      "media/clip.mp4"
+     ]
+    ]
+   }
+  ]
+ }
+]

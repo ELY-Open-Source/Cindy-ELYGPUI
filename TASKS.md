@@ -255,7 +255,7 @@ listed in `tasks/done.md`.
       (decode, `~`, the absolute stat, the join, `bfsFindBySuffix` with its ignored folders), the
       batch with its one walk, their cache, and Node's `path.join` for both platforms; goldens on
       the inputs of Cindy's tests
-    - [ ] 9.6h2 The renderer's resolver (`localPathResolver.ts`): `resolveLocalPathSmart`, its
+    - [x] 9.6h2 The renderer's resolver (`localPathResolver.ts`): `resolveLocalPathSmart`, its
       peek, cache and negative revalidation, and `useResolvedMarkdownTarget` for a local task
       over the mounted content
     - [ ] 9.6h3 `MarkdownTargetLink`'s link: the external link with its open-with menu, the

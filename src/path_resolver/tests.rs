@@ -120,6 +120,7 @@ mod golden {
 
     #[test]
     fn every_step_answers_as_cindys() {
+        let _serial = crate::path_resolver::cache::serial();
         let all = include_str!("../../tests/fixtures/path-resolver/expected.json");
         let all: Vec<Value> = serde_json::from_str(all).unwrap();
         let mut steps = 0;

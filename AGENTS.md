@@ -554,6 +554,27 @@ defines scope and what 1:1 means.
   and Windows, with `isWindowsReservedName`'s `slice(0, -1)`; golden `node-path` runs both halves
   in Cindy's Electron as Node, so Linux checks the Windows half's strings. No Windows folder is
   walked in a test.
+- Smart paths: `src/local_path/smart.rs` is `localPathResolver.ts`'s lookups over the path
+  resolver, in the `SmartPaths` global: `resolve_smart` (`resolveLocalPathSmart`, a task, past this
+  cache), `peek`, `ask` (`resolveLocalPathSmartCached`) and `recheck`
+  (`revalidateNegativeLocalPathSmart`; it answers whether a lookup is on its way). No promise is
+  handed out: an answer lands in the cache (500, the oldest out first, no lifetime), `ask`'s `then`
+  runs once the batch of the lookup it joined has settled, as a promise's callback, and the windows
+  draw again. Asks of one update leave together in `cx.defer`, which stands for the microtask: one
+  resolver call per folder on the background executor, rechecks apart. A lookup sent in a
+  boundary's millisecond or before it is checked once more when it lands negative. `now` is
+  `Date.now()` on the executor clock, in whole milliseconds as Cindy's stamps are. The resolver's
+  allow check is `file_path_policy::allowed`, its home the user's. Cindy's main process answers its
+  calls in the order sent; here two lookups in flight may land in either order.
+  `src/markdown_target/resolved.rs` is `useResolvedMarkdownTarget` for a local task: the `Mounted`
+  global holds a hook per target drawn (`begin` and `end` about the rows; a target not drawn
+  unmounts). A hook reads the cache when its target, folder or streaming flag changes, asks on a
+  miss, reads once more when the lookup it joined lands (a later run of the hook drops that
+  callback, as the effect's cleanup does), and then keeps its state whatever the cache holds,
+  as React state does. `lit` is `resolvedLocalFromResult`. A remote task's stat comes with its
+  chapter. Golden `smart-paths`: `scripts/golden/smartPaths.mjs` runs Cindy's cache over Cindy's
+  main resolver on real trees, each call held at a gate until the step that lands it, on a clock it
+  sets; `lit.json` comes from the renderer's private function through the hast golden's bundle.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

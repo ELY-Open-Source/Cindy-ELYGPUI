@@ -50,6 +50,15 @@ impl Cache {
     }
 }
 
+/// Tests that count on the shared cache's entries run one at a time.
+#[cfg(test)]
+pub fn serial() -> std::sync::MutexGuard<'static, ()> {
+    static SERIAL: Mutex<()> = Mutex::new(());
+    SERIAL
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
+}
+
 fn shared() -> std::sync::MutexGuard<'static, Cache> {
     CACHE
         .lock()

@@ -9,7 +9,7 @@ const ENTRY = [
   "export { regex as slugRegex } from 'github-slugger/regex.js';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
-const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform };\n';
+const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult };\n';
 const exporter = {
   name: 'renderer-exports',
   setup(build) {
@@ -62,6 +62,9 @@ export async function markdownHast({ esbuild, tmp, nodePaths, alias, define, ass
   });
   const { REMARK_PLUGINS, REMARK_PLUGINS_PRIVILEGED, golden, Markdown, slugRegex } = await import(pathToFileURL(bundle).href);
   write(path.join(fixtures, '..', '..', 'resources', 'slug-classes.json'), { dropped: dropped(slugRegex) });
+  // A candidate lit by the resolver's answer, as the renderer's hook lights it.
+  const lit = JSON.parse(fs.readFileSync(path.join(fixtures, 'smart-paths', 'lit-cases.json'), 'utf8'));
+  write(path.join(fixtures, 'smart-paths', 'lit.json'), lit.map(([target, result]) => [target, result, golden.resolvedLocalFromResult(target, result)]));
   // Strict inline math comes with 9.8, as KaTeX and the highlighter do with theirs.
   const less = (list) => list.filter((plugin) => plugin !== named(list, 3, 'remarkStrictInlineMath'));
   let seen;

@@ -1,6 +1,7 @@
 //! `localPathResolver.ts`'s joins: a tool's path made absolute against the task's folder.
 
 pub mod shape;
+pub mod smart;
 
 use std::borrow::Cow;
 

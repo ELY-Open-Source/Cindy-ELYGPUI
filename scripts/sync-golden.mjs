@@ -22,6 +22,7 @@ import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
 import { nodePath } from './golden/nodePath.mjs';
 import { pathResolver } from './golden/pathResolver.mjs';
+import { smartPaths } from './golden/smartPaths.mjs';
 import { mergeMessages } from './golden/mergeMessages.mjs';
 import * as workRuns from './golden/workRuns.mjs';
 
@@ -584,6 +585,7 @@ try {
   console.log(`${jsSort({ fixtures })} sort cases`);
   console.log(`${nodePath({ cindy, fixtures, write })} node path cases`);
   console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
+  console.log(`${await smartPaths(golden, pathShape, workspacePaths)} smart path steps`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),

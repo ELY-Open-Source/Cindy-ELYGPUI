@@ -51,14 +51,24 @@ pub fn file(text: &str) -> bool {
     drive(text) || POSIX.is_match(text) || RELATIVE.is_match(text)
 }
 
+/// `IMAGE_EXT_RE`.
+pub fn image(text: &str) -> bool {
+    static IMAGE: LazyLock<Regex> =
+        LazyLock::new(|| pattern(&format!(r"\.(?i-u:png|jpe?g|gif|webp|svg|bmp|ico){QUERY}")));
+    IMAGE.is_match(text)
+}
+
+/// `MODEL_EXT_RE`.
+pub fn model(text: &str) -> bool {
+    static MODEL: LazyLock<Regex> =
+        LazyLock::new(|| pattern(&format!(r"\.(?i-u:glb|gltf|fbx){QUERY}")));
+    MODEL.is_match(text)
+}
+
 /// `classifyMarkdownHref`.
 pub fn classify(href: &str) -> Kind {
     static EXTENSION: LazyLock<Regex> =
         LazyLock::new(|| pattern(&format!(r"\.[A-Za-z0-9]{{1,10}}{QUERY}")));
-    static IMAGE: LazyLock<Regex> =
-        LazyLock::new(|| pattern(&format!(r"\.(?i-u:png|jpe?g|gif|webp|svg|bmp|ico){QUERY}")));
-    static MODEL: LazyLock<Regex> =
-        LazyLock::new(|| pattern(&format!(r"\.(?i-u:glb|gltf|fbx){QUERY}")));
     let file_url = href.starts_with("file://");
     if href.is_empty() || href.starts_with('#') {
         return Kind::External;
@@ -71,8 +81,8 @@ pub fn classify(href: &str) -> Kind {
     match () {
         () if !local => Kind::External,
         () if directory(probe) => Kind::Directory,
-        () if IMAGE.is_match(probe) => Kind::Image,
-        () if MODEL.is_match(probe) => Kind::Model,
+        () if image(probe) => Kind::Image,
+        () if model(probe) => Kind::Model,
         () => Kind::Text,
     }
 }

@@ -16,6 +16,7 @@ use crate::{
     theme_import::color::js_trim,
 };
 
+pub mod resolved;
 #[cfg(test)]
 pub mod tests;
 
@@ -25,6 +26,7 @@ pub enum Local {
     Image,
     Model,
     Text,
+    Directory,
 }
 
 /// Why a reference stays code or plain text.
@@ -38,7 +40,7 @@ pub enum Reason {
 }
 
 /// `MarkdownTarget`.
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Target {
     External {
         href: String,

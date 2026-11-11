@@ -66,6 +66,7 @@ fn local(kind: Local) -> Js {
         Local::Image => "image",
         Local::Model => "model",
         Local::Text => "text",
+        Local::Directory => "directory",
     })
 }
 
