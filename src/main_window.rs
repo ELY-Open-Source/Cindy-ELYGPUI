@@ -227,6 +227,7 @@ pub fn open(user_data: PathBuf, activation: Activation, cx: &mut App) -> Result<
                 if active {
                     crate::motion::refresh_reduced_motion(cx);
                     crate::workspace_media::focused(cx);
+                    crate::session_view::images_focused(cx);
                 }
                 root.activation.activation(active);
                 if !active {

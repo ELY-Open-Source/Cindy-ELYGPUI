@@ -147,10 +147,6 @@ pub fn xdt_file(url: &str) -> String {
 }
 
 /// `normalizeMarkdownImageSrc`: the address the renderer loads for a destination as written.
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the image's box draws with 9.6i3")
-)]
 pub fn image_src(src: &str, dir: &str, privileged: bool) -> Option<String> {
     static WEB: LazyLock<Regex> = LazyLock::new(|| pattern("^(?i-u:https?)://"));
     const ROUTED: [&str; 7] = [

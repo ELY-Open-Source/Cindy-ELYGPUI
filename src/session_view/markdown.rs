@@ -241,8 +241,9 @@ impl Walk<'_> {
             let Some(card) = inline.cards.get(part) else {
                 continue;
             };
-            // `my-2`; the markers that wait for a line hang by the card's first baseline.
-            let baseline = self.anchors.card_metrics(*card).baseline * self.zoom;
+            // The markers that wait for a line hang by the card's first baseline.
+            let metrics = self.anchors.card_metrics(*card);
+            let baseline = metrics.baseline * self.zoom;
             let card = self.anchors.card(*card);
             let hung = markers.drain(..);
             let hung = hung.map(|marker| marker.draw(baseline, self.zoom, self.window));
@@ -250,7 +251,8 @@ impl Walk<'_> {
                 .relative()
                 .child(card)
                 .children(hung.collect::<Vec<_>>());
-            out.push(Laid::new((8.0, 8.0), Some(card.into_any_element())));
+            let margin = (metrics.margin, metrics.margin);
+            out.push(Laid::new(margin, Some(card.into_any_element())));
         }
         out
     }

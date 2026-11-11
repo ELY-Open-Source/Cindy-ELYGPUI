@@ -34,6 +34,8 @@ pub enum Chip {
     Icon(&'static [u8]),
     /// A deep link's chip, by its `a` among the text's links.
     Link(usize),
+    /// `LightboxImage`'s button, by its `img` among the text's images.
+    Image(usize),
 }
 
 /// What an `a` or an inline `code` draws as in place of its own face.
@@ -43,8 +45,10 @@ pub enum Swap {
     Chip,
     /// A deep link that names nothing: `<span>{label ?? href}</span>`.
     Words(String),
-    /// `SessionHandoffCard`: a block, which ends the lines before it.
+    /// `SessionHandoffCard` or a failed image's card: a block, which ends the lines before it.
     Card,
+    /// An image that loads: one atom of its line.
+    Image,
 }
 
 /// The swap of an `a` or an inline `code`, by its node.
@@ -67,6 +71,8 @@ pub struct Inline {
     /// The `a` nodes read, by address.
     pub links: Vec<*const Element>,
     pub files: Vec<Held>,
+    /// The `img` nodes that are atoms, by address.
+    pub images: Vec<*const Element>,
     /// The collapsed space not yet written, in its first space's face.
     gap: Option<Mark>,
     /// Whether a space, or a line's start, came last: the spaces after it collapse.
@@ -85,6 +91,7 @@ impl Default for Inline {
             chips: Vec::new(),
             links: Vec::new(),
             files: Vec::new(),
+            images: Vec::new(),
             gap: None,
             spaced: true,
             codes: 0,
@@ -156,7 +163,7 @@ impl Inline {
         self.spans[next - 1].1
     }
 
-    /// An image reads as its text until 9.6i.
+    /// An image that draws nothing yet reads as nothing.
     pub fn read(&mut self, node: &Hast, mark: Mark, files: Files) {
         let live = self.cards.len() == self.part;
         let Hast::Element(element) = node else {
@@ -178,7 +185,22 @@ impl Inline {
             return;
         };
         // Past its part the reader only counts cards, which an inline face may hold.
-        if !live && !matches!(element.tag, "a" | "em" | "strong" | "del") {
+        if !live && !matches!(element.tag, "a" | "em" | "strong" | "del" | "img") {
+            return;
+        }
+        if element.tag == "img" {
+            match files(element) {
+                Some(Swap::Card) => self.cards.push(element),
+                Some(Swap::Image) if live => {
+                    self.end_gap();
+                    self.images.push(element);
+                    let chip = Chip::Image(self.images.len() - 1);
+                    self.chips.push((self.text.len(), chip));
+                    self.push(CHIP, mark);
+                    self.spaced = false;
+                }
+                _ => {}
+            }
             return;
         }
         let file = match element.tag {
@@ -196,7 +218,7 @@ impl Inline {
                     return;
                 }
                 Some(Swap::Words(words)) => return self.read(&Hast::Text(words), mark, files),
-                None => None,
+                Some(Swap::Image) | None => None,
             },
             _ => None,
         };

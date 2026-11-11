@@ -160,9 +160,11 @@ impl Walk<'_> {
                 });
                 laid.push(Laid::new((0.0, 0.0), lines));
                 if let Some(card) = inline.cards.get(part) {
-                    height += self.anchors.card_metrics(*card).height;
-                    // `my-2`, which the cell's padding keeps inside it.
-                    laid.push(Laid::new((8.0, 8.0), Some(self.anchors.card(*card))));
+                    let metrics = self.anchors.card_metrics(*card);
+                    height += metrics.height;
+                    // A margin the cell's padding keeps inside it.
+                    let margin = (metrics.margin, metrics.margin);
+                    laid.push(Laid::new(margin, Some(self.anchors.card(*card))));
                 }
             }
             let (stack, content) = super::column(laid, false);

@@ -427,3 +427,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   flight, so a cancelled answer was stored and outlived its file once the cache dropped it.
 - Round 2: PASS. A changed path or folder moves the hook's run on; an answer kept earlier
   stays. No live desktop check was made.
+
+## 9.6i3a The image's box in a line
+- Round 1: FAIL. The words about a loading frame stood at its bottom, not by its spinner; one
+  Retry mended every image of its address; a failed card counted its whole title at least, so
+  four cards overflowed a narrow table.
+- Round 2: FAIL. Those three closed. A Retry's load was kept by the image's number alone, so a
+  changed address drew the old picture; the card's measure left Retry's width out.
+- Round 3: FAIL, marked `[!]`. Those two closed. Open: an address that left a slot and came
+  back reads the shared failure of its first mount. No live desktop check was made.

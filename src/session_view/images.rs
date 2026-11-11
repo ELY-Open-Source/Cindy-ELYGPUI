@@ -3,7 +3,12 @@
 use std::{collections::HashMap, path::Path, sync::Arc};
 
 use anyhow::{Context as _, Result, bail};
-use ely_gpui_component::{motion::Spinner, primitives::IconName, theme::IconSize};
+use ely_gpui_component::{
+    buttons::{Button, ButtonVariant},
+    motion::Spinner,
+    primitives::IconName,
+    theme::{ActiveTheme as _, ControlSize, IconSize, TextSize},
+};
 use gpui::{
     AnyElement, App, AppContext as _, ElementId, FontWeight, InteractiveElement as _,
     IntoElement as _, ParentElement as _, RenderImage, StatefulInteractiveElement as _,
@@ -11,7 +16,7 @@ use gpui::{
 };
 use image::{Frame, ImageFormat, RgbaImage, imageops};
 
-use super::{SessionView, chip};
+use super::{SessionView, chip, flow::draw::shape};
 use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
@@ -24,14 +29,14 @@ use crate::{
     theme::Appearance,
     tip,
     transition::{self, Curve},
-    units::css,
+    units::{Zoom, css},
 };
 
 /// A decoded image: its natural size, and a long image's square top.
 #[derive(Clone)]
 pub struct Shown {
-    image: Arc<RenderImage>,
-    natural: (u32, u32),
+    pub image: Arc<RenderImage>,
+    pub natural: (u32, u32),
     top: Option<Arc<RenderImage>>,
 }
 
@@ -43,18 +48,20 @@ pub enum Load {
     /// `useImageLoadFailure`'s `missing`: the read said the file is not there.
     Missing,
     Unavailable,
+    /// Bytes that were read and did not decode: `readable`, so a retry is offered.
+    Undecoded,
 }
 
-/// The mounted content's images by address; an address held is a load asked.
+/// The mounted content's loads by address, then those a Retry started: its image, its address.
 #[derive(Default)]
-pub struct Held(HashMap<String, Load>);
+pub struct Held(HashMap<String, Load>, HashMap<String, (String, Load)>);
 
 fn held_mut(cx: &mut App) -> Option<&mut Held> {
     let shown = cx.global_mut::<SessionView>().shown.as_mut();
     shown?.content.as_mut().map(|content| &mut content.images)
 }
 
-fn held(url: &str, cx: &App) -> Option<Load> {
+pub fn held(url: &str, cx: &App) -> Option<Load> {
     let shown = cx.global::<SessionView>().shown.as_ref();
     let content = shown.and_then(|shown| shown.content.as_ref());
     content.and_then(|content| content.images.0.get(url).cloned())
@@ -125,13 +132,29 @@ fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
         }
         Err(error) => {
             log::error!(target: "sessionView", "image {url} not decoded: {error:#}");
-            Load::Unavailable
+            Load::Undecoded
         }
     }
 }
 
+/// One load off the main thread; `slot` finds where its answer goes, if that still stands.
+fn start(url: String, slot: impl Fn(&mut Held) -> Option<&mut Load> + 'static, cx: &mut App) {
+    let (user_data, svg) = (sessions::user_data(cx), cx.svg_renderer());
+    let loading = cx.background_spawn(async move { load(&user_data, &url, svg) });
+    cx.spawn(async move |cx| {
+        let load = loading.await;
+        cx.update(|cx| {
+            if let Some(slot) = held_mut(cx).and_then(&slot) {
+                *slot = load;
+                cx.refresh_windows();
+            }
+        });
+    })
+    .detach();
+}
+
 /// Starts the loads the frame lacked, each address once.
-fn fetch(urls: Vec<String>, cx: &mut App) {
+pub fn fetch(urls: Vec<String>, cx: &mut App) {
     for url in urls {
         let Some(held) = held_mut(cx) else {
             return;
@@ -140,20 +163,66 @@ fn fetch(urls: Vec<String>, cx: &mut App) {
             continue;
         }
         held.0.insert(url.clone(), Load::Loading);
-        let (user_data, svg) = (sessions::user_data(cx), cx.svg_renderer());
-        let address = url.clone();
-        let loading = cx.background_spawn(async move { load(&user_data, &address, svg) });
-        cx.spawn(async move |cx| {
-            let load = loading.await;
-            cx.update(|cx| {
-                let slot = held_mut(cx).and_then(|held| held.0.get_mut(&url));
-                if let Some(slot) = slot {
-                    *slot = load;
-                    cx.refresh_windows();
-                }
-            });
-        })
-        .detach();
+        let key = url.clone();
+        start(url, move |held| held.0.get_mut(&key), cx);
+    }
+}
+
+/// The load the image mounted as `id` started with its own Retry, while it shows `url`.
+pub fn own(id: &str, url: &str, cx: &App) -> Option<Load> {
+    let shown = cx.global::<SessionView>().shown.as_ref();
+    let content = shown.and_then(|shown| shown.content.as_ref());
+    let (held, load) = content?.images.1.get(id)?;
+    (held == url).then(|| load.clone())
+}
+
+/// The message `key` drew these images: a Retry's load of any other of its images unmounts.
+pub fn mounted(key: &str, drawn: &HashMap<String, Option<String>>, cx: &mut App) {
+    let Some(held) = held_mut(cx) else {
+        return;
+    };
+    let prefix = format!("{key}-g");
+    held.1.retain(|id, (url, _)| {
+        !id.starts_with(&prefix)
+            || drawn
+                .get(id)
+                .is_some_and(|shown| shown.as_ref() == Some(url))
+    });
+}
+
+/// `retry`: the image mounted as `id` alone mounts anew, so its load starts over.
+pub fn retry(id: &str, url: &str, cx: &mut App) {
+    let Some(held) = held_mut(cx) else {
+        return;
+    };
+    log::info!(target: "sessionView", "image {url} is tried again for {id}");
+    held.1
+        .insert(id.to_owned(), (url.to_owned(), Load::Loading));
+    let (key, address) = (id.to_owned(), url.to_owned());
+    // The answer lands only while this image still shows this address.
+    start(
+        url.to_owned(),
+        move |held| {
+            let (shown, load) = held.1.get_mut(&key)?;
+            (*shown == address).then_some(load)
+        },
+        cx,
+    );
+    cx.refresh_windows();
+}
+
+/// `useImageLoadFailure`'s `focus` listener: every failed image is tried again.
+pub fn focused(cx: &mut App) {
+    let Some(held) = held_mut(cx) else {
+        return;
+    };
+    let before = held.0.len() + held.1.len();
+    let stands = |load: &Load| matches!(load, Load::Loading | Load::Ready(_));
+    held.0.retain(|_, load| stands(load));
+    held.1.retain(|_, (_, load)| stands(load));
+    if held.0.len() + held.1.len() < before {
+        log::info!(target: "sessionView", "failed images are tried again on focus");
+        cx.refresh_windows();
     }
 }
 
@@ -182,7 +251,7 @@ fn fitted((width, height): (u32, u32)) -> (f32, f32) {
 }
 
 /// `ChatLoadingImage`'s frame while the image loads.
-fn loading(id: &str, cx: &App) -> AnyElement {
+pub fn loading(id: &str, cx: &App) -> AnyElement {
     let appearance = cx.global::<Appearance>();
     let label = cx
         .global::<Translator>()
@@ -209,8 +278,39 @@ fn loading(id: &str, cx: &App) -> AnyElement {
         .into_any_element()
 }
 
-/// `ImageMissingPlaceholder`; its retry comes with 9.13.
-fn failed(id: &str, name: &str, missing: bool, window: &Window, cx: &App) -> AnyElement {
+/// What an `ImageMissingPlaceholder` shows beside its file's name.
+pub struct Failed {
+    pub missing: bool,
+    /// A block, `maxWidth` wide where there is room, in place of a flex item sized by its content.
+    pub block: bool,
+    /// The address `onRetry` loads again.
+    pub retry: Option<String>,
+}
+
+/// The height of the card's Retry, Cindy's `sm` button.
+pub const RETRY: f32 = 28.0;
+
+/// Retry's width in CSS pixels: Ely's small button about its label, as Ely lays it out.
+pub fn retry_width(window: &Window, cx: &App) -> f32 {
+    let (theme, rem) = (cx.theme(), window.rem_size());
+    let mut style = window.text_style();
+    style.font_size = theme.text_size(TextSize::Sm).into();
+    style.font_weight = FontWeight::MEDIUM;
+    let label = cx.global::<Translator>().t("commonUi.retry", &[]);
+    // gpui lays a text out to the whole pixel above its width.
+    let label = shape(&label, &style, window).width.ceil();
+    let sides = theme.control_padding(ControlSize::Sm).to_pixels(rem) * 2.0;
+    // `border_1` is a window pixel a side.
+    f32::from(label + sides + gpui::px(2.0)) / cx.global::<Zoom>().0
+}
+
+/// `ImageMissingPlaceholder`.
+pub fn failed(id: &str, name: &str, card: Failed, window: &Window, cx: &App) -> AnyElement {
+    let Failed {
+        missing,
+        block,
+        retry,
+    } = card;
     // gpui sizes a truncated line by what it kept: a name past the box fills it, as in CSS.
     let (rem, small) = (window.rem_size(), css(text_size(11.0, cx)));
     // `truncate` draws the name on one line; the tip keeps it as stored.
@@ -235,7 +335,8 @@ fn failed(id: &str, name: &str, missing: bool, window: &Window, cx: &App) -> Any
         .justify_center()
         .gap(css(8.0))
         .max_w(css(280.0))
-        .when(fills, |el| el.w(css(280.0)))
+        .when(fills || block, |el| el.w(css(280.0)))
+        .when(block, |el| el.max_w_full())
         .min_h(css(140.0))
         .rounded(css(12.0))
         .border(css(1.0))
@@ -261,8 +362,29 @@ fn failed(id: &str, name: &str, missing: bool, window: &Window, cx: &App) -> Any
                 .text_size(small)
                 .text_color(muted)
                 .child(shown)
-                .tooltip(tip::mono(name)),
+                .tooltip(tip::mono(name.clone())),
         )
+        .children(retry.map(|url| {
+            let t = cx.global::<Translator>();
+            let label = t.t("commonUi.retry", &[]);
+            let mounted = id.to_owned();
+            let again = Button::new(ElementId::Name(format!("{id}-retry").into()), label.clone())
+                .variant(ButtonVariant::Secondary)
+                .size(ControlSize::Sm)
+                .name(format!("{label}: {name}"))
+                .on_click(move |_, _, cx| {
+                    cx.stop_propagation();
+                    self::retry(&mounted, &url, cx);
+                });
+            let selector = format!("{id}-retry");
+            div()
+                .debug_selector(move || selector)
+                .flex()
+                .flex_none()
+                .items_center()
+                .h(css(RETRY))
+                .child(again)
+        }))
         .into_any_element()
 }
 
@@ -349,8 +471,15 @@ fn image(
     let over = transition::keyed(child("dim"), over, dim, window, cx);
     let face = match &load {
         Load::Loading => return loading(&id, cx),
-        Load::Missing => return failed(&id, name, true, window, cx),
-        Load::Unavailable => return failed(&id, name, false, window, cx),
+        Load::Missing | Load::Unavailable | Load::Undecoded => {
+            // The user's card offers no retry before 9.13.
+            let card = Failed {
+                missing: matches!(load, Load::Missing),
+                block: false,
+                retry: None,
+            };
+            return failed(&id, name, card, window, cx);
+        }
         Load::Ready(image) => ready(&id, name, image, shown * over, cx),
     };
     div()
@@ -385,4 +514,4 @@ pub fn elements(
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

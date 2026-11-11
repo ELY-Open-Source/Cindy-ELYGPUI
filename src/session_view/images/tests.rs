@@ -7,7 +7,7 @@ use super::{Load, fitted, held_mut, long};
 use crate::session_view::user_row::tests::{at, open_json, settle};
 
 /// A WebP of this size in the task's image cache.
-fn put(dir: &Path, name: &str, (width, height): (u32, u32)) {
+pub(in crate::session_view) fn put(dir: &Path, name: &str, (width, height): (u32, u32)) {
     let folder = dir.join("cc-agent/images/s1");
     std::fs::create_dir_all(&folder).unwrap();
     let pixels = vec![200u8; (width * height * 4) as usize];
@@ -124,7 +124,7 @@ fn a_missing_image_and_an_unreadable_one_say_so(cx: &mut TestAppContext) {
         cx.update(|_, cx| held_mut(cx).unwrap().0[&url].clone())
     };
     assert!(matches!(state(cx, "gone.webp"), Load::Missing));
-    assert!(matches!(state(cx, "bad.webp"), Load::Unavailable));
+    assert!(matches!(state(cx, "bad.webp"), Load::Undecoded));
     let (gone, bad) = (
         at(cx, "msg-c0-image-0-failed").unwrap(),
         at(cx, "msg-c0-image-1-failed").unwrap(),

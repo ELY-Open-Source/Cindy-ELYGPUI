@@ -12,7 +12,9 @@ use gpui::{
 };
 
 use super::{
-    chip, handoff, jump,
+    chip, handoff,
+    inline_image::{self, Picture},
+    jump,
     link_chip::{self, Act, Want},
     links::{self, Shared, Spots, Stop, What},
     markdown::text::Swap,
@@ -85,6 +87,8 @@ pub struct Anchors {
     links: HashMap<*const Element, (f32, f32, RefCell<Option<AnyElement>>)>,
     /// Each handoff card until drawn, and its metrics.
     cards: HashMap<*const Element, (RefCell<Option<AnyElement>>, handoff::Metrics)>,
+    /// Each `img` that draws.
+    images: HashMap<*const Element, Picture>,
     shared: Shared,
 }
 
@@ -110,14 +114,14 @@ fn collect<'a>(nodes: &'a [Hast], links: &mut Vec<&'a Element>, codes: &mut Vec<
     }
 }
 
-/// What an `a` takes from the elements about it: an `em`'s slant, and its weight.
+/// What an `a` or an `img` takes from the elements about it: an `em`'s slant, and its weight.
 type Around = (bool, FontWeight);
 
-/// Each `a` node with what stands about it.
+/// Each `a` and `img` node with what stands about it.
 fn around(nodes: &[Hast], (em, weight): Around, found: &mut HashMap<*const Element, Around>) {
     for node in nodes {
         if let Hast::Element(element) = node {
-            if element.tag == "a" {
+            if matches!(element.tag, "a" | "img") {
                 found.insert(element, (em, weight));
             }
             let weight = match element.tag {
@@ -322,6 +326,7 @@ pub fn read(
     Anchors {
         links,
         cards,
+        images: inline_image::read(key, tree, dir, &about, window, cx),
         key: key.to_owned(),
         by: by.collect(),
         list,
@@ -431,6 +436,9 @@ impl Anchors {
 
     /// What the reader puts in place of the node's own inline face.
     pub fn swap(&self, node: *const Element) -> Option<Swap> {
+        if let Some(picture) = self.images.get(&node) {
+            return Some(picture.card().map_or(Swap::Image, |_| Swap::Card));
+        }
         if let Some(file) = self.file(node) {
             return Some(Swap::File(file));
         }
@@ -448,14 +456,23 @@ impl Anchors {
         (*width, *height)
     }
 
-    /// A handoff card, drawn once.
+    /// An image that is an atom of its line.
+    pub fn picture(&self, node: *const Element) -> &Picture {
+        &self.images[&node]
+    }
+
+    /// A handoff card or a failed image's card, drawn once.
     pub fn card(&self, node: *const Element) -> AnyElement {
+        if let Some(picture) = self.images.get(&node) {
+            return picture.block();
+        }
         let card = self.cards[&node].0.take();
         card.expect("a card is drawn once")
     }
 
     pub fn card_metrics(&self, node: *const Element) -> handoff::Metrics {
-        self.cards[&node].1
+        let failed = self.images.get(&node).and_then(Picture::card);
+        failed.unwrap_or_else(|| self.cards[&node].1)
     }
 
     /// A deep link's chip, which a row draws once.

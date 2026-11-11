@@ -20,6 +20,7 @@ use super::{
 use crate::{
     session_view::{
         flow::{Atom, CHIP, atoms, draw::shape, rows_where},
+        inline_image,
         target_link::Anchors,
     },
     units::css,
@@ -148,7 +149,21 @@ impl Look<'_> {
             Chip::Pill => 2.0 * self.pad().0,
             Chip::Icon(_) => (ICON.0 + ICON.1) * self.zoom,
             Chip::Link(link) => self.anchors.link_size(inline.links[link]).0,
+            Chip::Image(image) => self.image_width(inline, image),
         }
+    }
+
+    /// An image's button in this line, in window pixels: it shrinks to the line's width.
+    fn image_width(&self, inline: &Inline, image: usize) -> f32 {
+        let picture = self.anchors.picture(inline.images[image]);
+        picture.size(f32::from(self.width) / self.zoom).0 * self.zoom
+    }
+
+    /// An image's reach over and under the baseline, its margins counted.
+    fn image_extent(&self, inline: &Inline, image: usize) -> (f32, f32) {
+        let picture = self.anchors.picture(inline.images[image]);
+        let (over, under) = picture.reach(f32::from(self.width) / self.zoom);
+        (over * self.zoom, under * self.zoom)
     }
 
     /// A link chip's reach over and under the baseline: its middle half an x-height over it.
@@ -341,6 +356,7 @@ impl Look<'_> {
         let above = top + root.baseline;
         let reach = chips(&row).filter_map(|(_, (_, chip))| match chip {
             Chip::Link(link) => Some(self.link_extent(inline, *link, window)),
+            Chip::Image(image) => Some(self.image_extent(inline, *image)),
             _ => None,
         });
         let (over, under) = reach.fold((above, height - above), |tall, chip| {
@@ -404,6 +420,16 @@ impl Look<'_> {
                             .child(self.anchors.link_chip(node));
                         Draw::Plain(chip.into_any_element())
                     }
+                    Chip::Image(image) => {
+                        let over = self.image_extent(inline, *image).0;
+                        let avail = f32::from(self.width) / self.zoom;
+                        let atom = div()
+                            .flex_none()
+                            .mt(css((top + root.baseline - over) / self.zoom))
+                            .pt(css(inline_image::MARGIN))
+                            .child(self.anchors.picture(inline.images[*image]).atom(avail));
+                        Draw::Plain(atom.into_any_element())
+                    }
                     Chip::Icon(source) => {
                         let icon =
                             self.icon(source, mark, &place, format!("{}-icon-{n}", self.path));
@@ -434,11 +460,22 @@ impl Look<'_> {
         for text in inline.text.split('\n') {
             let line = start..start + text.len();
             start = line.end + 1;
-            let atoms = self.atoms(inline, &line, window);
+            let mut atoms = self.atoms(inline, &line, window);
             // A space hangs and counts nothing; a code's box with no text joins the atom before.
             let (mut run, mut lead) = (0.0, true);
-            for atom in &atoms {
+            for atom in &mut atoms {
                 let at = line.start + atom.at;
+                // An image asks what its own content asks, whatever the line's width.
+                let image = inline.chips.iter().find_map(|(place, chip)| match chip {
+                    Chip::Image(image) if *place == at => Some(inline.images[*image]),
+                    _ => None,
+                });
+                if let Some(image) = image {
+                    let (least, most) = self.anchors.picture(image).content();
+                    (run, lead, atom.advance) = (least * self.zoom, false, most * self.zoom);
+                    min = min.max(run);
+                    continue;
+                }
                 let code = inline.mark(at).code;
                 let edge = |at: Option<usize>| at.is_none_or(|at| inline.mark(at).code != code);
                 if inline.chips.contains(&(at, Chip::Pill)) {

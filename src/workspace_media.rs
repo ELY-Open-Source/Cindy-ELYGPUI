@@ -1,8 +1,4 @@
 //! `useWorkspaceMediaPath`: a relative media path of a local task, searched for in its folder.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the image's box draws with 9.6i3")
-)]
 
 use std::collections::{HashMap, HashSet};
 

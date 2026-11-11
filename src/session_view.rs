@@ -20,6 +20,7 @@ mod handoff_pill;
 pub mod header;
 mod hook_card;
 mod images;
+mod inline_image;
 mod items;
 mod jump;
 mod link_chip;
@@ -33,6 +34,7 @@ mod user_row;
 mod width;
 
 pub use entry_error::element;
+pub use images::focused as images_focused;
 
 /// `sessionEntryFailure` for a local read, which is never `denied`.
 #[derive(Clone, Copy, Debug, PartialEq)]

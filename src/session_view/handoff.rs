@@ -35,6 +35,8 @@ pub struct Metrics {
     pub height: f32,
     pub least: f32,
     pub most: f32,
+    /// The block's margin above and below: the card's `my-2`.
+    pub margin: f32,
 }
 
 /// A label's widest character and its whole width, `spacing` after each character.
@@ -328,6 +330,7 @@ pub fn element(
         height: 74.0 + 2.0 * taller,
         least,
         most,
+        margin: 8.0,
     };
     let el = press::clicks(el, (&element, &focus), open, window, cx);
     (press::listen(el, &press, false).into_any_element(), metrics)

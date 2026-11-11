@@ -304,9 +304,14 @@ listed in `tasks/done.md`.
     - [ ] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
         `useImageLoadFailure` with `ImageMissingPlaceholder`; the click, the menu and the
         lightbox come with 9.13, `ChatVideoView` with its chapter
-      - [ ] 9.6i3a The box in a line for an address the media stores read (`xdt-image://`,
+      - [!] 9.6i3a The box in a line for an address the media stores read (`xdt-image://`,
           `cindy-media://`): the button's margins and max sizes, `ChatLoadingImage`'s frame,
           `useImageLoadFailure` with `ImageMissingPlaceholder`
+          - Open after round 3 (`logs/review/9.6i3a-r3.md`), P2: an address that left an image
+            and came back reads the shared load of its first mount. After a Retry mended `a`,
+            a slot that shows `b` and then `a` again draws the old failure's card, where Cindy
+            mounts a new `ImageLoad` and loads `a` anew. A new mount needs a load of its own,
+            while another mounted image of that address keeps its failure.
       - [ ] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
           whitelist and the sensitive-media list), so a workspace image draws
       - [ ] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy

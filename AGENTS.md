@@ -473,8 +473,8 @@ defines scope and what 1:1 means.
   it, through empty codes (`logs/review/9.6f-blink-trailing.log`). Where a wrap drops a code's
   space, the code closes before it, and a code the space opened keeps its box on that row
   (`Look::stub`). A `sup` is Tailwind's preflight: 75% of
-  its face's size on the row's baseline, lifted half an em, its line height none. An image reads
-  as its text until 9.6i. `inline.rs` draws the rows: each face is shaped in its own font, inline code
+  its face's size on the row's baseline, lifted half an em, its line height none. An image is
+  its own bullet. `inline.rs` draws the rows: each face is shaped in its own font, inline code
   (`text-14`, the code font, the block's line ratio) takes `px-[0.4em]` at its two ends, and
   `flow::rows_where` breaks the line: a word with no break overflows, as Cindy's does, and breaks
   only after a link's letters (`overflow-wrap: anywhere`; `logs/review/9.6f-blink-words.log`). A row
@@ -554,6 +554,31 @@ defines scope and what 1:1 means.
   until it renders. After a boundary met a lookup in flight Cindy's promise settles at the second
   recheck and the port's waiter at the first, which shows only when the cache dropped the answer
   between them. Nothing draws with it before 9.6i3.
+- Inline images: `session_view/inline_image.rs` is `LightboxImage` in a line, for the addresses
+  the media stores read (`xdt-image://`, `cindy-media://`; a local file's bytes come with 9.6i3b
+  and with them the hook's `revision`, a web address's with 9.6i3c, and until then both draw the
+  unavailable card). `read` takes the tree's `img` nodes in document order (`Anchors.images`,
+  mounted as `<key>-g<n>`): the raw local source or `src` through `workspace_media::path` (nothing
+  while pending) and `image_src`; a managed video draws nothing before `ChatVideoView`'s chapter.
+  The load is `images.rs`'s (`held`, `fetch`). Blink's boxes are in `logs/review/9.6i3a-blink-
+  image.log` and `-cells.log` (probes in `.scratch/9.6i3/`). A loading or loaded image is one atom
+  of its line (`Chip::Image`, `Swap::Image`) with 18px over and under it (`reach`): a loaded
+  button's bottom stands on the baseline; the 280 by 180 frame's baseline is its centred spinner's
+  bottom, 98px down. `fit` sizes a loaded one: the button is the natural width cut by `max-height`
+  (or the `width` attribute), at most the line's width, and the image at its left is at most
+  `min(50vw, 480px)` wide, so the button may be wider than its image; a column counts nothing for
+  it at least and its own width at most. A failed load is `ImageMissingPlaceholder`, a block among
+  the lines as the handoff card is (`Swap::Card`; `handoff::Metrics.margin` is 0 for it):
+  `images::failed` in its block form, 280 wide where there is room, a pending list marker by its
+  icon's bottom; a column counts its icon, its name, its title's widest character or Retry
+  (`retry_width`, Ely's small button about its label) at least. Its metrics say 140 tall (more
+  with Retry) at the bubble's 1.6 line ratio; a card squeezed until its title wraps draws taller
+  than they say. `Load::Undecoded` is `readable`: the card offers Retry (Ely's small secondary
+  `Button` in a 28px row), which starts a load for that image alone, kept while it shows that
+  address (`Held.1`, `own`, `mounted`), as each `useImageLoadFailure` keeps its own state;
+  `images::focused`, from the window's activation, drops every failed load, for the user's images
+  too. No `online` event reaches the port. The click, the Tab stop, the menu and the lightbox come
+  with 9.13; `status: 'loading'` with the streamed rows of 9.6j.
 - Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink` for a
   privileged message of a local task. Before the blocks are laid out `read` takes the tree's `a`
   nodes in document order (`Anchors`, each by its node's address): the raw local destination when

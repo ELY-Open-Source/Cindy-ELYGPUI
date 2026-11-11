@@ -8,7 +8,7 @@ use gpui::{
 use super::{assistant_row, attachments, items::items, jump, link_chip, user_row, width::Widths};
 use crate::{
     chat_message::merge::get, history_render::Projection, markdown_target::resolved,
-    render_items::Item, rich_answer::js::Js, units::css,
+    render_items::Item, rich_answer::js::Js, units::css, workspace_media,
 };
 
 /// `collectStableLocalFileRefs`: the files the task's user messages attached, name then path.
@@ -56,12 +56,14 @@ pub fn element(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement 
     let handle = jump::begin(window, cx);
     link_chip::begin(cx);
     resolved::begin(cx);
+    workspace_media::begin(cx);
     let rows: Vec<AnyElement> = projection
         .iter()
         .flat_map(|p| p.items.iter().map(move |i| (i, p)))
         .filter_map(|(item, p)| row(item, (p, &files), widths, window, cx))
         .collect();
     resolved::end(cx);
+    workspace_media::end(cx);
     link_chip::end(cx);
     let list = div().flex().flex_col().gap(css(14.0)).children(rows);
     let content = div()
