@@ -75,6 +75,7 @@ mod show_item;
 mod sidebar;
 mod smooth_scroll;
 mod source_label;
+mod svg_image;
 mod theme;
 mod theme_import;
 mod tip;

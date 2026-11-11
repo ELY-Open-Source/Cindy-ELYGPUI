@@ -192,7 +192,7 @@ pub fn read(
             continue;
         }
         let read = |src: &&String| {
-            ["xdt-image://", "cindy-media://", "xdt-file://"]
+            ["xdt-image://", "cindy-media://", "xdt-file://", "data:"]
                 .iter()
                 .any(|scheme| src.starts_with(scheme))
         };
@@ -210,7 +210,7 @@ pub fn read(
                     Load::Loading
                 })
             }
-            // A web address's bytes come with 9.6i3c.
+            // A web address's bytes come with 9.6i3c2.
             Some(_) => Load::Unavailable,
         };
         let element = ElementId::Name(id.clone().into());

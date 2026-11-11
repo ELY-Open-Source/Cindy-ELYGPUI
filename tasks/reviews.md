@@ -441,3 +441,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 1: PASS. The reviewer ran Cindy's own handler on 159 requests and the port answered
   each alike; both goldens matched a fresh record; 300,000 path checks found no difference. No
   live desktop check was made; Windows and macOS paths were checked as strings.
+
+## 9.6i3c1 A `data:` address
+- Round 1: FAIL. P1: a `data:` SVG's `image` that named a local file was read by gpui's SVG
+  renderer, past the sensitive-media list; Blink's image reads no outside reference.
+- Round 2: PASS. `svg_image.rs` draws an SVG image with a resolver that reads nothing outside
+  it; the reviewer's 38 kinds of outside reference opened no file and reached no server, and
+  1,900 addresses load as Blink loads them. No live desktop check was made.

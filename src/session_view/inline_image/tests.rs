@@ -355,3 +355,15 @@ fn a_file_found_after_its_image_failed_mounts_the_image_anew(cx: &mut TestAppCon
     assert!(at(cx, "msg-c1-g0-failed").is_none());
     assert_eq!(bounds(cx, "msg-c1-g0").size, size(px(100.0), px(50.0)));
 }
+
+#[gpui::test]
+fn a_data_address_draws_and_a_broken_one_is_unavailable(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let vector = "%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2220%22%2F%3E";
+    let text = format!("![](data:image/svg+xml,{vector})\n\n![](data:image/png;base64,AAAA)");
+    let cx = draw(cx, dir.path(), &text);
+    settle(cx);
+    assert_eq!(bounds(cx, "msg-c1-g0").size, size(px(40.0), px(20.0)));
+    assert!(at(cx, "msg-c1-g1-failed").is_some());
+    assert!(at(cx, "msg-c1-g1-retry").is_none());
+}

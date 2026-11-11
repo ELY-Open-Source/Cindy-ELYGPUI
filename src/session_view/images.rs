@@ -2,7 +2,8 @@
 
 use std::{collections::HashMap, path::Path, sync::Arc};
 
-use anyhow::{Context as _, Result, bail};
+use anyhow::{Context as _, Result, anyhow, bail};
+use data_url::DataUrl;
 use ely_gpui_component::{
     buttons::{Button, ButtonVariant},
     motion::Spinner,
@@ -11,9 +12,8 @@ use ely_gpui_component::{
 };
 use gpui::{
     AnyElement, App, AppContext as _, ElementId, FontWeight, InteractiveElement as _,
-    IntoElement as _, ParentElement as _, RenderImage, SMOOTH_SVG_SCALE_FACTOR,
-    StatefulInteractiveElement as _, Styled as _, SvgRenderer, Window, div, img,
-    prelude::FluentBuilder as _,
+    IntoElement as _, ParentElement as _, RenderImage, StatefulInteractiveElement as _,
+    Styled as _, SvgRenderer, Window, div, img, prelude::FluentBuilder as _,
 };
 use image::{Frame, ImageFormat, RgbaImage, imageops};
 
@@ -26,7 +26,7 @@ use crate::{
     media_store::{self, Failure},
     motion,
     rich_answer::js::Js,
-    sessions,
+    sessions, svg_image,
     theme::Appearance,
     tip,
     transition::{self, Curve},
@@ -93,8 +93,19 @@ fn top(image: &RenderImage, width: u32) -> Result<RenderImage> {
 
 /// The bytes decoded by what they are, as Chromium sniffs an image; `vector` is an SVG's type.
 fn decode(bytes: Vec<u8>, vector: bool, svg: SvgRenderer) -> Result<Shown> {
+    if vector {
+        let (image, natural) = svg_image::render(&bytes)?;
+        let top = match long(natural) {
+            true => Some(Arc::new(top(&image, image.size(0).width.0 as u32)?)),
+            false => None,
+        };
+        return Ok(Shown {
+            image: Arc::new(image),
+            natural,
+            top,
+        });
+    }
     let format = match image::guess_format(&bytes) {
-        _ if vector => gpui::ImageFormat::Svg,
         Ok(ImageFormat::Png) => gpui::ImageFormat::Png,
         Ok(ImageFormat::Jpeg) => gpui::ImageFormat::Jpeg,
         Ok(ImageFormat::Gif) => gpui::ImageFormat::Gif,
@@ -106,12 +117,9 @@ fn decode(bytes: Vec<u8>, vector: bool, svg: SvgRenderer) -> Result<Shown> {
     };
     let image = gpui::Image::from_bytes(format, bytes).to_image_data(svg)?;
     let size = image.size(0);
-    // gpui draws an SVG at twice its size.
-    let scale = if vector { SMOOTH_SVG_SCALE_FACTOR } else { 1.0 };
-    let natural = |pixels: i32| (pixels as f32 / scale).round() as u32;
-    let natural = (natural(size.width.0), natural(size.height.0));
+    let natural = (size.width.0 as u32, size.height.0 as u32);
     let top = match long(natural) {
-        true => Some(Arc::new(top(&image, size.width.0 as u32)?)),
+        true => Some(Arc::new(top(&image, natural.0)?)),
         false => None,
     };
     Ok(Shown {
@@ -143,10 +151,38 @@ fn local(url: &str, svg: SvgRenderer) -> Load {
     }
 }
 
+/// A `data:` address as the Fetch standard reads one: its bytes, decoded by its media type.
+fn inline(url: &str, svg: SvgRenderer) -> Result<Shown> {
+    let parsed = DataUrl::process(url).map_err(|error| anyhow!("{error:?}"))?;
+    let read = parsed.decode_to_vec();
+    let (bytes, _) = read.map_err(|error| anyhow!("{error:?}"))?;
+    let mime = parsed.mime_type();
+    decode(
+        bytes,
+        mime.type_ == "image" && mime.subtype == "svg+xml",
+        svg,
+    )
+}
+
 /// The read and the decode, off the main thread.
 fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
     if url.starts_with("xdt-file://") {
         return local(url, svg);
+    }
+    if url.starts_with("data:") {
+        let length = url.len();
+        return match inline(url, svg) {
+            Ok(shown) => {
+                let (width, height) = shown.natural;
+                log::info!(target: "sessionView", "a data image of {length} bytes loaded: {width}x{height}");
+                Load::Ready(shown)
+            }
+            // Cindy probes the stores alone, so this failure is unavailable.
+            Err(error) => {
+                log::error!(target: "sessionView", "a data image of {length} bytes not read: {error:#}");
+                Load::Unavailable
+            }
+        };
     }
     let bytes = match media_store::read(user_data, url) {
         Ok(bytes) => bytes,

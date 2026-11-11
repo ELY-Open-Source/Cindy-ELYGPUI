@@ -315,6 +315,8 @@ listed in `tasks/done.md`.
       - [x] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
           whitelist and the sensitive-media list), so a workspace image draws
       - [ ] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
+        - [x] 9.6i3c1 A `data:` address: Blink's data URL read (media type, base64, escapes)
+        - [ ] 9.6i3c2 An `http(s)` address: the fetch, with the client it needs
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
   - [ ] 9.6k Selection and copy over the drawn Markdown

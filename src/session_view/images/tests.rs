@@ -3,7 +3,7 @@ use std::{path::Path, time::Duration};
 use gpui::{Modifiers, TestAppContext, VisualTestContext, px, size};
 use image::{ExtendedColorType, ImageEncoder as _, codecs::webp::WebPEncoder};
 
-use super::{Load, fitted, held_mut, long};
+use super::{Load, fitted, held_mut, inline, long};
 use crate::session_view::user_row::tests::{at, open_json, settle};
 
 /// A WebP of this size in the task's image cache.
@@ -244,4 +244,16 @@ fn a_blob_address_reads_the_media_store(cx: &mut TestAppContext) {
         at(cx, "msg-c0-image-0").unwrap().size,
         size(px(40.0), px(30.0))
     );
+}
+
+#[test]
+fn a_data_address_loads_where_blinks_image_does() {
+    let cases = include_str!("../../../tests/fixtures/data-image/blink.json");
+    let cases: Vec<(String, Option<(u32, u32)>)> = serde_json::from_str(cases).unwrap();
+    assert!(cases.len() > 40);
+    for (url, expected) in cases {
+        let svg = gpui::SvgRenderer::new(std::sync::Arc::new(()));
+        let natural = inline(&url, svg).ok().map(|shown| shown.natural);
+        assert_eq!(natural, expected, "{url}");
+    }
 }

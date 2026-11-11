@@ -493,8 +493,12 @@ defines scope and what 1:1 means.
   recheck and the port's waiter at the first, which shows only when the cache dropped the answer
   between them. Nothing draws with it before 9.6i3.
 - Inline images: `session_view/inline_image.rs` is `LightboxImage` in a line, for the addresses
-  the media stores read (`xdt-image://`, `cindy-media://`) and for a local file's (`xdt-file://`,
-  below; a web address's bytes come with 9.6i3c, and until then it draws the unavailable card). `read` takes the tree's `img` nodes in document order (`Anchors.images`,
+  the media stores read (`xdt-image://`, `cindy-media://`), a local file's (`xdt-file://`, below)
+  and a `data:` address (a web address's bytes come with 9.6i3c2; until then it draws the
+  unavailable card). `images.rs`'s `inline` reads a `data:` address with the `data-url` crate, the
+  Fetch standard's reader, and decodes it as SVG when its media type is `image/svg+xml`, else by
+  its bytes; `tests/fixtures/data-image/blink.json` holds what Blink's `<img>` loads of 45
+  addresses, and the port loads the same ones at the same sizes. A failure is unavailable. `read` takes the tree's `img` nodes in document order (`Anchors.images`,
   mounted as `<key>-g<n>`): the raw local source or `src` through `workspace_media::path` (nothing
   while pending) and `image_src`; a managed video draws nothing before `ChatVideoView`'s chapter.
   The load is `images.rs`'s (`held`, `fetch`). Blink's boxes are in `logs/review/9.6i3a-blink-
@@ -529,8 +533,11 @@ defines scope and what 1:1 means.
   `media_allowed` checks against the list built once from this host (`dirs::home_dir` for
   `os.homedir`, `canonicalize` without Windows' namespace for `realpathSync.native`). An inline
   image loads it through `images.rs`'s `local`: every failure is unavailable with no Retry, since
-  `useImageLoadFailure` probes the stores alone; an `image/svg+xml` file is drawn by gpui's SVG
-  renderer (usvg's size rules, not Blink's), any other by its bytes. `images::revised` is
+  `useImageLoadFailure` probes the stores alone; an `image/svg+xml` file is drawn by
+  `src/svg_image.rs`, any other by its bytes: resvg at gpui's version (usvg's size rules, not
+  Blink's) at two pixels per CSS pixel with the system's fonts, and an `image` inside it that names
+  a file or a web address is not read, as Blink's image reads none (`data:` ones draw); gpui's own
+  SVG renderer would read such a file past the sensitive list. `images::revised` is
   `WorkspaceMediaSrc`'s `key={revision}`: an image whose hook revision grew mounts anew, with a
   load of its own (`remount`, `reload`).
 - Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink` for a
@@ -926,6 +933,8 @@ defines scope and what 1:1 means.
 - `node scripts/sync-golden.mjs <cindy checkout> <commit>` runs Cindy's own `convertVsCodeTheme`,
   `normalizeLocalThemeColors` and `layoutTree` on the inputs under `tests/fixtures/` and writes the
   expected outputs; the Rust ports must match them.
+- `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-data-images.js` asks Blink
+  which `data:` addresses an image loads and writes `tests/fixtures/data-image/blink.json`.
 - `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-line-breaks.js` asks Blink
   where it breaks each pair of U+0021 to U+00FF and writes `resources/line-break-pairs.txt`.
 - `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`. CI
