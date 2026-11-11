@@ -16,6 +16,11 @@ mod command_intent;
 mod command_output;
 mod confirm;
 mod confirm_dialog;
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+)]
+mod copy_media;
 mod cross_process_lock;
 mod deep_link;
 mod dev_profile;
@@ -64,6 +69,11 @@ mod router;
 mod session_owner;
 mod session_view;
 mod sessions;
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+)]
+mod show_item;
 mod sidebar;
 mod smooth_scroll;
 mod source_label;

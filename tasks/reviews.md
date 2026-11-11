@@ -364,3 +364,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: PASS. A row's link boxes are dressed in document order, so the anchor's stop comes
   before the chips it holds. The reviewer's 37 link tests and Cindy's renderer agree. No live
   desktop check was made.
+
+## 9.6h4b The file menu's main handlers
+- Round 1: FAIL. The `@Nx` search split compound extensions at the last dot, `nativeImage`'s
+  `NormalizePath` was missing, and `maxBuffer` counted UTF-16 units; a 16-bit PNG rounded where
+  Electron cuts.
+- Round 2: FAIL. A folder path ending in a separator or a dot sought `folder@2x` beside it, and
+  bytes that are no UTF-8 counted one each where Node counts U+FFFD's three.
+- Round 3: FAIL. A sequence cut by the end of the output stayed out of `maxBuffer`. Fixed after
+  the round, not reviewed again. No live desktop check was made: no file manager opened, no
+  clipboard written; macOS and Windows code is cross-linted only.

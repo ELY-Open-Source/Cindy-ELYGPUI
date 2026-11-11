@@ -42,12 +42,11 @@ pub fn open(value: &str, cx: &App) -> Task<Result<(), String>> {
     shell_open(path, cx)
 }
 
-/// `XDGOpen` without waiting: Electron's Linux `openPath` never settles, so nothing returns.
+/// `XDGOpen` without waiting: `xdg-open` started in `dir` and reaped when it ends.
 #[cfg(target_os = "linux")]
-fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
-    let dir = path.parent().unwrap_or(&path).to_owned();
+pub fn xdg_open(what: &std::ffi::OsStr, dir: &Path) {
     let spawned = std::process::Command::new("xdg-open")
-        .arg(&path)
+        .arg(what)
         .current_dir(dir)
         .env("MM_NOTTTY", "1")
         .spawn();
@@ -60,6 +59,12 @@ fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
         }
         Err(error) => log::error!(target: "open-path", "xdg-open not started: {error}"),
     }
+}
+
+/// Electron's Linux `openPath` never settles, so nothing returns.
+#[cfg(target_os = "linux")]
+fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
+    xdg_open(path.as_os_str(), path.parent().unwrap_or(&path));
     Task::ready(Ok(()))
 }
 

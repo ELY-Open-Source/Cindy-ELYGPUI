@@ -816,6 +816,27 @@ defines scope and what 1:1 means.
   token is not passed. macOS calls `NSWorkspace openURL`; Windows `ShellExecuteEx` on a COM
   thread (Chromium's `SHParseDisplayName` id list, `explore` for a folder). The project menu's
   Open in file manager toasts the handler's error. Native code is type-checked in a scratch crate.
+- Show in folder and copy file: `src/show_item.rs` is the `shell:show-item-in-folder` handler for a
+  file path (absolute, `path.normalize`, the blocklist, `fs.existsSync`), then Electron 42's
+  `shell.showItemInFolder`, which answers nothing. Linux (`portal.rs`, `ShowItemHelper` on a thread
+  of its own): the portal's `OpenURI.OpenDirectory` with the file's descriptor, heard out to its
+  `Response`, when `org.freedesktop.portal.Desktop` runs or the bus can start it, else
+  `FileManager1.ShowItems`, the choice made once; a failure opens the parent folder as Electron's
+  `OpenFolder` does, `xdg-open .` from that folder's own parent. No activation token is passed.
+  macOS (`finder.rs`) calls `selectFile:inFileViewerRootedAtPath:`; Windows (`shell.rs`)
+  `SHOpenFolderAndSelectItems` on a COM thread, through `SHParseDisplayName`. `src/copy_media.rs`
+  is `media:copy-to-clipboard` for a file path (no normalize). Windows and macOS run
+  `fileClipboard.ts`'s PowerShell and `osascript` through `exec.rs`, Node's `execFile`: ten
+  seconds then `SIGTERM`, 64K bytes of decoded output, `error.message` as Node words it. Linux
+  writes a bitmap, as Cindy does: `bitmap.rs` is `nativeImage.createFromPath` (the bytes as a
+  PNG, else a JPEG, a 16-bit sample cut to its high byte; a path through `..` made real;
+  the `@Nx` files beside it by `base::FilePath`'s own string rules, the density nearest 1 from above) with
+  Skia's premultiply and its PNG encoder's unpremultiply
+  (`logs/review/9.6h4b-electron-unpremul.log`); colour profiles are not applied. gpui 0.3.11
+  writes text alone to a Linux clipboard, so `arboard` writes the image (Wayland data control,
+  else X11) and one `Clipboard` is kept, since the content lives in its writer. In tests both
+  handlers record the path and touch no desktop. Native code is cross-linted in a scratch crate
+  (`logs/review/9.6h4b-r1-native-*.log`).
 - Untrusted files: read with `bounded_read::read`, Cindy's `readBoundedFileNoFollow` (no-follow
   open, regular file, size limit, stable while read).
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as

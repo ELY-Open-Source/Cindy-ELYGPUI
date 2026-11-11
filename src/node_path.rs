@@ -27,6 +27,18 @@ pub fn join(parts: &[&str]) -> String {
     }
 }
 
+/// `path.normalize` on this host.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+)]
+pub fn normalize(path: &str) -> String {
+    match cfg!(windows) {
+        true => win32::normalize(path),
+        false => posix::normalize(path),
+    }
+}
+
 /// `path.basename` on this host.
 pub fn basename(path: &str) -> &str {
     match cfg!(windows) {
