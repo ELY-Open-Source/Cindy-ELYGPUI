@@ -331,7 +331,8 @@ listed in `tasks/done.md`.
       - [ ] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
           (`useStreamFadePreference.ts`, `chat.streamFadePreference`)
       - [ ] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate
-          and commit, `streamingMarkdownBlocks`' kept blocks, `StreamingBody`'s pending line
+          and commit, `streamingMarkdownBlocks`' kept blocks (`StreamingBody` is off in Cindy:
+          `USE_LINE_COMMIT_STREAMING` is false)
       - [ ] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem`: a word and a marker faded on the
           clock, settled at its end
   - [ ] 9.6k Selection and copy over the drawn Markdown
