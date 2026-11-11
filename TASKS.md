@@ -281,6 +281,11 @@ listed in `tasks/done.md`.
         separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link
+      - [ ] 9.6h5a `SessionLinkChip` and `ProjectLinkChip` for an `a` of a privileged message: the
+        chip an atom of its row (9.5j's faces, reads, clicks and menu), the author's label, and
+        the words of a link that names nothing
+      - [ ] 9.6h5b `SessionHandoffCard` for a session-card link (`parseSessionCardHref`): the
+        block it makes inside its paragraph, its badge, last-active words and click
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
       `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
