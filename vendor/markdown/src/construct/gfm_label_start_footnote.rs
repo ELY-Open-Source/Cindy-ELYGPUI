@@ -79,6 +79,8 @@ pub fn open(tokenizer: &mut Tokenizer) -> State {
             tokenizer.consume();
             tokenizer.exit(Name::GfmFootnoteCallMarker);
             tokenizer.exit(Name::GfmFootnoteCallLabel);
+            let at = tokenizer.events[tokenizer.events.len() - 6].point.index;
+            tokenizer.tokenize_state.label_spans.push((at, None));
             tokenizer.tokenize_state.label_starts.push(LabelStart {
                 kind: LabelKind::GfmFootnote,
                 start: (tokenizer.events.len() - 6, tokenizer.events.len() - 1),

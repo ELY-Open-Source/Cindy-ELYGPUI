@@ -166,6 +166,10 @@ pub fn protocol_start(tokenizer: &mut Tokenizer) -> State {
         .constructs
         .gfm_autolink_literal &&
         matches!(tokenizer.current, Some(b'H' | b'h'))
+            // Cindy: micromark's `previousUnbalanced`.
+            && tokenizer.tokenize_state.label_spans.iter().all(|span| span.1.is_some())
+            // Cindy: micromark tries the email first.
+            && !in_email(tokenizer)
             // Source: <https://github.com/github/cmark-gfm/blob/ef1cfcb/extensions/autolink.c#L214>.
             && !matches!(tokenizer.previous, Some(b'A'..=b'Z' | b'a'..=b'z'))
     {
@@ -270,6 +274,10 @@ pub fn www_start(tokenizer: &mut Tokenizer) -> State {
         .constructs
         .gfm_autolink_literal &&
         matches!(tokenizer.current, Some(b'W' | b'w'))
+            // Cindy: micromark's `previousUnbalanced`.
+            && tokenizer.tokenize_state.label_spans.iter().all(|span| span.1.is_some())
+            // Cindy: micromark tries the email first.
+            && !in_email(tokenizer)
             // Source: <https://github.com/github/cmark-gfm/blob/ef1cfcb/extensions/autolink.c#L156>.
             && matches!(tokenizer.previous, None | Some(b'\t' | b'\n' | b' ' | b'(' | b'*' | b'_' | b'[' | b']' | b'~'))
     {
@@ -643,14 +651,40 @@ pub fn resolve(tokenizer: &mut Tokenizer) {
                     if bytes[byte_index] == b'@' {
                         let mut range = (0, 0, Name::GfmAutolinkLiteralEmail);
 
-                        if let Some(start) = peek_bytes_atext(bytes, min, byte_index) {
-                            let (start, kind) = peek_protocol(bytes, min, start);
+                        // Cindy: micromark's `previousUnbalanced`, as it stood at the address.
+                        let balanced = |start: usize| {
+                            let at = start_index + start;
+                            tokenizer
+                                .tokenize_state
+                                .label_spans
+                                .iter()
+                                .all(|(open, end)| *open >= at || end.is_some_and(|end| end <= at))
+                        };
 
-                            if let Some(end) = peek_bytes_email_domain(
-                                bytes,
-                                byte_index + 1,
-                                kind == Name::GfmAutolinkLiteralXmpp,
-                            ) {
+                        // Cindy: micromark starts no email after atext or a slash before this data.
+                        let source = tokenizer.parse_state.bytes;
+                        let first = |start: usize| {
+                            if start > 0 {
+                                return !(start == min && is_atext(bytes[start - 1]));
+                            }
+                            tokenizer.slices.iter().any(|slice| slice.0 == start_index)
+                                || !(is_atext(source[start_index - 1])
+                                    || source[start_index - 1] == b'/')
+                        };
+                        let under = tokenizer.parse_state.options.attention_flanks.is_some();
+
+                        if let Some(start) = peek_bytes_atext(bytes, min, byte_index)
+                            .filter(|start| balanced(*start) && first(*start))
+                            .filter(|start| !(under && bytes[*start] == b'_'))
+                        {
+                            // Cindy: micromark takes no `mailto:` or `xmpp:` before the address.
+                            let kind = Name::GfmAutolinkLiteralEmail;
+
+                            // Cindy: micromark reads the domain off the source, past this data.
+                            if let Some(end) =
+                                peek_bytes_email_domain(source, start_index + byte_index + 1)
+                            {
+                                let end = end - start_index;
                                 // Note: normally we’d truncate trailing
                                 // punctuation from the link.
                                 // However, email autolink literals cannot
@@ -738,6 +772,57 @@ pub fn resolve(tokenizer: &mut Tokenizer) {
     }
 }
 
+/// Cindy: micromark's `gfmAtext`.
+fn is_atext(byte: u8) -> bool {
+    matches!(byte, b'+' | b'-' | b'.' | b'0'..=b'9' | b'A'..=b'Z' | b'_' | b'a'..=b'z')
+}
+
+/// Cindy: whether an email holds the current byte; micromark tries it before `www`.
+pub fn in_email(tokenizer: &Tokenizer) -> bool {
+    let at = tokenizer.point.index;
+    let (from, to) = tokenizer
+        .slices
+        .iter()
+        .rfind(|slice| slice.0 <= at && at < slice.1)
+        .copied()
+        .expect("the current byte lies in a pushed slice");
+    let bytes = &tokenizer.parse_state.bytes[from..to];
+    let at = at - from;
+    let mut end = at;
+    while end < bytes.len() && is_atext(bytes[end]) {
+        end += 1;
+    }
+    let mut start = at;
+    while start > 0 && is_atext(bytes[start - 1]) {
+        start -= 1;
+    }
+    let under = tokenizer.parse_state.options.attention_flanks.is_some();
+
+    [Some(end), start.checked_sub(1)]
+        .iter()
+        .flatten()
+        .any(|&sign| email_about(bytes, sign, under).is_some_and(|(start, end)| start <= at && at < end))
+}
+
+/// Cindy: the email micromark reads about the `@` at `sign`, as its start and end.
+fn email_about(bytes: &[u8], sign: usize, under: bool) -> Option<(usize, usize)> {
+    if bytes.get(sign) != Some(&b'@') {
+        return None;
+    }
+    let start = peek_bytes_atext(bytes, 0, sign)?;
+    // An attention marker or an escape takes the run's first byte.
+    let escapes = bytes[..start].iter().rev().take_while(|b| **b == b'\\').count();
+    let escaped = escapes % 2 == 1 && !bytes[start].is_ascii_alphanumeric();
+    if under && bytes[start] == b'_' || escaped {
+        return None;
+    }
+    // An email before this one may have taken the run as its domain.
+    if start > 0 && email_about(bytes, start - 1, under).is_some_and(|(_, end)| end > start) {
+        return None;
+    }
+    peek_bytes_email_domain(bytes, sign + 1).map(|end| (start, end))
+}
+
 /// Move back past atext.
 ///
 /// Moving back is only used when post processing text: so for the email address
@@ -771,40 +856,6 @@ fn peek_bytes_atext(bytes: &[u8], min: usize, end: usize) -> Option<usize> {
     }
 }
 
-/// Move back past a `mailto:` or `xmpp:` protocol.
-///
-/// Moving back is only used when post processing text: so for the email address
-/// algorithm.
-///
-/// ```markdown
-/// > | a mailto:contact@example.org b
-///              ^-- from
-///       ^-- to
-/// ```
-fn peek_protocol(bytes: &[u8], min: usize, end: usize) -> (usize, Name) {
-    let mut index = end;
-
-    if index > min && bytes[index - 1] == b':' {
-        index -= 1;
-
-        // Take alphanumerical.
-        while index > min && matches!(bytes[index - 1], b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z') {
-            index -= 1;
-        }
-
-        let slice = Slice::from_indices(bytes, index, end - 1);
-        let name = slice.as_str().to_ascii_lowercase();
-
-        if name == "xmpp" {
-            return (index, Name::GfmAutolinkLiteralXmpp);
-        } else if name == "mailto" {
-            return (index, Name::GfmAutolinkLiteralMailto);
-        }
-    }
-
-    (end, Name::GfmAutolinkLiteralEmail)
-}
-
 /// Move past email domain.
 ///
 /// Peeking like this only used when post processing text: so for the email
@@ -815,7 +866,7 @@ fn peek_protocol(bytes: &[u8], min: usize, end: usize) -> (usize, Name) {
 ///               ^-- from
 ///                         ^-- to
 /// ```
-fn peek_bytes_email_domain(bytes: &[u8], start: usize, xmpp: bool) -> Option<usize> {
+fn peek_bytes_email_domain(bytes: &[u8], start: usize) -> Option<usize> {
     let mut index = start;
     let mut dot = false;
 
@@ -826,7 +877,6 @@ fn peek_bytes_email_domain(bytes: &[u8], start: usize, xmpp: bool) -> Option<usi
         match bytes[index] {
             // Alphanumerical, `-`, and `_`.
             b'-' | b'0'..=b'9' | b'A'..=b'Z' | b'_' | b'a'..=b'z' => {}
-            b'/' if xmpp => {}
             // Dot followed by alphanumerical (not `-` or `_`).
             b'.' if index + 1 < bytes.len()
                 && matches!(bytes[index + 1], b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z') =>

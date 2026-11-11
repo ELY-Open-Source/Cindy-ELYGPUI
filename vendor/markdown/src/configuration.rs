@@ -2,7 +2,7 @@ use crate::util::{
     line_ending::LineEnding,
     mdx::{EsmParse as MdxEsmParse, ExpressionParse as MdxExpressionParse},
 };
-use alloc::{boxed::Box, fmt, string::String};
+use alloc::{boxed::Box, fmt, string::String, vec::Vec};
 
 /// Control which constructs are enabled.
 ///
@@ -1226,8 +1226,18 @@ pub struct ParseOptions {
     /// `tests/test_utils/mod.rs`.
     #[cfg_attr(feature = "serde", serde(skip))]
     pub mdx_esm_parse: Option<Box<MdxEsmParse>>,
+
+    /// Cindy: whether a `*` or `_` sequence opens and closes (micromark's attention extensions).
+    #[cfg_attr(feature = "serde", serde(skip))]
+    pub attention_flanks: Option<Box<AttentionFlanks>>,
+
+    /// Cindy: the byte offsets where micromark ends a text chunk, each before a NUL.
+    pub chunk_ends: Vec<usize>,
     // Note: when adding fields, don’t forget to add them to `fmt::Debug` below.
 }
+
+/// Cindy: the source, the fed slice and the sequence as byte ranges; answers `(open, close)`.
+pub type AttentionFlanks = dyn Fn(&[u8], (usize, usize), (usize, usize)) -> (bool, bool);
 
 impl fmt::Debug for ParseOptions {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -1246,6 +1256,11 @@ impl fmt::Debug for ParseOptions {
                 "mdx_esm_parse",
                 &self.mdx_esm_parse.as_ref().map(|_d| "[Function]"),
             )
+            .field(
+                "attention_flanks",
+                &self.attention_flanks.as_ref().map(|_d| "[Function]"),
+            )
+            .field("chunk_ends", &self.chunk_ends)
             .finish()
     }
 }
@@ -1259,6 +1274,8 @@ impl Default for ParseOptions {
             math_text_single_dollar: true,
             mdx_expression_parse: None,
             mdx_esm_parse: None,
+            attention_flanks: None,
+            chunk_ends: Vec::new(),
         }
     }
 }
@@ -1456,7 +1473,7 @@ mod tests {
 
         assert_eq!(
             format!("{:?}", ParseOptions::default()),
-            "ParseOptions { constructs: Constructs { attention: true, autolink: true, block_quote: true, character_escape: true, character_reference: true, code_indented: true, code_fenced: true, code_text: true, definition: true, frontmatter: false, gfm_autolink_literal: false, gfm_footnote_definition: false, gfm_label_start_footnote: false, gfm_strikethrough: false, gfm_table: false, gfm_task_list_item: false, hard_break_escape: true, hard_break_trailing: true, heading_atx: true, heading_setext: true, html_flow: true, html_text: true, label_start_image: true, label_start_link: true, label_end: true, list_item: true, math_flow: false, math_text: false, mdx_esm: false, mdx_expression_flow: false, mdx_expression_text: false, mdx_jsx_flow: false, mdx_jsx_text: false, thematic_break: true }, gfm_strikethrough_single_tilde: true, math_text_single_dollar: true, mdx_expression_parse: None, mdx_esm_parse: None }",
+            "ParseOptions { constructs: Constructs { attention: true, autolink: true, block_quote: true, character_escape: true, character_reference: true, code_indented: true, code_fenced: true, code_text: true, definition: true, frontmatter: false, gfm_autolink_literal: false, gfm_footnote_definition: false, gfm_label_start_footnote: false, gfm_strikethrough: false, gfm_table: false, gfm_task_list_item: false, hard_break_escape: true, hard_break_trailing: true, heading_atx: true, heading_setext: true, html_flow: true, html_text: true, label_start_image: true, label_start_link: true, label_end: true, list_item: true, math_flow: false, math_text: false, mdx_esm: false, mdx_expression_flow: false, mdx_expression_text: false, mdx_jsx_flow: false, mdx_jsx_text: false, thematic_break: true }, gfm_strikethrough_single_tilde: true, math_text_single_dollar: true, mdx_expression_parse: None, mdx_esm_parse: None, attention_flanks: None, chunk_ends: [] }",
             "should support `Debug` trait"
         );
         assert_eq!(
@@ -1469,7 +1486,7 @@ mod tests {
                 })),
                 ..Default::default()
             }),
-            "ParseOptions { constructs: Constructs { attention: true, autolink: true, block_quote: true, character_escape: true, character_reference: true, code_indented: true, code_fenced: true, code_text: true, definition: true, frontmatter: false, gfm_autolink_literal: false, gfm_footnote_definition: false, gfm_label_start_footnote: false, gfm_strikethrough: false, gfm_table: false, gfm_task_list_item: false, hard_break_escape: true, hard_break_trailing: true, heading_atx: true, heading_setext: true, html_flow: true, html_text: true, label_start_image: true, label_start_link: true, label_end: true, list_item: true, math_flow: false, math_text: false, mdx_esm: false, mdx_expression_flow: false, mdx_expression_text: false, mdx_jsx_flow: false, mdx_jsx_text: false, thematic_break: true }, gfm_strikethrough_single_tilde: true, math_text_single_dollar: true, mdx_expression_parse: Some(\"[Function]\"), mdx_esm_parse: Some(\"[Function]\") }",
+            "ParseOptions { constructs: Constructs { attention: true, autolink: true, block_quote: true, character_escape: true, character_reference: true, code_indented: true, code_fenced: true, code_text: true, definition: true, frontmatter: false, gfm_autolink_literal: false, gfm_footnote_definition: false, gfm_label_start_footnote: false, gfm_strikethrough: false, gfm_table: false, gfm_task_list_item: false, hard_break_escape: true, hard_break_trailing: true, heading_atx: true, heading_setext: true, html_flow: true, html_text: true, label_start_image: true, label_start_link: true, label_end: true, list_item: true, math_flow: false, math_text: false, mdx_esm: false, mdx_expression_flow: false, mdx_expression_text: false, mdx_jsx_flow: false, mdx_jsx_text: false, thematic_break: true }, gfm_strikethrough_single_tilde: true, math_text_single_dollar: true, mdx_expression_parse: Some(\"[Function]\"), mdx_esm_parse: Some(\"[Function]\"), attention_flanks: None, chunk_ends: [] }",
             "should support `Debug` trait on mdx functions"
         );
     }

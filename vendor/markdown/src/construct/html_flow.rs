@@ -122,7 +122,7 @@ const CDATA: u8 = 5;
 /// Symbol for `<div` (condition 6).
 const BASIC: u8 = 6;
 /// Symbol for `<x>` (condition 7).
-const COMPLETE: u8 = 7;
+pub const COMPLETE: u8 = 7;
 
 /// Start of HTML (flow).
 ///

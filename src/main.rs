@@ -39,6 +39,7 @@ mod locale;
 mod logger;
 mod lucide;
 mod main_window;
+mod markdown;
 mod markdown_text;
 mod media_store;
 mod message_rows;

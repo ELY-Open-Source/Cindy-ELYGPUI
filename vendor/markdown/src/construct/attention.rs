@@ -76,6 +76,7 @@
 //! [html-strong]: https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-strong-element
 //! [html-del]: https://html.spec.whatwg.org/multipage/edits.html#the-del-element
 
+use crate::construct::gfm_autolink_literal::in_email;
 use crate::event::{Event, Kind, Name, Point};
 use crate::resolve::Name as ResolveName;
 use crate::state::{Name as StateName, State};
@@ -108,6 +109,8 @@ struct Sequence {
     open: bool,
     /// Whether this sequence can close attention.
     close: bool,
+    /// Cindy: whether a micromark chunk ends where this sequence ends.
+    chunk_end: bool,
 }
 
 /// At start of attention.
@@ -117,6 +120,15 @@ struct Sequence {
 ///     ^
 /// ```
 pub fn start(tokenizer: &mut Tokenizer) -> State {
+    // Cindy: micromark's email, begun before this underscore, has taken it.
+    if tokenizer.current == Some(b'_')
+        && tokenizer.parse_state.options.constructs.gfm_autolink_literal
+        && (tokenizer.tokenize_state.label_spans.iter()).all(|span| span.1.is_some())
+        && in_email(tokenizer)
+    {
+        return State::Nok;
+    }
+
     // Emphasis/strong:
     if (tokenizer.parse_state.options.constructs.attention
         && matches!(tokenizer.current, Some(b'*' | b'_')))
@@ -154,22 +166,60 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
     // Find all sequences, gather info about them.
     let mut sequences = get_sequences(tokenizer);
 
-    // Now walk through them and match them.
-    let mut close = 0;
+    // Cindy: micromark resolves attention and strikethrough apart, the first it met first.
+    let single = tokenizer.parse_state.options.gfm_strikethrough_single_tilde;
+    let first = sequences
+        .iter()
+        .find(|sequence| {
+            sequence.marker != b'~' || sequence.size == 2 || (sequence.size == 1 && single)
+        })
+        .is_some_and(|sequence| sequence.marker == b'~');
 
-    while close < sequences.len() {
-        let sequence_close = &sequences[close];
+    for round in [false, true] {
+        // Cindy: in a label attention comes first, as `insideSpan` lists it.
+        let pick = |sequence: &Sequence| {
+            (sequence.marker == b'~') == (round != (sequence.stack.is_empty() && first))
+        };
+        let end = sequences.len();
+        pass(tokenizer, &mut sequences, 0, end, &pick);
+    }
+
+    // Mark remaining sequences as data.
+    let mut index = 0;
+    while index < sequences.len() {
+        let sequence = &sequences[index];
+        tokenizer.events[sequence.index].name = Name::Data;
+        tokenizer.events[sequence.index + 1].name = Name::Data;
+        index += 1;
+    }
+
+    tokenizer.map.consume(&mut tokenizer.events);
+    None
+}
+
+/// Cindy: match the closing sequences `pick` takes in a range; gives the range's new end.
+fn pass(
+    tokenizer: &mut Tokenizer,
+    sequences: &mut Vec<Sequence>,
+    from: usize,
+    mut to: usize,
+    pick: &dyn Fn(&Sequence) -> bool,
+) -> usize {
+    let mut close = from;
+
+    while close < to {
         let mut next_index = close + 1;
 
         // Find a sequence that can close.
-        if sequence_close.close {
+        if sequences[close].close && pick(&sequences[close]) {
             let mut open = close;
 
             // Now walk back to find an opener.
-            while open > 0 {
+            while open > from {
                 open -= 1;
 
                 let sequence_open = &sequences[open];
+                let sequence_close = &sequences[close];
 
                 // An opener matching our closer:
                 if sequence_open.open
@@ -200,8 +250,20 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
                         continue;
                     }
 
+                    // Cindy: micromark resolves what the pair holds, then lets it go.
+                    for strike in [false, true] {
+                        let before = sequences.len();
+                        pass(tokenizer, sequences, open + 1, close, &|sequence| {
+                            (sequence.marker == b'~') == strike
+                        });
+                        close -= before - sequences.len();
+                        to -= before - sequences.len();
+                    }
+
                     // We found a match!
-                    next_index = match_sequences(tokenizer, &mut sequences, open, close);
+                    let before = sequences.len();
+                    next_index = match_sequences(tokenizer, sequences, open, close);
+                    to -= before - sequences.len();
 
                     break;
                 }
@@ -211,17 +273,7 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
         close = next_index;
     }
 
-    // Mark remaining sequences as data.
-    let mut index = 0;
-    while index < sequences.len() {
-        let sequence = &sequences[index];
-        tokenizer.events[sequence.index].name = Name::Data;
-        tokenizer.events[sequence.index + 1].name = Name::Data;
-        index += 1;
-    }
-
-    tokenizer.map.consume(&mut tokenizer.events);
-    None
+    to
 }
 
 /// Get sequences.
@@ -256,23 +308,45 @@ fn get_sequences(tokenizer: &mut Tokenizer) -> Vec<Sequence> {
                         && tokenizer.parse_state.options.constructs.gfm_strikethrough
                         && matches!(before_char, Some('~')));
 
+                // Cindy: micromark's attention extensions judge `*` and `_` themselves.
+                let flanks = tokenizer
+                    .parse_state
+                    .options
+                    .attention_flanks
+                    .as_ref()
+                    .filter(|_| marker != b'~')
+                    .map(|flanks| {
+                        let at = (enter.point.index, exit.point.index);
+                        let slice = tokenizer
+                            .slices
+                            .iter()
+                            .find(|(start, end)| *start <= at.0 && at.1 <= *end)
+                            .expect("a sequence lies in a pushed slice");
+                        flanks(tokenizer.parse_state.bytes, *slice, at)
+                    });
+                let (open, close) = flanks.unwrap_or(if marker == b'_' {
+                    (
+                        open && (before != CharacterKind::Other || !close),
+                        close && (after != CharacterKind::Other || !open),
+                    )
+                } else {
+                    (open, close)
+                });
+
                 sequences.push(Sequence {
                     index,
                     stack: stack.clone(),
                     start_point: enter.point.clone(),
                     end_point: exit.point.clone(),
                     size: exit.point.index - enter.point.index,
-                    open: if marker == b'_' {
-                        open && (before != CharacterKind::Other || !close)
-                    } else {
-                        open
-                    },
-                    close: if marker == b'_' {
-                        close && (after != CharacterKind::Other || !open)
-                    } else {
-                        close
-                    },
+                    open,
+                    close,
                     marker,
+                    chunk_end: tokenizer
+                        .parse_state
+                        .options
+                        .chunk_ends
+                        .contains(&exit.point.index),
                 });
             }
         } else if enter.kind == Kind::Enter {
@@ -324,6 +398,8 @@ fn match_sequences(
 
     while between < close {
         sequences[between].open = false;
+        // Cindy: a later pass finds no closer in a matched pair.
+        sequences[between].close = false;
         between += 1;
     }
 
@@ -432,7 +508,8 @@ fn match_sequences(
         tokenizer.map.add(open_index, 2, vec![]);
         // Everything shifts one to the left, account for it in next iteration.
         next -= 1;
-    } else {
+    } else if !sequences[open].chunk_end {
+        // Cindy: micromark's `movePoint` leaves the rest whole at a chunk's end.
         tokenizer.events[open_index + 1].point = sequences[open].end_point.clone();
     }
 

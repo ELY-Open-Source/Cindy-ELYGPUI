@@ -229,6 +229,27 @@ listed in `tasks/done.md`.
   (`streamingMarkdownChunks.ts`) for rows still being written;
   `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads (its
   golden then takes rows with a Markdown image)
+  - [x] 9.6a The parse: the tree `REMARK_PLUGINS`' parse extensions build (remark-gfm with
+      `singleTilde: false`, remark-cjk-friendly's attention, remark-math) on the vendored
+      markdown-rs, golden `markdown-tree`
+  - [ ] 9.6b Transformers that read no path: `remarkTruncateCjkUrls`, `remarkHtmlImages`,
+      `remarkSessionLinks`
+  - [ ] 9.6c Local paths in the tree: `remarkBareSpaceLocalImages`, `remarkLocalPathLinks`,
+      `remarkPreserveRawLocalDestinations`, with `markdownTarget.ts`'s classes
+  - [ ] 9.6d What react-markdown hands its renderers: `skipHtml`, the URL transforms, definitions and
+      footnotes resolved, `rehype-slug`'s ids, `rehypeFencedCodeMarker`
+  - [ ] 9.6e Blocks drawn in an assistant text row (`.msg-markdown`): paragraphs, headings, lists and
+      task lists, block quotes, rules, plain code blocks (their chrome with 9.7)
+  - [ ] 9.6f Inline content in the flow's rows: emphasis, strong, strikethrough, inline code, breaks,
+      the link's face
+  - [ ] 9.6g Tables: columns, alignment, the scroll of a wide table
+  - [ ] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
+      session, project and session-card links, in-document anchors
+  - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
+      `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
+  - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
+      throttle and the word fade
+  - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
 - [ ] 9.8 Math: `remark-math` with `remarkStrictInlineMath` and `math-markdown`, drawn as KaTeX

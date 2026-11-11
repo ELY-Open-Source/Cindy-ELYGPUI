@@ -215,3 +215,54 @@ pub fn parse(value: &str) -> String {
 
     result
 }
+
+/// Cindy: micromark's `decodeString`: character escapes and references, decoded.
+pub fn decode_string(value: &str) -> String {
+    let bytes = value.as_bytes();
+    let len = bytes.len();
+    let mut result = String::with_capacity(len);
+    let mut start = 0;
+    let mut index = 0;
+
+    while index < len {
+        if bytes[index] == b'\\' && index + 1 < len && bytes[index + 1].is_ascii_punctuation() {
+            result.push_str(&value[start..index]);
+            start = index + 1;
+            index += 2;
+            continue;
+        }
+
+        if bytes[index] == b'&' {
+            let (marker, value_start) = if index + 1 < len && bytes[index + 1] == b'#' {
+                if index + 2 < len && matches!(bytes[index + 2], b'x' | b'X') {
+                    (b'x', index + 3)
+                } else {
+                    (b'#', index + 2)
+                }
+            } else {
+                (b'&', index + 1)
+            };
+            let test = value_test(marker);
+            let mut value_end = value_start;
+            while value_end < len && value_end - value_start < value_max(marker) && test(&bytes[value_end])
+            {
+                value_end += 1;
+            }
+
+            if value_end > value_start && value_end < len && bytes[value_end] == b';' {
+                if let Some(decoded) = decode(&value[value_start..value_end], marker, true) {
+                    result.push_str(&value[start..index]);
+                    result.push_str(&decoded);
+                    start = value_end + 1;
+                    index = start;
+                    continue;
+                }
+            }
+        }
+
+        index += 1;
+    }
+
+    result.push_str(&value[start..]);
+    result
+}

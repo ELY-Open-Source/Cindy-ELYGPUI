@@ -69,7 +69,7 @@ pub use util::mdx::{
     ExpressionParse as MdxExpressionParse, Signal as MdxSignal,
 };
 
-pub use configuration::{CompileOptions, Constructs, Options, ParseOptions};
+pub use configuration::{AttentionFlanks, CompileOptions, Constructs, Options, ParseOptions};
 
 use alloc::string::String;
 

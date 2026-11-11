@@ -88,13 +88,79 @@ pub fn list_loose(events: &[Event], mut index: usize, include_items: bool) -> bo
     false
 }
 
-/// Figure out if an item is spread or not.
-pub fn list_item_loose(events: &[Event], mut index: usize) -> bool {
+/// Cindy: mdast-util-from-markdown's `listSpread`: two line endings between two items.
+pub fn list_spread(events: &[Event], start: usize) -> bool {
+    let mut balance = 0;
+    let mut index = start;
+
+    while index < events.len() {
+        let event = &events[index];
+
+        if event.kind == Kind::Enter {
+            balance += 1;
+
+            if balance == 2 && event.name == Name::ListItem && index > start + 1 {
+                let mut tail = index;
+                let mut lines = 0;
+                let mut quotes = 0;
+                let mut depth = None;
+
+                while tail > start {
+                    tail -= 1;
+                    let event = &events[tail];
+                    match event.name {
+                        Name::LineEnding | Name::BlankLineEnding => {
+                            if event.kind == Kind::Enter {
+                                lines += 1;
+                                depth.get_or_insert(quotes);
+                                quotes = 0;
+                            }
+                        }
+                        // Cindy: a quote that closed here ends before its last line's ending.
+                        Name::BlockQuotePrefix => {
+                            if event.kind == Kind::Enter {
+                                quotes += 1;
+                                if depth.is_some_and(|depth| quotes > depth) {
+                                    break;
+                                }
+                            }
+                        }
+                        Name::SpaceOrTab | Name::BlockQuoteMarker => {}
+                        Name::ListItem
+                        | Name::ListOrdered
+                        | Name::ListUnordered
+                        | Name::BlockQuote
+                            if event.kind == Kind::Exit => {}
+                        _ => break,
+                    }
+                }
+
+                if lines > 1 {
+                    return true;
+                }
+            }
+        } else {
+            balance -= 1;
+
+            if balance == 0 {
+                break;
+            }
+        }
+
+        index += 1;
+    }
+
+    false
+}
+
+pub fn list_item_loose(events: &[Event], start: usize) -> bool {
     debug_assert!(
-        matches!(events[index].name, Name::ListItem),
+        matches!(events[start].name, Name::ListItem),
         "expected list item"
     );
     let mut balance = 0;
+    let mut index = start;
+    let mut blank = None;
 
     while index < events.len() {
         let event = &events[index];
@@ -104,7 +170,7 @@ pub fn list_item_loose(events: &[Event], mut index: usize) -> bool {
         } else {
             balance -= 1;
 
-            if balance == 1 && event.name == Name::BlankLineEnding {
+            if balance == 1 && event.name == Name::BlankLineEnding && blank.is_none() {
                 // Blank line directly after a prefix:
                 //
                 // ```markdown
@@ -112,21 +178,45 @@ pub fn list_item_loose(events: &[Event], mut index: usize) -> bool {
                 //      ^
                 //   |   a
                 // ```
-                let mut at_prefix = false;
-
-                // List item.
                 let mut before = index - 2;
 
                 if events[before].name == Name::SpaceOrTab {
                     before -= 2;
                 }
 
-                if events[before].name == Name::ListItemPrefix {
-                    at_prefix = true;
+                // Cindy: a blank line inside a block quote belongs to the quote.
+                let mut quote = index - 2;
+                let mut closed = false;
+                while events[quote].name == Name::SpaceOrTab
+                    || (events[quote].name == Name::BlockQuote
+                        && events[quote].kind == Kind::Exit)
+                {
+                    closed = closed || events[quote].name == Name::BlockQuote;
+                    quote -= 1;
                 }
 
-                if !at_prefix {
-                    return true;
+                // Cindy: so does the blank line that opens a nested empty item.
+                let mut nested = index - 2;
+                let mut ended = false;
+                while events[nested].name == Name::SpaceOrTab
+                    || (events[nested].kind == Kind::Exit
+                        && matches!(
+                            events[nested].name,
+                            Name::ListItem
+                                | Name::ListOrdered
+                                | Name::ListUnordered
+                                | Name::BlockQuote
+                        ))
+                {
+                    ended = ended || events[nested].name != Name::SpaceOrTab;
+                    nested -= 1;
+                }
+
+                if events[before].name != Name::ListItemPrefix
+                    && !(closed && events[quote].name == Name::BlockQuotePrefix)
+                    && !(ended && events[nested].name == Name::ListItemPrefix)
+                {
+                    blank = Some(index - 1);
                 }
             }
 
@@ -139,7 +229,24 @@ pub fn list_item_loose(events: &[Event], mut index: usize) -> bool {
         index += 1;
     }
 
-    false
+    // Cindy: micromark's `prepareList`: the blank lines that end an item do not spread it.
+    let Some(blank) = blank else { return false };
+    let mut line = None;
+
+    while index > start {
+        index -= 1;
+        match events[index].name {
+            Name::LineEnding | Name::BlankLineEnding => {
+                if events[index].kind == Kind::Enter {
+                    line = Some(index);
+                }
+            }
+            Name::SpaceOrTab | Name::BlockQuotePrefix | Name::BlockQuoteMarker => {}
+            _ => break,
+        }
+    }
+
+    line.is_none_or(|line| blank < line)
 }
 
 /// Figure out the alignment of a GFM table.

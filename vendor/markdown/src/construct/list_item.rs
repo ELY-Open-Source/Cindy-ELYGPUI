@@ -67,7 +67,6 @@ use crate::tokenizer::Tokenizer;
 use crate::util::{
     constant::{LIST_ITEM_VALUE_SIZE_MAX, TAB_SIZE},
     skip,
-    slice::{Position, Slice},
 };
 use alloc::{vec, vec::Vec};
 
@@ -285,14 +284,8 @@ pub fn after(tokenizer: &mut Tokenizer) -> State {
             tokenizer.events.len() - 1,
             &[Name::ListItem],
         );
-        let mut prefix = Slice::from_position(
-            tokenizer.parse_state.bytes,
-            &Position {
-                start: &tokenizer.events[start].point,
-                end: &tokenizer.point,
-            },
-        )
-        .len();
+        // Cindy: the prefix in columns, so a tab counts to its stop.
+        let mut prefix = tokenizer.point.column - tokenizer.events[start].point.column;
 
         if blank {
             prefix += 1;
@@ -383,7 +376,22 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
 
         if event.name == Name::ListItem {
             if event.kind == Kind::Enter {
-                let end = skip::opt(&tokenizer.events, index, &[Name::ListItem]) - 1;
+                // Cindy: this item's own exit: the next item may follow with no event between.
+                let mut end = index;
+                let mut depth = 0;
+                loop {
+                    let event = &tokenizer.events[end];
+                    if event.name == Name::ListItem {
+                        if event.kind == Kind::Enter {
+                            depth += 1;
+                        } else if depth == 1 {
+                            break;
+                        } else {
+                            depth -= 1;
+                        }
+                    }
+                    end += 1;
+                }
                 let marker = skip::to(&tokenizer.events, index, &[Name::ListItemMarker]);
                 // Guaranteed to be a valid ASCII byte.
                 let marker = tokenizer.parse_state.bytes[tokenizer.events[marker].point.index];

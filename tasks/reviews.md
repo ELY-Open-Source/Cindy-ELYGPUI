@@ -266,3 +266,15 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: `i18n::Arg::Js` carries a JavaScript Number, which picks its plural form and reads as
   `String(n)`. Golden cases hold three sums past 2^54.
 - Round 3: PASS.
+
+## 9.6a The parse: the Markdown tree
+- Round 1: FAIL. P2: emphasis and strikethrough resolved in one walk, where Cindy runs two
+  resolvers, the first met first (`*~~_a~~b_`). P2: an email found in data an underscore's
+  attention had cut (`_中a@b.c_`). P3: `**\0*` lost a star Cindy keeps, since micromark's
+  `movePoint` leaves an opener whole at a chunk's end. P3: a four-line comment in the golden script.
+- Fixed: `attention::pass` runs each kind apart, in a label attention first, and a matched pair
+  resolves what it holds; `chunk_ends` marks the NULs; the domain is read off the source; the
+  comment is one line. Three more email rules came out of fresh mixes: an underscore inside an
+  email is no attention, `\a` escapes nothing, and no email starts in the one before it. The
+  reviewer's 29,513 inputs agree; the golden holds an inline round and an email round.
+- Round 2: PASS.

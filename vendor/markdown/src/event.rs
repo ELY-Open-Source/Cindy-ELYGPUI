@@ -1024,6 +1024,7 @@ pub enum Name {
     /// > | mailto:context@example.com
     ///     ^^^^^^^^^^^^^^^^^^^^^^^^^^
     /// ```
+    #[allow(dead_code)] // Cindy: micromark builds none.
     GfmAutolinkLiteralMailto,
     /// GFM extension: autolink w/ protocol.
     ///
@@ -1078,6 +1079,7 @@ pub enum Name {
     /// > | mailto:a@b.c/d
     ///     ^^^^^^^^^^^^^^
     /// ```
+    #[allow(dead_code)] // Cindy: micromark builds none.
     GfmAutolinkLiteralXmpp,
     /// GFM extension: whole footnote call.
     ///

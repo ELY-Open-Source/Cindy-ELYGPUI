@@ -90,14 +90,14 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
     if tokenizer.parse_state.options.constructs.heading_setext
         && !tokenizer.lazy
         && !tokenizer.pierce
-        // Require a paragraph before.
+        // Cindy: require content before; an underline never follows an underline.
         && (!tokenizer.events.is_empty()
             && matches!(tokenizer.events[skip::opt_back(
                 &tokenizer.events,
                 tokenizer.events.len() - 1,
                 &[Name::LineEnding, Name::SpaceOrTab],
             )]
-            .name, Name::Content | Name::HeadingSetextUnderline))
+            .name, Name::Content))
     {
         tokenizer.enter(Name::HeadingSetextUnderline);
 
@@ -129,7 +129,7 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
 /// ```
 pub fn before(tokenizer: &mut Tokenizer) -> State {
     match tokenizer.current {
-        Some(b'-' | b'=') => {
+        Some(b'-' | b'=') if paragraph_before(tokenizer) => {
             tokenizer.tokenize_state.marker = tokenizer.current.unwrap();
             tokenizer.enter(Name::HeadingSetextUnderlineSequence);
             State::Retry(StateName::HeadingSetextInside)
@@ -243,6 +243,8 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
                 tokenizer.map.add(enter + 1, exit - enter, vec![]);
                 // Remove old Paragraph:Enter.
                 tokenizer.map.add(exit + 3, 1, vec![]);
+                // Cindy: a later underline looks for this paragraph's new start.
+                tokenizer.events[exit + 3].name = Name::Data;
             } else {
                 // Swap type.
                 tokenizer.events[enter].name = Name::Paragraph;
@@ -278,4 +280,60 @@ pub fn resolve(tokenizer: &mut Tokenizer) -> Option<Subresult> {
 
     tokenizer.map.consume(&mut tokenizer.events);
     None
+}
+
+/// Cindy: whether the content before holds a paragraph; micromark knows its definitions here.
+fn paragraph_before(tokenizer: &Tokenizer) -> bool {
+    let events = &tokenizer.events;
+    let underline = skip::to_back(events, events.len() - 1, &[Name::HeadingSetextUnderline]);
+    let exit = skip::opt_back(events, underline - 1, &[Name::LineEnding, Name::SpaceOrTab]);
+
+    if events[exit].name != Name::Content {
+        return true;
+    }
+
+    // Each line is its own content until the resolver links them.
+    let mut lines = vec![exit - 1];
+    let mut first = exit - 1;
+
+    while first > 2 {
+        let before = skip::opt_back(
+            events,
+            first - 1,
+            &[Name::SpaceOrTab, Name::BlockQuotePrefix],
+        );
+
+        if before < 2
+            || events[before].name != Name::LineEnding
+            || events[before - 2].name != Name::Content
+        {
+            break;
+        }
+
+        first = before - 3;
+        lines.push(first);
+    }
+
+    let mut content = Tokenizer::new(events[first].point.clone(), tokenizer.parse_state);
+    let mut state = State::Next(StateName::ContentDefinitionBefore);
+
+    for &index in lines.iter().rev() {
+        if index != first {
+            content.define_skip(events[index].point.clone());
+        }
+
+        // A line before the last holds its line ending.
+        let end = &events[if index == exit - 1 { exit } else { index + 3 }].point;
+        state = content.push(
+            (events[index].point.index, events[index].point.vs),
+            (end.index, end.vs),
+            state,
+        );
+    }
+
+    content.flush(state, true).is_err()
+        || content
+            .events
+            .iter()
+            .any(|event| event.name == Name::Paragraph)
 }

@@ -13,9 +13,10 @@ use crate::message;
 use crate::unist::{Point, Position};
 use crate::util::{
     character_reference::{
-        decode as decode_character_reference, parse as parse_character_reference,
+        decode as decode_character_reference, decode_string,
+        parse as parse_character_reference,
     },
-    infer::{gfm_table_align, list_item_loose, list_loose},
+    infer::{gfm_table_align, list_item_loose, list_spread},
     mdx_collect::{collect, Result as CollectResult},
     normalize_identifier::normalize_identifier,
     slice::{Position as SlicePosition, Slice},
@@ -743,7 +744,7 @@ fn on_enter_link(context: &mut CompileContext) {
 /// Handle [`Enter`][Kind::Enter]:{[`ListOrdered`][Name::ListOrdered],[`ListUnordered`][Name::ListUnordered]}.
 fn on_enter_list(context: &mut CompileContext) {
     let ordered = context.events[context.index].name == Name::ListOrdered;
-    let spread = list_loose(context.events, context.index, false);
+    let spread = list_spread(context.events, context.index);
 
     context.tail_push(Node::List(List {
         ordered,
@@ -1083,14 +1084,18 @@ fn on_exit_raw_text(context: &mut CompileContext) -> Result<(), message::Message
         }
     }
 
+    // Cindy: micromark's padding is a space or a line ending at each end.
+    let edge = |b: u8| matches!(b, b' ' | b'\n' | b'\r');
     let value_bytes = value.as_bytes();
     if value.len() > 2
-        && value_bytes[0] == b' '
-        && value_bytes[value.len() - 1] == b' '
-        && !value_bytes.iter().all(|b| *b == b' ')
+        && edge(value_bytes[0])
+        && edge(value_bytes[value.len() - 1])
+        && !value_bytes.iter().all(|b| edge(*b))
     {
-        value.remove(0);
-        value.pop();
+        let head = if value.starts_with("\r\n") { 2 } else { 1 };
+        let tail = if value.ends_with("\r\n") { 2 } else { 1 };
+        value.replace_range(value.len() - tail.., "");
+        value.replace_range(..head, "");
     }
 
     match context.tail_mut() {
@@ -1110,6 +1115,8 @@ fn on_exit_data(context: &mut CompileContext) -> Result<(), message::Message> {
         &SlicePosition::from_exit_event(context.events, context.index),
     );
     if let Node::Text(text) = context.tail_mut() {
+        // Cindy: a chunk that starts inside a tab keeps the tab's spaces, as micromark's.
+        text.value.extend(core::iter::repeat_n(' ', value.before));
         text.value.push_str(value.as_str());
     } else {
         unreachable!("expected text on stack");
@@ -1130,11 +1137,13 @@ fn on_exit_definition_destination_string(context: &mut CompileContext) {
 
 /// Handle [`Exit`][Kind::Exit]:{[`DefinitionLabelString`][Name::DefinitionLabelString],[`GfmFootnoteDefinitionLabelString`][Name::GfmFootnoteDefinitionLabelString]}.
 fn on_exit_definition_id(context: &mut CompileContext) {
-    let label = context.resume().to_string();
+    context.resume();
     let slice = Slice::from_position(
         context.bytes,
         &SlicePosition::from_exit_event(context.events, context.index),
     );
+    // Cindy: micromark's string content keeps a continuation line's indent.
+    let label = decode_string(slice.as_str());
     let identifier = normalize_identifier(slice.as_str()).to_lowercase();
 
     match context.tail_mut() {
@@ -1221,10 +1230,9 @@ fn on_exit_gfm_task_list_item_value(context: &mut CompileContext) {
     let checked = context.events[context.index].name == Name::GfmTaskListItemValueChecked;
     let ancestor = context.tail_penultimate_mut();
 
+    // Cindy: after an empty item the check may stand outside any item.
     if let Node::ListItem(node) = ancestor {
         node.checked = Some(checked);
-    } else {
-        unreachable!("expected list item on stack");
     }
 }
 
@@ -1278,27 +1286,41 @@ fn on_exit_heading_setext_underline_sequence(context: &mut CompileContext) {
     }
 }
 
+/// Cindy: mdast-util-to-string, which reads an image as its alt.
+fn alt_text(node: &Node) -> String {
+    match node {
+        Node::Image(image) => image.alt.clone(),
+        Node::ImageReference(image) => image.alt.clone(),
+        _ => match node.children() {
+            Some(children) => children.iter().map(alt_text).collect(),
+            None => node.to_string(),
+        },
+    }
+}
+
 /// Handle [`Exit`][Kind::Exit]:[`LabelText`][Name::LabelText].
 fn on_exit_label_text(context: &mut CompileContext) {
     let mut fragment = context.resume();
-    let label = fragment.to_string();
+    let alt = alt_text(&fragment);
     let children = fragment.children_mut().unwrap().split_off(0);
     let slice = Slice::from_position(
         context.bytes,
         &SlicePosition::from_exit_event(context.events, context.index),
     );
+    // Cindy: mdast-util-from-markdown's label is the source, decoded.
+    let label = decode_string(slice.as_str());
     let identifier = normalize_identifier(slice.as_str()).to_lowercase();
 
     let reference = context
         .media_reference_stack
         .last_mut()
         .expect("expected reference on media stack");
-    reference.label.clone_from(&label);
+    reference.label = label;
     reference.identifier = identifier;
 
     match context.tail_mut() {
         Node::Link(node) => node.children = children,
-        Node::Image(node) => node.alt = label,
+        Node::Image(node) => node.alt = alt,
         Node::FootnoteReference(_) => {}
         _ => unreachable!("expected footnote refereence, image, or link on stack"),
     }
@@ -1409,7 +1431,12 @@ fn on_exit_media(context: &mut CompileContext) -> Result<(), message::Message> {
 fn on_exit_list_item(context: &mut CompileContext) -> Result<(), message::Message> {
     if let Node::ListItem(item) = context.tail_mut() {
         if item.checked.is_some() {
-            if let Some(Node::Paragraph(paragraph)) = item.children.first_mut() {
+            // Cindy: the first paragraph, as mdast-util-gfm-task-list-item looks for it.
+            if let Some(Node::Paragraph(paragraph)) = item
+                .children
+                .iter_mut()
+                .find(|node| matches!(node, Node::Paragraph(_)))
+            {
                 if let Some(Node::Text(text)) = paragraph.children.first_mut() {
                     let mut point = text.position.as_ref().unwrap().start.clone();
                     let bytes = text.value.as_bytes();
@@ -1424,12 +1451,8 @@ fn on_exit_list_item(context: &mut CompileContext) -> Result<(), message::Messag
                         point.line += 1;
                         point.column = 1;
                         point.offset += 1;
+                        // Cindy: remark drops one unit, so a CRLF keeps its LF.
                         start += 1;
-                        // Move past the LF of CRLF.
-                        if bytes.len() > 1 && bytes[0] == b'\r' && bytes[1] == b'\n' {
-                            point.offset += 1;
-                            start += 1;
-                        }
                     }
 
                     // The whole text is whitespace: update the text.
@@ -1668,11 +1691,13 @@ fn on_exit_mdx_jsx_tag_self_closing_marker(context: &mut CompileContext) {
 
 /// Handle [`Exit`][Kind::Exit]:[`ReferenceString`][Name::ReferenceString].
 fn on_exit_reference_string(context: &mut CompileContext) {
-    let label = context.resume().to_string();
+    context.resume();
     let slice = Slice::from_position(
         context.bytes,
         &SlicePosition::from_exit_event(context.events, context.index),
     );
+    // Cindy: micromark's string content keeps a continuation line's indent.
+    let label = decode_string(slice.as_str());
     let identifier = normalize_identifier(slice.as_str()).to_lowercase();
     let reference = context
         .media_reference_stack

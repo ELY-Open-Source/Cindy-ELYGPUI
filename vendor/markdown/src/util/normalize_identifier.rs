@@ -59,7 +59,8 @@ pub fn normalize_identifier(value: &str) -> String {
         }
         // First non-whitespace we see after whitespace.
         else if in_whitespace {
-            if start != 0 {
+            // Cindy: a word that starts the value is at 0 too.
+            if !result.is_empty() {
                 result.push(' ');
             }
 

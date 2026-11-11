@@ -184,8 +184,9 @@ fn trim_data(
         if index > 0 || slice.before > 0 {
             let enter_point = tokenizer.events[exit_index - 1].point.clone();
             let mut exit_point = enter_point.clone();
-            exit_point.index += index;
-            exit_point.column += index;
+            // Cindy: a slice that starts inside a tab starts past its byte.
+            exit_point.index += index + usize::from(slice.before > 0);
+            exit_point.column += index + slice.before;
             exit_point.vs = 0;
 
             tokenizer.map.add(

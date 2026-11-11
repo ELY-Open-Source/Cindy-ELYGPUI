@@ -443,6 +443,8 @@ pub fn head_delimiter_start(tokenizer: &mut Tokenizer) -> State {
 
     if tokenizer.lazy || tokenizer.pierce {
         tokenizer.tokenize_state.size = 0;
+        // Cindy: the head row's cell must not read as the slash of a closing tag.
+        tokenizer.tokenize_state.seen = false;
         State::Nok
     } else {
         tokenizer.enter(Name::GfmTableDelimiterRow);

@@ -36,18 +36,24 @@ use crate::tokenizer::Tokenizer;
 ///     ^
 /// ```
 pub fn start(tokenizer: &mut Tokenizer) -> State {
+    // Cindy: micromark closes the flow at a new container, so nothing in it interrupts.
+    if tokenizer.pierce {
+        tokenizer.interrupt = false;
+    }
+
+    // Cindy: a line one of these shortcuts refuses may still head a table.
     match tokenizer.current {
         Some(b'#') => {
             tokenizer.attempt(
                 State::Next(StateName::FlowAfter),
-                State::Next(StateName::FlowBeforeContent),
+                State::Next(StateName::FlowBeforeGfmTable),
             );
             State::Retry(StateName::HeadingAtxStart)
         }
         Some(b'$' | b'`' | b'~') => {
             tokenizer.attempt(
                 State::Next(StateName::FlowAfter),
-                State::Next(StateName::FlowBeforeContent),
+                State::Next(StateName::FlowBeforeGfmTable),
             );
             State::Retry(StateName::RawFlowStart)
         }
@@ -56,7 +62,7 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
         Some(b'*' | b'_') => {
             tokenizer.attempt(
                 State::Next(StateName::FlowAfter),
-                State::Next(StateName::FlowBeforeContent),
+                State::Next(StateName::FlowBeforeGfmTable),
             );
             State::Retry(StateName::ThematicBreakStart)
         }
@@ -70,14 +76,14 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
         Some(b'e' | b'i') => {
             tokenizer.attempt(
                 State::Next(StateName::FlowAfter),
-                State::Next(StateName::FlowBeforeContent),
+                State::Next(StateName::FlowBeforeGfmTable),
             );
             State::Retry(StateName::MdxEsmStart)
         }
         Some(b'{') => {
             tokenizer.attempt(
                 State::Next(StateName::FlowAfter),
-                State::Next(StateName::FlowBeforeContent),
+                State::Next(StateName::FlowBeforeGfmTable),
             );
             State::Retry(StateName::MdxExpressionFlowStart)
         }

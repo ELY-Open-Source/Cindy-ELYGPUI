@@ -389,15 +389,50 @@ defines scope and what 1:1 means.
   their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
   Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
   tests `open_external` records the address and starts no program.
-- Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast
-  (wooorm's markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in
-  `vendor/markdown` (1.0.0, upstream otherwise) with three patches marked `Cindy:` where it parts
-  from micromark: ATX heading text, character classes as micromark reads UTF-16 code units, and
-  laziness at end of file. `src/rich_answer.rs` is `richAnswerText`: `cindy-ui` fences split from
-  Markdown, `stream.rs` replays the ops once, `values.rs` resolves them, `js.rs` parses them as
-  `JSON.parse` does (`Infinity` apart from `null`, no nesting limit: its recursion grows the stack
-  through `stacker`, as V8 nests a million levels). Goldens in `tests/fixtures/preview` come from
-  Cindy's functions; `sync-golden.mjs` stubs Electron, which `mapper.ts` imports.
+- Previews: `src/markdown_text.rs` is `markdownPreviewText` over the `markdown` crate's mdast (wooorm's
+  markdown-rs, the mdast remark-parse and remark-gfm build). The crate is vendored in `vendor/markdown`
+  (1.0.0, upstream otherwise) with patches marked `Cindy:` where it parts from micromark and
+  mdast-util-from-markdown: ATX heading text, character classes as micromark reads UTF-16 code units,
+  laziness at end of file, and those of the Markdown tree below. `src/rich_answer.rs` is
+  `richAnswerText`: `cindy-ui` fences split from Markdown, `stream.rs` replays the ops once,
+  `values.rs` resolves them, `js.rs` parses them as `JSON.parse` does (`Infinity` apart from `null`, no
+  nesting limit: its recursion grows the stack through `stacker`, as V8 nests a million levels).
+  Goldens in `tests/fixtures/preview` come from Cindy's functions; `sync-golden.mjs` stubs Electron,
+  which `mapper.ts` imports.
+- Markdown tree: `src/markdown.rs` is the parse of `MarkdownRenderer.tsx`'s `REMARK_PLUGINS`:
+  remark-gfm with `singleTilde: false`, remark-cjk-friendly and remark-math, golden `markdown-tree`
+  (`scripts/golden/markdownTree.mjs` runs remark-parse with the list's first three plugins; its cases
+  hold CommonMark 0.31.2's examples and seeded mixes of tokens). NUL reads as U+FFFD. `flanks.rs` is
+  micromark-extension-cjk-friendly's `tokenizeAttention` on the classes of
+  `resources/attention-classes.json`, which the sync reads off the extension's own `classifyCharacter`;
+  the crate asks it through `ParseOptions.attention_flanks` with the slice its text tokenizer was fed,
+  micromark's chunk stream: past a slice's end lies whitespace, and a variation selector reads the
+  character before it only inside its chunk, which a NUL ends. `autolinks.rs` is
+  mdast-util-gfm-autolink-literal's `transformGfmAutolinkLiterals` with mdast-util-find-and-replace's
+  walk: web addresses and emails left in text become links, outside links and link references. The
+  golden leaves out the `checked` remark sets on a node that is no list item, which nothing reads. The
+  crate's patches for this tree, each found by the golden: `previousUnbalanced` for literal autolinks
+  (`label_spans`: a label start holds them back until a failed end balances it), an email tried before
+  `www`, no `mailto:` or `xmpp:` prefix, a code or math span's padding of spaces or line endings, a
+  chunk that starts inside a tab keeps the tab's spaces, a list prefix counted in columns, a label read
+  from its source (`decode_string`, micromark's `decodeString`), an identifier's first word, an image's
+  alt with the alts inside it, a table head after a line a flow shortcut refused, and the table head's
+  flag reset when it is refused. Containers as micromark's document closes them: `interrupt` holds
+  while the flow has a construct open and through the containers of one line, a list is spread by two
+  line endings between items (a quote that closed there ends before its last line's ending), an item by
+  a blank line before its last that is its own, complete html on a lazy line interrupts a paragraph and
+  stays in its containers, the empty line at end of file is lazy to open quotes alone, and no line
+  continues a setext heading lazily. An underline over definitions alone is refused when it is read
+  (`paragraph_before` reads the content's definitions then), and none follows an underline. Attention
+  and strikethrough resolve apart, as micromark's two resolvers do: at the top the kind the text met
+  first goes first, in a label attention does (`insideSpan`'s order), and a matched pair resolves what
+  it holds, then lets it go. An opener that ends where a micromark chunk ends (before a NUL,
+  `ParseOptions.chunk_ends`) keeps its whole run as text once part of it is used, as `movePoint` leaves
+  it. An email is micromark's, read before attention: its domain is read off the source, it keeps an
+  underscore past its first byte while no label start stands unbalanced, an escape takes its first byte
+  only when that is punctuation, and none starts in the domain of the email before it or right after a
+  link's atext. A task check opens the first content of the flow an item starts, so a lazy line after
+  an empty item loses its `[x]` as Cindy's does; it drops one unit after it, so a CRLF keeps its LF.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

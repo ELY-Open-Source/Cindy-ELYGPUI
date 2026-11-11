@@ -73,7 +73,8 @@ impl<'a> Slice<'a> {
         // If we have virtual spaces before, it means we are past the actual
         // character at that index, and those virtual spaces.
         if before > 0 {
-            before = TAB_SIZE - before;
+            // Cindy: what is left of a tab depends on where its stop is.
+            before = (TAB_SIZE - position.start.column % TAB_SIZE) % TAB_SIZE + 1;
             start += 1;
         }
 

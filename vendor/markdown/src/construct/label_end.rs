@@ -347,6 +347,14 @@ pub fn ok(tokenizer: &mut Tokenizer) -> State {
     // Remove the start.
     let label_start = tokenizer.tokenize_state.label_starts.pop().unwrap();
 
+    // Cindy: micromark's resolved label holds no label start, and its footnote call never did.
+    let end = if label_start.kind == LabelKind::GfmFootnote {
+        0
+    } else {
+        tokenizer.point.index
+    };
+    balance(tokenizer, label_start.start.0, end);
+
     // If this is a link or footnote, we need to mark earlier link starts as no
     // longer viable for use (as they would otherwise contain a link).
     // These link starts are still looking for balanced closing brackets, so
@@ -386,9 +394,22 @@ pub fn ok(tokenizer: &mut Tokenizer) -> State {
 /// ```
 pub fn nok(tokenizer: &mut Tokenizer) -> State {
     let start = tokenizer.tokenize_state.label_starts.pop().unwrap();
+    balance(tokenizer, start.start.0, tokenizer.point.index);
     tokenizer.tokenize_state.label_starts_loose.push(start);
     tokenizer.tokenize_state.end = 0;
     State::Nok
+}
+
+/// Cindy: mark the label start at event `start` balanced from byte `end` on.
+fn balance(tokenizer: &mut Tokenizer, start: usize, end: usize) {
+    let at = tokenizer.events[start].point.index;
+    let span = tokenizer
+        .tokenize_state
+        .label_spans
+        .iter_mut()
+        .rfind(|span| span.0 == at)
+        .expect("a label start has its span");
+    span.1 = Some(end);
 }
 
 /// At a resource.

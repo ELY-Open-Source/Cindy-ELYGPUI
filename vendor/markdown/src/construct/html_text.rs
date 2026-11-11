@@ -51,11 +51,11 @@
 //! [html_flow]: crate::construct::html_flow
 //! [html_parsing]: https://html.spec.whatwg.org/multipage/parsing.html#parsing
 
-use crate::construct::partial_space_or_tab::space_or_tab;
+use crate::construct::partial_space_or_tab::space_or_tab_min_max;
 use crate::event::Name;
 use crate::state::{Name as StateName, State};
 use crate::tokenizer::Tokenizer;
-use crate::util::constant::HTML_CDATA_PREFIX;
+use crate::util::constant::{HTML_CDATA_PREFIX, TAB_SIZE};
 
 /// Start of HTML (text).
 ///
@@ -637,7 +637,16 @@ pub fn line_ending_after(tokenizer: &mut Tokenizer) -> State {
             State::Next(StateName::HtmlTextLineEndingAfterPrefix),
             State::Nok,
         );
-        State::Retry(space_or_tab(tokenizer))
+        // Cindy: micromark's line prefix stops short of indented code.
+        State::Retry(space_or_tab_min_max(
+            tokenizer,
+            0,
+            if tokenizer.parse_state.options.constructs.code_indented {
+                TAB_SIZE - 1
+            } else {
+                usize::MAX
+            },
+        ))
     } else {
         State::Retry(StateName::HtmlTextLineEndingAfterPrefix)
     }

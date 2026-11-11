@@ -10,6 +10,7 @@
 //! * [GFM: Footnote definition][crate::construct::gfm_footnote_definition]
 
 use crate::event::{Content, Event, Kind, Link, Name};
+use crate::construct::html_flow::COMPLETE;
 use crate::message;
 use crate::state::{Name as StateName, State};
 use crate::subtokenize::divide_events;
@@ -146,7 +147,12 @@ pub fn container_new_before(tokenizer: &mut Tokenizer) -> State {
     {
         let child = tokenizer.tokenize_state.document_child.as_ref().unwrap();
 
-        tokenizer.interrupt = child.interrupt;
+        // Cindy: micromark's `interrupt` is any construct the flow holds open.
+        tokenizer.interrupt = child.interrupt
+            || child
+                .stack
+                .iter()
+                .any(|name| matches!(name, Name::CodeIndented | Name::HtmlFlow));
 
         // …and if we’re in a concrete construct, new containers can’t “pierce”
         // into them.
@@ -285,7 +291,7 @@ pub fn container_new_after(tokenizer: &mut Tokenizer) -> State {
         .document_container_stack
         .push(container);
     tokenizer.tokenize_state.document_continued += 1;
-    tokenizer.interrupt = false;
+    // Cindy: micromark keeps `interrupt` for the containers that follow on this line.
     State::Retry(StateName::DocumentContainerNewBefore)
 }
 
@@ -373,6 +379,33 @@ pub fn flow_end(tokenizer: &mut Tokenizer) -> State {
         state,
     );
 
+    // Cindy: complete html that interrupts a paragraph on a lazy line stays in the containers.
+    let ended = tokenizer.previous == Some(b'\n');
+    let html = child.lazy
+        && tokenizer.tokenize_state.document_lazy_accepting_before
+        && (tokenizer.current.is_some() || ended)
+        && child.stack.contains(&Name::HtmlFlow)
+        && child.tokenize_state.marker == COMPLETE;
+
+    // Cindy: the empty line at eof is lazy to the quotes this line leaves open.
+    if tokenizer.current.is_none()
+        && ended
+        && child
+            .stack
+            .iter()
+            .any(|name| matches!(name, Name::HtmlFlow | Name::CodeFenced | Name::MathFlow))
+    {
+        let stack = &tokenizer.tokenize_state.document_container_stack;
+        let open = if child.lazy && !html {
+            tokenizer.tokenize_state.document_continued
+        } else {
+            stack.len()
+        };
+        child.lazy = stack[..open]
+            .iter()
+            .any(|container| container.kind == Container::BlockQuote);
+    }
+
     // Cindy: micromark feeds eof with the last line before judging laziness.
     let state = if tokenizer.current.is_none() {
         if let Err(message) = child.flush(state, false) {
@@ -432,7 +465,8 @@ pub fn flow_end(tokenizer: &mut Tokenizer) -> State {
     if !document_lazy_continuation_current && !child.events.is_empty() {
         let before = skip::opt_back(&child.events, child.events.len() - 1, &[Name::LineEnding]);
         let name = &child.events[before].name;
-        if name == &Name::Content || name == &Name::HeadingSetextUnderline {
+        // Cindy: no line continues a setext heading lazily.
+        if name == &Name::Content {
             document_lazy_continuation_current = true;
         }
     }
@@ -440,9 +474,10 @@ pub fn flow_end(tokenizer: &mut Tokenizer) -> State {
     // Reset “piercing”.
     child.pierce = false;
 
-    if child.lazy
-        && tokenizer.tokenize_state.document_lazy_accepting_before
-        && document_lazy_continuation_current
+    if html
+        || (child.lazy
+            && tokenizer.tokenize_state.document_lazy_accepting_before
+            && document_lazy_continuation_current)
     {
         tokenizer.tokenize_state.document_continued =
             tokenizer.tokenize_state.document_container_stack.len();
@@ -537,7 +572,10 @@ fn exit_containers(tokenizer: &mut Tokenizer, phase: &Phase) -> Result<(), messa
         tokenizer.tokenize_state.document_exits[index] = Some(exits);
     }
 
-    child.interrupt = false;
+    // Cindy: after the line was fed, the flow still holds what that line opened.
+    if *phase != Phase::After {
+        child.interrupt = false;
+    }
 
     Ok(())
 }

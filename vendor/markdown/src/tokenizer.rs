@@ -222,6 +222,8 @@ pub struct TokenizeState<'a> {
     ///
     /// Used when tokenizing [text content][crate::construct::text].
     pub label_starts_loose: Vec<LabelStart>,
+    /// Cindy: each label start and where a failed end balanced it (`previousUnbalanced`).
+    pub label_spans: Vec<(usize, Option<usize>)>,
     /// Stack of images and links.
     ///
     /// Used when tokenizing [text content][crate::construct::text].
@@ -275,6 +277,8 @@ pub struct TokenizeState<'a> {
 pub struct Tokenizer<'a> {
     /// Jump between line endings.
     column_start: Vec<(usize, usize)>,
+    /// Cindy: the byte range of each slice pushed, as micromark's chunk streams.
+    pub slices: Vec<(usize, usize)>,
     // First line where this tokenizer starts.
     first_line: usize,
     /// Current point after the last line ending (excluding jump).
@@ -331,6 +335,7 @@ impl<'a> Tokenizer<'a> {
             current: None,
             // To do: reserve size when feeding?
             column_start: vec![],
+            slices: vec![],
             first_line: point.line,
             line_start: point.clone(),
             consumed: true,
@@ -355,6 +360,7 @@ impl<'a> Tokenizer<'a> {
                 end: 0,
                 label_starts: vec![],
                 label_starts_loose: vec![],
+                label_spans: vec![],
                 marker: 0,
                 marker_b: 0,
                 markers: &[],
@@ -622,6 +628,7 @@ impl<'a> Tokenizer<'a> {
 
     /// Tokenize.
     pub fn push(&mut self, from: (usize, usize), to: (usize, usize), state: State) -> State {
+        self.slices.push((from.0, to.0));
         push_impl(self, from, to, state, false)
     }
 

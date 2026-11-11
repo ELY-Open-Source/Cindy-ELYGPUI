@@ -123,16 +123,31 @@ pub fn subtokenize(
                     && events[index - 1].kind == Kind::Enter
                     && events[index - 1].name == Name::Paragraph
                 {
-                    let before = skip::opt_back(
+                    // Cindy: the first content of the flow an item starts, a lazy line's too.
+                    let mut before = skip::opt_back(
                         events,
                         index - 2,
                         &[
-                            Name::BlankLineEnding,
+                            Name::BlockQuotePrefix,
                             Name::Definition,
                             Name::LineEnding,
                             Name::SpaceOrTab,
                         ],
                     );
+                    if before > 1 && events[before].name == Name::BlankLineEnding {
+                        before -= 2;
+                    }
+                    while events[before].kind == Kind::Exit
+                        && matches!(
+                            events[before].name,
+                            Name::ListItem
+                                | Name::ListOrdered
+                                | Name::ListUnordered
+                                | Name::BlockQuote
+                        )
+                    {
+                        before -= 1;
+                    }
 
                     if events[before].kind == Kind::Exit
                         && events[before].name == Name::ListItemPrefix

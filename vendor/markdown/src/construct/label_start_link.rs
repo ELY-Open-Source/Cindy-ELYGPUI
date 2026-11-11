@@ -51,6 +51,8 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
         tokenizer.consume();
         tokenizer.exit(Name::LabelMarker);
         tokenizer.exit(Name::LabelLink);
+        let at = tokenizer.events[start].point.index;
+        tokenizer.tokenize_state.label_spans.push((at, None));
         tokenizer.tokenize_state.label_starts.push(LabelStart {
             kind: LabelKind::Link,
             start: (start, tokenizer.events.len() - 1),

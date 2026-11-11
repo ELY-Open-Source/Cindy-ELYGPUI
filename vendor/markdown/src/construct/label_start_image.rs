@@ -108,6 +108,8 @@ pub fn after(tokenizer: &mut Tokenizer) -> State {
     {
         State::Nok
     } else {
+        let at = tokenizer.events[tokenizer.events.len() - 6].point.index;
+        tokenizer.tokenize_state.label_spans.push((at, None));
         tokenizer.tokenize_state.label_starts.push(LabelStart {
             kind: LabelKind::Image,
             start: (tokenizer.events.len() - 6, tokenizer.events.len() - 1),
