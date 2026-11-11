@@ -328,6 +328,12 @@ listed in `tasks/done.md`.
       - [x] 9.6j2b The fade state: `assignKeys`, the timeline (`scheduleWordFadeSegment`), the
           candidates and the transform on the renderer tree
     - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
+      - [ ] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
+          (`useStreamFadePreference.ts`, `chat.streamFadePreference`)
+      - [ ] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate
+          and commit, `streamingMarkdownBlocks`' kept blocks, `StreamingBody`'s pending line
+      - [ ] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem`: a word and a marker faded on the
+          clock, settled at its end
   - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
