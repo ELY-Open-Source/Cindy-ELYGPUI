@@ -322,6 +322,11 @@ listed in `tasks/done.md`.
     - [x] 9.6j1 `repairStreamingMarkdown`, `splitStreamingMarkdownChunks` and
         `getStreamingMarkdownThrottleInterval`, with their golden
     - [ ] 9.6j2 `rehypeStreamWordFade`: the fade segments, their keys and the timeline
+      - [ ] 9.6j2a `splitWords`: `Intl.Segmenter`'s words as Chromium's ICU rules cut them
+          (`word.txt`: a full stop and a colon break between letters, Hangul apart from letters),
+          checked against V8 on every locale string; Han and kana runs go to a dictionary
+      - [ ] 9.6j2b The fade state: `assignKeys`, the timeline (`scheduleWordFadeSegment`), the
+          candidates and the transform on the renderer tree
     - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
   - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
