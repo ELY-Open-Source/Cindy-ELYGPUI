@@ -1,11 +1,12 @@
 //! `scrollIntoNearestView` for the active task: `block: 'nearest'`, smooth unless motion is
 //! reduced, along Chromium's programmatic scroll curve.
 
-use std::time::Duration;
-
 use gpui::{App, Bounds, Global, Pixels, ScrollHandle, Window};
 
-use crate::motion::{self, Tween};
+use crate::{
+    motion::ReducedMotion,
+    smooth_scroll::{self, Run},
+};
 
 /// The list's scroller, the task waiting to be revealed and the scroll on its way.
 #[derive(Default)]
@@ -18,11 +19,6 @@ pub struct Reveal {
 }
 
 impl Global for Reveal {}
-
-struct Run {
-    tween: Tween,
-    set: Pixels,
-}
 
 /// A task that became active, or mounted active, as the `isActive` effect sees it.
 pub fn activated(id: &str, cx: &mut App) {
@@ -43,11 +39,6 @@ fn nearest(top: f32, bottom: f32, port_top: f32, port_bottom: f32) -> f32 {
     } else {
         0.0
     }
-}
-
-/// `ScrollOffsetAnimationCurve::EaseInOutSegmentDuration`, delta based, in device pixels.
-fn duration(delta: f32) -> Duration {
-    Duration::from_secs_f32(delta.abs().sqrt().min(1.5 * 60.0) / 60.0)
 }
 
 /// The focused project's node, as the effect's `scrollIntoView` in the next frame finds it.
@@ -78,6 +69,7 @@ pub fn project_painted(key: &str, node: Bounds<Pixels>, window: &mut Window, cx:
 /// `scrollIntoView({ block: 'nearest' })` for the box drawn at `row`.
 fn scroll(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
     let now = cx.background_executor().now();
+    let held = (window.scale_factor(), cx.global::<ReducedMotion>().0);
     let reveal = cx.global_mut::<Reveal>();
     let port = reveal.handle.bounds();
     let delta = nearest(
@@ -86,20 +78,12 @@ fn scroll(id: &str, row: Bounds<Pixels>, window: &mut Window, cx: &mut App) {
         port.top().into(),
         port.bottom().into(),
     );
-    let from = reveal.handle.offset().y;
-    let max = reveal.handle.max_offset().y;
-    let to = (from - gpui::px(delta)).clamp(-max, gpui::px(0.0));
-    if to == from {
-        // `CancelProgrammaticScrollAnimation` on a no-op offset.
-        reveal.run = None;
+    let Some((by, length)) =
+        smooth_scroll::start(&reveal.handle, &mut reveal.run, delta, held, now)
+    else {
         return log::debug!(target: "sessions", "{id} already in view");
-    }
-    let length = duration(f32::from(to - from) * window.scale_factor());
-    let length = motion::length(length, cx);
-    let mut tween = Tween::still(from.into(), now);
-    tween.toward_along(to.into(), now, length, motion::programmatic_scroll);
-    log::info!(target: "sessions", "{id} revealed: {:.1}px over {}ms", f32::from(to - from), length.as_millis());
-    cx.global_mut::<Reveal>().run = Some(Run { tween, set: from });
+    };
+    log::info!(target: "sessions", "{id} revealed: {by:.1}px over {}ms", length.as_millis());
     window.request_animation_frame();
 }
 
@@ -112,23 +96,8 @@ pub fn step(window: &mut Window, cx: &mut App) {
         Some((key, false)) => Some((key, true)),
         _ => None,
     };
-    let Some(run) = reveal.run.as_mut() else {
-        return;
-    };
-    if reveal.handle.offset().y != run.set {
-        log::debug!(target: "sessions", "reveal stopped by a scroll");
-        reveal.run = None;
-        return;
-    }
-    let (at, going) = run.tween.at(now);
-    run.set = gpui::px(at);
-    reveal
-        .handle
-        .set_offset(gpui::point(reveal.handle.offset().x, run.set));
-    if going {
+    if smooth_scroll::step(&reveal.handle, &mut reveal.run, now) {
         window.request_animation_frame();
-    } else {
-        reveal.run = None;
     }
 }
 

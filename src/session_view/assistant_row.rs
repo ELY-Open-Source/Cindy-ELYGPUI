@@ -4,7 +4,7 @@ use std::{collections::HashMap, rc::Rc};
 
 use gpui::{AnyElement, App, IntoElement as _, ParentElement as _, Styled as _, Window, div};
 
-use super::{SessionView, markdown, width::Widths};
+use super::{SessionView, links, markdown, session, target_link, width::Widths};
 use crate::{
     chat_message::merge::{Fields, get},
     goal_verdict,
@@ -33,8 +33,9 @@ pub(super) fn tree(key: &str, text: &str, cx: &mut App) -> Option<Rc<Vec<Hast>>>
 pub(super) fn element(
     key: &str,
     message: &Fields,
+    files: &[(String, String)],
     widths: Widths,
-    window: &Window,
+    window: &mut Window,
     cx: &mut App,
 ) -> Option<AnyElement> {
     let flag = |name| js::truthy(get(message, name));
@@ -47,7 +48,13 @@ pub(super) fn element(
         return None;
     }
     let tree = tree(key, shown, cx)?;
-    let body = markdown::element(key, &tree, widths.message, window, cx);
+    let dir = session(cx).and_then(|task| task.working_dir.clone());
+    let dir = dir.unwrap_or_default();
+    let anchors = target_link::read(key, &tree, files, &dir, window, cx);
+    let mut body = markdown::element(key, &tree, &anchors, widths.message, window, cx);
+    if !anchors.is_empty() {
+        body = links::host(&format!("{key}-md"), anchors.shared(), body, cx);
+    }
     // `flex w-full flex-col items-start gap-1.5` about the bare bubble, `w-full min-w-0`.
     let bubble = div().w_full().min_w_0().child(body);
     let column = div()

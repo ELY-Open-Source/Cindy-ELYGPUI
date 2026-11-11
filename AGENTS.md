@@ -508,8 +508,9 @@ defines scope and what 1:1 means.
   and the pill of a code that holds no text. A line's end (`Inline::end`) drops the spaces before
   it, through empty codes (`logs/review/9.6f-blink-trailing.log`). Where a wrap drops a code's
   space, the code closes before it, and a code the space opened keeps its box on that row
-  (`Look::stub`). A footnote's `sup` and an image
-  read as their text until 9.6h and 9.6i. `inline.rs` draws the rows: each face is shaped in its own font, inline code
+  (`Look::stub`). A `sup` is Tailwind's preflight: 75% of
+  its face's size on the row's baseline, lifted half an em, its line height none. An image reads
+  as its text until 9.6i. `inline.rs` draws the rows: each face is shaped in its own font, inline code
   (`text-14`, the code font, the block's line ratio) takes `px-[0.4em]` at its two ends, and
   `flow::rows_where` breaks the line: a word with no break overflows, as Cindy's does, and breaks
   only after a link's letters (`overflow-wrap: anywhere`; `logs/review/9.6f-blink-words.log`). A row
@@ -517,7 +518,7 @@ defines scope and what 1:1 means.
   (`--msg-md-inline-code-bg`, `py-[0.2em]` about the font's height, 6px corners at the code's own
   ends). A row with code is Blink's line box (`extent`, `grown`: the leading's upper half floored;
   `logs/review/9.6f-blink-inline.log`), so it may be a fraction taller than its line. gpui lays a
-  code piece out to the device pixel. A link's target and menu come with 9.6h. `marker.rs` draws a
+  code piece out to the device pixel. `marker.rs` draws a
   list's markers as `list_marker.cc` places them: an item's marker waits for the first line under
   the item, at any depth, and hangs from that line's rows at the item's own edge, by its own
   baseline; an item with no line keeps it and is one line high, and an item with no block at all is
@@ -575,6 +576,30 @@ defines scope and what 1:1 means.
   chapter. Golden `smart-paths`: `scripts/golden/smartPaths.mjs` runs Cindy's cache over Cindy's
   main resolver on real trees, each call held at a gate until the step that lands it, on a clock it
   sets; `lit.json` comes from the renderer's private function through the hast golden's bundle.
+- Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink`
+  for a privileged message of a local task. Before the blocks are laid out `read` takes the
+  tree's `a` nodes in document order (`Anchors`, each by its node's address): the raw local
+  destination when the tree kept one, `markdown_target::link` with the files the task's user
+  messages attached (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook
+  (`resolved::resolved`, mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its
+  rows). `Face` is what the node draws as: a span (plain text, a code reference, a bare path
+  that has not resolved; the audio player comes with 9.13, a resolved target's chip and link
+  with 9.6h4), `Later` (a session, project or session-card link, underlined and inert until
+  9.6h5), a web address, or an inline target. A link is underlined and breaks anywhere; each
+  stretch of its text on each row, and each empty code's box it holds, is a box (`dress`, named
+  by row and part), the first its Tab stop, its authored `title` gpui's tooltip, all of them
+  `links::listen`:
+  the clicks, keys and menu `UserMessageUrlLink` has, on `What::Url` for a web address (the
+  open-with menu) and `What::Target` for the rest (`useLinkContextMenu`: Open link, then Copy
+  link with the `href` as the renderer handed it on). One menu per message hosts them
+  (`links::host` under `<key>-md`). `open` is `openInlineTarget`: an anchor scrolls to its id,
+  else the `anchorNotFound` toast; an authored local link asks `resolve_smart` past the cache,
+  then toasts `duplicateFiles` or `fileUnavailable`; what a found file and a stored image open
+  comes with 9.13, so those clicks log and open nothing. `session_view/jump.rs` is the anchor's
+  `getElementById` and `scrollIntoView({ behavior: 'smooth', block: 'start' })`: a heading, a
+  footnote's item and an `a` with an `id` record where they paint (the first in the document
+  keeps the id), and the stream's `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's
+  programmatic curve that `sessions/reveal.rs` shares; reduced motion jumps.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

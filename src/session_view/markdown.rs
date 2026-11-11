@@ -12,7 +12,7 @@ mod tests;
 use ely_gpui_component::theme::ActiveTheme as _;
 use gpui::{
     AnyElement, App, Div, FontWeight, Hsla, InteractiveElement as _, IntoElement as _,
-    ParentElement as _, Styled as _, TextStyle, Window, div,
+    ParentElement as _, Styled as _, TextStyle, Window, canvas, div,
 };
 
 use self::{
@@ -20,7 +20,7 @@ use self::{
     marker::{Kind, Marker},
     text::{Inline, Mark, Metrics, Piece, metrics},
 };
-use super::flow::draw;
+use super::{flow::draw, jump, target_link::Anchors};
 use crate::{
     appearance_settings::{code_size, text_size},
     markdown::hast::{self, Element, Hast, Prop},
@@ -110,6 +110,24 @@ struct Walk<'a> {
     window: &'a Window,
     cx: &'a App,
     zoom: f32,
+    anchors: &'a Anchors,
+}
+
+/// `drawn` with the node's `id` kept where it paints, for an anchor to find.
+fn named(node: &Element, drawn: AnyElement) -> AnyElement {
+    let Some(Prop::Text(id)) = node.prop("id") else {
+        return drawn;
+    };
+    let id = id.clone();
+    let probe = canvas(
+        move |bounds, _, cx| jump::painted(&id, bounds, cx),
+        |_, _, _, _| {},
+    );
+    div()
+        .relative()
+        .child(drawn)
+        .child(probe.absolute().inset_0())
+        .into_any_element()
 }
 
 impl Walk<'_> {
@@ -152,7 +170,7 @@ impl Walk<'_> {
     }
 
     fn look<'a>(
-        &self,
+        &'a self,
         face: &'a Face,
         width: f32,
         path: &'a str,
@@ -174,6 +192,7 @@ impl Walk<'_> {
             width: css(width).to_pixels(self.window.rem_size()),
             zoom: self.zoom,
             anywhere,
+            anchors: self.anchors,
         }
     }
 
@@ -318,6 +337,7 @@ impl Walk<'_> {
                     Some(item.children(hung.collect::<Vec<_>>()).into_any_element())
                 }
             };
+            let element = element.map(|element| named(item, element));
             items.push(Laid::new(margins, element));
         }
         shift(markers, -indent);
@@ -412,7 +432,7 @@ impl Walk<'_> {
                 let level = tag[1..].parse().expect("a heading's level");
                 let (face, margin) = self.heading(level, face);
                 let lines = self.lines(&block.children, &face, width, path, markers);
-                Laid::new((margin, margin), lines)
+                Laid::new((margin, margin), lines.map(|lines| named(block, lines)))
             }
         };
         Some(laid)
@@ -458,6 +478,7 @@ impl Walk<'_> {
 pub(super) fn element(
     key: &str,
     tree: &[Hast],
+    anchors: &Anchors,
     width: f32,
     window: &Window,
     cx: &App,
@@ -466,6 +487,7 @@ pub(super) fn element(
         window,
         cx,
         zoom: cx.global::<Zoom>().0,
+        anchors,
     };
     let size = text_size(15.0, cx);
     let face = Face {

@@ -258,7 +258,7 @@ listed in `tasks/done.md`.
     - [x] 9.6h2 The renderer's resolver (`localPathResolver.ts`): `resolveLocalPathSmart`, its
       peek, cache and negative revalidation, and `useResolvedMarkdownTarget` for a local task
       over the mounted content
-    - [ ] 9.6h3 `MarkdownTargetLink`'s link: the external link with its open-with menu, the
+    - [x] 9.6h3 `MarkdownTargetLink`'s link: the external link with its open-with menu, the
       in-document anchor, plain text and code references, the authored local link that resolves
       again on a click, `useLinkContextMenu`
     - [ ] 9.6h4 Resolved local targets: `FileTargetChip`, `ResolvedLocalLink`,

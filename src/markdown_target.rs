@@ -1,5 +1,12 @@
 //! `markdownTarget.ts`: what a Markdown link or an inline code span points at.
-#![allow(dead_code)] // The link renderers come with 9.6h.
+
+#![cfg_attr(
+    not(test),
+    expect(
+        dead_code,
+        reason = "inline code's targets come with 9.6h4, a remote task's with its chapter"
+    )
+)]
 
 use std::sync::LazyLock;
 

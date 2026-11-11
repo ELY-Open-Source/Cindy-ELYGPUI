@@ -1,10 +1,5 @@
 //! Node 24's `path`: `join`, `normalize`, `basename` and `isAbsolute`, for either platform.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the host runs one platform's half")
-)]
-
 #[cfg(test)]
 mod tests;
 

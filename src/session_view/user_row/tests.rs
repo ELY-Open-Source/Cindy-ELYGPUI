@@ -89,6 +89,26 @@ pub(in crate::session_view) fn open_roles<'a>(
     serve(cx, dir, width, db)
 }
 
+/// As `open_roles`, with `s1` in the folder `working`.
+pub(in crate::session_view) fn open_in<'a>(
+    cx: &'a mut TestAppContext,
+    dir: &std::path::Path,
+    working: &str,
+    rows: &[(&str, &str)],
+) -> &'a mut VisualTestContext {
+    let db = super::super::tests::db();
+    db.execute(
+        "UPDATE sessions SET working_dir = ?1 WHERE id = 's1'",
+        [working],
+    )
+    .unwrap();
+    for (n, (role, content)) in rows.iter().enumerate() {
+        let content = serde_json::to_string(content).unwrap();
+        put_as(&db, role, n as i64, &content, None);
+    }
+    serve(cx, dir, 2400.0, db)
+}
+
 fn serve<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,

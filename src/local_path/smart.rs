@@ -1,10 +1,5 @@
 //! `localPathResolver.ts`'s smart lookups: the resolver asked off the main thread, answers kept.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the link renderers call it in 9.6h3")
-)]
-
 use std::{
     collections::{HashMap, HashSet},
     time::Instant,
@@ -29,6 +24,10 @@ mod tests;
 /// `SMART_RESOLVE_CACHE_CAP`.
 const CAP: usize = 500;
 /// `NEGATIVE_RECHECK_MIN_MS`.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "workspace media paths recheck in 9.6i")
+)]
 const RECHECK_MIN: u64 = 2_000;
 
 /// `SmartResolveResult`; `None` holds the legacy join.
@@ -160,6 +159,10 @@ pub fn ask(href: &str, dir: &str, then: impl FnOnce(&mut App) + 'static, cx: &mu
 }
 
 /// `revalidateNegativeLocalPathSmart`: whether an answer is on its way.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "workspace media paths recheck in 9.6i")
+)]
 pub fn recheck(href: &str, dir: &str, boundary: Option<u64>, cx: &mut App) -> bool {
     let (key, now) = (key(dir, href), now(cx));
     let paths = cx.default_global::<SmartPaths>();

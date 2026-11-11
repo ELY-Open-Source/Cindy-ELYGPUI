@@ -347,3 +347,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   joined has settled; a hook's run number drops a callback its effect cancelled. The delayed
   eviction and recheck, 501 mounted targets, the millisecond controls, 11 transitions and 1026
   lookup conversions agree with Cindy's hook under React. No live desktop check was made.
+
+## 9.6h3 `MarkdownTargetLink`'s link
+- Round 1: FAIL. A link's boxes shared an element id across rows, so only its first row took a
+  click; an empty code's box inside a link had no listeners; an authored title was dropped.
+  The reveal's extraction kept its behaviour.
+- Round 2: PASS. A box is named by row and part, the pill and the wrap's stub carry their link,
+  and the title is the link's tooltip. Six reproductions, four regression tests and nine cases
+  through Cindy's renderer agree. No live desktop check was made.

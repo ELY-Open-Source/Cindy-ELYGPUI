@@ -124,7 +124,7 @@ pub fn locate(href: &str, window: &Window, cx: &mut App) {
 }
 
 /// A click or a key on the chip `id`, with the modifiers and button it held.
-fn activate(
+pub fn activate(
     (act, id): (&Act, &str),
     (modifiers, button): (Modifiers, MouseButton),
     window: &Window,

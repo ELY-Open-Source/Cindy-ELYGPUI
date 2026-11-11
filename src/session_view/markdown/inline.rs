@@ -14,9 +14,15 @@ use super::{
     text::{Chip, Inline, Mark, Metrics, metrics},
 };
 use crate::{
-    session_view::flow::{Atom, CHIP, atoms, draw::shape, rows_where},
+    session_view::{
+        flow::{Atom, CHIP, atoms, draw::shape, rows_where},
+        target_link::Anchors,
+    },
     units::css,
 };
+
+/// Tailwind's preflight for `sup`: `font-size: 75%`, and `top: -0.5em` of that.
+const SUP: (f32, f32) = (0.75, 0.5);
 
 /// What the rows are drawn with; lengths are CSS pixels unless a name says otherwise.
 pub struct Look<'a> {
@@ -32,7 +38,12 @@ pub struct Look<'a> {
     pub zoom: f32,
     /// `overflow-wrap: anywhere` on the whole text, as a table's cell has it.
     pub anywhere: bool,
+    /// What each `a` draws as.
+    pub anchors: &'a Anchors,
 }
+
+/// A code box a wrap left: whether the dropped space was all it held, and the link that holds it.
+type Stub = (bool, Option<usize>);
 
 /// The rows, the first one's baseline under the block's top and their height, in window pixels.
 pub struct Drawn {
@@ -69,6 +80,22 @@ fn pieces(inline: &Inline, range: &Range<usize>) -> Vec<(Range<usize>, Mark)> {
 }
 
 impl Look<'_> {
+    /// The face's size in CSS pixels; `sup` has `line-height: 0`, so the line stays.
+    fn size(&self, mark: Mark) -> f32 {
+        let face = if mark.code.is_some() {
+            &self.code
+        } else {
+            self.face
+        };
+        face.size * if mark.sup { SUP.0 } else { 1.0 }
+    }
+
+    /// Whether the text's `a` draws as a link.
+    fn linked(&self, inline: &Inline, mark: Mark) -> bool {
+        mark.link
+            .is_some_and(|link| self.anchors.marked(inline.links[link]))
+    }
+
     fn style(&self, mark: Mark, window: &Window) -> TextStyle {
         let face = if mark.code.is_some() {
             &self.code
@@ -76,7 +103,7 @@ impl Look<'_> {
             self.face
         };
         let mut style = window.text_style();
-        style.font_size = css(face.size).into();
+        style.font_size = css(self.size(mark)).into();
         style.line_height = css(face.line).into();
         style.font_weight = if mark.strong {
             FontWeight::BOLD
@@ -148,12 +175,21 @@ impl Look<'_> {
             })
             .when(mark.italic, |el| el.italic())
             .when(mark.strike, |el| el.line_through())
-            .when(mark.link, |el| el.underline());
+            .when(self.linked(inline, mark), |el| el.underline())
+            .when(mark.sup, |el| {
+                let size = self.size(mark);
+                el.relative().top(css(-SUP.1 * size)).text_size(css(size))
+            });
+        if mark.code.is_none() && !mark.sup {
+            return piece.mt(css(top / self.zoom)).child(text);
+        }
+        let own = metrics(&self.style(mark, window), window);
         if mark.code.is_none() {
+            // The smaller text stands on the row's baseline before `top` lifts it.
+            let top = top + root.baseline - own.baseline;
             return piece.mt(css(top / self.zoom)).child(text);
         }
         // The box is the font's own height and the padding; its ends are the code's ends.
-        let own = metrics(&self.style(mark, window), window);
         let (pad_x, pad_y) = self.pad();
         let starts = range.start == 0 || inline.mark(range.start - 1).code != mark.code;
         // A space a wrap dropped is no text: the code may end before it.
@@ -178,25 +214,43 @@ impl Look<'_> {
             .when(starts, |el| el.pl(css(pad_x / self.zoom)))
             .when(ends, |el| el.pr(css(pad_x / self.zoom)))
             .font_family(self.mono.clone())
-            .text_size(css(self.code.size))
+            .text_size(css(self.size(mark)))
             .line_height(css(self.code.line))
             .child(fill)
             .child(div().relative().child(text))
     }
 
-    /// The code whose first space a wrap after `row` dropped: whether that space was all it held.
-    fn stub(inline: &Inline, row: &Range<usize>, next: usize) -> Option<bool> {
+    /// The code whose first space a wrap after `row` dropped.
+    fn stub(inline: &Inline, row: &Range<usize>, next: usize) -> Option<Stub> {
         let at = (row.end..next).find(|at| inline.mark(*at).code.is_some())?;
-        let code = inline.mark(at).code;
+        let Mark { code, link, .. } = inline.mark(at);
         let opens = at == 0 || inline.mark(at - 1).code != code;
-        opens.then(|| at + 1 == inline.text.len() || inline.mark(at + 1).code != code)
+        let whole = at + 1 == inline.text.len() || inline.mark(at + 1).code != code;
+        opens.then_some((whole, link))
+    }
+
+    /// `piece`, the box `name` of row `row`, with its link's listeners when a link holds it.
+    fn boxed(
+        &self,
+        inline: &Inline,
+        link: Option<usize>,
+        piece: Div,
+        (row, name): (usize, &str),
+    ) -> AnyElement {
+        match link {
+            Some(link) => {
+                let at = format!("r{row}-{name}");
+                self.anchors.dress(inline.links[link], piece, &at)
+            }
+            None => piece.into_any_element(),
+        }
     }
 
     /// One row: its pieces and chips side by side, on the line box Blink gives them.
     fn row(
         &self,
         inline: &Inline,
-        (nth, row, stub): (usize, Range<usize>, Option<bool>),
+        (nth, row, stub): (usize, Range<usize>, Option<Stub>),
         root: &Metrics,
         window: &Window,
     ) -> (AnyElement, f32, f32) {
@@ -249,7 +303,6 @@ impl Look<'_> {
                 .rounded_l(css(6.0))
                 .when(whole, |el| el.rounded_r(css(6.0)))
                 .bg(self.fill)
-                .into_any_element()
         };
         let mut parts = Vec::new();
         for (range, mark) in held {
@@ -259,7 +312,8 @@ impl Look<'_> {
                     let n = parts.len();
                     let selector = format!("{}-r{nth}-{n}", self.path);
                     let piece = self.piece(inline, (from..to, mark), (top, root), window);
-                    parts.push(piece.debug_selector(move || selector).into_any_element());
+                    let piece = piece.debug_selector(move || selector);
+                    parts.push(self.boxed(inline, mark.link, piece, (nth, &n.to_string())));
                 }
             };
             for (n, (at, chip)) in chips(&range) {
@@ -270,14 +324,18 @@ impl Look<'_> {
                         let selector = format!("{}-check-{n}", self.path);
                         marker::check(*checked, baseline, selector)
                     }
-                    Chip::Pill => pill(true, format!("{}-pill-{n}", self.path)),
+                    Chip::Pill => {
+                        let pill = pill(true, format!("{}-pill-{n}", self.path));
+                        self.boxed(inline, mark.link, pill, (nth, &format!("pill-{n}")))
+                    }
                 });
                 from = at + CHIP.len_utf8();
             }
             say(from, range.end, &mut parts);
         }
-        if let Some(whole) = stub {
-            parts.push(pill(whole, format!("{}-stub-{nth}", self.path)));
+        if let Some((whole, link)) = stub {
+            let pill = pill(whole, format!("{}-stub-{nth}", self.path));
+            parts.push(self.boxed(inline, link, pill, (nth, "stub")));
         }
         let row = div()
             .flex()
@@ -328,7 +386,8 @@ impl Look<'_> {
             start = line.end + 1;
             let atoms = self.atoms(inline, &line, window);
             // A link's `overflow-wrap: anywhere`; other text overflows (`9.6f-blink-words.log`).
-            let anywhere = |at: usize| self.anywhere || inline.mark(line.start + at).link;
+            let anywhere =
+                |at: usize| self.anywhere || self.linked(inline, inline.mark(line.start + at));
             // An empty code's box stays with what stands before it, or at a line's start after it.
             let pill = |at: usize| inline.chips.contains(&(line.start + at, Chip::Pill));
             let lead = (atoms.iter())

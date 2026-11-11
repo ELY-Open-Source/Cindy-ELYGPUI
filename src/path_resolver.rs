@@ -1,10 +1,5 @@
 //! `main/pathResolver.ts`: a path a reply names, found in or about the task's folder.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the renderer's resolver calls it in 9.6h2")
-)]
-
 pub mod cache;
 #[cfg(test)]
 mod tests;

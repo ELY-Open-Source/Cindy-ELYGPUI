@@ -19,12 +19,14 @@ pub mod header;
 mod hook_card;
 mod images;
 mod items;
+mod jump;
 mod link_chip;
 mod links;
 mod markdown;
 mod orca_card;
 mod source_labels;
 mod stream;
+mod target_link;
 mod user_row;
 mod width;
 
@@ -61,6 +63,8 @@ struct Content {
     unfolded: std::collections::HashSet<String>,
     /// What its link chips read.
     links: link_chip::Found,
+    /// Its stream's scroller, and where an in-document anchor lands.
+    jump: jump::Jump,
     /// Its messages' images, by address.
     images: images::Held,
     /// Its assistant messages' trees, by item key.
@@ -201,6 +205,7 @@ fn mount(id: &str, cx: &mut App) {
         stream: None,
         unfolded: Default::default(),
         links: Default::default(),
+        jump: Default::default(),
         images: Default::default(),
         trees: Default::default(),
     });

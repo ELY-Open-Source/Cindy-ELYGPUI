@@ -3,7 +3,7 @@
 use gpui::{Pixels, TextStyle, Window};
 
 use crate::{
-    markdown::hast::{Hast, Prop},
+    markdown::hast::{Element, Hast, Prop},
     session_view::flow::{Atom, CHIP, atoms, draw::shape, rows_where},
 };
 
@@ -13,7 +13,9 @@ pub struct Mark {
     pub strong: bool,
     pub italic: bool,
     pub strike: bool,
-    pub link: bool,
+    /// Which of the text's `a` nodes holds it.
+    pub link: Option<usize>,
+    pub sup: bool,
     /// Which inline code holds the text.
     pub code: Option<usize>,
 }
@@ -31,6 +33,8 @@ pub struct Inline {
     /// Where each face starts; it holds to the next one.
     pub spans: Vec<(usize, Mark)>,
     pub chips: Vec<(usize, Chip)>,
+    /// The `a` nodes read, by address.
+    pub links: Vec<*const Element>,
     /// The collapsed space not yet written, in its first space's face.
     gap: Option<Mark>,
     /// Whether a space, or a line's start, came last: the spaces after it collapse.
@@ -44,6 +48,7 @@ impl Default for Inline {
             text: String::new(),
             spans: Vec::new(),
             chips: Vec::new(),
+            links: Vec::new(),
             gap: None,
             spaced: true,
             codes: 0,
@@ -105,7 +110,7 @@ impl Inline {
         self.spans[next - 1].1
     }
 
-    /// A footnote's `sup` and an image read as their text until 9.6h and 9.6i.
+    /// An image reads as its text until 9.6i.
     pub fn read(&mut self, node: &Hast, mark: Mark) {
         let Hast::Element(element) = node else {
             let Hast::Text(value) = node else { return };
@@ -135,7 +140,14 @@ impl Inline {
                 strike: true,
                 ..mark
             },
-            "a" => Mark { link: true, ..mark },
+            "a" => {
+                self.links.push(element);
+                Mark {
+                    link: Some(self.links.len() - 1),
+                    ..mark
+                }
+            }
+            "sup" => Mark { sup: true, ..mark },
             "code" => Mark {
                 code: Some(self.codes),
                 ..mark
@@ -429,12 +441,12 @@ mod tests {
         assert_eq!(
             face(8),
             Mark {
-                link: true,
+                link: Some(0),
                 ..plain
             }
         );
         let code = Mark {
-            link: true,
+            link: Some(0),
             code: Some(0),
             ..plain
         };

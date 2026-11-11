@@ -5,7 +5,7 @@ use gpui::{
     size,
 };
 
-use super::{Reveal, duration, nearest};
+use super::{Reveal, nearest};
 use crate::{
     motion::ReducedMotion,
     router,
@@ -14,6 +14,7 @@ use crate::{
         view_mode::{self, Main, Pinned},
         view_tests::open,
     },
+    smooth_scroll::duration,
 };
 
 /// A short window, so the last rows sit below the list's end.

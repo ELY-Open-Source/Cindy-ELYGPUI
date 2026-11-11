@@ -7,14 +7,17 @@ use ely_gpui_component::{
     primitives::IconName,
 };
 use gpui::{
-    AnyElement, App, Bounds, ClickEvent, ClipboardItem, ElementId, Entity, FocusHandle,
+    AnyElement, App, Bounds, ClickEvent, ClipboardItem, Div, ElementId, Entity, FocusHandle,
     HighlightStyle, InteractiveElement as _, IntoElement, LineLayout, Modifiers, MouseButton,
-    ParentElement as _, Pixels, Point, Role, SharedString, StatefulInteractiveElement as _,
-    Styled as _, StyledText, TextLayout, UnderlineStyle, Window, canvas, div, point,
-    prelude::FluentBuilder as _, px, size,
+    ParentElement as _, Pixels, Point, Role, SharedString, Stateful,
+    StatefulInteractiveElement as _, Styled as _, StyledText, TextLayout, UnderlineStyle, Window,
+    canvas, div, point, prelude::FluentBuilder as _, px, size,
 };
 
-use super::link_chip::{Act, act};
+use super::{
+    link_chip::{Act, act},
+    target_link::{self, Go},
+};
 use crate::{
     i18n::Translator,
     link_open::{self, Target},
@@ -29,11 +32,12 @@ pub struct Link {
     pub url: SharedString,
 }
 
-/// What a menu was asked for: a web address, or a link chip by its element's name.
+/// What a menu was asked for; a chip by its element's name, a Markdown link by what it copies.
 #[derive(Clone)]
 pub enum What {
     Url(SharedString),
     Chip(Act, SharedString),
+    Target(Go, SharedString),
 }
 
 /// `useOpenWithMenu`'s and `useLinkContextMenu`'s state: the numbered ask and what it is for.
@@ -44,7 +48,7 @@ pub struct Asked {
 }
 
 /// A link's boxes in the window, in the order they were placed.
-type Spots = Rc<RefCell<Vec<Bounds<Pixels>>>>;
+pub type Spots = Rc<RefCell<Vec<Bounds<Pixels>>>>;
 
 /// What a message's links share: the menu's ask, and each link's Tab stop and boxes.
 pub struct Shared {
@@ -144,6 +148,13 @@ fn menu(what: Option<&What>, cx: &App) -> Menu {
             let (Act::Session(href) | Act::Project(href)) = to;
             return act::menu(to, id, cx).separator().item(copy(href));
         }
+        Some(What::Target(go, href)) => {
+            let go = go.clone();
+            let open = MenuItem::new(label("openLink"))
+                .icon(IconName::ArrowUpRight)
+                .on_click(move |window, cx| target_link::open(&go, window, cx));
+            return Menu::new().item(open).separator().item(copy(href));
+        }
         Some(What::Url(url)) => url,
     };
     let out = url.clone();
@@ -172,84 +183,104 @@ pub fn ask(asked: &Entity<Asked>, what: What, at: Point<Pixels>, cx: &mut App) {
     });
 }
 
-/// One box of a link; the first is its Tab stop.
+/// What a click or a key on a link does, with the modifiers and button it held.
+fn go(what: &What, held: (Modifiers, MouseButton), window: &mut Window, cx: &mut App) {
+    match what {
+        What::Url(url) => activate(url, held.0, held.1, window, cx),
+        What::Chip(to, id) => act::activate((to, id), held, window, cx),
+        What::Target(to, _) => target_link::open(to, window, cx),
+    }
+}
+
+/// One box of a link: whether it is the link's first, the link's Tab stop and its boxes.
+pub struct Stop {
+    pub first: bool,
+    pub focus: FocusHandle,
+    pub spots: Spots,
+}
+
+/// A link's box as Cindy's anchor: its clicks, keys and menu; the first box is the Tab stop.
+pub fn listen(el: Stateful<Div>, what: What, stop: Stop, asked: &Entity<Asked>) -> Stateful<Div> {
+    let Stop {
+        first,
+        focus,
+        spots,
+    } = stop;
+    let (left, middle, right, keys) = (what.clone(), what.clone(), what.clone(), what);
+    let (pressed, back) = (focus.clone(), focus.clone());
+    let (menu, by_key) = (asked.clone(), asked.clone());
+    el.cursor_pointer()
+        .when(first, |el| {
+            el.track_focus(&focus)
+                .role(Role::Link)
+                .on_key_down(move |event, window, cx| {
+                    let k = &event.keystroke;
+                    if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
+                        window.prevent_default();
+                        cx.stop_propagation();
+                        // `linkMenuPosition` for a key: the link's left and bottom.
+                        let spots = spots.borrow();
+                        let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
+                        let bottom = spots.last().map(Bounds::bottom);
+                        let under = point(left.unwrap_or_default(), bottom.unwrap_or_default());
+                        ask(&by_key, keys.clone(), under, cx);
+                    } else if matches!(k.key.as_str(), "enter" | "space") {
+                        window.prevent_default();
+                        go(&keys, (k.modifiers, MouseButton::Left), window, cx);
+                    }
+                })
+        })
+        .on_any_mouse_down(move |_, window, cx| pressed.focus(window, cx))
+        // Keys activate on key down above; gpui's key-up click is not Cindy's.
+        .on_click(move |event, window, cx| {
+            if matches!(event, ClickEvent::Mouse(_)) {
+                cx.stop_propagation();
+                go(&left, (event.modifiers(), MouseButton::Left), window, cx);
+            }
+        })
+        .on_aux_click(move |event, window, cx| {
+            let ClickEvent::Mouse(mouse) = event else {
+                return;
+            };
+            if mouse.up.button == MouseButton::Middle {
+                cx.stop_propagation();
+                go(
+                    &middle,
+                    (event.modifiers(), MouseButton::Middle),
+                    window,
+                    cx,
+                );
+            }
+        })
+        .on_mouse_down(MouseButton::Right, move |event, window, cx| {
+            window.prevent_default();
+            cx.stop_propagation();
+            // The stop keeps the press from the listener above: the menu hands focus back here.
+            back.focus(window, cx);
+            ask(&menu, right.clone(), event.position, cx);
+        })
+}
+
+/// One box of a web address over the message's text.
 struct Piece {
     id: String,
-    first: bool,
     size: gpui::Size<Pixels>,
     url: SharedString,
-    focus: FocusHandle,
+    stop: Stop,
     asked: Entity<Asked>,
-    spots: Spots,
 }
 
 impl Piece {
     fn element(self) -> AnyElement {
-        let Piece {
-            id,
-            first,
-            size,
-            url,
-            focus,
-            asked,
-            spots,
-        } = self;
-        let selector = id.clone();
-        let (left, middle, right, keys) = (url.clone(), url.clone(), url.clone(), url);
-        let (pressed, menu, by_key) = (focus.clone(), asked.clone(), asked);
-        let back = focus.clone();
-        div()
-            .id(ElementId::Name(id.into()))
+        let selector = self.id.clone();
+        let first = self.stop.first;
+        let el = div()
+            .id(ElementId::Name(self.id.into()))
             .debug_selector(move || selector)
-            .w(size.width)
-            .h(size.height)
-            .cursor_pointer()
-            .when(first, |el| {
-                el.track_focus(&focus)
-                    .role(Role::Link)
-                    .aria_label(keys.clone())
-                    .on_key_down(move |event, window, cx| {
-                        let k = &event.keystroke;
-                        if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
-                            window.prevent_default();
-                            cx.stop_propagation();
-                            // `linkMenuPosition` for a key: the link's left and bottom.
-                            let spots = spots.borrow();
-                            let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
-                            let bottom = spots.last().map(Bounds::bottom);
-                            let under = point(left.unwrap_or_default(), bottom.unwrap_or_default());
-                            ask(&by_key, What::Url(keys.clone()), under, cx);
-                        } else if matches!(k.key.as_str(), "enter" | "space") {
-                            window.prevent_default();
-                            activate(&keys, k.modifiers, MouseButton::Left, window, cx);
-                        }
-                    })
-            })
-            .on_any_mouse_down(move |_, window, cx| pressed.focus(window, cx))
-            // Keys activate on key down above; gpui's key-up click is not Cindy's.
-            .on_click(move |event, window, cx| {
-                if matches!(event, ClickEvent::Mouse(_)) {
-                    cx.stop_propagation();
-                    activate(&left, event.modifiers(), MouseButton::Left, window, cx);
-                }
-            })
-            .on_aux_click(move |event, window, cx| {
-                let ClickEvent::Mouse(mouse) = event else {
-                    return;
-                };
-                if mouse.up.button == MouseButton::Middle {
-                    cx.stop_propagation();
-                    activate(&middle, event.modifiers(), MouseButton::Middle, window, cx);
-                }
-            })
-            .on_mouse_down(MouseButton::Right, move |event, window, cx| {
-                window.prevent_default();
-                cx.stop_propagation();
-                // The stop keeps the press from the listener above: the menu hands focus back here.
-                back.focus(window, cx);
-                ask(&menu, What::Url(right.clone()), event.position, cx);
-            })
-            .into_any_element()
+            .w(self.size.width)
+            .h(self.size.height)
+            .when(first, |el| el.aria_label(self.url.clone()));
+        listen(el, What::Url(self.url), self.stop, &self.asked).into_any_element()
     }
 }
 
@@ -281,12 +312,14 @@ fn overlay(key: String, links: Vec<Link>, layout: TextLayout, shared: &Shared) -
                 spots.borrow_mut().push(Bounds::new(at, bounds.size));
                 let piece = Piece {
                     id: format!("{key}-link-{}-{row}", link.nth),
-                    first: row == 0,
                     size: bounds.size,
                     url: link.url.clone(),
-                    focus: focus.clone(),
+                    stop: Stop {
+                        first: row == 0,
+                        focus: focus.clone(),
+                        spots: spots.clone(),
+                    },
                     asked: asked.clone(),
-                    spots: spots.clone(),
                 };
                 let mut piece = piece.element();
                 piece.prepaint_as_root(at, bounds.size.into(), window, cx);
@@ -306,6 +339,11 @@ fn overlay(key: String, links: Vec<Link>, layout: TextLayout, shared: &Shared) -
 impl Shared {
     pub fn asked(&self) -> &Entity<Asked> {
         &self.asked
+    }
+
+    /// Link `nth`'s Tab stop and boxes.
+    pub fn stop(&self, nth: usize) -> (FocusHandle, Spots) {
+        (self.focus[nth].clone(), self.spots[nth].clone())
     }
 }
 
