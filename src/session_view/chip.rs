@@ -271,6 +271,11 @@ impl Chip {
         f32::from(u8::from(self.stand == Stand::Island)) * 4.0
     }
 
+    /// Whether the label takes an `em`'s italic: the message link's button keeps its own face.
+    pub fn slants(&self) -> bool {
+        self.stand != Stand::Link
+    }
+
     /// The margin box's height: `leading-5`, `py-0.5`, the border, less `-my-[1px]`.
     pub fn height(&self) -> f32 {
         24.0 + f32::from(u8::from(self.stand != Stand::Line)) * 2.0

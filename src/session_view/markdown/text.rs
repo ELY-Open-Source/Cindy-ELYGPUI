@@ -32,10 +32,21 @@ pub enum Chip {
     Pill,
     /// A resolved file's `FileTypeIcon`.
     Icon(&'static [u8]),
+    /// A deep link's chip, by its `a` among the text's links.
+    Link(usize),
 }
 
-/// The face of an `a` or an inline `code` that is a resolved target, by its node.
-pub type Files<'a> = &'a dyn Fn(*const Element) -> Option<FileFace>;
+/// What an `a` or an inline `code` draws as in place of its own face.
+pub enum Swap {
+    File(FileFace),
+    /// `SessionLinkChip` or `ProjectLinkChip`: one atom, whatever the link holds.
+    Chip,
+    /// A deep link that names nothing: `<span>{label ?? href}</span>`.
+    Words(String),
+}
+
+/// The swap of an `a` or an inline `code`, by its node.
+pub type Files<'a> = &'a dyn Fn(*const Element) -> Option<Swap>;
 
 /// A file chip's box: its node, the box and the link about it, and the text it holds.
 pub struct Held {
@@ -148,7 +159,20 @@ impl Inline {
             return;
         };
         let file = match element.tag {
-            "a" | "code" => files(element),
+            "a" | "code" => match files(element) {
+                Some(Swap::File(file)) => Some(file),
+                Some(Swap::Chip) => {
+                    self.end_gap();
+                    self.links.push(element);
+                    let chip = Chip::Link(self.links.len() - 1);
+                    self.chips.push((self.text.len(), chip));
+                    self.push(CHIP, mark);
+                    self.spaced = false;
+                    return;
+                }
+                Some(Swap::Words(words)) => return self.read(&Hast::Text(words), mark, files),
+                None => None,
+            },
             _ => None,
         };
         let boxed = file.is_some_and(|file| file.boxed);

@@ -94,7 +94,7 @@ impl Walk<'_> {
         let read = |cell: &Element| {
             let mut inline = Inline::default();
             (cell.children.iter()).for_each(|node| {
-                inline.read(node, Mark::default(), &|node| self.anchors.file(node))
+                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
             });
             inline.end();
             inline

@@ -142,12 +142,23 @@ impl Look<'_> {
         (0.4 * em, 0.2 * em)
     }
 
-    fn chip_width(&self, chip: Chip) -> f32 {
+    fn chip_width(&self, inline: &Inline, chip: Chip) -> f32 {
         match chip {
             Chip::Check(_) => CHECK * self.zoom,
             Chip::Pill => 2.0 * self.pad().0,
             Chip::Icon(_) => (ICON.0 + ICON.1) * self.zoom,
+            Chip::Link(link) => self.anchors.link_size(inline.links[link]).0,
         }
+    }
+
+    /// A link chip's reach over and under the baseline: its middle half an x-height over it.
+    fn link_extent(&self, inline: &Inline, link: usize, window: &Window) -> (f32, f32) {
+        let style = self.style(Mark::default(), window);
+        let size = style.font_size.to_pixels(window.rem_size());
+        let system = window.text_system();
+        let middle = f32::from(system.x_height(system.resolve_font(&style.font()), size)) / 2.0;
+        let half = self.anchors.link_size(inline.links[link]).1 * self.zoom / 2.0;
+        (half + middle, half - middle)
     }
 
     /// The line's atoms from its own start: each face's glyphs, a code's padding at its ends.
@@ -172,7 +183,7 @@ impl Look<'_> {
         }
         for (at, chip) in inline.chips.iter().filter(|(at, _)| line.contains(at)) {
             let atom = all.iter_mut().find(|atom| atom.at + line.start == *at);
-            atom.expect("a chip's stand-in is shaped").advance = self.chip_width(*chip);
+            atom.expect("a chip's stand-in is shaped").advance = self.chip_width(inline, *chip);
         }
         self.pad_files(inline, line, &mut all);
         all
@@ -319,13 +330,23 @@ impl Look<'_> {
         let boxed = held.iter().any(|(_, mark)| Self::mono(*mark))
             || stub.is_some()
             || chips(&row).any(|(_, (_, chip))| *chip == Chip::Pill);
-        let (top, height) = match boxed {
+        let (mut top, mut height) = match boxed {
             true => grown(
                 extent(root, line),
                 extent(&code, self.code.line * self.zoom),
             ),
             false => (0.0, line),
         };
+        // A link chip's margin box grows the row as Blink's line box grows.
+        let above = top + root.baseline;
+        let reach = chips(&row).filter_map(|(_, (_, chip))| match chip {
+            Chip::Link(link) => Some(self.link_extent(inline, *link, window)),
+            _ => None,
+        });
+        let (over, under) = reach.fold((above, height - above), |tall, chip| {
+            (tall.0.max(chip.0), tall.1.max(chip.1))
+        });
+        (top, height) = (top + over - above, over + under);
         // A code's box with no text: both paddings, or the left one when its text follows.
         let pill = |whole: bool, selector: String| {
             let (pad_x, pad_y) = self.pad();
@@ -373,6 +394,15 @@ impl Look<'_> {
                     Chip::Pill => {
                         let pill = pill(true, format!("{}-pill-{n}", self.path));
                         Draw::held(Self::link_of(inline, mark), pill, format!("pill-{n}"))
+                    }
+                    Chip::Link(link) => {
+                        let node = inline.links[*link];
+                        let over = self.link_extent(inline, *link, window).0;
+                        let chip = div()
+                            .flex_none()
+                            .mt(css((top + root.baseline - over) / self.zoom))
+                            .child(self.anchors.link_chip(node));
+                        Draw::Plain(chip.into_any_element())
                     }
                     Chip::Icon(source) => {
                         let icon =

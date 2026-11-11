@@ -1,18 +1,24 @@
 //! `MarkdownTargetLink`: what an `a` of the renderer tree draws as, and what its link opens.
 
-use std::{cell::Cell, collections::HashMap};
+use std::{
+    cell::{Cell, RefCell},
+    collections::HashMap,
+};
 
 use gpui::{
-    AnyElement, App, Div, ElementId, InteractiveElement as _, IntoElement as _, ParentElement as _,
-    Role, SharedString, StatefulInteractiveElement as _, Styled as _, Window, canvas,
-    prelude::FluentBuilder as _,
+    AnyElement, App, Div, ElementId, FontStyle, InteractiveElement as _, IntoElement as _,
+    ParentElement as _, Pixels, Role, SharedString, StatefulInteractiveElement as _, Styled as _,
+    Window, canvas, div, prelude::FluentBuilder as _,
 };
 
 use super::{
     chip, jump,
+    link_chip::{self, Act, Want},
     links::{self, Shared, Spots, Stop, What},
+    markdown::text::Swap,
 };
 use crate::{
+    appearance_settings::text_size,
     deep_link,
     i18n::{Arg, Translator},
     local_path::smart::{self, Smart},
@@ -44,8 +50,12 @@ pub enum Go {
 pub enum Face {
     /// `<span>`: its text alone.
     Span,
-    /// A session, project or session-card link: its chip and card come with 9.6h5.
+    /// A session-card link: its card comes with 9.6h5b.
     Later,
+    /// `SessionLinkChip` or `ProjectLinkChip`.
+    Chip(chip::Chip),
+    /// A session or project link that names nothing: `<span>{label ?? href}</span>`.
+    Words(String),
     /// A web address, with the open-with menu.
     External(SharedString),
     Inline(Go),
@@ -71,6 +81,8 @@ pub struct Anchors {
     /// The resolved targets among the `a` and inline `code` nodes, and their mounted chips.
     files: HashMap<*const Element, FileFace>,
     chips: HashMap<*const Element, Chip>,
+    /// Each deep link's chip: its width in window pixels, its height, and its element until drawn.
+    links: HashMap<*const Element, (f32, f32, RefCell<Option<AnyElement>>)>,
     shared: Shared,
 }
 
@@ -92,6 +104,18 @@ fn collect<'a>(nodes: &'a [Hast], links: &mut Vec<&'a Element>, codes: &mut Vec<
                 _ => {}
             }
             collect(&element.children, links, codes);
+        }
+    }
+}
+
+/// The `a` nodes that stand inside an `em`.
+fn slanted(nodes: &[Hast], em: bool, found: &mut Vec<*const Element>) {
+    for node in nodes {
+        if let Hast::Element(element) = node {
+            if em && element.tag == "a" {
+                found.push(element);
+            }
+            slanted(&element.children, em || element.tag == "em", found);
         }
     }
 }
@@ -134,19 +158,48 @@ fn face(target: Target, bare: bool, dir: &str, label: &str) -> Face {
     }
 }
 
+/// A session or project link's face: its chip with the author's label, else its words.
+fn deep(href: &str, label: &str, wants: &mut Vec<Want>, cx: &App) -> Option<Face> {
+    let session = deep_link::strip(href, "session/").is_some();
+    if !session && deep_link::strip(href, "project/").is_none() {
+        return None;
+    }
+    let label = Some(js_trim(label)).filter(|label| !label.is_empty() && *label != href);
+    let chip = match session {
+        true => {
+            let known = (link_chip::held(cx), cx.global::<Translator>());
+            link_chip::session(href, label, known, wants)
+        }
+        false => link_chip::project(href, label),
+    };
+    Some(match chip {
+        Some(chip) => Face::Chip(chip),
+        None => Face::Words(label.unwrap_or(href).to_owned()),
+    })
+}
+
 /// The `a` renderer for the node mounted as `id`, in a privileged message of a local task.
-fn anchor(id: &str, a: &Element, files: &[(String, String)], dir: &str, cx: &mut App) -> Anchor {
+fn anchor(
+    id: &str,
+    a: &Element,
+    (files, dir): (&[(String, String)], &str),
+    wants: &mut Vec<Want>,
+    cx: &mut App,
+) -> Anchor {
     let href = text(a, "href");
     let raw = text(a, "data-cindy-raw-local-link-href");
     let handed = raw.or(href);
-    let deep = |path| href.is_some_and(|href| deep_link::strip(href, path).is_some());
-    let face = if deep("session-card/") || deep("session/") || deep("project/") {
+    let mut label = String::new();
+    (a.children.iter()).for_each(|child| hast::string(child, &mut label));
+    let card = href.is_some_and(|href| deep_link::strip(href, "session-card/").is_some());
+    let chip = href.filter(|_| !card);
+    let face = if card {
         Face::Later
+    } else if let Some(face) = chip.and_then(|href| deep(href, &label, wants, cx)) {
+        face
     } else {
         let target = markdown_target::link(handed, files);
         let lit = resolved::resolved(id, &target, dir, false, cx);
-        let mut label = String::new();
-        (a.children.iter()).for_each(|child| hast::string(child, &mut label));
         let bare = a.prop("data-bare-path").is_some();
         face(lit.unwrap_or(target), bare, dir, &label)
     };
@@ -170,9 +223,13 @@ pub fn read(
 ) -> Anchors {
     let (mut found, mut codes) = (Vec::new(), Vec::new());
     collect(tree, &mut found, &mut codes);
+    let mut wants = Vec::new();
     let nodes = found.iter().enumerate();
-    let list = nodes.map(|(n, a)| anchor(&format!("{key}-a{n}"), a, files, dir, cx));
+    let list = nodes.map(|(n, a)| anchor(&format!("{key}-a{n}"), a, (files, dir), &mut wants, cx));
     let list: Vec<Anchor> = list.collect();
+    if !wants.is_empty() {
+        cx.defer(move |cx| link_chip::fetch(wants, cx));
+    }
     // A Tab stop per `a`, then one per inline code.
     let stops = list.len() + codes.len();
     let shared = links::shared(&format!("{key}-md"), stops, window, cx);
@@ -205,8 +262,36 @@ pub fn read(
         let chip = file::chip(&id, file.path.clone(), focus, asks(file), window, cx);
         chips.insert(node, chip);
     }
+    let mut links = HashMap::new();
+    let mut slant = Vec::new();
+    slanted(tree, false, &mut slant);
+    let size = text_size(12.0, cx);
+    for (n, (a, anchor)) in found.iter().zip(&list).enumerate() {
+        let Face::Chip(chip) = &anchor.face else {
+            continue;
+        };
+        let id = format!("{key}-chip-a{n}");
+        if let Some(Act::Session(href)) = chip.act() {
+            link_chip::drawn(&id, (0, n), href, cx);
+        }
+        // `InlineReferenceChip` resets the weight alone: an `em` about the link slants its label.
+        let italic = chip.slants() && slant.contains(&(*a as *const Element));
+        let mut style = window.text_style();
+        if italic {
+            style.font_style = FontStyle::Italic;
+        }
+        let width = chip.width(size, &style, window, cx);
+        let element = chip.element(id, (Pixels::ZERO, size), Some(&shared), window, cx);
+        let element = match italic {
+            true => div().italic().child(element).into_any_element(),
+            false => element,
+        };
+        let drawn = (width.into(), chip.height(), RefCell::new(Some(element)));
+        links.insert(*a as *const Element, drawn);
+    }
     let by = found.iter().enumerate().map(|(n, a)| (*a as *const _, n));
     Anchors {
+        links,
         key: key.to_owned(),
         by: by.collect(),
         list,
@@ -314,6 +399,30 @@ impl Anchors {
         self.files.get(&node).copied()
     }
 
+    /// What the reader puts in place of the node's own inline face.
+    pub fn swap(&self, node: *const Element) -> Option<Swap> {
+        if let Some(file) = self.file(node) {
+            return Some(Swap::File(file));
+        }
+        match &self.list[*self.by.get(&node)?].face {
+            Face::Chip(_) => Some(Swap::Chip),
+            Face::Words(words) => Some(Swap::Words(words.clone())),
+            _ => None,
+        }
+    }
+
+    /// A deep link's chip: its width in window pixels and its margin box's height.
+    pub fn link_size(&self, node: *const Element) -> (f32, f32) {
+        let (width, height, _) = &self.links[&node];
+        (*width, *height)
+    }
+
+    /// A deep link's chip, which a row draws once.
+    pub fn link_chip(&self, node: *const Element) -> AnyElement {
+        let drawn = self.links[&node].2.take();
+        drawn.expect("a link chip is drawn once")
+    }
+
     /// The mounted chip of a node whose face is the chip's box.
     pub fn chip(&self, node: *const Element) -> &Chip {
         &self.chips[&node]
@@ -343,6 +452,7 @@ impl Anchors {
             Face::Span | Face::Later | Face::File(FileFace { boxed: true, .. }, ..) => {
                 return piece.into_any_element();
             }
+            Face::Chip(_) | Face::Words(_) => panic!("a deep link's face holds no piece"),
             Face::File(_, _, file) => {
                 let asks = Asks {
                     file: file.clone(),

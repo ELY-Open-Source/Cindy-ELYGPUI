@@ -4,7 +4,7 @@ mod inline;
 mod margins;
 mod marker;
 mod table;
-mod text;
+pub(super) mod text;
 
 #[cfg(test)]
 mod tests;
@@ -207,7 +207,7 @@ impl Walk<'_> {
     ) -> Option<AnyElement> {
         let mut inline = Inline::default();
         (nodes.iter())
-            .for_each(|node| inline.read(node, Mark::default(), &|node| self.anchors.file(node)));
+            .for_each(|node| inline.read(node, Mark::default(), &|node| self.anchors.swap(node)));
         inline.end();
         if inline.text.is_empty() {
             return None;

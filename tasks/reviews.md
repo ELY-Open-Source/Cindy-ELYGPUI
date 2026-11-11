@@ -389,3 +389,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   Cindy's keydown bubbles on and activates the enclosing target too.
 - Round 2: PASS. Every box of a target hears the keys and lets Enter and Space bubble. No live
   desktop check was made: the handlers ran on their test recorders.
+
+## 9.6h5a The session and project chips in Markdown
+- Round 1: FAIL. The chip's label stayed 12px at every UI font size, and an `em` about the
+  link did not slant a session or project chip.
+- Round 2: PASS. The label is `--text-12` through `text_size`; an `em` about the link slants
+  the chip, the message link's button apart. No live desktop check was made.

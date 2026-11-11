@@ -583,8 +583,16 @@ defines scope and what 1:1 means.
   messages attached (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook
   (`resolved::resolved`, mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its
   rows). `Face` is what the node draws as: a span (plain text, a code reference, a bare path
-  that has not resolved; the audio player comes with 9.13), a resolved file (below), `Later` (a session, project or session-card link, underlined and inert until
-  9.6h5), a web address, or an inline target. A link is underlined and breaks anywhere; each
+  that has not resolved; the audio player comes with 9.13), a resolved file (below), a deep link's chip or words (below), `Later` (a session-card link, underlined and inert
+  until 9.6h5b), a web address, or an inline target. A session or project link (`deep`) is
+  `SessionLinkChip` or `ProjectLinkChip`, 9.5j's chip with its reads, clicks, keys and menu
+  (`link_chip`; the label is the link's text, trimmed, unless empty or the address itself):
+  the reader takes the `a` as one atom whatever it holds (`text::Swap::Chip`, `Chip::Link`),
+  `Anchors.links` holds each chip's width, margin box and element, and its row grows about
+  the chip's middle, half an x-height over the baseline, as a user message's row does. The label is
+  `--text-12` (`text_size`), and an `em` about the link slants a session or project chip
+  (`slanted`), not a message link's (`logs/review/9.6h5a-r1-review-blink.log`). A
+  link that names no task or folder reads as its words, `label ?? href` (`Swap::Words`). A link is underlined and breaks anywhere; each
   stretch of its text on each row, and each empty code's box it holds, is a box (`dress`, named
   by row and part), the first its Tab stop, its authored `title` gpui's tooltip, all of them
   `links::listen`:

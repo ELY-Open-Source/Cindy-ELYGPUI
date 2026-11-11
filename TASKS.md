@@ -281,7 +281,7 @@ listed in `tasks/done.md`.
         separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link
-      - [ ] 9.6h5a `SessionLinkChip` and `ProjectLinkChip` for an `a` of a privileged message: the
+      - [x] 9.6h5a `SessionLinkChip` and `ProjectLinkChip` for an `a` of a privileged message: the
         chip an atom of its row (9.5j's faces, reads, clicks and menu), the author's label, and
         the words of a link that names nothing
       - [ ] 9.6h5b `SessionHandoffCard` for a session-card link (`parseSessionCardHref`): the
