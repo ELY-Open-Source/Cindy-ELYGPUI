@@ -433,6 +433,16 @@ defines scope and what 1:1 means.
   only when that is punctuation, and none starts in the domain of the email before it or right after a
   link's atext. A task check opens the first content of the flow an item starts, so a lazy line after
   an empty item loses its `[x]` as Cindy's does; it drops one unit after it, so a CRLF keeps its LF.
+- Tree transformers: each of Cindy's remark plugins after the parse is a `transform` on the tree,
+  golden `markdown-transforms` (`scripts/golden/markdownTransforms.mjs` runs each plugin of
+  `REMARK_PLUGINS_PRIVILEGED` alone on the parsed tree; its cases are the inputs of Cindy's tests and
+  seeded mixes). `markdown/cjk_urls.rs` is `remarkTruncateCjkUrls`: a literal autolink (one text, its
+  value the address, at the link's own place) takes back the query's bracket closers, is cut by
+  `url_boundary::clip` with the text before it, and its tail's web addresses become links.
+  `html_images.rs` is `remarkHtmlImages` with `htmlImage.ts`: an html node that is one safe `<img>`
+  becomes an image at its place; mdast's `data.hProperties` are `Image.width` and `height`, fields
+  added to the vendored crate. `session_links.rs` is `remarkSessionLinks`: text outside a link is split
+  at its valid deep links. A link a transformer makes has no place and no title.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

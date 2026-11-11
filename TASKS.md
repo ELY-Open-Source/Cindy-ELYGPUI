@@ -232,7 +232,7 @@ listed in `tasks/done.md`.
   - [x] 9.6a The parse: the tree `REMARK_PLUGINS`' parse extensions build (remark-gfm with
       `singleTilde: false`, remark-cjk-friendly's attention, remark-math) on the vendored
       markdown-rs, golden `markdown-tree`
-  - [ ] 9.6b Transformers that read no path: `remarkTruncateCjkUrls`, `remarkHtmlImages`,
+  - [x] 9.6b Transformers that read no path: `remarkTruncateCjkUrls`, `remarkHtmlImages`,
       `remarkSessionLinks`
   - [ ] 9.6c Local paths in the tree: `remarkBareSpaceLocalImages`, `remarkLocalPathLinks`,
       `remarkPreserveRawLocalDestinations`, with `markdownTarget.ts`'s classes

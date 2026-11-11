@@ -12,6 +12,11 @@ pub const SESSION: &str =
 /// `PROJECT_DEEP_LINK_RE_SOURCE` without its lookahead, which `project_ends` is.
 pub const PROJECT: &str = r"(?:cindy|xdt-maker)://project/[A-Za-z0-9%~._!*-]+";
 
+/// `textContainsDeepLink`.
+pub fn contains(text: &str) -> bool {
+    PREFIXES.iter().any(|prefix| text.contains(prefix))
+}
+
 /// A project link may not stop before a quote or a parenthesis that its folder name held.
 pub fn project_ends(text: &str, end: usize) -> bool {
     !text[end..].starts_with(['\'', '('])

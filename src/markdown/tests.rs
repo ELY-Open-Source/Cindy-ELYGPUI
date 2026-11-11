@@ -1,7 +1,7 @@
 use markdown::mdast::{AlignKind, Node, ReferenceKind};
 use serde_json::{Value, json};
 
-use super::parse;
+use super::{cjk_urls, html_images, parse, session_links};
 
 fn reference(kind: ReferenceKind) -> &'static str {
     match kind {
@@ -36,7 +36,15 @@ fn bare(node: &Node) -> Value {
         }
         Node::ListItem(n) => json!({"type": "listItem", "spread": n.spread, "checked": n.checked}),
         Node::Link(n) => json!({"type": "link", "title": n.title, "url": n.url}),
-        Node::Image(n) => json!({"type": "image", "alt": n.alt, "title": n.title, "url": n.url}),
+        Node::Image(n) => {
+            let mut image = json!({"type": "image", "alt": n.alt, "title": n.title, "url": n.url});
+            for (key, size) in [("width", &n.width), ("height", &n.height)] {
+                if let Some(size) = size {
+                    image[key] = json!(size);
+                }
+            }
+            image
+        }
         Node::Definition(n) => json!({
             "type": "definition", "identifier": n.identifier, "label": n.label,
             "title": n.title, "url": n.url,
@@ -91,4 +99,41 @@ fn the_tree_matches_cindys() {
         }
     }
     assert_eq!(wrong, 0, "of {} trees", cases.len());
+}
+
+/// Each transformer alone on Cindy's parse, as Cindy's own plugin leaves the tree.
+#[test]
+fn the_transformers_match_cindys() {
+    let golden = include_str!("../../tests/fixtures/markdown-transforms/expected.json");
+    let cases: Vec<(String, Value)> = serde_json::from_str(golden).unwrap();
+    assert!(cases.len() > 5800);
+    type Transform = fn(&mut Node);
+    let transforms: [(&str, Transform); 3] = [
+        ("truncate", cjk_urls::transform),
+        ("images", html_images::transform),
+        ("sessions", session_links::transform),
+    ];
+    let mut wrong = 0;
+    for (text, trees) in &cases {
+        for (key, transform) in transforms {
+            let mut tree = parse(text);
+            transform(&mut tree);
+            let port = bare(&tree);
+            if port != trees[key] {
+                wrong += 1;
+                eprintln!("{key} {text:?}\n  cindy {}\n  port  {port}", trees[key]);
+            }
+        }
+    }
+    assert_eq!(wrong, 0, "of {} cases", cases.len());
+}
+
+#[test]
+fn an_html_image_keeps_its_place() {
+    let mut tree = parse("a <img src=\"https://a.test/b.png\"> b");
+    html_images::transform(&mut tree);
+    let image = &tree.children().unwrap()[0].children().unwrap()[1];
+    let place = image.position().unwrap();
+    assert!(matches!(image, Node::Image(_)));
+    assert_eq!((place.start.offset, place.end.offset), (2, 34));
 }

@@ -278,3 +278,7 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   email is no attention, `\a` escapes nothing, and no email starts in the one before it. The
   reviewer's 29,513 inputs agree; the golden holds an inline round and an email round.
 - Round 2: PASS.
+
+## 9.6b Transformers that read no path
+- Round 1: PASS. The reviewer's 39,384 fresh inputs agree on all three transformers; 45 mutants
+  killed, one ended in endless recursion, none survived.

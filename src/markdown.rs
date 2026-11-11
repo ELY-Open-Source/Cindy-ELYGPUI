@@ -1,8 +1,11 @@
 //! The Markdown tree `MarkdownRenderer.tsx`'s remark parse builds, here on markdown-rs.
-#![allow(dead_code)] // The tree's readers come with 9.6b.
+#![allow(dead_code)] // The tree's reader comes with 9.6e.
 
 mod autolinks;
+mod cjk_urls;
 mod flanks;
+mod html_images;
+mod session_links;
 #[cfg(test)]
 mod tests;
 

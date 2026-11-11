@@ -726,6 +726,8 @@ fn on_enter_image(context: &mut CompileContext) {
         title: None,
         alt: String::new(),
         position: None,
+        width: None,
+        height: None,
     }));
     context.media_reference_stack.push(Reference::new());
 }

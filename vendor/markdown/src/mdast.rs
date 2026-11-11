@@ -973,6 +973,12 @@ pub struct Image {
     /// appropriate for a tooltip.
     #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
     pub title: Option<String>,
+    /// Cindy: `data.hProperties.width`, which an html image may carry.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub width: Option<String>,
+    /// Cindy: `data.hProperties.height`.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub height: Option<String>,
 }
 
 /// Link reference.
@@ -1782,11 +1788,13 @@ mod tests {
             alt: "a".into(),
             url: "b".into(),
             title: None,
+            width: None,
+            height: None,
         });
 
         assert_eq!(
             format!("{:?}", node),
-            "Image { position: None, alt: \"a\", url: \"b\", title: None }",
+            "Image { position: None, alt: \"a\", url: \"b\", title: None, width: None, height: None }",
             "should support `Debug`"
         );
         assert_eq!(node.to_string(), "", "should support `ToString`");
@@ -1797,7 +1805,7 @@ mod tests {
         node.position_set(Some(Position::new(1, 1, 0, 1, 2, 1)));
         assert_eq!(
             format!("{:?}", node),
-            "Image { position: Some(1:1-1:2 (0-1)), alt: \"a\", url: \"b\", title: None }",
+            "Image { position: Some(1:1-1:2 (0-1)), alt: \"a\", url: \"b\", title: None, width: None, height: None }",
             "should support `position_set`"
         );
     }
