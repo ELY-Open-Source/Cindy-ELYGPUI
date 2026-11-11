@@ -628,16 +628,19 @@ defines scope and what 1:1 means.
   circle, icon and arrow over a fixed 150ms, which reduced motion leaves; the keyboard's
   focus draws `ring-2 ring-foreground` past Tailwind's white `ring-offset-2`. gpui has no
   letter spacing, so the badge's `tracking-[0.4px]` is a box per letter, as wide as it is
-  shaped and 0.4px more, laid out to the device pixel. A click (any modifier) is `handleClick`, and the keys
-  are a native button's, not gpui's key-up click: Enter clicks on key down and Space on key
-  up, whatever they hold. A held Space (`handoff::Space`) ends with any other activation
-  and with the focus leaving: a draw with the card unfocused drops it, and a clean Space
-  (no other key, no modifier) clicks through gpui's own key-up click, which gpui withholds
-  when the focus moved meanwhile, even away and back inside one update. gpui keeps that
+  shaped and 0.4px more, laid out to the device pixel. A click (any modifier) is
+  `handleClick`, and the keys are a native button's (`press::clicks`), not gpui's key-up
+  click: Enter clicks on key down and Space on key up, whatever they hold. A held Space ends
+  with any other activation and with the focus leaving; a clean Space clicks through gpui's
+  own key-up click, which gpui withholds when the focus moved meanwhile. gpui keeps that
   focus generation to itself, so a Space mixed with another key or a modifier does not see
-  a focus gone and back within one update. It runs
-  `link_chip::act::task`, the chip's route read, where the card's latest ask alone navigates while it is mounted. The route's `from`
-  state and `HandoffSourcePill` come with 9.6h5b3. In a table's cell the card is a block too
+  a focus gone and back within one update. The click runs `link_chip::act::task`, the
+  chip's route read, with the route's `from` state: `router::Handoff`, the shown task's id and
+  title, beside the location (`navigate_from`; a plain `navigate` carries none).
+  `session_view/handoff_pill.rs` is `HandoffSourcePill` over the viewport while the route
+  holds a handoff and the content has not dismissed it: Return (`act::back`,
+  `resolveSessionRoute` then a plain navigate) and Dismiss, both `press::clicks` buttons with
+  `ring-2`. In a table's cell the card is a block too
   (`Walk::parts`, which `runs` shares): the cell is a closed column of lines and cards, so
   `my-2` stays inside its padding and two cards share one margin; a `th` hands its medium
   weight on. The column counts the card's min and max content (`handoff::content`): the

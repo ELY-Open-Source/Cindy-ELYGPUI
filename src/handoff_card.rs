@@ -1,4 +1,4 @@
-//! `SessionHandoffCard`'s words: its title, badge, last-active line and short id.
+//! `SessionHandoffCard`'s words (title, badge, last-active line, short id) and its pill's.
 
 use crate::{
     deep_link::{Card, Wake},
@@ -63,6 +63,18 @@ pub fn last_active(value: &str, now: f64, t: &Translator) -> String {
         _ => ("lastActive.days", DAY),
     };
     word(t, key, &[("count", Arg::Js((delta / unit).floor()))])
+}
+
+/// `HandoffSourcePill`'s line: the dispatcher's title, else its short id.
+pub fn pill(dispatcher: &str, title: Option<&str>, t: &Translator) -> String {
+    let own = title.map(js_trim).filter(|title| !title.is_empty());
+    let label = own.map_or_else(|| short(dispatcher), str::to_owned);
+    let args = [("title", Arg::Text(&label))];
+    t.t("ccAgent.handoff.pill.fromDispatcher", &args)
+}
+
+pub fn dismiss(t: &Translator) -> String {
+    t.t("ccAgent.handoff.pill.dismissAria", &[])
 }
 
 #[cfg(test)]

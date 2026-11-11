@@ -16,6 +16,7 @@ mod column;
 mod entry_error;
 mod flow;
 mod handoff;
+mod handoff_pill;
 pub mod header;
 mod hook_card;
 mod images;
@@ -70,6 +71,8 @@ struct Content {
     images: images::Held,
     /// Its assistant messages' trees, by item key.
     trees: assistant_row::Trees,
+    /// `handoffPillDismissed`.
+    dismissed: bool,
 }
 
 #[derive(Default)]
@@ -209,6 +212,7 @@ fn mount(id: &str, cx: &mut App) {
         jump: Default::default(),
         images: Default::default(),
         trees: Default::default(),
+        dismissed: false,
     });
     content_read(cx);
     let store = Store::global(cx);

@@ -46,6 +46,11 @@ pub fn corner_down_right() -> String {
     lucide(r#"<polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/>"#)
 }
 
+/// `CornerUpLeft`.
+pub fn corner_up_left() -> String {
+    lucide(r#"<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>"#)
+}
+
 /// `History`.
 pub fn history() -> String {
     lucide(

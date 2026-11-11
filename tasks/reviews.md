@@ -409,3 +409,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   title's raw white space widened its column; a decoded line feed reached the line shaper.
 - Round 2: PASS. The badge and the short id count their widest character in the min; the title
   and the id collapse their white space before measure and draw. No live desktop check was made.
+
+## 9.6h5b3 The handoff's route state and its pill
+- Round 1: FAIL. The pill's line kept its raw white space: ten spaces widened it and a line
+  feed made two lines.
+- Round 2: PASS. The drawn line collapses its white space; the route state keeps the title as
+  handed on. No live desktop check was made.

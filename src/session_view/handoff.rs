@@ -4,9 +4,9 @@ use std::time::Duration;
 
 use ely_gpui_component::{primitives::IconName, theme::ActiveTheme as _};
 use gpui::{
-    AnyElement, App, ClickEvent, Div, ElementId, FocusHandle, FontWeight, Hsla,
-    InteractiveElement as _, IntoElement as _, KeyboardButton, ParentElement as _, Role,
-    StatefulInteractiveElement as _, Styled as _, TextStyle, Window, div, white,
+    AnyElement, App, Div, ElementId, FocusHandle, FontWeight, Hsla, InteractiveElement as _,
+    IntoElement as _, ParentElement as _, Role, StatefulInteractiveElement as _, Styled as _,
+    TextStyle, Window, div, white,
 };
 
 use super::{
@@ -19,7 +19,7 @@ use crate::{
     deep_link::Card,
     handoff_card as words,
     i18n::Translator,
-    js_date, lucide, motion, press,
+    js_date, lucide, motion, press, router,
     theme::Appearance,
     transition::{self, Curve},
     units::css,
@@ -27,14 +27,6 @@ use crate::{
 
 /// The card's first baseline under its top: the bottom of the icon in its 36px circle.
 const BASELINE: f32 = 46.0;
-
-/// A Space held on the card: a native button clicks when it lifts, unless something ended it.
-#[derive(Clone, Copy, Default)]
-struct Space {
-    held: bool,
-    /// Another key or a modifier came with it, so gpui's own key-up click will not come.
-    mixed: bool,
-}
 
 /// What a card's place takes from it, in CSS pixels: its first baseline, height and content widths.
 #[derive(Clone, Copy)]
@@ -126,6 +118,13 @@ fn tracked(label: &str, size: f32, weight: FontWeight, window: &Window) -> Div {
             .child(c.to_string())
     });
     div().flex().children(letters)
+}
+
+/// `dispatcherSessionId` and `dispatcherTitle`: the task this view shows, and its stored title.
+fn from(cx: &App) -> Option<router::Handoff> {
+    let dispatcher = router::active_session(cx).filter(|id| !id.is_empty())?;
+    let title = super::session(cx).map(|task| task.title.clone());
+    Some(router::Handoff { dispatcher, title })
 }
 
 /// The card mounted as `id` with its metrics; `weight` is what it inherits.
@@ -290,21 +289,10 @@ pub fn element(
             .border_color(color)
     };
     let rings = ringed.then(|| [ring(3.0, white()), ring(5.0, ink)]);
-    let space = window.use_keyed_state(child("space"), cx, |_, _| Space::default());
-    if !focus.is_focused(window) {
-        space.update(cx, |space, _| *space = Space::default());
-    }
     let (chip, task) = (id.to_owned(), card.session_id.clone());
-    // Every activation ends a held Space, as a native button's does.
-    let open = {
-        let space = space.clone();
-        move |window: &mut Window, cx: &mut App| {
-            space.update(cx, |space, _| *space = Space::default());
-            act::task(task.clone(), &chip, false, window, cx)
-        }
+    let open = move |window: &mut Window, cx: &mut App| {
+        act::task(task.clone(), &chip, (false, from(cx)), window, cx)
     };
-    let (clicked, entered, released) = (open.clone(), open.clone(), open);
-    let (down, up, clean) = (space.clone(), space.clone(), space);
     let selector = id.to_owned();
     let el = div()
         .id(element.clone())
@@ -323,43 +311,6 @@ pub fn element(
         .p(css(16.0))
         .cursor_pointer()
         .font_weight(weight)
-        // gpui's key-up click tells a clean Space from one the focus left meanwhile.
-        .on_click(move |event, window, cx| {
-            let fresh = match event {
-                ClickEvent::Mouse(_) => true,
-                ClickEvent::Keyboard(key) => {
-                    key.button == KeyboardButton::Space && clean.read(cx).held
-                }
-                _ => false,
-            };
-            if fresh {
-                clicked(window, cx);
-            }
-        })
-        .on_key_down(move |event, window, cx| {
-            let stroke = &event.keystroke;
-            match stroke.key.as_str() {
-                "enter" => entered(window, cx),
-                "space" => down.update(cx, |space, _| {
-                    space.mixed |= stroke.modifiers.modified();
-                    space.held = true;
-                }),
-                _ => down.update(cx, |space, _| space.mixed = space.held),
-            }
-        })
-        .on_key_up(move |event, window, cx| {
-            let stroke = &event.keystroke;
-            let Space { held, mixed } = *up.read(cx);
-            if stroke.key != "space" {
-                return up.update(cx, |space, _| space.mixed = space.held);
-            }
-            if held && (mixed || stroke.modifiers.modified()) {
-                return released(window, cx);
-            }
-            // The clean release is gpui's click, in this same dispatch.
-            let up = up.clone();
-            cx.defer(move |cx| up.update(cx, |space, _| *space = Space::default()));
-        })
         .child(round(36.0).rounded(css(9999.0)).bg(disc).child(
             lucide::icon(lucide::corner_down_right().as_bytes(), 18.0, 2.0).text_color(glyph),
         ))
@@ -378,5 +329,6 @@ pub fn element(
         least,
         most,
     };
+    let el = press::clicks(el, (&element, &focus), open, window, cx);
     (press::listen(el, &press, false).into_any_element(), metrics)
 }

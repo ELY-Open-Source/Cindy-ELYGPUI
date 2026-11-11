@@ -1,8 +1,8 @@
 //! A native button's `:hover` and `:active`: hover ignores the input, Space presses while focused.
 
 use gpui::{
-    App, Div, ElementId, Entity, FocusHandle, InteractiveElement as _, MouseButton, Stateful,
-    StatefulInteractiveElement as _, Window, prelude::FluentBuilder as _,
+    App, ClickEvent, Div, ElementId, Entity, FocusHandle, InteractiveElement as _, KeyboardButton,
+    MouseButton, Stateful, StatefulInteractiveElement as _, Window, prelude::FluentBuilder as _,
 };
 
 #[derive(Default)]
@@ -79,4 +79,72 @@ pub fn listen(el: Stateful<Div>, press: &Entity<Press>, disabled: bool) -> State
                 }
             })
         })
+}
+
+/// A Space held on a button: it clicks when it lifts, unless something ended it.
+#[derive(Clone, Copy, Default)]
+struct Space {
+    held: bool,
+    /// Another key or a modifier came with it, so gpui's own key-up click will not come.
+    mixed: bool,
+}
+
+/// A native button's clicks: the mouse, Enter on key down, Space as it lifts, whatever they hold.
+pub fn clicks(
+    el: Stateful<Div>,
+    (id, focus): (&ElementId, &FocusHandle),
+    open: impl Fn(&mut Window, &mut App) + Clone + 'static,
+    window: &mut Window,
+    cx: &mut App,
+) -> Stateful<Div> {
+    let key = ElementId::NamedChild(std::sync::Arc::new(id.clone()), "space".into());
+    let space = window.use_keyed_state(key, cx, |_, _| Space::default());
+    if !focus.is_focused(window) {
+        space.update(cx, |space, _| *space = Space::default());
+    }
+    // Every activation ends a held Space.
+    let open = {
+        let space = space.clone();
+        move |window: &mut Window, cx: &mut App| {
+            space.update(cx, |space, _| *space = Space::default());
+            open(window, cx)
+        }
+    };
+    let (clicked, entered, released) = (open.clone(), open.clone(), open);
+    let (down, up, clean) = (space.clone(), space.clone(), space);
+    // gpui's key-up click tells a clean Space from one the focus left meanwhile.
+    el.on_click(move |event, window, cx| {
+        let fresh = match event {
+            ClickEvent::Mouse(_) => true,
+            ClickEvent::Keyboard(key) => key.button == KeyboardButton::Space && clean.read(cx).held,
+            _ => false,
+        };
+        if fresh {
+            clicked(window, cx);
+        }
+    })
+    .on_key_down(move |event, window, cx| {
+        let stroke = &event.keystroke;
+        match stroke.key.as_str() {
+            "enter" => entered(window, cx),
+            "space" => down.update(cx, |space, _| {
+                space.mixed |= stroke.modifiers.modified();
+                space.held = true;
+            }),
+            _ => down.update(cx, |space, _| space.mixed = space.held),
+        }
+    })
+    .on_key_up(move |event, window, cx| {
+        let stroke = &event.keystroke;
+        let Space { held, mixed } = *up.read(cx);
+        if stroke.key != "space" {
+            return up.update(cx, |space, _| space.mixed = space.held);
+        }
+        if held && (mixed || stroke.modifiers.modified()) {
+            return released(window, cx);
+        }
+        // The clean release is gpui's click, in this same dispatch.
+        let up = up.clone();
+        cx.defer(move |cx| up.update(cx, |space, _| *space = Space::default()));
+    })
 }

@@ -42,6 +42,7 @@ fn section(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement {
     let area = crate::wallpaper::clear(area, cx);
     let messages = super::stream::element(widths, window, cx);
     let viewport = div().relative().min_h_0().flex_1().child(messages);
+    let pill = super::handoff_pill::element(widths.message, window, cx);
     // `bg-gradient-to-t from-content-area to-transparent`, `h-8`.
     let fade = div()
         .debug_selector(|| "session-composer-fade".into())
@@ -84,6 +85,7 @@ fn section(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement {
         .flex_col()
         .size_full()
         .bg(area)
+        .children(pill)
         .child(viewport)
         .child(dock)
         .into_any_element()

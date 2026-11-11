@@ -284,14 +284,14 @@ listed in `tasks/done.md`.
       - [x] 9.6h5a `SessionLinkChip` and `ProjectLinkChip` for an `a` of a privileged message: the
         chip an atom of its row (9.5j's faces, reads, clicks and menu), the author's label, and
         the words of a link that names nothing
-      - [ ] 9.6h5b `SessionHandoffCard` for a session-card link
+      - [x] 9.6h5b `SessionHandoffCard` for a session-card link
         - [x] 9.6h5b1 `parseSessionCardHref` and the card in a paragraph, heading, list item or
           footnote: the block it makes among the lines about it (its margins collapse as a
           block's; `logs/review/9.6h5b-blink-card.log`), its title, badge, last-active words
           and short id, the weight a `strong` or heading hands on, its click and keys
         - [x] 9.6h5b2 The card in a table's cell: the cell as lines and cards, and the card's
           min and max content in the column widths
-        - [ ] 9.6h5b3 The route's `from` state a card's click hands on, and `HandoffSourcePill`
+        - [x] 9.6h5b3 The route's `from` state a card's click hands on, and `HandoffSourcePill`
           over the task it opened: the dispatcher's title or short id, Return and Dismiss
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
       `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads

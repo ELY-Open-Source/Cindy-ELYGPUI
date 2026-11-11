@@ -72,15 +72,38 @@ fn route(db: &Connection, id: &str) -> String {
     })
 }
 
+/// `resolveSessionRoute(id).then`: a database not ready answers the task's own route.
+fn resolved(id: String, cx: &mut App, then: impl FnOnce(&str, &mut App) + 'static) {
+    let State::Ready(db) = &cx.global::<LocalDb>().state else {
+        log::warn!(target: "sessionView", "link target {id} not read: DbClient not ready");
+        return then(&format!("/cc-agent/{id}"), cx);
+    };
+    let task = id.clone();
+    let answer = db.call(move |conn| route(conn, &task));
+    cx.spawn(async move |cx| {
+        let Ok(route) = answer.await else {
+            return log::error!(target: "sessionView", "link target {id}: database closed");
+        };
+        cx.update(|cx| {
+            then(&route, cx);
+            cx.refresh_windows();
+        });
+    })
+    .detach();
+}
+
+/// What a task's link asks: to open apart, and the state a handoff card hands on.
+pub type Ask = (bool, Option<router::Handoff>);
+
 /// `openTarget` for the chip `chip`: its latest ask alone navigates, while it stays mounted.
 pub fn open(href: &str, chip: &str, separate: bool, window: &Window, cx: &mut App) {
     if let Some(target) = deep_link::parse_session(href) {
-        task(target.session_id, chip, separate, window, cx);
+        task(target.session_id, chip, (separate, None), window, cx);
     }
 }
 
 /// `open` for the task `id`, which a handoff card names itself.
-pub fn task(id: String, chip: &str, separate: bool, window: &Window, cx: &mut App) {
+pub fn task(id: String, chip: &str, (separate, from): Ask, window: &Window, cx: &mut App) {
     let version = ASKED.fetch_add(1, Ordering::Relaxed) + 1;
     let Some(found) = held_mut(cx) else {
         return;
@@ -92,29 +115,23 @@ pub fn task(id: String, chip: &str, separate: bool, window: &Window, cx: &mut Ap
         log::error!(target: "sessionView", "no new window opens task {id} before its chapter");
         return links::failed("chat.markdownRenderer.openLinkFailed", window, cx);
     }
-    let chip = chip.to_owned();
-    let latest = move |cx: &mut App| {
-        held_mut(cx).is_some_and(|found| found.opening.get(&chip) == Some(&version))
-    };
-    let State::Ready(db) = &cx.global::<LocalDb>().state else {
-        log::warn!(target: "sessionView", "link target {id} not read: DbClient not ready");
-        return router::navigate(&format!("/cc-agent/{id}"), cx);
-    };
-    let task = id.clone();
-    let answer = db.call(move |conn| route(conn, &task));
-    cx.spawn(async move |cx| {
-        let Ok(route) = answer.await else {
-            return log::error!(target: "sessionView", "link target {id}: database closed");
-        };
-        cx.update(|cx| {
-            if !latest(cx) {
-                return log::info!(target: "sessionView", "link target {id}: a later ask won");
-            }
-            router::navigate(&route, cx);
-            cx.refresh_windows();
-        });
-    })
-    .detach();
+    let (chip, target) = (chip.to_owned(), id.clone());
+    resolved(id, cx, move |route, cx| {
+        let latest = held_mut(cx).is_some_and(|found| found.opening.get(&chip) == Some(&version));
+        if !latest {
+            return log::info!(target: "sessionView", "link target {target}: a later ask won");
+        }
+        match from {
+            Some(from) => router::navigate_from(route, from, cx),
+            None => router::navigate(route, cx),
+        }
+    });
+}
+
+/// `handleReturnToDispatcher`.
+pub fn back(dispatcher: String, cx: &mut App) {
+    log::info!(target: "sessionView", "handoff return to {dispatcher}");
+    resolved(dispatcher, cx, router::navigate);
 }
 
 /// `ProjectLinkChip`'s `handleClick`; a message is drawn only where the sidebar's list is.

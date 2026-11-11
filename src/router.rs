@@ -19,6 +19,15 @@ const NEW: &str = "/cc-agent/new";
 /// The hash route's location: its pathname and its search.
 pub struct Router {
     location: String,
+    /// `location.state.from` of a handoff card's navigation.
+    from: Option<Handoff>,
+}
+
+/// `HandoffFromState`: the task whose card opened this one, and that task's title.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Handoff {
+    pub dispatcher: String,
+    pub title: Option<String>,
 }
 
 impl Global for Router {}
@@ -91,6 +100,7 @@ fn matched(path: &str) -> Route {
 pub fn install(cx: &mut App) {
     cx.set_global(Router {
         location: "/".into(),
+        from: None,
     });
     cx.observe_global::<sessions::Sessions>(settle).detach();
     settle(cx);
@@ -117,12 +127,31 @@ pub fn active_session(cx: &App) -> Option<String> {
     }
 }
 
+/// `parseHandoffState` of the location's state.
+pub fn handoff(cx: &App) -> Option<&Handoff> {
+    cx.global::<Router>().from.as_ref()
+}
+
+/// `navigate(to)`: the new location carries no state.
 pub fn navigate(to: &str, cx: &mut App) {
-    if location(cx) == to {
+    go(to, None, cx);
+}
+
+/// `navigate(to, { state: { from } })`.
+pub fn navigate_from(to: &str, from: Handoff, cx: &mut App) {
+    go(to, Some(from), cx);
+}
+
+fn go(to: &str, from: Option<Handoff>, cx: &mut App) {
+    let router = cx.global::<Router>();
+    if router.location == to && router.from == from {
         return;
     }
-    log::info!(target: "router", "navigate to {to}");
-    cx.global_mut::<Router>().location = to.to_owned();
+    log::info!(target: "router", "navigate to {to}, handoff: {}", from.is_some());
+    *cx.global_mut::<Router>() = Router {
+        location: to.to_owned(),
+        from,
+    };
     track_last_view(pathname(to), cx);
     settle(cx);
 }
