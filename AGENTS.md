@@ -270,6 +270,13 @@ defines scope and what 1:1 means.
   `src/markdown_media.rs` is `isManagedMarkdownVideoUrl` and `src/remote_media_url.rs`
   `parseRemoteMediaUrl`'s wrapped address (`atob`, `TextDecoder`). Golden `image-targets`, from the
   hast golden's bundle; `normalizeMathDelimiters` joins with 9.8, so no case holds a math delimiter.
+- Streaming Markdown: `src/streaming_markdown.rs` is `repairStreamingMarkdown.ts` (`repair`: an open
+  fence closed, a half image or link read as its text, an open `**` or `*` on the last line closed)
+  with `getStreamingMarkdownThrottleInterval` (`throttle`, the length in UTF-16 units), and
+  `chunks.rs` `splitStreamingMarkdownChunks` (`split`: a chunk's `start` is its byte, the golden's a
+  UTF-16 unit). JavaScript's `\s`, `.` and multiline `^` are spelled by hand. Golden
+  `streaming-markdown`: `scripts/golden/streamingMarkdown.mjs` runs Cindy's functions on every
+  prefix of Cindy's test inputs, crafted texts and 240 seeded mixes. Nothing reads it before 9.6j3.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
@@ -855,7 +862,8 @@ defines scope and what 1:1 means.
   `docs/storage.md` maps each store to its chapter; never migrate Cindy's database.
 - Colors, sizes and radii come from Ely's `cx.theme()`. Reuse Ely components before writing new UI.
 - Errors surface: no fallback that hides a failure. Log each key step.
-- No file over 1000 lines (vendored upstream code apart). Comments only where needed, one short line.
+- No file over 1000 lines (vendored upstream code and the data under `tests/fixtures` apart).
+  Comments only where needed, one short line.
 - `TASKS.md` is progress truth; finished chapters move to `tasks/done.md`, their reviews to
   `tasks/reviews-done*.md`. One task, one review pass, one commit, one push.
 - Update this file when the stack or direction changes.

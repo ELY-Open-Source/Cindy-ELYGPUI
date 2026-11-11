@@ -457,3 +457,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   bytes past ASCII dropped; an empty `Location` followed to itself.
 - Round 3: PASS. Fields read as Chromium 148 reads them; 126 loads compared with Blink, no
   difference. No live desktop, outside network, TLS, proxy or cross-platform check was made.
+
+## 9.6j1 Streaming Markdown's repair, chunks and interval
+- Round 1: FAIL. P3: the two new fixture files exceed 1000 lines. No functional difference in
+  936,964 inputs run through Cindy's functions and the port; the golden regenerated alike.
+- Round 2: PASS. AGENTS.md states the exception for data under `tests/fixtures`. No desktop,
+  streamed row, timer or word fade was checked: the functions have no caller yet.

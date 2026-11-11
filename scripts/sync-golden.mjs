@@ -12,11 +12,12 @@ import { sentText } from './golden/sentText.mjs';
 import { hookCard } from './golden/hookCard.mjs';
 import { markdownTree } from './golden/markdownTree.mjs';
 import { markdownTransforms } from './golden/markdownTransforms.mjs';
+import { streamed } from './golden/streamingMarkdown.mjs';
 import { markdownHast } from './golden/markdownHast.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
-import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, FILE_LOCATION_TESTS, GOAL_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, LOCAL_PATH_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, FILE_LOCATION_TESTS, GOAL_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, LOCAL_PATH_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, STREAM_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -117,6 +118,8 @@ try {
     "export { resolveSafe as resolveBlob } from './main/cindy-media/blobStore';",
     "export * as attachmentSafety from './shared/attachmentSafety';",
     "export { stripGoalVerdictBlock } from '../../../packages/maker-shared/src/goalVerdict';",
+    "export { repairStreamingMarkdown } from './renderer/components/chat/repairStreamingMarkdown';",
+    "export * as streamingChunks from './renderer/components/chat/streamingMarkdownChunks';",
     "export { isSafetyDowngradedAttachment } from './renderer/lib/chatAttachmentSave';",
     "export * as filePresentation from '../../../packages/maker-shared/src/filePresentation';",
     "export { sentAgentReferenceDisplayLabel } from './renderer/components/chat/SentAgentReferenceChip';",
@@ -136,7 +139,7 @@ try {
     // The sent-text golden runs `renderContent`, whose JSX needs its runtime.
     define, jsx: 'automatic',
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, workspacePaths, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, formatFileLocation, toWorkdirRel, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, workspacePaths, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, formatFileLocation, toWorkdirRel, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, repairStreamingMarkdown, streamingChunks, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -572,6 +575,12 @@ try {
   const goalCases = await recorded({ ...golden, name: 'goal-verdict', tests: GOAL_TESTS, fns: { stripGoalVerdictBlock },
     keep: (_, args) => typeof args[0] === 'string' });
   console.log(`${goalCases} goal verdict cases`);
+  const streamCases = await recorded({ ...golden, name: 'streaming-markdown', tests: STREAM_TESTS, fns: {
+    repairStreamingMarkdown,
+    interval: (length) => streamingChunks.getStreamingMarkdownThrottleInterval('a'.repeat(length)),
+    ...streamed({ repair: repairStreamingMarkdown, split: streamingChunks.splitStreamingMarkdownChunks }),
+  } });
+  console.log(`${streamCases} streaming markdown cases`);
   // Where an address resolves under the stub's userData, or why it does not.
   const placed = (resolveSafe) => (url) => {
     try { return path.relative('/user-data', resolveSafe(url).absPath); } catch (error) { return `refused: ${error.message}`; }

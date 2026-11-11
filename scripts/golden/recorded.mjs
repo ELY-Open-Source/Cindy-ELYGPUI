@@ -93,6 +93,12 @@ export const FILE_KIND_TESTS = {
   'packages/maker-shared/src/filePresentation.test.ts': { './filePresentation': ['getFileVisualKind'] },
 };
 
+export const STREAM_TESTS = {
+  [`${desktop}/renderer/components/chat/__tests__/repairStreamingMarkdown.test.ts`]: {
+    '../repairStreamingMarkdown': ['repairStreamingMarkdown'],
+  },
+};
+
 export const GOAL_TESTS = {
   [`${shared}/goalVerdict.test.ts`]: { '../goalVerdict': ['stripGoalVerdictBlock'] },
 };

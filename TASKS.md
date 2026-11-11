@@ -319,6 +319,10 @@ listed in `tasks/done.md`.
         - [x] 9.6i3c2 An `http(s)` address: the fetch, with the client it needs
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
+    - [x] 9.6j1 `repairStreamingMarkdown`, `splitStreamingMarkdownChunks` and
+        `getStreamingMarkdownThrottleInterval`, with their golden
+    - [ ] 9.6j2 `rehypeStreamWordFade`: the fade segments, their keys and the timeline
+    - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
   - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
