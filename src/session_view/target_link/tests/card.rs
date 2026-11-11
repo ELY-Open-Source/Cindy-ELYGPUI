@@ -161,17 +161,6 @@ fn a_click_or_a_key_opens_the_card_s_task(cx: &mut TestAppContext) {
     assert_eq!(toasts(cx), Vec::<String>::new());
 }
 
-#[gpui::test]
-fn a_cell_s_card_reads_as_its_text(cx: &mut TestAppContext) {
-    let dir = tempfile::tempdir().unwrap();
-    let text = format!("| a |\n| - |\n| one {} two |\n", card("old"));
-    let cx = draw(cx, dir.path(), &text);
-    assert!(at(cx, CARD).is_none());
-    let cell = bounds(cx, "msg-c1-md-0-r1c0");
-    cx.simulate_click(cell.center(), Modifiers::none());
-    assert_eq!(path(cx), "/cc-agent/s1");
-}
-
 #[test]
 fn a_strong_or_a_heading_hands_its_weight_on() {
     let text = format!(

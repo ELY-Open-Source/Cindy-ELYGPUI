@@ -6,10 +6,14 @@ use ely_gpui_component::{primitives::IconName, theme::ActiveTheme as _};
 use gpui::{
     AnyElement, App, ClickEvent, Div, ElementId, FocusHandle, FontWeight, Hsla,
     InteractiveElement as _, IntoElement as _, KeyboardButton, ParentElement as _, Role,
-    StatefulInteractiveElement as _, Styled as _, Window, div, white,
+    StatefulInteractiveElement as _, Styled as _, TextStyle, Window, div, white,
 };
 
-use super::link_chip::act;
+use super::{
+    chip::nowrap,
+    flow::{self, Atom},
+    link_chip::act,
+};
 use crate::{
     appearance_settings::text_size,
     deep_link::Card,
@@ -30,6 +34,76 @@ struct Space {
     held: bool,
     /// Another key or a modifier came with it, so gpui's own key-up click will not come.
     mixed: bool,
+}
+
+/// What a card's place takes from it, in CSS pixels: its first baseline, height and content widths.
+#[derive(Clone, Copy)]
+pub struct Metrics {
+    pub baseline: f32,
+    pub height: f32,
+    pub least: f32,
+    pub most: f32,
+}
+
+/// A label's widest character and its whole width, `spacing` after each character.
+fn widths(label: &str, size: f32, style: &TextStyle, spacing: f32, window: &Window) -> (f32, f32) {
+    let rem = window.rem_size();
+    let shaped = window.text_system().shape_line(
+        label.to_owned().into(),
+        css(size).to_pixels(rem),
+        &[style.to_run(label.len())],
+        None,
+    );
+    let zoom = f32::from(rem) / 16.0;
+    let wide = |atom: &Atom| atom.advance / zoom + spacing;
+    let atoms = flow::atoms(&shaped);
+    // A space hangs at a break and counts nothing.
+    let seen = atoms
+        .iter()
+        .filter(|atom| !label[atom.at..].starts_with(flow::hangs));
+    let least = seen.map(wide).fold(0.0, f32::max);
+    (least, atoms.iter().map(wide).sum())
+}
+
+/// The card's content in a cell, whose `overflow-wrap: anywhere` breaks the badge and the short id.
+pub(super) fn content(
+    (title, badge, when, short): (&str, &str, (&str, bool), &str),
+    (solid, weight): (bool, FontWeight),
+    window: &Window,
+    cx: &App,
+) -> (f32, f32) {
+    let sizes = [10.0, 11.0, 12.0, 14.0].map(|size| text_size(size, cx));
+    let styled = |weight: FontWeight| TextStyle {
+        font_weight: weight,
+        ..window.text_style()
+    };
+    let (_, title) = widths(title, sizes[3], &styled(FontWeight::SEMIBOLD), 0.0, window);
+    let badge = widths(badge, sizes[0], &styled(FontWeight::MEDIUM), 0.4, window);
+    let edge = if solid { 16.0 } else { 18.0 };
+    let first = |badge: f32| title + 8.0 + badge + edge;
+    let mut small = styled(weight);
+    let (_, dot) = widths("\u{b7}", sizes[2], &small, 0.0, window);
+    // The last-active words follow the history icon; the never-active ones slant alone.
+    let lead = match when.1 {
+        true => 18.0,
+        false => {
+            small.font_style = gpui::FontStyle::Italic;
+            0.0
+        }
+    };
+    let (_, when) = widths(when.0, sizes[2], &small, 0.0, window);
+    let mono = TextStyle {
+        font_family: cx.theme().mono_family.clone(),
+        ..styled(weight)
+    };
+    let short = widths(short, sizes[1], &mono, 0.0, window);
+    let second = |short: f32| lead + when + 6.0 + dot + 6.0 + short;
+    // The circle, the arrow, two gaps, `p-4` and the border.
+    let rest = 122.0;
+    (
+        rest + first(badge.0).max(second(short.0)),
+        rest + first(badge.1).max(second(short.1)),
+    )
 }
 
 /// `tracking-[0.4px]`: each character as wide as it is shaped, and 0.4px more.
@@ -54,7 +128,7 @@ fn tracked(label: &str, size: f32, weight: FontWeight, window: &Window) -> Div {
     div().flex().children(letters)
 }
 
-/// The card mounted as `id`, and its first baseline in CSS pixels; `weight` is what it inherits.
+/// The card mounted as `id` with its metrics; `weight` is what it inherits.
 pub fn element(
     id: &str,
     card: &Card,
@@ -62,7 +136,7 @@ pub fn element(
     focus: FocusHandle,
     window: &mut Window,
     cx: &mut App,
-) -> (AnyElement, f32) {
+) -> (AnyElement, Metrics) {
     let element = ElementId::Name(id.to_owned().into());
     let child = |name: &'static str| {
         ElementId::NamedChild(std::sync::Arc::new(element.clone()), name.into())
@@ -74,6 +148,13 @@ pub fn element(
     let seen = card.last_active.as_deref().filter(|at| !at.is_empty());
     let seen = seen.map(|at| words::last_active(at, js_date::now(), t));
     let never = words::never(t);
+    // A text's white space collapses, as `nowrap` and `normal` both draw it.
+    let (title, short) = (nowrap(&title), nowrap(&words::short(&card.session_id)));
+    let when = seen
+        .as_deref()
+        .map_or((never.as_str(), false), |seen| (seen, true));
+    let upper = badge.to_uppercase();
+    let (least, most) = content((&title, &upper, when, &short), (solid, weight), window, cx);
     let a = cx.global::<Appearance>();
     let (ink, paper) = (a.hsl_token("foreground"), a.hsl_token("background"));
     let pick = |rest: Hsla, lit: Hsla| if state.hovered { lit } else { rest };
@@ -116,7 +197,7 @@ pub fn element(
         let selector = format!("{id}-{name}");
         move || selector
     };
-    let label = tracked(&badge.to_uppercase(), sizes[0], FontWeight::MEDIUM, window)
+    let label = tracked(&upper, sizes[0], FontWeight::MEDIUM, window)
         .debug_selector(part("badge"))
         .flex_none()
         .rounded(css(9999.0))
@@ -161,7 +242,7 @@ pub fn element(
         .text_size(css(sizes[1]))
         .line_height(css(16.0))
         .text_color(meta)
-        .child(words::short(&card.session_id));
+        .child(short);
     let lines = div()
         .min_w_0()
         .flex_1()
@@ -290,9 +371,12 @@ pub fn element(
         )
         .children(rings.into_iter().flatten());
     // An outlined badge's border makes its line, and the card, 2px taller.
-    let baseline = BASELINE + if solid { 0.0 } else { 1.0 };
-    (
-        press::listen(el, &press, false).into_any_element(),
-        baseline,
-    )
+    let taller = if solid { 0.0 } else { 1.0 };
+    let metrics = Metrics {
+        baseline: BASELINE + taller,
+        height: 74.0 + 2.0 * taller,
+        least,
+        most,
+    };
+    (press::listen(el, &press, false).into_any_element(), metrics)
 }

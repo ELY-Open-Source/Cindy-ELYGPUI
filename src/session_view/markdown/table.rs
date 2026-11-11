@@ -6,11 +6,7 @@ use gpui::{
     prelude::FluentBuilder as _,
 };
 
-use super::{
-    Face, Laid, Walk,
-    marker::Marker,
-    text::{Inline, Mark, Swap},
-};
+use super::{Face, Laid, Walk, marker::Marker, text::Inline};
 use crate::{
     appearance_settings::text_size,
     markdown::hast::{Element, Hast, Prop},
@@ -91,29 +87,27 @@ impl Walk<'_> {
             weight: FontWeight::MEDIUM,
             ..body.clone()
         };
-        let read = |cell: &Element| {
-            let mut inline = Inline::default();
-            // A cell's card comes with 9.6h5b2: until then its link reads as its text.
-            let swap = |node| {
-                let swap = self.anchors.swap(node);
-                swap.filter(|swap| !matches!(swap, Swap::Card))
-            };
-            (cell.children.iter()).for_each(|node| inline.read(node, Mark::default(), &swap));
-            inline.end();
-            inline
-        };
         let rows = held(table).flat_map(held);
-        let rows: Vec<Vec<(&Element, Inline)>> = rows
-            .map(|row| held(row).map(|cell| (cell, read(cell))).collect())
+        let rows: Vec<Vec<(&Element, Vec<Inline>)>> = rows
+            .map(|row| {
+                let cells = held(row).map(|cell| (cell, self.parts(&cell.children)));
+                cells.collect()
+            })
             .collect();
         let face = |cell: &Element| if cell.tag == "th" { &head } else { &body };
         let mut sizes = vec![(CELL, CELL); rows[0].len()];
-        for (column, (cell, inline)) in rows.iter().flat_map(|row| row.iter().enumerate()) {
+        for (column, (cell, parts)) in rows.iter().flat_map(|row| row.iter().enumerate()) {
             let look = self.look(face(cell), 0.0, path, true);
-            let (min, max) = look.sizes(inline, self.window);
             let (low, high) = &mut sizes[column];
-            *low = low.max(min / self.zoom + CELL);
-            *high = high.max(max / self.zoom + CELL);
+            for (part, inline) in parts.iter().enumerate() {
+                let (min, max) = look.sizes(inline, self.window);
+                // A card is a block: the cell is as wide as its widest line or card asks.
+                let card = inline.cards.get(part);
+                let card = card.map(|card| self.anchors.card_metrics(*card));
+                let (least, most) = card.map_or((0.0, 0.0), |card| (card.least, card.most));
+                *low = low.max(min / self.zoom + CELL).max(least + CELL);
+                *high = high.max(max / self.zoom + CELL).max(most + CELL);
+            }
         }
         // The table is as wide as its container, or as its columns' least widths ask.
         let least: f32 = sizes.iter().map(|(min, _)| min).sum();
@@ -134,28 +128,48 @@ impl Walk<'_> {
         let fill = appearance.token("msg-table-header-bg");
         // The first row's height: its tallest cell, with `py-2` and a border.
         let mut first = 17.0_f32;
-        let mut cell = |(row, column): (usize, usize), cell: &Element, inline: &Inline| {
+        let mut cell = |(row, column): (usize, usize), cell: &Element, parts: &[Inline]| {
             let face = face(cell);
             let selector = format!("{path}-r{row}c{column}");
-            let look = self.look(face, columns[column] - CELL, &selector, true);
-            let lines = (!inline.text.is_empty()).then(|| {
-                let drawn = look.draw(inline, self.window);
-                if row == 0 {
-                    first = first.max(drawn.height / self.zoom + 17.0);
+            let (mut laid, mut height) = (Vec::new(), 0.0);
+            for (part, inline) in parts.iter().enumerate() {
+                // The lines after card `part - 1` are `<cell>-p<part>`.
+                let name = match part {
+                    0 => selector.clone(),
+                    _ => format!("{selector}-p{part}"),
+                };
+                let lines = (!inline.text.is_empty()).then(|| {
+                    let look = self.look(face, columns[column] - CELL, &name, true);
+                    let drawn = look.draw(inline, self.window);
+                    height += drawn.height / self.zoom;
+                    let style = self.style(face, false);
+                    let rows = (face, &style, drawn.baseline);
+                    let lines = self.rows(rows, drawn.rows, &mut Vec::new());
+                    // `th` is `text-left`; a `td` follows its `align`.
+                    let lines = match cell.prop("align") {
+                        Some(Prop::Text(side)) if cell.tag == "td" && side == "center" => {
+                            lines.items_center()
+                        }
+                        Some(Prop::Text(side)) if cell.tag == "td" && side == "right" => {
+                            lines.items_end()
+                        }
+                        _ => lines,
+                    };
+                    let selector = format!("{name}-lines");
+                    lines.debug_selector(move || selector).into_any_element()
+                });
+                laid.push(Laid::new((0.0, 0.0), lines));
+                if let Some(card) = inline.cards.get(part) {
+                    height += self.anchors.card_metrics(*card).height;
+                    // `my-2`, which the cell's padding keeps inside it.
+                    laid.push(Laid::new((8.0, 8.0), Some(self.anchors.card(*card))));
                 }
-                let style = self.style(face, false);
-                let lines = self.rows((face, &style, drawn.baseline), drawn.rows, &mut Vec::new());
-                // `th` is `text-left`; a `td` follows its `align`.
-                match cell.prop("align") {
-                    Some(Prop::Text(side)) if cell.tag == "td" && side == "center" => {
-                        lines.items_center()
-                    }
-                    Some(Prop::Text(side)) if cell.tag == "td" && side == "right" => {
-                        lines.items_end()
-                    }
-                    _ => lines,
-                }
-            });
+            }
+            let (stack, content) = super::column(laid, false);
+            height += stack.gaps.iter().flatten().sum::<f32>() + stack.tail;
+            if row == 0 {
+                first = first.max(height + 17.0);
+            }
             let name = selector.clone();
             div()
                 .debug_selector(move || name)
@@ -170,12 +184,12 @@ impl Walk<'_> {
                 .px(css(12.0))
                 .py(css(8.0))
                 .when(cell.tag == "th", |el| el.bg(fill))
-                .children(lines)
+                .child(content.pb(css(stack.tail)))
         };
         let mut drawn = Vec::new();
         for (row, cells) in rows.iter().enumerate() {
             let cells = cells.iter().enumerate();
-            let cells = cells.map(|(column, (node, inline))| cell((row, column), node, inline));
+            let cells = cells.map(|(column, (node, parts))| cell((row, column), node, parts));
             drawn.push(div().flex().children(cells.collect::<Vec<_>>()));
         }
         // No cell is aligned to a baseline, so the row's is its cells' content bottom.

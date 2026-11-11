@@ -196,6 +196,23 @@ impl Walk<'_> {
         }
     }
 
+    /// A run of inline nodes in parts: the text up to each handoff card, then the text after the last.
+    fn parts(&self, nodes: &[Hast]) -> Vec<Inline> {
+        let mut out = Vec::new();
+        loop {
+            let mut inline = Inline::part(out.len());
+            (nodes.iter()).for_each(|node| {
+                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
+            });
+            inline.end();
+            let last = inline.cards.len() <= out.len();
+            out.push(inline);
+            if last {
+                return out;
+            }
+        }
+    }
+
     /// A run of inline nodes: its line boxes, and each handoff card a block among them.
     fn runs(
         &self,
@@ -206,12 +223,7 @@ impl Walk<'_> {
         markers: &mut Vec<Marker>,
     ) -> Vec<Laid> {
         let mut out = Vec::new();
-        for part in 0.. {
-            let mut inline = Inline::part(part);
-            (nodes.iter()).for_each(|node| {
-                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
-            });
-            inline.end();
+        for (part, inline) in self.parts(nodes).into_iter().enumerate() {
             // The lines after card `part - 1` are `<path>-p<part>`.
             let name = match part {
                 0 => path.to_owned(),
@@ -227,12 +239,13 @@ impl Walk<'_> {
             });
             out.push(Laid::new((0.0, 0.0), lines));
             let Some(card) = inline.cards.get(part) else {
-                break;
+                continue;
             };
             // `my-2`; the markers that wait for a line hang by the card's first baseline.
-            let (card, baseline) = self.anchors.card(*card);
+            let baseline = self.anchors.card_metrics(*card).baseline * self.zoom;
+            let card = self.anchors.card(*card);
             let hung = markers.drain(..);
-            let hung = hung.map(|marker| marker.draw(baseline * self.zoom, self.zoom, self.window));
+            let hung = hung.map(|marker| marker.draw(baseline, self.zoom, self.window));
             let card = div()
                 .relative()
                 .child(card)

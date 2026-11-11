@@ -83,8 +83,8 @@ pub struct Anchors {
     chips: HashMap<*const Element, Chip>,
     /// Each deep link's chip: its width in window pixels, its height, and its element until drawn.
     links: HashMap<*const Element, (f32, f32, RefCell<Option<AnyElement>>)>,
-    /// Each handoff card until drawn, and its first baseline in CSS pixels.
-    cards: HashMap<*const Element, (RefCell<Option<AnyElement>>, f32)>,
+    /// Each handoff card until drawn, and its metrics.
+    cards: HashMap<*const Element, (RefCell<Option<AnyElement>>, handoff::Metrics)>,
     shared: Shared,
 }
 
@@ -122,7 +122,7 @@ fn around(nodes: &[Hast], (em, weight): Around, found: &mut HashMap<*const Eleme
             }
             let weight = match element.tag {
                 "strong" => FontWeight::BOLD,
-                "h1" | "h2" | "h3" => FontWeight::MEDIUM,
+                "h1" | "h2" | "h3" | "th" => FontWeight::MEDIUM,
                 _ => weight,
             };
             around(
@@ -291,8 +291,8 @@ pub fn read(
         };
         link_chip::mounted(&id, (0, n), target, cx);
         let (focus, weight) = (shared.stop(n).0, about[&node].1);
-        let (element, baseline) = handoff::element(&id, card, weight, focus, window, cx);
-        cards.insert(node, (RefCell::new(Some(element)), baseline));
+        let (element, metrics) = handoff::element(&id, card, weight, focus, window, cx);
+        cards.insert(node, (RefCell::new(Some(element)), metrics));
     }
     let size = text_size(12.0, cx);
     for (n, (a, anchor)) in found.iter().zip(&list).enumerate() {
@@ -448,10 +448,14 @@ impl Anchors {
         (*width, *height)
     }
 
-    /// A handoff card, drawn once, and its first baseline in CSS pixels.
-    pub fn card(&self, node: *const Element) -> (AnyElement, f32) {
-        let (card, baseline) = &self.cards[&node];
-        (card.take().expect("a card is drawn once"), *baseline)
+    /// A handoff card, drawn once.
+    pub fn card(&self, node: *const Element) -> AnyElement {
+        let card = self.cards[&node].0.take();
+        card.expect("a card is drawn once")
+    }
+
+    pub fn card_metrics(&self, node: *const Element) -> handoff::Metrics {
+        self.cards[&node].1
     }
 
     /// A deep link's chip, which a row draws once.
@@ -485,7 +489,7 @@ impl Anchors {
         let name = format!("{}-a{nth}-{at}", self.key);
         let named = |piece: Div| piece.id(ElementId::Name(name.into()));
         let listened = match &anchor.face {
-            // A chip's box takes its clicks; a cell's card is inert text until 9.6h5b2.
+            // A chip's box and a card take their own clicks.
             Face::Span | Face::Card(_) | Face::File(FileFace { boxed: true, .. }, ..) => {
                 return piece.into_any_element();
             }

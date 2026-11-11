@@ -403,3 +403,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: PASS. Every activation ends a held Space, and a clean Space clicks through gpui's own
   key-up click. A Space mixed with another key does not see a focus round trip inside one
   update. No live desktop check was made.
+
+## 9.6h5b2 The handoff card in a table's cell
+- Round 1: FAIL. The card's min content ignored the cell's `overflow-wrap: anywhere`, and a
+  title's raw white space widened its column; a decoded line feed reached the line shaper.
+- Round 2: PASS. The badge and the short id count their widest character in the min; the title
+  and the id collapse their white space before measure and draw. No live desktop check was made.

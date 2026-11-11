@@ -289,7 +289,7 @@ listed in `tasks/done.md`.
           footnote: the block it makes among the lines about it (its margins collapse as a
           block's; `logs/review/9.6h5b-blink-card.log`), its title, badge, last-active words
           and short id, the weight a `strong` or heading hands on, its click and keys
-        - [ ] 9.6h5b2 The card in a table's cell: the cell as lines and cards, and the card's
+        - [x] 9.6h5b2 The card in a table's cell: the cell as lines and cards, and the card's
           min and max content in the column widths
         - [ ] 9.6h5b3 The route's `from` state a card's click hands on, and `HandoffSourcePill`
           over the task it opened: the dispatcher's title or short id, Return and Dismiss

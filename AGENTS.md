@@ -637,8 +637,14 @@ defines scope and what 1:1 means.
   focus generation to itself, so a Space mixed with another key or a modifier does not see
   a focus gone and back within one update. It runs
   `link_chip::act::task`, the chip's route read, where the card's latest ask alone navigates while it is mounted. The route's `from`
-  state and `HandoffSourcePill` come with 9.6h5b3; a card in a table's cell with 9.6h5b2,
-  until which a cell's card link reads as its text, underlined and inert.
+  state and `HandoffSourcePill` come with 9.6h5b3. In a table's cell the card is a block too
+  (`Walk::parts`, which `runs` shares): the cell is a closed column of lines and cards, so
+  `my-2` stays inside its padding and two cards share one margin; a `th` hands its medium
+  weight on. The column counts the card's min and max content (`handoff::content`): the
+  circle, arrow, gaps, padding and border, 122px, and the wider of its two lines, where the
+  title and the last-active words count whole (`nowrap`) and the badge and the short id their
+  widest character in the min, since the cell's `overflow-wrap: anywhere` reaches them
+  (`logs/review/9.6h5b2-r1-review-blink.log`). The title's and the id's white space collapses.
 - Resolved files: `target_link/file.rs` holds the faces of a resolved local target. An `a`
   whose label reads as a file (`code_label`, `shouldRenderCodeReferenceLabel`; golden
   `smart-paths/label.json` from the renderer's private function) is `FileTargetChip`, any other

@@ -526,4 +526,5 @@ fn a_link_is_a_tab_stop_before_the_chips_it_holds(cx: &mut TestAppContext) {
 }
 
 mod card;
+mod cell;
 mod deep;
