@@ -395,3 +395,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   link did not slant a session or project chip.
 - Round 2: PASS. The label is `--text-12` through `text_size`; an `em` about the link slants
   the chip, the message link's button apart. No live desktop check was made.
+
+## 9.6h5b1 The handoff card in a paragraph
+- Round 1: FAIL. A modified Enter or Space did nothing and Enter waited for key up; an empty
+  `last_active` read as recently active.
+- Round 2: FAIL. A held Space outlived Enter, a click, and a focus gone and back in one update.
+- Round 3: PASS. Every activation ends a held Space, and a clean Space clicks through gpui's own
+  key-up click. A Space mixed with another key does not see a focus round trip inside one
+  update. No live desktop check was made.

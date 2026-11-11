@@ -27,6 +27,7 @@ mod file_path_policy;
 mod file_presentation;
 mod generated_files;
 mod goal_verdict;
+mod handoff_card;
 mod history_render;
 mod history_view;
 mod hook_card;

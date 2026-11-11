@@ -9,7 +9,7 @@ const ENTRY = [
   "export { regex as slugRegex } from 'github-slugger/regex.js';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
-const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel };\n';
+const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref };\n';
 const exporter = {
   name: 'renderer-exports',
   setup(build) {
@@ -68,6 +68,9 @@ export async function markdownHast({ esbuild, tmp, nodePaths, alias, define, ass
   // Whether a resolved target's label reads as a file reference, which makes it a chip.
   const labels = JSON.parse(fs.readFileSync(path.join(fixtures, 'smart-paths', 'label-cases.json'), 'utf8'));
   write(path.join(fixtures, 'smart-paths', 'label.json'), labels.map(([target, label]) => [target, label, golden.shouldRenderCodeReferenceLabel(target, label)]));
+  // A session-card link's target, or null for a link that draws as any other.
+  const cards = JSON.parse(fs.readFileSync(path.join(fixtures, 'session-card', 'cases.json'), 'utf8'));
+  write(path.join(fixtures, 'session-card', 'expected.json'), cards.map((href) => [href, golden.parseSessionCardHref(href)]));
   // Strict inline math comes with 9.8, as KaTeX and the highlighter do with theirs.
   const less = (list) => list.filter((plugin) => plugin !== named(list, 3, 'remarkStrictInlineMath'));
   let seen;

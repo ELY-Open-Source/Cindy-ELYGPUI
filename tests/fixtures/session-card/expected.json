@@ -1,0 +1,377 @@
+[
+ [
+  "cindy://session-card/abc?wake=resumed&title=Plan&last_active=2026-01-02T03:04:05.000Z",
+  {
+   "sessionId": "abc",
+   "title": "Plan",
+   "wake": "resumed",
+   "lastActive": "2026-01-02T03:04:05.000Z"
+  }
+ ],
+ [
+  "xdt-maker://session-card/abc?wake=resumed&title=Plan&last_active=2026-01-02T03:04:05.000Z",
+  {
+   "sessionId": "abc",
+   "title": "Plan",
+   "wake": "resumed",
+   "lastActive": "2026-01-02T03:04:05.000Z"
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=created&title=&last_active=null",
+  {
+   "sessionId": "abc",
+   "title": null,
+   "wake": "created",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=already-active&title=%20%20&last_active=",
+  {
+   "sessionId": "abc",
+   "title": null,
+   "wake": "already-active",
+   "lastActive": ""
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=already-active&title=+a+b+&last_active=null",
+  {
+   "sessionId": "abc",
+   "title": " a b ",
+   "wake": "already-active",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=Resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/abc?wake=asleep&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/abc?title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&title=a",
+  null
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&wake=created&title=a&title=b&last_active=x&last_active=y",
+  {
+   "sessionId": "abc",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": "x"
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&title=a&last_active=NULL",
+  {
+   "sessionId": "abc",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": "NULL"
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&title=a&last_active=not%20a%20date",
+  {
+   "sessionId": "abc",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": "not a date"
+  }
+ ],
+ [
+  "cindy://session-card/?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/%20%20?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/%20a%20b%20?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a b",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a%2Fb?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a/b",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a/b?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a/b",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card//a?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card///a//b/?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a//b/",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a/../b?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "b",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/./a/.?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a/",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/..?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/%2e%2e/a?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a%?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a%zz?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a%E4?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a%E4%BD%A0?wake=resumed&title=%E4%BD%A0&last_active=null",
+  {
+   "sessionId": "a你",
+   "title": "你",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/任务 一?wake=resumed&title=标题 x&last_active=null",
+  {
+   "sessionId": "任务 一",
+   "title": "标题 x",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a b?wake=resumed&title=a b&last_active=null",
+  {
+   "sessionId": "a b",
+   "title": "a b",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a\tb\nc?wake=resumed&title=a\tb&last_active=null",
+  {
+   "sessionId": "abc",
+   "title": "ab",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a#frag?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title=a&last_active=null#frag",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title=a%23b%26c%3Dd&last_active=null",
+  {
+   "sessionId": "a",
+   "title": "a#b&c=d",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title=%ff%fe&last_active=null",
+  {
+   "sessionId": "a",
+   "title": "��",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title=a%&last_active=%zz",
+  {
+   "sessionId": "a",
+   "title": "a%",
+   "wake": "resumed",
+   "lastActive": "%zz"
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed;title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a?&&wake=resumed&&title=a&=x&last_active=null&",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title&last_active",
+  {
+   "sessionId": "a",
+   "title": null,
+   "wake": "resumed",
+   "lastActive": ""
+  }
+ ],
+ [
+  "cindy://session-card/a?WAKE=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title=a&last%5Factive=null",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?wake=resumed&title= 　&last_active=null",
+  {
+   "sessionId": "a",
+   "title": null,
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/ a﻿?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a\\b?wake=resumed&title=a&last_active=null",
+  {
+   "sessionId": "a\\b",
+   "title": "a",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a?b?wake=resumed&title=a&last_active=null",
+  null
+ ],
+ [
+  "cindy://session-card/a\"<>`{}|^~[]@:;,$!*'()?wake=resumed&title=a\"<>`{}|^[]&last_active=null",
+  {
+   "sessionId": "a\"<>`{}|^~[]@:;,$!*'()",
+   "title": "a\"<>`{}|^[]",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/abc?wake=resumed&title=Plan&last_active=2026-01-02T03:04:05.000Z\n",
+  {
+   "sessionId": "abc",
+   "title": "Plan",
+   "wake": "resumed",
+   "lastActive": "2026-01-02T03:04:05.000Z"
+  }
+ ],
+ [
+  "cindy://session-card/%00a?wake=resumed&title=%00&last_active=null",
+  {
+   "sessionId": "\u0000a",
+   "title": "\u0000",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/😀?wake=resumed&title=😀&last_active=null",
+  {
+   "sessionId": "😀",
+   "title": "😀",
+   "wake": "resumed",
+   "lastActive": null
+  }
+ ],
+ [
+  "cindy://session-card/a%2Bb+c?wake=resumed&title=a%2Bb+c&last_active=2026-01-02T03:04:05+08:00",
+  {
+   "sessionId": "a+b+c",
+   "title": "a+b c",
+   "wake": "resumed",
+   "lastActive": "2026-01-02T03:04:05 08:00"
+  }
+ ]
+]

@@ -140,10 +140,11 @@ fn an_em_about_a_link_slants_it() {
     let text = "*[a](cindy://session/a)* [*b*](cindy://session/b) \
         ***[c](cindy://project/c)***\n\n| x |\n| - |\n| *[d](cindy://session/d)* |\n";
     let tree = hast::render(text, true, Urls::Trusted);
-    let (mut all, mut codes, mut slant) = (Vec::new(), Vec::new(), Vec::new());
+    let (mut all, mut codes) = (Vec::new(), Vec::new());
     super::super::collect(&tree, &mut all, &mut codes);
-    super::super::slanted(&tree, false, &mut slant);
-    let slants = |a: &&hast::Element| slant.contains(&(*a as *const hast::Element));
+    let mut about = std::collections::HashMap::new();
+    super::super::around(&tree, (false, gpui::FontWeight::NORMAL), &mut about);
+    let slants = |a: &&hast::Element| about[&(*a as *const hast::Element)].0;
     // An `em` inside the label is flattened with the label.
     assert_eq!(
         all.iter().map(slants).collect::<Vec<_>>(),

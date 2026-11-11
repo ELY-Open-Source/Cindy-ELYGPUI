@@ -583,8 +583,8 @@ defines scope and what 1:1 means.
   messages attached (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook
   (`resolved::resolved`, mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its
   rows). `Face` is what the node draws as: a span (plain text, a code reference, a bare path
-  that has not resolved; the audio player comes with 9.13), a resolved file (below), a deep link's chip or words (below), `Later` (a session-card link, underlined and inert
-  until 9.6h5b), a web address, or an inline target. A session or project link (`deep`) is
+  that has not resolved; the audio player comes with 9.13), a resolved file (below), a deep link's chip or words (below), a handoff card (its own bullet), a web address,
+  or an inline target. A session or project link (`deep`) is
   `SessionLinkChip` or `ProjectLinkChip`, 9.5j's chip with its reads, clicks, keys and menu
   (`link_chip`; the label is the link's text, trimmed, unless empty or the address itself):
   the reader takes the `a` as one atom whatever it holds (`text::Swap::Chip`, `Chip::Link`),
@@ -608,6 +608,37 @@ defines scope and what 1:1 means.
   footnote's item and an `a` with an `id` record where they paint (the first in the document
   keeps the id), and the stream's `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's
   programmatic curve that `sessions/reveal.rs` shares; reduced motion jumps.
+- Handoff card: `deep_link::parse_card` is `parseSessionCardHref` behind the renderer's
+  `session-card/` prefix check (`new URL` is the `url` crate; golden `session-card`, from the
+  renderer's private function through the hast golden's bundle); a link that parses as no
+  card draws as any other link. `src/handoff_card.rs` holds the card's words (`displayTitle`,
+  the badge, `formatLastActive` on `js_date` (an empty `last_active` is none, as the
+  component's truthiness check has it), `shortSessionId` in UTF-16 units) and
+  `session_view/handoff.rs` draws `SessionHandoffCard`. The button is a block inside its
+  paragraph, so the inline reader reads a run in parts (`Inline::part`): text past card
+  `part - 1` and up to card `part`, counting cards through `em`, `strong` and `del`
+  (`Swap::Card`), and `Walk::runs` lays the parts and cards out as blocks whose margins
+  collapse (`my-2`, through the paragraph or heading, an open container). A break before a
+  card ends its line; one after it opens a line. Pending list markers hang by the card's
+  first baseline, the bottom of the icon in its circle, 46px down (47 with the outlined
+  badge, whose border makes the card 76px for 74). Blink's places are in
+  `logs/review/9.6h5b-blink-card.log` and `-list.log` (probes in `.scratch/9.6h5b/`). The
+  card keeps its own sizes and takes its second line's weight from a `strong` or an `h1` to
+  `h3` about it (`target_link::around`), never an `em`'s slant. Its hover eases border,
+  circle, icon and arrow over a fixed 150ms, which reduced motion leaves; the keyboard's
+  focus draws `ring-2 ring-foreground` past Tailwind's white `ring-offset-2`. gpui has no
+  letter spacing, so the badge's `tracking-[0.4px]` is a box per letter, as wide as it is
+  shaped and 0.4px more, laid out to the device pixel. A click (any modifier) is `handleClick`, and the keys
+  are a native button's, not gpui's key-up click: Enter clicks on key down and Space on key
+  up, whatever they hold. A held Space (`handoff::Space`) ends with any other activation
+  and with the focus leaving: a draw with the card unfocused drops it, and a clean Space
+  (no other key, no modifier) clicks through gpui's own key-up click, which gpui withholds
+  when the focus moved meanwhile, even away and back inside one update. gpui keeps that
+  focus generation to itself, so a Space mixed with another key or a modifier does not see
+  a focus gone and back within one update. It runs
+  `link_chip::act::task`, the chip's route read, where the card's latest ask alone navigates while it is mounted. The route's `from`
+  state and `HandoffSourcePill` come with 9.6h5b3; a card in a table's cell with 9.6h5b2,
+  until which a cell's card link reads as its text, underlined and inert.
 - Resolved files: `target_link/file.rs` holds the faces of a resolved local target. An `a`
   whose label reads as a file (`code_label`, `shouldRenderCodeReferenceLabel`; golden
   `smart-paths/label.json` from the renderer's private function) is `FileTargetChip`, any other

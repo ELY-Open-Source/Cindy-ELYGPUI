@@ -55,9 +55,13 @@ pub fn begin(cx: &mut App) {
 
 /// A session chip was drawn at `place`; a new place or target ends what the chip asked.
 pub fn drawn(id: &str, place: (usize, usize), href: &str, cx: &mut App) {
-    let Some(target) = deep_link::parse_session(href) else {
-        return;
-    };
+    if let Some(target) = deep_link::parse_session(href) {
+        mounted(id, place, target, cx);
+    }
+}
+
+/// `drawn` for what opens `target`: a chip, or a handoff card.
+pub fn mounted(id: &str, place: (usize, usize), target: deep_link::Session, cx: &mut App) {
     let Some(found) = held_mut(cx) else {
         return;
     };
@@ -226,6 +230,12 @@ pub fn held(cx: &App) -> &Found {
     let shown = cx.global::<SessionView>().shown.as_ref();
     let content = shown.and_then(|shown| shown.content.as_ref());
     &content.expect("a row draws in mounted content").links
+}
+
+/// The open the chip `id` asked last, by its number.
+#[cfg(test)]
+pub fn asked(id: &str, cx: &App) -> Option<u64> {
+    held(cx).opening.get(id).copied()
 }
 
 pub(super) fn held_mut(cx: &mut App) -> Option<&mut Found> {

@@ -196,28 +196,50 @@ impl Walk<'_> {
         }
     }
 
-    /// The line boxes of a run of inline nodes; `None` when it holds no line.
-    fn lines(
+    /// A run of inline nodes: its line boxes, and each handoff card a block among them.
+    fn runs(
         &self,
         nodes: &[Hast],
         face: &Face,
         width: f32,
         path: &str,
         markers: &mut Vec<Marker>,
-    ) -> Option<AnyElement> {
-        let mut inline = Inline::default();
-        (nodes.iter())
-            .for_each(|node| inline.read(node, Mark::default(), &|node| self.anchors.swap(node)));
-        inline.end();
-        if inline.text.is_empty() {
-            return None;
+    ) -> Vec<Laid> {
+        let mut out = Vec::new();
+        for part in 0.. {
+            let mut inline = Inline::part(part);
+            (nodes.iter()).for_each(|node| {
+                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
+            });
+            inline.end();
+            // The lines after card `part - 1` are `<path>-p<part>`.
+            let name = match part {
+                0 => path.to_owned(),
+                _ => format!("{path}-p{part}"),
+            };
+            let lines = (!inline.text.is_empty()).then(|| {
+                let look = self.look(face, width, &name, false);
+                let drawn = look.draw(&inline, self.window);
+                let style = self.style(face, false);
+                let block = self.rows((face, &style, drawn.baseline), drawn.rows, markers);
+                let selector = name.clone();
+                block.debug_selector(move || selector).into_any_element()
+            });
+            out.push(Laid::new((0.0, 0.0), lines));
+            let Some(card) = inline.cards.get(part) else {
+                break;
+            };
+            // `my-2`; the markers that wait for a line hang by the card's first baseline.
+            let (card, baseline) = self.anchors.card(*card);
+            let hung = markers.drain(..);
+            let hung = hung.map(|marker| marker.draw(baseline * self.zoom, self.zoom, self.window));
+            let card = div()
+                .relative()
+                .child(card)
+                .children(hung.collect::<Vec<_>>());
+            out.push(Laid::new((8.0, 8.0), Some(card.into_any_element())));
         }
-        let look = self.look(face, width, path, false);
-        let drawn = look.draw(&inline, self.window);
-        let style = self.style(face, false);
-        let selector = path.to_owned();
-        let block = self.rows((face, &style, drawn.baseline), drawn.rows, markers);
-        Some(block.debug_selector(move || selector).into_any_element())
+        out
     }
 
     /// `CodeBlockPre`'s surface over the code's text; its chrome and colors come with 9.7.
@@ -408,8 +430,8 @@ impl Walk<'_> {
             // `my-2 first:mt-0 last:mb-0`.
             "p" => {
                 let margin = |edge| if edge { 0.0 } else { 8.0 };
-                let lines = self.lines(&block.children, face, width, path, markers);
-                Laid::new((margin(edges.0), margin(edges.1)), lines)
+                let runs = self.runs(&block.children, face, width, path, markers);
+                open((margin(edges.0), margin(edges.1)), runs, |column| column)
             }
             "ul" | "ol" => self.list(block, face, width, path, markers),
             "blockquote" => self.quote(block, face, width, path, markers),
@@ -432,8 +454,10 @@ impl Walk<'_> {
             tag => {
                 let level = tag[1..].parse().expect("a heading's level");
                 let (face, margin) = self.heading(level, face);
-                let lines = self.lines(&block.children, &face, width, path, markers);
-                Laid::new((margin, margin), lines.map(|lines| named(block, lines)))
+                let runs = self.runs(&block.children, &face, width, path, markers);
+                let mut laid = open((margin, margin), runs, |column| column);
+                laid.element = laid.element.map(|lines| named(block, lines));
+                laid
             }
         };
         Some(laid)
@@ -461,16 +485,14 @@ impl Walk<'_> {
             }
             // The text before block `nth` is `<path>-<nth>t`.
             let text = format!("{path}-{nth}t");
-            let lines = self.lines(&children[run..index], face, width, &text, markers);
-            out.push(Laid::new((0.0, 0.0), lines));
+            out.extend(self.runs(&children[run..index], face, width, &text, markers));
             let edges = (first == Some(index), last == Some(index));
             let own = format!("{path}-{nth}");
             out.extend(self.block(block, edges, face, (width, &own), markers));
             (run, nth) = (index + 1, nth + 1);
         }
         let text = format!("{path}-{nth}t");
-        let lines = self.lines(&children[run..], face, width, &text, markers);
-        out.push(Laid::new((0.0, 0.0), lines));
+        out.extend(self.runs(&children[run..], face, width, &text, markers));
         out
     }
 }

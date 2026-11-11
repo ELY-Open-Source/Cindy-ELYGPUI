@@ -6,13 +6,13 @@ use std::{
 };
 
 use gpui::{
-    AnyElement, App, Div, ElementId, FontStyle, InteractiveElement as _, IntoElement as _,
-    ParentElement as _, Pixels, Role, SharedString, StatefulInteractiveElement as _, Styled as _,
-    Window, canvas, div, prelude::FluentBuilder as _,
+    AnyElement, App, Div, ElementId, FontStyle, FontWeight, InteractiveElement as _,
+    IntoElement as _, ParentElement as _, Pixels, Role, SharedString,
+    StatefulInteractiveElement as _, Styled as _, Window, canvas, div, prelude::FluentBuilder as _,
 };
 
 use super::{
-    chip, jump,
+    chip, handoff, jump,
     link_chip::{self, Act, Want},
     links::{self, Shared, Spots, Stop, What},
     markdown::text::Swap,
@@ -50,8 +50,8 @@ pub enum Go {
 pub enum Face {
     /// `<span>`: its text alone.
     Span,
-    /// A session-card link: its card comes with 9.6h5b.
-    Later,
+    /// `SessionHandoffCard`.
+    Card(deep_link::Card),
     /// `SessionLinkChip` or `ProjectLinkChip`.
     Chip(chip::Chip),
     /// A session or project link that names nothing: `<span>{label ?? href}</span>`.
@@ -83,6 +83,8 @@ pub struct Anchors {
     chips: HashMap<*const Element, Chip>,
     /// Each deep link's chip: its width in window pixels, its height, and its element until drawn.
     links: HashMap<*const Element, (f32, f32, RefCell<Option<AnyElement>>)>,
+    /// Each handoff card until drawn, and its first baseline in CSS pixels.
+    cards: HashMap<*const Element, (RefCell<Option<AnyElement>>, f32)>,
     shared: Shared,
 }
 
@@ -108,14 +110,26 @@ fn collect<'a>(nodes: &'a [Hast], links: &mut Vec<&'a Element>, codes: &mut Vec<
     }
 }
 
-/// The `a` nodes that stand inside an `em`.
-fn slanted(nodes: &[Hast], em: bool, found: &mut Vec<*const Element>) {
+/// What an `a` takes from the elements about it: an `em`'s slant, and its weight.
+type Around = (bool, FontWeight);
+
+/// Each `a` node with what stands about it.
+fn around(nodes: &[Hast], (em, weight): Around, found: &mut HashMap<*const Element, Around>) {
     for node in nodes {
         if let Hast::Element(element) = node {
-            if em && element.tag == "a" {
-                found.push(element);
+            if element.tag == "a" {
+                found.insert(element, (em, weight));
             }
-            slanted(&element.children, em || element.tag == "em", found);
+            let weight = match element.tag {
+                "strong" => FontWeight::BOLD,
+                "h1" | "h2" | "h3" => FontWeight::MEDIUM,
+                _ => weight,
+            };
+            around(
+                &element.children,
+                (em || element.tag == "em", weight),
+                found,
+            );
         }
     }
 }
@@ -191,11 +205,9 @@ fn anchor(
     let handed = raw.or(href);
     let mut label = String::new();
     (a.children.iter()).for_each(|child| hast::string(child, &mut label));
-    let card = href.is_some_and(|href| deep_link::strip(href, "session-card/").is_some());
-    let chip = href.filter(|_| !card);
-    let face = if card {
-        Face::Later
-    } else if let Some(face) = chip.and_then(|href| deep(href, &label, wants, cx)) {
+    let face = if let Some(card) = href.and_then(deep_link::parse_card) {
+        Face::Card(card)
+    } else if let Some(face) = href.and_then(|href| deep(href, &label, wants, cx)) {
         face
     } else {
         let target = markdown_target::link(handed, files);
@@ -263,8 +275,25 @@ pub fn read(
         chips.insert(node, chip);
     }
     let mut links = HashMap::new();
-    let mut slant = Vec::new();
-    slanted(tree, false, &mut slant);
+    let mut about = HashMap::new();
+    around(tree, (false, FontWeight::NORMAL), &mut about);
+    let mut cards = HashMap::new();
+    for (n, (a, anchor)) in found.iter().zip(&list).enumerate() {
+        let Face::Card(card) = &anchor.face else {
+            continue;
+        };
+        let node = *a as *const Element;
+        let id = format!("{key}-card-a{n}");
+        let target = deep_link::Session {
+            session_id: card.session_id.clone(),
+            message_client_id: None,
+            device_id: None,
+        };
+        link_chip::mounted(&id, (0, n), target, cx);
+        let (focus, weight) = (shared.stop(n).0, about[&node].1);
+        let (element, baseline) = handoff::element(&id, card, weight, focus, window, cx);
+        cards.insert(node, (RefCell::new(Some(element)), baseline));
+    }
     let size = text_size(12.0, cx);
     for (n, (a, anchor)) in found.iter().zip(&list).enumerate() {
         let Face::Chip(chip) = &anchor.face else {
@@ -275,7 +304,7 @@ pub fn read(
             link_chip::drawn(&id, (0, n), href, cx);
         }
         // `InlineReferenceChip` resets the weight alone: an `em` about the link slants its label.
-        let italic = chip.slants() && slant.contains(&(*a as *const Element));
+        let italic = chip.slants() && about[&(*a as *const Element)].0;
         let mut style = window.text_style();
         if italic {
             style.font_style = FontStyle::Italic;
@@ -292,6 +321,7 @@ pub fn read(
     let by = found.iter().enumerate().map(|(n, a)| (*a as *const _, n));
     Anchors {
         links,
+        cards,
         key: key.to_owned(),
         by: by.collect(),
         list,
@@ -407,6 +437,7 @@ impl Anchors {
         match &self.list[*self.by.get(&node)?].face {
             Face::Chip(_) => Some(Swap::Chip),
             Face::Words(words) => Some(Swap::Words(words.clone())),
+            Face::Card(_) => Some(Swap::Card),
             _ => None,
         }
     }
@@ -415,6 +446,12 @@ impl Anchors {
     pub fn link_size(&self, node: *const Element) -> (f32, f32) {
         let (width, height, _) = &self.links[&node];
         (*width, *height)
+    }
+
+    /// A handoff card, drawn once, and its first baseline in CSS pixels.
+    pub fn card(&self, node: *const Element) -> (AnyElement, f32) {
+        let (card, baseline) = &self.cards[&node];
+        (card.take().expect("a card is drawn once"), *baseline)
     }
 
     /// A deep link's chip, which a row draws once.
@@ -448,8 +485,8 @@ impl Anchors {
         let name = format!("{}-a{nth}-{at}", self.key);
         let named = |piece: Div| piece.id(ElementId::Name(name.into()));
         let listened = match &anchor.face {
-            // A chip's box takes the clicks of what it holds.
-            Face::Span | Face::Later | Face::File(FileFace { boxed: true, .. }, ..) => {
+            // A chip's box takes its clicks; a cell's card is inert text until 9.6h5b2.
+            Face::Span | Face::Card(_) | Face::File(FileFace { boxed: true, .. }, ..) => {
                 return piece.into_any_element();
             }
             Face::Chip(_) | Face::Words(_) => panic!("a deep link's face holds no piece"),

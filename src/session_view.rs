@@ -15,6 +15,7 @@ mod chip;
 mod column;
 mod entry_error;
 mod flow;
+mod handoff;
 pub mod header;
 mod hook_card;
 mod images;

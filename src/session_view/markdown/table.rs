@@ -9,7 +9,7 @@ use gpui::{
 use super::{
     Face, Laid, Walk,
     marker::Marker,
-    text::{Inline, Mark},
+    text::{Inline, Mark, Swap},
 };
 use crate::{
     appearance_settings::text_size,
@@ -93,9 +93,12 @@ impl Walk<'_> {
         };
         let read = |cell: &Element| {
             let mut inline = Inline::default();
-            (cell.children.iter()).for_each(|node| {
-                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
-            });
+            // A cell's card comes with 9.6h5b2: until then its link reads as its text.
+            let swap = |node| {
+                let swap = self.anchors.swap(node);
+                swap.filter(|swap| !matches!(swap, Swap::Card))
+            };
+            (cell.children.iter()).for_each(|node| inline.read(node, Mark::default(), &swap));
             inline.end();
             inline
         };

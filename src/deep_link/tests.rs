@@ -74,3 +74,26 @@ fn label_brackets_unescape_as_cindys() {
         text(&unescape_label(args[0].str().unwrap()))
     });
 }
+
+#[test]
+fn a_session_card_link_parses_as_cindys() {
+    let all = include_str!("../../tests/fixtures/session-card/expected.json");
+    let all: Vec<(String, Option<serde_json::Value>)> = serde_json::from_str(all).unwrap();
+    assert_eq!(all.len(), 50);
+    for (href, want) in all {
+        let got = super::parse_card(&href).map(|card| {
+            let wake = match card.wake {
+                super::Wake::Resumed => "resumed",
+                super::Wake::AlreadyActive => "already-active",
+                super::Wake::Created => "created",
+            };
+            serde_json::json!({
+                "sessionId": card.session_id,
+                "title": card.title,
+                "wake": wake,
+                "lastActive": card.last_active,
+            })
+        });
+        assert_eq!(got, want, "{href:?}");
+    }
+}

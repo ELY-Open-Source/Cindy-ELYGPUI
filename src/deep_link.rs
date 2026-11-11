@@ -1,6 +1,8 @@
 //! `deepLinkSchemes.ts` and `deepLink.ts`: Cindy's deep links as text carries them.
 
-use crate::cindy_json::decode_uri_component;
+use url::Url;
+
+use crate::{cindy_json::decode_uri_component, theme_import::color::js_trim};
 
 /// `DEEP_LINK_URL_PREFIXES`: the scheme links are built with, then the historic one.
 const PREFIXES: [&str; 2] = ["cindy://", "xdt-maker://"];
@@ -125,6 +127,51 @@ pub fn parse_session(href: &str) -> Option<Session> {
 pub fn parse_project(href: &str) -> Option<String> {
     let (path, _) = path_and_query(href, "project/")?;
     decode_uri_component(path)
+}
+
+/// How the handoff reached its task.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Wake {
+    Resumed,
+    AlreadyActive,
+    Created,
+}
+
+/// A session-card link's target.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Card {
+    pub session_id: String,
+    pub title: Option<String>,
+    pub wake: Wake,
+    pub last_active: Option<String>,
+}
+
+/// `parseSessionCardHref`, behind the renderer's `session-card/` prefix check.
+pub fn parse_card(href: &str) -> Option<Card> {
+    strip(href, "session-card/")?;
+    let url = Url::parse(href).ok()?;
+    if url.host_str() != Some("session-card") {
+        return None;
+    }
+    let id = decode_uri_component(url.path().trim_start_matches('/'))?;
+    let id = js_trim(&id);
+    let get = |name: &str| {
+        let mut pairs = url.query_pairs();
+        pairs.find(|(key, _)| key == name).map(|(_, value)| value)
+    };
+    let wake = match get("wake")?.as_ref() {
+        "resumed" => Wake::Resumed,
+        "already-active" => Wake::AlreadyActive,
+        "created" => Wake::Created,
+        _ => return None,
+    };
+    let (title, last) = (get("title")?, get("last_active")?);
+    (!id.is_empty()).then(|| Card {
+        session_id: id.to_owned(),
+        title: Some(title.into_owned()).filter(|title| !js_trim(title).is_empty()),
+        wake,
+        last_active: Some(last.into_owned()).filter(|last| last != "null"),
+    })
 }
 
 #[cfg(test)]

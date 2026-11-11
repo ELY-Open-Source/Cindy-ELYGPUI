@@ -74,10 +74,13 @@ fn route(db: &Connection, id: &str) -> String {
 
 /// `openTarget` for the chip `chip`: its latest ask alone navigates, while it stays mounted.
 pub fn open(href: &str, chip: &str, separate: bool, window: &Window, cx: &mut App) {
-    let Some(target) = deep_link::parse_session(href) else {
-        return;
-    };
-    let id = target.session_id;
+    if let Some(target) = deep_link::parse_session(href) {
+        task(target.session_id, chip, separate, window, cx);
+    }
+}
+
+/// `open` for the task `id`, which a handoff card names itself.
+pub fn task(id: String, chip: &str, separate: bool, window: &Window, cx: &mut App) {
     let version = ASKED.fetch_add(1, Ordering::Relaxed) + 1;
     let Some(found) = held_mut(cx) else {
         return;

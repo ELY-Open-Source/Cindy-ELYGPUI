@@ -43,6 +43,8 @@ pub enum Swap {
     Chip,
     /// A deep link that names nothing: `<span>{label ?? href}</span>`.
     Words(String),
+    /// `SessionHandoffCard`: a block, which ends the lines before it.
+    Card,
 }
 
 /// The swap of an `a` or an inline `code`, by its node.
@@ -70,6 +72,9 @@ pub struct Inline {
     /// Whether a space, or a line's start, came last: the spaces after it collapse.
     spaced: bool,
     codes: usize,
+    /// The handoff cards met; the text read is what follows card `part - 1`.
+    pub cards: Vec<*const Element>,
+    part: usize,
 }
 
 impl Default for Inline {
@@ -83,6 +88,8 @@ impl Default for Inline {
             gap: None,
             spaced: true,
             codes: 0,
+            cards: Vec::new(),
+            part: 0,
         }
     }
 }
@@ -93,6 +100,14 @@ fn collapses(c: char) -> bool {
 }
 
 impl Inline {
+    /// A reader of the lines between card `part - 1` and card `part`.
+    pub fn part(part: usize) -> Self {
+        Self {
+            part,
+            ..Self::default()
+        }
+    }
+
     fn push(&mut self, c: char, mark: Mark) {
         if self.spans.last().is_none_or(|(_, last)| *last != mark) {
             self.spans.push((self.text.len(), mark));
@@ -143,8 +158,12 @@ impl Inline {
 
     /// An image reads as its text until 9.6i.
     pub fn read(&mut self, node: &Hast, mark: Mark, files: Files) {
+        let live = self.cards.len() == self.part;
         let Hast::Element(element) = node else {
             let Hast::Text(value) = node else { return };
+            if !live {
+                return;
+            }
             for c in value.chars() {
                 match collapses(c) {
                     true if self.spaced => {}
@@ -158,8 +177,14 @@ impl Inline {
             }
             return;
         };
+        // Past its part the reader only counts cards, which an inline face may hold.
+        if !live && !matches!(element.tag, "a" | "em" | "strong" | "del") {
+            return;
+        }
         let file = match element.tag {
             "a" | "code" => match files(element) {
+                Some(Swap::Card) => return self.cards.push(element),
+                _ if !live => return,
                 Some(Swap::File(file)) => Some(file),
                 Some(Swap::Chip) => {
                     self.end_gap();
