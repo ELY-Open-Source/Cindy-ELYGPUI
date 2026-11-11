@@ -273,10 +273,15 @@ pub fn container_new_after(tokenizer: &mut Tokenizer) -> State {
     if tokenizer.tokenize_state.document_continued
         != tokenizer.tokenize_state.document_container_stack.len()
     {
+        // Cindy: the flow closes at this line, which is lazy to nothing.
+        tokenizer.tokenize_state.document_child.as_mut().unwrap().lazy = false;
         if let Err(message) = exit_containers(tokenizer, &Phase::Prefix) {
             return State::Error(message);
         }
     }
+
+    // Cindy: a container is a filled line to the empty item a blank line closed.
+    tokenizer.tokenize_state.document_item_blank = false;
 
     // We are “piercing” into the flow with a new container.
     tokenizer
@@ -308,6 +313,16 @@ pub fn containers_after(tokenizer: &mut Tokenizer) -> State {
 
     child.lazy = tokenizer.tokenize_state.document_continued
         != tokenizer.tokenize_state.document_container_stack.len();
+    // Cindy: so that line is lazy to the item; a container on it cleared the flag.
+    let rest = &tokenizer.parse_state.bytes[tokenizer.point.index..];
+    let filled = rest
+        .iter()
+        .find(|byte| !matches!(byte, b'\t' | b' '))
+        .is_some_and(|byte| !matches!(byte, b'\n' | b'\r'));
+    if filled {
+        child.lazy = child.lazy || tokenizer.tokenize_state.document_item_blank;
+        tokenizer.tokenize_state.document_item_blank = false;
+    }
     child.define_skip(tokenizer.point.clone());
 
     if tokenizer.current.is_none() {

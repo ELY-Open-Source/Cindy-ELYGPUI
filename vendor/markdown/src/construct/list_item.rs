@@ -332,6 +332,7 @@ pub fn cont_blank(tokenizer: &mut Tokenizer) -> State {
     let size = container.size;
 
     if container.blank_initial {
+        tokenizer.tokenize_state.document_item_blank = true;
         State::Nok
     } else if matches!(tokenizer.current, Some(b'\t' | b' ')) {
         // Consume, optionally, at most `size`.

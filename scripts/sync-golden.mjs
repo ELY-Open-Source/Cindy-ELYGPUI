@@ -12,6 +12,7 @@ import { sentText } from './golden/sentText.mjs';
 import { hookCard } from './golden/hookCard.mjs';
 import { markdownTree } from './golden/markdownTree.mjs';
 import { markdownTransforms } from './golden/markdownTransforms.mjs';
+import { markdownHast } from './golden/markdownHast.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
@@ -565,6 +566,7 @@ try {
   console.log(`${await hookCard({ ...golden, define, assets: ASSETS, cindy, src })} hook card cases`);
   console.log(`${await markdownTree({ ...golden, define, assets: ASSETS, src })} markdown tree cases`);
   console.log(`${await markdownTransforms({ ...golden, define, assets: ASSETS, src })} markdown transform cases`);
+  console.log(`${await markdownHast({ ...golden, define, assets: ASSETS, src })} markdown hast cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);

@@ -193,6 +193,10 @@ pub struct TokenizeState<'a> {
     pub document_continued: usize,
     /// Index of last `data`.
     pub document_data_index: Option<usize>,
+    /// Cindy: where the flow's events stood when a container last opened: micromark starts a flow there.
+    pub flow_pierced: usize,
+    /// Cindy: a blank line closed an empty list item, which micromark keeps to the next filled line.
+    pub document_item_blank: bool,
     /// Container exits by line number.
     pub document_exits: Vec<Option<Vec<Event>>>,
     /// Whether the previous flow was a paragraph or a definition.
@@ -349,6 +353,8 @@ impl<'a> Tokenizer<'a> {
                 document_container_stack: vec![],
                 document_exits: vec![],
                 document_continued: 0,
+                document_item_blank: false,
+                flow_pierced: 0,
                 document_lazy_accepting_before: false,
                 document_data_index: None,
                 document_child_state: None,

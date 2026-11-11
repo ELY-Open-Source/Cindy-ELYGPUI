@@ -303,9 +303,11 @@ fn paragraph_before(tokenizer: &Tokenizer) -> bool {
             &[Name::SpaceOrTab, Name::BlockQuotePrefix],
         );
 
+        // Cindy: a line before the container that opened is no line of this content.
         if before < 2
             || events[before].name != Name::LineEnding
             || events[before - 2].name != Name::Content
+            || before - 3 < tokenizer.tokenize_state.flow_pierced
         {
             break;
         }

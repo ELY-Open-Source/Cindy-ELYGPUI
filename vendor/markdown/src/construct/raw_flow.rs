@@ -142,10 +142,7 @@ use crate::construct::partial_space_or_tab::{space_or_tab, space_or_tab_min_max}
 use crate::event::{Content, Link, Name};
 use crate::state::{Name as StateName, State};
 use crate::tokenizer::Tokenizer;
-use crate::util::{
-    constant::{CODE_FENCED_SEQUENCE_SIZE_MIN, MATH_FLOW_SEQUENCE_SIZE_MIN, TAB_SIZE},
-    slice::{Position, Slice},
-};
+use crate::util::constant::{CODE_FENCED_SEQUENCE_SIZE_MIN, MATH_FLOW_SEQUENCE_SIZE_MIN, TAB_SIZE};
 
 /// Start of raw.
 ///
@@ -195,13 +192,11 @@ pub fn before_sequence_open(tokenizer: &mut Tokenizer) -> State {
     let tail = tokenizer.events.last();
     let mut prefix = 0;
 
+    // Cindy: the indent in columns, so a tab counts to its stop.
     if let Some(event) = tail {
         if event.name == Name::SpaceOrTab {
-            prefix = Slice::from_position(
-                tokenizer.parse_state.bytes,
-                &Position::from_exit_event(&tokenizer.events, tokenizer.events.len() - 1),
-            )
-            .len();
+            let enter = &tokenizer.events[tokenizer.events.len() - 2];
+            prefix = event.point.column - enter.point.column;
         }
     }
 

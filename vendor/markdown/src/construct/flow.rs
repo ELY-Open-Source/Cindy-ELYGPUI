@@ -39,6 +39,7 @@ pub fn start(tokenizer: &mut Tokenizer) -> State {
     // Cindy: micromark closes the flow at a new container, so nothing in it interrupts.
     if tokenizer.pierce {
         tokenizer.interrupt = false;
+        tokenizer.tokenize_state.flow_pierced = tokenizer.events.len();
     }
 
     // Cindy: a line one of these shortcuts refuses may still head a table.

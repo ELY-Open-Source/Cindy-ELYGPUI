@@ -289,3 +289,15 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   nothing. All 30,041 trees agreed.
 - Round 2: PASS. Both closed: the empty path is filtered as `if (knownPath)` does, and `shape::file`
   is back in `inline_code`. Seeds added for both; 144 mutants killed, none survived.
+
+## 9.6d The renderer tree
+- Round 1: FAIL. Two list inputs with a footnote definition in an item got the wrong spread, so
+  the renderer tree kept or unwrapped a paragraph Cindy's does not.
+- Round 2: FAIL. Both closed, but among the reviewer's 27,208 fresh inputs 259 spreads differed at
+  quote, footnote and empty-item boundaries, and a task check after a footnote definition's exit
+  stayed text.
+- Round 3: PASS. The spread heuristics went: `infer::spreads` replays micromark's exits,
+  `subtokenize` and `prepareList` on the port's events. The task check passes a definition's exit
+  and an indent after a definition stays outside the paragraph. The reviewer's 27,208 and 59,650
+  fresh inputs agree; 614,561 of the author's agree; 47 of 53 mutants killed first, the rest
+  removed as redundant code or killed by added inputs.

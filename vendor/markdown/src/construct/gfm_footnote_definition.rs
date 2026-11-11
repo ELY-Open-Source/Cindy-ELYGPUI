@@ -167,6 +167,7 @@
 
 use crate::construct::partial_space_or_tab::space_or_tab_min_max;
 use crate::event::{Content, Link, Name};
+use crate::tokenizer::Container;
 use crate::state::{Name as StateName, State};
 use crate::tokenizer::Tokenizer;
 use crate::util::{
@@ -398,12 +399,9 @@ pub fn cont_start(tokenizer: &mut Tokenizer) -> State {
 /// > | ␠␠␊
 ///     ^
 /// ```
-pub fn cont_blank(tokenizer: &mut Tokenizer) -> State {
-    if matches!(tokenizer.current, Some(b'\t' | b' ')) {
-        State::Retry(space_or_tab_min_max(tokenizer, 0, TAB_SIZE))
-    } else {
-        State::Ok
-    }
+pub fn cont_blank(_tokenizer: &mut Tokenizer) -> State {
+    // Cindy: micromark leaves a blank line's spaces to the flow.
+    State::Ok
 }
 
 /// Start of footnote definition continuation, at a filled line.
@@ -418,6 +416,16 @@ pub fn cont_filled(tokenizer: &mut Tokenizer) -> State {
         // Consume exactly `TAB_SIZE`.
         State::Retry(space_or_tab_min_max(tokenizer, TAB_SIZE, TAB_SIZE))
     } else {
-        State::Nok
+        // Cindy: micromark reads the last event, so the indent of the definition around this one counts.
+        let continued = tokenizer.tokenize_state.document_continued;
+        let around = continued.checked_sub(1).map(|index| {
+            &tokenizer.tokenize_state.document_container_stack[index].kind
+        });
+
+        if matches!(around, Some(Container::GfmFootnoteDefinition)) {
+            State::Ok
+        } else {
+            State::Nok
+        }
     }
 }

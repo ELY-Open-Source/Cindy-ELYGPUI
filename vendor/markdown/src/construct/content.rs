@@ -23,6 +23,7 @@
 //! [definition]: crate::construct::definition
 //! [paragraph]: crate::construct::paragraph
 
+use crate::construct::partial_space_or_tab::space_or_tab;
 use crate::event::{Content, Kind, Link, Name};
 use crate::message;
 use crate::resolve::Name as ResolveName;
@@ -83,6 +84,11 @@ pub fn chunk_inside(tokenizer: &mut Tokenizer) -> State {
 ///     ^
 /// ```
 pub fn definition_before(tokenizer: &mut Tokenizer) -> State {
+    // Cindy: micromark's content leaves a line's indent out of what follows a definition.
+    if matches!(tokenizer.current, Some(b'\t' | b' ')) && !tokenizer.events.is_empty() {
+        tokenizer.attempt(State::Next(StateName::ContentDefinitionBefore), State::Nok);
+        return State::Retry(space_or_tab(tokenizer));
+    }
     tokenizer.attempt(
         State::Next(StateName::ContentDefinitionAfter),
         State::Next(StateName::ParagraphStart),

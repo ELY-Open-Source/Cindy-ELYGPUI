@@ -4,6 +4,7 @@
 mod autolinks;
 mod cjk_urls;
 mod flanks;
+pub mod hast;
 mod html_images;
 mod local_images;
 mod path_links;
@@ -61,4 +62,18 @@ fn plain(text: &str) -> Node {
         ..ParseOptions::default()
     };
     markdown::to_mdast(&source, &options).expect("only MDX syntax fails to parse")
+}
+
+/// The tree after `REMARK_PLUGINS`' transformers; `privileged` is `REMARK_PLUGINS_PRIVILEGED`.
+fn transformed(text: &str, privileged: bool) -> Node {
+    let mut tree = parse(text);
+    cjk_urls::transform(&mut tree);
+    html_images::transform(&mut tree);
+    local_images::transform(&mut tree, text);
+    if privileged {
+        session_links::transform(&mut tree);
+    }
+    path_links::transform(&mut tree);
+    raw_destinations::transform(&mut tree);
+    tree
 }

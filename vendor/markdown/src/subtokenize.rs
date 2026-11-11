@@ -144,13 +144,23 @@ pub fn subtokenize(
                                 | Name::ListOrdered
                                 | Name::ListUnordered
                                 | Name::BlockQuote
+                                | Name::GfmFootnoteDefinition
                         )
                     {
                         before -= 1;
                     }
 
+                    // Cindy: content that follows its line's spaces is not the item's first.
+                    let mut first = before + 1;
+                    while !matches!(events[first].name, Name::Definition | Name::Paragraph) {
+                        first += 1;
+                    }
+                    let indented = events[first].name == Name::Definition
+                        && events[first + 1].name == Name::SpaceOrTab;
+
                     if events[before].kind == Kind::Exit
                         && events[before].name == Name::ListItemPrefix
+                        && !indented
                     {
                         tokenizer
                             .tokenize_state

@@ -432,7 +432,20 @@ defines scope and what 1:1 means.
   underscore past its first byte while no label start stands unbalanced, an escape takes its first byte
   only when that is punctuation, and none starts in the domain of the email before it or right after a
   link's atext. A task check opens the first content of the flow an item starts, so a lazy line after
-  an empty item loses its `[x]` as Cindy's does; it drops one unit after it, so a CRLF keeps its LF.
+  an empty item loses its `[x]` as Cindy's does, a footnote definition that closed before it is passed,
+  and content after its line's spaces is not first; after a definition a line's indent stays outside
+  the paragraph. The check drops one unit after it, so a CRLF keeps its LF.
+  Spread (`util/infer.rs`, `spreads`) replays micromark on the port's events: each container's exit
+  goes where micromark leaves it (where a new container starts, else where the line that closes it
+  starts, else the document's end; a blank line closes no item), `subtokenize` moves it before the line
+  endings it follows until a quote's prefix or a definition's indent stops it, then `prepareList` runs
+  over each list; `to_mdast` reads the table. A definition inside another continues when the outer one
+  took its indent and no space follows. An empty item a blank line closed leaves the next filled line
+  lazy, so indented code there ends at its line and holds no `interrupt`; a container ends indented
+  code where its line starts, not at the ending of the line it opened; the setext check reads no
+  content line from before a container that opened. A fence's indent counts in columns, a blank line in
+  a definition leaves its spaces to the flow, and the flow a new container closes is lazy to nothing,
+  so unclosed html keeps its line ending.
 - Tree transformers: each of Cindy's remark plugins after the parse is a `transform` on the tree,
   golden `markdown-transforms` (`scripts/golden/markdownTransforms.mjs` runs each plugin of
   `REMARK_PLUGINS_PRIVILEGED` alone on the parsed tree; its cases are the inputs of Cindy's tests and
@@ -458,6 +471,22 @@ defines scope and what 1:1 means.
   `remote_lit`). An `xdt-file://` link's `new URL` is the `url` crate, which reads the scheme as Node
   does where the golden runs; in Cindy's renderer the scheme is standard, so Chromium refuses hosts
   Node takes.
+- Renderer tree: `src/markdown/hast.rs` is what react-markdown 10 hands `MarkdownRenderer.tsx`'s
+  renderers, golden `markdown-hast` (`scripts/golden/markdownHast.mjs` calls react-markdown's own
+  `Markdown` with Cindy's remark lists, `rehypeSlug`, `rehypeFencedCodeMarker` and each URL transform,
+  and reads the tree its `post` step left; an esbuild load hook exports the renderer's private
+  transforms and plugin list to the golden's bundle). `markdown::transformed` runs the transformers in
+  `REMARK_PLUGINS`' order, the session links only when privileged. `hast/build.rs` is
+  mdast-util-to-hast 13 (`wrap`, the text after a break, trim-lines, loose and task list items, a
+  table's cells filled to its alignments, `normalizeUri`, remark-math's `code` classes; a reference or
+  a footnote call with no definition panics, since micromark builds neither, as does a task item that
+  does not start with its paragraph), `footer.rs` its footnote calls and section, `slug.rs`
+  github-slugger over `resources/slug-classes.json`, which the sync reads off the slugger's regex.
+  `hast.rs`'s `finish` is the rehype plugins and `post` in one walk: a heading's id, `dataFencedCode`
+  on a `pre`'s `code`, html dropped (`skipHtml`), `href` and `src` through `urls.rs`
+  (`trustedUrlTransform`, `previewSafeUrlTransform`, `allowlistedImageUrlTransform` over
+  `defaultUrlTransform`). `remarkStrictInlineMath` and KaTeX come with 9.8, the highlighter with 9.7;
+  the golden leaves them out.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

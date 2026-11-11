@@ -236,7 +236,7 @@ listed in `tasks/done.md`.
       `remarkSessionLinks`
   - [x] 9.6c Local paths in the tree: `remarkBareSpaceLocalImages`, `remarkLocalPathLinks`,
       `remarkPreserveRawLocalDestinations`, with `markdownTarget.ts`'s classes
-  - [ ] 9.6d What react-markdown hands its renderers: `skipHtml`, the URL transforms, definitions and
+  - [x] 9.6d What react-markdown hands its renderers: `skipHtml`, the URL transforms, definitions and
       footnotes resolved, `rehype-slug`'s ids, `rehypeFencedCodeMarker`
   - [ ] 9.6e Blocks drawn in an assistant text row (`.msg-markdown`): paragraphs, headings, lists and
       task lists, block quotes, rules, plain code blocks (their chrome with 9.7)

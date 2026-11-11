@@ -16,7 +16,7 @@ use crate::util::{
         decode as decode_character_reference, decode_string,
         parse as parse_character_reference,
     },
-    infer::{gfm_table_align, list_item_loose, list_spread},
+    infer::{gfm_table_align, spreads},
     mdx_collect::{collect, Result as CollectResult},
     normalize_identifier::normalize_identifier,
     slice::{Position as SlicePosition, Slice},
@@ -101,6 +101,8 @@ struct CompileContext<'a> {
     jsx_tag: Option<JsxTag>,
     media_reference_stack: Vec<Reference>,
     raw_flow_fence_seen: bool,
+    /// Cindy: whether the list or item at each event is spread.
+    spread: Vec<bool>,
     // Intermediate results.
     /// Primary tree and buffers.
     trees: Vec<(Node, Vec<usize>, Vec<usize>)>,
@@ -138,6 +140,7 @@ impl<'a> CompileContext<'a> {
             jsx_tag: None,
             media_reference_stack: vec![],
             raw_flow_fence_seen: false,
+            spread: spreads(events),
             trees: vec![(tree, vec![], vec![])],
             index: 0,
         }
@@ -757,7 +760,7 @@ fn on_enter_link(context: &mut CompileContext) {
 /// Handle [`Enter`][Kind::Enter]:{[`ListOrdered`][Name::ListOrdered],[`ListUnordered`][Name::ListUnordered]}.
 fn on_enter_list(context: &mut CompileContext) {
     let ordered = context.events[context.index].name == Name::ListOrdered;
-    let spread = list_spread(context.events, context.index);
+    let spread = context.spread[context.index];
 
     context.tail_push(Node::List(List {
         ordered,
@@ -770,7 +773,7 @@ fn on_enter_list(context: &mut CompileContext) {
 
 /// Handle [`Enter`][Kind::Enter]:[`ListItem`][Name::ListItem].
 fn on_enter_list_item(context: &mut CompileContext) {
-    let spread = list_item_loose(context.events, context.index);
+    let spread = context.spread[context.index];
 
     context.tail_push(Node::ListItem(ListItem {
         spread,

@@ -17,6 +17,11 @@ pub fn contains(text: &str) -> bool {
     PREFIXES.iter().any(|prefix| text.contains(prefix))
 }
 
+/// `isDeepLinkUrl`.
+pub fn starts(url: &str) -> bool {
+    PREFIXES.iter().any(|prefix| url.starts_with(prefix))
+}
+
 /// A project link may not stop before a quote or a parenthesis that its folder name held.
 pub fn project_ends(text: &str, end: usize) -> bool {
     !text[end..].starts_with(['\'', '('])

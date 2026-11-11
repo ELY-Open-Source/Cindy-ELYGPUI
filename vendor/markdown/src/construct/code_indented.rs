@@ -146,7 +146,9 @@ pub fn after(tokenizer: &mut Tokenizer) -> State {
 ///   |     bbb
 /// ```
 pub fn further_start(tokenizer: &mut Tokenizer) -> State {
-    if tokenizer.lazy || tokenizer.pierce {
+    // Cindy: a container ends the code where its line starts, not at the ending of the line it opened.
+    let chunk = tokenizer.events.last().map(|event| &event.name) == Some(&Name::CodeFlowChunk);
+    if tokenizer.lazy || (tokenizer.pierce && !chunk) {
         return State::Nok;
     }
 

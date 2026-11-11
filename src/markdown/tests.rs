@@ -100,7 +100,7 @@ fn bare(node: &Node) -> Value {
 fn the_tree_matches_cindys() {
     let golden = include_str!("../../tests/fixtures/markdown-tree/expected.json");
     let cases: Vec<(String, Value)> = serde_json::from_str(golden).unwrap();
-    assert!(cases.len() > 51000);
+    assert!(cases.len() > 71600);
     let mut wrong = 0;
     for (text, tree) in &cases {
         let port = std::panic::catch_unwind(|| bare(&parse(text)));
