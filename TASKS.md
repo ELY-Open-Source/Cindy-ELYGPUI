@@ -295,6 +295,15 @@ listed in `tasks/done.md`.
           over the task it opened: the dispatcher's title or short id, Return and Dismiss
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
       `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
+    - [ ] 9.6i1 `extractRenderedMarkdownImageTargets` with `isManagedMarkdownVideoUrl`
+        (`parseRemoteMediaUrl`) and its per-message cache, read by `recordTurnInlineMedia`;
+        `normalizeMathDelimiters` joins with 9.8; the render-items golden takes rows with a
+        Markdown image
+    - [ ] 9.6i2 The address an image loads: `normalizeMarkdownImageSrc` and
+        `useWorkspaceMediaPath` (`WorkspaceMediaSrc`) for a local task
+    - [ ] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
+        `useImageLoadFailure` with `ImageMissingPlaceholder`; the click, the menu and the
+        lightbox come with 9.13, `ChatVideoView` with its chapter
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
   - [ ] 9.6k Selection and copy over the drawn Markdown
