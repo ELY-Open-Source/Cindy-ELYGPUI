@@ -294,6 +294,19 @@ defines scope and what 1:1 means.
   `ELECTRON_RUN_AS_NODE=1 <cindy checkout>/node_modules/.bin/electron scripts/v8-words.js` writes
   that table and V8's cuts of 25,679 texts (locale strings, seeded mixes of every class, CJK text spliced with
   characters NFKC changes).
+- Word fade: `src/word_fade.rs` is `rehypeStreamWordFade.ts`: `Fade` is `WordFadeState` (its
+  default `createWordFadeState`; `source` a chunk's own state by the chunk's start, on the owner's
+  timeline; `candidate` and `whole_candidate` a render's copy, `commit` and `retain_only` its
+  layout effect), `schedule` is `scheduleWordFadeSegment` and answers the delay its caller sets,
+  and `fade` is the transformer on a renderer tree: a span per word and per inline code, a list
+  item's marker on its first segment's key. The clock is its caller's, in milliseconds. A text
+  holds no lone surrogate, so a pair cut by a chunk never reaches it. `cache.rs` holds
+  `getOrCreateWordFadeState`'s 64 states (`States`) and `splitWords`' cache (500 texts, 2 MiB in
+  UTF-16 units). Golden `word-fade`: `scripts/word-fade.js` runs Cindy's module in Cindy's
+  Electron, for V8's words, on 36 seeded streams (chunks that grow, are edited, fall back to the
+  whole document; renders given up; spans scheduled and settled on a stepped clock) and one of
+  marked items come back emptied, and writes
+  each run's tree and the state after it. Nothing reads it before 9.6j3.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
@@ -860,6 +873,8 @@ defines scope and what 1:1 means.
 - `node scripts/sync-golden.mjs <cindy checkout> <commit>` runs Cindy's own `convertVsCodeTheme`,
   `normalizeLocalThemeColors` and `layoutTree` on the inputs under `tests/fixtures/` and writes the
   expected outputs; the Rust ports must match them.
+- `ELECTRON_RUN_AS_NODE=1 <cindy checkout>/node_modules/.bin/electron scripts/word-fade.js <cindy
+  checkout> <commit>` writes `tests/fixtures/word-fade/expected.json`.
 - `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-data-images.js` asks Blink
   which `data:` addresses an image loads and writes `tests/fixtures/data-image/blink.json`.
 - `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-line-breaks.js` asks Blink

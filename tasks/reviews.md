@@ -470,3 +470,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS. V8's unassigned code points and pictographs come from a table V8 wrote; the
   402,266 texts, 438,924 CJK cases and 14,751 further cases match V8. Stated limits: ICU's
   Thai, Lao, Khmer and Burmese engines are not ported. No desktop or fade check was made.
+
+## 9.6j2b The fade state and its transformer
+- Round 1: FAIL. P3: an item with no new segment lost the `dataWfKey` it came with, where
+  `applyMarkerFade` keeps it (6 of 4,021 differential groups).
+- Round 2: PASS. The marker sets properties as the spread does; 4,021 groups and 53,715 steps
+  match Cindy's module, and the golden's 37 streams regenerate byte for byte. No desktop check
+  was made: the streamed row comes with 9.6j3.
