@@ -6,10 +6,6 @@ mod attachment_safety;
 mod bare_space_images;
 mod bounded_read;
 mod browse_history;
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
-)]
 mod browser_file;
 mod chat_message;
 mod chat_quotes;
@@ -21,15 +17,12 @@ mod command_intent;
 mod command_output;
 mod confirm;
 mod confirm_dialog;
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
-)]
 mod copy_media;
 mod cross_process_lock;
 mod deep_link;
 mod dev_profile;
 mod dock_icon;
+mod file_location;
 mod file_path_policy;
 mod file_presentation;
 mod generated_files;
@@ -74,10 +67,6 @@ mod router;
 mod session_owner;
 mod session_view;
 mod sessions;
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
-)]
 mod show_item;
 mod sidebar;
 mod smooth_scroll;

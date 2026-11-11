@@ -261,7 +261,7 @@ listed in `tasks/done.md`.
     - [x] 9.6h3 `MarkdownTargetLink`'s link: the external link with its open-with menu, the
       in-document anchor, plain text and code references, the authored local link that resolves
       again on a click, `useLinkContextMenu`
-    - [ ] 9.6h4 Resolved local targets: `FileTargetChip`, `ResolvedLocalLink`,
+    - [!] 9.6h4 Resolved local targets: `FileTargetChip`, `ResolvedLocalLink`,
       `shouldRenderCodeReferenceLabel`, `InlineCodeWithTarget`, with `useFileChipContextMenu`;
       what a click opens comes with 9.13's lightboxes
       - [x] 9.6h4a The faces: `shouldRenderCodeReferenceLabel`, `FileTargetChip` (its icon,
@@ -277,7 +277,7 @@ listed in `tasks/done.md`.
         for an absolute path (`openFileInBrowser.ts` with its error codes,
         `isBrowserOpenablePath`), per platform; a `file://` URL, its kept query and hash and
         `windowsFileUrlOpener.ts` come with the built-in browser that sends one (17.0)
-      - [ ] 9.6h4d `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
+      - [x] 9.6h4d `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
         separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link

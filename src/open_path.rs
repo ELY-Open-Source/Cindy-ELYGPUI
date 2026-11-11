@@ -43,10 +43,6 @@ pub fn open(value: &str, cx: &App) -> Task<Result<(), String>> {
 }
 
 /// Electron's `shell.openPath` for a path a handler has checked: the error, once it settles.
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
-)]
 pub fn hand(path: &str, cx: &App) -> Task<Result<(), String>> {
     shell_open(PathBuf::from(path), cx)
 }

@@ -16,7 +16,7 @@ import { markdownHast } from './golden/markdownHast.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
-import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, GOAL_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, LOCAL_PATH_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, FILE_LOCATION_TESTS, GOAL_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, LOCAL_PATH_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -109,6 +109,8 @@ try {
     "export * as userMessage from './renderer/components/chat/UserMessage';",
     "export * as chatQuotes from '@cindy/maker-shared/chat-quotes';",
     "export * as linkOpen from './renderer/hooks/useLinkOpenPreference';",
+    "export { formatFileLocation } from './renderer/lib/fileLocation';",
+    "export { toWorkdirRel } from './shared/workdirPath';",
     "export { resolveSafe as resolveCachedImage } from './main/imageCacheStore';",
     "export { resolveSafe as resolveBlob } from './main/cindy-media/blobStore';",
     "export * as attachmentSafety from './shared/attachmentSafety';",
@@ -132,7 +134,7 @@ try {
     // The sent-text golden runs `renderContent`, whose JSX needs its runtime.
     define, jsx: 'automatic',
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, workspacePaths, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, workspacePaths, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, formatFileLocation, toWorkdirRel, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -531,6 +533,9 @@ try {
   const linkOpenCases = await recorded({ ...golden, name: 'link-open', tests: LINK_OPEN_TESTS,
     fns: { isLocalOpenUrl: linkOpen.isLocalOpenUrl } });
   console.log(`${linkOpenCases} link open cases`);
+  const locationCases = await recorded({ ...golden, name: 'file-location', tests: FILE_LOCATION_TESTS,
+    fns: { formatFileLocation, toWorkdirRel } });
+  console.log(`${locationCases} file location cases`);
   // Attached files: cases give name and path as a pair, Cindy's tests as an object.
   const known = (files) => files?.map((file) => (Array.isArray(file) ? { name: file[0], path: file[1] } : file));
   const localPathCases = await recorded({ ...golden, name: 'local-paths', tests: LOCAL_PATH_TESTS, fns: {

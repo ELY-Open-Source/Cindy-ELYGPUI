@@ -22,11 +22,11 @@ fn draw<'a>(
 }
 
 /// Piece `n` of the first row of block `block`.
-fn piece(block: usize, n: usize) -> String {
+pub(super) fn piece(block: usize, n: usize) -> String {
     format!("msg-c1-md-{block}-r0-{n}")
 }
 
-fn bounds(cx: &mut VisualTestContext, selector: &str) -> Bounds<Pixels> {
+pub(super) fn bounds(cx: &mut VisualTestContext, selector: &str) -> Bounds<Pixels> {
     at(cx, selector).unwrap_or_else(|| panic!("no {selector}"))
 }
 
@@ -60,7 +60,7 @@ fn a_target_draws_as_cindys_renderer_draws_it() {
         at: Place::default(),
     };
     let drawn = |kind: Local, bare: bool, label: &str| match face(lit(kind), bare, "/work", label) {
-        Face::File(face, title) if title == "src/a.ts" => (face.boxed, face.icon.is_some()),
+        Face::File(face, title, _) if title == "src/a.ts" => (face.boxed, face.icon.is_some()),
         _ => panic!("a resolved target is a file's face"),
     };
     assert_eq!(drawn(Local::Text, false, "a.ts"), (true, true));
@@ -232,7 +232,7 @@ fn a_footnote_call_is_raised_and_small(cx: &mut TestAppContext) {
 }
 
 /// A task folder with `files`, and the assistant text shown in it.
-fn in_folder<'a>(
+pub(super) fn in_folder<'a>(
     cx: &'a mut TestAppContext,
     dir: &std::path::Path,
     root: &std::path::Path,
@@ -272,7 +272,7 @@ fn an_authored_local_link_resolves_again_on_a_click(cx: &mut TestAppContext) {
     std::fs::write(root.path().join("lost.ts"), "").unwrap();
     click(cx, &piece(0, 0), Modifiers::none());
     assert_eq!(toasts(cx).len(), 2);
-    // A link that resolved is a resolved target's: its icon, then its label; its menu is 9.6h4d's.
+    // A link that resolved is a resolved target's: its icon, then its label.
     assert!(at(cx, "msg-c1-md-0-icon-0").is_some());
     press(cx, &piece(0, 5), MouseButton::Right);
     assert!(at(cx, COPY).is_none());
@@ -495,11 +495,8 @@ fn a_chip_inside_a_link_keeps_its_own_clicks_and_title(cx: &mut TestAppContext) 
     focus(cx, &piece(0, 2));
     cx.simulate_keystrokes("enter");
     settle(cx);
-    assert_eq!(
-        opener::take(),
-        Vec::<String>::new(),
-        "the chip has the focus"
-    );
+    // The chip has the focus; its key bubbles to the link, as Cindy's keydown does.
+    assert_eq!(opener::take(), ["https://x.y/outer"]);
     cx.update(|window, cx| window.focus_next(cx));
     settle(cx);
     cx.simulate_keystrokes("enter");
@@ -523,6 +520,7 @@ fn a_link_is_a_tab_stop_before_the_chips_it_holds(cx: &mut TestAppContext) {
         settle(cx);
         opened.push(opener::take().join(" "));
     }
-    // The link, its two chips, then the next link.
-    assert_eq!(opened, ["https://x.y/outer", "", "", "https://x.y/tail"]);
+    // The link, its two chips, whose key bubbles to it, then the next link.
+    let outer = "https://x.y/outer";
+    assert_eq!(opened, [outer, outer, outer, "https://x.y/tail"]);
 }

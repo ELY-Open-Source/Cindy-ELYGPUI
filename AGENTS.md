@@ -593,8 +593,9 @@ defines scope and what 1:1 means.
   link with the `href` as the renderer handed it on). One menu per message hosts them
   (`links::host` under `<key>-md`). `open` is `openInlineTarget`: an anchor scrolls to its id,
   else the `anchorNotFound` toast; an authored local link asks `resolve_smart` past the cache,
-  then toasts `duplicateFiles` or `fileUnavailable`; what a found file and a stored image open
-  comes with 9.13, so those clicks log and open nothing. `session_view/jump.rs` is the anchor's
+  then toasts `duplicateFiles` or `fileUnavailable`; a found HTML file opens by the link
+  preference (`file_menu::page`); what another found file and a stored image open comes with
+  9.13, so those clicks log and open nothing. `session_view/jump.rs` is the anchor's
   `getElementById` and `scrollIntoView({ behavior: 'smooth', block: 'start' })`: a heading, a
   footnote's item and an `a` with an `id` record where they paint (the first in the document
   keeps the id), and the stream's `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's
@@ -617,9 +618,24 @@ defines scope and what 1:1 means.
   its `title` gpui's tooltip. A chip inside a link is the link's box as a whole (`Held.link`,
   `link_of`): the link's listeners stand about the fragment, not on what it holds, so the
   chip keeps its clicks, right press, title and Tab stop, after the link's. The innermost
-  target takes a press. A click, a middle click,
-  Enter and Space reach `onOpen`, which opens nothing before 9.13; the file menu comes with
-  9.6h4d.
+  target takes a press. `target_link/file_menu.rs` is `useFileChipContextMenu` for a local task,
+  on the message's one menu (`What::File`; a message with chips and no `a` hosts it too). A
+  right click, the menu key or Shift+F10 (under the boxes the target drew) opens its rows: for
+  a page (`isBrowserOpenablePath`) Open in sidebar, Open in browser and View source; else
+  Locate in file list (with a task folder) and Open with default app (a file); then Show in
+  folder (`show_item`), Copy (`copy_media`, no page), Copy path and, where the reference named
+  a line, Copy Location. `activate` is `onActivate`: a separate activation (Shift, Mod, Ctrl
+  or the middle button) opens a page in the system browser (`browser_file`, a refusal's code
+  the toast's key) and any other target through `open_path`; a plain one opens an HTML file as
+  `openHtmlFileByPreference` does (`page`: the local link preference, the sidebar by default)
+  and reaches `onOpen` for the rest, which opens nothing before 9.13, as View source does.
+  Every box of a target hears Enter and Space and lets them bubble, so a key on a chip inside
+  a link activates both, as Cindy's keydown does; a click and the menu key stop at the chip. The
+  sidebar browser comes with 17.0 and the sidebar file browser with 18.0, so those rows fail
+  with Cindy's toasts. Ely's `Folder` and `Clipboard` stand in for lucide's `folder-tree` and
+  `clipboard-copy`. `src/file_location.rs` is `formatFileLocation` over `toWorkdirRel`
+  (`shared/workdirPath.ts`: a Windows folder compares without case and slices in UTF-16
+  units), golden `file-location` on the inputs of Cindy's test and `cases.json`.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

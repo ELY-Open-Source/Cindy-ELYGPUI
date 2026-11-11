@@ -16,7 +16,7 @@ use gpui::{
 
 use super::{
     link_chip::{Act, act},
-    target_link::{self, Go},
+    target_link::{self, Go, file::Resolved, file_menu},
 };
 use crate::{
     i18n::Translator,
@@ -38,9 +38,10 @@ pub enum What {
     Url(SharedString),
     Chip(Act, SharedString),
     Target(Go, SharedString),
+    File(Resolved),
 }
 
-/// `useOpenWithMenu`'s and `useLinkContextMenu`'s state: the numbered ask and what it is for.
+/// The menus' state (`useOpenWithMenu`, `useLinkContextMenu`, the file menu): the ask and its subject.
 #[derive(Default)]
 pub struct Asked {
     request: Option<(u64, Point<Pixels>)>,
@@ -108,7 +109,7 @@ fn external(url: &str, window: &Window, cx: &mut App) {
 }
 
 /// `openInSidebar`: the sidebar browser comes with 17.0, so the open fails as Cindy's fails.
-fn sidebar(window: &Window, cx: &mut App) {
+pub fn sidebar(window: &Window, cx: &mut App) {
     log::error!(target: "sessionView", "no sidebar browser opens a link before 17.0");
     failed("chat.markdownRenderer.openInSidebarFailed", window, cx);
 }
@@ -155,6 +156,7 @@ fn menu(what: Option<&What>, cx: &App) -> Menu {
                 .on_click(move |window, cx| target_link::open(&go, window, cx));
             return Menu::new().item(open).separator().item(copy(href));
         }
+        Some(What::File(file)) => return file_menu::menu(file, cx),
         Some(What::Url(url)) => url,
     };
     let out = url.clone();
@@ -189,7 +191,16 @@ fn go(what: &What, held: (Modifiers, MouseButton), window: &mut Window, cx: &mut
         What::Url(url) => activate(url, held.0, held.1, window, cx),
         What::Chip(to, id) => act::activate((to, id), held, window, cx),
         What::Target(to, _) => target_link::open(to, window, cx),
+        What::File(file) => file_menu::activate(file, held, window, cx),
     }
+}
+
+/// `linkMenuPosition` for a key: the left and the bottom of the boxes drawn.
+pub fn under(spots: &Spots) -> Point<Pixels> {
+    let spots = spots.borrow();
+    let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
+    let bottom = spots.last().map(Bounds::bottom);
+    point(left.unwrap_or_default(), bottom.unwrap_or_default())
 }
 
 /// One box of a link: whether it is the link's first, the link's Tab stop and its boxes.
@@ -210,25 +221,18 @@ pub fn listen(el: Stateful<Div>, what: What, stop: Stop, asked: &Entity<Asked>) 
     let (pressed, back) = (focus.clone(), focus.clone());
     let (menu, by_key) = (asked.clone(), asked.clone());
     el.cursor_pointer()
-        .when(first, |el| {
-            el.track_focus(&focus)
-                .role(Role::Link)
-                .on_key_down(move |event, window, cx| {
-                    let k = &event.keystroke;
-                    if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
-                        window.prevent_default();
-                        cx.stop_propagation();
-                        // `linkMenuPosition` for a key: the link's left and bottom.
-                        let spots = spots.borrow();
-                        let left = spots.iter().map(|b| b.left()).reduce(Pixels::min);
-                        let bottom = spots.last().map(Bounds::bottom);
-                        let under = point(left.unwrap_or_default(), bottom.unwrap_or_default());
-                        ask(&by_key, keys.clone(), under, cx);
-                    } else if matches!(k.key.as_str(), "enter" | "space") {
-                        window.prevent_default();
-                        go(&keys, (k.modifiers, MouseButton::Left), window, cx);
-                    }
-                })
+        .when(first, |el| el.track_focus(&focus).role(Role::Link))
+        // Every box hears the keys of a target it holds.
+        .on_key_down(move |event, window, cx| {
+            let k = &event.keystroke;
+            if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
+                window.prevent_default();
+                cx.stop_propagation();
+                ask(&by_key, keys.clone(), under(&spots), cx);
+            } else if matches!(k.key.as_str(), "enter" | "space") {
+                window.prevent_default();
+                go(&keys, (k.modifiers, MouseButton::Left), window, cx);
+            }
         })
         // A target inside the link that took the press keeps the focus.
         .on_any_mouse_down(move |_, window, cx| {

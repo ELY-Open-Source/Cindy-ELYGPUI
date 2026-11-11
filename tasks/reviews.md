@@ -383,3 +383,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: PASS. `root` is `path.win32.resolve`'s root parse; the URL's path is written by hand,
   since the `url` crate parts from ada on empty segments and drive letters. No live desktop
   check was made: no browser opened; macOS and Windows code was not cross-compiled this round.
+
+## 9.6h4d The file menu
+- Round 1: FAIL. Enter and Space on a chip inside another target stopped at the chip, where
+  Cindy's keydown bubbles on and activates the enclosing target too.
+- Round 2: PASS. Every box of a target hears the keys and lets Enter and Space bubble. No live
+  desktop check was made: the handlers ran on their test recorders.

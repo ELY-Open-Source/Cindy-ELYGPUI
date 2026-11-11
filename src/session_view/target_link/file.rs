@@ -4,14 +4,18 @@ use std::cell::Cell;
 
 use gpui::{
     AnyElement, App, ClickEvent, Div, ElementId, Entity, FocusHandle, Hsla,
-    InteractiveElement as _, IntoElement as _, MouseButton, Role, SharedString, Stateful,
-    StatefulInteractiveElement as _, Styled as _, Window, prelude::FluentBuilder as _,
+    InteractiveElement as _, IntoElement as _, MouseButton, ParentElement as _, Role, SharedString,
+    Stateful, StatefulInteractiveElement as _, Styled as _, Window, canvas,
+    prelude::FluentBuilder as _,
 };
 
+use super::file_menu;
 use crate::{
+    browser_file,
     local_path::shape,
     markdown_target::{self, Place},
     motion,
+    session_view::links::{self, Asked, Spots, What},
     theme::Appearance,
     theme_import::color::js_trim,
     tip,
@@ -23,6 +27,30 @@ use crate::{
 pub struct FileFace {
     pub boxed: bool,
     pub icon: Option<&'static [u8]>,
+}
+
+/// A resolved local target: its path, whether a folder, the place named and the task's folder.
+#[derive(Clone)]
+pub struct Resolved {
+    pub path: SharedString,
+    pub folder: bool,
+    pub at: Place,
+    pub cwd: SharedString,
+}
+
+impl Resolved {
+    /// `canOpenInBrowser`.
+    pub fn browsable(&self) -> bool {
+        !self.folder && browser_file::openable(&self.path)
+    }
+}
+
+/// What a target's boxes ask its menu with: the file, the message's ask and the boxes drawn.
+#[derive(Clone)]
+pub struct Asks {
+    pub file: Resolved,
+    pub asked: Entity<Asked>,
+    pub spots: Spots,
 }
 
 /// `utils.basename`.
@@ -60,6 +88,7 @@ pub struct Chip {
     hover: Entity<Option<usize>>,
     title: SharedString,
     focus: FocusHandle,
+    asks: Asks,
     drawn: Cell<bool>,
 }
 
@@ -68,6 +97,7 @@ pub fn chip(
     id: &str,
     title: SharedString,
     focus: FocusHandle,
+    asks: Asks,
     window: &mut Window,
     cx: &mut App,
 ) -> Chip {
@@ -89,29 +119,36 @@ pub fn chip(
         hover,
         title,
         focus,
+        asks,
         drawn: Cell::new(false),
     }
 }
 
-/// `onOpen`: the lightboxes and the file browser come with 9.13.
-fn open() {
-    log::warn!(target: "sessionView", "a resolved file activated: nothing opens it before 9.13");
-}
-
-/// A box of a resolved target: its click, middle click and keys; the first box is the Tab stop.
-pub fn listen(el: Stateful<Div>, first: bool, focus: &FocusHandle, role: Role) -> Stateful<Div> {
-    let pressed = focus.clone();
+/// A box of a resolved target: its clicks, keys and menu; the first box is the Tab stop.
+pub fn listen(
+    el: Stateful<Div>,
+    first: bool,
+    focus: &FocusHandle,
+    role: Role,
+    asks: &Asks,
+) -> Stateful<Div> {
+    let (pressed, back) = (focus.clone(), focus.clone());
+    let (keys, left, middle, right) = (asks.clone(), asks.clone(), asks.clone(), asks.clone());
     el.cursor_pointer()
-        .when(first, |el| {
-            el.track_focus(focus)
-                .role(role)
-                .on_key_down(|event, window, cx| {
-                    if matches!(event.keystroke.key.as_str(), "enter" | "space") {
-                        window.prevent_default();
-                        cx.stop_propagation();
-                        open();
-                    }
-                })
+        .when(first, |el| el.track_focus(focus).role(role))
+        // Every box hears the keys of a target it holds; Enter and Space bubble on, as Cindy's do.
+        .on_key_down(move |event, window, cx| {
+            let k = &event.keystroke;
+            if k.key == "menu" || (k.key == "f10" && k.modifiers.shift) {
+                window.prevent_default();
+                cx.stop_propagation();
+                let (what, under) = (What::File(keys.file.clone()), links::under(&keys.spots));
+                links::ask(&keys.asked, what, under, cx);
+            } else if matches!(k.key.as_str(), "enter" | "space") {
+                window.prevent_default();
+                let held = (k.modifiers, MouseButton::Left);
+                file_menu::activate(&keys.file, held, window, cx);
+            }
         })
         // The innermost target takes the press: a chip about it sees the default prevented.
         .on_any_mouse_down(move |_, window, cx| {
@@ -121,24 +158,29 @@ pub fn listen(el: Stateful<Div>, first: bool, focus: &FocusHandle, role: Role) -
             }
         })
         // Keys activate on key down above; gpui's key-up click is not Cindy's.
-        .on_click(|event, _, cx| {
+        .on_click(move |event, window, cx| {
             if matches!(event, ClickEvent::Mouse(_)) {
                 cx.stop_propagation();
-                open();
+                let held = (event.modifiers(), MouseButton::Left);
+                file_menu::activate(&left.file, held, window, cx);
             }
         })
-        // The file's menu comes with 9.6h4d: a link about the chip opens none of its own.
-        .on_mouse_down(MouseButton::Right, |_, window, cx| {
+        .on_mouse_down(MouseButton::Right, move |event, window, cx| {
             window.prevent_default();
             cx.stop_propagation();
+            // The menu hands focus back to the target it was asked on.
+            back.focus(window, cx);
+            let what = What::File(right.file.clone());
+            links::ask(&right.asked, what, event.position, cx);
         })
-        .on_aux_click(|event, _, cx| {
+        .on_aux_click(move |event, window, cx| {
             let ClickEvent::Mouse(mouse) = event else {
                 return;
             };
             if mouse.up.button == MouseButton::Middle {
                 cx.stop_propagation();
-                open();
+                let held = (event.modifiers(), MouseButton::Middle);
+                file_menu::activate(&middle.file, held, window, cx);
             }
         })
 }
@@ -149,7 +191,13 @@ impl Chip {
         let first = !self.drawn.replace(true);
         let id = ElementId::Name(format!("{}-r{row}", self.id).into());
         let (hover, title) = (self.hover.clone(), self.title.clone());
-        listen(el.id(id), first, &self.focus, Role::Button)
+        let spots = self.asks.spots.clone();
+        let probe = canvas(
+            move |bounds, _, _| spots.borrow_mut().push(bounds),
+            |_, _, _, _| {},
+        );
+        let el = el.child(probe.absolute().inset_0());
+        listen(el.id(id), first, &self.focus, Role::Button, &self.asks)
             // Hover ignores key presses, as CSS `:hover` does.
             .hover_listener_mode(gpui::HoverListenerMode::InputModalityIndependent)
             .on_hover(move |over, _, cx| {

@@ -20,10 +20,6 @@ pub fn open(value: &str, cx: &App) -> Task<bool> {
 }
 
 /// Electron's `shell.openExternal` for an address a handler has checked.
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
-)]
 pub fn hand(url: String, cx: &App) -> Task<bool> {
     shell_open(url, cx)
 }

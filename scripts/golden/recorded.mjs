@@ -110,6 +110,10 @@ export const LOCAL_PATH_TESTS = {
   },
 };
 
+export const FILE_LOCATION_TESTS = {
+  [`${desktop}/renderer/__tests__/fileLocation.test.ts`]: { '../lib/fileLocation': ['formatFileLocation'] },
+};
+
 export const LINK_OPEN_TESTS = {
   [`${desktop}/renderer/hooks/__tests__/useLinkOpenPreference.test.ts`]: { '../useLinkOpenPreference': ['isLocalOpenUrl'] },
 };
