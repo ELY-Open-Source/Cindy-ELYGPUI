@@ -30,7 +30,7 @@ pub fn join(parts: &[&str]) -> String {
 /// `path.normalize` on this host.
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
 )]
 pub fn normalize(path: &str) -> String {
     match cfg!(windows) {

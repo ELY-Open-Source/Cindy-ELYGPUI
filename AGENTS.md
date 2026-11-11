@@ -619,7 +619,7 @@ defines scope and what 1:1 means.
   chip keeps its clicks, right press, title and Tab stop, after the link's. The innermost
   target takes a press. A click, a middle click,
   Enter and Space reach `onOpen`, which opens nothing before 9.13; the file menu comes with
-  9.6h4c.
+  9.6h4d.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

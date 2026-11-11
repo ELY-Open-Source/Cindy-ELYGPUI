@@ -127,7 +127,7 @@ pub fn listen(el: Stateful<Div>, first: bool, focus: &FocusHandle, role: Role) -
                 open();
             }
         })
-        // The file's menu comes with 9.6h4c: a link about the chip opens none of its own.
+        // The file's menu comes with 9.6h4d: a link about the chip opens none of its own.
         .on_mouse_down(MouseButton::Right, |_, window, cx| {
             window.prevent_default();
             cx.stop_propagation();

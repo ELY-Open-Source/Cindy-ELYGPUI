@@ -273,7 +273,10 @@ listed in `tasks/done.md`.
           byte pass 64K). Fixed after the round and not reviewed again: the end of a pipe counts
           the flushed text; the reviewer's 28 subprocess and 133 image cases agree
           (`logs/review/9.6h4b-r3.md`).
-      - [ ] 9.6h4c `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
+      - [ ] 9.6h4c The main handler behind Open in default browser: `shell:open-file-in-browser`
+        (`openFileInBrowser.ts` with its error codes, `windowsFileUrlOpener.ts`,
+        `isBrowserOpenablePath`), per platform
+      - [ ] 9.6h4d `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
         separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link

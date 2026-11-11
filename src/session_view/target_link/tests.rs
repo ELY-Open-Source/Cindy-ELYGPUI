@@ -272,7 +272,7 @@ fn an_authored_local_link_resolves_again_on_a_click(cx: &mut TestAppContext) {
     std::fs::write(root.path().join("lost.ts"), "").unwrap();
     click(cx, &piece(0, 0), Modifiers::none());
     assert_eq!(toasts(cx).len(), 2);
-    // A link that resolved is a resolved target's: its icon, then its label; its menu is 9.6h4c's.
+    // A link that resolved is a resolved target's: its icon, then its label; its menu is 9.6h4d's.
     assert!(at(cx, "msg-c1-md-0-icon-0").is_some());
     press(cx, &piece(0, 5), MouseButton::Right);
     assert!(at(cx, COPY).is_none());

@@ -18,7 +18,7 @@ mod confirm;
 mod confirm_dialog;
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
 )]
 mod copy_media;
 mod cross_process_lock;
@@ -71,7 +71,7 @@ mod session_view;
 mod sessions;
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "the file menu calls it in 9.6h4c")
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
 )]
 mod show_item;
 mod sidebar;
