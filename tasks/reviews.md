@@ -253,3 +253,16 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Fixed: the body drops CR and FF before it reads its rows; a probe of every C0 control in Cindy's
   Electron shows no other is dropped (`logs/review/9.5q-r3-blink-controls.log`).
 - Round 3: PASS.
+
+## 9.5r The hook form: HookTaskCard
+- Round 1: FAIL. P2: a context heading broke at the regular weight and drew in medium, so a font
+  whose medium runs wider lost a row. P3: the counts added as integers, where Cindy adds JavaScript
+  Numbers: 9007199254740991 and two entries read 9007199254740993.
+- Fixed: the heading breaks in the style it draws in; the counts stay Numbers through both sums.
+  Golden cases hold three sums past the safe range.
+- Round 2: FAIL. P3: the finished sum reached the words as an integer, where i18next writes the
+  Number: two counts of 9007199254740991 and eight entries read 18014398509481992 for Cindy's
+  18014398509481990.
+- Fixed: `i18n::Arg::Js` carries a JavaScript Number, which picks its plural form and reads as
+  `String(n)`. Golden cases hold three sums past 2^54.
+- Round 3: PASS.

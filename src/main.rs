@@ -24,6 +24,7 @@ mod file_presentation;
 mod generated_files;
 mod history_render;
 mod history_view;
+mod hook_card;
 mod i18n;
 mod js_date;
 mod js_re;

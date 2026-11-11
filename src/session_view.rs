@@ -15,6 +15,7 @@ mod column;
 mod entry_error;
 mod flow;
 pub mod header;
+mod hook_card;
 mod images;
 mod items;
 mod link_chip;
@@ -54,7 +55,7 @@ struct Content {
     read: u64,
     /// The task's view and its render items.
     stream: Option<items::Watch>,
-    /// The long messages shown in full, by item key.
+    /// What is unfolded: a long message by its item key, a card's context by `<key>-context`.
     unfolded: std::collections::HashSet<String>,
     /// What its link chips read.
     links: link_chip::Found,

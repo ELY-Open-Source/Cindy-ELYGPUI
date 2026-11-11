@@ -3,7 +3,7 @@
 use std::ops::Range;
 
 use gpui::{
-    AnyElement, App, IntoElement, ParentElement as _, Pixels, ShapedLine, SharedString,
+    AnyElement, App, FontWeight, IntoElement, ParentElement as _, Pixels, ShapedLine, SharedString,
     Styled as _, TextStyle, Window, div, prelude::FluentBuilder as _, relative,
 };
 
@@ -237,8 +237,74 @@ fn broken(
     (atoms, rows)
 }
 
+/// Blink lays out no CR and no FF in `pre-wrap` (`logs/review/9.5q-r3-blink-controls.log`).
+pub fn laid(text: &str) -> String {
+    text.chars()
+        .filter(|c| !matches!(c, '\r' | '\x0c'))
+        .collect()
+}
+
+/// Rows of text: each with its leading semibold bytes, and how many there are unclamped.
+pub struct Pre {
+    pub rows: Vec<(String, usize)>,
+    pub total: usize,
+}
+
+/// `pre-wrap` rows of laid text; its first `bold` bytes are semibold, `kept` is `line-clamp`.
+pub fn pre(
+    text: &str,
+    (bold, kept): (usize, Option<usize>),
+    (style, width): (&TextStyle, Pixels),
+    window: &Window,
+) -> Pre {
+    let size = style.font_size.to_pixels(window.rem_size());
+    let shape = |line: &str, bold: usize| {
+        let mut strong = style.to_run(bold);
+        strong.font.weight = FontWeight::SEMIBOLD;
+        let runs = [strong, style.to_run(line.len() - bold)];
+        let line = SharedString::from(line.to_owned());
+        window.text_system().shape_line(line, size, &runs, None)
+    };
+    // An empty `pre` holds no line; a final line feed opens none.
+    let body = text.strip_suffix('\n').unwrap_or(text);
+    let (mut all, mut at) = (Vec::new(), 0);
+    for line in body.split('\n').filter(|_| !text.is_empty()) {
+        let strong = bold.saturating_sub(at).min(line.len());
+        let atoms = atoms(&shape(line, strong));
+        let broken = rows(line, &atoms, width.into(), &[]);
+        all.extend(broken.into_iter().map(|row| (line, strong, row)));
+        at += line.len() + 1;
+    }
+    let total = all.len();
+    let cut = kept.filter(|kept| total > *kept);
+    all.truncate(cut.unwrap_or(total));
+    let last = all.len().saturating_sub(1);
+    let row = |(nth, (line, strong, row)): (usize, (&str, usize, Range<usize>))| {
+        let held = strong.saturating_sub(row.start).min(row.len());
+        if cut.is_none() || nth != last {
+            return (line[row].to_owned(), held);
+        }
+        let dots = "\u{2026}";
+        let room = f32::from(shape(dots, 0).width);
+        let end = clamp(
+            &atoms(&shape(line, strong)),
+            row.clone(),
+            room,
+            width.into(),
+        );
+        (
+            format!("{}{dots}", &line[row.start..end]),
+            held.min(end - row.start),
+        )
+    };
+    Pre {
+        rows: all.into_iter().enumerate().map(row).collect(),
+        total,
+    }
+}
+
 /// The plain text's rows at `width`: `pre-wrap` with no chip and no link.
-pub fn plain(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> Vec<String> {
+fn plain(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> Vec<String> {
     let text = body.replace('\r', "");
     let text = text.strip_suffix('\n').unwrap_or(&text);
     let rows = |line: &str| {

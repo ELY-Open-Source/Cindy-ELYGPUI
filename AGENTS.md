@@ -281,55 +281,68 @@ defines scope and what 1:1 means.
   frame (`prepaint_as_root`), the message column at `messageWidth`, the dock (fade, `pb-5` zone, the
   composer's row at `inputWidth`) at `inputPad`. `stream.rs` is `MessageStream`'s list: the scroller,
   the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only a user
-  message draws so far, less its hook form. `user_row.rs` is `UserMessage`'s bubble: the display text
-  (quote text joined), `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is
-  `UserAttachmentChip`'s inert face in `fileAttachmentNodes`, over the bubble and for a message with no
-  text: the chips wrap and stand right, each at most `min(280px, 100%)`, lit under the pointer, the
-  native `title` as gpui's tooltip; `src/attachment_safety.rs` (`attachmentSafety.ts` with
-  `isSafetyDowngradedAttachment`, golden `attachment-safety`) picks Download for a file the chat only
-  saves. Its click and menus come with 9.13. `images.rs` is `ChatImageView`'s `user-attached` face,
-  each image a child of the column before the files: `src/media_store.rs` resolves `xdt-image://` and
-  `cindy-media://blobs/` as the two stores' `resolveSafe` do (golden `media-store`, whose Electron stub
-  answers `app.getPath`) and reads as the protocol handlers' `fs.readFile` does; the read and the
-  decode (by the bytes' own format, through gpui's `Image`, so a GIF plays) run on the background
-  executor, once per address for the mounted content (`Content.images`). While it loads
-  `ChatLoadingImage`'s 280 by 180 frame with Ely's `Spinner` stands in; the image then fades in within
-  280 by 180 at its ratio and dims to 0.9 under the pointer. A long image (over three times as tall as
-  wide) draws its square top, cropped at decode since gpui's `cover` centres, in a 240 box with the
-  hint pill. A read that finds no file draws `ImageMissingPlaceholder` as missing, any other failure as
-  unavailable; its retry, the lightbox and the menu come with 9.13. The decode keeps the image's full
-  size; AVIF and animated WebP or PNG are not decoded as Chromium does. `source_labels.rs` is what
-  stands over those: `MessageSourceLabels`' row (who sent it, at most one, then the device) and the
-  `/goal` badge. `src/source_label.rs` holds each label's words, tooltip and route as
-  `AutomationOriginBadge` and the plugin and device badges give them, golden `source-labels`:
-  `scripts/golden/sourceLabels.mjs` mounts Cindy's own component in jsdom with Cindy's English strings,
-  reads each label off the DOM and clicks it for its route. A label that opens something is a Tab stop
-  with the button role and lights to `foreground`; its `title` is gpui's tooltip. A task's label reads
-  the title the task list holds (`sessions::held_title`, `getTitleById`). With no device list and no
-  signed-in device before 13.0 every device label shows and opens My devices; a teammate's mark is
-  `BotAvatar`'s tint and initial, its profile coming with the bots' chapter; remote tasks and the
-  embedded view come with theirs. `orca_card.rs` is the Orca form in place of the bubble: the labels
-  set left (`Align::Start`) over a card up to 560 wide, whose header (a Tab stop with the button role,
-  lit to `cmd-palette-item-hover`, its corners rounded since gpui clips to none) unfolds the message
-  with the bubble's own record; the body is the display text as `pre-wrap` rows (`draw::plain`) in the
-  code face at the code size less 2px, each line the code size and 4px. Blink lays out no CR and no FF
-  there (`logs/review/9.5q-r3-blink-controls.log`), so both are dropped first. Images, files and the
-  goal badge are the bubble's. `flow.rs` breaks a line into rows itself, since gpui's text holds no
-  element: Blink's break opportunities (`breaks` is `NextBreakablePosition`: a break after a run of
-  spaces, the pair table `resources/line-break-pairs.txt` for U+0021 to U+00FF, which
-  `scripts/blink-line-breaks.js` reads off Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen
-  before a letter past ASCII, with LB20a, which ICU4X lacks) over the shaped glyphs' advances (`atoms`,
-  read in x order, so right-to-left text keeps its advances), a chip a fixed-width atom at U+FFFC,
-  Blink's own stand-in; a word too long breaks where it overflows (`overflow-wrap: anywhere`), and
-  spaces, tabs and U+3000 at a wrap hang unseen (`logs/review/9.5e-r1-blink-lines.log`,
-  `-blink-spaces.log`). `flow/draw.rs` draws `renderContentWithoutPastedText`'s nodes (`sent::parts`,
-  each text piece apart) row by row, each row a flex row of words, links and chips: no CR, a final line
-  feed ends its line, a line that wraps fills the bubble. A row's parts stand left to right; Blink's
-  reordering of mixed directions across a chip is not ported. The measure shapes with the window's text
-  style, which no element above the text changes. The fold counts the plain text's rows while the row
-  is built, so Cindy's estimate and remembered results are not ported; a folded message draws its first
-  rows and `clamp` ends the last with the ellipsis. A row with a chip grows as Blink's line box does:
-  each chip's margin box (24px, a quote island's 26px) centres half an x-height over the baseline
+  message draws so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text joined),
+  `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is `UserAttachmentChip`'s
+  inert face in `fileAttachmentNodes`, over the bubble and for a message with no text: the chips wrap
+  and stand right, each at most `min(280px, 100%)`, lit under the pointer, the native `title` as gpui's
+  tooltip; `src/attachment_safety.rs` (`attachmentSafety.ts` with `isSafetyDowngradedAttachment`,
+  golden `attachment-safety`) picks Download for a file the chat only saves. Its click and menus come
+  with 9.13. `images.rs` is `ChatImageView`'s `user-attached` face, each image a child of the column
+  before the files: `src/media_store.rs` resolves `xdt-image://` and `cindy-media://blobs/` as the two
+  stores' `resolveSafe` do (golden `media-store`, whose Electron stub answers `app.getPath`) and reads
+  as the protocol handlers' `fs.readFile` does; the read and the decode (by the bytes' own format,
+  through gpui's `Image`, so a GIF plays) run on the background executor, once per address for the
+  mounted content (`Content.images`). While it loads `ChatLoadingImage`'s 280 by 180 frame with Ely's
+  `Spinner` stands in; the image then fades in within 280 by 180 at its ratio and dims to 0.9 under the
+  pointer. A long image (over three times as tall as wide) draws its square top, cropped at decode
+  since gpui's `cover` centres, in a 240 box with the hint pill. A read that finds no file draws
+  `ImageMissingPlaceholder` as missing, any other failure as unavailable; its retry, the lightbox and
+  the menu come with 9.13. The decode keeps the image's full size; AVIF and animated WebP or PNG are
+  not decoded as Chromium does. `source_labels.rs` is what stands over those: `MessageSourceLabels`'
+  row (who sent it, at most one, then the device) and the `/goal` badge. `src/source_label.rs` holds
+  each label's words, tooltip and route as `AutomationOriginBadge` and the plugin and device badges
+  give them, golden `source-labels`: `scripts/golden/sourceLabels.mjs` mounts Cindy's own component in
+  jsdom with Cindy's English strings, reads each label off the DOM and clicks it for its route. A label
+  that opens something is a Tab stop with the button role and lights to `foreground`; its `title` is
+  gpui's tooltip. A task's label reads the title the task list holds (`sessions::held_title`,
+  `getTitleById`). With no device list and no signed-in device before 13.0 every device label shows and
+  opens My devices; a teammate's mark is `BotAvatar`'s tint and initial, its profile coming with the
+  bots' chapter; remote tasks and the embedded view come with theirs. `orca_card.rs` is the Orca form
+  in place of the bubble: the labels set left (`Align::Start`) over a card up to 560 wide, whose header
+  (a Tab stop with the button role, lit to `cmd-palette-item-hover`, its corners rounded since gpui
+  clips to none) unfolds the message with the bubble's own record; the body is the display text as
+  `pre-wrap` rows (`draw::pre`) in the code face at the code size less 2px, each line the code size and
+  4px. Blink lays out no CR and no FF in `pre-wrap` (`logs/review/9.5q-r3-blink-controls.log`), so
+  `draw::laid` drops both first. Images, files and the goal badge are the bubble's. `hook_card.rs` is
+  the hook form, `HookTaskCard`: the device and plugin labels (`Over::Hook`: the card names its own
+  channel), the images and the files set left, then the card up to 560 wide. `src/hook_card.rs` holds
+  its words (`imLabel`, `hookTaskCardHeading`, the context's sections and what each counts), golden
+  `hook-card`: `scripts/golden/hookCard.mjs` mounts Cindy's component in jsdom, unfolds its context and
+  reads the DOM. The header is the channel's mark (Slack's and X's paths are Cindy's own) and who
+  spoke, a speaker's id as the tooltip. The words are `draw::pre` rows; clean stored text
+  (`contentFormat: 'user-text'`) past 14 rows keeps 10, the last ending in the ellipsis, under a
+  disclosure. A second disclosure with a chevron that turns over 150ms unfolds the attached context:
+  `Collapse` is a keyed transition of 200ms on the height the rows add up to and on the opacity, the
+  body unmounted once closed. A thread entry's `[author]` is semibold through shaped runs and a text
+  highlight. Both disclosures are Tab stops with the button role, lit to `text-secondary`, with a 2px
+  outline 2px off while the keyboard holds focus (an absolute bordered overlay). The fold's record keys
+  the context by `<key>-context`. The message actions come with 9.13. `flow.rs` breaks a line into rows
+  itself, since gpui's text holds no element: Blink's break opportunities (`breaks` is
+  `NextBreakablePosition`: a break after a run of spaces, the pair table
+  `resources/line-break-pairs.txt` for U+0021 to U+00FF, which `scripts/blink-line-breaks.js` reads off
+  Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen before a letter past ASCII, with LB20a,
+  which ICU4X lacks) over the shaped glyphs' advances (`atoms`, read in x order, so right-to-left text
+  keeps its advances), a chip a fixed-width atom at U+FFFC, Blink's own stand-in; a word too long
+  breaks where it overflows (`overflow-wrap: anywhere`), and spaces, tabs and U+3000 at a wrap hang
+  unseen (`logs/review/9.5e-r1-blink-lines.log`, `-blink-spaces.log`). `flow/draw.rs` draws
+  `renderContentWithoutPastedText`'s nodes (`sent::parts`, each text piece apart) row by row, each row
+  a flex row of words, links and chips: no CR, a final line feed ends its line, a line that wraps fills
+  the bubble. A row's parts stand left to right; Blink's reordering of mixed directions across a chip
+  is not ported. The measure shapes with the window's text style, which no element above the text
+  changes. The fold counts the plain text's rows while the row is built, so Cindy's estimate and
+  remembered results are not ported; a folded message draws its first rows and `clamp` ends the last
+  with the ellipsis. A row with a chip grows as Blink's line box does: each chip's margin box (24px, a
+  quote island's 26px) centres half an x-height over the baseline
   (`logs/review/9.5i-r1-blink-chip.log`). `chip.rs` is `InlineReferenceChip`'s inert face for the
   legacy command, agent, folder and file chips (`FileTypeIcon` through `file_presentation`; lucide
   0.468's `FileChartColumn` and `FileVideo` live in `lucide.rs`), sized by layout up to
@@ -390,9 +403,11 @@ defines scope and what 1:1 means.
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with
   `XDT_USER_DATA_DIR_EPOCH=1`); `--isolated` on an official profile stops startup. Paths compare
   through `dev_profile::canonical::path`. Release builds always use the region folder.
-- i18n: `src/i18n.rs` ports Cindy's i18next setup over `locales/`, embedded in the binary. Plurals
-  and number formats come from ICU4X (`icu_plurals`, `icu_decimal`, `icu_locale_core`), as `Intl`
-  gives them to Cindy. Ely's `I18n` global is set to the nearest Ely locale for Ely's own text.
+- i18n: `src/i18n.rs` ports Cindy's i18next setup over `locales/`, embedded in the binary. Plurals and
+  number formats come from ICU4X (`icu_plurals`, `icu_decimal`, `icu_locale_core`), as `Intl` gives
+  them to Cindy. `Arg::Js` is a JavaScript Number: it picks its plural form and reads as `String(n)`,
+  so a count past 2^53 reads as Cindy's does. Ely's `I18n` global is set to the nearest Ely locale for
+  Ely's own text.
 - Themes: `src/theme.rs` resolves Cindy's tokens from `themes/` as `theme-service.ts` does;
   `src/theme/css.rs` evaluates their CSS colors (hex, rgb, hsl, `color-mix`, relative `oklch`). On
   Linux, `src/os_appearance.rs` reads the portal's color scheme before the window opens, since gpui

@@ -138,7 +138,7 @@ listed in `tasks/done.md`.
     yet ready (`buildRaw`, `buildCachedRenderItems`) with 9.14's loading states; `historyAfter`
     with the side chat, which 10.0's expansion places; `reuseGeneratedFilesRenderItems` with 9.13's
     card; the caches' reset on a new data owner with 13.0; the fork marker's place with 9.12
-- [ ] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
+- [!] 9.5 The user message (`UserMessage.tsx`), with `chat-rail-compact`'s type scale (from 9.3c):
   `userMessageDisplayText.ts`, linkify and URL links
   (`message-link-clickability.md`), the collapse (`userMessageCollapse.ts`), attachment chips,
   quote, inline reference and session link chips, the forwarded-request text of 8.7
@@ -221,7 +221,7 @@ listed in `tasks/done.md`.
   - [x] 9.5p Over the bubble: the goal badge and `MessageSourceLabels` (`AutomationOriginBadge`,
     the plugin, group and device labels with their tooltips; `messageSourceLabel.ts`)
   - [x] 9.5q The Orca form: the Lead and Worker card in place of the bubble, its source labels
-  - [ ] 9.5r The hook form: `HookTaskCard` with its attachments, fold and attached context
+  - [x] 9.5r The hook form: `HookTaskCard` with its attachments, fold and attached context
 - [ ] 9.6 Markdown (`MarkdownRenderer.tsx`) on the vendored mdast: GFM tables, lists, task
   lists, block quotes, links and images (`remarkLocalPathLinks`, `remarkSessionLinks`,
   `remarkHtmlImages`, `remarkTruncateCjkUrls`, `remark-cjk-friendly`), headings with slugs, the

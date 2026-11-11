@@ -14,7 +14,14 @@ fn plurals_follow_each_locale() {
     let key = "mailReader.messageCount";
     assert_eq!(en.t(key, &[("count", Arg::Number(1))]), "1 email");
     assert_eq!(en.t(key, &[("count", Arg::Number(5))]), "5 emails");
-    let many = fr.lookup(key, Some(1_000_000)).unwrap();
+    // A JavaScript Number picks its form and reads as `String(n)`.
+    assert_eq!(en.t(key, &[("count", Arg::Js(1.0))]), "1 email");
+    let big = 9_007_199_254_740_991.0 * 2.0 + 8.0;
+    assert_eq!(
+        en.t(key, &[("count", Arg::Js(big))]),
+        "18014398509481990 emails"
+    );
+    let many = fr.lookup(key, Some(1_000_000_i64.into())).unwrap();
     assert!(std::ptr::eq(
         many,
         fr.lookup("mailReader.messageCount_many", None).unwrap()

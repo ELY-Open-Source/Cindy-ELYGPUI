@@ -10,8 +10,8 @@ use gpui::{
 use super::{
     SessionView, attachments,
     flow::draw::{self, Island, Look, Ranges},
-    images, orca_card,
-    source_labels::{self, Align},
+    hook_card, images, orca_card,
+    source_labels::{self, Over},
     width::Widths,
 };
 use crate::{
@@ -20,7 +20,7 @@ use crate::{
     chat_quotes::{self, Segment},
     i18n::Translator,
     lucide, motion, press,
-    rich_answer::js::{Js, truthy, utf16_len},
+    rich_answer::js::{Js, utf16_len},
     theme::Appearance,
     theme_import::color::js_trim,
     transition::{self, Curve},
@@ -188,7 +188,7 @@ fn ranges(message: &Fields, start: Option<usize>, length: usize) -> Ranges {
     }
 }
 
-/// The row of an ordinary message or of an Orca one; the hook form comes with 9.5r.
+/// A user message's row: the bubble, the Orca card or the hook card.
 pub fn element(
     key: &str,
     message: &Fields,
@@ -209,8 +209,9 @@ pub fn element(
             cx,
         ));
     }
-    if truthy(get(message, "hookSource")) {
-        return None;
+    if let Some(hook) = get(message, "hookSource") {
+        let message = (message, content);
+        return Some(hook_card::element(key, message, hook, widths, window, cx));
     }
     let origin = get(message, "automationOrigin");
     let forwarded = origin.and_then(Js::obj).and_then(|o| o.get("kind")?.str()) == Some("session");
@@ -227,9 +228,10 @@ pub fn element(
     });
     let room = COLUMN.min(widths.message);
     let files = attachments::files(message);
-    let files = (!files.is_empty()).then(|| attachments::row(key, &files, room, window, cx));
+    let files =
+        (!files.is_empty()).then(|| attachments::row(key, &files, (room, false), window, cx));
     let images = images::elements(key, &images::images(message), window, cx);
-    let labels = source_labels::row(key, message, Align::End, cx);
+    let labels = source_labels::row(key, message, Over::Bubble, cx);
     let goal = source_labels::goal(key, message, cx);
     let badges = labels.into_iter().chain(goal);
     let mut over: Vec<AnyElement> = badges.chain(images).chain(files).collect();

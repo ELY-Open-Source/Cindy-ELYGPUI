@@ -5,10 +5,10 @@ use std::{cell::RefCell, collections::HashSet, sync::OnceLock};
 use anyhow::{Context as _, Result, bail};
 use icu_decimal::{DecimalFormatter, input::Decimal};
 use icu_locale_core::Locale;
-use icu_plurals::{PluralCategory, PluralRules};
+use icu_plurals::{PluralCategory, PluralOperands, PluralRules};
 use serde_json::Value;
 
-use crate::locale;
+use crate::{cindy_json::js_number, locale};
 use catalogs::{CATALOGS, DEV_WRITE_BLOCKED};
 
 const DEFAULTS: [(&str, &str); 3] = [
@@ -23,6 +23,8 @@ const INTERNAL: &str = "ipcError.INTERNAL";
 pub enum Arg<'a> {
     Text(&'a str),
     Number(i64),
+    /// A JavaScript Number, written as `String(n)` writes it.
+    Js(f64),
 }
 
 struct Bundle {
@@ -123,7 +125,7 @@ impl Translator {
         }
     }
 
-    fn lookup(&self, key: &str, count: Option<i64>) -> Option<&str> {
+    fn lookup(&self, key: &str, count: Option<PluralOperands>) -> Option<&str> {
         let (ns, path) = key.split_once(':').unwrap_or(("common", key));
         self.chain.iter().find_map(|bundle| {
             let root = match ns {
@@ -163,6 +165,7 @@ impl Translator {
                     out.push_str(&self.numbers.format(&Decimal::from(n)).to_string());
                 }
                 (Some(Arg::Number(n)), None) => out.push_str(&n.to_string()),
+                (Some(Arg::Js(n)), None) => out.push_str(&js_number(n)),
                 (Some(Arg::Text(text)), None) => out.push_str(text),
                 (None, None) => match DEFAULTS.iter().find(|(n, _)| *n == name) {
                     Some((_, text)) => out.push_str(text),
@@ -193,7 +196,14 @@ impl Translator {
     /// The message for `key`; `count` picks the plural form.
     pub fn t(&self, key: &str, args: &[(&str, Arg)]) -> String {
         let count = match Self::arg(args, "count") {
-            Some(Arg::Number(n)) => Some(n),
+            Some(Arg::Number(n)) => Some(n.into()),
+            Some(Arg::Js(n)) => match js_number(n).parse::<Decimal>() {
+                Ok(decimal) => Some((&decimal).into()),
+                Err(error) => {
+                    log::warn!(target: "i18n", "{key}: no plural form for {n}: {error:?}");
+                    None
+                }
+            },
             _ => None,
         };
         let message = self.lookup(key, count).or_else(|| {

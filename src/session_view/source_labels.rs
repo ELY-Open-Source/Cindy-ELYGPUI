@@ -118,17 +118,19 @@ impl RenderOnce for Shell {
     }
 }
 
-/// `MessageSourceLabels`' `align`.
+/// The form the labels stand over; a hook card names its own channel, so it draws no automation.
 #[derive(Clone, Copy, PartialEq)]
-pub(super) enum Align {
-    Start,
-    End,
+pub(super) enum Over {
+    Bubble,
+    Orca,
+    Hook,
 }
 
-/// `MessageSourceLabels` over a message.
-pub(super) fn row(key: &str, message: &Fields, align: Align, cx: &App) -> Option<AnyElement> {
+/// `MessageSourceLabels` over a message: set right over a bubble, left over a card.
+pub(super) fn row(key: &str, message: &Fields, over: Over, cx: &App) -> Option<AnyElement> {
     let live = |id: &str| sessions::held_title(id, cx);
-    let labels = source_label::labels(message, live, cx.global::<Translator>());
+    let automation = over != Over::Hook;
+    let labels = source_label::labels(message, automation, live, cx.global::<Translator>());
     if labels.is_empty() {
         return None;
     }
@@ -142,9 +144,9 @@ pub(super) fn row(key: &str, message: &Fields, align: Align, cx: &App) -> Option
         .flex()
         .flex_wrap()
         .items_center()
-        .map(|el| match align {
-            Align::Start => el.justify_start(),
-            Align::End => el.justify_end(),
+        .map(|el| match over {
+            Over::Bubble => el.justify_end(),
+            Over::Orca | Over::Hook => el.justify_start(),
         })
         .max_w_full()
         .gap_x(css(12.0))

@@ -9,6 +9,7 @@ import { pathToFileURL } from 'node:url';
 import { ASSETS } from './golden/record.mjs';
 import { renderItems } from './golden/renderItems.mjs';
 import { sentText } from './golden/sentText.mjs';
+import { hookCard } from './golden/hookCard.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
@@ -536,6 +537,7 @@ try {
     fns: { cached: placed(resolveCachedImage), blob: placed(resolveBlob) } });
   console.log(`${mediaCases} media store cases`);
   console.log(`${await sourceLabels({ ...golden, define, assets: ASSETS, cindy, src })} source label cases`);
+  console.log(`${await hookCard({ ...golden, define, assets: ASSETS, cindy, src })} hook card cases`);
   console.log(`${await renderItems({ ...golden, define }, { buildRenderItems, isGeneratedFilesTurnSealed })} render item cases`);
   console.log(`${workGroups(golden, { stream, groups: desktopGroups })} work group cases`);
   const mapServerMessages = await mapper(golden);

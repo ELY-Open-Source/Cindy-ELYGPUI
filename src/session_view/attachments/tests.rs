@@ -146,14 +146,3 @@ fn a_file_the_chat_only_saves_draws_download() {
     assert_eq!(pdf, (false, chip::file_icon("report.pdf")));
     assert_ne!(pdf.1, download);
 }
-
-#[gpui::test]
-fn the_hook_form_draws_no_chip_yet(cx: &mut TestAppContext) {
-    let hook = r#"{"hookSource":{"im":"feishu"}}"#;
-    let dir = tempfile::tempdir().unwrap();
-    let row = content("hello", &[("a.txt", "/tmp/a.txt")]);
-    let rows = [(row.as_str(), Some(hook)), (&row, None)];
-    let cx = crate::session_view::user_row::tests::open(cx, dir.path(), 2400.0, &rows);
-    assert!(at(cx, "msg-c1-files").is_some());
-    assert!(at(cx, "msg-c0-files").is_none());
-}

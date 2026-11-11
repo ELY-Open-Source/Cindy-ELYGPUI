@@ -1,10 +1,5 @@
 //! `userMessageDisplayText.ts`: the text a user message shows, apart from what it stores.
 
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "9.5r's hook card reads the rest")
-)]
-
 use std::sync::LazyLock;
 
 use regex::Regex;

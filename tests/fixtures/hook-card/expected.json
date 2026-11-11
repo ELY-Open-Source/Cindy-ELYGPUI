@@ -1,0 +1,1631 @@
+[
+ [
+  [
+   {
+    "im": "slack"
+   },
+   null
+  ],
+  {
+   "icon": "slack",
+   "label": "Cindy · from Slack",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "telegram"
+   },
+   null
+  ],
+  {
+   "icon": "send",
+   "label": "Cindy · from Telegram",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "x"
+   },
+   null
+  ],
+  {
+   "icon": "x",
+   "label": "Cindy · from X",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "lark"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Lark",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "discord"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Discord",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "wechat"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from WeChat",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "wecom"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from WeCom",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "dingtalk"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from DingTalk",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "teams"
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from teams",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": ""
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from ",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {}
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": true,
+      "name": "Me",
+      "id": "u1"
+     },
+     "chat": {
+      "kind": "group",
+      "name": "Team"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "Ann",
+      "id": "u2"
+     },
+     "chat": {
+      "kind": "direct"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Ann · from Feishu DM (not the owner)",
+   "title": "user_id: u2",
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "Ann"
+     },
+     "chat": {
+      "kind": "direct",
+      "name": "x"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Ann · from Feishu DM (not the owner)",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "  Ann  ",
+      "id": "u2"
+     },
+     "chat": {
+      "kind": "group",
+      "name": "  Team  "
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Ann · from Feishu group “Team”",
+   "title": "user_id: u2",
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "   ",
+      "id": "u2"
+     },
+     "chat": {
+      "kind": "group",
+      "name": "   "
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "u2 · from a Feishu group",
+   "title": "user_id: u2",
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "id": "u2"
+     },
+     "chat": {
+      "kind": "group"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "u2 · from a Feishu group",
+   "title": "user_id: u2",
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "",
+      "id": ""
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Group member · from a Feishu group",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Group member · from a Feishu group",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "　Bo﻿",
+      "id": " u 3 "
+     },
+     "chat": {
+      "name": "G"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Bo · from Feishu group “G”",
+   "title": "user_id:  u 3 ",
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "teams",
+    "origin": {
+     "sender": {
+      "isOwner": false,
+      "name": "Cy"
+     },
+     "chat": {
+      "kind": "group",
+      "name": "Ops"
+     }
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cy · from teams group “Ops”",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": []
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "Ann",
+      "text": "first"
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (1)",
+    "sections": [
+     {
+      "heading": "Referenced messages (1)",
+      "lines": [
+       [
+        "[Ann]",
+        "[Ann] first"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "Ann",
+      "text": "first\nline"
+     },
+     {
+      "author": "Bot",
+      "text": "second",
+      "isBot": true
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (2)",
+    "sections": [
+     {
+      "heading": "Referenced messages (2)",
+      "lines": [
+       [
+        "[Ann]",
+        "[Ann] first\nline"
+       ],
+       [
+        "[Bot]",
+        "[Bot] second"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted"
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "   "
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 2
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (2)",
+    "sections": [
+     {
+      "heading": "Referenced messages (2)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 0
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 1.5
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": -1
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": "2"
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740992
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 2
+    },
+    "threadContext": [
+     {
+      "author": "Ann",
+      "text": "t"
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (3)",
+    "sections": [
+     {
+      "heading": "Referenced messages (3)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[Ann]",
+        "[Ann] t"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted"
+    },
+    "threadContext": [
+     {
+      "author": "Ann",
+      "text": "t"
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[Ann]",
+        "[Ann] t"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyMessageCount": 5
+    },
+    "threadContext": [
+     {
+      "author": "Ann",
+      "text": "t"
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (1)",
+    "sections": [
+     {
+      "heading": "Referenced messages (1)",
+      "lines": [
+       [
+        "[Ann]",
+        "[Ann] t"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu"
+   },
+   "group words"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Group chat background",
+      "lines": [
+       [
+        null,
+        "group words"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu"
+   },
+   "   "
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu"
+   },
+   ""
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 3
+    }
+   },
+   "group words"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (3)",
+    "sections": [
+     {
+      "heading": "Group chat background (3)",
+      "lines": [
+       [
+        null,
+        "group words"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 0
+    }
+   },
+   "group words"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Group chat background",
+      "lines": [
+       [
+        null,
+        "group words"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 3
+    }
+   },
+   " \n "
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": null
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 1,
+     "replyContext": "quoted",
+     "replyMessageCount": 1
+    }
+   },
+   "one\ntwo"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (2)",
+    "sections": [
+     {
+      "heading": "Referenced messages (1)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (1)",
+      "lines": [
+       [
+        null,
+        "one\ntwo"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 4,
+     "replyContext": "quoted"
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (4)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 4
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message",
+    "sections": [
+     {
+      "heading": "Referenced messages (4)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 2
+    },
+    "threadContext": [
+     {
+      "author": "A",
+      "text": "t"
+     },
+     {
+      "author": "B",
+      "text": "u"
+     }
+    ]
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (4)",
+    "sections": [
+     {
+      "heading": "Referenced messages (2)",
+      "lines": [
+       [
+        "[A]",
+        "[A] t"
+       ],
+       [
+        "[B]",
+        "[B] u"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (2)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "groupMessageCount": 1
+    },
+    "threadContext": [
+     {
+      "author": "",
+      "text": ""
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (1)",
+    "sections": [
+     {
+      "heading": "Referenced messages (1)",
+      "lines": [
+       [
+        "[]",
+        "[] "
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": 7,
+      "text": 1.5
+     },
+     {
+      "author": null,
+      "text": true
+     },
+     {
+      "text": "only text"
+     },
+     {
+      "author": false
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (4)",
+    "sections": [
+     {
+      "heading": "Referenced messages (4)",
+      "lines": [
+       [
+        "[7]",
+        "[7] 1.5"
+       ],
+       [
+        "[]",
+        "[] "
+       ],
+       [
+        "[]",
+        "[] only text"
+       ],
+       [
+        "[]",
+        "[] "
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "A\r\nB",
+      "text": "x\fy"
+     }
+    ]
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (1)",
+    "sections": [
+     {
+      "heading": "Referenced messages (1)",
+      "lines": [
+       [
+        "[A\r\nB]",
+        "[A\r\nB] x\fy"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "A",
+      "text": "one"
+     },
+     {
+      "author": "B",
+      "text": "two"
+     }
+    ],
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740991
+    }
+   },
+   null
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (9007199254740992)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254740992)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[A]",
+        "[A] one"
+       ],
+       [
+        "[B]",
+        "[B] two"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740991,
+     "groupMessageCount": 2
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (9007199254740992)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254740991)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (2)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "A",
+      "text": "one"
+     }
+    ],
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740990,
+     "groupMessageCount": 9007199254740991
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (18014398509481982)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254740991)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[A]",
+        "[A] one"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (9007199254740991)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     }
+    ],
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740991,
+     "groupMessageCount": 9007199254740991
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (18014398509481990)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254741000)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (9007199254740991)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "threadContext": [
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     },
+     {
+      "author": "A",
+      "text": "x"
+     }
+    ],
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740991,
+     "groupMessageCount": 9007199254740989
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (18014398509481984)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254740994)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ],
+       [
+        "[A]",
+        "[A] x"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (9007199254740989)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ [
+  [
+   {
+    "im": "feishu",
+    "contextSnapshot": {
+     "replyContext": "quoted",
+     "replyMessageCount": 9007199254740990,
+     "groupMessageCount": 9007199254740991
+    }
+   },
+   "g"
+  ],
+  {
+   "icon": "message-square",
+   "label": "Cindy · from Feishu",
+   "title": null,
+   "context": {
+    "label": "Context attached to this message (18014398509481980)",
+    "sections": [
+     {
+      "heading": "Referenced messages (9007199254740990)",
+      "lines": [
+       [
+        null,
+        "quoted"
+       ]
+      ]
+     },
+     {
+      "heading": "Group chat background (9007199254740991)",
+      "lines": [
+       [
+        null,
+        "g"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ]
+]

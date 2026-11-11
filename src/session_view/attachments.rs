@@ -120,11 +120,11 @@ fn file(
         .into_any_element()
 }
 
-/// `fileAttachmentNodes`: the chips wrapped and set right, in a column `room` CSS pixels wide.
+/// `fileAttachmentNodes`: the chips wrapped in a column `room` CSS pixels wide, set `left` or right.
 pub fn row(
     key: &str,
     files: &[(&str, &str)],
-    room: f32,
+    (room, left): (f32, bool),
     window: &mut Window,
     cx: &mut App,
 ) -> AnyElement {
@@ -137,7 +137,10 @@ pub fn row(
         .flex()
         .flex_wrap()
         .items_end()
-        .justify_end()
+        .map(|el| match left {
+            true => el.justify_start(),
+            false => el.justify_end(),
+        })
         .gap(css(6.0))
         .max_w_full()
         .children(chips)

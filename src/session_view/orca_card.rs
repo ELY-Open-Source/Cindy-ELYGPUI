@@ -10,7 +10,7 @@ use gpui::{
 use super::{
     chip,
     flow::draw,
-    source_labels::{self, Align},
+    source_labels::{self, Over},
     user_row,
     width::Widths,
 };
@@ -132,15 +132,7 @@ fn body(key: &str, text: &str, widths: Widths, window: &Window, cx: &App) -> Any
     style.font_family = cx.theme().mono_family.clone();
     (style.font_size, style.line_height) = (size.into(), line.into());
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
-    // Blink lays out no CR and no FF (`9.5q-r3-blink-controls.log`); an empty `pre` holds no line.
-    let text: String = text
-        .chars()
-        .filter(|c| !matches!(c, '\r' | '\x0c'))
-        .collect();
-    let rows = match text.is_empty() {
-        true => Vec::new(),
-        false => draw::plain(&text, &style, width, window),
-    };
+    let rows = draw::pre(&draw::laid(text), (0, None), (&style, width), window).rows;
     let appearance = cx.global::<Appearance>();
     let (selector, text_selector) = (format!("{key}-orca-body"), format!("{key}-orca-text"));
     let pre = div()
@@ -152,7 +144,7 @@ fn body(key: &str, text: &str, widths: Widths, window: &Window, cx: &App) -> Any
         .text_size(size)
         .line_height(line)
         .text_color(appearance.hsl_token("foreground"))
-        .children(rows);
+        .children(rows.into_iter().map(|(row, _)| row));
     div()
         .debug_selector(move || selector)
         .border_t(css(1.0))
@@ -197,7 +189,7 @@ pub(super) fn element(
         .text_color(appearance.token("msg-tool-card-text"))
         .child(head)
         .children(body);
-    let labels = source_labels::row(key, message, Align::Start, cx);
+    let labels = source_labels::row(key, message, Over::Orca, cx);
     let column = div()
         .flex()
         .flex_col()

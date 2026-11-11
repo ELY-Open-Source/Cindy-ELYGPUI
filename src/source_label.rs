@@ -197,14 +197,16 @@ pub fn initial(name: &str) -> String {
     }
 }
 
-/// `MessageSourceLabels`: one sender at most, then the device; `live` is a task's held title.
+/// `MessageSourceLabels`: one sender at most (`automation` passes the origin), then the device.
 pub fn labels(
     message: &Fields,
+    automation: bool,
     live: impl Fn(&str) -> Option<String>,
     t: &Translator,
 ) -> Vec<Label> {
     let record = |key| get(message, key).and_then(Js::obj);
-    let sender = match (record("sourcePlugin"), record("automationOrigin")) {
+    let origin = record("automationOrigin").filter(|_| automation);
+    let sender = match (record("sourcePlugin"), origin) {
         (Some(source), _) => plugin(source, t),
         (None, Some(origin)) => match origin.get("kind").and_then(Js::str) {
             Some("session") => session(origin, live, t),

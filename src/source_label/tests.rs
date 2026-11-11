@@ -54,7 +54,10 @@ fn labels_are_the_ones_cindy_draws() {
             let title = crate::theme_import::color::js_trim(held.obj()?.get(id)?.str()?);
             (!title.is_empty()).then(|| title.to_owned())
         };
-        let found: Vec<Js> = labels(&message, live, &t).into_iter().map(seen).collect();
+        let found: Vec<Js> = labels(&message, true, live, &t)
+            .into_iter()
+            .map(seen)
+            .collect();
         assert_eq!(&Js::Arr(found), expected, "{input:?}");
     }
     assert!(cases.len() > 40);
