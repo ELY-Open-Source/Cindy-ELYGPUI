@@ -487,6 +487,13 @@ defines scope and what 1:1 means.
   (`trustedUrlTransform`, `previewSafeUrlTransform`, `allowlistedImageUrlTransform` over
   `defaultUrlTransform`). `remarkStrictInlineMath` and KaTeX come with 9.8, the highlighter with 9.7;
   the golden leaves them out.
+- Image targets: `markdown/image_targets.rs` is `markdownImageTargets.ts`: `extract` walks the tree
+  after the privileged transformers for image nodes, each address once, and `Cache` is the
+  per-message cache the stream's mount holds (`items::Watch`). `render_items` reads it in
+  `recordTurnInlineMedia`, so a result's media a turn's answer embeds draws once.
+  `src/markdown_media.rs` is `isManagedMarkdownVideoUrl` and `src/remote_media_url.rs`
+  `parseRemoteMediaUrl`'s wrapped address (`atob`, `TextDecoder`). Golden `image-targets`, from the
+  hast golden's bundle; `normalizeMathDelimiters` joins with 9.8, so no case holds a math delimiter.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
@@ -541,149 +548,142 @@ defines scope and what 1:1 means.
   scrollbar.
 - Path resolver: `src/path_resolver.rs` is `main/pathResolver.ts`, the answer behind
   `fs:resolve-path`: `decode` (`safeDecodeHrefForLookup`), a leading `~`, the absolute stat, the
-  join with the task's folder, then `walk.rs`'s breadth-first search for files whose path ends
-  with the href (`find`, and `find_many` for a batch's one walk), with Cindy's ignored folders and
-  the folders an href names itself. `resolve_all` is `resolveWorkspacePathBatch`. A folder that
-  cannot be read is passed by, as Cindy passes it. `cache.rs` is the cache both entries share (30
-  seconds, 200 answers, the oldest out first; a refresh or a negative answer asked again reads the
-  folder anew) behind one mutex. The calls block: a caller runs them on the background executor.
-  Golden `path-resolver`: `scripts/golden/pathResolver.mjs` builds each case's tree in `.scratch/`
-  and runs Cindy's functions on it; the test builds the same tree. A folder's entries come in
-  byte order on POSIX, as libuv's `scandir` sorts them (`logs/review/9.6h1-r1-electron-order.log`,
-  Cindy's Electron main on Linux; not measured on macOS), and in the system's order on Windows.
+  join with the task's folder, then `walk.rs`'s breadth-first search for files whose path ends with
+  the href (`find`, and `find_many` for a batch's one walk), with Cindy's ignored folders and the
+  folders an href names itself. `resolve_all` is `resolveWorkspacePathBatch`. A folder that cannot
+  be read is passed by, as Cindy passes it. `cache.rs` is the cache both entries share (30 seconds,
+  200 answers, the oldest out first; a refresh or a negative answer asked again reads the folder
+  anew) behind one mutex. The calls block: a caller runs them on the background executor. Golden
+  `path-resolver`: `scripts/golden/pathResolver.mjs` builds each case's tree in `.scratch/` and runs
+  Cindy's functions on it; the test builds the same tree. A folder's entries come in byte order on
+  POSIX, as libuv's `scandir` sorts them (`logs/review/9.6h1-r1-electron-order.log`, Cindy's
+  Electron main on Linux; not measured on macOS), and in the system's order on Windows.
   `src/node_path.rs` is Node 24's `path` (`join`, `normalize`, `basename`, `isAbsolute`) for POSIX
-  and Windows, with `isWindowsReservedName`'s `slice(0, -1)`; golden `node-path` runs both halves
-  in Cindy's Electron as Node, so Linux checks the Windows half's strings. No Windows folder is
-  walked in a test.
-- Smart paths: `src/local_path/smart.rs` is `localPathResolver.ts`'s lookups over the path
-  resolver, in the `SmartPaths` global: `resolve_smart` (`resolveLocalPathSmart`, a task, past this
-  cache), `peek`, `ask` (`resolveLocalPathSmartCached`) and `recheck`
-  (`revalidateNegativeLocalPathSmart`; it answers whether a lookup is on its way). No promise is
-  handed out: an answer lands in the cache (500, the oldest out first, no lifetime), `ask`'s `then`
-  runs once the batch of the lookup it joined has settled, as a promise's callback, and the windows
-  draw again. Asks of one update leave together in `cx.defer`, which stands for the microtask: one
-  resolver call per folder on the background executor, rechecks apart. A lookup sent in a
-  boundary's millisecond or before it is checked once more when it lands negative. `now` is
-  `Date.now()` on the executor clock, in whole milliseconds as Cindy's stamps are. The resolver's
-  allow check is `file_path_policy::allowed`, its home the user's. Cindy's main process answers its
-  calls in the order sent; here two lookups in flight may land in either order.
-  `src/markdown_target/resolved.rs` is `useResolvedMarkdownTarget` for a local task: the `Mounted`
-  global holds a hook per target drawn (`begin` and `end` about the rows; a target not drawn
-  unmounts). A hook reads the cache when its target, folder or streaming flag changes, asks on a
-  miss, reads once more when the lookup it joined lands (a later run of the hook drops that
-  callback, as the effect's cleanup does), and then keeps its state whatever the cache holds,
-  as React state does. `lit` is `resolvedLocalFromResult`. A remote task's stat comes with its
-  chapter. Golden `smart-paths`: `scripts/golden/smartPaths.mjs` runs Cindy's cache over Cindy's
-  main resolver on real trees, each call held at a gate until the step that lands it, on a clock it
-  sets; `lit.json` comes from the renderer's private function through the hast golden's bundle.
-- Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink`
-  for a privileged message of a local task. Before the blocks are laid out `read` takes the
-  tree's `a` nodes in document order (`Anchors`, each by its node's address): the raw local
-  destination when the tree kept one, `markdown_target::link` with the files the task's user
-  messages attached (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook
-  (`resolved::resolved`, mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its
-  rows). `Face` is what the node draws as: a span (plain text, a code reference, a bare path
-  that has not resolved; the audio player comes with 9.13), a resolved file (below), a deep link's chip or words (below), a handoff card (its own bullet), a web address,
-  or an inline target. A session or project link (`deep`) is
+  and Windows, with `isWindowsReservedName`'s `slice(0, -1)`; golden `node-path` runs both halves in
+  Cindy's Electron as Node, so Linux checks the Windows half's strings. No Windows folder is walked
+  in a test.
+- Smart paths: `src/local_path/smart.rs` is `localPathResolver.ts`'s lookups over the path resolver,
+  in the `SmartPaths` global: `resolve_smart` (`resolveLocalPathSmart`, a task, past this cache),
+  `peek`, `ask` (`resolveLocalPathSmartCached`) and `recheck` (`revalidateNegativeLocalPathSmart`;
+  it answers whether a lookup is on its way). No promise is handed out: an answer lands in the cache
+  (500, the oldest out first, no lifetime), `ask`'s `then` runs once the batch of the lookup it
+  joined has settled, as a promise's callback, and the windows draw again. Asks of one update leave
+  together in `cx.defer`, which stands for the microtask: one resolver call per folder on the
+  background executor, rechecks apart. A lookup sent in a boundary's millisecond or before it is
+  checked once more when it lands negative. `now` is `Date.now()` on the executor clock, in whole
+  milliseconds as Cindy's stamps are. The resolver's allow check is `file_path_policy::allowed`, its
+  home the user's. Cindy's main process answers its calls in the order sent; here two lookups in
+  flight may land in either order. `src/markdown_target/resolved.rs` is `useResolvedMarkdownTarget`
+  for a local task: the `Mounted` global holds a hook per target drawn (`begin` and `end` about the
+  rows; a target not drawn unmounts). A hook reads the cache when its target, folder or streaming
+  flag changes, asks on a miss, reads once more when the lookup it joined lands (a later run of the
+  hook drops that callback, as the effect's cleanup does), and then keeps its state whatever the
+  cache holds, as React state does. `lit` is `resolvedLocalFromResult`. A remote task's stat comes
+  with its chapter. Golden `smart-paths`: `scripts/golden/smartPaths.mjs` runs Cindy's cache over
+  Cindy's main resolver on real trees, each call held at a gate until the step that lands it, on a
+  clock it sets; `lit.json` comes from the renderer's private function through the hast golden's
+  bundle.
+- Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink` for a
+  privileged message of a local task. Before the blocks are laid out `read` takes the tree's `a`
+  nodes in document order (`Anchors`, each by its node's address): the raw local destination when
+  the tree kept one, `markdown_target::link` with the files the task's user messages attached
+  (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook (`resolved::resolved`,
+  mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its rows). `Face` is what the
+  node draws as: a span (plain text, a code reference, a bare path that has not resolved; the audio
+  player comes with 9.13), a resolved file (below), a deep link's chip or words (below), a handoff
+  card (its own bullet), a web address, or an inline target. A session or project link (`deep`) is
   `SessionLinkChip` or `ProjectLinkChip`, 9.5j's chip with its reads, clicks, keys and menu
-  (`link_chip`; the label is the link's text, trimmed, unless empty or the address itself):
-  the reader takes the `a` as one atom whatever it holds (`text::Swap::Chip`, `Chip::Link`),
-  `Anchors.links` holds each chip's width, margin box and element, and its row grows about
-  the chip's middle, half an x-height over the baseline, as a user message's row does. The label is
+  (`link_chip`; the label is the link's text, trimmed, unless empty or the address itself): the
+  reader takes the `a` as one atom whatever it holds (`text::Swap::Chip`, `Chip::Link`),
+  `Anchors.links` holds each chip's width, margin box and element, and its row grows about the
+  chip's middle, half an x-height over the baseline, as a user message's row does. The label is
   `--text-12` (`text_size`), and an `em` about the link slants a session or project chip
-  (`slanted`), not a message link's (`logs/review/9.6h5a-r1-review-blink.log`). A
-  link that names no task or folder reads as its words, `label ?? href` (`Swap::Words`). A link is underlined and breaks anywhere; each
-  stretch of its text on each row, and each empty code's box it holds, is a box (`dress`, named
-  by row and part), the first its Tab stop, its authored `title` gpui's tooltip, all of them
-  `links::listen`:
-  the clicks, keys and menu `UserMessageUrlLink` has, on `What::Url` for a web address (the
-  open-with menu) and `What::Target` for the rest (`useLinkContextMenu`: Open link, then Copy
-  link with the `href` as the renderer handed it on). One menu per message hosts them
-  (`links::host` under `<key>-md`). `open` is `openInlineTarget`: an anchor scrolls to its id,
-  else the `anchorNotFound` toast; an authored local link asks `resolve_smart` past the cache,
-  then toasts `duplicateFiles` or `fileUnavailable`; a found HTML file opens by the link
-  preference (`file_menu::page`); what another found file and a stored image open comes with
-  9.13, so those clicks log and open nothing. `session_view/jump.rs` is the anchor's
-  `getElementById` and `scrollIntoView({ behavior: 'smooth', block: 'start' })`: a heading, a
-  footnote's item and an `a` with an `id` record where they paint (the first in the document
-  keeps the id), and the stream's `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's
-  programmatic curve that `sessions/reveal.rs` shares; reduced motion jumps.
+  (`slanted`), not a message link's (`logs/review/9.6h5a-r1-review-blink.log`). A link that names no
+  task or folder reads as its words, `label ?? href` (`Swap::Words`). A link is underlined and
+  breaks anywhere; each stretch of its text on each row, and each empty code's box it holds, is a
+  box (`dress`, named by row and part), the first its Tab stop, its authored `title` gpui's tooltip,
+  all of them `links::listen`: the clicks, keys and menu `UserMessageUrlLink` has, on `What::Url`
+  for a web address (the open-with menu) and `What::Target` for the rest (`useLinkContextMenu`: Open
+  link, then Copy link with the `href` as the renderer handed it on). One menu per message hosts
+  them (`links::host` under `<key>-md`). `open` is `openInlineTarget`: an anchor scrolls to its id,
+  else the `anchorNotFound` toast; an authored local link asks `resolve_smart` past the cache, then
+  toasts `duplicateFiles` or `fileUnavailable`; a found HTML file opens by the link preference
+  (`file_menu::page`); what another found file and a stored image open comes with 9.13, so those
+  clicks log and open nothing. `session_view/jump.rs` is the anchor's `getElementById` and
+  `scrollIntoView({ behavior: 'smooth', block: 'start' })`: a heading, a footnote's item and an `a`
+  with an `id` record where they paint (the first in the document keeps the id), and the stream's
+  `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's programmatic curve that
+  `sessions/reveal.rs` shares; reduced motion jumps.
 - Handoff card: `deep_link::parse_card` is `parseSessionCardHref` behind the renderer's
   `session-card/` prefix check (`new URL` is the `url` crate; golden `session-card`, from the
-  renderer's private function through the hast golden's bundle); a link that parses as no
-  card draws as any other link. `src/handoff_card.rs` holds the card's words (`displayTitle`,
-  the badge, `formatLastActive` on `js_date` (an empty `last_active` is none, as the
-  component's truthiness check has it), `shortSessionId` in UTF-16 units) and
-  `session_view/handoff.rs` draws `SessionHandoffCard`. The button is a block inside its
-  paragraph, so the inline reader reads a run in parts (`Inline::part`): text past card
-  `part - 1` and up to card `part`, counting cards through `em`, `strong` and `del`
-  (`Swap::Card`), and `Walk::runs` lays the parts and cards out as blocks whose margins
-  collapse (`my-2`, through the paragraph or heading, an open container). A break before a
-  card ends its line; one after it opens a line. Pending list markers hang by the card's
-  first baseline, the bottom of the icon in its circle, 46px down (47 with the outlined
-  badge, whose border makes the card 76px for 74). Blink's places are in
-  `logs/review/9.6h5b-blink-card.log` and `-list.log` (probes in `.scratch/9.6h5b/`). The
-  card keeps its own sizes and takes its second line's weight from a `strong` or an `h1` to
-  `h3` about it (`target_link::around`), never an `em`'s slant. Its hover eases border,
-  circle, icon and arrow over a fixed 150ms, which reduced motion leaves; the keyboard's
-  focus draws `ring-2 ring-foreground` past Tailwind's white `ring-offset-2`. gpui has no
-  letter spacing, so the badge's `tracking-[0.4px]` is a box per letter, as wide as it is
-  shaped and 0.4px more, laid out to the device pixel. A click (any modifier) is
-  `handleClick`, and the keys are a native button's (`press::clicks`), not gpui's key-up
-  click: Enter clicks on key down and Space on key up, whatever they hold. A held Space ends
-  with any other activation and with the focus leaving; a clean Space clicks through gpui's
-  own key-up click, which gpui withholds when the focus moved meanwhile. gpui keeps that
-  focus generation to itself, so a Space mixed with another key or a modifier does not see
-  a focus gone and back within one update. The click runs `link_chip::act::task`, the
-  chip's route read, with the route's `from` state: `router::Handoff`, the shown task's id and
-  title, beside the location (`navigate_from`; a plain `navigate` carries none).
-  `session_view/handoff_pill.rs` is `HandoffSourcePill` over the viewport while the route
-  holds a handoff and the content has not dismissed it: Return (`act::back`,
-  `resolveSessionRoute` then a plain navigate) and Dismiss, both `press::clicks` buttons with
-  `ring-2`. In a table's cell the card is a block too
-  (`Walk::parts`, which `runs` shares): the cell is a closed column of lines and cards, so
-  `my-2` stays inside its padding and two cards share one margin; a `th` hands its medium
-  weight on. The column counts the card's min and max content (`handoff::content`): the
-  circle, arrow, gaps, padding and border, 122px, and the wider of its two lines, where the
-  title and the last-active words count whole (`nowrap`) and the badge and the short id their
-  widest character in the min, since the cell's `overflow-wrap: anywhere` reaches them
+  renderer's private function through the hast golden's bundle); a link that parses as no card draws
+  as any other link. `src/handoff_card.rs` holds the card's words (`displayTitle`, the badge,
+  `formatLastActive` on `js_date` (an empty `last_active` is none, as the component's truthiness
+  check has it), `shortSessionId` in UTF-16 units) and `session_view/handoff.rs` draws
+  `SessionHandoffCard`. The button is a block inside its paragraph, so the inline reader reads a run
+  in parts (`Inline::part`): text past card `part - 1` and up to card `part`, counting cards through
+  `em`, `strong` and `del` (`Swap::Card`), and `Walk::runs` lays the parts and cards out as blocks
+  whose margins collapse (`my-2`, through the paragraph or heading, an open container). A break
+  before a card ends its line; one after it opens a line. Pending list markers hang by the card's
+  first baseline, the bottom of the icon in its circle, 46px down (47 with the outlined badge, whose
+  border makes the card 76px for 74). Blink's places are in `logs/review/9.6h5b-blink-card.log` and
+  `-list.log` (probes in `.scratch/9.6h5b/`). The card keeps its own sizes and takes its second
+  line's weight from a `strong` or an `h1` to `h3` about it (`target_link::around`), never an `em`'s
+  slant. Its hover eases border, circle, icon and arrow over a fixed 150ms, which reduced motion
+  leaves; the keyboard's focus draws `ring-2 ring-foreground` past Tailwind's white `ring-offset-2`.
+  gpui has no letter spacing, so the badge's `tracking-[0.4px]` is a box per letter, as wide as it
+  is shaped and 0.4px more, laid out to the device pixel. A click (any modifier) is `handleClick`,
+  and the keys are a native button's (`press::clicks`), not gpui's key-up click: Enter clicks on key
+  down and Space on key up, whatever they hold. A held Space ends with any other activation and with
+  the focus leaving; a clean Space clicks through gpui's own key-up click, which gpui withholds when
+  the focus moved meanwhile. gpui keeps that focus generation to itself, so a Space mixed with
+  another key or a modifier does not see a focus gone and back within one update. The click runs
+  `link_chip::act::task`, the chip's route read, with the route's `from` state: `router::Handoff`,
+  the shown task's id and title, beside the location (`navigate_from`; a plain `navigate` carries
+  none). `session_view/handoff_pill.rs` is `HandoffSourcePill` over the viewport while the route
+  holds a handoff and the content has not dismissed it: Return (`act::back`, `resolveSessionRoute`
+  then a plain navigate) and Dismiss, both `press::clicks` buttons with `ring-2`. In a table's cell
+  the card is a block too (`Walk::parts`, which `runs` shares): the cell is a closed column of lines
+  and cards, so `my-2` stays inside its padding and two cards share one margin; a `th` hands its
+  medium weight on. The column counts the card's min and max content (`handoff::content`): the
+  circle, arrow, gaps, padding and border, 122px, and the wider of its two lines, where the title
+  and the last-active words count whole (`nowrap`) and the badge and the short id their widest
+  character in the min, since the cell's `overflow-wrap: anywhere` reaches them
   (`logs/review/9.6h5b2-r1-review-blink.log`). The title's and the id's white space collapses.
-- Resolved files: `target_link/file.rs` holds the faces of a resolved local target. An `a`
-  whose label reads as a file (`code_label`, `shouldRenderCodeReferenceLabel`; golden
-  `smart-paths/label.json` from the renderer's private function) is `FileTargetChip`, any other
-  and every bare path `ResolvedLocalLink`; an inline `code` whose text resolves
-  (`InlineCodeWithTarget`, its hook mounted as `<key>-i<n>`) is the chip too, its title the
-  file's path. `read` hands the reader each such node's `FileFace` (`Inline::read`'s `files`):
-  a chip opens a box in `Inline.files` (`Mark.file` names the innermost, so a chip may hold a
-  chip) and an icon stands before the label as a chip atom (`FileTypeIcon` at 14 with `mr-1`,
-  0.125em under the baseline; none for a folder, none for a link with no label).
-  `markdown/inline/file_box.rs` draws the box: text in it is the code face and underlined,
-  `px-1` goes to its first and last atom, `break-all` to its bytes, and on each row the parts
-  a box holds stand inside one fragment (`nest`) with `py-0.5` about the font's box, rounded
-  where the box starts and ends (`logs/review/9.6h4a-blink-chip.log`). A fragment is the
-  chip's `role="button"` (`Chip::fragment`): the first its Tab stop, its hover the lit fill
-  over `--motion-fast` (the row under the pointer is kept, so a move between rows stays lit),
-  its `title` gpui's tooltip. A chip inside a link is the link's box as a whole (`Held.link`,
-  `link_of`): the link's listeners stand about the fragment, not on what it holds, so the
-  chip keeps its clicks, right press, title and Tab stop, after the link's. The innermost
-  target takes a press. `target_link/file_menu.rs` is `useFileChipContextMenu` for a local task,
-  on the message's one menu (`What::File`; a message with chips and no `a` hosts it too). A
-  right click, the menu key or Shift+F10 (under the boxes the target drew) opens its rows: for
-  a page (`isBrowserOpenablePath`) Open in sidebar, Open in browser and View source; else
-  Locate in file list (with a task folder) and Open with default app (a file); then Show in
-  folder (`show_item`), Copy (`copy_media`, no page), Copy path and, where the reference named
-  a line, Copy Location. `activate` is `onActivate`: a separate activation (Shift, Mod, Ctrl
-  or the middle button) opens a page in the system browser (`browser_file`, a refusal's code
-  the toast's key) and any other target through `open_path`; a plain one opens an HTML file as
-  `openHtmlFileByPreference` does (`page`: the local link preference, the sidebar by default)
-  and reaches `onOpen` for the rest, which opens nothing before 9.13, as View source does.
-  Every box of a target hears Enter and Space and lets them bubble, so a key on a chip inside
-  a link activates both, as Cindy's keydown does; a click and the menu key stop at the chip. The
-  sidebar browser comes with 17.0 and the sidebar file browser with 18.0, so those rows fail
-  with Cindy's toasts. Ely's `Folder` and `Clipboard` stand in for lucide's `folder-tree` and
-  `clipboard-copy`. `src/file_location.rs` is `formatFileLocation` over `toWorkdirRel`
-  (`shared/workdirPath.ts`: a Windows folder compares without case and slices in UTF-16
-  units), golden `file-location` on the inputs of Cindy's test and `cases.json`.
+- Resolved files: `target_link/file.rs` holds the faces of a resolved local target. An `a` whose
+  label reads as a file (`code_label`, `shouldRenderCodeReferenceLabel`; golden
+  `smart-paths/label.json` from the renderer's private function) is `FileTargetChip`, any other and
+  every bare path `ResolvedLocalLink`; an inline `code` whose text resolves (`InlineCodeWithTarget`,
+  its hook mounted as `<key>-i<n>`) is the chip too, its title the file's path. `read` hands the
+  reader each such node's `FileFace` (`Inline::read`'s `files`): a chip opens a box in
+  `Inline.files` (`Mark.file` names the innermost, so a chip may hold a chip) and an icon stands
+  before the label as a chip atom (`FileTypeIcon` at 14 with `mr-1`, 0.125em under the baseline;
+  none for a folder, none for a link with no label). `markdown/inline/file_box.rs` draws the box:
+  text in it is the code face and underlined, `px-1` goes to its first and last atom, `break-all` to
+  its bytes, and on each row the parts a box holds stand inside one fragment (`nest`) with `py-0.5`
+  about the font's box, rounded where the box starts and ends (`logs/review/9.6h4a-blink-chip.log`).
+  A fragment is the chip's `role="button"` (`Chip::fragment`): the first its Tab stop, its hover the
+  lit fill over `--motion-fast` (the row under the pointer is kept, so a move between rows stays
+  lit), its `title` gpui's tooltip. A chip inside a link is the link's box as a whole (`Held.link`,
+  `link_of`): the link's listeners stand about the fragment, not on what it holds, so the chip keeps
+  its clicks, right press, title and Tab stop, after the link's. The innermost target takes a press.
+  `target_link/file_menu.rs` is `useFileChipContextMenu` for a local task, on the message's one menu
+  (`What::File`; a message with chips and no `a` hosts it too). A right click, the menu key or
+  Shift+F10 (under the boxes the target drew) opens its rows: for a page (`isBrowserOpenablePath`)
+  Open in sidebar, Open in browser and View source; else Locate in file list (with a task folder)
+  and Open with default app (a file); then Show in folder (`show_item`), Copy (`copy_media`, no
+  page), Copy path and, where the reference named a line, Copy Location. `activate` is `onActivate`:
+  a separate activation (Shift, Mod, Ctrl or the middle button) opens a page in the system browser
+  (`browser_file`, a refusal's code the toast's key) and any other target through `open_path`; a
+  plain one opens an HTML file as `openHtmlFileByPreference` does (`page`: the local link
+  preference, the sidebar by default) and reaches `onOpen` for the rest, which opens nothing before
+  9.13, as View source does. Every box of a target hears Enter and Space and lets them bubble, so a
+  key on a chip inside a link activates both, as Cindy's keydown does; a click and the menu key stop
+  at the chip. The sidebar browser comes with 17.0 and the sidebar file browser with 18.0, so those
+  rows fail with Cindy's toasts. Ely's `Folder` and `Clipboard` stand in for lucide's `folder-tree`
+  and `clipboard-copy`. `src/file_location.rs` is `formatFileLocation` over `toWorkdirRel`
+  (`shared/workdirPath.ts`: a Windows folder compares without case and slices in UTF-16 units),
+  golden `file-location` on the inputs of Cindy's test and `cases.json`.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

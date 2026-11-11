@@ -415,3 +415,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   feed made two lines.
 - Round 2: PASS. The drawn line collapses its white space; the route state keeps the title as
   handed on. No live desktop check was made.
+
+## 9.6i1 A text's image targets
+- Round 1: FAIL. An origin token whose JSON held a lone surrogate escape failed the port's parse
+  and passed as a legacy device id, so an image read as a managed video.
+- Round 2: PASS. Each lone surrogate escape reads as U+FFFD before the parse; the fields are read
+  for emptiness and `k` alone.

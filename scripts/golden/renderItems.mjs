@@ -39,9 +39,8 @@ function shown(item, rows) {
   }
 }
 
-// Markdown image targets come with the Markdown renderer (9.6), voice rows with 22.0.
-const later = (row) => row?.systemCardType === 'voice-call' || (row?.role === 'assistant'
-  && typeof row.content === 'string' && (row.content.includes('![') || /<img/i.test(row.content)));
+// Voice rows come with 22.0.
+const later = (row) => row?.systemCardType === 'voice-call';
 const keep = (fn, args) => fn !== 'buildRenderItems' || !(Array.isArray(args[0]) && args[0].some(later));
 
 export function renderItems(golden, { buildRenderItems, isGeneratedFilesTurnSealed }) {

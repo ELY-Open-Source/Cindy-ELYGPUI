@@ -19283,6 +19283,126 @@
       "content": "..."
      },
      {
+      "clientId": "img1",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-img1",
+      "toolName": "image_generate",
+      "toolInput": {}
+     },
+     {
+      "clientId": "imgr1",
+      "role": "tool_result",
+      "content": "{\"xdt_image_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\"}",
+      "toolUseId": "tu-img1"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "![生成结果](cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png)"
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "..."
+     },
+     {
+      "clientId": "img2",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-img2",
+      "toolName": "image_generate",
+      "toolInput": {}
+     },
+     {
+      "clientId": "imgr2",
+      "role": "tool_result",
+      "content": "{\"xdt_image_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\"}",
+      "toolUseId": "tu-img2"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "文件地址：cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-img1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "img1",
+       "{\"xdt_image_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\"}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "img1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-img2",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "img2",
+       "{\"xdt_image_url\":\"cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\"}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "img2"
+     ]
+    },
+    {
+     "type": "tool_media",
+     "key": "media-img2",
+     "items": [
+      {
+       "kind": "image",
+       "url": "cindy-media://blobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+      }
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "..."
+     },
+     {
       "clientId": "a1",
       "role": "assistant",
       "content": "ok"
@@ -28262,6 +28382,236 @@
      {
       "clientId": "brief",
       "role": "assistant",
+      "content": "图表如下 ![chart](https://example.com/chart.png)"
+     },
+     {
+      "clientId": "notify",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-notify",
+      "toolName": "mcp__cindy_scheduler__schedule_notify_current_run",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "notify-result",
+      "role": "tool_result",
+      "content": "{\"ok\":true}",
+      "toolUseId": "tu-notify"
+     },
+     {
+      "clientId": "wrap",
+      "role": "assistant",
+      "content": "本轮有 3 条首次亮相的 PR 需要你决策,已触发通知。",
+      "turnCompleted": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "message",
+     "key": "msg-th1",
+     "message": 1
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-diff",
+     "toolCalls": [
+      2
+     ],
+     "resultMap": [
+      [
+       "diff",
+       "diff --git a/apps/mobile/app/devices/index.tsx"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "diff"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-brief",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-notify",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "notify",
+       "{\"ok\":true}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "notify"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-wrap",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "巡检待放行的 PR,给一份产品决策简报"
+     },
+     {
+      "clientId": "th1",
+      "role": "thinking",
+      "content": "Thought"
+     },
+     {
+      "clientId": "diff",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-diff",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "diff-result",
+      "role": "tool_result",
+      "content": "diff --git a/apps/mobile/app/devices/index.tsx",
+      "toolUseId": "tu-diff"
+     },
+     {
+      "clientId": "brief",
+      "role": "assistant",
+      "content": "缩略图:<img src=\"https://example.com/thumb.png\" width=\"150\">"
+     },
+     {
+      "clientId": "notify",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-notify",
+      "toolName": "mcp__cindy_scheduler__schedule_notify_current_run",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "notify-result",
+      "role": "tool_result",
+      "content": "{\"ok\":true}",
+      "toolUseId": "tu-notify"
+     },
+     {
+      "clientId": "wrap",
+      "role": "assistant",
+      "content": "本轮有 3 条首次亮相的 PR 需要你决策,已触发通知。",
+      "turnCompleted": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "message",
+     "key": "msg-th1",
+     "message": 1
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-diff",
+     "toolCalls": [
+      2
+     ],
+     "resultMap": [
+      [
+       "diff",
+       "diff --git a/apps/mobile/app/devices/index.tsx"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "diff"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-brief",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-notify",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "notify",
+       "{\"ok\":true}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "notify"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-wrap",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "巡检待放行的 PR,给一份产品决策简报"
+     },
+     {
+      "clientId": "th1",
+      "role": "thinking",
+      "content": "Thought"
+     },
+     {
+      "clientId": "diff",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-diff",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "diff-result",
+      "role": "tool_result",
+      "content": "diff --git a/apps/mobile/app/devices/index.tsx",
+      "toolUseId": "tu-diff"
+     },
+     {
+      "clientId": "brief",
+      "role": "assistant",
       "content": "报告在附件里。",
       "files": [
        {
@@ -28499,6 +28849,236 @@
       "clientId": "brief",
       "role": "assistant",
       "content": "先看 [PR](https://github.com/x/y/pull/1) 的 diff。"
+     },
+     {
+      "clientId": "notify",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-notify",
+      "toolName": "mcp__cindy_scheduler__schedule_notify_current_run",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "notify-result",
+      "role": "tool_result",
+      "content": "{\"ok\":true}",
+      "toolUseId": "tu-notify"
+     },
+     {
+      "clientId": "wrap",
+      "role": "assistant",
+      "content": "本轮有 3 条首次亮相的 PR 需要你决策,已触发通知。",
+      "turnCompleted": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "message",
+     "key": "msg-th1",
+     "message": 1
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-diff",
+     "toolCalls": [
+      2
+     ],
+     "resultMap": [
+      [
+       "diff",
+       "diff --git a/apps/mobile/app/devices/index.tsx"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "diff"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-brief",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-notify",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "notify",
+       "{\"ok\":true}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "notify"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-wrap",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "巡检待放行的 PR,给一份产品决策简报"
+     },
+     {
+      "clientId": "th1",
+      "role": "thinking",
+      "content": "Thought"
+     },
+     {
+      "clientId": "diff",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-diff",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "diff-result",
+      "role": "tool_result",
+      "content": "diff --git a/apps/mobile/app/devices/index.tsx",
+      "toolUseId": "tu-diff"
+     },
+     {
+      "clientId": "brief",
+      "role": "assistant",
+      "content": "说明里提到 <img> 标签。"
+     },
+     {
+      "clientId": "notify",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-notify",
+      "toolName": "mcp__cindy_scheduler__schedule_notify_current_run",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "notify-result",
+      "role": "tool_result",
+      "content": "{\"ok\":true}",
+      "toolUseId": "tu-notify"
+     },
+     {
+      "clientId": "wrap",
+      "role": "assistant",
+      "content": "本轮有 3 条首次亮相的 PR 需要你决策,已触发通知。",
+      "turnCompleted": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "message",
+     "key": "msg-th1",
+     "message": 1
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-diff",
+     "toolCalls": [
+      2
+     ],
+     "resultMap": [
+      [
+       "diff",
+       "diff --git a/apps/mobile/app/devices/index.tsx"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "diff"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-brief",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-notify",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "notify",
+       "{\"ok\":true}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "notify"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-wrap",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "巡检待放行的 PR,给一份产品决策简报"
+     },
+     {
+      "clientId": "th1",
+      "role": "thinking",
+      "content": "Thought"
+     },
+     {
+      "clientId": "diff",
+      "role": "tool_use",
+      "content": "",
+      "toolUseId": "tu-diff",
+      "toolName": "Bash",
+      "toolInput": {
+       "command": "gh pr diff 1111"
+      }
+     },
+     {
+      "clientId": "diff-result",
+      "role": "tool_result",
+      "content": "diff --git a/apps/mobile/app/devices/index.tsx",
+      "toolUseId": "tu-diff"
+     },
+     {
+      "clientId": "brief",
+      "role": "assistant",
+      "content": "<img-wrapper src=\"https://example.com/a.png\">"
      },
      {
       "clientId": "notify",
@@ -32855,6 +33435,233 @@
      {
       "clientId": "u1",
       "role": "user",
+      "content": "Inspect"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      }
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "Continue"
+     },
+     {
+      "clientId": "image-call",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "make_image",
+      "toolUseId": "image-tool"
+     },
+     {
+      "clientId": "image-result",
+      "role": "tool_result",
+      "content": "{\"xdt_image_url\":\"https://example.com/a.png\"}",
+      "toolUseId": "image-tool"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
+      "isStreaming": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-image-call",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "image-call",
+       "{\"xdt_image_url\":\"https://example.com/a.png\"}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "image-call"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "Inspect"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      }
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "Continue"
+     },
+     {
+      "clientId": "image-call",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "make_image",
+      "toolUseId": "image-tool"
+     },
+     {
+      "clientId": "image-result",
+      "role": "tool_result",
+      "content": "{\"xdt_image_url\":\"https://example.com/a.png\"}",
+      "toolUseId": "image-tool"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
+      "isStreaming": false,
+      "turnCompleted": true
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-image-call",
+     "toolCalls": [
+      5
+     ],
+     "resultMap": [
+      [
+       "image-call",
+       "{\"xdt_image_url\":\"https://example.com/a.png\"}"
+      ]
+     ],
+     "resultTsMap": [],
+     "settledIds": [
+      "image-call"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 7
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
       "content": "Inspect",
       "createdAt": "2023-11-14T22:13:20.000Z"
      },
@@ -33081,6 +33888,100 @@
       "clientId": "a2",
       "role": "assistant",
       "content": "# Delivery\n\nReport. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. ",
+      "isStreaming": true,
+      "createdAt": "2023-11-14T22:13:25.000Z"
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "t1",
+       1700000002000
+      ]
+     ],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 5
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "Inspect",
+      "createdAt": "2023-11-14T22:13:20.000Z"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      },
+      "createdAt": "2023-11-14T22:13:21.000Z"
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1",
+      "createdAt": "2023-11-14T22:13:22.000Z"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true,
+      "createdAt": "2023-11-14T22:13:23.000Z"
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "Continue",
+      "createdAt": "2023-11-14T22:13:24.000Z"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
       "isStreaming": true,
       "createdAt": "2023-11-14T22:13:25.000Z"
      }
@@ -33524,6 +34425,89 @@
       "clientId": "a2",
       "role": "assistant",
       "content": "# Delivery\n\nReport. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. ",
+      "isStreaming": true,
+      "createdAt": "2023-11-14T22:13:24.000Z"
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "t1",
+       1700000002000
+      ]
+     ],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 4
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "Inspect",
+      "createdAt": "2023-11-14T22:13:20.000Z"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      },
+      "createdAt": "2023-11-14T22:13:21.000Z"
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1",
+      "createdAt": "2023-11-14T22:13:22.000Z"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true,
+      "createdAt": "2023-11-14T22:13:23.000Z"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
       "isStreaming": true,
       "createdAt": "2023-11-14T22:13:24.000Z"
      }
@@ -34088,6 +35072,149 @@
       "clientId": "a2",
       "role": "assistant",
       "content": "# Delivery\n\nReport. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. ",
+      "isStreaming": true,
+      "createdAt": "2023-11-14T22:13:28.000Z"
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "t1",
+       1700000002000
+      ]
+     ],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "message",
+     "key": "msg-thinking",
+     "message": 5
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-active-tool",
+     "toolCalls": [
+      6
+     ],
+     "resultMap": [
+      [
+       "active-tool",
+       "read result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "active-tool",
+       1700000007000
+      ]
+     ],
+     "settledIds": [
+      "active-tool"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 8
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "Inspect",
+      "createdAt": "2023-11-14T22:13:20.000Z"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      },
+      "createdAt": "2023-11-14T22:13:21.000Z"
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1",
+      "createdAt": "2023-11-14T22:13:22.000Z"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true,
+      "createdAt": "2023-11-14T22:13:23.000Z"
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "Continue",
+      "createdAt": "2023-11-14T22:13:24.000Z"
+     },
+     {
+      "clientId": "thinking",
+      "role": "thinking",
+      "content": "Checking",
+      "thinkingDurationMs": 1000,
+      "createdAt": "2023-11-14T22:13:25.000Z"
+     },
+     {
+      "clientId": "active-tool",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "call_active",
+      "createdAt": "2023-11-14T22:13:26.000Z"
+     },
+     {
+      "clientId": "active-result",
+      "role": "tool_result",
+      "content": "read result",
+      "toolUseId": "call_active",
+      "createdAt": "2023-11-14T22:13:27.000Z"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
       "isStreaming": true,
       "createdAt": "2023-11-14T22:13:28.000Z"
      }
@@ -34804,6 +35931,149 @@
       "clientId": "a2",
       "role": "assistant",
       "content": "# Delivery\n\nReport. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. Report. ",
+      "isStreaming": true,
+      "createdAt": "2023-11-14T23:13:28.000Z"
+     }
+    ]
+   ],
+   [
+    {
+     "type": "message",
+     "key": "msg-u1",
+     "message": 0
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-t1",
+     "toolCalls": [
+      1
+     ],
+     "resultMap": [
+      [
+       "t1",
+       "original result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "t1",
+       1700000002000
+      ]
+     ],
+     "settledIds": [
+      "t1"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a1",
+     "message": 3
+    },
+    {
+     "type": "message",
+     "key": "msg-u2",
+     "message": 4
+    },
+    {
+     "type": "message",
+     "key": "msg-thinking",
+     "message": 5
+    },
+    {
+     "type": "tool_segment",
+     "key": "seg-active-tool",
+     "toolCalls": [
+      6
+     ],
+     "resultMap": [
+      [
+       "active-tool",
+       "read result"
+      ]
+     ],
+     "resultTsMap": [
+      [
+       "active-tool",
+       1700000007000
+      ]
+     ],
+     "settledIds": [
+      "active-tool"
+     ]
+    },
+    {
+     "type": "message",
+     "key": "msg-a2",
+     "message": 8
+    }
+   ]
+  ],
+  [
+   [
+    [
+     {
+      "clientId": "u1",
+      "role": "user",
+      "content": "Inspect",
+      "createdAt": "2023-11-14T22:13:20.000Z"
+     },
+     {
+      "clientId": "t1",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "tool-1",
+      "toolInput": {
+       "file_path": "/src/app.ts"
+      },
+      "createdAt": "2023-11-14T22:13:21.000Z"
+     },
+     {
+      "clientId": "r1",
+      "role": "tool_result",
+      "content": "original result",
+      "toolUseId": "tool-1",
+      "createdAt": "2023-11-14T22:13:22.000Z"
+     },
+     {
+      "clientId": "a1",
+      "role": "assistant",
+      "content": "Finished.",
+      "turnCompleted": true,
+      "createdAt": "2023-11-14T22:13:23.000Z"
+     },
+     {
+      "clientId": "u2",
+      "role": "user",
+      "content": "Continue",
+      "createdAt": "2023-11-14T22:13:24.000Z"
+     },
+     {
+      "clientId": "thinking",
+      "role": "thinking",
+      "content": "Checking",
+      "thinkingDurationMs": 1000,
+      "createdAt": "2023-11-14T22:13:25.000Z"
+     },
+     {
+      "clientId": "active-tool",
+      "role": "tool_use",
+      "content": "",
+      "toolName": "Read",
+      "toolUseId": "call_active",
+      "createdAt": "2023-11-14T22:13:26.000Z"
+     },
+     {
+      "clientId": "active-result",
+      "role": "tool_result",
+      "content": "read result",
+      "toolUseId": "call_active",
+      "createdAt": "2023-11-14T22:13:27.000Z"
+     },
+     {
+      "clientId": "a2",
+      "role": "assistant",
+      "content": "![image](https://example.com/a.png)",
       "isStreaming": true,
       "createdAt": "2023-11-14T23:13:28.000Z"
      }

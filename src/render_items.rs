@@ -12,6 +12,7 @@ use crate::{
     generated_files::File,
     history_view::Summary,
     js_date,
+    markdown::image_targets,
     message_rows::{
         is_agent_plan_tool_name, is_agent_task_tool_name, is_orca_communication_tool,
         is_subagent_parent_tool_use_id,
@@ -118,6 +119,8 @@ pub struct Options<'a> {
     pub history_window_incomplete: bool,
     pub working_dir: &'a str,
     pub history_artifacts: &'a [Js],
+    /// `markdownImageTargetCache`.
+    pub image_targets: Option<&'a image_targets::Cache>,
 }
 
 pub(crate) fn field<'a>(row: &'a Fields, key: &str) -> Option<&'a Js> {
@@ -268,6 +271,10 @@ impl<'a> Build<'a> {
                 && !truthy(field(row, "systemCardType"))
                 && !truthy(field(row, "isStreaming"));
             if answer {
+                urls.extend(match self.opts.image_targets {
+                    Some(cache) => cache.targets(&client_id(row), content(row)),
+                    None => image_targets::extract(content(row)),
+                });
                 urls.extend(rich_answer::media_sources(content(row)));
             }
         }

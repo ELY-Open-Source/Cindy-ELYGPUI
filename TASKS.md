@@ -295,7 +295,7 @@ listed in `tasks/done.md`.
           over the task it opened: the dispatcher's title or short id, Return and Dismiss
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
       `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
-    - [ ] 9.6i1 `extractRenderedMarkdownImageTargets` with `isManagedMarkdownVideoUrl`
+    - [x] 9.6i1 `extractRenderedMarkdownImageTargets` with `isManagedMarkdownVideoUrl`
         (`parseRemoteMediaUrl`) and its per-message cache, read by `recordTurnInlineMedia`;
         `normalizeMathDelimiters` joins with 9.8; the render-items golden takes rows with a
         Markdown image

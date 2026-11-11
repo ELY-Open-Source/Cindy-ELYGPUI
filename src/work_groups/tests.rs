@@ -35,6 +35,7 @@ fn options(opts: Option<&Js>) -> Options<'_> {
         history_artifacts: opt("historyArtifacts")
             .and_then(Js::arr)
             .unwrap_or_default(),
+        image_targets: None,
     }
 }
 

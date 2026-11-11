@@ -14,6 +14,7 @@ use crate::{
         controller::{Detail, Message as _, Snapshot, View, leaves, summaries},
     },
     js_date,
+    markdown::image_targets,
     render_items::{self, Deferred, Item, Options},
     rich_answer::js::{Js, truthy},
     work_groups,
@@ -33,6 +34,8 @@ pub struct Input<'a> {
     /// `handoff.tail`.
     pub tail: &'a IndexSet<String>,
     pub working_dir: &'a str,
+    /// `markdownImageTargetCache`, which the stream's mount holds.
+    pub image_targets: Option<&'a image_targets::Cache>,
 }
 
 /// The items with the rows they index.
@@ -290,6 +293,7 @@ pub fn render(input: &Input) -> Result<Projection, String> {
         history_window_incomplete: true,
         working_dir: input.working_dir,
         history_artifacts: &artifacts,
+        image_targets: input.image_targets,
     };
     let built = render_items::build(&rows, options)?;
     let binder = bind::Binder {

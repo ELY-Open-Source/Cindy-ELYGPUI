@@ -179,6 +179,7 @@ fn the_view_renders_as_cindys() {
             pending: &strings(case.get("pending")),
             tail: &strings(case.get("tail")),
             working_dir: case.get("workingDir").and_then(Js::str).unwrap_or_default(),
+            image_targets: None,
         };
         let got = match render(&input) {
             Ok(projection) => {

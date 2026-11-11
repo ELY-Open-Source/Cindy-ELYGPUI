@@ -7,6 +7,10 @@ const ENTRY = [
   "export { REMARK_PLUGINS, REMARK_PLUGINS_PRIVILEGED, golden } from './renderer/components/chat/MarkdownRenderer';",
   "export { default as Markdown } from 'react-markdown';",
   "export { regex as slugRegex } from 'github-slugger/regex.js';",
+  "export { normalizeMarkdownRendererContent } from './renderer/components/chat/MarkdownRenderer';",
+  "export { extractRenderedMarkdownImageTargets } from './renderer/components/chat/markdownImageTargets';",
+  "export { isManagedMarkdownVideoUrl } from './renderer/components/chat/markdownMedia';",
+  "export { parseRemoteMediaUrl } from './shared/remoteMediaUrl';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
 const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref };\n';
@@ -49,6 +53,21 @@ function dropped(regex) {
   return out;
 }
 
+/** The image-targets golden: what a text hands the `img` renderer, and which addresses are videos. */
+function imageTargets(loaded, { fixtures, write }) {
+  const dir = path.join(fixtures, 'image-targets');
+  const { urls, texts } = JSON.parse(fs.readFileSync(path.join(dir, 'cases.json'), 'utf8'));
+  // Math delimiters are normalized with 9.8: no case may hold one.
+  const plain = (text) => {
+    if (loaded.normalizeMarkdownRendererContent(text) !== text) throw new Error(`a case with math delimiters: ${text}`);
+    return text;
+  };
+  write(path.join(dir, 'expected.json'), {
+    urls: urls.map((url) => [url, loaded.parseRemoteMediaUrl(url)?.origUrl ?? null, loaded.isManagedMarkdownVideoUrl(url)]),
+    texts: texts.map((text) => [text, loaded.extractRenderedMarkdownImageTargets(plain(text))]),
+  });
+}
+
 /** `cases.json`: Markdown sources. */
 export async function markdownHast({ esbuild, tmp, nodePaths, alias, define, assets, fixtures, write, src }) {
   const dir = path.join(fixtures, 'markdown-hast');
@@ -60,7 +79,9 @@ export async function markdownHast({ esbuild, tmp, nodePaths, alias, define, ass
     entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: bundle, logLevel: 'error',
     nodePaths, alias, loader: assets.loader, plugins: [exporter, ...assets.plugins], define, jsx: 'automatic', keepNames: true,
   });
-  const { REMARK_PLUGINS, REMARK_PLUGINS_PRIVILEGED, golden, Markdown, slugRegex } = await import(pathToFileURL(bundle).href);
+  const loaded = await import(pathToFileURL(bundle).href);
+  const { REMARK_PLUGINS, REMARK_PLUGINS_PRIVILEGED, golden, Markdown, slugRegex } = loaded;
+  imageTargets(loaded, { fixtures, write });
   write(path.join(fixtures, '..', '..', 'resources', 'slug-classes.json'), { dropped: dropped(slugRegex) });
   // A candidate lit by the resolver's answer, as the renderer's hook lights it.
   const lit = JSON.parse(fs.readFileSync(path.join(fixtures, 'smart-paths', 'lit-cases.json'), 'utf8'));

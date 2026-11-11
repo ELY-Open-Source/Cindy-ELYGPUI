@@ -125,6 +125,7 @@ fn render_items_match_cindys() {
             history_artifacts: opt("historyArtifacts")
                 .and_then(Js::arr)
                 .unwrap_or_default(),
+            image_targets: None,
         };
         match build(&rows(&args[0]), options) {
             Ok(items) => Js::Arr(items.iter().map(shown).collect()),

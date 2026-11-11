@@ -6,6 +6,7 @@ mod cjk_urls;
 mod flanks;
 pub mod hast;
 mod html_images;
+pub mod image_targets;
 mod local_images;
 mod path_links;
 mod raw_destinations;

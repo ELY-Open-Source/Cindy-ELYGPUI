@@ -11,6 +11,7 @@ use crate::{
     chat_store::Store,
     history_render::{self, Input, Projection},
     history_view::controller::{View, settled},
+    markdown::image_targets,
 };
 
 /// The view the content follows, with what it last rendered.
@@ -18,6 +19,8 @@ pub(super) struct Watch {
     view: View<Message>,
     stop: Option<Box<dyn FnOnce()>>,
     items: Option<Result<Rc<Projection>, String>>,
+    /// `markdownImageTargetCacheRef`.
+    image_targets: Rc<image_targets::Cache>,
 }
 
 impl Drop for Watch {
@@ -53,6 +56,7 @@ pub(super) fn watch(id: &str, cx: &mut App) -> Option<Watch> {
         view,
         stop: Some(Box::new(stop)),
         items: None,
+        image_targets: Rc::default(),
     })
 }
 
@@ -63,7 +67,8 @@ fn watched(cx: &mut App) -> Option<&mut Watch> {
 
 /// The projection again, from the view's snapshot and the task's working directory.
 pub(super) fn render(cx: &mut App) {
-    let Some(view) = watched(cx).map(|watch| watch.view.clone()) else {
+    let watch = watched(cx).map(|watch| (watch.view.clone(), watch.image_targets.clone()));
+    let Some((view, image_targets)) = watch else {
         return;
     };
     let snapshot = view.snapshot();
@@ -77,6 +82,7 @@ pub(super) fn render(cx: &mut App) {
         pending: &none,
         tail: &none,
         working_dir: working_dir.as_deref().unwrap_or_default(),
+        image_targets: Some(&image_targets),
     };
     let items = snapshot.ready.then(|| history_render::render(&input));
     match &items {
