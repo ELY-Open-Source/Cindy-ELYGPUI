@@ -237,12 +237,21 @@ fn broken(
     (atoms, rows)
 }
 
-/// The rows the plain text takes at `width`, as Cindy's hidden mirror measures them.
-pub fn count(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> usize {
+/// The plain text's rows at `width`: `pre-wrap` with no chip and no link.
+pub fn plain(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> Vec<String> {
     let text = body.replace('\r', "");
     let text = text.strip_suffix('\n').unwrap_or(&text);
-    let rows = |line| broken((line, &[]), &[], (style, width), window).1.len();
-    text.split('\n').map(rows).sum()
+    let rows = |line: &str| {
+        let rows = broken((line, &[]), &[], (style, width), window).1;
+        let words = rows.into_iter().map(|row| line[row].to_owned());
+        words.collect::<Vec<_>>()
+    };
+    text.split('\n').flat_map(rows).collect()
+}
+
+/// The rows the plain text takes at `width`, as Cindy's hidden mirror measures them.
+pub fn count(body: &str, style: &TextStyle, width: Pixels, window: &Window) -> usize {
+    plain(body, style, width, window).len()
 }
 
 /// Where a row's parts sit: a chip's middle lies half an x-height over the baseline.

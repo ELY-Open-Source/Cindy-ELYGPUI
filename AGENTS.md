@@ -280,9 +280,9 @@ defines scope and what 1:1 means.
   `column.rs` the view's section: a canvas measures the container and lays the section out in the same
   frame (`prepaint_as_root`), the message column at `messageWidth`, the dock (fade, `pb-5` zone, the
   composer's row at `inputWidth`) at `inputPad`. `stream.rs` is `MessageStream`'s list: the scroller,
-  the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only an ordinary
-  user message draws so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text
-  joined), `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is
+  the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only a user
+  message draws so far, less its hook form. `user_row.rs` is `UserMessage`'s bubble: the display text
+  (quote text joined), `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is
   `UserAttachmentChip`'s inert face in `fileAttachmentNodes`, over the bubble and for a message with no
   text: the chips wrap and stand right, each at most `min(280px, 100%)`, lit under the pointer, the
   native `title` as gpui's tooltip; `src/attachment_safety.rs` (`attachmentSafety.ts` with
@@ -308,7 +308,13 @@ defines scope and what 1:1 means.
   the title the task list holds (`sessions::held_title`, `getTitleById`). With no device list and no
   signed-in device before 13.0 every device label shows and opens My devices; a teammate's mark is
   `BotAvatar`'s tint and initial, its profile coming with the bots' chapter; remote tasks and the
-  embedded view come with theirs. `flow.rs` breaks a line into rows itself, since gpui's text holds no
+  embedded view come with theirs. `orca_card.rs` is the Orca form in place of the bubble: the labels
+  set left (`Align::Start`) over a card up to 560 wide, whose header (a Tab stop with the button role,
+  lit to `cmd-palette-item-hover`, its corners rounded since gpui clips to none) unfolds the message
+  with the bubble's own record; the body is the display text as `pre-wrap` rows (`draw::plain`) in the
+  code face at the code size less 2px, each line the code size and 4px. Blink lays out no CR and no FF
+  there (`logs/review/9.5q-r3-blink-controls.log`), so both are dropped first. Images, files and the
+  goal badge are the bubble's. `flow.rs` breaks a line into rows itself, since gpui's text holds no
   element: Blink's break opportunities (`breaks` is `NextBreakablePosition`: a break after a run of
   spaces, the pair table `resources/line-break-pairs.txt` for U+0021 to U+00FF, which
   `scripts/blink-line-breaks.js` reads off Cindy's Electron, ICU's UAX 14 for the rest and for a hyphen
@@ -399,6 +405,8 @@ defines scope and what 1:1 means.
   Omarchy's folder swap keeps the last good theme.
 - Fonts: `src/appearance_settings.rs` reads Cindy's shared `appearance-settings.json` (fonts only so
   far) and sets Ely's font scale (`uiSize / 14`) and families; gpui takes the first of the list.
+  `codeSize` (`clampAppearanceCodeSize`) is the `CodeSize` global, `--app-code-font-size`;
+  `code_size(delta, cx)` is its `calc()`.
 - Main window: `src/main_window.rs` opens it as Cindy's `createWindow` does (app id per region from
   `src/region.rs`, title, 800x600 minimum) and keeps `window-state.json` with `electron-window-state`'s
   rules (`src/window_state.rs`). `src/activation_click.rs` swallows the activating click per platform

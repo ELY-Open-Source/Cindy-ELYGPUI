@@ -6,6 +6,12 @@ use crate::theme_import::color::js_trim;
 const FILE: &str = "appearance-settings.json";
 const MAX_BYTES: u64 = 16 * 1024;
 pub const DEFAULT_UI_SIZE: f64 = 14.0;
+const DEFAULT_CODE_SIZE: f64 = 14.0;
+
+/// `--app-code-font-size` in CSS pixels, as `applyFontSettings` sets it.
+pub struct CodeSize(pub f32);
+
+impl gpui::Global for CodeSize {}
 
 /// The settings the window shell reads: fonts for `applyFontSettings`, and the window zoom.
 #[derive(Debug, PartialEq)]
@@ -13,6 +19,7 @@ pub struct Settings {
     pub ui_family: String,
     pub code_family: String,
     pub ui_size: f64,
+    pub code_size: f64,
     pub window_zoom: f64,
     pub app_icon: AppIcon,
     pub wallpaper: crate::wallpaper::Settings,
@@ -67,10 +74,16 @@ pub fn read(user_data: &Path) -> Settings {
         Some(size) if size.is_finite() => (size + 0.5).floor().clamp(12.0, 24.0),
         _ => DEFAULT_UI_SIZE,
     };
+    // `clampAppearanceCodeSize`.
+    let code_size = match number(fields.get("codeSize").map(AsRef::as_ref)) {
+        Some(size) if size.is_finite() => js_round(size).clamp(10.0, 24.0),
+        _ => DEFAULT_CODE_SIZE,
+    };
     let settings = Settings {
         ui_family: family(&fields, "uiFamily"),
         code_family: family(&fields, "codeFamily"),
         ui_size,
+        code_size,
         window_zoom: window_zoom(number(fields.get("windowZoom").map(AsRef::as_ref))),
         app_icon: AppIcon::parse(string(fields.get("appIcon").map(AsRef::as_ref)).as_deref()),
         wallpaper: crate::wallpaper::read(&fields, user_data),
@@ -83,6 +96,11 @@ pub fn read(user_data: &Path) -> Settings {
 pub fn text_size(size: f32, cx: &gpui::App) -> f32 {
     use ely_gpui_component::theme::ActiveTheme as _;
     js_round(f64::from(size * cx.theme().font_scale)) as f32
+}
+
+/// `calc(var(--app-code-font-size) + N px)` in CSS pixels.
+pub fn code_size(delta: f32, cx: &gpui::App) -> f32 {
+    cx.global::<CodeSize>().0 + delta
 }
 
 /// The first family of a CSS font list; gpui takes one family.
@@ -104,6 +122,7 @@ mod tests {
             ui_family: String::new(),
             code_family: String::new(),
             ui_size: 14.0,
+            code_size: 14.0,
             window_zoom: 1.0,
             app_icon: AppIcon::Default,
             wallpaper: crate::wallpaper::read(&Default::default(), dir.path()),
@@ -137,6 +156,18 @@ mod tests {
             Some("IBM Plex Sans")
         );
         assert_eq!(first_family("  "), None);
+        // `clampAppearanceCodeSize`: a number, rounded, 10 to 24.
+        for (stored, size) in [
+            ("12.5", 13.0),
+            ("12.4", 12.0),
+            ("3", 10.0),
+            ("99", 24.0),
+            ("1e400", 14.0),
+            ("\"18\"", 14.0),
+        ] {
+            std::fs::write(&file, format!(r#"{{"codeSize": {stored}}}"#)).unwrap();
+            assert_eq!(read(dir.path()).code_size, size, "{stored}");
+        }
         std::fs::write(&file, r#"{"windowZoom": 1.25}"#).unwrap();
         assert_eq!(read(dir.path()).window_zoom, 1.3);
         std::fs::write(&file, r#"{"appIcon": "mark"}"#).unwrap();

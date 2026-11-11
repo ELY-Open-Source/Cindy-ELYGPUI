@@ -118,8 +118,15 @@ impl RenderOnce for Shell {
     }
 }
 
-/// `MessageSourceLabels`, set right over an ordinary message.
-pub(super) fn row(key: &str, message: &Fields, cx: &App) -> Option<AnyElement> {
+/// `MessageSourceLabels`' `align`.
+#[derive(Clone, Copy, PartialEq)]
+pub(super) enum Align {
+    Start,
+    End,
+}
+
+/// `MessageSourceLabels` over a message.
+pub(super) fn row(key: &str, message: &Fields, align: Align, cx: &App) -> Option<AnyElement> {
     let live = |id: &str| sessions::held_title(id, cx);
     let labels = source_label::labels(message, live, cx.global::<Translator>());
     if labels.is_empty() {
@@ -135,7 +142,10 @@ pub(super) fn row(key: &str, message: &Fields, cx: &App) -> Option<AnyElement> {
         .flex()
         .flex_wrap()
         .items_center()
-        .justify_end()
+        .map(|el| match align {
+            Align::Start => el.justify_start(),
+            Align::End => el.justify_end(),
+        })
         .max_w_full()
         .gap_x(css(12.0))
         .gap_y(css(2.0))

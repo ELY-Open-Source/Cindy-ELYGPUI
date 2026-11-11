@@ -101,7 +101,8 @@ struct Startup {
 fn apply_fonts(fonts: &appearance_settings::Settings, cx: &mut App) {
     let ui = appearance_settings::first_family(&fonts.ui_family);
     let code = appearance_settings::first_family(&fonts.code_family);
-    log::info!(target: "appearance-settings-store", "fonts: ui {ui:?} code {code:?} size {}", fonts.ui_size);
+    log::info!(target: "appearance-settings-store", "fonts: ui {ui:?} code {code:?} size {} code size {}", fonts.ui_size, fonts.code_size);
+    cx.set_global(appearance_settings::CodeSize(fonts.code_size as f32));
     Theme::update(cx, |theme| {
         theme.font_scale = (fonts.ui_size / appearance_settings::DEFAULT_UI_SIZE) as f32;
         if let Some(family) = ui {

@@ -268,17 +268,16 @@ fn a_narrow_column_bounds_the_bubble(cx: &mut TestAppContext) {
 fn other_forms_and_empty_text_draw_no_bubble(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();
     let rows = [
-        (r#"{"orcaSource":"lead","content":"do it"}"#, None),
         ("from a channel", Some(r#"{"hookSource":{"im":"feishu"}}"#)),
         (" \n ", None),
         ("shown", None),
     ];
     let cx = open(cx, dir.path(), 2400.0, &rows);
-    for n in 0..3 {
+    for n in 0..2 {
         assert!(at(cx, &format!("item-msg-c{n}")).is_none(), "c{n}");
     }
     let column = at(cx, "session-messages").unwrap();
-    let row = at(cx, "item-msg-c3").unwrap();
+    let row = at(cx, "item-msg-c2").unwrap();
     assert_eq!(
         row.top(),
         column.top() + px(28.0),

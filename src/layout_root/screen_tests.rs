@@ -75,6 +75,7 @@ pub(super) fn open_beside<'a>(
         ely_gpui_component::init_for_tests(cx);
         cx.set_global(crate::motion::ReducedMotion::default());
         cx.set_global(crate::units::Zoom(1.0));
+        cx.set_global(crate::appearance_settings::CodeSize(14.0));
         cx.set_global(crate::window_material::Material::load());
         crate::wallpaper::none_for_tests(cx);
         cx.set_global(crate::preferences::Preferences::load(dir).unwrap());

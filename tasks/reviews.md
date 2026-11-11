@@ -242,3 +242,14 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   `matched` on the pathname as it stands. Router tests hold the values Cindy's own code gave
   (`logs/review/9.5p-r2-route-repro.log`).
 - Round 3: PASS.
+
+## 9.5q The Orca form: the Lead and Worker card
+- Round 1: FAIL. P3: a message of carriage returns alone drew one line of the code face, where
+  Blink's `pre` holds no line box (`logs/review/9.5q-r1-pre-hidden.log`).
+- Fixed: the body draws no row for a text of nothing but CR and FF, both 0 high in that probe.
+  Test `a_pre_of_ignored_characters_holds_no_line`.
+- Round 2: FAIL. P3: a form feed alone on the last line drew a line (`a\n\f` took two), where
+  Blink lays out no FF (`logs/review/9.5q-r2-pre.log`).
+- Fixed: the body drops CR and FF before it reads its rows; a probe of every C0 control in Cindy's
+  Electron shows no other is dropped (`logs/review/9.5q-r3-blink-controls.log`).
+- Round 3: PASS.

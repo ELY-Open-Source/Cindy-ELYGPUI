@@ -10,7 +10,8 @@ use gpui::{
 use super::{
     SessionView, attachments,
     flow::draw::{self, Island, Look, Ranges},
-    images, source_labels,
+    images, orca_card,
+    source_labels::{self, Align},
     width::Widths,
 };
 use crate::{
@@ -60,7 +61,7 @@ fn fold(origin: Option<&Js>) -> Fold {
     }
 }
 
-fn unfolded(key: &str, cx: &App) -> bool {
+pub(super) fn unfolded(key: &str, cx: &App) -> bool {
     let content = cx
         .global::<SessionView>()
         .shown
@@ -187,7 +188,7 @@ fn ranges(message: &Fields, start: Option<usize>, length: usize) -> Ranges {
     }
 }
 
-/// The row of an ordinary message; the Orca and hook forms come with 9.5q and 9.5r.
+/// The row of an ordinary message or of an Orca one; the hook form comes with 9.5r.
 pub fn element(
     key: &str,
     message: &Fields,
@@ -198,7 +199,17 @@ pub fn element(
     let content = get(message, "content")
         .and_then(Js::str)
         .unwrap_or_default();
-    if truthy(get(message, "hookSource")) || user_message::orca(content).is_some() {
+    if let Some(orca) = user_message::orca(content) {
+        return Some(orca_card::element(
+            key,
+            (message, content),
+            &orca,
+            widths,
+            window,
+            cx,
+        ));
+    }
+    if truthy(get(message, "hookSource")) {
         return None;
     }
     let origin = get(message, "automationOrigin");
@@ -218,7 +229,7 @@ pub fn element(
     let files = attachments::files(message);
     let files = (!files.is_empty()).then(|| attachments::row(key, &files, room, window, cx));
     let images = images::elements(key, &images::images(message), window, cx);
-    let labels = source_labels::row(key, message, cx);
+    let labels = source_labels::row(key, message, Align::End, cx);
     let goal = source_labels::goal(key, message, cx);
     let badges = labels.into_iter().chain(goal);
     let mut over: Vec<AnyElement> = badges.chain(images).chain(files).collect();

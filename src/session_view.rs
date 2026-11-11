@@ -19,6 +19,7 @@ mod images;
 mod items;
 mod link_chip;
 mod links;
+mod orca_card;
 mod source_labels;
 mod stream;
 mod user_row;
