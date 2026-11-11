@@ -5,10 +5,13 @@ use std::path::Path;
 use gpui::{Bounds, Modifiers, Pixels, TestAppContext, VisualTestContext, px, size};
 
 use super::fit;
-use crate::session_view::{
-    images::{self, tests::put},
-    links::tests::click,
-    user_row::tests::{at, open_roles, settle},
+use crate::{
+    session_view::{
+        images::{self, tests::put},
+        links::tests::click,
+        user_row::tests::{at, open_in, open_roles, settle},
+    },
+    workspace_media,
 };
 
 fn draw<'a>(cx: &'a mut TestAppContext, dir: &Path, text: &str) -> &'a mut VisualTestContext {
@@ -288,4 +291,67 @@ fn four_cards_with_retry_keep_their_padding(cx: &mut TestAppContext) {
             "{card:?} {retry:?}"
         );
     }
+}
+
+/// A WebP of this size at `to`, in the task's folder.
+fn file(dir: &Path, to: &Path, size: (u32, u32)) {
+    put(dir, "made.webp", size);
+    std::fs::copy(dir.join("cc-agent/images/s1/made.webp"), to).unwrap();
+}
+
+/// `s1` in the folder `work` under `dir`, open on an answer.
+fn local<'a>(cx: &'a mut TestAppContext, dir: &Path, text: &str) -> &'a mut VisualTestContext {
+    let work = dir.join("work");
+    let rows = [("user", "hi"), ("assistant", text)];
+    let cx = open_in(cx, dir, work.to_str().unwrap(), &rows);
+    for _ in 0..4 {
+        settle(cx);
+    }
+    cx
+}
+
+#[gpui::test]
+fn a_local_file_draws_by_its_path_in_the_task_s_folder(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let dir = dir.path().canonicalize().unwrap();
+    let work = dir.join("work");
+    std::fs::create_dir_all(work.join("deep/renders")).unwrap();
+    file(&dir, &work.join("near.webp"), (100, 50));
+    file(&dir, &work.join("deep/renders/far.webp"), (60, 30));
+    let vector = r#"<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20"/>"#;
+    std::fs::write(work.join("draw.svg"), vector).unwrap();
+    std::fs::write(work.join("notes.txt"), "words").unwrap();
+    let whole = work.join("near.webp");
+    let text = format!(
+        "![](near.webp)\n\n![](renders/far.webp)\n\n![]({})\n\n![](draw.svg)\n\n![](notes.txt)",
+        whole.display()
+    );
+    let cx = local(cx, &dir, &text);
+    assert_eq!(bounds(cx, "msg-c1-g0").size, size(px(100.0), px(50.0)));
+    // A path that is not at the join is the one file of the folder that ends with it.
+    assert_eq!(bounds(cx, "msg-c1-g1").size, size(px(60.0), px(30.0)));
+    assert_eq!(bounds(cx, "msg-c1-g2").size, size(px(100.0), px(50.0)));
+    assert_eq!(bounds(cx, "msg-c1-g3").size, size(px(40.0), px(20.0)));
+    // The handler serves no text file: the card stands, with no Retry.
+    assert!(at(cx, "msg-c1-g4-failed").is_some());
+    assert!(at(cx, "msg-c1-g4-retry").is_none());
+}
+
+#[gpui::test]
+fn a_file_found_after_its_image_failed_mounts_the_image_anew(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let dir = dir.path().canonicalize().unwrap();
+    let work = dir.join("work");
+    std::fs::create_dir_all(&work).unwrap();
+    let cx = local(cx, &dir, "![](late.webp)");
+    assert!(at(cx, "msg-c1-g0-failed").is_some());
+    assert!(at(cx, "msg-c1-g0-retry").is_none());
+    // The file lands at the join, so the address stays; the hook's revision alone remounts it.
+    file(&dir, &work.join("late.webp"), (100, 50));
+    cx.update(|_, cx| workspace_media::focused(cx));
+    for _ in 0..4 {
+        settle(cx);
+    }
+    assert!(at(cx, "msg-c1-g0-failed").is_none());
+    assert_eq!(bounds(cx, "msg-c1-g0").size, size(px(100.0), px(50.0)));
 }

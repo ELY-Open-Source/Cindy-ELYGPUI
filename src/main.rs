@@ -39,6 +39,7 @@ mod layout_root;
 mod layout_tree;
 mod link_open;
 mod linkify;
+mod local_file;
 mod local_path;
 mod localdb;
 mod locale;

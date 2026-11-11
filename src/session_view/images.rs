@@ -11,8 +11,9 @@ use ely_gpui_component::{
 };
 use gpui::{
     AnyElement, App, AppContext as _, ElementId, FontWeight, InteractiveElement as _,
-    IntoElement as _, ParentElement as _, RenderImage, StatefulInteractiveElement as _,
-    Styled as _, SvgRenderer, Window, div, img, prelude::FluentBuilder as _,
+    IntoElement as _, ParentElement as _, RenderImage, SMOOTH_SVG_SCALE_FACTOR,
+    StatefulInteractiveElement as _, Styled as _, SvgRenderer, Window, div, img,
+    prelude::FluentBuilder as _,
 };
 use image::{Frame, ImageFormat, RgbaImage, imageops};
 
@@ -21,7 +22,7 @@ use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
     i18n::Translator,
-    lucide,
+    local_file, lucide,
     media_store::{self, Failure},
     motion,
     rich_answer::js::Js,
@@ -52,9 +53,13 @@ pub enum Load {
     Undecoded,
 }
 
-/// The mounted content's loads by address, then those a Retry started: its image, its address.
+/// The mounted content's loads: by address, an image's own, and each image's hook revision.
 #[derive(Default)]
-pub struct Held(HashMap<String, Load>, HashMap<String, (String, Load)>);
+pub struct Held(
+    HashMap<String, Load>,
+    HashMap<String, (String, Load)>,
+    HashMap<String, u64>,
+);
 
 fn held_mut(cx: &mut App) -> Option<&mut Held> {
     let shown = cx.global_mut::<SessionView>().shown.as_mut();
@@ -86,22 +91,27 @@ fn top(image: &RenderImage, width: u32) -> Result<RenderImage> {
     Ok(RenderImage::new(frames?))
 }
 
-/// The bytes decoded by what they are, as Chromium sniffs an image.
-fn decode(bytes: Vec<u8>, svg: SvgRenderer) -> Result<Shown> {
-    let format = match image::guess_format(&bytes)? {
-        ImageFormat::Png => gpui::ImageFormat::Png,
-        ImageFormat::Jpeg => gpui::ImageFormat::Jpeg,
-        ImageFormat::Gif => gpui::ImageFormat::Gif,
-        ImageFormat::WebP => gpui::ImageFormat::Webp,
-        ImageFormat::Bmp => gpui::ImageFormat::Bmp,
-        ImageFormat::Ico => gpui::ImageFormat::Ico,
-        other => bail!("no decoder for {other:?}"),
+/// The bytes decoded by what they are, as Chromium sniffs an image; `vector` is an SVG's type.
+fn decode(bytes: Vec<u8>, vector: bool, svg: SvgRenderer) -> Result<Shown> {
+    let format = match image::guess_format(&bytes) {
+        _ if vector => gpui::ImageFormat::Svg,
+        Ok(ImageFormat::Png) => gpui::ImageFormat::Png,
+        Ok(ImageFormat::Jpeg) => gpui::ImageFormat::Jpeg,
+        Ok(ImageFormat::Gif) => gpui::ImageFormat::Gif,
+        Ok(ImageFormat::WebP) => gpui::ImageFormat::Webp,
+        Ok(ImageFormat::Bmp) => gpui::ImageFormat::Bmp,
+        Ok(ImageFormat::Ico) => gpui::ImageFormat::Ico,
+        Ok(other) => bail!("no decoder for {other:?}"),
+        Err(error) => bail!(error),
     };
     let image = gpui::Image::from_bytes(format, bytes).to_image_data(svg)?;
     let size = image.size(0);
-    let natural = (size.width.0 as u32, size.height.0 as u32);
+    // gpui draws an SVG at twice its size.
+    let scale = if vector { SMOOTH_SVG_SCALE_FACTOR } else { 1.0 };
+    let natural = |pixels: i32| (pixels as f32 / scale).round() as u32;
+    let natural = (natural(size.width.0), natural(size.height.0));
     let top = match long(natural) {
-        true => Some(Arc::new(top(&image, natural.0)?)),
+        true => Some(Arc::new(top(&image, size.width.0 as u32)?)),
         false => None,
     };
     Ok(Shown {
@@ -111,8 +121,33 @@ fn decode(bytes: Vec<u8>, svg: SvgRenderer) -> Result<Shown> {
     })
 }
 
+/// A local file's read and decode. Cindy probes the stores alone, so each failure is unavailable.
+fn local(url: &str, svg: SvgRenderer) -> Load {
+    let served = match local_file::read(url) {
+        Ok(served) => served,
+        Err(status) => {
+            log::warn!(target: "sessionView", "image {url} answered {status}");
+            return Load::Unavailable;
+        }
+    };
+    match decode(served.bytes, served.mime == "image/svg+xml", svg) {
+        Ok(shown) => {
+            let (width, height) = shown.natural;
+            log::info!(target: "sessionView", "image {url} loaded: {width}x{height}");
+            Load::Ready(shown)
+        }
+        Err(error) => {
+            log::error!(target: "sessionView", "image {url} not decoded: {error:#}");
+            Load::Unavailable
+        }
+    }
+}
+
 /// The read and the decode, off the main thread.
 fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
+    if url.starts_with("xdt-file://") {
+        return local(url, svg);
+    }
     let bytes = match media_store::read(user_data, url) {
         Ok(bytes) => bytes,
         Err(Failure::Missing) => {
@@ -124,7 +159,7 @@ fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
             return Load::Unavailable;
         }
     };
-    match decode(bytes, svg) {
+    match decode(bytes, false, svg) {
         Ok(shown) => {
             let (width, height) = shown.natural;
             log::info!(target: "sessionView", "image {url} loaded: {width}x{height}");
@@ -188,18 +223,23 @@ pub fn mounted(key: &str, drawn: &HashMap<String, Option<String>>, cx: &mut App)
                 .get(id)
                 .is_some_and(|shown| shown.as_ref() == Some(url))
     });
+    held.2
+        .retain(|id, _| !id.starts_with(&prefix) || drawn.contains_key(id));
 }
 
-/// `retry`: the image mounted as `id` alone mounts anew, so its load starts over.
-pub fn retry(id: &str, url: &str, cx: &mut App) {
-    let Some(held) = held_mut(cx) else {
-        return;
-    };
-    log::info!(target: "sessionView", "image {url} is tried again for {id}");
-    held.1
-        .insert(id.to_owned(), (url.to_owned(), Load::Loading));
+/// The image mounted as `id` mounts anew: its own load of `url` stands, loading.
+fn remount(id: &str, url: &str, cx: &mut App) -> bool {
+    let held = held_mut(cx);
+    held.is_some_and(|held| {
+        let own = (url.to_owned(), Load::Loading);
+        held.1.insert(id.to_owned(), own);
+        true
+    })
+}
+
+/// Starts the load a remount set; it lands only while this image still shows this address.
+pub fn reload(id: &str, url: &str, cx: &mut App) {
     let (key, address) = (id.to_owned(), url.to_owned());
-    // The answer lands only while this image still shows this address.
     start(
         url.to_owned(),
         move |held| {
@@ -208,6 +248,28 @@ pub fn retry(id: &str, url: &str, cx: &mut App) {
         },
         cx,
     );
+}
+
+/// `WorkspaceMediaSrc`'s `key={revision}`: an image whose revision grew mounts anew.
+pub fn revised(id: &str, url: &str, revision: u64, cx: &mut App) -> bool {
+    let Some(held) = held_mut(cx) else {
+        return false;
+    };
+    let before = held.2.insert(id.to_owned(), revision);
+    if before.is_none_or(|before| before == revision) {
+        return false;
+    }
+    log::info!(target: "sessionView", "image {url} was found for {id}: it loads anew");
+    remount(id, url, cx)
+}
+
+/// `retry`: the image mounted as `id` alone mounts anew, so its load starts over.
+pub fn retry(id: &str, url: &str, cx: &mut App) {
+    if !remount(id, url, cx) {
+        return;
+    }
+    log::info!(target: "sessionView", "image {url} is tried again for {id}");
+    reload(id, url, cx);
     cx.refresh_windows();
 }
 

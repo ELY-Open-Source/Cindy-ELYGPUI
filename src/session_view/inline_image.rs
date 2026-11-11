@@ -175,7 +175,7 @@ pub fn read(
         units::to_css(view.height, cx),
     );
     let (mut out, mut wants) = (HashMap::new(), Vec::new());
-    let mut drawn = HashMap::new();
+    let (mut drawn, mut again) = (HashMap::new(), Vec::new());
     for (n, node) in found.into_iter().enumerate() {
         let id = format!("{key}-g{n}");
         let raw = text(node, "data-cindy-raw-local-image-src").or_else(|| text(node, "src"));
@@ -191,12 +191,18 @@ pub fn read(
         if src.as_deref().is_some_and(markdown_media::is_managed_video) {
             continue;
         }
-        let stored =
-            |src: &&String| src.starts_with("xdt-image://") || src.starts_with("cindy-media://");
+        let read = |src: &&String| {
+            ["xdt-image://", "cindy-media://", "xdt-file://"]
+                .iter()
+                .any(|scheme| src.starts_with(scheme))
+        };
         let load = match &src {
             // No address: the frame stays.
             None => Load::Loading,
-            Some(url) if stored(&url) => {
+            Some(url) if read(&url) => {
+                if images::revised(&id, url, media.revision, cx) {
+                    again.push((id.clone(), url.clone()));
+                }
                 // A load this image's own Retry started stands before the shared one.
                 let held = images::own(&id, url, cx).or_else(|| images::held(url, cx));
                 held.unwrap_or_else(|| {
@@ -204,7 +210,7 @@ pub fn read(
                     Load::Loading
                 })
             }
-            // A local file's bytes come with 9.6i3b, a web address's with 9.6i3c.
+            // A web address's bytes come with 9.6i3c.
             Some(_) => Load::Unavailable,
         };
         let element = ElementId::Name(id.clone().into());
@@ -260,8 +266,13 @@ pub fn read(
         out.insert(node as *const Element, picture);
     }
     images::mounted(key, &drawn, cx);
-    if !wants.is_empty() {
-        cx.defer(move |cx| images::fetch(wants, cx));
+    if !wants.is_empty() || !again.is_empty() {
+        cx.defer(move |cx| {
+            images::fetch(wants, cx);
+            for (id, url) in again {
+                images::reload(&id, &url, cx);
+            }
+        });
     }
     out
 }

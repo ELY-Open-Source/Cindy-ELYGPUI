@@ -312,7 +312,7 @@ listed in `tasks/done.md`.
             a slot that shows `b` and then `a` again draws the old failure's card, where Cindy
             mounts a new `ImageLoad` and loads `a` anew. A new mount needs a load of its own,
             while another mounted image of that address keeps its failure.
-      - [ ] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
+      - [x] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
           whitelist and the sensitive-media list), so a workspace image draws
       - [ ] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the

@@ -70,3 +70,63 @@ fn a_share_root_matches_without_its_trailing_separator() {
     assert!(!allowed_against("\\\\?\\c:\\windows\\system32", &list));
     assert!(allowed_against("C:\\Windows123", &list));
 }
+
+#[test]
+fn the_sensitive_list_is_cindys_on_every_platform() {
+    use super::sensitive::{Host, Platform, blocklist};
+    use serde_json::Value;
+
+    let cases = include_str!("../../tests/fixtures/file-policy/expected.json");
+    let cases: Vec<(Value, Vec<String>)> = serde_json::from_str(cases).unwrap();
+    assert!(cases.len() > 700);
+    for (host, expected) in cases {
+        let text = |key: &str| host[key].as_str().unwrap().to_owned();
+        let platform = match text("platform").as_str() {
+            "win32" => Platform::Win32,
+            "darwin" => Platform::Darwin,
+            _ => Platform::Other,
+        };
+        let sep = if platform == Platform::Win32 {
+            "\\"
+        } else {
+            "/"
+        };
+        let under = |root: &str, at: &str| {
+            let inside = match root.ends_with(sep) {
+                true => root.to_owned(),
+                false => format!("{root}{sep}"),
+            };
+            at == root || at.starts_with(&inside)
+        };
+        // The recorder's file system of words.
+        let real = |value: &str| {
+            let links = host["links"].as_array().unwrap();
+            let pair = |link: &Value| {
+                (
+                    link[0].as_str().unwrap().to_owned(),
+                    link[1].as_str().unwrap().to_owned(),
+                )
+            };
+            let link = links.iter().map(pair).find(|(from, _)| under(from, value));
+            let at = match link {
+                Some((from, to)) => format!("{to}{}", &value[from.len()..]),
+                None => value.to_owned(),
+            };
+            let exists = host["exists"].as_array().unwrap();
+            exists
+                .iter()
+                .any(|root| under(root.as_str().unwrap(), &at))
+                .then_some(at)
+        };
+        let env = |key: &str| host["env"][key].as_str().map(str::to_owned);
+        let (home, cwd) = (text("home"), text("cwd"));
+        let list = blocklist(&Host {
+            platform,
+            home: &home,
+            cwd: &cwd,
+            env: &env,
+            real: &real,
+        });
+        assert_eq!(list, expected, "{host}");
+    }
+}

@@ -452,8 +452,9 @@ defines scope and what 1:1 means.
   Cindy's functions on it; the test builds the same tree. A folder's entries come in byte order on
   POSIX, as libuv's `scandir` sorts them (`logs/review/9.6h1-r1-electron-order.log`, Cindy's
   Electron main on Linux; not measured on macOS), and in the system's order on Windows.
-  `src/node_path.rs` is Node 24's `path` (`join`, `normalize`, `basename`, `isAbsolute`) for POSIX
-  and Windows, with `isWindowsReservedName`'s `slice(0, -1)`; golden `node-path` runs both halves in
+  `src/node_path.rs` is Node 24's `path` (`join`, `normalize`, `resolve` from a given current
+  folder, `basename`, `dirname`, `extname`, `isAbsolute`) for POSIX and Windows, with
+  `isWindowsReservedName`'s `slice(0, -1)` and a Windows drive's own folder (`=C:`); golden `node-path` runs both halves in
   Cindy's Electron as Node, so Linux checks the Windows half's strings. No Windows folder is walked
   in a test.
 - Smart paths: `src/local_path/smart.rs` is `localPathResolver.ts`'s lookups over the path resolver,
@@ -492,9 +493,8 @@ defines scope and what 1:1 means.
   recheck and the port's waiter at the first, which shows only when the cache dropped the answer
   between them. Nothing draws with it before 9.6i3.
 - Inline images: `session_view/inline_image.rs` is `LightboxImage` in a line, for the addresses
-  the media stores read (`xdt-image://`, `cindy-media://`; a local file's bytes come with 9.6i3b
-  and with them the hook's `revision`, a web address's with 9.6i3c, and until then both draw the
-  unavailable card). `read` takes the tree's `img` nodes in document order (`Anchors.images`,
+  the media stores read (`xdt-image://`, `cindy-media://`) and for a local file's (`xdt-file://`,
+  below; a web address's bytes come with 9.6i3c, and until then it draws the unavailable card). `read` takes the tree's `img` nodes in document order (`Anchors.images`,
   mounted as `<key>-g<n>`): the raw local source or `src` through `workspace_media::path` (nothing
   while pending) and `image_src`; a managed video draws nothing before `ChatVideoView`'s chapter.
   The load is `images.rs`'s (`held`, `fetch`). Blink's boxes are in `logs/review/9.6i3a-blink-
@@ -516,6 +516,23 @@ defines scope and what 1:1 means.
   `images::focused`, from the window's activation, drops every failed load, for the user's images
   too. No `online` event reaches the port. The click, the Tab stop, the menu and the lightbox come
   with 9.13; `status: 'loading'` with the streamed rows of 9.6j.
+- Local files: `src/local_file.rs` is `localFileProtocol.ts`'s handler for a `GET` with no `Range`
+  (`read`: the file's bytes and its `Content-Type`, else the refusal's status): the `path` of the
+  query as `URLSearchParams` decodes it, absolute, `path.resolve` equal to `path.normalize`, the
+  extension whitelist, the sensitive-media list on the path and again on its real path, a regular
+  file. `new URL` is the `url` crate, to which the scheme is not standard: Chromium refuses hosts
+  it takes. A lost current folder refuses every path, where Node asks for it only when a path
+  needs it. `file_path_policy/sensitive.rs` is `buildSensitiveMediaBlocklist` over a `Host`
+  (platform, home, current folder, environment, `realpathSync`), golden `file-policy`:
+  `scripts/golden/filePolicy.mjs` runs Cindy's function in Cindy's Electron as Node on crafted and
+  seeded hosts of all three platforms, each with a file system of words the test builds again.
+  `media_allowed` checks against the list built once from this host (`dirs::home_dir` for
+  `os.homedir`, `canonicalize` without Windows' namespace for `realpathSync.native`). An inline
+  image loads it through `images.rs`'s `local`: every failure is unavailable with no Retry, since
+  `useImageLoadFailure` probes the stores alone; an `image/svg+xml` file is drawn by gpui's SVG
+  renderer (usvg's size rules, not Blink's), any other by its bytes. `images::revised` is
+  `WorkspaceMediaSrc`'s `key={revision}`: an image whose hook revision grew mounts anew, with a
+  load of its own (`remount`, `reload`).
 - Markdown links: `session_view/target_link.rs` is the `a` renderer with `MarkdownTargetLink` for a
   privileged message of a local task. Before the blocks are laid out `read` takes the tree's `a`
   nodes in document order (`Anchors`, each by its node's address): the raw local destination when
@@ -806,7 +823,7 @@ defines scope and what 1:1 means.
   wake gpui from outside, so tests drive the real decoder only outside the gpui test scheduler.
 - Open path: `src/file_path_policy.rs` is `filePathPolicy.ts`'s system blocklist and
   `isPathAllowedAgainst` on this host's paths (`canonical::resolve` stands for `path.resolve`);
-  the sensitive-media list comes with `xdt-file://`. `src/open_path.rs` is the `shell:open-path`
+  the sensitive-media list is under Local files. `src/open_path.rs` is the `shell:open-path`
   handler: `resolveShellOpenPathTarget` for paths (`cindy-media://` comes with its store), the
   blocklist, then Electron's `shell.openPath`. Linux starts `xdg-open` and reaps it unwaited, as
   Electron's Linux open never settles, so no error reaches a toast; Electron's XDG activation
@@ -836,8 +853,8 @@ defines scope and what 1:1 means.
   (`logs/review/9.6h4b-r1-native-*.log`).
 - Open in browser: `src/browser_file.rs` is `openFileInBrowser.ts`, the
   `shell:open-file-in-browser` handler, for an absolute path: `resolveBrowserFileTarget`
-  (`convert.rs` is Node 24's `pathToFileURL` for POSIX and Windows: `path.win32.resolve`'s root
-  parse, where a rooted path with no device takes the current folder's drive, share or `\\?`,
+  (`convert.rs` is Node 24's `pathToFileURL` for POSIX and Windows: `node_path`'s `resolve`,
+  where a rooted Windows path with no device takes the current folder's drive, share or `\\?`,
   `EncodePathChars`, the kept last separator, then ada's part by hand, since the `url` crate
   drops a `file:` path's empty segments and guards a drive letter otherwise: the controls at the
   end cut, the path set escaped, dot segments folded (`segments`), and a UNC path's host as

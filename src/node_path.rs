@@ -1,4 +1,4 @@
-//! Node 24's `path`: `join`, `normalize`, `basename` and `isAbsolute`, for either platform.
+//! Node 24's `path` for either platform: the calls Cindy's main process makes.
 
 #[cfg(test)]
 mod tests;
@@ -48,7 +48,108 @@ pub fn basename(path: &str) -> &str {
     }
 }
 
+/// `path.resolve` on this host, from the folder `cwd`.
+pub fn resolve(path: &str, cwd: &str) -> String {
+    match cfg!(windows) {
+        true => win32::resolve(path, cwd, |key| std::env::var(key).ok()),
+        false => posix::resolve(path, cwd),
+    }
+}
+
+/// `path.extname` on this host.
+pub fn extname(path: &str) -> &str {
+    match cfg!(windows) {
+        true => win32::extname(path),
+        false => posix::extname(path),
+    }
+}
+
+/// `extname`'s scan from `start`: the last name's last dot, unless the name starts there.
+fn ext(path: &str, start: usize, sep: fn(u8) -> bool) -> &str {
+    let b = path.as_bytes();
+    let (mut dot, mut end, mut part) = (None, None, start);
+    let (mut trailing, mut state) = (true, 0);
+    for i in (start..b.len()).rev() {
+        if sep(b[i]) {
+            if !trailing {
+                part = i + 1;
+                break;
+            }
+            continue;
+        }
+        if end.is_none() {
+            trailing = false;
+            end = Some(i + 1);
+        }
+        if b[i] != b'.' {
+            if dot.is_some() {
+                state = -1;
+            }
+        } else if dot.is_none() {
+            dot = Some(i);
+        } else if state != 1 {
+            state = 1;
+        }
+    }
+    let (Some(dot), Some(end)) = (dot, end) else {
+        return "";
+    };
+    match state == 0 || (state == 1 && dot == end - 1 && dot == part + 1) {
+        true => "",
+        false => &path[dot..end],
+    }
+}
+
+/// Where the name after the last separator run ends its folder, from `offset`.
+fn folder_end(b: &[u8], offset: usize, sep: fn(u8) -> bool) -> Option<usize> {
+    let mut trailing = true;
+    for i in (offset..b.len()).rev() {
+        match (sep(b[i]), trailing) {
+            (true, false) => return Some(i),
+            (true, true) => {}
+            (false, _) => trailing = false,
+        }
+    }
+    None
+}
+
 pub mod posix {
+    /// `path.posix.resolve` of one path, from the folder `cwd`.
+    pub fn resolve(path: &str, cwd: &str) -> String {
+        let rooted = |path: &str| path.starts_with('/');
+        if matches!(path, "" | ".") && rooted(cwd) {
+            return cwd.to_owned();
+        }
+        let (full, absolute) = match (path.is_empty(), rooted(path)) {
+            (true, _) => (format!("{cwd}/"), rooted(cwd)),
+            (false, true) => (format!("{path}/"), true),
+            (false, false) => (format!("{cwd}/{path}/"), rooted(cwd)),
+        };
+        let folded = super::fold(&full, !absolute, "/", |c| c == '/');
+        match (absolute, folded.is_empty()) {
+            (true, _) => format!("/{folded}"),
+            (false, true) => ".".into(),
+            (false, false) => folded,
+        }
+    }
+
+    pub fn dirname(path: &str) -> &str {
+        if path.is_empty() {
+            return ".";
+        }
+        let rooted = path.starts_with('/');
+        match super::folder_end(path.as_bytes(), 1, |b| b == b'/') {
+            None if rooted => "/",
+            None => ".",
+            Some(1) if rooted => "//",
+            Some(end) => &path[..end],
+        }
+    }
+
+    pub fn extname(path: &str) -> &str {
+        super::ext(path, 0, |b| b == b'/')
+    }
+
     pub fn normalize(path: &str) -> String {
         if path.is_empty() {
             return ".".into();
@@ -119,6 +220,120 @@ pub mod win32 {
 
     fn sep(b: u8) -> bool {
         b == b'/' || b == b'\\'
+    }
+
+    /// Where the run of separators, or of other bytes, that starts at `from` ends.
+    fn run(b: &[u8], from: usize, want: bool) -> usize {
+        from + b[from..].iter().take_while(|c| sep(**c) == want).count()
+    }
+
+    /// The root `resolve` matches: the device, where the tail starts and whether it is absolute.
+    fn root(path: &str) -> (String, usize, bool) {
+        let (b, len) = (path.as_bytes(), path.len());
+        if len >= 2 && b[0].is_ascii_alphabetic() && b[1] == b':' {
+            let rooted = len > 2 && sep(b[2]);
+            return (path[..2].to_owned(), if rooted { 3 } else { 2 }, rooted);
+        }
+        if !b.first().is_some_and(|c| sep(*c)) {
+            return (String::new(), 0, false);
+        }
+        if len == 1 || !sep(b[1]) {
+            return (String::new(), 1, true);
+        }
+        let host = run(b, 2, false);
+        let share = run(b, host, true);
+        if host == 2 || host == len || share == len {
+            return (String::new(), 0, true);
+        }
+        let first = &path[2..host];
+        match first == "." || first == "?" {
+            true => (format!("\\\\{first}"), 4, true),
+            false => {
+                let end = run(b, share, false);
+                (format!("\\\\{first}\\{}", &path[share..end]), end, true)
+            }
+        }
+    }
+
+    /// `path.win32.resolve` of one path, from the folder `cwd`; `env` reads a drive's own folder.
+    pub fn resolve(path: &str, cwd: &str, env: impl Fn(&str) -> Option<String>) -> String {
+        if matches!(path, "" | ".") && cwd.bytes().next().is_some_and(sep) {
+            // Node on Windows leaves the slashes, which a Windows folder never holds.
+            return cwd.replace('/', "\\");
+        }
+        let (mut device, end, mut absolute) = root(path);
+        let mut tail = match path.is_empty() {
+            true => String::new(),
+            false => format!("{}\\", &path[end..]),
+        };
+        if !absolute || device.is_empty() {
+            let mut from = match device.is_empty() {
+                true => cwd.to_owned(),
+                false => env(&format!("={device}"))
+                    .filter(|folder| !folder.is_empty())
+                    .unwrap_or_else(|| cwd.to_owned()),
+            };
+            let units: Vec<u16> = from.encode_utf16().take(3).collect();
+            let drive = String::from_utf16_lossy(&units[..units.len().min(2)]);
+            let other = drive.to_lowercase() != device.to_lowercase();
+            if !device.is_empty() && other && units.get(2) == Some(&u16::from(b'\\')) {
+                from = format!("{device}\\");
+            }
+            let (found, end, rooted) = root(&from);
+            let same = device.is_empty() || found.is_empty();
+            if same || found.to_lowercase() == device.to_lowercase() {
+                if device.is_empty() {
+                    device = found;
+                }
+                if !absolute {
+                    tail = format!("{}\\{tail}", &from[end..]);
+                    absolute = rooted;
+                }
+            }
+        }
+        let tail = super::fold(&tail, !absolute, "\\", separator);
+        match (absolute, device.is_empty() && tail.is_empty()) {
+            (true, _) => format!("{device}\\{tail}"),
+            (false, true) => ".".into(),
+            (false, false) => format!("{device}{tail}"),
+        }
+    }
+
+    pub fn dirname(path: &str) -> &str {
+        let (b, len) = (path.as_bytes(), path.len());
+        match len {
+            0 => return ".",
+            1 if sep(b[0]) => return path,
+            1 => return ".",
+            _ => {}
+        }
+        let mut root_end = None;
+        if sep(b[0]) {
+            root_end = Some(1);
+            let host = run(b, 2.min(len), false);
+            if sep(b[1]) && host < len && host != 2 {
+                let share = run(b, host, true);
+                let end = run(b, share, false);
+                if share < len && end == len {
+                    return path;
+                }
+                if share < len {
+                    root_end = Some(end + 1);
+                }
+            }
+        } else if b[0].is_ascii_alphabetic() && b[1] == b':' {
+            root_end = Some(if len > 2 && sep(b[2]) { 3 } else { 2 });
+        }
+        match (super::folder_end(b, root_end.unwrap_or(0), sep), root_end) {
+            (Some(end), _) | (None, Some(end)) => &path[..end],
+            (None, None) => ".",
+        }
+    }
+
+    pub fn extname(path: &str) -> &str {
+        let b = path.as_bytes();
+        let drive = b.len() >= 2 && b[1] == b':' && b[0].is_ascii_alphabetic();
+        super::ext(path, if drive { 2 } else { 0 }, sep)
     }
 
     /// `isWindowsReservedName`: with no colon, `slice(0, -1)` drops the last UTF-16 unit.

@@ -22,6 +22,7 @@ import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
 import { nodePath } from './golden/nodePath.mjs';
 import { browserFile } from './golden/browserFile.mjs';
+import { filePolicy } from './golden/filePolicy.mjs';
 import { pathResolver } from './golden/pathResolver.mjs';
 import { smartPaths } from './golden/smartPaths.mjs';
 import { workspaceMedia } from './golden/workspaceMedia.mjs';
@@ -593,6 +594,7 @@ try {
   console.log(`${jsSort({ fixtures })} sort cases`);
   console.log(`${nodePath({ cindy, fixtures, write })} node path cases`);
   console.log(`${await browserFile(golden, cindy)} browser file cases`);
+  console.log(`${await filePolicy(golden, cindy)} file policy cases`);
   console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
   console.log(`${await smartPaths(golden, pathShape, workspacePaths)} smart path steps`);
   console.log(`${await workspaceMedia({ ...golden, define, assets: ASSETS, cindy, src }, workspacePaths)} workspace media steps`);

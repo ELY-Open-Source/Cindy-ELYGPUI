@@ -436,3 +436,8 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   changed address drew the old picture; the card's measure left Retry's width out.
 - Round 3: FAIL, marked `[!]`. Those two closed. Open: an address that left a slot and came
   back reads the shared failure of its first mount. No live desktop check was made.
+
+## 9.6i3b A local file's bytes
+- Round 1: PASS. The reviewer ran Cindy's own handler on 159 requests and the port answered
+  each alike; both goldens matched a fresh record; 300,000 path checks found no difference. No
+  live desktop check was made; Windows and macOS paths were checked as strings.

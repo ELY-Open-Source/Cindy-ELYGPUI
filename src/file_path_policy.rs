@@ -1,6 +1,13 @@
-//! `filePathPolicy.ts`'s system blocklist and `isPathAllowedAgainst`, on this host's paths.
+//! `filePathPolicy.ts`: its two blocklists, and `isPathAllowedAgainst` on this host's paths.
 
-use std::{path::Path, sync::LazyLock};
+pub mod sensitive;
+
+use std::{
+    path::Path,
+    sync::{LazyLock, OnceLock},
+};
+
+use sensitive::{Host, Platform};
 
 use crate::dev_profile::canonical::resolve;
 
@@ -100,6 +107,37 @@ pub fn allowed_against(path: &str, blocklist: &[String]) -> bool {
 /// `isPathAllowed`.
 pub fn allowed(path: &str) -> bool {
     allowed_against(path, &SYSTEM)
+}
+
+/// `getSensitiveMediaBlocklist`, built once; `cwd` is the folder a relative root resolves on.
+fn sensitive_list(cwd: &str) -> &'static [String] {
+    static LIST: OnceLock<Vec<String>> = OnceLock::new();
+    LIST.get_or_init(|| {
+        let home = dirs::home_dir().expect("startup found the home folder");
+        let real = |path: &str| {
+            let real = std::fs::canonicalize(path).ok()?;
+            // libuv hands a Windows path back without its namespace.
+            Some(strip_namespace(&real.to_string_lossy()))
+        };
+        let list = sensitive::blocklist(&Host {
+            platform: match (cfg!(windows), cfg!(target_os = "macos")) {
+                (true, _) => Platform::Win32,
+                (false, true) => Platform::Darwin,
+                (false, false) => Platform::Other,
+            },
+            home: &home.to_string_lossy(),
+            cwd,
+            env: &|key| std::env::var(key).ok(),
+            real: &real,
+        });
+        log::info!(target: "file-path-policy", "sensitive media blocklist: {} roots", list.len());
+        list
+    })
+}
+
+/// `isPathAllowedAgainst` on the sensitive-media list.
+pub fn media_allowed(path: &str, cwd: &str) -> bool {
+    allowed_against(path, sensitive_list(cwd))
 }
 
 #[cfg(test)]

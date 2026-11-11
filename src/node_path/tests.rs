@@ -21,6 +21,39 @@ fn two(port: impl Fn(&[&str]) -> String) -> impl Fn(&Value) -> Value {
     move |input| port(&[input[0].as_str().unwrap(), input[1].as_str().unwrap()]).into()
 }
 
+/// `resolve` from the case's current folder and, for Windows, its drive's own folder.
+fn from(port: impl Fn(&str, &str, Option<(&str, &str)>) -> String) -> impl Fn(&Value) -> Value {
+    move |input| {
+        let drive = input[1].as_array();
+        let drive = drive.map(|drive| (drive[0].as_str().unwrap(), drive[1].as_str().unwrap()));
+        port(
+            input[2].as_str().unwrap(),
+            input[0].as_str().unwrap(),
+            drive,
+        )
+        .into()
+    }
+}
+
+#[test]
+fn folders_extensions_and_resolved_paths_are_nodes() {
+    assert!(golden("posixDirname", one(|path| posix::dirname(path).into())) > 2000);
+    assert!(golden("posixExtname", one(|path| posix::extname(path).into())) > 2000);
+    assert!(golden("win32Dirname", one(|path| win32::dirname(path).into())) > 2000);
+    assert!(golden("win32Extname", one(|path| win32::extname(path).into())) > 2000);
+    let resolved = from(|path, cwd, _| posix::resolve(path, cwd));
+    assert!(golden("posixResolve", resolved) > 2000);
+    let resolved = from(|path, cwd, drive| {
+        let env = |key: &str| {
+            drive
+                .filter(|(name, _)| *name == key)
+                .map(|(_, at)| at.to_owned())
+        };
+        win32::resolve(path, cwd, env)
+    });
+    assert!(golden("win32Resolve", resolved) > 2000);
+}
+
 #[test]
 fn posix_paths_are_nodes() {
     assert!(golden("posixNormalize", one(posix::normalize)) > 2000);
