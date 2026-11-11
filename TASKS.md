@@ -249,7 +249,7 @@ listed in `tasks/done.md`.
       (`a_code_keeps_its_box_where_a_wrap_drops_its_space`). A wrapped row's fit does not count
       the closing padding after a dropped space; Blink's count there is not measured.
   - [x] 9.6g Tables: columns, alignment, the scroll of a wide table
-  - [ ] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
+  - [!] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
       session, project and session-card links, in-document anchors
     - [x] 9.6h1 The workspace path resolver (`main/pathResolver.ts`): `resolveWorkspacePath`
       (decode, `~`, the absolute stat, the join, `bfsFindBySuffix` with its ignored folders), the
@@ -279,7 +279,7 @@ listed in `tasks/done.md`.
         `windowsFileUrlOpener.ts` come with the built-in browser that sends one (17.0)
       - [x] 9.6h4d `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
         separate activation, `formatFileLocation` with `toWorkdirRel`
-    - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
+    - [x] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link
       - [x] 9.6h5a `SessionLinkChip` and `ProjectLinkChip` for an `a` of a privileged message: the
         chip an atom of its row (9.5j's faces, reads, clicks and menu), the author's label, and
