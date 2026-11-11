@@ -93,6 +93,10 @@ export const FILE_KIND_TESTS = {
   'packages/maker-shared/src/filePresentation.test.ts': { './filePresentation': ['getFileVisualKind'] },
 };
 
+export const GOAL_TESTS = {
+  [`${shared}/goalVerdict.test.ts`]: { '../goalVerdict': ['stripGoalVerdictBlock'] },
+};
+
 export const ATTACHMENT_TESTS = {
   [`${desktop}/shared/__tests__/attachmentSafety.test.ts`]: { '../attachmentSafety': ['attachmentExtension', 'isDangerousAttachmentName'] },
 };

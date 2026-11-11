@@ -381,6 +381,13 @@ impl Appearance {
         color.unwrap_or_else(|error| panic!("{error:#}")).into()
     }
 
+    /// A color token that may read `inherit`, which is no color of its own.
+    pub fn inherited(&self, id: &str) -> Option<gpui::Hsla> {
+        let value = self.themes.value(&self.active.theme, id);
+        let value = value.unwrap_or_else(|error| panic!("{error:#}"));
+        (value.trim() != "inherit").then(|| self.token(id))
+    }
+
     /// A `box-shadow` token of the active theme, at the window zoom.
     pub fn shadow_token(&self, id: &str, cx: &gpui::App) -> gpui::BoxShadow {
         let zoom = cx.global::<crate::units::Zoom>().0;

@@ -5,12 +5,17 @@ use crate::{layout_root::screen_tests, sessions};
 
 /// A user row whose `content` column is this JSON.
 fn put(db: &Connection, n: i64, content: &str, meta: Option<&str>) {
+    put_as(db, "user", n, content, meta);
+}
+
+fn put_as(db: &Connection, role: &str, n: i64, content: &str, meta: Option<&str>) {
     db.execute(
         "INSERT INTO messages (id, client_id, session_id, role, content, agent_meta, created_at)
-         VALUES (?, ?, 's1', 'user', ?, ?, ?)",
+         VALUES (?, ?, 's1', ?, ?, ?, ?)",
         (
             n.to_string(),
             format!("c{n}"),
+            role,
             content,
             meta,
             1_700_000_000_000 + n,
@@ -65,6 +70,21 @@ pub(in crate::session_view) fn open_meta<'a>(
     let db = super::super::tests::db();
     for (n, (content, meta)) in rows.iter().enumerate() {
         put(&db, n as i64, content, *meta);
+    }
+    serve(cx, dir, width, db)
+}
+
+/// As `open`, each message with its role.
+pub(in crate::session_view) fn open_roles<'a>(
+    cx: &'a mut TestAppContext,
+    dir: &std::path::Path,
+    width: f32,
+    rows: &[(&str, &str)],
+) -> &'a mut VisualTestContext {
+    let db = super::super::tests::db();
+    for (n, (role, content)) in rows.iter().enumerate() {
+        let content = serde_json::to_string(content).unwrap();
+        put_as(&db, role, n as i64, &content, None);
     }
     serve(cx, dir, width, db)
 }

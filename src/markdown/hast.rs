@@ -56,7 +56,7 @@ impl Element {
         found.map(|(_, value)| value)
     }
 
-    fn classed(&self, class: &str) -> bool {
+    pub fn classed(&self, class: &str) -> bool {
         matches!(self.prop("className"), Some(Prop::Words(words)) if words.iter().any(|word| word == class))
     }
 }
@@ -77,7 +77,7 @@ pub fn render(text: &str, privileged: bool, urls: Urls) -> Vec<Hast> {
 }
 
 /// A node's text, as hast-util-to-string reads it.
-fn string(node: &Hast, out: &mut String) {
+pub fn string(node: &Hast, out: &mut String) {
     match node {
         Hast::Text(value) => out.push_str(value),
         Hast::Element(element) => element.children.iter().for_each(|child| string(child, out)),

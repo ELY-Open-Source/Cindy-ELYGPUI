@@ -238,7 +238,7 @@ listed in `tasks/done.md`.
       `remarkPreserveRawLocalDestinations`, with `markdownTarget.ts`'s classes
   - [x] 9.6d What react-markdown hands its renderers: `skipHtml`, the URL transforms, definitions and
       footnotes resolved, `rehype-slug`'s ids, `rehypeFencedCodeMarker`
-  - [ ] 9.6e Blocks drawn in an assistant text row (`.msg-markdown`): paragraphs, headings, lists and
+  - [x] 9.6e Blocks drawn in an assistant text row (`.msg-markdown`): paragraphs, headings, lists and
       task lists, block quotes, rules, plain code blocks (their chrome with 9.7)
   - [ ] 9.6f Inline content in the flow's rows: emphasis, strong, strikethrough, inline code, breaks,
       the link's face

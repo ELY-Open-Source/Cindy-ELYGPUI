@@ -280,8 +280,8 @@ defines scope and what 1:1 means.
   `column.rs` the view's section: a canvas measures the container and lays the section out in the same
   frame (`prepaint_as_root`), the message column at `messageWidth`, the dock (fade, `pb-5` zone, the
   composer's row at `inputWidth`) at `inputPad`. `stream.rs` is `MessageStream`'s list: the scroller,
-  the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; only a user
-  message draws so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text joined),
+  the `pt-7` column at `messageWidth` and `msg-stream-items`, a row per render item; a user's and
+  an assistant's message draw so far. `user_row.rs` is `UserMessage`'s bubble: the display text (quote text joined),
   `ChatBubble`'s user face, and the long message's fold. `attachments.rs` is `UserAttachmentChip`'s
   inert face in `fileAttachmentNodes`, over the bubble and for a message with no text: the chips wrap
   and stand right, each at most `min(280px, 100%)`, lit under the pointer, the native `title` as gpui's
@@ -487,6 +487,28 @@ defines scope and what 1:1 means.
   (`trustedUrlTransform`, `previewSafeUrlTransform`, `allowlistedImageUrlTransform` over
   `defaultUrlTransform`). `remarkStrictInlineMath` and KaTeX come with 9.8, the highlighter with 9.7;
   the golden leaves them out.
+- Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
+  bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`, golden
+  `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A text
+  with a rich answer draws nothing until 9.10; the labels, cards and action bar come with 9.11,
+  `normalizeMathDelimiters` with 9.8. `session_view/markdown.rs` is `.msg-markdown`: it walks the
+  renderer tree and lays the blocks out itself, since gpui has no margin collapsing, list markers or
+  inline boxes. Blink's layout of Cindy's classes is measured in Cindy's Electron
+  (`logs/review/9.6e-blink-*.log`; the probes are `.scratch/9.6e/probe*.js`). `margins.rs` collapses
+  a column's margins: adjoining ones keep the larger, they pass through a container with no padding
+  or border (a list, an item, a quote, the footnotes), a block with no height joins those about it,
+  and the bubble, a flex item, keeps the first and last inside. A node's own `className` replaces
+  the renderer's (`{...props}` comes after it), so a task list (`contains-task-list`) is a bare `ul`
+  (no indent, gap or marker) and the footnotes' heading (`sr-only`) is not drawn. A run of inline
+  nodes between blocks is a block of its own; `text.rs` reads it as its text with `white-space:
+  normal` collapsed (inline faces come with 9.6f, images 9.6i) and breaks it with the bubble's flow;
+  a task's check is a 13px atom on the baseline (`marker::check`, Chromium's disabled light box: the
+  renderer sets no `color-scheme`). `marker.rs` draws a list's markers as `list_marker.cc` places
+  them: an item's marker waits for the first line under the item, at any depth, and hangs from that
+  line's rows at the item's own edge, by its own baseline; an item with no line keeps it and is one
+  line high, and an item with no block at all is a line the markers pending above it take too. A code block is `CodeBlockPre`'s surface over `pre-wrap` `break-all` rows in the code
+  face, a tab to its row's next stop of four spaces (`text::code`, Blink's `TabSize`); every fence
+  draws so until 9.7 (highlight, copy, diff) and 9.9 (mermaid). Tables come with 9.6g.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

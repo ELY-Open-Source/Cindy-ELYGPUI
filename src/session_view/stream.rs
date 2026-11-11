@@ -5,7 +5,7 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, div,
 };
 
-use super::{items::items, link_chip, user_row, width::Widths};
+use super::{assistant_row, items::items, link_chip, user_row, width::Widths};
 use crate::{
     chat_message::merge::get, history_render::Projection, render_items::Item, rich_answer::js::Js,
     units::css,
@@ -19,15 +19,16 @@ fn row(
     window: &mut Window,
     cx: &mut App,
 ) -> Option<AnyElement> {
-    // The other items come with 9.5g to 9.13.
+    // The other items come with 9.7 to 9.13.
     let Item::Message { key, message } = item else {
         return None;
     };
     let message = &projection.rows[*message];
-    if get(message, "role").and_then(Js::str) != Some("user") {
-        return None;
-    }
-    let bubble = user_row::element(key, message, widths, window, cx)?;
+    let bubble = match get(message, "role").and_then(Js::str) {
+        Some("user") => user_row::element(key, message, widths, window, cx)?,
+        Some("assistant") => assistant_row::element(key, message, widths, window, cx)?,
+        _ => return None,
+    };
     let selector = format!("item-{key}");
     let row = div()
         .debug_selector(move || selector)

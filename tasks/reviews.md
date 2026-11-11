@@ -301,3 +301,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   and an indent after a definition stays outside the paragraph. The reviewer's 27,208 and 59,650
   fresh inputs agree; 614,561 of the author's agree; 47 of 53 mutants killed first, the rest
   removed as redundant code or killed by added inputs.
+
+## 9.6e Markdown blocks
+- Round 1: FAIL. A U+FFFC in the text was read as a task check and the row panicked. The
+  reviewer's 128 block layouts otherwise matched Blink's heights.
+- Round 2: PASS. A row is cut at the bytes the checks were recorded at. All 128 layouts agree
+  with Blink, and six probes of checks at row edges pass. No live desktop check was made.

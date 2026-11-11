@@ -1,0 +1,67 @@
+{
+ "stripGoalVerdictBlock": [
+  [
+   "a\n\n```JSON\n{\"GOAL_STATUS\":\"x\"}\n```\n\n"
+  ],
+  [
+   "a\n```jsonc\n{\"goal_setup\":1}\n```"
+  ],
+  [
+   "a\n```js\n{\"goal_status\":1}\n```"
+  ],
+  [
+   "a ```json{\"goal_status\":1}``` "
+  ],
+  [
+   "a\u00a0\ufeff\n{\"goal_status\":1}\u3000\u2028"
+  ],
+  [
+   "a\u0085{\"goal_status\":1}"
+  ],
+  [
+   "a {\"goal_status\":{\"b\":1}}"
+  ],
+  [
+   "a {\"x\":1} {\"goal_status\":1}"
+  ],
+  [
+   "{\"goal_status\":1}"
+  ],
+  [
+   "```json\n{\"goal_status\":1}\n```"
+  ],
+  [
+   "a\n\n\n{\"goal_status\":1}"
+  ],
+  [
+   "goal_status"
+  ],
+  [
+   "a {\"goal_status\":1} b"
+  ],
+  [
+   "a\n```json\n{\"goal_status\":1}\n```\n{\"goal_status\":2}"
+  ],
+  [
+   "a\n{\"goal_status\":1}\n```json\n{\"goal_status\":2}\n```"
+  ],
+  [
+   "a\n```json\n{\"goal_\u017ftatus\":1}\n```"
+  ],
+  [
+   "a\n```j\u017fon\n{\"goal_status\":1}\n```"
+  ],
+  [
+   "a\n````json\n{\"goal_status\":1}\n````"
+  ],
+  [
+   "a \t\n{ \"goal_setup\" : true }"
+  ],
+  [
+   "a\n```\n{'goal_status':1}\n```"
+  ],
+  [
+   "trailing  \n\n{\"goal_status\":1}"
+  ]
+ ]
+}

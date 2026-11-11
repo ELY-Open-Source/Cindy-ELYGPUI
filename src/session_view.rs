@@ -9,6 +9,7 @@ use crate::{
     sessions::{self, group::Session, query},
 };
 
+mod assistant_row;
 mod attachments;
 mod chip;
 mod column;
@@ -20,6 +21,7 @@ mod images;
 mod items;
 mod link_chip;
 mod links;
+mod markdown;
 mod orca_card;
 mod source_labels;
 mod stream;
@@ -61,6 +63,8 @@ struct Content {
     links: link_chip::Found,
     /// Its messages' images, by address.
     images: images::Held,
+    /// Its assistant messages' trees, by item key.
+    trees: assistant_row::Trees,
 }
 
 #[derive(Default)]
@@ -198,6 +202,7 @@ fn mount(id: &str, cx: &mut App) {
         unfolded: Default::default(),
         links: Default::default(),
         images: Default::default(),
+        trees: Default::default(),
     });
     content_read(cx);
     let store = Store::global(cx);

@@ -39,7 +39,7 @@ pub fn style(size: Pixels, window: &Window) -> TextStyle {
 }
 
 /// `text` shaped as one line of `style`.
-fn shape(text: &str, style: &TextStyle, window: &Window) -> ShapedLine {
+pub fn shape(text: &str, style: &TextStyle, window: &Window) -> ShapedLine {
     let size = style.font_size.to_pixels(window.rem_size());
     let run = style.to_run(text.len());
     window
@@ -222,7 +222,7 @@ fn lines(islands: &[Island], linked: bool, known: (&Found, &Translator)) -> (Vec
 }
 
 /// The line's atoms, each chip as wide as its face, and the rows they break into.
-fn broken(
+pub fn broken(
     (text, paths): (&str, &[Range<usize>]),
     chips: &[(usize, Pixels)],
     (style, width): (&TextStyle, Pixels),

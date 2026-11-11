@@ -144,6 +144,18 @@ fn every_family_maps_to_an_ely_palette() {
     }
 }
 
+#[test]
+fn a_token_that_inherits_has_no_color_of_its_own() {
+    let initial = crate::os_appearance::Initial {
+        os: WindowAppearance::Light,
+        gpui_agrees: true,
+    };
+    let appearance = super::Appearance::new(Mode::System, None, initial, None).unwrap();
+    assert_eq!(appearance.inherited("md-h1-fg"), None);
+    let text = appearance.token("msg-assistant-text");
+    assert_eq!(appearance.inherited("msg-assistant-text"), Some(text));
+}
+
 /// Cindy's own `normalizeLocalThemeColors` wrote the expected side.
 #[test]
 fn normalize_matches_cindy_output() {
