@@ -301,7 +301,7 @@ listed in `tasks/done.md`.
         Markdown image
     - [x] 9.6i2 The address an image loads: `normalizeMarkdownImageSrc` and
         `useWorkspaceMediaPath` (`WorkspaceMediaSrc`) for a local task
-    - [ ] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
+    - [!] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
         `useImageLoadFailure` with `ImageMissingPlaceholder`; the click, the menu and the
         lightbox come with 9.13, `ChatVideoView` with its chapter
       - [!] 9.6i3a The box in a line for an address the media stores read (`xdt-image://`,
@@ -314,9 +314,9 @@ listed in `tasks/done.md`.
             while another mounted image of that address keeps its failure.
       - [x] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
           whitelist and the sensitive-media list), so a workspace image draws
-      - [ ] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
+      - [x] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
         - [x] 9.6i3c1 A `data:` address: Blink's data URL read (media type, base64, escapes)
-        - [ ] 9.6i3c2 An `http(s)` address: the fetch, with the client it needs
+        - [x] 9.6i3c2 An `http(s)` address: the fetch, with the client it needs
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
   - [ ] 9.6k Selection and copy over the drawn Markdown

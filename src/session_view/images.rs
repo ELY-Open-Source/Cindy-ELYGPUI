@@ -10,6 +10,7 @@ use ely_gpui_component::{
     primitives::IconName,
     theme::{ActiveTheme as _, ControlSize, IconSize, TextSize},
 };
+use gpui::http_client::HttpClient;
 use gpui::{
     AnyElement, App, AppContext as _, ElementId, FontWeight, InteractiveElement as _,
     IntoElement as _, ParentElement as _, RenderImage, StatefulInteractiveElement as _,
@@ -31,6 +32,7 @@ use crate::{
     tip,
     transition::{self, Curve},
     units::{Zoom, css},
+    web_image,
 };
 
 /// A decoded image: its natural size, and a long image's square top.
@@ -164,6 +166,35 @@ fn inline(url: &str, svg: SvgRenderer) -> Result<Shown> {
     )
 }
 
+/// `http:` or `https:`, as `normalizeMarkdownImageSrc` lets one through.
+pub fn web(url: &str) -> bool {
+    let starts = |scheme: &str| {
+        let head = url.as_bytes().get(..scheme.len());
+        head.is_some_and(|head| head.eq_ignore_ascii_case(scheme.as_bytes()))
+    };
+    starts("http://") || starts("https://")
+}
+
+/// A web address's fetch and decode. Cindy probes the stores alone, so a failure is unavailable.
+async fn fetched(client: Arc<dyn HttpClient>, url: &str, svg: SvgRenderer) -> Load {
+    let length = url.len();
+    let decoded = match web_image::fetch(client, url).await {
+        Ok((bytes, vector)) => decode(bytes, vector, svg),
+        Err(error) => Err(error),
+    };
+    match decoded {
+        Ok(shown) => {
+            let (width, height) = shown.natural;
+            log::info!(target: "sessionView", "a web image of {length} bytes of address loaded: {width}x{height}");
+            Load::Ready(shown)
+        }
+        Err(error) => {
+            log::error!(target: "sessionView", "a web image of {length} bytes of address not loaded: {error:#}");
+            Load::Unavailable
+        }
+    }
+}
+
 /// The read and the decode, off the main thread.
 fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
     if url.starts_with("xdt-file://") {
@@ -211,7 +242,13 @@ fn load(user_data: &Path, url: &str, svg: SvgRenderer) -> Load {
 /// One load off the main thread; `slot` finds where its answer goes, if that still stands.
 fn start(url: String, slot: impl Fn(&mut Held) -> Option<&mut Load> + 'static, cx: &mut App) {
     let (user_data, svg) = (sessions::user_data(cx), cx.svg_renderer());
-    let loading = cx.background_spawn(async move { load(&user_data, &url, svg) });
+    let client = cx.http_client();
+    let loading = cx.background_spawn(async move {
+        match web(&url) {
+            true => fetched(client, &url, svg).await,
+            false => load(&user_data, &url, svg),
+        }
+    });
     cx.spawn(async move |cx| {
         let load = loading.await;
         cx.update(|cx| {

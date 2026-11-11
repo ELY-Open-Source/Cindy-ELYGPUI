@@ -29,6 +29,7 @@ notify = "8.2.1"
 indexmap = "2"
 markdown = { path = "vendor/markdown" }
 regex = "1"
+reqwest_client = { package = "gpui-pre-reqwest-client", version = "=0.3.11" }
 resvg = "0.46.0"
 rusqlite = { version = "0.41.1", features = ["bundled", "functions"] }
 raw-window-handle = { version = "0.6.2", features = ["std"] }

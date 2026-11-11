@@ -192,9 +192,8 @@ pub fn read(
             continue;
         }
         let read = |src: &&String| {
-            ["xdt-image://", "cindy-media://", "xdt-file://", "data:"]
-                .iter()
-                .any(|scheme| src.starts_with(scheme))
+            let schemes = ["xdt-image://", "cindy-media://", "xdt-file://", "data:"];
+            images::web(src) || schemes.iter().any(|scheme| src.starts_with(scheme))
         };
         let load = match &src {
             // No address: the frame stays.
@@ -210,7 +209,7 @@ pub fn read(
                     Load::Loading
                 })
             }
-            // A web address's bytes come with 9.6i3c2.
+            // A remote task's media comes with its chapter.
             Some(_) => Load::Unavailable,
         };
         let element = ElementId::Name(id.clone().into());

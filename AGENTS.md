@@ -494,8 +494,8 @@ defines scope and what 1:1 means.
   between them. Nothing draws with it before 9.6i3.
 - Inline images: `session_view/inline_image.rs` is `LightboxImage` in a line, for the addresses
   the media stores read (`xdt-image://`, `cindy-media://`), a local file's (`xdt-file://`, below)
-  and a `data:` address (a web address's bytes come with 9.6i3c2; until then it draws the
-  unavailable card). `images.rs`'s `inline` reads a `data:` address with the `data-url` crate, the
+  a `data:` address and a web address (below; a remote task's media comes with its chapter and
+  draws the unavailable card). `images.rs`'s `inline` reads a `data:` address with the `data-url` crate, the
   Fetch standard's reader, and decodes it as SVG when its media type is `image/svg+xml`, else by
   its bytes; `tests/fixtures/data-image/blink.json` holds what Blink's `<img>` loads of 45
   addresses, and the port loads the same ones at the same sizes. A failure is unavailable. `read` takes the tree's `img` nodes in document order (`Anchors.images`,
@@ -520,6 +520,27 @@ defines scope and what 1:1 means.
   `images::focused`, from the window's activation, drops every failed load, for the user's images
   too. No `online` event reaches the port. The click, the Tab stop, the menu and the lightbox come
   with 9.13; `status: 'loading'` with the streamed rows of 9.6j.
+- Web images: the app's HTTP client is `gpui-pre-reqwest-client` at gpui's pin, set with
+  `with_http_client` in `main.rs`; its user agent (`web_image::user_agent`) is Electron 42's with
+  Cindy's product token and this crate's version. `src/web_image.rs` is the fetch Blink's `<img>`
+  makes, as measured in Cindy's Electron against a loopback server
+  (`logs/review/9.6i3c2-blink-http.log`, probe `.scratch/9.6i3c/http.js`, and the reviewer's
+  `logs/review/9.6i3c2-r1-review-blink.log`). The address is made canonical by the `url` crate and
+  refused with credentials or on a port of Chromium 148's `kRestrictedPorts`. `fetch` asks each hop
+  itself with Blink's image `Accept` and no `Referer`, and reads each answer's fields as Chromium
+  does, byte for byte (`logs/review/9.6i3c2-r3-blink-headers.log`, probe `.scratch/9.6i3c/headers.js`):
+  two differing `Location` fields or `Content-Disposition` values fail any answer; one whose joined
+  `Cross-Origin-Resource-Policy` is `same-origin` or `same-site` is refused; a 301, 302, 303, 307
+  or 308 with a `Location` that is not empty goes on, its bytes past ASCII escaped, at most twenty
+  times, and fails on a place that does not parse, another scheme, credentials or a restricted
+  port; 204, 205 and 304 have no body; any other status gives its body, failed when empty. A
+  `Content-Type` splits at commas outside quotes and the last value with a type decides: SVG only
+  under `image/svg+xml`, any other body by its bytes. A
+  client's error is logged by its root cause, which names no address. The port sends no cookie, no
+  `Accept-Language`, no `Sec-Fetch` or client-hint header, asks for no compression and keeps no
+  HTTP cache; a proxy comes from the environment, as reqwest reads it. A failure is unavailable
+  with no Retry. The fetch's test runs the real client against a loopback server outside gpui's
+  scheduler; view tests set gpui's `FakeHttpClient`. Logs name an address by its length.
 - Local files: `src/local_file.rs` is `localFileProtocol.ts`'s handler for a `GET` with no `Range`
   (`read`: the file's bytes and its `Content-Type`, else the refusal's status): the `path` of the
   query as `URLSearchParams` decodes it, absolute, `path.resolve` equal to `path.normalize`, the

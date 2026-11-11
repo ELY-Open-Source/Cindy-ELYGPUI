@@ -89,6 +89,7 @@ mod url_boundary;
 mod user_message;
 mod v8_classes;
 mod wallpaper;
+mod web_image;
 mod window_material;
 mod window_state;
 mod work_groups;
@@ -214,8 +215,12 @@ fn startup() -> Result<Startup> {
 fn main() {
     cross_process_lock::note_process_start();
     let startup = startup().unwrap_or_else(|error| panic!("startup failed: {error:#}"));
+    let agent = web_image::user_agent();
+    let client = reqwest_client::ReqwestClient::user_agent(&agent);
+    let client = client.unwrap_or_else(|error| panic!("no HTTP client: {error:#}"));
     gpui_platform::application()
         .with_assets(Assets)
+        .with_http_client(std::sync::Arc::new(client))
         .run(move |cx: &mut App| {
             open(startup, cx).unwrap_or_else(|error| panic!("startup failed: {error:#}"));
         });

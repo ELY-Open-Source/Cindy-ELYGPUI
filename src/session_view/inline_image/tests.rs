@@ -179,13 +179,33 @@ fn a_focus_tries_a_missing_image_again(cx: &mut TestAppContext) {
 }
 
 #[gpui::test]
-fn an_address_with_no_reader_yet_is_unavailable(cx: &mut TestAppContext) {
+fn a_web_address_draws_what_its_server_answers(cx: &mut TestAppContext) {
+    use gpui::http_client::{AsyncBody, FakeHttpClient, Response};
+
     let dir = tempfile::tempdir().unwrap();
-    let cx = draw(cx, dir.path(), "![a](https://x.test/a.png)");
+    put(dir.path(), "a.webp", (100, 50));
+    let bytes = std::fs::read(dir.path().join("cc-agent/images/s1/a.webp")).unwrap();
+    let client = FakeHttpClient::create(move |request| {
+        let found = request.uri().path() == "/a.webp";
+        let body = if found { bytes.clone() } else { Vec::new() };
+        let status = if found { 404 } else { 200 };
+        async move {
+            Ok(Response::builder()
+                .status(status)
+                .body(AsyncBody::from(body))?)
+        }
+    });
+    cx.update(|cx| cx.set_http_client(client));
+    let text = "![a](https://x.test/a.webp)\n\n![b](http://x.test/none.png)";
+    let cx = draw(cx, dir.path(), text);
+    settle(cx);
+    // A body that decodes draws whatever its status; an empty one is unavailable, with no Retry.
+    assert_eq!(bounds(cx, "msg-c1-g0").size, size(px(100.0), px(50.0)));
     assert_eq!(
-        bounds(cx, "msg-c1-g0-failed").size,
+        bounds(cx, "msg-c1-g1-failed").size,
         size(px(280.0), px(140.0))
     );
+    assert!(at(cx, "msg-c1-g1-retry").is_none());
 }
 
 #[gpui::test]

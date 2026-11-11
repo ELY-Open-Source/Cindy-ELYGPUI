@@ -448,3 +448,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS. `svg_image.rs` draws an SVG image with a resolver that reads nothing outside
   it; the reviewer's 38 kinds of outside reference opened no file and reached no server, and
   1,900 addresses load as Blink loads them. No live desktop check was made.
+
+## 9.6i3c2 An `http(s)` address
+- Round 1: FAIL. P1: a redirect sent a `Referer`. P2: no CORP check on redirect answers;
+  credentials and restricted ports asked; unfollowable redirects drew their body; the address in
+  error logs; multi-valued CORP and `Content-Type`; the address not canonical. P3: a 205's body.
+- Round 2: FAIL. Those closed. P2: `Content-Type` split at commas inside quotes; fields with
+  bytes past ASCII dropped; an empty `Location` followed to itself.
+- Round 3: PASS. Fields read as Chromium 148 reads them; 126 loads compared with Blink, no
+  difference. No live desktop, outside network, TLS, proxy or cross-platform check was made.
