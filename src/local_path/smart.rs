@@ -158,6 +158,17 @@ pub fn ask(href: &str, dir: &str, then: impl FnOnce(&mut App) + 'static, cx: &mu
     }
 }
 
+/// `.then` on the lookup `recheck` said is on its way.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "workspace media paths recheck in 9.6i")
+)]
+pub fn join(href: &str, dir: &str, then: impl FnOnce(&mut App) + 'static, cx: &mut App) {
+    let paths = cx.default_global::<SmartPaths>();
+    let waiters = paths.waiters.entry(key(dir, href)).or_default();
+    waiters.push(Box::new(then));
+}
+
 /// `revalidateNegativeLocalPathSmart`: whether an answer is on its way.
 #[cfg_attr(
     not(test),

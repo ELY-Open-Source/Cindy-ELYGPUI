@@ -146,9 +146,47 @@ pub fn xdt_file(url: &str) -> String {
     file_url(&path, revision.map(|found| decoded(&found[1])).as_deref())
 }
 
+/// `normalizeMarkdownImageSrc`: the address the renderer loads for a destination as written.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the image's box draws with 9.6i3")
+)]
+pub fn image_src(src: &str, dir: &str, privileged: bool) -> Option<String> {
+    static WEB: LazyLock<Regex> = LazyLock::new(|| pattern("^(?i-u:https?)://"));
+    const ROUTED: [&str; 7] = [
+        "data:",
+        "http://",
+        "https://",
+        "xdt-image://",
+        "xdt-video://",
+        "cindy-media://",
+        "cindy-remote-media://",
+    ];
+    if src.is_empty()
+        || ROUTED
+            .iter()
+            .any(|scheme| privileged && src.starts_with(scheme))
+    {
+        return Some(src.to_owned());
+    }
+    if !privileged {
+        return WEB.is_match(src).then(|| src.to_owned());
+    }
+    if src.starts_with("xdt-file://") {
+        return Some(xdt_file(src));
+    }
+    // A file URL's path is decoded once; a path as written never is.
+    let path = match src.strip_prefix("file://") {
+        Some(rest) => decoded(rest),
+        None => src.to_owned(),
+    };
+    let path = super::resolve(&strip_drive_slash(&path), dir);
+    Some(file_url(&path, None))
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{Kind, classify, directory, file, known, xdt_file};
+    use super::{Kind, classify, directory, file, image_src, known, xdt_file};
     use crate::{
         deep_link::tests::text,
         markdown_target::tests::{files, golden, optional},
@@ -174,6 +212,11 @@ mod tests {
         });
         golden("normalizeXdtFileUrlForRenderer", |args| {
             Js::Str(xdt_file(args[0].str().unwrap()))
+        });
+        golden("normalizeMarkdownImageSrc", |args| {
+            let (src, dir) = (args[0].str().unwrap(), args[1].str().unwrap());
+            let src = image_src(src, dir, args[2] == Js::Bool(true));
+            src.map_or(Js::Null, Js::Str)
         });
     }
 

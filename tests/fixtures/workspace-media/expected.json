@@ -1,0 +1,2753 @@
+[
+ {
+  "name": "paths that are not looked up",
+  "files": [
+   "workspace/sub/a.png",
+   "workspace/sub/a b.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "off",
+      "a.png",
+      false,
+      false
+     ],
+     [
+      "abs",
+      "/tmp/a.png",
+      true,
+      false
+     ],
+     [
+      "back",
+      "\\a.png",
+      true,
+      false
+     ],
+     [
+      "drive",
+      "C:/a.png",
+      true,
+      false
+     ],
+     [
+      "drive-back",
+      "c:\\a.png",
+      true,
+      false
+     ],
+     [
+      "scheme",
+      "https://x.test/a.png",
+      true,
+      false
+     ],
+     [
+      "media",
+      "cindy-media://blobs/a",
+      true,
+      false
+     ],
+     [
+      "odd-scheme",
+      "a+b.c-d:a.png",
+      true,
+      false
+     ],
+     [
+      "percent",
+      "a%20b.png",
+      true,
+      false
+     ],
+     [
+      "none",
+      null,
+      true,
+      false
+     ],
+     [
+      "empty",
+      "",
+      true,
+      false
+     ],
+     [
+      "up",
+      "../a.png",
+      true,
+      false
+     ],
+     [
+      "up-later",
+      "sub/../../a.png",
+      true,
+      false
+     ],
+     [
+      "dots",
+      "./.",
+      true,
+      false
+     ],
+     [
+      "no-dir",
+      "a.png",
+      true,
+      false,
+      ""
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "off": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "abs": {
+     "src": "/tmp/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "back": {
+     "src": "\\a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "drive": {
+     "src": "C:/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "drive-back": {
+     "src": "c:\\a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "scheme": {
+     "src": "https://x.test/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "media": {
+     "src": "cindy-media://blobs/a",
+     "pending": false,
+     "revision": 0
+    },
+    "odd-scheme": {
+     "src": "a+b.c-d:a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "percent": {
+     "src": "a%20b.png",
+     "pending": false,
+     "revision": 0
+    },
+    "none": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    },
+    "empty": {
+     "src": "",
+     "pending": false,
+     "revision": 0
+    },
+    "up": {
+     "src": "../a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "up-later": {
+     "src": "sub/../../a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "dots": {
+     "src": "./.",
+     "pending": false,
+     "revision": 0
+    },
+    "no-dir": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "off": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "abs": {
+     "src": "/tmp/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "back": {
+     "src": "\\a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "drive": {
+     "src": "C:/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "drive-back": {
+     "src": "c:\\a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "scheme": {
+     "src": "https://x.test/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "media": {
+     "src": "cindy-media://blobs/a",
+     "pending": false,
+     "revision": 0
+    },
+    "odd-scheme": {
+     "src": "a+b.c-d:a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "percent": {
+     "src": "a%20b.png",
+     "pending": false,
+     "revision": 0
+    },
+    "none": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    },
+    "empty": {
+     "src": "",
+     "pending": false,
+     "revision": 0
+    },
+    "up": {
+     "src": "../a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "up-later": {
+     "src": "sub/../../a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "dots": {
+     "src": "./.",
+     "pending": false,
+     "revision": 0
+    },
+    "no-dir": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a path where it is written",
+  "files": [
+   "workspace/img/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "plain",
+      "img/a.png",
+      true,
+      false
+     ],
+     [
+      "dot",
+      "./img/a.png",
+      true,
+      false
+     ],
+     [
+      "back",
+      "img\\a.png",
+      true,
+      false
+     ],
+     [
+      "double",
+      "img//a.png",
+      true,
+      false
+     ],
+     [
+      "round",
+      "x/../img/a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "plain": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "dot": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "back": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "double": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "round": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "plain": {
+     "src": "img/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "dot": {
+     "src": "<root>/workspace/img/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "back": {
+     "src": "<root>/workspace/img/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "double": {
+     "src": "<root>/workspace/img/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "round": {
+     "src": "<root>/workspace/img/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a path found deeper",
+  "files": [
+   "workspace/film/renders/out/clip.mp4"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "clip",
+      "renders/out/clip.mp4",
+      true,
+      false
+     ],
+     [
+      "dot",
+      "./renders/out/clip.mp4",
+      true,
+      false
+     ],
+     [
+      "digit",
+      "1:clip.mp4",
+      true,
+      false
+     ],
+     [
+      "colon",
+      "renders:out/clip.mp4",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "clip",
+      "renders/out/clip.mp4",
+      false,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "clip",
+      "renders/out/clip.mp4",
+      true,
+      false
+     ]
+    ]
+   }
+  ],
+  "out": [
+   {
+    "clip": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "dot": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "digit": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "colon": {
+     "src": "renders:out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "clip": {
+     "src": "<root>/workspace/film/renders/out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    },
+    "dot": {
+     "src": "<root>/workspace/film/renders/out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    },
+    "digit": {
+     "src": "1:clip.mp4",
+     "pending": false,
+     "revision": 0
+    },
+    "colon": {
+     "src": "renders:out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "clip": {
+     "src": "renders/out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "clip": {
+     "src": "<root>/workspace/film/renders/out/clip.mp4",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "several, none and a folder",
+  "files": [
+   "workspace/a/pkg.json",
+   "workspace/b/pkg.json",
+   "workspace/deep/Skills/x.md"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "many",
+      "pkg.json",
+      true,
+      false
+     ],
+     [
+      "ghost",
+      "ghost.png",
+      true,
+      false
+     ],
+     [
+      "folder",
+      "Skills",
+      true,
+      false
+     ],
+     [
+      "folder-direct",
+      "deep",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "many": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "ghost": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "folder": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "folder-direct": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "many": {
+     "src": "pkg.json",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    },
+    "folder": {
+     "src": "Skills",
+     "pending": false,
+     "revision": 0
+    },
+    "folder-direct": {
+     "src": "deep",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a file written later, seen on focus",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "late",
+      "out/late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/out/late.png"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   },
+   {
+    "remove": "workspace/out/late.png"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "late": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "a file written deeper, seen on focus",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "late",
+      "out/late.png",
+      true,
+      false
+     ],
+     [
+      "twin",
+      "out/late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/sub/out/late.png"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "late": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "twin": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "twin": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "twin": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "twin": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "twin": {
+     "src": "out/late.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a focus while the lookup flies",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "late",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/late.png"
+   },
+   {
+    "render": [
+     [
+      "late",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "focus": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "late": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "late": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "the end of a streamed answer",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "s",
+      "out/a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/deep/out/a.png"
+   },
+   {
+    "render": [
+     [
+      "s",
+      "out/a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "s",
+      "out/a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "s",
+      "out/a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "s",
+      "out/a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "s": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a streamed answer mounted anew",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "chunk",
+      "out/a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": []
+   },
+   {
+    "write": "workspace/out/a.png"
+   },
+   {
+    "render": [
+     [
+      "whole",
+      "out/a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "whole",
+      "out/a.png",
+      true,
+      false
+     ],
+     [
+      "other",
+      "out/a.png",
+      true,
+      false
+     ]
+    ]
+   }
+  ],
+  "out": [
+   {
+    "chunk": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "chunk": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {},
+   {},
+   {
+    "whole": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "whole": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "whole": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 1
+    },
+    "other": {
+     "src": "out/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a streamed answer that ends before it lands",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "s",
+      "a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "s",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/x/a.png"
+   },
+   {
+    "render": [
+     [
+      "s",
+      "a.png",
+      true,
+      true
+     ]
+    ]
+   },
+   {
+    "render": []
+   },
+   {
+    "render": [
+     [
+      "t",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "s": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "s": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {},
+   {
+    "t": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "t": {
+     "src": "<root>/workspace/x/a.png",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "a new mount rechecks after two seconds",
+  "files": [],
+  "steps": [
+   {
+    "render": [
+     [
+      "a",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/late.png"
+   },
+   {
+    "render": [
+     [
+      "a",
+      "late.png",
+      true,
+      false
+     ],
+     [
+      "b",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "tick": 1999
+   },
+   {
+    "render": [
+     [
+      "c",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "tick": 1
+   },
+   {
+    "render": [
+     [
+      "c",
+      "late.png",
+      true,
+      false
+     ],
+     [
+      "d",
+      "late.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "a": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "a": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "a": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "a": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "b": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "a": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "b": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "a": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "b": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "c": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "c": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "c": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "c": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    },
+    "d": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "c": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 1
+    },
+    "d": {
+     "src": "late.png",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "an answer the cache dropped",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "found",
+      "a.png",
+      true,
+      false
+     ],
+     [
+      "ghost",
+      "ghost.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "render": [
+     [
+      "found",
+      "a.png",
+      true,
+      false
+     ],
+     [
+      "ghost",
+      "ghost.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "write": "workspace/deep/ghost.png"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "found",
+      "a.png",
+      true,
+      false
+     ],
+     [
+      "ghost",
+      "ghost.png",
+      true,
+      false
+     ],
+     [
+      "new",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "found": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    },
+    "ghost": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "<root>/workspace/deep/ghost.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "found": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "<root>/workspace/deep/ghost.png",
+     "pending": false,
+     "revision": 1
+    },
+    "new": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "found": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    },
+    "ghost": {
+     "src": "<root>/workspace/deep/ghost.png",
+     "pending": false,
+     "revision": 1
+    },
+    "new": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a hook whose path changes",
+  "files": [
+   "workspace/deep/a.png",
+   "workspace/deep/b.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      "ghost.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/ghost.png"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "ghost.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false,
+      "<root>/workspace/deep"
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      null,
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      true,
+      false
+     ]
+    ]
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": "ghost.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": false,
+     "revision": 1
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/b.png",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "a folder that turns into a file's place",
+  "files": [
+   "workspace/deep/out/x.md"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "out",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "write": "workspace/pics/out"
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "out",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "out",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "out",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/pics/out",
+     "pending": false,
+     "revision": 1
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup that lands on a hook switched off",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      false,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup that lands on a hook with no source",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      null,
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup that lands on a hook with a rooted source",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "/a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup that lands on a hook with an escaped source",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a%2Epng",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a%2Epng",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a%2Epng",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a%2Epng",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a%2Epng",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup that lands on a hook with no folder",
+  "files": [
+   "workspace/deep/a.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false,
+      ""
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "remove": "workspace/deep/a.png"
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "focus": true
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a kept answer outlives a lookup that was let go",
+  "files": [
+   "workspace/deep/a.png",
+   "workspace/deep/b.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      false,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ },
+ {
+  "name": "a lookup let go for another path",
+  "files": [
+   "workspace/deep/a.png",
+   "workspace/deep/b.png"
+  ],
+  "steps": [
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "flood": 500
+   },
+   {
+    "render": [
+     [
+      "m",
+      "a.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   },
+   {
+    "render": [
+     [
+      "m",
+      "b.png",
+      true,
+      false
+     ]
+    ]
+   },
+   {
+    "land": true
+   }
+  ],
+  "out": [
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/b.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/a.png",
+     "pending": false,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": null,
+     "pending": true,
+     "revision": 0
+    }
+   },
+   {
+    "m": {
+     "src": "<root>/workspace/deep/b.png",
+     "pending": false,
+     "revision": 0
+    }
+   }
+  ]
+ }
+]

@@ -24,6 +24,7 @@ import { nodePath } from './golden/nodePath.mjs';
 import { browserFile } from './golden/browserFile.mjs';
 import { pathResolver } from './golden/pathResolver.mjs';
 import { smartPaths } from './golden/smartPaths.mjs';
+import { workspaceMedia } from './golden/workspaceMedia.mjs';
 import { mergeMessages } from './golden/mergeMessages.mjs';
 import * as workRuns from './golden/workRuns.mjs';
 
@@ -546,6 +547,7 @@ try {
     classifyMarkdownHref: pathShape.classifyMarkdownHref,
     resolveKnownLocalFileHref: (href, files) => pathShape.resolveKnownLocalFileHref(href, known(files)),
     normalizeXdtFileUrlForRenderer: pathShape.normalizeXdtFileUrlForRenderer,
+    normalizeMarkdownImageSrc: pathShape.normalizeMarkdownImageSrc,
     splitLocalLineSuffix: markdownTarget.splitLocalLineSuffix,
     looksLikeBareFileReference: markdownTarget.looksLikeBareFileReference,
     normalizeSandboxHref: markdownTarget.normalizeSandboxHref,
@@ -593,6 +595,7 @@ try {
   console.log(`${await browserFile(golden, cindy)} browser file cases`);
   console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
   console.log(`${await smartPaths(golden, pathShape, workspacePaths)} smart path steps`);
+  console.log(`${await workspaceMedia({ ...golden, define, assets: ASSETS, cindy, src }, workspacePaths)} workspace media steps`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),

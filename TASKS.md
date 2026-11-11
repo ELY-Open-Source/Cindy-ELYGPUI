@@ -299,7 +299,7 @@ listed in `tasks/done.md`.
         (`parseRemoteMediaUrl`) and its per-message cache, read by `recordTurnInlineMedia`;
         `normalizeMathDelimiters` joins with 9.8; the render-items golden takes rows with a
         Markdown image
-    - [ ] 9.6i2 The address an image loads: `normalizeMarkdownImageSrc` and
+    - [x] 9.6i2 The address an image loads: `normalizeMarkdownImageSrc` and
         `useWorkspaceMediaPath` (`WorkspaceMediaSrc`) for a local task
     - [ ] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
         `useImageLoadFailure` with `ImageMissingPlaceholder`; the click, the menu and the

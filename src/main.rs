@@ -91,6 +91,7 @@ mod window_material;
 mod window_state;
 mod work_groups;
 mod work_runs;
+mod workspace_media;
 
 use std::path::PathBuf;
 

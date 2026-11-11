@@ -421,3 +421,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   and passed as a legacy device id, so an image read as a managed video.
 - Round 2: PASS. Each lone surrogate escape reads as U+FFFD before the parse; the fields are read
   for emptiness and `k` alone.
+
+## 9.6i2 The address an image loads
+- Round 1: FAIL. A hook whose path stopped being looked up kept the callback of the lookup in
+  flight, so a cancelled answer was stored and outlived its file once the cache dropped it.
+- Round 2: PASS. A changed path or folder moves the hook's run on; an answer kept earlier
+  stays. No live desktop check was made.
