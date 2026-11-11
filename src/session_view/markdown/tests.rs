@@ -303,6 +303,130 @@ fn an_object_character_in_the_text_is_no_check(cx: &mut TestAppContext) {
     assert_eq!(check.left(), line.left(), "the box, then the character");
 }
 
+/// A space's advance in the code font at 14px, and the width of `text` in it.
+fn mono(cx: &mut VisualTestContext, text: &str) -> (f32, f32) {
+    cx.update(|window, cx| {
+        use ely_gpui_component::theme::ActiveTheme as _;
+        let mut style = window.text_style();
+        style.font_family = cx.theme().mono_family.clone();
+        (style.font_size, style.line_height) = (px(14.0).into(), px(22.4).into());
+        let width = |text: &str| {
+            f32::from(crate::session_view::flow::draw::shape(text, &style, window).width)
+        };
+        (width(" "), width(text))
+    })
+}
+
+#[gpui::test]
+fn inline_faces_stand_side_by_side(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let text = "a **bold** *em* ~~del~~ [link](https://x.y) `code` z\n\nplain\n\n# Head `code`\n\n\
+                a ` ` b\n";
+    let cx = draw(cx, dir.path(), text);
+    let line = block(cx, "0");
+    let pieces: Vec<_> = (0..11).map(|n| block(cx, &format!("0-r0-{n}"))).collect();
+    assert!(at(cx, "msg-c1-md-0-r0-11").is_none());
+    assert_eq!(pieces[0].left(), line.left());
+    for pair in pieces.windows(2) {
+        assert!(
+            (pair[1].left() - pair[0].right()).abs() < px(0.01),
+            "{pair:?}"
+        );
+    }
+    // `px-[0.4em]` of 14px about the code's text; gpui lays out to the device pixel.
+    let (_, width) = mono(cx, "code");
+    assert!((f32::from(pieces[9].size.width) - width - 11.2).abs() < 0.51);
+    // A row with code may grow by under a pixel (`inline::grown`); a plain one keeps its line.
+    let tall: f32 = line.size.height.into();
+    assert!((24.0..25.0).contains(&tall), "{tall}");
+    assert_eq!(block(cx, "1").size.height, px(24.0));
+    let head: f32 = block(cx, "2").size.height.into();
+    assert!((28.0..29.0).contains(&head), "{head}");
+    // Code that holds no text is its padding; the space after it collapsed.
+    let (pill, after) = (block(cx, "3-pill-0"), block(cx, "3-r0-2"));
+    assert!((f32::from(pill.size.width) - 11.2).abs() < 0.51);
+    assert!((after.left() - pill.right()).abs() < px(0.01));
+    assert!(at(cx, "msg-c1-md-3-r0-3").is_none());
+}
+
+#[gpui::test]
+fn only_a_link_breaks_inside_a_word(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let long = "x".repeat(400);
+    let words = vec!["wwww"; 80].join(" ");
+    let text = format!(
+        "{long}\n\nab {long} cd\n\n[{long}](https://x.y)\n\none  \ntwo\\\nthree\n\n`{words}`\n"
+    );
+    let cx = draw(cx, dir.path(), &text);
+    // `logs/review/9.6f-blink-words.log`: a word overflows; `logs/review/9.6f-blink-inline.log`.
+    assert_eq!(block(cx, "0").size.height, px(24.0));
+    assert_eq!(block(cx, "1").size.height, px(72.0));
+    let link: f32 = block(cx, "2").size.height.into();
+    assert!(link > 24.0 && link % 24.0 == 0.0, "{link}");
+    assert_eq!(
+        block(cx, "3").size.height,
+        px(72.0),
+        "a break ends its line"
+    );
+    // Code wraps between its words; only its first row starts with the padding.
+    let (m, _) = mono(cx, "");
+    let fits = |room: f32| ((room / m + 1.0) / 5.0).floor();
+    let (first, second) = (block(cx, "4-r0-0"), block(cx, "4-r1-0"));
+    let width = |words: f32| (5.0 * words - 1.0) * m;
+    assert!((f32::from(first.size.width) - 5.6 - width(fits(914.0 - 5.6))).abs() < 0.51);
+    assert!((f32::from(second.size.width) - width(fits(914.0))).abs() < 0.51);
+    assert_eq!(first.left(), second.left());
+}
+
+// `logs/review/9.6f-r1-review-evidence.log`
+#[gpui::test]
+fn a_leading_break_and_a_dropped_space_draw(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let source = "\\\n`x`\n\na` `\n\na` `  \nb\n\na ` `\n\n`a `\n";
+    let cx = draw(cx, dir.path(), source);
+    let tall: f32 = block(cx, "0").size.height.into();
+    assert!((48.0..49.0).contains(&tall), "{tall}");
+    assert!(block(cx, "0-r1-0").top() > block(cx, "0").top() + px(23.0));
+    // The box is its padding, right after the letter.
+    let pill = block(cx, "1-pill-0");
+    assert!((f32::from(pill.size.width) - 11.2).abs() < 0.51);
+    assert!(pill.left() > block(cx, "1").left());
+    let (pill, line) = (block(cx, "2-pill-0"), block(cx, "2"));
+    assert!(pill.bottom() < line.top() + px(24.5), "on the first line");
+    // The space before an empty code goes; a code with text is one box.
+    assert_eq!(block(cx, "3-pill-0").left(), block(cx, "1-pill-0").left());
+    assert!(at(cx, "msg-c1-md-4-pill-0").is_none());
+}
+
+// `logs/review/9.6f-r3-review-evidence.log`
+#[gpui::test]
+fn a_code_keeps_its_box_where_a_wrap_drops_its_space(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let (a, b) = ("a".repeat(80), "b".repeat(80));
+    let text = format!("{a}` `{b}\n\n{a}`x `{b}\n\n{a}` x`{b}\n\n`x`\n");
+    let cx = draw(cx, dir.path(), &text);
+    // The space was all the code held: its two paddings stay on the first row.
+    let stub = block(cx, "0-stub-0");
+    assert!((f32::from(block(cx, "0-stub-0").size.width) - 11.2).abs() < 0.51);
+    assert_eq!(stub.left(), block(cx, "0-r0-0").right());
+    let whole = block(cx, "0");
+    assert!(whole.size.height > px(47.0) && stub.bottom() < whole.top() + px(26.0));
+    // The code ends before the dropped space, so it closes there.
+    assert_eq!(
+        f32::from(block(cx, "1-r0-1").size.width),
+        f32::from(block(cx, "3-r0-0").size.width)
+    );
+    assert!(at(cx, "msg-c1-md-1-stub-0").is_none());
+    // The code opens on the first row and its text follows on the second.
+    assert!((f32::from(block(cx, "2-stub-0").size.width) - 5.6).abs() < 0.51);
+    assert!(
+        (f32::from(block(cx, "2-r1-0").size.width) + f32::from(block(cx, "2-stub-0").size.width)
+            - f32::from(block(cx, "3-r0-0").size.width))
+        .abs()
+            < 0.51
+    );
+}
+
 #[gpui::test]
 fn code_wraps_anywhere_and_keeps_its_empty_lines(cx: &mut TestAppContext) {
     let dir = tempfile::tempdir().unwrap();

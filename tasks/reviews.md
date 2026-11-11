@@ -307,3 +307,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   reviewer's 128 block layouts otherwise matched Blink's heights.
 - Round 2: PASS. A row is cut at the bytes the checks were recorded at. All 128 layouts agree
   with Blink, and six probes of checks at row edges pass. No live desktop check was made.
+
+## 9.6f Inline content
+- Round 1: FAIL. A paragraph that starts with a hard break panicked (`br` wrote no span), and a
+  code holding one space lost its box at a line's end. Heights agreed with Blink in 41 cases.
+- Round 2: FAIL. Both closed. New: a code with text and a last space gained a second box, and
+  the space before an empty code stayed at a line's end. 136 inputs, no panic.
+- Round 3: FAIL. Both closed (`Inline::end` trims a line's tail; 302 cases, 234 agree with
+  Blink's CODE boxes). New P1: a soft wrap dropped a code's space and its box or closing
+  padding. Fixed after the round with `Look::stub`, not reviewed again. No live desktop check
+  was made.

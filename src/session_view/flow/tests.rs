@@ -47,6 +47,35 @@ fn a_chip_breaks_as_a_word() {
     assert_eq!(rows, ["aa", "\u{fffc}", "bb"]);
 }
 
+/// As `broken`, breaking a word only after the bytes in `anywhere`.
+fn broken_in(line: &str, width: f32, anywhere: std::ops::Range<usize>) -> Vec<&str> {
+    let within = |at| anywhere.contains(&at);
+    let rows = super::rows_where(line, &even(line), width, &[], within);
+    rows.into_iter().map(|row| &line[row]).collect()
+}
+
+#[test]
+fn a_word_breaks_only_where_it_may() {
+    // `logs/review/9.6f-blink-words.log`: no break in plain text, so it overflows.
+    assert_eq!(broken_in("abcdefgh", 30.0, 0..0), ["abcdefgh"]);
+    assert_eq!(
+        broken_in("ab cdefgh ij", 30.0, 0..0),
+        ["ab", "cdefgh", "ij"]
+    );
+    // A link breaks after each of its letters, the last one too, but not before its first.
+    assert_eq!(
+        broken_in("abXXXXXXXcd", 40.0, 2..9),
+        ["abXX", "XXXX", "Xcd"]
+    );
+    assert_eq!(
+        broken_in("abcdefXYabcdef", 40.0, 6..8),
+        ["abcdefX", "Y", "abcdef"]
+    );
+    assert_eq!(broken_in("XXXcdefgh", 40.0, 0..3), ["XXX", "cdefgh"]);
+    // A space breaks first.
+    assert_eq!(broken_in("ab XXXXX", 40.0, 3..8), ["ab", "XXXX", "X"]);
+}
+
 /// A shaped line of these glyphs, each a byte index and its x.
 fn shaped(glyphs: &[(usize, f32)], width: f32) -> gpui::LineLayout {
     let glyph = |(index, x): &(usize, f32)| gpui::ShapedGlyph {

@@ -488,9 +488,9 @@ defines scope and what 1:1 means.
   `defaultUrlTransform`). `remarkStrictInlineMath` and KaTeX come with 9.8, the highlighter with 9.7;
   the golden leaves them out.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
-  bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`, golden
-  `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A text
-  with a rich answer draws nothing until 9.10; the labels, cards and action bar come with 9.11,
+  bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
+  golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
+  text with a rich answer draws nothing until 9.10; the labels, cards and action bar come with 9.11,
   `normalizeMathDelimiters` with 9.8. `session_view/markdown.rs` is `.msg-markdown`: it walks the
   renderer tree and lays the blocks out itself, since gpui has no margin collapsing, list markers or
   inline boxes. Blink's layout of Cindy's classes is measured in Cindy's Electron
@@ -500,15 +500,31 @@ defines scope and what 1:1 means.
   and the bubble, a flex item, keeps the first and last inside. A node's own `className` replaces
   the renderer's (`{...props}` comes after it), so a task list (`contains-task-list`) is a bare `ul`
   (no indent, gap or marker) and the footnotes' heading (`sr-only`) is not drawn. A run of inline
-  nodes between blocks is a block of its own; `text.rs` reads it as its text with `white-space:
-  normal` collapsed (inline faces come with 9.6f, images 9.6i) and breaks it with the bubble's flow;
-  a task's check is a 13px atom on the baseline (`marker::check`, Chromium's disabled light box: the
-  renderer sets no `color-scheme`). `marker.rs` draws a list's markers as `list_marker.cc` places
-  them: an item's marker waits for the first line under the item, at any depth, and hangs from that
-  line's rows at the item's own edge, by its own baseline; an item with no line keeps it and is one
-  line high, and an item with no block at all is a line the markers pending above it take too. A code block is `CodeBlockPre`'s surface over `pre-wrap` `break-all` rows in the code
-  face, a tab to its row's next stop of four spaces (`text::code`, Blink's `TabSize`); every fence
-  draws so until 9.7 (highlight, copy, diff) and 9.9 (mermaid). Tables come with 9.6g.
+  nodes between blocks is a block of its own. `text.rs` reads it (`Inline`): the text with
+  `white-space: normal` collapsed, a collapsed space carried through an element that holds none; the
+  face each stretch has (`Mark`: `strong` 700 in `--md-strong-fg`, `em` italic, `del` struck, `a`
+  underlined, inline `code`); a line feed per `br`; and the chips, a task's check (a 13px atom on
+  the baseline, `marker::check`, Chromium's disabled light box: the renderer sets no `color-scheme`)
+  and the pill of a code that holds no text. A line's end (`Inline::end`) drops the spaces before
+  it, through empty codes (`logs/review/9.6f-blink-trailing.log`). Where a wrap drops a code's
+  space, the code closes before it, and a code the space opened keeps its box on that row
+  (`Look::stub`). A footnote's `sup` and an image
+  read as their text until 9.6h and 9.6i. `inline.rs` draws the rows: each face is shaped in its own font, inline code
+  (`text-14`, the code font, the block's line ratio) takes `px-[0.4em]` at its two ends, and
+  `flow::rows_where` breaks the line: a word with no break overflows, as Cindy's does, and breaks
+  only after a link's letters (`overflow-wrap: anywhere`; `logs/review/9.6f-blink-words.log`). A row
+  of one plain stretch is a string; else its pieces stand side by side, code over its fill
+  (`--msg-md-inline-code-bg`, `py-[0.2em]` about the font's height, 6px corners at the code's own
+  ends). A row with code is Blink's line box (`extent`, `grown`: the leading's upper half floored;
+  `logs/review/9.6f-blink-inline.log`), so it may be a fraction taller than its line. gpui lays a
+  code piece out to the device pixel. A link's target and menu come with 9.6h. `marker.rs` draws a
+  list's markers as `list_marker.cc` places them: an item's marker waits for the first line under
+  the item, at any depth, and hangs from that line's rows at the item's own edge, by its own
+  baseline; an item with no line keeps it and is one line high, and an item with no block at all is
+  a line the markers pending above it take too. A code block is `CodeBlockPre`'s surface over
+  `pre-wrap` `break-all` rows in the code face, a tab to its row's next stop of four spaces
+  (`text::code`, Blink's `TabSize`); what `break-all` leaves whole overflows; every fence draws so
+  until 9.7 (highlight, copy, diff) and 9.9 (mermaid). Tables come with 9.6g.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

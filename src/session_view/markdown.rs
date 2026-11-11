@@ -1,5 +1,6 @@
 //! `.msg-markdown`: the renderer tree's blocks, laid out as Blink lays out Cindy's classes.
 
+mod inline;
 mod margins;
 mod marker;
 mod text;
@@ -15,10 +16,10 @@ use gpui::{
 
 use self::{
     margins::{Margins, Stack, collapse},
-    marker::{CHECK, Kind, Marker},
-    text::{Inline, Metrics, Piece, metrics},
+    marker::{Kind, Marker},
+    text::{Inline, Mark, Metrics, Piece, metrics},
 };
-use super::flow::{CHIP, draw};
+use super::flow::draw;
 use crate::{
     appearance_settings::{code_size, text_size},
     markdown::hast::{self, Element, Hast, Prop},
@@ -73,11 +74,6 @@ fn open(own: (f32, f32), laid: Vec<Laid>, dress: impl FnOnce(Div) -> Div) -> Lai
     Laid::new(margins, element)
 }
 
-/// A stretch of a row's text, if it holds any.
-fn text_part(text: &str) -> Option<AnyElement> {
-    (!text.is_empty()).then(|| text.to_owned().into_any_element())
-}
-
 /// The pending markers' items lie `by` further from the lines that follow.
 fn shift(markers: &mut [Marker], by: f32) {
     markers.iter_mut().for_each(|marker| marker.x += by);
@@ -130,12 +126,12 @@ impl Walk<'_> {
     /// A text block's rows container, which the pending markers hang from.
     fn rows(
         &self,
-        (face, style, at): (&Face, &TextStyle, &Metrics),
+        (face, style, baseline): (&Face, &TextStyle, f32),
         rows: Vec<AnyElement>,
         markers: &mut Vec<Marker>,
     ) -> Div {
         let hung = markers.drain(..);
-        let hung = hung.map(|marker| marker.draw(at.baseline, self.zoom, self.window));
+        let hung = hung.map(|marker| marker.draw(baseline, self.zoom, self.window));
         div()
             .relative()
             .flex()
@@ -164,37 +160,31 @@ impl Walk<'_> {
         markers: &mut Vec<Marker>,
     ) -> Option<AnyElement> {
         let mut inline = Inline::default();
-        nodes.iter().for_each(|node| inline.read(node));
+        (nodes.iter()).for_each(|node| inline.read(node, Mark::default()));
+        inline.end();
         if inline.text.is_empty() {
             return None;
         }
-        let rem = self.window.rem_size();
-        let style = self.style(face, false);
-        let at = metrics(&style, self.window);
-        let side = css(CHECK).to_pixels(rem);
-        let chips: Vec<_> = inline.checks.iter().map(|(at, _)| (*at, side)).collect();
-        let width = css(width).to_pixels(rem);
-        let broken = draw::broken((&inline.text, &[]), &chips, (&style, width), self.window).1;
-        // A check is known by its byte: the text may hold a U+FFFC of its own.
-        let row = |row: std::ops::Range<usize>| {
-            let within = |(_, (byte, _)): &(usize, &(usize, bool))| row.contains(byte);
-            let mut checks = inline.checks.iter().enumerate().filter(within).peekable();
-            if checks.peek().is_none() {
-                return inline.text[row].to_owned().into_any_element();
-            }
-            let (mut parts, mut from) = (Vec::new(), row.start);
-            for (n, (byte, checked)) in checks {
-                parts.extend(text_part(&inline.text[from..*byte]));
-                let selector = format!("{path}-check-{n}");
-                parts.push(marker::check(*checked, at.baseline / self.zoom, selector));
-                from = byte + CHIP.len_utf8();
-            }
-            parts.extend(text_part(&inline.text[from..row.end]));
-            self.row(&at).children(parts).into_any_element()
+        let appearance = self.cx.global::<Appearance>();
+        let size = text_size(14.0, self.cx);
+        let look = inline::Look {
+            path,
+            face,
+            code: Face {
+                size,
+                line: size * face.line / face.size,
+                ..face.clone()
+            },
+            mono: self.cx.theme().mono_family.clone(),
+            strong: appearance.inherited("md-strong-fg").unwrap_or(face.color),
+            fill: appearance.token("msg-md-inline-code-bg"),
+            width: css(width).to_pixels(self.window.rem_size()),
+            zoom: self.zoom,
         };
-        let rows = broken.into_iter().map(row).collect();
+        let drawn = look.draw(&inline, self.window);
+        let style = self.style(face, false);
         let selector = path.to_owned();
-        let block = self.rows((face, &style, &at), rows, markers);
+        let block = self.rows((face, &style, drawn.baseline), drawn.rows, markers);
         Some(block.debug_selector(move || selector).into_any_element())
     }
 
@@ -241,7 +231,7 @@ impl Walk<'_> {
         let mut none = Vec::new();
         let taken = if rows.is_empty() { &mut none } else { markers };
         shift(taken, CODE);
-        let rows = self.rows((&code, &style, &at), rows, taken);
+        let rows = self.rows((&code, &style, at.baseline), rows, taken);
         let appearance = self.cx.global::<Appearance>();
         let selector = path.to_owned();
         let surface = div()

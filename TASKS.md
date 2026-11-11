@@ -240,8 +240,14 @@ listed in `tasks/done.md`.
       footnotes resolved, `rehype-slug`'s ids, `rehypeFencedCodeMarker`
   - [x] 9.6e Blocks drawn in an assistant text row (`.msg-markdown`): paragraphs, headings, lists and
       task lists, block quotes, rules, plain code blocks (their chrome with 9.7)
-  - [ ] 9.6f Inline content in the flow's rows: emphasis, strong, strikethrough, inline code, breaks,
+  - [!] 9.6f Inline content in the flow's rows: emphasis, strong, strikethrough, inline code, breaks,
       the link's face
+    - Open after round 3 (P1): a soft wrap dropped the space a code held and, with it, the code's
+      box (`aaaa` + a code of one space + `bbbb` at 60px) or its closing padding (a code `x `).
+      Fixed after the round and not reviewed again: `Look::stub` draws the box the wrap left and
+      a piece ends where only dropped spaces remain of its code
+      (`a_code_keeps_its_box_where_a_wrap_drops_its_space`). A wrapped row's fit does not count
+      the closing padding after a dropped space; Blink's count there is not measured.
   - [ ] 9.6g Tables: columns, alignment, the scroll of a wide table
   - [ ] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
       session, project and session-card links, in-document anchors

@@ -3,17 +3,52 @@
 use gpui::{Pixels, TextStyle, Window};
 
 use crate::{
-    markdown::hast::Hast,
-    session_view::flow::{Atom, CHIP, atoms, draw::shape, rows},
+    markdown::hast::{Hast, Prop},
+    session_view::flow::{Atom, CHIP, atoms, draw::shape, rows_where},
 };
 
-/// The text of a run of inline nodes under `white-space: normal`, a task check as a `CHIP`.
-#[derive(Default)]
+/// The face an inline element gives its text.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Mark {
+    pub strong: bool,
+    pub italic: bool,
+    pub strike: bool,
+    pub link: bool,
+    /// Which inline code holds the text.
+    pub code: Option<usize>,
+}
+
+/// An atom that is no text: a task's check, or an inline code that holds none.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Chip {
+    Check(bool),
+    Pill,
+}
+
+/// A run of inline nodes under `white-space: normal`: a `CHIP` per chip, a line feed per `br`.
 pub struct Inline {
     pub text: String,
-    /// Each check's byte, and whether it is checked.
-    pub checks: Vec<(usize, bool)>,
-    gap: bool,
+    /// Where each face starts; it holds to the next one.
+    pub spans: Vec<(usize, Mark)>,
+    pub chips: Vec<(usize, Chip)>,
+    /// The collapsed space not yet written, in its first space's face.
+    gap: Option<Mark>,
+    /// Whether a space, or a line's start, came last: the spaces after it collapse.
+    spaced: bool,
+    codes: usize,
+}
+
+impl Default for Inline {
+    fn default() -> Self {
+        Self {
+            text: String::new(),
+            spans: Vec::new(),
+            chips: Vec::new(),
+            gap: None,
+            spaced: true,
+            codes: 0,
+        }
+    }
 }
 
 /// The white space Blink collapses (`logs/review/9.6e-blink-whitespace.log`).
@@ -22,34 +57,117 @@ fn collapses(c: char) -> bool {
 }
 
 impl Inline {
+    fn push(&mut self, c: char, mark: Mark) {
+        if self.spans.last().is_none_or(|(_, last)| *last != mark) {
+            self.spans.push((self.text.len(), mark));
+        }
+        self.text.push(c);
+    }
+
     fn end_gap(&mut self) {
-        if std::mem::take(&mut self.gap) {
-            self.text.push(' ');
+        if let Some(mark) = self.gap.take() {
+            self.push(' ', mark);
         }
     }
 
-    /// Emphasis, links, breaks and images come with 9.6f to 9.6i: a node reads as its text.
-    pub fn read(&mut self, node: &Hast) {
-        match node {
-            Hast::Text(value) => {
-                for c in value.chars() {
-                    if collapses(c) {
-                        self.gap = !self.text.is_empty();
-                    } else {
+    fn pill(&mut self, mark: Mark) {
+        self.chips.push((self.text.len(), Chip::Pill));
+        self.push(CHIP, mark);
+    }
+
+    /// A line's end drops the spaces before it, through empty codes; a code left empty keeps its box.
+    pub fn end(&mut self) {
+        self.end_gap();
+        let mut start = self.text.len();
+        for (at, c) in self.text.char_indices().rev() {
+            let pill = c == CHIP && self.chips.contains(&(at, Chip::Pill));
+            if c != ' ' && !pill {
+                break;
+            }
+            start = at;
+        }
+        let held = (start > 0).then(|| self.mark(start - 1).code).flatten();
+        let tail = self.text[start..].char_indices();
+        let tail: Vec<_> = tail.map(|(at, c)| (c, self.mark(start + at))).collect();
+        self.text.truncate(start);
+        self.spans.retain(|(at, _)| *at < start);
+        self.chips.retain(|(at, _)| *at < start);
+        for (c, mark) in tail {
+            if c == CHIP || mark.code.is_some_and(|code| held != Some(code)) {
+                self.pill(Mark { code: None, ..mark });
+            }
+        }
+    }
+
+    /// The face of the byte at `at`.
+    pub fn mark(&self, at: usize) -> Mark {
+        let next = self.spans.partition_point(|(start, _)| *start <= at);
+        self.spans[next - 1].1
+    }
+
+    /// A footnote's `sup` and an image read as their text until 9.6h and 9.6i.
+    pub fn read(&mut self, node: &Hast, mark: Mark) {
+        let Hast::Element(element) = node else {
+            let Hast::Text(value) = node else { return };
+            for c in value.chars() {
+                match collapses(c) {
+                    true if self.spaced => {}
+                    true => (self.gap, self.spaced) = (Some(mark), true),
+                    false => {
                         self.end_gap();
-                        self.text.push(c);
+                        self.push(c, mark);
+                        self.spaced = false;
                     }
                 }
             }
-            Hast::Element(element) if element.tag == "input" => {
+            return;
+        };
+        let inner = match element.tag {
+            "em" => Mark {
+                italic: true,
+                ..mark
+            },
+            "strong" => Mark {
+                strong: true,
+                ..mark
+            },
+            "del" => Mark {
+                strike: true,
+                ..mark
+            },
+            "a" => Mark { link: true, ..mark },
+            "code" => Mark {
+                code: Some(self.codes),
+                ..mark
+            },
+            _ => mark,
+        };
+        let before = self.text.len();
+        match element.tag {
+            "input" => {
                 self.end_gap();
-                let checked =
-                    element.prop("checked") == Some(&crate::markdown::hast::Prop::Flag(true));
-                self.checks.push((self.text.len(), checked));
-                self.text.push(CHIP);
+                let checked = element.prop("checked") == Some(&Prop::Flag(true));
+                self.chips.push((self.text.len(), Chip::Check(checked)));
+                self.push(CHIP, mark);
+                self.spaced = false;
             }
-            Hast::Element(element) => element.children.iter().for_each(|child| self.read(child)),
-            Hast::Raw => {}
+            "br" => {
+                self.end();
+                self.push('\n', mark);
+                self.spaced = true;
+            }
+            _ => element
+                .children
+                .iter()
+                .for_each(|child| self.read(child, inner)),
+        }
+        if element.tag == "code" {
+            self.codes += 1;
+            // With no text and no space of its own the box is its padding alone.
+            if self.text.len() == before && self.gap != Some(inner) {
+                self.end_gap();
+                self.pill(mark);
+            }
         }
     }
 }
@@ -58,6 +176,7 @@ impl Inline {
 pub struct Metrics {
     pub line: f32,
     pub ascent: f32,
+    pub descent: f32,
     /// The baseline, from the line's top.
     pub baseline: f32,
 }
@@ -71,6 +190,7 @@ pub fn metrics(style: &TextStyle, window: &Window) -> Metrics {
     Metrics {
         line: line.into(),
         ascent: probe.ascent.into(),
+        descent: probe.descent.into(),
         baseline: ((line - probe.ascent - probe.descent) / 2.0 + probe.ascent).into(),
     }
 }
@@ -138,7 +258,14 @@ pub fn code(line: &str, style: &TextStyle, width: Pixels, window: &Window) -> Ve
         let rest = &line[from..];
         let atoms = tabbed(line, &shaped, from, space);
         let all = 0..rest.len();
-        let broken = rows(rest, &atoms, width.into(), std::slice::from_ref(&all));
+        // `break-all` alone: what it does not break overflows (`9.6f-blink-words.log`).
+        let broken = rows_where(
+            rest,
+            &atoms,
+            width.into(),
+            std::slice::from_ref(&all),
+            |_| false,
+        );
         // A tab's width counts from its own row's start, so a row after a wrap is read again.
         let again = broken
             .get(1)
@@ -164,12 +291,12 @@ pub fn code(line: &str, style: &TextStyle, width: Pixels, window: &Window) -> Ve
 
 #[cfg(test)]
 mod tests {
-    use super::{Inline, tab};
+    use super::{Chip, Inline, Mark, tab};
     use crate::markdown::hast::Hast;
 
     fn collapsed(text: &str) -> String {
         let mut inline = Inline::default();
-        inline.read(&Hast::Text(text.into()));
+        inline.read(&Hast::Text(text.into()), Mark::default());
         inline.text
     }
 
@@ -199,9 +326,154 @@ mod tests {
     fn a_gap_joins_across_nodes() {
         let mut inline = Inline::default();
         for part in [" a ", " ", " b", " "] {
-            inline.read(&Hast::Text(part.into()));
+            inline.read(&Hast::Text(part.into()), Mark::default());
         }
         assert_eq!(inline.text, "a b");
+    }
+
+    /// The reader over the renderer's own tree for `source`'s first paragraph.
+    fn read(source: &str) -> Inline {
+        use crate::markdown::hast::{Urls, render};
+        let tree = render(source, true, Urls::Trusted);
+        let Some(Hast::Element(paragraph)) = tree.first() else {
+            panic!("a paragraph")
+        };
+        let mut inline = Inline::default();
+        (paragraph.children.iter()).for_each(|node| inline.read(node, Mark::default()));
+        inline.end();
+        inline
+    }
+
+    #[test]
+    fn a_break_that_starts_a_paragraph_has_a_face() {
+        let inline = read("\\\n`x`");
+        assert_eq!(inline.text, "\nx");
+        assert_eq!((inline.mark(0).code, inline.mark(1).code), (None, Some(0)));
+    }
+
+    // `logs/review/9.6f-r1-review-evidence.log`
+    #[test]
+    fn a_code_whose_space_a_line_end_drops_is_a_pill() {
+        let inline = read("a` `");
+        assert_eq!(inline.text, "a\u{fffc}");
+        assert_eq!(inline.chips, [(1, Chip::Pill)]);
+        let inline = read("a` `  \nb");
+        assert_eq!(inline.text, "a\u{fffc}\nb");
+        assert_eq!(inline.chips, [(1, Chip::Pill)]);
+        let inline = read("**a` `**");
+        assert_eq!(inline.chips, [(1, Chip::Pill)]);
+        assert!(inline.mark(1).strong && inline.mark(1).code.is_none());
+        // A space no code holds leaves nothing.
+        assert_eq!(read("a  \nb").chips, []);
+        // `logs/review/9.6f-r2-review-evidence.log`: a code with text keeps one box.
+        for source in ["`a `", "`a `  \nb"] {
+            let inline = read(source);
+            assert_eq!(inline.chips, [], "{source}");
+            assert_eq!(inline.text.split('\n').next(), Some("a"), "{source}");
+        }
+        // The space before an empty code is the line's last, and goes.
+        let inline = read("a ` `");
+        assert_eq!(
+            (inline.text.as_str(), &inline.chips[..]),
+            ("a\u{fffc}", &[(1, Chip::Pill)][..])
+        );
+        let inline = read("`a ` ` `");
+        assert_eq!(
+            (inline.text.as_str(), &inline.chips[..]),
+            ("a\u{fffc}", &[(1, Chip::Pill)][..])
+        );
+        assert_eq!((inline.mark(0).code, inline.mark(1).code), (Some(0), None));
+        // Two codes that hold a space each are two boxes.
+        let inline = read("a` ` ` `");
+        assert_eq!(inline.text, "a\u{fffc}\u{fffc}");
+        assert_eq!(inline.chips.len(), 2);
+    }
+
+    #[test]
+    fn each_inline_element_gives_its_face() {
+        let inline = read("a **b *c*** ~~d~~ [e `f`](https://x.y) g");
+        assert_eq!(inline.text, "a b c d e f g");
+        let face = |at: usize| inline.mark(at);
+        let plain = Mark::default();
+        assert_eq!(face(0), plain);
+        assert_eq!(
+            face(2),
+            Mark {
+                strong: true,
+                ..plain
+            }
+        );
+        assert_eq!(
+            face(3),
+            Mark {
+                strong: true,
+                ..plain
+            },
+            "the space inside"
+        );
+        let both = Mark {
+            strong: true,
+            italic: true,
+            ..plain
+        };
+        assert_eq!(face(4), both);
+        assert_eq!(face(5), plain);
+        assert_eq!(
+            face(6),
+            Mark {
+                strike: true,
+                ..plain
+            }
+        );
+        assert_eq!(
+            face(8),
+            Mark {
+                link: true,
+                ..plain
+            }
+        );
+        let code = Mark {
+            link: true,
+            code: Some(0),
+            ..plain
+        };
+        assert_eq!(face(10), code);
+        assert_eq!(face(12), plain);
+        assert_eq!(inline.spans.len(), 9);
+    }
+
+    #[test]
+    fn a_break_ends_its_line_and_drops_the_space_about_it() {
+        assert_eq!(read("one  \ntwo\\\n three").text, "one\ntwo\nthree");
+    }
+
+    #[test]
+    fn code_that_holds_no_text_is_a_pill() {
+        // Its space collapses into the one before, and so does the space after it.
+        let inline = read("a ` ` b `x` `y`");
+        assert_eq!(inline.text, "a \u{fffc}b x y");
+        assert_eq!(inline.chips, [(2, Chip::Pill)]);
+        assert_eq!(inline.mark(7).code, Some(1));
+        assert_eq!(inline.mark(9).code, Some(2), "each code is its own box");
+        // With no space before it the code keeps its own.
+        let inline = read("a` `b");
+        assert_eq!((inline.text.as_str(), inline.chips.len()), ("a b", 0));
+        assert_eq!(inline.mark(1).code, Some(0));
+        // A task's check is a chip too, and a space follows it.
+        let tree =
+            crate::markdown::hast::render("- [x] a", true, crate::markdown::hast::Urls::Trusted);
+        let Some(Hast::Element(list)) = tree.first() else {
+            panic!("a list")
+        };
+        let Some(Hast::Element(item)) =
+            list.children.iter().find(|c| matches!(c, Hast::Element(_)))
+        else {
+            panic!("an item")
+        };
+        let mut inline = Inline::default();
+        (item.children.iter()).for_each(|node| inline.read(node, Mark::default()));
+        assert_eq!(inline.text, "\u{fffc} a");
+        assert_eq!(inline.chips, [(0, Chip::Check(true))]);
     }
 
     #[test]

@@ -134,10 +134,25 @@ fn breaks(line: &str, all: &[Range<usize>]) -> Vec<usize> {
 
 /// The rows of `line` at `width`, in bytes; white space at a wrap hangs; `all` is `break-all`.
 pub fn rows(line: &str, atoms: &[Atom], width: f32, all: &[Range<usize>]) -> Vec<Range<usize>> {
+    rows_where(line, atoms, width, all, |_| true)
+}
+
+/// As `rows`; a row with no break breaks after a byte only where `anywhere` holds for it.
+pub fn rows_where(
+    line: &str,
+    atoms: &[Atom],
+    width: f32,
+    all: &[Range<usize>],
+    anywhere: impl Fn(usize) -> bool,
+) -> Vec<Range<usize>> {
     let breaks = breaks(line, all);
     let (mut rows, mut first) = (Vec::new(), 0);
     let (mut used, mut candidate, mut segment) = (0.0, None, None::<Range<usize>>);
+    let mut soft = None;
     for (nth, atom) in atoms.iter().enumerate() {
+        if nth > first && anywhere(atoms[nth - 1].at) {
+            soft = Some((nth, used));
+        }
         let moved = segment.as_ref().is_none_or(|s| !s.contains(&atom.at));
         let hung = line[atom.at..].starts_with(hangs);
         if !hung && moved {
@@ -153,10 +168,12 @@ pub fn rows(line: &str, atoms: &[Atom], width: f32, all: &[Range<usize>]) -> Vec
         if hung || used <= width || nth == first {
             continue;
         }
-        let (cut, before) = candidate.take().unwrap_or((nth, used - atom.advance));
+        let Some((cut, before)) = candidate.take().or(soft) else {
+            continue;
+        };
         let row = &line[atoms[first].at..atoms[cut].at];
         rows.push(atoms[first].at..atoms[first].at + row.trim_end_matches(hangs).len());
-        (first, used) = (cut, used - before);
+        (first, used, soft) = (cut, used - before, None);
     }
     rows.push(atoms.get(first).map_or(0, |atom| atom.at)..line.len());
     rows
