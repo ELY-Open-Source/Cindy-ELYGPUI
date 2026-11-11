@@ -4,7 +4,10 @@ use gpui::{Pixels, TextStyle, Window};
 
 use crate::{
     markdown::hast::{Element, Hast, Prop},
-    session_view::flow::{Atom, CHIP, atoms, draw::shape, rows_where},
+    session_view::{
+        flow::{Atom, CHIP, atoms, draw::shape, rows_where},
+        target_link::file::FileFace,
+    },
 };
 
 /// The face an inline element gives its text.
@@ -16,6 +19,8 @@ pub struct Mark {
     /// Which of the text's `a` nodes holds it.
     pub link: Option<usize>,
     pub sup: bool,
+    /// Which file chip's box holds the text, the innermost.
+    pub file: Option<usize>,
     /// Which inline code holds the text.
     pub code: Option<usize>,
 }
@@ -25,6 +30,19 @@ pub struct Mark {
 pub enum Chip {
     Check(bool),
     Pill,
+    /// A resolved file's `FileTypeIcon`.
+    Icon(&'static [u8]),
+}
+
+/// The face of an `a` or an inline `code` that is a resolved target, by its node.
+pub type Files<'a> = &'a dyn Fn(*const Element) -> Option<FileFace>;
+
+/// A file chip's box: its node, the box and the link about it, and the text it holds.
+pub struct Held {
+    pub node: *const Element,
+    pub parent: Option<usize>,
+    pub link: Option<usize>,
+    pub range: std::ops::Range<usize>,
 }
 
 /// A run of inline nodes under `white-space: normal`: a `CHIP` per chip, a line feed per `br`.
@@ -35,6 +53,7 @@ pub struct Inline {
     pub chips: Vec<(usize, Chip)>,
     /// The `a` nodes read, by address.
     pub links: Vec<*const Element>,
+    pub files: Vec<Held>,
     /// The collapsed space not yet written, in its first space's face.
     gap: Option<Mark>,
     /// Whether a space, or a line's start, came last: the spaces after it collapse.
@@ -49,6 +68,7 @@ impl Default for Inline {
             spans: Vec::new(),
             chips: Vec::new(),
             links: Vec::new(),
+            files: Vec::new(),
             gap: None,
             spaced: true,
             codes: 0,
@@ -111,7 +131,7 @@ impl Inline {
     }
 
     /// An image reads as its text until 9.6i.
-    pub fn read(&mut self, node: &Hast, mark: Mark) {
+    pub fn read(&mut self, node: &Hast, mark: Mark, files: Files) {
         let Hast::Element(element) = node else {
             let Hast::Text(value) = node else { return };
             for c in value.chars() {
@@ -127,7 +147,12 @@ impl Inline {
             }
             return;
         };
-        let inner = match element.tag {
+        let file = match element.tag {
+            "a" | "code" => files(element),
+            _ => None,
+        };
+        let boxed = file.is_some_and(|file| file.boxed);
+        let mut inner = match element.tag {
             "em" => Mark {
                 italic: true,
                 ..mark
@@ -148,12 +173,30 @@ impl Inline {
                 }
             }
             "sup" => Mark { sup: true, ..mark },
-            "code" => Mark {
+            // A resolved inline code is the chip's box, not inline code's.
+            "code" if !boxed => Mark {
                 code: Some(self.codes),
                 ..mark
             },
             _ => mark,
         };
+        if boxed {
+            self.end_gap();
+            let held = Held {
+                node: element,
+                parent: mark.file,
+                link: mark.link,
+                range: self.text.len()..self.text.len(),
+            };
+            self.files.push(held);
+            inner.file = Some(self.files.len() - 1);
+        }
+        if let Some(icon) = file.and_then(|file| file.icon) {
+            self.end_gap();
+            self.chips.push((self.text.len(), Chip::Icon(icon)));
+            self.push(CHIP, inner);
+            self.spaced = false;
+        }
         let before = self.text.len();
         match element.tag {
             "input" => {
@@ -171,9 +214,12 @@ impl Inline {
             _ => element
                 .children
                 .iter()
-                .for_each(|child| self.read(child, inner)),
+                .for_each(|child| self.read(child, inner, files)),
         }
-        if element.tag == "code" {
+        if let Some(held) = inner.file.filter(|_| boxed) {
+            self.files[held].range.end = self.text.len();
+        }
+        if element.tag == "code" && !boxed {
             self.codes += 1;
             // With no text and no space of its own the box is its padding alone.
             if self.text.len() == before && self.gap != Some(inner) {
@@ -309,7 +355,7 @@ mod tests {
 
     fn collapsed(text: &str) -> String {
         let mut inline = Inline::default();
-        inline.read(&Hast::Text(text.into()), Mark::default());
+        inline.read(&Hast::Text(text.into()), Mark::default(), &|_| None);
         inline.text
     }
 
@@ -339,7 +385,7 @@ mod tests {
     fn a_gap_joins_across_nodes() {
         let mut inline = Inline::default();
         for part in [" a ", " ", " b", " "] {
-            inline.read(&Hast::Text(part.into()), Mark::default());
+            inline.read(&Hast::Text(part.into()), Mark::default(), &|_| None);
         }
         assert_eq!(inline.text, "a b");
     }
@@ -352,7 +398,7 @@ mod tests {
             panic!("a paragraph")
         };
         let mut inline = Inline::default();
-        (paragraph.children.iter()).for_each(|node| inline.read(node, Mark::default()));
+        (paragraph.children.iter()).for_each(|node| inline.read(node, Mark::default(), &|_| None));
         inline.end();
         inline
     }
@@ -484,7 +530,7 @@ mod tests {
             panic!("an item")
         };
         let mut inline = Inline::default();
-        (item.children.iter()).for_each(|node| inline.read(node, Mark::default()));
+        (item.children.iter()).for_each(|node| inline.read(node, Mark::default(), &|_| None));
         assert_eq!(inline.text, "\u{fffc} a");
         assert_eq!(inline.chips, [(0, Chip::Check(true))]);
     }

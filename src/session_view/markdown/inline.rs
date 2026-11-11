@@ -1,6 +1,10 @@
 //! A block's inline text as rows: each face shaped in its own font, then drawn piece by piece.
 
+mod file_box;
+
 use std::ops::Range;
+
+use file_box::{At, Draw, ICON, Part};
 
 use gpui::{
     AnyElement, Div, FontStyle, FontWeight, Hsla, InteractiveElement as _, IntoElement as _,
@@ -43,7 +47,15 @@ pub struct Look<'a> {
 }
 
 /// A code box a wrap left: whether the dropped space was all it held, and the link that holds it.
-type Stub = (bool, Option<usize>);
+type Stub = (bool, Mark);
+
+/// A row to draw: its place among the block's rows, its bytes, and where the next row starts.
+struct Row {
+    nth: usize,
+    range: Range<usize>,
+    next: usize,
+    stub: Option<Stub>,
+}
 
 /// The rows, the first one's baseline under the block's top and their height, in window pixels.
 pub struct Drawn {
@@ -82,12 +94,17 @@ fn pieces(inline: &Inline, range: &Range<usize>) -> Vec<(Range<usize>, Mark)> {
 impl Look<'_> {
     /// The face's size in CSS pixels; `sup` has `line-height: 0`, so the line stays.
     fn size(&self, mark: Mark) -> f32 {
-        let face = if mark.code.is_some() {
+        let face = if Self::mono(mark) {
             &self.code
         } else {
             self.face
         };
         face.size * if mark.sup { SUP.0 } else { 1.0 }
+    }
+
+    /// Inline code and a file chip are `font-mono text-14`.
+    fn mono(mark: Mark) -> bool {
+        mark.code.is_some() || mark.file.is_some()
     }
 
     /// Whether the text's `a` draws as a link.
@@ -97,7 +114,7 @@ impl Look<'_> {
     }
 
     fn style(&self, mark: Mark, window: &Window) -> TextStyle {
-        let face = if mark.code.is_some() {
+        let face = if Self::mono(mark) {
             &self.code
         } else {
             self.face
@@ -113,7 +130,7 @@ impl Look<'_> {
         if mark.italic {
             style.font_style = FontStyle::Italic;
         }
-        if mark.code.is_some() {
+        if Self::mono(mark) {
             style.font_family = self.mono.clone();
         }
         style
@@ -129,6 +146,7 @@ impl Look<'_> {
         match chip {
             Chip::Check(_) => CHECK * self.zoom,
             Chip::Pill => 2.0 * self.pad().0,
+            Chip::Icon(_) => (ICON.0 + ICON.1) * self.zoom,
         }
     }
 
@@ -156,6 +174,7 @@ impl Look<'_> {
             let atom = all.iter_mut().find(|atom| atom.at + line.start == *at);
             atom.expect("a chip's stand-in is shaped").advance = self.chip_width(*chip);
         }
+        self.pad_files(inline, line, &mut all);
         all
     }
 
@@ -175,19 +194,29 @@ impl Look<'_> {
             })
             .when(mark.italic, |el| el.italic())
             .when(mark.strike, |el| el.line_through())
-            .when(self.linked(inline, mark), |el| el.underline())
+            .when(self.linked(inline, mark) || mark.file.is_some(), |el| {
+                el.underline()
+            })
             .when(mark.sup, |el| {
                 let size = self.size(mark);
                 el.relative().top(css(-SUP.1 * size)).text_size(css(size))
             });
-        if mark.code.is_none() && !mark.sup {
+        if !Self::mono(mark) && !mark.sup {
             return piece.mt(css(top / self.zoom)).child(text);
         }
         let own = metrics(&self.style(mark, window), window);
+        // Text of another size or font stands on the row's baseline.
+        let lift = css((top + root.baseline - own.baseline) / self.zoom);
+        if !Self::mono(mark) {
+            return piece.mt(lift).child(text);
+        }
+        let piece = piece
+            .mt(lift)
+            .font_family(self.mono.clone())
+            .text_size(css(self.size(mark)))
+            .line_height(css(self.code.line));
         if mark.code.is_none() {
-            // The smaller text stands on the row's baseline before `top` lifts it.
-            let top = top + root.baseline - own.baseline;
-            return piece.mt(css(top / self.zoom)).child(text);
+            return piece.child(text);
         }
         // The box is the font's own height and the padding; its ends are the code's ends.
         let (pad_x, pad_y) = self.pad();
@@ -210,12 +239,8 @@ impl Look<'_> {
             .bg(self.fill);
         piece
             .relative()
-            .mt(css((top + root.baseline - own.baseline) / self.zoom))
             .when(starts, |el| el.pl(css(pad_x / self.zoom)))
             .when(ends, |el| el.pr(css(pad_x / self.zoom)))
-            .font_family(self.mono.clone())
-            .text_size(css(self.size(mark)))
-            .line_height(css(self.code.line))
             .child(fill)
             .child(div().relative().child(text))
     }
@@ -223,34 +248,46 @@ impl Look<'_> {
     /// The code whose first space a wrap after `row` dropped.
     fn stub(inline: &Inline, row: &Range<usize>, next: usize) -> Option<Stub> {
         let at = (row.end..next).find(|at| inline.mark(*at).code.is_some())?;
-        let Mark { code, link, .. } = inline.mark(at);
-        let opens = at == 0 || inline.mark(at - 1).code != code;
-        let whole = at + 1 == inline.text.len() || inline.mark(at + 1).code != code;
-        opens.then_some((whole, link))
+        let mark = inline.mark(at);
+        let opens = at == 0 || inline.mark(at - 1).code != mark.code;
+        let whole = at + 1 == inline.text.len() || inline.mark(at + 1).code != mark.code;
+        opens.then_some((whole, mark))
     }
 
-    /// `piece`, the box `name` of row `row`, with its link's listeners when a link holds it.
+    /// The link whose box a part is: none when a chip inside that link holds the part.
+    fn link_of(inline: &Inline, mark: Mark) -> Option<usize> {
+        let mut file = mark.file;
+        while let Some(held) = file.map(|held| &inline.files[held]) {
+            if held.link == mark.link {
+                return None;
+            }
+            file = held.parent;
+        }
+        mark.link
+    }
+
+    /// `piece`, the box `name` of row `row`, with its link's listeners.
     fn boxed(
         &self,
         inline: &Inline,
-        link: Option<usize>,
+        link: usize,
         piece: Div,
         (row, name): (usize, &str),
     ) -> AnyElement {
-        match link {
-            Some(link) => {
-                let at = format!("r{row}-{name}");
-                self.anchors.dress(inline.links[link], piece, &at)
-            }
-            None => piece.into_any_element(),
-        }
+        let at = format!("r{row}-{name}");
+        self.anchors.dress(inline.links[link], piece, &at)
     }
 
     /// One row: its pieces and chips side by side, on the line box Blink gives them.
     fn row(
         &self,
         inline: &Inline,
-        (nth, row, stub): (usize, Range<usize>, Option<Stub>),
+        Row {
+            nth,
+            range: row,
+            next,
+            stub,
+        }: Row,
         root: &Metrics,
         window: &Window,
     ) -> (AnyElement, f32, f32) {
@@ -279,7 +316,7 @@ impl Look<'_> {
             ),
             window,
         );
-        let boxed = held.iter().any(|(_, mark)| mark.code.is_some())
+        let boxed = held.iter().any(|(_, mark)| Self::mono(*mark))
             || stub.is_some()
             || chips(&row).any(|(_, (_, chip))| *chip == Chip::Pill);
         let (top, height) = match boxed {
@@ -304,44 +341,60 @@ impl Look<'_> {
                 .when(whole, |el| el.rounded_r(css(6.0)))
                 .bg(self.fill)
         };
-        let mut parts = Vec::new();
+        let place = At {
+            nth,
+            row: &row,
+            next,
+            top,
+            root,
+            code: &code,
+        };
+        let mut parts: Vec<Part> = Vec::new();
         for (range, mark) in held {
             let mut from = range.start;
-            let say = |from: usize, to: usize, parts: &mut Vec<AnyElement>| {
+            let say = |from: usize, to: usize, parts: &mut Vec<Part>| {
                 if from < to {
                     let n = parts.len();
                     let selector = format!("{}-r{nth}-{n}", self.path);
                     let piece = self.piece(inline, (from..to, mark), (top, root), window);
                     let piece = piece.debug_selector(move || selector);
-                    parts.push(self.boxed(inline, mark.link, piece, (nth, &n.to_string())));
+                    let link = Self::link_of(inline, mark);
+                    parts.push((mark.file, Draw::held(link, piece, n.to_string())));
                 }
             };
             for (n, (at, chip)) in chips(&range) {
                 say(from, *at, &mut parts);
                 let baseline = (top + root.baseline) / self.zoom;
-                parts.push(match chip {
+                let part = match chip {
                     Chip::Check(checked) => {
                         let selector = format!("{}-check-{n}", self.path);
-                        marker::check(*checked, baseline, selector)
+                        Draw::Plain(marker::check(*checked, baseline, selector))
                     }
                     Chip::Pill => {
                         let pill = pill(true, format!("{}-pill-{n}", self.path));
-                        self.boxed(inline, mark.link, pill, (nth, &format!("pill-{n}")))
+                        Draw::held(Self::link_of(inline, mark), pill, format!("pill-{n}"))
                     }
-                });
+                    Chip::Icon(source) => {
+                        let icon =
+                            self.icon(source, mark, &place, format!("{}-icon-{n}", self.path));
+                        Draw::held(Self::link_of(inline, mark), icon, format!("icon-{n}"))
+                    }
+                };
+                parts.push((mark.file, part));
                 from = at + CHIP.len_utf8();
             }
             say(from, range.end, &mut parts);
         }
-        if let Some((whole, link)) = stub {
+        if let Some((whole, mark)) = stub {
             let pill = pill(whole, format!("{}-stub-{nth}", self.path));
-            parts.push(self.boxed(inline, link, pill, (nth, "stub")));
+            let pill = Draw::held(Self::link_of(inline, mark), pill, "stub".into());
+            parts.push((mark.file, pill));
         }
         let row = div()
             .flex()
             .items_start()
             .h(css(height / self.zoom))
-            .children(parts);
+            .children(self.nest(inline, parts, 0, &place));
         (row.into_any_element(), top + root.baseline, height)
     }
 
@@ -394,12 +447,19 @@ impl Look<'_> {
                 .find(|atom| !pill(atom.at))
                 .map(|atom| atom.at);
             let stuck = |at: usize| pill(at) || (at > 0 && lead == Some(at));
-            let broken = rows_where(text, &atoms, self.width.into(), &[], anywhere, stuck);
+            let all = Self::broken_all(inline, &line);
+            let broken = rows_where(text, &atoms, self.width.into(), &all, anywhere, stuck);
             for (n, row) in broken.iter().enumerate() {
                 let next = broken.get(n + 1).map_or(row.end, |next| next.start);
                 let row = line.start + row.start..line.start + row.end;
-                let stub = Self::stub(inline, &row, line.start + next);
-                let (row, at, tall) = self.row(inline, (rows.len(), row, stub), &root, window);
+                let next = line.start + next;
+                let row = Row {
+                    nth: rows.len(),
+                    stub: Self::stub(inline, &row, next),
+                    range: row,
+                    next,
+                };
+                let (row, at, tall) = self.row(inline, row, &root, window);
                 baseline.get_or_insert(at);
                 height += tall;
                 rows.push(row);

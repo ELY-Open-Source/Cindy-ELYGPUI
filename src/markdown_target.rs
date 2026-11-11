@@ -2,10 +2,7 @@
 
 #![cfg_attr(
     not(test),
-    expect(
-        dead_code,
-        reason = "inline code's targets come with 9.6h4, a remote task's with its chapter"
-    )
+    expect(dead_code, reason = "a remote task's targets come with its chapter")
 )]
 
 use std::sync::LazyLock;

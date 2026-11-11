@@ -9,7 +9,7 @@ const ENTRY = [
   "export { regex as slugRegex } from 'github-slugger/regex.js';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
-const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult };\n';
+const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel };\n';
 const exporter = {
   name: 'renderer-exports',
   setup(build) {
@@ -65,6 +65,9 @@ export async function markdownHast({ esbuild, tmp, nodePaths, alias, define, ass
   // A candidate lit by the resolver's answer, as the renderer's hook lights it.
   const lit = JSON.parse(fs.readFileSync(path.join(fixtures, 'smart-paths', 'lit-cases.json'), 'utf8'));
   write(path.join(fixtures, 'smart-paths', 'lit.json'), lit.map(([target, result]) => [target, result, golden.resolvedLocalFromResult(target, result)]));
+  // Whether a resolved target's label reads as a file reference, which makes it a chip.
+  const labels = JSON.parse(fs.readFileSync(path.join(fixtures, 'smart-paths', 'label-cases.json'), 'utf8'));
+  write(path.join(fixtures, 'smart-paths', 'label.json'), labels.map(([target, label]) => [target, label, golden.shouldRenderCodeReferenceLabel(target, label)]));
   // Strict inline math comes with 9.8, as KaTeX and the highlighter do with theirs.
   const less = (list) => list.filter((plugin) => plugin !== named(list, 3, 'remarkStrictInlineMath'));
   let seen;

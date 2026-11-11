@@ -4,25 +4,29 @@ use std::{cell::Cell, collections::HashMap};
 
 use gpui::{
     AnyElement, App, Div, ElementId, InteractiveElement as _, IntoElement as _, ParentElement as _,
-    SharedString, StatefulInteractiveElement as _, Styled as _, Window, canvas,
+    Role, SharedString, StatefulInteractiveElement as _, Styled as _, Window, canvas,
     prelude::FluentBuilder as _,
 };
 
 use super::{
-    jump,
+    chip, jump,
     links::{self, Shared, Stop, What},
 };
 use crate::{
     deep_link,
     i18n::{Arg, Translator},
     local_path::smart::{self, Smart},
-    markdown::hast::{Element, Hast, Prop},
-    markdown_target::{self, Target, resolved},
+    markdown::hast::{self, Element, Hast, Prop},
+    markdown_target::{self, Local, Target, resolved},
+    theme_import::color::js_trim,
     tip, toast,
 };
 
+pub mod file;
 #[cfg(test)]
 mod tests;
+
+use file::{Chip, FileFace};
 
 /// What `openInlineTarget` opens.
 #[derive(Clone)]
@@ -44,6 +48,8 @@ pub enum Face {
     /// A web address, with the open-with menu.
     External(SharedString),
     Inline(Go),
+    /// A resolved local target, and the `href` that is its chip's title.
+    File(FileFace, SharedString),
 }
 
 struct Anchor {
@@ -61,6 +67,9 @@ pub struct Anchors {
     key: String,
     by: HashMap<*const Element, usize>,
     list: Vec<Anchor>,
+    /// The resolved targets among the `a` and inline `code` nodes, and their mounted chips.
+    files: HashMap<*const Element, FileFace>,
+    chips: HashMap<*const Element, Chip>,
     shared: Shared,
 }
 
@@ -71,27 +80,47 @@ fn text<'a>(element: &'a Element, name: &str) -> Option<&'a str> {
     }
 }
 
-fn collect<'a>(nodes: &'a [Hast], out: &mut Vec<&'a Element>) {
+/// The tree's `a` nodes and its inline `code` nodes, each kind in document order.
+fn collect<'a>(nodes: &'a [Hast], links: &mut Vec<&'a Element>, codes: &mut Vec<&'a Element>) {
     for node in nodes {
         if let Hast::Element(element) = node {
-            if element.tag == "a" {
-                out.push(element);
+            let inline = || ["dataFencedCode", "className"].map(|name| element.prop(name));
+            match element.tag {
+                "a" => links.push(element),
+                "code" if inline() == [None, None] => codes.push(element),
+                _ => {}
             }
-            collect(&element.children, out);
+            collect(&element.children, links, codes);
         }
     }
 }
 
-/// The face of a target, once its hook has had its say.
-fn face(target: Target, bare: bool, dir: &str) -> Face {
+/// A resolved target's icon: `FileTypeIcon`, which a folder has none of.
+fn icon(path: &str, kind: Local) -> Option<&'static [u8]> {
+    (kind != Local::Directory).then(|| chip::file_icon(path))
+}
+
+/// The face of a target, once its hook has had its say; `label` is its children's text.
+fn face(target: Target, bare: bool, dir: &str, label: &str) -> Face {
     match target {
+        Target::Resolved {
+            href,
+            path,
+            kind,
+            at,
+        } => {
+            // A bare path lights as a link, and so does a label of prose.
+            let boxed = !bare && file::code_label(&href, at, label);
+            let shown = boxed || !js_trim(label).is_empty();
+            let icon = icon(&path, kind).filter(|_| shown);
+            Face::File(FileFace { boxed, icon }, href.into())
+        }
         Target::External { href } => Face::External(href.into()),
         Target::Anchor { id, .. } => Face::Inline(Go::Heading(id)),
         Target::LocalImageUrl { .. } => Face::Inline(Go::Image),
         Target::Candidate { .. } if !bare => Face::Inline(Go::Local(target, dir.to_owned())),
-        // The audio player comes with 9.13, a resolved target's chip and link with 9.6h4.
+        // The audio player comes with 9.13.
         Target::Audio { .. }
-        | Target::Resolved { .. }
         | Target::Candidate { .. }
         | Target::Code { .. }
         | Target::Plain { .. } => Face::Span,
@@ -109,11 +138,10 @@ fn anchor(id: &str, a: &Element, files: &[(String, String)], dir: &str, cx: &mut
     } else {
         let target = markdown_target::link(handed, files);
         let lit = resolved::resolved(id, &target, dir, false, cx);
-        face(
-            lit.unwrap_or(target),
-            a.prop("data-bare-path").is_some(),
-            dir,
-        )
+        let mut label = String::new();
+        (a.children.iter()).for_each(|child| hast::string(child, &mut label));
+        let bare = a.prop("data-bare-path").is_some();
+        face(lit.unwrap_or(target), bare, dir, &label)
     };
     Anchor {
         face,
@@ -133,18 +161,60 @@ pub fn read(
     window: &mut Window,
     cx: &mut App,
 ) -> Anchors {
-    let mut found = Vec::new();
-    collect(tree, &mut found);
+    let (mut found, mut codes) = (Vec::new(), Vec::new());
+    collect(tree, &mut found, &mut codes);
     let nodes = found.iter().enumerate();
     let list = nodes.map(|(n, a)| anchor(&format!("{key}-a{n}"), a, files, dir, cx));
     let list: Vec<Anchor> = list.collect();
+    // A Tab stop per `a`, then one per inline code.
+    let stops = list.len() + codes.len();
+    let shared = links::shared(&format!("{key}-md"), stops, window, cx);
+    let (mut faces, mut chips) = (HashMap::new(), HashMap::new());
+    for (n, (a, anchor)) in found.iter().zip(&list).enumerate() {
+        let Face::File(face, href) = &anchor.face else {
+            continue;
+        };
+        let node = *a as *const Element;
+        faces.insert(node, *face);
+        if face.boxed {
+            let (id, focus) = (format!("{key}-a{n}"), shared.stop(n).0);
+            chips.insert(node, file::chip(&id, href.clone(), focus, window, cx));
+        }
+    }
+    for (n, code) in codes.iter().enumerate() {
+        let id = format!("{key}-i{n}");
+        let Some((face, path)) = inline_code(&id, code, dir, cx) else {
+            continue;
+        };
+        let (node, focus) = (*code as *const Element, shared.stop(list.len() + n).0);
+        faces.insert(node, face);
+        chips.insert(node, file::chip(&id, path.into(), focus, window, cx));
+    }
     let by = found.iter().enumerate().map(|(n, a)| (*a as *const _, n));
     Anchors {
         key: key.to_owned(),
         by: by.collect(),
-        shared: links::shared(&format!("{key}-md"), list.len(), window, cx),
         list,
+        files: faces,
+        chips,
+        shared,
     }
+}
+
+/// `InlineCodeWithTarget` for the node mounted as `id`: its chip's face and title, once resolved.
+fn inline_code(id: &str, code: &Element, dir: &str, cx: &mut App) -> Option<(FileFace, String)> {
+    let mut text = String::new();
+    (code.children.iter()).for_each(|child| hast::string(child, &mut text));
+    let target = markdown_target::inline_code(&text)?;
+    let lit = resolved::resolved(id, &target, dir, false, cx)?;
+    let Target::Resolved { path, kind, .. } = lit else {
+        panic!("a hook lights a candidate as a resolved target");
+    };
+    let face = FileFace {
+        boxed: true,
+        icon: icon(&path, kind),
+    };
+    Some((face, path))
 }
 
 /// The resolved lookup of an authored link's click.
@@ -205,7 +275,20 @@ impl Anchors {
 
     /// Whether the node draws as a link: underlined, and broken anywhere.
     pub fn marked(&self, node: *const Element) -> bool {
-        !matches!(self.list[self.by[&node]].face, Face::Span)
+        !matches!(
+            self.list[self.by[&node]].face,
+            Face::Span | Face::File(FileFace { boxed: true, .. }, _)
+        )
+    }
+
+    /// The face of an `a` or an inline `code` that is a resolved target.
+    pub fn file(&self, node: *const Element) -> Option<FileFace> {
+        self.files.get(&node).copied()
+    }
+
+    /// The mounted chip of a node whose face is the chip's box.
+    pub fn chip(&self, node: *const Element) -> &Chip {
+        &self.chips[&node]
     }
 
     /// A box of the node, drawn as `piece` and named `at`: its id, and its link's clicks and keys.
@@ -225,21 +308,38 @@ impl Anchors {
             |_, _, _, _| {},
         );
         let piece = piece.relative().child(probe.absolute().inset_0());
-        let what = match &anchor.face {
-            Face::Span | Face::Later => return piece.into_any_element(),
-            Face::External(url) => What::Url(url.clone()),
-            Face::Inline(go) => What::Target(go.clone(), anchor.href.clone()),
-        };
-        let stop = Stop {
-            first,
-            focus,
-            spots,
-        };
         let name = format!("{}-a{nth}-{at}", self.key);
-        let piece = piece.id(ElementId::Name(name.into()));
+        let named = |piece: Div| piece.id(ElementId::Name(name.into()));
+        let listened = match &anchor.face {
+            // A chip's box takes the clicks of what it holds.
+            Face::Span | Face::Later | Face::File(FileFace { boxed: true, .. }, _) => {
+                return piece.into_any_element();
+            }
+            Face::File(..) => file::listen(named(piece), first, &focus, Role::Link),
+            Face::External(url) => {
+                let (what, stop) = (
+                    What::Url(url.clone()),
+                    Stop {
+                        first,
+                        focus,
+                        spots,
+                    },
+                );
+                links::listen(named(piece), what, stop, self.shared.asked())
+            }
+            Face::Inline(go) => {
+                let what = What::Target(go.clone(), anchor.href.clone());
+                let stop = Stop {
+                    first,
+                    focus,
+                    spots,
+                };
+                links::listen(named(piece), what, stop, self.shared.asked())
+            }
+        };
         // The native `title` is gpui's one tooltip; an empty one shows nothing.
         let title = anchor.title.clone().filter(|title| !title.is_empty());
-        links::listen(piece, what, stop, self.shared.asked())
+        listened
             .when_some(title, |el, title| el.tooltip(tip::tip(title)))
             .into_any_element()
     }

@@ -1,0 +1,3352 @@
+[
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text"
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "src/app.ts",
+   "absPath": "/w/src/app.ts",
+   "localKind": "text",
+   "line": 4,
+   "column": 9
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "C:\\\\w\\\\My File.md",
+   "absPath": "C:\\\\w\\\\My File.md",
+   "localKind": "text",
+   "line": 12
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "docs/",
+   "absPath": "/w/docs",
+   "localKind": "directory"
+  },
+  "Dockerfile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  ""
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "  "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "src/app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  " src/app.ts "
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts:4"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts:4:9"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts:5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts:4:1"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "APP.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "see the code"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "查看实现"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "the app.ts file"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "other/index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "index.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "index.ts:42"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "pkg/index.ts:42:7"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "README"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "Makefile"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "docs"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "docs/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "a\nb"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app.ts\n"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  " app.ts　"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "src\\app.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "./x"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "v1.2"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "e.g."
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "a.b.c"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "https://x.y/a.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "~/notes.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "file.tar.gz"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "x.ts:0"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "x.ts:01"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "x.ts:4:"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "app"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  ".env"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  ".gitignore"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "foo/"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "foo/bar"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "1.5"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "A.B"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "C:\\w\\My File.md"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "C:\\w\\My File.md:12"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "node_modules/.bin/tsc"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "@scope/pkg"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "a b.ts"
+ ],
+ [
+  {
+   "kind": "resolved-local",
+   "href": "Makefile",
+   "absPath": "/w/Makefile",
+   "localKind": "text"
+  },
+  "Dockerfile"
+ ]
+]

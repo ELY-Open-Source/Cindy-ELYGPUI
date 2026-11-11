@@ -230,7 +230,12 @@ pub fn listen(el: Stateful<Div>, what: What, stop: Stop, asked: &Entity<Asked>) 
                     }
                 })
         })
-        .on_any_mouse_down(move |_, window, cx| pressed.focus(window, cx))
+        // A target inside the link that took the press keeps the focus.
+        .on_any_mouse_down(move |_, window, cx| {
+            if !window.default_prevented() {
+                pressed.focus(window, cx);
+            }
+        })
         // Keys activate on key down above; gpui's key-up click is not Cindy's.
         .on_click(move |event, window, cx| {
             if matches!(event, ClickEvent::Mouse(_)) {

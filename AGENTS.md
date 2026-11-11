@@ -583,8 +583,7 @@ defines scope and what 1:1 means.
   messages attached (`stream::attached`, `collectStableLocalFileRefs`), then the node's hook
   (`resolved::resolved`, mounted as `<key>-a<n>`; the stream calls `begin` and `end` about its
   rows). `Face` is what the node draws as: a span (plain text, a code reference, a bare path
-  that has not resolved; the audio player comes with 9.13, a resolved target's chip and link
-  with 9.6h4), `Later` (a session, project or session-card link, underlined and inert until
+  that has not resolved; the audio player comes with 9.13), a resolved file (below), `Later` (a session, project or session-card link, underlined and inert until
   9.6h5), a web address, or an inline target. A link is underlined and breaks anywhere; each
   stretch of its text on each row, and each empty code's box it holds, is a box (`dress`, named
   by row and part), the first its Tab stop, its authored `title` gpui's tooltip, all of them
@@ -600,6 +599,27 @@ defines scope and what 1:1 means.
   footnote's item and an `a` with an `id` record where they paint (the first in the document
   keeps the id), and the stream's `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's
   programmatic curve that `sessions/reveal.rs` shares; reduced motion jumps.
+- Resolved files: `target_link/file.rs` holds the faces of a resolved local target. An `a`
+  whose label reads as a file (`code_label`, `shouldRenderCodeReferenceLabel`; golden
+  `smart-paths/label.json` from the renderer's private function) is `FileTargetChip`, any other
+  and every bare path `ResolvedLocalLink`; an inline `code` whose text resolves
+  (`InlineCodeWithTarget`, its hook mounted as `<key>-i<n>`) is the chip too, its title the
+  file's path. `read` hands the reader each such node's `FileFace` (`Inline::read`'s `files`):
+  a chip opens a box in `Inline.files` (`Mark.file` names the innermost, so a chip may hold a
+  chip) and an icon stands before the label as a chip atom (`FileTypeIcon` at 14 with `mr-1`,
+  0.125em under the baseline; none for a folder, none for a link with no label).
+  `markdown/inline/file_box.rs` draws the box: text in it is the code face and underlined,
+  `px-1` goes to its first and last atom, `break-all` to its bytes, and on each row the parts
+  a box holds stand inside one fragment (`nest`) with `py-0.5` about the font's box, rounded
+  where the box starts and ends (`logs/review/9.6h4a-blink-chip.log`). A fragment is the
+  chip's `role="button"` (`Chip::fragment`): the first its Tab stop, its hover the lit fill
+  over `--motion-fast` (the row under the pointer is kept, so a move between rows stays lit),
+  its `title` gpui's tooltip. A chip inside a link is the link's box as a whole (`Held.link`,
+  `link_of`): the link's listeners stand about the fragment, not on what it holds, so the
+  chip keeps its clicks, right press, title and Tab stop, after the link's. The innermost
+  target takes a press. A click, a middle click,
+  Enter and Space reach `onOpen`, which opens nothing before 9.13; the file menu comes with
+  9.6h4c.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

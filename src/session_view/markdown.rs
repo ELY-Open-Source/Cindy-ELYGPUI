@@ -206,7 +206,8 @@ impl Walk<'_> {
         markers: &mut Vec<Marker>,
     ) -> Option<AnyElement> {
         let mut inline = Inline::default();
-        (nodes.iter()).for_each(|node| inline.read(node, Mark::default()));
+        (nodes.iter())
+            .for_each(|node| inline.read(node, Mark::default(), &|node| self.anchors.file(node)));
         inline.end();
         if inline.text.is_empty() {
             return None;

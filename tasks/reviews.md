@@ -355,3 +355,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS. A box is named by row and part, the pill and the wrap's stub carry their link,
   and the title is the link's tooltip. Six reproductions, four regression tests and nine cases
   through Cindy's renderer agree. No live desktop check was made.
+
+## 9.6h4a The faces of a resolved local target
+- Round 1: FAIL. A resolved inline-code chip inside an ordinary link took the outer link's click,
+  title and Tab stop.
+- Round 2: FAIL. A link that starts with a chip took its Tab stop after the chip when prose
+  followed: the suffix claimed the anchor's first box before the chip's link box was built.
+- Round 3: PASS. A row's link boxes are dressed in document order, so the anchor's stop comes
+  before the chips it holds. The reviewer's 37 link tests and Cindy's renderer agree. No live
+  desktop check was made.
