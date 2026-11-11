@@ -304,6 +304,12 @@ listed in `tasks/done.md`.
     - [ ] 9.6i3 `LightboxImage` in line: its box in a line (`ChatLoadingImage`, the max sizes),
         `useImageLoadFailure` with `ImageMissingPlaceholder`; the click, the menu and the
         lightbox come with 9.13, `ChatVideoView` with its chapter
+      - [ ] 9.6i3a The box in a line for an address the media stores read (`xdt-image://`,
+          `cindy-media://`): the button's margins and max sizes, `ChatLoadingImage`'s frame,
+          `useImageLoadFailure` with `ImageMissingPlaceholder`
+      - [ ] 9.6i3b A local file's bytes: the `xdt-file://` protocol handler's read (its extension
+          whitelist and the sensitive-media list), so a workspace image draws
+      - [ ] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
   - [ ] 9.6k Selection and copy over the drawn Markdown
