@@ -30,12 +30,15 @@ pub struct Look<'a> {
     pub fill: Hsla,
     pub width: Pixels,
     pub zoom: f32,
+    /// `overflow-wrap: anywhere` on the whole text, as a table's cell has it.
+    pub anywhere: bool,
 }
 
-/// The rows, and the first one's baseline under the block's top, in window pixels.
+/// The rows, the first one's baseline under the block's top and their height, in window pixels.
 pub struct Drawn {
     pub rows: Vec<AnyElement>,
     pub baseline: f32,
+    pub height: f32,
 }
 
 /// Blink's `FontHeight` with its leading: the half above the text is floored.
@@ -196,7 +199,7 @@ impl Look<'_> {
         (nth, row, stub): (usize, Range<usize>, Option<bool>),
         root: &Metrics,
         window: &Window,
-    ) -> (AnyElement, f32) {
+    ) -> (AnyElement, f32, f32) {
         let held = pieces(inline, &row);
         let chips = |range: &Range<usize>| {
             let range = range.clone();
@@ -208,6 +211,7 @@ impl Look<'_> {
             return (
                 inline.text[row].to_owned().into_any_element(),
                 root.baseline,
+                root.line,
             );
         }
         let line = self.face.line * self.zoom;
@@ -280,33 +284,72 @@ impl Look<'_> {
             .items_start()
             .h(css(height / self.zoom))
             .children(parts);
-        (row.into_any_element(), top + root.baseline)
+        (row.into_any_element(), top + root.baseline, height)
+    }
+
+    /// The min and max content widths in window pixels, a break allowed after every atom.
+    pub fn sizes(&self, inline: &Inline, window: &Window) -> (f32, f32) {
+        let (mut min, mut max, mut start) = (0.0_f32, 0.0_f32, 0);
+        for text in inline.text.split('\n') {
+            let line = start..start + text.len();
+            start = line.end + 1;
+            let atoms = self.atoms(inline, &line, window);
+            // A space hangs and counts nothing; a code's box with no text joins the atom before.
+            let (mut run, mut lead) = (0.0, true);
+            for atom in &atoms {
+                let at = line.start + atom.at;
+                let code = inline.mark(at).code;
+                let edge = |at: Option<usize>| at.is_none_or(|at| inline.mark(at).code != code);
+                if inline.chips.contains(&(at, Chip::Pill)) {
+                    run += atom.advance;
+                } else if !inline.text[at..].starts_with(' ') {
+                    // Boxes that start a line join the atom after them.
+                    run = atom.advance + if lead { run } else { 0.0 };
+                    lead = false;
+                } else if code.is_some() {
+                    let next = Some(at + 1).filter(|next| *next < inline.text.len());
+                    let ends = [edge(at.checked_sub(1)), edge(next)];
+                    run += self.pad().0 * ends.iter().filter(|end| **end).count() as f32;
+                }
+                min = min.max(run);
+            }
+            max = max.max(atoms.iter().map(|atom| atom.advance).sum());
+        }
+        (min, max)
     }
 
     /// The text's lines, each broken at the width; a break at the end opens no line.
     pub fn draw(&self, inline: &Inline, window: &Window) -> Drawn {
         let root = metrics(&self.style(Mark::default(), window), window);
         let body = inline.text.strip_suffix('\n').unwrap_or(&inline.text);
-        let (mut rows, mut baseline, mut start) = (Vec::new(), None, 0);
+        let (mut rows, mut baseline, mut start, mut height) = (Vec::new(), None, 0, 0.0);
         for text in body.split('\n') {
             let line = start..start + text.len();
             start = line.end + 1;
             let atoms = self.atoms(inline, &line, window);
             // A link's `overflow-wrap: anywhere`; other text overflows (`9.6f-blink-words.log`).
-            let anywhere = |at: usize| inline.mark(line.start + at).link;
-            let broken = rows_where(text, &atoms, self.width.into(), &[], anywhere);
+            let anywhere = |at: usize| self.anywhere || inline.mark(line.start + at).link;
+            // An empty code's box stays with what stands before it, or at a line's start after it.
+            let pill = |at: usize| inline.chips.contains(&(line.start + at, Chip::Pill));
+            let lead = (atoms.iter())
+                .find(|atom| !pill(atom.at))
+                .map(|atom| atom.at);
+            let stuck = |at: usize| pill(at) || (at > 0 && lead == Some(at));
+            let broken = rows_where(text, &atoms, self.width.into(), &[], anywhere, stuck);
             for (n, row) in broken.iter().enumerate() {
                 let next = broken.get(n + 1).map_or(row.end, |next| next.start);
                 let row = line.start + row.start..line.start + row.end;
                 let stub = Self::stub(inline, &row, line.start + next);
-                let (row, at) = self.row(inline, (rows.len(), row, stub), &root, window);
+                let (row, at, tall) = self.row(inline, (rows.len(), row, stub), &root, window);
                 baseline.get_or_insert(at);
+                height += tall;
                 rows.push(row);
             }
         }
         Drawn {
             rows,
             baseline: baseline.expect("a line holds a row"),
+            height,
         }
     }
 }

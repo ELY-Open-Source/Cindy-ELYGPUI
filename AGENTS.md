@@ -524,7 +524,20 @@ defines scope and what 1:1 means.
   a line the markers pending above it take too. A code block is `CodeBlockPre`'s surface over
   `pre-wrap` `break-all` rows in the code face, a tab to its row's next stop of four spaces
   (`text::code`, Blink's `TabSize`); what `break-all` leaves whole overflows; every fence draws so
-  until 9.7 (highlight, copy, diff) and 9.9 (mermaid). Tables come with 9.6g.
+  until 9.7 (highlight, copy, diff) and 9.9 (mermaid). `table.rs` is the GFM table in
+  `CopyAsImageBlock`'s `my-3` (its toolbar comes with 9.16): `columns` is Blink 148's
+  `DistributeInlineSizeToComputedInlineSizeAuto` for automatic columns in 64ths of a pixel, over
+  each column's min and max content (`Look::sizes`; a cell breaks anywhere, so its min is its
+  widest atom, a code's box with no text of its own counted with the atom before it, or at a
+  line's start with the one after; no row starts at such a box, which hangs with the space before
+  it) plus 25px of padding and collapsed border; the Chromium sources read for it are in
+  `.scratch/9.6g/chromium`. The table is its container's width, or its least widths' sum when that
+  is more, and then its wrapper scrolls it. Column edges snap to device pixels. A cell draws the
+  borders after it and the table the first two; text is `text-14`, a `th` medium on
+  `--msg-table-header-bg` and always left, a `td` by its `align`, both in the row's middle. A
+  pending list marker hangs by the first row's content bottom, Blink's baseline for a row with no
+  baseline cell (`logs/review/9.6g-blink-{tables,cells,nested}.log`). The scroller draws no
+  scrollbar.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

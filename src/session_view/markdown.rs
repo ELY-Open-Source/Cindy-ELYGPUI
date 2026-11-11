@@ -3,6 +3,7 @@
 mod inline;
 mod margins;
 mod marker;
+mod table;
 mod text;
 
 #[cfg(test)]
@@ -150,6 +151,32 @@ impl Walk<'_> {
         div().flex().min_h(css(at.line / self.zoom))
     }
 
+    fn look<'a>(
+        &self,
+        face: &'a Face,
+        width: f32,
+        path: &'a str,
+        anywhere: bool,
+    ) -> inline::Look<'a> {
+        let appearance = self.cx.global::<Appearance>();
+        let size = text_size(14.0, self.cx);
+        inline::Look {
+            path,
+            face,
+            code: Face {
+                size,
+                line: size * face.line / face.size,
+                ..face.clone()
+            },
+            mono: self.cx.theme().mono_family.clone(),
+            strong: appearance.inherited("md-strong-fg").unwrap_or(face.color),
+            fill: appearance.token("msg-md-inline-code-bg"),
+            width: css(width).to_pixels(self.window.rem_size()),
+            zoom: self.zoom,
+            anywhere,
+        }
+    }
+
     /// The line boxes of a run of inline nodes; `None` when it holds no line.
     fn lines(
         &self,
@@ -165,22 +192,7 @@ impl Walk<'_> {
         if inline.text.is_empty() {
             return None;
         }
-        let appearance = self.cx.global::<Appearance>();
-        let size = text_size(14.0, self.cx);
-        let look = inline::Look {
-            path,
-            face,
-            code: Face {
-                size,
-                line: size * face.line / face.size,
-                ..face.clone()
-            },
-            mono: self.cx.theme().mono_family.clone(),
-            strong: appearance.inherited("md-strong-fg").unwrap_or(face.color),
-            fill: appearance.token("msg-md-inline-code-bg"),
-            width: css(width).to_pixels(self.window.rem_size()),
-            zoom: self.zoom,
-        };
+        let look = self.look(face, width, path, false);
         let drawn = look.draw(&inline, self.window);
         let style = self.style(face, false);
         let selector = path.to_owned();
@@ -393,8 +405,7 @@ impl Walk<'_> {
                 let laid = self.flow(&block.children, face, width, path, markers);
                 open((0.0, 0.0), laid, |column| column)
             }
-            // Tables come with 9.6g.
-            "table" => return None,
+            "table" => self.table(block, face, (width, path), markers),
             // The footnotes' heading: the node's own class replaces Cindy's.
             _ if block.classed("sr-only") => return None,
             tag => {

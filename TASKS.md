@@ -248,7 +248,7 @@ listed in `tasks/done.md`.
       a piece ends where only dropped spaces remain of its code
       (`a_code_keeps_its_box_where_a_wrap_drops_its_space`). A wrapped row's fit does not count
       the closing padding after a dropped space; Blink's count there is not measured.
-  - [ ] 9.6g Tables: columns, alignment, the scroll of a wide table
+  - [x] 9.6g Tables: columns, alignment, the scroll of a wide table
   - [ ] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
       session, project and session-card links, in-document anchors
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and

@@ -50,8 +50,25 @@ fn a_chip_breaks_as_a_word() {
 /// As `broken`, breaking a word only after the bytes in `anywhere`.
 fn broken_in(line: &str, width: f32, anywhere: std::ops::Range<usize>) -> Vec<&str> {
     let within = |at| anywhere.contains(&at);
-    let rows = super::rows_where(line, &even(line), width, &[], within);
+    let rows = super::rows_where(line, &even(line), width, &[], within, |_| false);
     rows.into_iter().map(|row| &line[row]).collect()
+}
+
+#[test]
+fn no_row_starts_at_a_stuck_byte() {
+    let line = "ab cd ef";
+    let rows = |stuck: usize| {
+        let rows = super::rows_where(line, &even(line), 50.0, &[], |_| true, |at| at == stuck);
+        rows.into_iter().map(|row| &line[row]).collect::<Vec<_>>()
+    };
+    assert_eq!(rows(usize::MAX), ["ab cd", "ef"]);
+    // What is stuck after a space that hangs hangs with it, past the width.
+    assert_eq!(rows(6), ["ab cd e", "f"]);
+    // The word before it is not broken for it.
+    let line = "ab xc";
+    let rows = super::rows_where(line, &even(line), 30.0, &[], |_| true, |at| at == 3);
+    let rows: Vec<_> = rows.into_iter().map(|row| &line[row]).collect();
+    assert_eq!(rows, ["ab x", "c"]);
 }
 
 #[test]

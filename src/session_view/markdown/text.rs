@@ -265,6 +265,7 @@ pub fn code(line: &str, style: &TextStyle, width: Pixels, window: &Window) -> Ve
             width.into(),
             std::slice::from_ref(&all),
             |_| false,
+            |_| false,
         );
         // A tab's width counts from its own row's start, so a row after a wrap is read again.
         let again = broken

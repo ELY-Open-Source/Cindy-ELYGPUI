@@ -502,3 +502,136 @@ fn the_row_draws_the_shown_text(cx: &mut TestAppContext) {
         assert!(!std::rc::Rc::ptr_eq(&first, &changed));
     });
 }
+
+// `logs/review/9.6g-blink-tables.log`, `logs/review/9.6g-blink-cells.log`
+#[gpui::test]
+fn a_table_lays_out_its_columns_and_borders(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let text = "before\n\n| `a` | `b` | `c` |\n|---|:-:|--:|\n| `x` | `y` | `z` |\n\nafter\n";
+    let cx = draw(cx, dir.path(), text);
+    let (wrap, table) = (block(cx, "1"), block(cx, "1-table"));
+    // `my-3` about the wrapper, and a table as wide as its container.
+    assert_eq!(wrap.top() - block(cx, "0").bottom(), px(12.0));
+    assert_eq!(block(cx, "2").top() - wrap.bottom(), px(12.0));
+    assert_eq!((table.size.width, wrap.size.width), (px(914.0), px(914.0)));
+    let cells = ["1-r0c0", "1-r0c1", "1-r0c2", "1-r1c0", "1-r1c1", "1-r1c2"];
+    let cells = cells.map(|cell| block(cx, cell));
+    // Equal contents take equal columns; the table's own border is the first pixel.
+    assert_eq!(cells[0].left() - table.left(), px(1.0));
+    assert!((cells[0].size.width - cells[1].size.width).abs() < px(0.51));
+    assert!((cells[2].right() - table.right()).abs() < px(0.51));
+    assert_eq!(cells[3].top(), cells[0].bottom());
+    assert!((cells[5].bottom() - table.bottom()).abs() < px(0.51));
+    // A row is its line, `py-2` and one border.
+    let tall: f32 = cells[0].size.height.into();
+    assert!((39.0..41.0).contains(&tall), "{tall}");
+    // `th` is `text-left` whatever its column; a `td` follows the column.
+    let inset = |cx: &mut VisualTestContext, cell: Bounds<Pixels>, piece: &str| {
+        let piece = block(cx, piece);
+        (
+            f32::from(piece.left() - cell.left()),
+            f32::from(cell.right() - piece.right()),
+        )
+    };
+    assert_eq!(inset(cx, cells[1], "1-r0c1-r0-0").0, 12.0);
+    assert_eq!(inset(cx, cells[2], "1-r0c2-r0-0").0, 12.0);
+    assert_eq!(inset(cx, cells[3], "1-r1c0-r0-0").0, 12.0);
+    let (left, right) = inset(cx, cells[4], "1-r1c1-r0-0");
+    assert!((left + 1.0 - right).abs() < 0.51, "{left} {right}");
+    assert_eq!(inset(cx, cells[5], "1-r1c2-r0-0").1, 13.0);
+}
+
+#[gpui::test]
+fn a_cell_wraps_anywhere_and_a_wide_table_scrolls(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let long = "x".repeat(400);
+    let head = vec!["wwwwwwwwww"; 40].join(" | ");
+    let rule = vec!["---"; 40].join("|");
+    let text = format!("| `k` | v |\n|---|---|\n| `a` | {long} |\n\n| {head} |\n|{rule}|\n");
+    let cx = draw(cx, dir.path(), &text);
+    // The long word breaks inside its cell, and the short cell stands in the row's middle.
+    let (table, short) = (block(cx, "0-table"), block(cx, "0-r1c0"));
+    assert_eq!(table.size.width, px(914.0));
+    assert!(short.size.height > px(60.0));
+    let piece = block(cx, "0-r1c0-r0-0");
+    let (above, below) = (piece.top() - short.top(), short.bottom() - piece.bottom());
+    assert!((above - below).abs() < px(2.0), "{above:?} {below:?}");
+    // Forty columns at their least widths outgrow the container, which scrolls them.
+    let (wrap, table) = (block(cx, "1"), block(cx, "1-table"));
+    assert_eq!(wrap.size.width, px(914.0));
+    assert!(table.size.width > px(1200.0));
+    let last = block(cx, "1-r0c39");
+    assert!((last.right() - table.right()).abs() < px(0.51));
+    let start = table.left();
+    cx.simulate_event(gpui::ScrollEvent {
+        position: wrap.center(),
+        delta: gpui::ScrollDelta::Pixels(gpui::point(px(-200.0), px(0.0))),
+        ..Default::default()
+    });
+    cx.run_until_parked();
+    assert_eq!(block(cx, "1-table").left(), start - px(200.0));
+}
+
+// `logs/review/9.6g-blink-nested.log`
+#[gpui::test]
+fn a_table_in_an_item_takes_the_marker(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let text = "before\n\n- | a | b |\n  |---|---|\n  | x | y |\n- next\n\n> | q |\n> |---|\n";
+    let cx = draw(cx, dir.path(), text);
+    // The item is its table: no line of its own stands over it.
+    let (item, table) = (block(cx, "1-0-0"), block(cx, "1-0-0-table"));
+    assert_eq!(table.left() - root(cx).left(), px(24.0));
+    assert_eq!(table.size.width, px(890.0));
+    assert_eq!(item.top() - block(cx, "0").bottom(), px(12.0));
+    // The marker hangs by the first row's content bottom.
+    let (mark, head) = (block(cx, "1-0-marker"), block(cx, "1-0-0-r0c0"));
+    assert!(mark.right() < table.left());
+    assert!(mark.bottom() < head.bottom() - px(7.0) && mark.top() > head.top() + px(12.0));
+    // A quote's table is as wide as the quote's content.
+    assert_eq!(block(cx, "2-0-table").size.width, px(896.0));
+}
+
+// `logs/review/9.6g-r1-review-evidence.log`
+#[gpui::test]
+fn an_empty_code_stays_with_the_text_before_it(cx: &mut TestAppContext) {
+    let dir = tempfile::tempdir().unwrap();
+    let cells = |cell: &str| {
+        let row = |cell: &str| format!("|{}|", vec![cell; 40].join("|"));
+        format!("{}\n{}\n{}\n", row(""), row("---"), row(cell))
+    };
+    let forms = [
+        "a ` `b",
+        "a` `b",
+        "` `b",
+        "ab ` `c",
+        "a` ` ` `b",
+        "a ` ` ` `b",
+        "b",
+    ];
+    let text = forms.map(cells).join("\n");
+    let cx = draw(cx, dir.path(), &text);
+    // The box counts with the letter before it, so both tables outgrow the container alike.
+    let (spaced, joined) = (block(cx, "0-table"), block(cx, "1-table"));
+    assert!(spaced.size.width > px(914.0));
+    assert_eq!(spaced.size.width, joined.size.width);
+    // Two lines: the letter with the box, then the other letter.
+    let (cell, pill) = (block(cx, "0-r1c0"), block(cx, "0-r1c0-pill-0"));
+    let tall: f32 = cell.size.height.into();
+    assert!((60.0..66.0).contains(&tall), "{tall}");
+    assert!(pill.bottom() < cell.top() + px(34.0));
+    // `logs/review/9.6g-r2-review-evidence.log`: a box that starts a line keeps the next atom.
+    let (lead, bare) = (block(cx, "2-table"), block(cx, "6-table"));
+    assert!(lead.size.width > bare.size.width + px(400.0));
+    assert_eq!(
+        block(cx, "2-r1c0").size.height,
+        block(cx, "6-r1c0").size.height
+    );
+    // A word that fits is not broken for the box after its space.
+    assert!(block(cx, "3-r1c0").size.height < px(66.0));
+    // A code of one space counts its padding as an empty code does.
+    assert_eq!(
+        block(cx, "4-table").size.width,
+        block(cx, "5-table").size.width
+    );
+    assert!(block(cx, "4-table").size.width > spaced.size.width + px(400.0));
+}

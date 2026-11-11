@@ -134,30 +134,35 @@ fn breaks(line: &str, all: &[Range<usize>]) -> Vec<usize> {
 
 /// The rows of `line` at `width`, in bytes; white space at a wrap hangs; `all` is `break-all`.
 pub fn rows(line: &str, atoms: &[Atom], width: f32, all: &[Range<usize>]) -> Vec<Range<usize>> {
-    rows_where(line, atoms, width, all, |_| true)
+    rows_where(line, atoms, width, all, |_| true, |_| false)
 }
 
-/// As `rows`; a row with no break breaks after a byte only where `anywhere` holds for it.
+/// As `rows`: a word breaks only after an `anywhere` byte, and no row starts at a `stuck` one.
 pub fn rows_where(
     line: &str,
     atoms: &[Atom],
     width: f32,
     all: &[Range<usize>],
     anywhere: impl Fn(usize) -> bool,
+    stuck: impl Fn(usize) -> bool,
 ) -> Vec<Range<usize>> {
     let breaks = breaks(line, all);
     let (mut rows, mut first) = (Vec::new(), 0);
     let (mut used, mut candidate, mut segment) = (0.0, None, None::<Range<usize>>);
-    let mut soft = None;
+    let (mut soft, mut trailing) = (None, false);
     for (nth, atom) in atoms.iter().enumerate() {
-        if nth > first && anywhere(atoms[nth - 1].at) {
+        let free = !stuck(atom.at);
+        // What is stuck to a space that hangs stays on its row with it.
+        let hung = line[atom.at..].starts_with(hangs) || (!free && trailing);
+        trailing = hung;
+        // No row starts with the space that would hang at the row before.
+        if nth > first && free && !hung && anywhere(atoms[nth - 1].at) {
             soft = Some((nth, used));
         }
         let moved = segment.as_ref().is_none_or(|s| !s.contains(&atom.at));
-        let hung = line[atom.at..].starts_with(hangs);
         if !hung && moved {
             // A new stretch between break opportunities: the row may end before it.
-            if segment.is_some() {
+            if segment.is_some() && free {
                 candidate = Some((nth, used));
             }
             let next = breaks.partition_point(|at| *at <= atom.at);

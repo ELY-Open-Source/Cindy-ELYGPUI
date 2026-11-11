@@ -317,3 +317,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   Blink's CODE boxes). New P1: a soft wrap dropped a code's space and its box or closing
   padding. Fixed after the round with `Look::stub`, not reviewed again. No live desktop check
   was made.
+
+## 9.6g Tables
+- Round 1: FAIL. An empty code's box counted as a breakable atom, so a table's minimum was too
+  small. The reviewer's other 88 renders agreed with Blink.
+- Round 2: FAIL. Closed. New: a box that starts a line, and a code of one space, were left out
+  of the minimum; a box after a word's space broke the word before it.
+- Round 3: PASS. A space hangs and counts nothing; a code's box with no text joins the atom
+  before it, or at a line's start the one after; what is stuck after a hung space hangs too.
+  149 earlier renders and 56 new ones agree with Blink but for the test font; the user bubble's
+  rows are unchanged over 81,920 comparisons. No live desktop check was made.
