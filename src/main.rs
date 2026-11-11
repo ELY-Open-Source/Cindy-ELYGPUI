@@ -6,6 +6,11 @@ mod attachment_safety;
 mod bare_space_images;
 mod bounded_read;
 mod browse_history;
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
+)]
+mod browser_file;
 mod chat_message;
 mod chat_quotes;
 mod chat_store;

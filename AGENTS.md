@@ -837,6 +837,24 @@ defines scope and what 1:1 means.
   else X11) and one `Clipboard` is kept, since the content lives in its writer. In tests both
   handlers record the path and touch no desktop. Native code is cross-linted in a scratch crate
   (`logs/review/9.6h4b-r1-native-*.log`).
+- Open in browser: `src/browser_file.rs` is `openFileInBrowser.ts`, the
+  `shell:open-file-in-browser` handler, for an absolute path: `resolveBrowserFileTarget`
+  (`convert.rs` is Node 24's `pathToFileURL` for POSIX and Windows: `path.win32.resolve`'s root
+  parse, where a rooted path with no device takes the current folder's drive, share or `\\?`,
+  `EncodePathChars`, the kept last separator, then ada's part by hand, since the `url` crate
+  drops a `file:` path's empty segments and guards a drive letter otherwise: the controls at the
+  end cut, the path set escaped, dot segments folded (`segments`), and a UNC path's host as
+  `set_hostname` reads it through `url::Host`, none when empty or `localhost`), the blocklist,
+  `isBrowserOpenablePath`
+  (`openable`), `fs.existsSync`, each refusal with its `BROWSER_FILE_*` code and Cindy's message.
+  The URL goes to Electron's `shell.openExternal` (`open_external::hand`); when that fails the
+  path goes to `shell.openPath` (`open_path::hand`), whose error is the answer. Golden
+  `browser-file`: `scripts/golden/browserFile.mjs` runs Cindy's functions in Cindy's Electron as
+  Node, once as it is and once with `path` and `pathToFileURL` set to their Windows forms, each
+  Windows case in a current folder of its own. A
+  `file://` URL is refused as no target until 17.0: the built-in browser sends one, and the `url`
+  crate reads a `file:` URL's empty segments and `^` otherwise than Node's ada. In tests
+  `open_path` records the path, as `open_external` does, and starts no program.
 - Untrusted files: read with `bounded_read::read`, Cindy's `readBoundedFileNoFollow` (no-follow
   open, regular file, size limit, stable while read).
 - Toasts: `src/toast.rs` ports `lib/toast.ts` as one `Toasts` global with a board per window, as

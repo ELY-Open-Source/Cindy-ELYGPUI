@@ -21,6 +21,7 @@ import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
 import { nodePath } from './golden/nodePath.mjs';
+import { browserFile } from './golden/browserFile.mjs';
 import { pathResolver } from './golden/pathResolver.mjs';
 import { smartPaths } from './golden/smartPaths.mjs';
 import { mergeMessages } from './golden/mergeMessages.mjs';
@@ -584,6 +585,7 @@ try {
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);
   console.log(`${jsSort({ fixtures })} sort cases`);
   console.log(`${nodePath({ cindy, fixtures, write })} node path cases`);
+  console.log(`${await browserFile(golden, cindy)} browser file cases`);
   console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
   console.log(`${await smartPaths(golden, pathShape, workspacePaths)} smart path steps`);
   const dialect = new SQLiteSyncDialect();

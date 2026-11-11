@@ -4,7 +4,12 @@
 mod tests;
 
 /// `normalizeString`: `.` and empty segments go, `..` takes the segment before it.
-fn fold(path: &str, above_root: bool, separator: &str, is_separator: fn(char) -> bool) -> String {
+pub fn fold(
+    path: &str,
+    above_root: bool,
+    separator: &str,
+    is_separator: fn(char) -> bool,
+) -> String {
     let mut kept: Vec<&str> = Vec::new();
     for segment in path.split(is_separator) {
         match segment {

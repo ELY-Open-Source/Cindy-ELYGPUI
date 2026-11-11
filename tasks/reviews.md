@@ -374,3 +374,12 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: FAIL. A sequence cut by the end of the output stayed out of `maxBuffer`. Fixed after
   the round, not reviewed again. No live desktop check was made: no file manager opened, no
   clipboard written; macOS and Windows code is cross-linted only.
+
+## 9.6h4c The browser handler
+- Round 1: FAIL. A rooted Windows path with no device lost the current folder's drive or share,
+  and a UNC host went through `Url::set_host` where Node's hostname setter refuses a port.
+- Round 2: FAIL. A `\\?\` current folder read as a UNC share, and a device root lost the
+  separator the UNC conversion needs.
+- Round 3: PASS. `root` is `path.win32.resolve`'s root parse; the URL's path is written by hand,
+  since the `url` crate parts from ada on empty segments and drive letters. No live desktop
+  check was made: no browser opened; macOS and Windows code was not cross-compiled this round.

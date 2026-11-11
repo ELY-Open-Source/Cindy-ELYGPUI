@@ -42,8 +42,17 @@ pub fn open(value: &str, cx: &App) -> Task<Result<(), String>> {
     shell_open(path, cx)
 }
 
+/// Electron's `shell.openPath` for a path a handler has checked: the error, once it settles.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
+)]
+pub fn hand(path: &str, cx: &App) -> Task<Result<(), String>> {
+    shell_open(PathBuf::from(path), cx)
+}
+
 /// `XDGOpen` without waiting: `xdg-open` started in `dir` and reaped when it ends.
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", not(test)))]
 pub fn xdg_open(what: &std::ffi::OsStr, dir: &Path) {
     let spawned = std::process::Command::new("xdg-open")
         .arg(what)
@@ -62,14 +71,14 @@ pub fn xdg_open(what: &std::ffi::OsStr, dir: &Path) {
 }
 
 /// Electron's Linux `openPath` never settles, so nothing returns.
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", not(test)))]
 fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
     xdg_open(path.as_os_str(), path.parent().unwrap_or(&path));
     Task::ready(Ok(()))
 }
 
 /// `NSWorkspace openURL` on the main thread.
-#[cfg(target_os = "macos")]
+#[cfg(all(target_os = "macos", not(test)))]
 fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
     use objc2_app_kit::NSWorkspace;
     use objc2_foundation::{NSString, NSURL};
@@ -82,7 +91,7 @@ fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
 }
 
 /// `OpenPathOnThread` on a COM thread: `explore` for a folder, the default verb for a file.
-#[cfg(target_os = "windows")]
+#[cfg(all(target_os = "windows", not(test)))]
 fn shell_open(path: PathBuf, cx: &App) -> Task<Result<(), String>> {
     cx.background_spawn(async move {
         match shell::open(&path) {
@@ -95,8 +104,14 @@ fn shell_open(path: PathBuf, cx: &App) -> Task<Result<(), String>> {
     })
 }
 
-#[cfg(target_os = "windows")]
+#[cfg(all(target_os = "windows", not(test)))]
 mod shell;
 
+/// Tests start no program: the path is recorded and the answer scripted.
 #[cfg(test)]
-mod tests;
+fn shell_open(path: PathBuf, _: &App) -> Task<Result<(), String>> {
+    Task::ready(tests::opened(&path))
+}
+
+#[cfg(test)]
+pub mod tests;

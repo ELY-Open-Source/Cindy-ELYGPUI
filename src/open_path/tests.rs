@@ -1,8 +1,32 @@
 //! The handler's checks before the shell sees a path.
 
+use std::{
+    cell::RefCell,
+    path::{Path, PathBuf},
+};
+
 use gpui::TestAppContext;
 
 use super::{open, strip_drive_uri_slash};
+
+thread_local! {
+    static OPENED: RefCell<Vec<PathBuf>> = const { RefCell::new(Vec::new()) };
+    static ERROR: RefCell<Option<String>> = const { RefCell::new(None) };
+}
+
+pub fn opened(path: &Path) -> Result<(), String> {
+    OPENED.with_borrow_mut(|opened| opened.push(path.to_owned()));
+    ERROR.with_borrow(|error| error.clone().map_or(Ok(()), Err))
+}
+
+/// The paths opened on this thread since the last call.
+pub fn take() -> Vec<PathBuf> {
+    OPENED.take()
+}
+
+pub fn fail(error: Option<&str>) {
+    ERROR.set(error.map(str::to_owned));
+}
 
 #[test]
 fn a_uri_drive_slash_comes_off() {

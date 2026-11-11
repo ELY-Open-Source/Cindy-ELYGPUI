@@ -16,14 +16,23 @@ pub fn open(value: &str, cx: &App) -> Task<bool> {
         return Task::ready(false);
     };
     log::info!(target: "open-external", "opening {}", url.origin().ascii_serialization());
+    shell_open(url.into(), cx)
+}
+
+/// Electron's `shell.openExternal` for an address a handler has checked.
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "the file menu calls it in 9.6h4d")
+)]
+pub fn hand(url: String, cx: &App) -> Task<bool> {
     shell_open(url, cx)
 }
 
 /// `XDGOpen` without waiting: a started `xdg-open` is the success.
 #[cfg(all(target_os = "linux", not(test)))]
-fn shell_open(url: Url, _: &App) -> Task<bool> {
+fn shell_open(url: String, _: &App) -> Task<bool> {
     let spawned = std::process::Command::new("xdg-open")
-        .arg(url.as_str())
+        .arg(&url)
         .env("MM_NOTTTY", "1")
         .spawn();
     Task::ready(match spawned {
@@ -43,8 +52,8 @@ fn shell_open(url: Url, _: &App) -> Task<bool> {
 
 /// `NSWorkspace openURL:configuration:completionHandler:`, once an application takes the address.
 #[cfg(all(target_os = "macos", not(test)))]
-fn shell_open(url: Url, cx: &App) -> Task<bool> {
-    let opened = match workspace::open(url.as_str()) {
+fn shell_open(url: String, cx: &App) -> Task<bool> {
+    let opened = match workspace::open(&url) {
         Ok(opened) => opened,
         Err(error) => {
             log::error!(target: "open-external", "{error}");
@@ -62,9 +71,9 @@ fn shell_open(url: Url, cx: &App) -> Task<bool> {
 
 /// `OpenExternalOnWorkerThread`: `ShellExecuteEx` on a COM thread.
 #[cfg(all(target_os = "windows", not(test)))]
-fn shell_open(url: Url, cx: &App) -> Task<bool> {
+fn shell_open(url: String, cx: &App) -> Task<bool> {
     cx.background_spawn(async move {
-        let opened = shell::open(&format!("\"{}\"", escape(url.as_str())));
+        let opened = shell::open(&format!("\"{}\"", escape(&url)));
         if let Err(error) = &opened {
             log::error!(target: "open-external", "Failed to open: {error}");
         }
@@ -91,8 +100,8 @@ fn escape(spec: &str) -> String {
 
 /// Tests start no program: the address is recorded and the answer scripted.
 #[cfg(test)]
-fn shell_open(url: Url, _: &App) -> Task<bool> {
-    Task::ready(tests::opened(url.as_str()))
+fn shell_open(url: String, _: &App) -> Task<bool> {
+    Task::ready(tests::opened(&url))
 }
 
 #[cfg(all(target_os = "windows", not(test)))]

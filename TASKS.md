@@ -273,9 +273,10 @@ listed in `tasks/done.md`.
           byte pass 64K). Fixed after the round and not reviewed again: the end of a pipe counts
           the flushed text; the reviewer's 28 subprocess and 133 image cases agree
           (`logs/review/9.6h4b-r3.md`).
-      - [ ] 9.6h4c The main handler behind Open in default browser: `shell:open-file-in-browser`
-        (`openFileInBrowser.ts` with its error codes, `windowsFileUrlOpener.ts`,
-        `isBrowserOpenablePath`), per platform
+      - [x] 9.6h4c The main handler behind Open in default browser: `shell:open-file-in-browser`
+        for an absolute path (`openFileInBrowser.ts` with its error codes,
+        `isBrowserOpenablePath`), per platform; a `file://` URL, its kept query and hash and
+        `windowsFileUrlOpener.ts` come with the built-in browser that sends one (17.0)
       - [ ] 9.6h4d `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
         separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
