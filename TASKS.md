@@ -264,6 +264,12 @@ listed in `tasks/done.md`.
     - [ ] 9.6h4 Resolved local targets: `FileTargetChip`, `ResolvedLocalLink`,
       `shouldRenderCodeReferenceLabel`, `InlineCodeWithTarget`, with `useFileChipContextMenu`;
       what a click opens comes with 9.13's lightboxes
+      - [ ] 9.6h4a The faces: `shouldRenderCodeReferenceLabel`, `FileTargetChip` (its icon,
+        hover, Tab stop and title), `ResolvedLocalLink`, `InlineCodeWithTarget`
+      - [ ] 9.6h4b The main handlers the file menu calls: `shell:show-item-in-folder` and
+        `copyMediaToClipboard` for a file path, per platform
+      - [ ] 9.6h4c `useFileChipContextMenu`: its rows for a local task, `onActivate` with a
+        separate activation, `formatFileLocation` with `toWorkdirRel`
     - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
       session-card link
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
