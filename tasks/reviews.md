@@ -327,3 +327,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   before it, or at a line's start the one after; what is stuck after a hung space hangs too.
   149 earlier renders and 56 new ones agree with Blink but for the test font; the user bubble's
   rows are unchanged over 81,920 comparisons. No live desktop check was made.
+
+## 9.6h1 The workspace path resolver
+- Round 1: FAIL. A folder's entries came in the file system's order; Node's `readdir` hands
+  them over in byte order, so a capped walk kept other files. 102,925 Node path operations and
+  the uncapped resolver requests agreed with Cindy.
+- Round 2: PASS. On POSIX the entries sort by their names' bytes, as libuv's `scandir` hands
+  them over (libuv 1.52.1 `src/unix/fs.c`; its Windows half does not sort). 139 resolver
+  requests agree with Cindy in order, names past ASCII among them. No Windows or macOS run.

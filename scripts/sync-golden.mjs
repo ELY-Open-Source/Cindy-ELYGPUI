@@ -20,6 +20,8 @@ import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, GOAL
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
+import { nodePath } from './golden/nodePath.mjs';
+import { pathResolver } from './golden/pathResolver.mjs';
 import { mergeMessages } from './golden/mergeMessages.mjs';
 import * as workRuns from './golden/workRuns.mjs';
 
@@ -92,6 +94,7 @@ try {
     "export { resolveLocalPath, resolveToolFilePath } from './renderer/lib/localPathResolver';",
     "export * as pathShape from './renderer/lib/localPathResolver';",
     "export * as markdownTarget from './renderer/lib/markdownTarget';",
+    "export * as workspacePaths from './main/pathResolver';",
     "export { findPathMatches } from './shared/bareFilePathTokens';",
     "export { findBareSpaceLocalImages } from './shared/bareSpaceLocalImages';",
     "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
@@ -127,7 +130,7 @@ try {
     // The sent-text golden runs `renderContent`, whose JSX needs its runtime.
     define, jsx: 'automatic',
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, workspacePaths, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, stripGoalVerdictBlock, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -579,6 +582,8 @@ try {
   console.log(`${await mergeMessages(golden)} merge cases`);
   console.log(`${jsDate({ cindy, fixtures, write })} date parse cases`);
   console.log(`${jsSort({ fixtures })} sort cases`);
+  console.log(`${nodePath({ cindy, fixtures, write })} node path cases`);
+  console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),

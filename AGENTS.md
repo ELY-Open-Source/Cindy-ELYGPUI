@@ -538,6 +538,22 @@ defines scope and what 1:1 means.
   pending list marker hangs by the first row's content bottom, Blink's baseline for a row with no
   baseline cell (`logs/review/9.6g-blink-{tables,cells,nested}.log`). The scroller draws no
   scrollbar.
+- Path resolver: `src/path_resolver.rs` is `main/pathResolver.ts`, the answer behind
+  `fs:resolve-path`: `decode` (`safeDecodeHrefForLookup`), a leading `~`, the absolute stat, the
+  join with the task's folder, then `walk.rs`'s breadth-first search for files whose path ends
+  with the href (`find`, and `find_many` for a batch's one walk), with Cindy's ignored folders and
+  the folders an href names itself. `resolve_all` is `resolveWorkspacePathBatch`. A folder that
+  cannot be read is passed by, as Cindy passes it. `cache.rs` is the cache both entries share (30
+  seconds, 200 answers, the oldest out first; a refresh or a negative answer asked again reads the
+  folder anew) behind one mutex. The calls block: a caller runs them on the background executor.
+  Golden `path-resolver`: `scripts/golden/pathResolver.mjs` builds each case's tree in `.scratch/`
+  and runs Cindy's functions on it; the test builds the same tree. A folder's entries come in
+  byte order on POSIX, as libuv's `scandir` sorts them (`logs/review/9.6h1-r1-electron-order.log`,
+  Cindy's Electron main on Linux; not measured on macOS), and in the system's order on Windows.
+  `src/node_path.rs` is Node 24's `path` (`join`, `normalize`, `basename`, `isAbsolute`) for POSIX
+  and Windows, with `isWindowsReservedName`'s `slice(0, -1)`; golden `node-path` runs both halves
+  in Cindy's Electron as Node, so Linux checks the Windows half's strings. No Windows folder is
+  walked in a test.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

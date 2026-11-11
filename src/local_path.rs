@@ -13,7 +13,7 @@ pub fn drive(text: &str) -> bool {
 }
 
 /// `isWindowsPathLike`.
-fn windows_like(path: &str) -> bool {
+pub fn windows_like(path: &str) -> bool {
     drive(path) || path.starts_with("\\\\") || path.starts_with("//")
 }
 

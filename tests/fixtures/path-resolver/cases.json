@@ -1,0 +1,1145 @@
+[
+ {
+  "name": "a file in a sub-package",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/index.ts"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx"
+   },
+   {
+    "find": "/src/App.tsx"
+   },
+   {
+    "find": "//src\\App.tsx"
+   },
+   {
+    "find": "App.tsx"
+   },
+   {
+    "find": "pp.tsx"
+   },
+   {
+    "find": ""
+   },
+   {
+    "many": [
+     "src/App.tsx",
+     "src/index.ts",
+     "src/App.tsx",
+     "App.tsx",
+     "pp.tsx",
+     ""
+    ]
+   },
+   {
+    "many": []
+   }
+  ]
+ },
+ {
+  "name": "one suffix in several packages",
+  "files": [
+   "workspace/apps/desktop/package.json",
+   "workspace/apps/server/package.json",
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "package.json"
+   },
+   {
+    "many": [
+     "package.json",
+     "src/App.tsx"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "ignored folders",
+  "files": [
+   "workspace/node_modules/foo/src/App.tsx",
+   "workspace/.git/objects/src/App.tsx",
+   "workspace/dist/src/App.tsx",
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx"
+   },
+   {
+    "many": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "resolve": "src/App.tsx"
+   },
+   {
+    "find": "foo/src/App.tsx"
+   },
+   {
+    "find": "node_modules/foo/src/App.tsx"
+   },
+   {
+    "resolve": "node_modules/foo/src/App.tsx"
+   },
+   {
+    "find": "x/node_modules/foo/src/App.tsx"
+   }
+  ]
+ },
+ {
+  "name": "an ignored folder the href names",
+  "files": [
+   "workspace/film/renders/out/clip.mp4",
+   "workspace/film/out/clip.mp4",
+   "workspace/web/out/renders/out/clip.mp4",
+   "workspace/film/renders/out/other.mp4",
+   "workspace/docs/clip.mp4",
+   "workspace/chaoshan-film/renders2d/out/seg3_2d_v1.mp4",
+   "workspace/chaoshan-film/out/seg3_2d_v1.mp4"
+  ],
+  "steps": [
+   {
+    "find": "renders/out/clip.mp4"
+   },
+   {
+    "find": "out/clip.mp4"
+   },
+   {
+    "find": "clip.mp4"
+   },
+   {
+    "find": "film/out/clip.mp4"
+   },
+   {
+    "find": "web/out/renders/out/clip.mp4"
+   },
+   {
+    "find": "out/renders/out/clip.mp4"
+   },
+   {
+    "many": [
+     "renders/out/other.mp4",
+     "clip.mp4",
+     "out/clip.mp4"
+    ]
+   },
+   {
+    "many": [
+     "renders/out/clip.mp4",
+     "film/out/clip.mp4",
+     "clip.mp4",
+     "web/out/renders/out/clip.mp4"
+    ]
+   },
+   {
+    "batch": [
+     "renders2d/out/seg3_2d_v1.mp4",
+     "seg3_2d_v1.mp4",
+     "renders/out/clip.mp4",
+     "clip.mp4"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "the candidate cap",
+  "files": [
+   "workspace/a/foo.ts",
+   "workspace/b/foo.ts",
+   "workspace/c/foo.ts",
+   "workspace/d/foo.ts",
+   "workspace/deep/er/bar.ts",
+   "workspace/top/bar.ts"
+  ],
+  "steps": [
+   {
+    "find": "foo.ts",
+    "max": 2
+   },
+   {
+    "many": [
+     "foo.ts"
+    ],
+    "max": 2
+   },
+   {
+    "find": "bar.ts",
+    "max": 1
+   },
+   {
+    "many": [
+     "bar.ts",
+     "foo.ts"
+    ],
+    "max": 1
+   },
+   {
+    "many": [
+     "bar.ts"
+    ],
+    "max": 1
+   },
+   {
+    "find": "foo.ts",
+    "max": 0
+   },
+   {
+    "many": [
+     "foo.ts"
+    ],
+    "max": 0
+   }
+  ]
+ },
+ {
+  "name": "the depth cap",
+  "files": [
+   "workspace/level1/level2/level3/deep.tsx",
+   "workspace/top.tsx"
+  ],
+  "steps": [
+   {
+    "find": "deep.tsx",
+    "depth": 2
+   },
+   {
+    "find": "deep.tsx",
+    "depth": 3
+   },
+   {
+    "find": "deep.tsx",
+    "depth": 8
+   },
+   {
+    "find": "top.tsx",
+    "depth": 0
+   },
+   {
+    "many": [
+     "deep.tsx",
+     "top.tsx"
+    ],
+    "depth": 2
+   },
+   {
+    "many": [
+     "deep.tsx",
+     "top.tsx"
+    ],
+    "depth": 3
+   }
+  ]
+ },
+ {
+  "name": "the allow check",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx",
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ]
+   },
+   {
+    "many": [
+     "src/App.tsx"
+    ],
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ]
+   },
+   {
+    "find": "src/App.tsx",
+    "blocked": "all"
+   }
+  ]
+ },
+ {
+  "name": "case",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/app.tsx"
+   },
+   {
+    "resolve": "src/app.tsx"
+   }
+  ]
+ },
+ {
+  "name": "decoding",
+  "steps": [
+   {
+    "decode": "C:%5CUsers%5Cme%5Chello%20world.pdf"
+   },
+   {
+    "decode": "safe%2Fsecret.txt"
+   },
+   {
+    "decode": "https%3A//example.com/a.pdf"
+   },
+   {
+    "decode": "https%3A//example.com/batch.pdf"
+   },
+   {
+    "decode": "..%2Fsecret.txt"
+   },
+   {
+    "decode": "%2e%2e/secret.txt"
+   },
+   {
+    "decode": "safe/..%2Fsecret.txt"
+   },
+   {
+    "decode": "a%20b"
+   },
+   {
+    "decode": "%E4%B8%AD/x"
+   },
+   {
+    "decode": "%zz"
+   },
+   {
+    "decode": "%"
+   },
+   {
+    "decode": "%E4%B8"
+   },
+   {
+    "decode": "a%5Cb"
+   },
+   {
+    "decode": "%5C%5Cserver%5Cshare"
+   },
+   {
+    "decode": "%2Fetc%2Fpasswd"
+   },
+   {
+    "decode": "a/%2e%2e"
+   },
+   {
+    "decode": "../x"
+   },
+   {
+    "decode": "a//%2e%2e"
+   },
+   {
+    "decode": "%2e%2e%2f"
+   },
+   {
+    "decode": "x%3A//y"
+   },
+   {
+    "decode": "a\\..\\b"
+   },
+   {
+    "decode": "a/b/../c%2e"
+   },
+   {
+    "decode": ""
+   },
+   {
+    "decode": "/"
+   },
+   {
+    "decode": "//%2e%2e"
+   },
+   {
+    "decode": "a/%2e%2e/"
+   },
+   {
+    "decode": "..//%2e%2e"
+   },
+   {
+    "decode": "%2e%2e/../x"
+   },
+   {
+    "decode": "../%2e%2e"
+   },
+   {
+    "decode": "c%3A/x"
+   },
+   {
+    "decode": "c:%2Fx"
+   },
+   {
+    "decode": "%2e./x"
+   },
+   {
+    "decode": ".%2e\\x"
+   },
+   {
+    "decode": "a%252Fb"
+   },
+   {
+    "decode": "HTTP%3a//x"
+   },
+   {
+    "decode": "1a%3A//x"
+   },
+   {
+    "decode": "%41:%2F%2Fx"
+   }
+  ]
+ },
+ {
+  "name": "the resolver",
+  "files": [
+   "workspace/src/App.tsx",
+   "workspace/apps/desktop/src/deep.tsx",
+   "workspace/apps/desktop/package.json",
+   "workspace/apps/server/package.json",
+   "workspace/Application Support/hello-word.pdf",
+   "workspace/apps/desktop/Generated Files/report final.pdf",
+   "workspace/dialogues/2026-06-23/hello word.pdf",
+   "workspace/report.pdf",
+   "workspace/D:/app.tsx",
+   "workspace/Skills/inner.md",
+   "workspace/node_modules/foo/src/Mod.tsx",
+   "workspace/Desktop/2.txt",
+   "workspace/abs/target.ts",
+   "sibling/report.pdf",
+   "secret.txt",
+   "home/Desktop/1.txt"
+  ],
+  "steps": [
+   {
+    "resolve": "src/App.tsx"
+   },
+   {
+    "resolve": "src/deep.tsx"
+   },
+   {
+    "resolve": "package.json"
+   },
+   {
+    "resolve": "does/not/exist.ts"
+   },
+   {
+    "resolve": "<root>/workspace/apps/desktop/src/deep.tsx"
+   },
+   {
+    "resolve": "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf"
+   },
+   {
+    "resolve": "Application%20Support/hello-word.pdf"
+   },
+   {
+    "resolve": "Generated%20Files/report%20final.pdf"
+   },
+   {
+    "resolve": "..%2Fsecret.txt"
+   },
+   {
+    "resolve": "%2e%2e/secret.txt"
+   },
+   {
+    "resolve": "safe/..%2Fsecret.txt"
+   },
+   {
+    "resolve": "safe%2Fsecret.txt"
+   },
+   {
+    "resolve": "docs/../report.pdf"
+   },
+   {
+    "resolve": "../sibling/report.pdf"
+   },
+   {
+    "resolve": "<root>/workspace/ghost/missing.tsx"
+   },
+   {
+    "resolve": ""
+   },
+   {
+    "resolve": "https://example.com/src/App.tsx"
+   },
+   {
+    "resolve": "https%3A//example.com/a.pdf"
+   },
+   {
+    "resolve": "/D:/app.tsx"
+   },
+   {
+    "resolve": "/D:"
+   },
+   {
+    "resolve": "D:/app.tsx"
+   },
+   {
+    "resolve": "src/App.tsx\nrm -rf /"
+   },
+   {
+    "resolve": "src/Mod.tsx"
+   },
+   {
+    "resolve": "~/Desktop/1.txt"
+   },
+   {
+    "resolve": "~/Desktop/2.txt"
+   },
+   {
+    "resolve": "~bob/secret.txt"
+   },
+   {
+    "resolve": "~"
+   },
+   {
+    "resolve": "~/"
+   },
+   {
+    "resolve": "~\\Desktop\\1.txt"
+   },
+   {
+    "resolve": "Skills"
+   },
+   {
+    "resolve": "./Skills"
+   },
+   {
+    "resolve": "Skills/"
+   },
+   {
+    "resolve": "ghost-dir"
+   },
+   {
+    "resolve": "src//App.tsx"
+   },
+   {
+    "resolve": "./src/App.tsx"
+   },
+   {
+    "resolve": "src/App.tsx/"
+   },
+   {
+    "resolve": "/"
+   },
+   {
+    "resolve": "apps"
+   },
+   {
+    "resolve": "desktop/src"
+   },
+   {
+    "resolve": "<root>/workspace/../secret.txt"
+   },
+   {
+    "resolve": "<root>/workspace/Skills/"
+   },
+   {
+    "resolve": "App.tsx"
+   },
+   {
+    "resolve": "/src/App.tsx"
+   },
+   {
+    "resolve": "%zz/App.tsx"
+   },
+   {
+    "resolve": "abs/target.ts"
+   },
+   {
+    "resolve": "ghost/x.ts"
+   },
+   {
+    "resolve": "src/App.tsx",
+    "dir": ""
+   },
+   {
+    "resolve": "src/App.tsx",
+    "dir": "relative/path"
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "dir": "<root>/workspace/"
+   },
+   {
+    "resolve": "deep.tsx",
+    "dir": "<root>/workspace/apps/../apps"
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ]
+   },
+   {
+    "resolve": "src/App.tsx",
+    "blocked": "all"
+   },
+   {
+    "resolve": "~/Desktop/1.txt",
+    "blocked": "all"
+   },
+   {
+    "resolve": "Skills",
+    "blocked": "all"
+   },
+   {
+    "resolve": "<root>/secret.txt",
+    "blocked": [
+     "<root>/secret.txt"
+    ]
+   },
+   {
+    "resolve": "package.json",
+    "max": 0
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "depth": 2
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ]
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "dir": "relative/dir"
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "dir": ""
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "blocked": "all"
+   },
+   {
+    "batch": [
+     "src/deep.tsx",
+     "package.json"
+    ],
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/apps/server/package.json"
+    ]
+   },
+   {
+    "batch": []
+   },
+   {
+    "batch": [
+     "deep.tsx",
+     "src/App.tsx"
+    ],
+    "max": 1
+   },
+   {
+    "batch": [
+     "package.json",
+     "deep.tsx"
+    ],
+    "max": 0
+   },
+   {
+    "batch": [
+     "src/deep.tsx",
+     "package.json"
+    ],
+    "depth": 2
+   },
+   {
+    "resolve": "package.json",
+    "max": 1
+   },
+   {
+    "batch": [
+     "package.json",
+     "deep.tsx"
+    ],
+    "max": 1
+   }
+  ]
+ },
+ {
+  "name": "links",
+  "files": [
+   "workspace/real/target.ts"
+  ],
+  "steps": [
+   {
+    "link": [
+     "workspace/alias.ts",
+     "real/target.ts"
+    ]
+   },
+   {
+    "link": [
+     "workspace/folder",
+     "real"
+    ]
+   },
+   {
+    "link": [
+     "workspace/broken.ts",
+     "nowhere"
+    ]
+   },
+   {
+    "resolve": "alias.ts"
+   },
+   {
+    "resolve": "folder"
+   },
+   {
+    "resolve": "folder/target.ts"
+   },
+   {
+    "resolve": "broken.ts"
+   },
+   {
+    "find": "alias.ts"
+   },
+   {
+    "find": "target.ts"
+   },
+   {
+    "many": [
+     "alias.ts",
+     "target.ts"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a refresh after a cached miss",
+  "steps": [
+   {
+    "batchCached": [
+     "report.pdf"
+    ]
+   },
+   {
+    "write": "workspace/report.pdf"
+   },
+   {
+    "cached": "report.pdf"
+   },
+   {
+    "cached": "report.pdf",
+    "refresh": true
+   },
+   {
+    "batchCached": [
+     "report.pdf"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "a cached hit",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/index.ts"
+  ],
+  "steps": [
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "cached": "src/index.ts"
+   },
+   {
+    "cached": "src/App.tsx",
+    "refresh": true
+   }
+  ]
+ },
+ {
+  "name": "a batch's cached hit",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "batchCached": [
+     "src/App.tsx",
+     "src/App.tsx"
+    ]
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "batch": [
+     "src/App.tsx"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "negative answers read again",
+  "steps": [
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "write": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ],
+    "revalidate": true
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ],
+    "revalidate": true
+   }
+  ]
+ },
+ {
+  "name": "several answers read again",
+  "files": [
+   "workspace/a/package.json",
+   "workspace/b/package.json"
+  ],
+  "steps": [
+   {
+    "batchCached": [
+     "package.json"
+    ]
+   },
+   {
+    "remove": "workspace/b/package.json"
+   },
+   {
+    "batchCached": [
+     "package.json"
+    ]
+   },
+   {
+    "batchCached": [
+     "package.json",
+     "ghost.ts"
+    ],
+    "revalidate": true
+   },
+   {
+    "cached": "package.json"
+   }
+  ]
+ },
+ {
+  "name": "one cache for each folder",
+  "files": [
+   "workspace/a/x.ts",
+   "workspace/b/x.ts"
+  ],
+  "steps": [
+   {
+    "cached": "x.ts",
+    "dir": "<root>/workspace/a"
+   },
+   {
+    "cached": "x.ts",
+    "dir": "<root>/workspace/b"
+   },
+   {
+    "cached": "x.ts"
+   },
+   {
+    "batchCached": [
+     "x.ts"
+    ],
+    "dir": "relative"
+   }
+  ]
+ },
+ {
+  "name": "a folder's entries in byte order",
+  "files": [
+   "workspace/z/target.txt",
+   "workspace/a/target.txt",
+   "workspace/m/target.txt",
+   "workspace/c/target.txt",
+   "workspace/b/target.txt",
+   "workspace/y/target.txt",
+   "workspace/n/target.txt",
+   "workspace/e/target.txt",
+   "workspace/d/target.txt",
+   "workspace/x/target.txt",
+   "workspace/q/target.txt",
+   "workspace/r/target.txt",
+   "workspace/B/target.txt",
+   "workspace/_k/target.txt",
+   "workspace/A b/target.txt",
+   "workspace/10/target.txt",
+   "workspace/9/target.txt",
+   "workspace/.h/target.txt",
+   "workspace/é/target.txt",
+   "workspace/中/target.txt",
+   "workspace/Zed.txt",
+   "workspace/target.txt.bak"
+  ],
+  "steps": [
+   {
+    "find": "target.txt",
+    "max": 1
+   },
+   {
+    "find": "target.txt"
+   },
+   {
+    "find": "target.txt",
+    "max": 30
+   },
+   {
+    "many": [
+     "target.txt",
+     "Zed.txt"
+    ],
+    "max": 3
+   },
+   {
+    "resolve": "target.txt"
+   },
+   {
+    "resolve": "target.txt",
+    "max": 1
+   },
+   {
+    "batch": [
+     "target.txt"
+    ]
+   },
+   {
+    "batchCached": [
+     "target.txt"
+    ]
+   },
+   {
+    "cached": "target.txt"
+   }
+  ]
+ }
+]

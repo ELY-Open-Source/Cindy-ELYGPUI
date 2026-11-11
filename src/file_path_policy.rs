@@ -54,15 +54,12 @@ pub fn strip_namespace(input: &str) -> String {
     }
 }
 
-/// Node's `isAbsolute` for this host: a root, or on Windows a separator or `X:` and one.
+/// Node's `isAbsolute` for this host.
 pub fn is_absolute(path: &str) -> bool {
-    if !cfg!(windows) {
-        return path.starts_with('/');
+    match cfg!(windows) {
+        true => crate::node_path::win32::is_absolute(path),
+        false => path.starts_with('/'),
     }
-    let b = path.as_bytes();
-    let sep = |c: u8| c == b'/' || c == b'\\';
-    b.first().is_some_and(|&c| sep(c))
-        || (b.len() > 2 && b[0].is_ascii_alphabetic() && b[1] == b':' && sep(b[2]))
 }
 
 /// The resolved key: lowercased on Windows, without a trailing separator.

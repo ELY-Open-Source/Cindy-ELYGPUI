@@ -1,0 +1,3901 @@
+[
+ {
+  "name": "a file in a sub-package",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/index.ts"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx"
+   },
+   {
+    "find": "/src/App.tsx"
+   },
+   {
+    "find": "//src\\App.tsx"
+   },
+   {
+    "find": "App.tsx"
+   },
+   {
+    "find": "pp.tsx"
+   },
+   {
+    "find": ""
+   },
+   {
+    "many": [
+     "src/App.tsx",
+     "src/index.ts",
+     "src/App.tsx",
+     "App.tsx",
+     "pp.tsx",
+     ""
+    ]
+   },
+   {
+    "many": []
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/apps/desktop/src/App.tsx"
+   ],
+   [
+    "<root>/workspace/apps/desktop/src/App.tsx"
+   ],
+   [
+    "<root>/workspace/apps/desktop/src/App.tsx"
+   ],
+   [
+    "<root>/workspace/apps/desktop/src/App.tsx"
+   ],
+   [],
+   [],
+   [
+    [
+     "src/App.tsx",
+     [
+      "<root>/workspace/apps/desktop/src/App.tsx"
+     ]
+    ],
+    [
+     "src/index.ts",
+     [
+      "<root>/workspace/apps/server/src/index.ts"
+     ]
+    ],
+    [
+     "App.tsx",
+     [
+      "<root>/workspace/apps/desktop/src/App.tsx"
+     ]
+    ],
+    [
+     "pp.tsx",
+     []
+    ],
+    [
+     "",
+     []
+    ]
+   ],
+   []
+  ]
+ },
+ {
+  "name": "one suffix in several packages",
+  "files": [
+   "workspace/apps/desktop/package.json",
+   "workspace/apps/server/package.json",
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "package.json"
+   },
+   {
+    "many": [
+     "package.json",
+     "src/App.tsx"
+    ]
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/apps/desktop/package.json",
+    "<root>/workspace/apps/server/package.json"
+   ],
+   [
+    [
+     "package.json",
+     [
+      "<root>/workspace/apps/desktop/package.json",
+      "<root>/workspace/apps/server/package.json"
+     ]
+    ],
+    [
+     "src/App.tsx",
+     [
+      "<root>/workspace/apps/desktop/src/App.tsx"
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "ignored folders",
+  "files": [
+   "workspace/node_modules/foo/src/App.tsx",
+   "workspace/.git/objects/src/App.tsx",
+   "workspace/dist/src/App.tsx",
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx"
+   },
+   {
+    "many": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "resolve": "src/App.tsx"
+   },
+   {
+    "find": "foo/src/App.tsx"
+   },
+   {
+    "find": "node_modules/foo/src/App.tsx"
+   },
+   {
+    "resolve": "node_modules/foo/src/App.tsx"
+   },
+   {
+    "find": "x/node_modules/foo/src/App.tsx"
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/apps/desktop/src/App.tsx"
+   ],
+   [
+    [
+     "src/App.tsx",
+     [
+      "<root>/workspace/apps/desktop/src/App.tsx"
+     ]
+    ]
+   ],
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   [],
+   [],
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/node_modules/foo/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   []
+  ]
+ },
+ {
+  "name": "an ignored folder the href names",
+  "files": [
+   "workspace/film/renders/out/clip.mp4",
+   "workspace/film/out/clip.mp4",
+   "workspace/web/out/renders/out/clip.mp4",
+   "workspace/film/renders/out/other.mp4",
+   "workspace/docs/clip.mp4",
+   "workspace/chaoshan-film/renders2d/out/seg3_2d_v1.mp4",
+   "workspace/chaoshan-film/out/seg3_2d_v1.mp4"
+  ],
+  "steps": [
+   {
+    "find": "renders/out/clip.mp4"
+   },
+   {
+    "find": "out/clip.mp4"
+   },
+   {
+    "find": "clip.mp4"
+   },
+   {
+    "find": "film/out/clip.mp4"
+   },
+   {
+    "find": "web/out/renders/out/clip.mp4"
+   },
+   {
+    "find": "out/renders/out/clip.mp4"
+   },
+   {
+    "many": [
+     "renders/out/other.mp4",
+     "clip.mp4",
+     "out/clip.mp4"
+    ]
+   },
+   {
+    "many": [
+     "renders/out/clip.mp4",
+     "film/out/clip.mp4",
+     "clip.mp4",
+     "web/out/renders/out/clip.mp4"
+    ]
+   },
+   {
+    "batch": [
+     "renders2d/out/seg3_2d_v1.mp4",
+     "seg3_2d_v1.mp4",
+     "renders/out/clip.mp4",
+     "clip.mp4"
+    ]
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/film/renders/out/clip.mp4"
+   ],
+   [],
+   [
+    "<root>/workspace/docs/clip.mp4"
+   ],
+   [
+    "<root>/workspace/film/out/clip.mp4"
+   ],
+   [
+    "<root>/workspace/web/out/renders/out/clip.mp4"
+   ],
+   [],
+   [
+    [
+     "renders/out/other.mp4",
+     [
+      "<root>/workspace/film/renders/out/other.mp4"
+     ]
+    ],
+    [
+     "clip.mp4",
+     [
+      "<root>/workspace/docs/clip.mp4"
+     ]
+    ],
+    [
+     "out/clip.mp4",
+     []
+    ]
+   ],
+   [
+    [
+     "renders/out/clip.mp4",
+     [
+      "<root>/workspace/film/renders/out/clip.mp4"
+     ]
+    ],
+    [
+     "film/out/clip.mp4",
+     [
+      "<root>/workspace/film/out/clip.mp4"
+     ]
+    ],
+    [
+     "clip.mp4",
+     [
+      "<root>/workspace/docs/clip.mp4"
+     ]
+    ],
+    [
+     "web/out/renders/out/clip.mp4",
+     [
+      "<root>/workspace/web/out/renders/out/clip.mp4"
+     ]
+    ]
+   ],
+   [
+    [
+     "renders2d/out/seg3_2d_v1.mp4",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/chaoshan-film/renders2d/out/seg3_2d_v1.mp4"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "seg3_2d_v1.mp4",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "renders/out/clip.mp4",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/film/renders/out/clip.mp4"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "clip.mp4",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/docs/clip.mp4"
+      ],
+      "kind": "file"
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "the candidate cap",
+  "files": [
+   "workspace/a/foo.ts",
+   "workspace/b/foo.ts",
+   "workspace/c/foo.ts",
+   "workspace/d/foo.ts",
+   "workspace/deep/er/bar.ts",
+   "workspace/top/bar.ts"
+  ],
+  "steps": [
+   {
+    "find": "foo.ts",
+    "max": 2
+   },
+   {
+    "many": [
+     "foo.ts"
+    ],
+    "max": 2
+   },
+   {
+    "find": "bar.ts",
+    "max": 1
+   },
+   {
+    "many": [
+     "bar.ts",
+     "foo.ts"
+    ],
+    "max": 1
+   },
+   {
+    "many": [
+     "bar.ts"
+    ],
+    "max": 1
+   },
+   {
+    "find": "foo.ts",
+    "max": 0
+   },
+   {
+    "many": [
+     "foo.ts"
+    ],
+    "max": 0
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/a/foo.ts",
+    "<root>/workspace/b/foo.ts"
+   ],
+   [
+    [
+     "foo.ts",
+     [
+      "<root>/workspace/a/foo.ts",
+      "<root>/workspace/b/foo.ts"
+     ]
+    ]
+   ],
+   [
+    "<root>/workspace/top/bar.ts"
+   ],
+   [
+    [
+     "bar.ts",
+     [
+      "<root>/workspace/top/bar.ts"
+     ]
+    ],
+    [
+     "foo.ts",
+     [
+      "<root>/workspace/a/foo.ts"
+     ]
+    ]
+   ],
+   [
+    [
+     "bar.ts",
+     [
+      "<root>/workspace/top/bar.ts"
+     ]
+    ]
+   ],
+   [],
+   [
+    [
+     "foo.ts",
+     []
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "the depth cap",
+  "files": [
+   "workspace/level1/level2/level3/deep.tsx",
+   "workspace/top.tsx"
+  ],
+  "steps": [
+   {
+    "find": "deep.tsx",
+    "depth": 2
+   },
+   {
+    "find": "deep.tsx",
+    "depth": 3
+   },
+   {
+    "find": "deep.tsx",
+    "depth": 8
+   },
+   {
+    "find": "top.tsx",
+    "depth": 0
+   },
+   {
+    "many": [
+     "deep.tsx",
+     "top.tsx"
+    ],
+    "depth": 2
+   },
+   {
+    "many": [
+     "deep.tsx",
+     "top.tsx"
+    ],
+    "depth": 3
+   }
+  ],
+  "out": [
+   [],
+   [
+    "<root>/workspace/level1/level2/level3/deep.tsx"
+   ],
+   [
+    "<root>/workspace/level1/level2/level3/deep.tsx"
+   ],
+   [
+    "<root>/workspace/top.tsx"
+   ],
+   [
+    [
+     "deep.tsx",
+     []
+    ],
+    [
+     "top.tsx",
+     [
+      "<root>/workspace/top.tsx"
+     ]
+    ]
+   ],
+   [
+    [
+     "deep.tsx",
+     [
+      "<root>/workspace/level1/level2/level3/deep.tsx"
+     ]
+    ],
+    [
+     "top.tsx",
+     [
+      "<root>/workspace/top.tsx"
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "the allow check",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/App.tsx",
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ]
+   },
+   {
+    "many": [
+     "src/App.tsx"
+    ],
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ]
+   },
+   {
+    "find": "src/App.tsx",
+    "blocked": "all"
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/apps/server/src/App.tsx"
+   ],
+   [
+    [
+     "src/App.tsx",
+     [
+      "<root>/workspace/apps/server/src/App.tsx"
+     ]
+    ]
+   ],
+   []
+  ]
+ },
+ {
+  "name": "case",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "find": "src/app.tsx"
+   },
+   {
+    "resolve": "src/app.tsx"
+   }
+  ],
+  "out": [
+   [],
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   }
+  ]
+ },
+ {
+  "name": "decoding",
+  "files": [],
+  "steps": [
+   {
+    "decode": "C:%5CUsers%5Cme%5Chello%20world.pdf"
+   },
+   {
+    "decode": "safe%2Fsecret.txt"
+   },
+   {
+    "decode": "https%3A//example.com/a.pdf"
+   },
+   {
+    "decode": "https%3A//example.com/batch.pdf"
+   },
+   {
+    "decode": "..%2Fsecret.txt"
+   },
+   {
+    "decode": "%2e%2e/secret.txt"
+   },
+   {
+    "decode": "safe/..%2Fsecret.txt"
+   },
+   {
+    "decode": "a%20b"
+   },
+   {
+    "decode": "%E4%B8%AD/x"
+   },
+   {
+    "decode": "%zz"
+   },
+   {
+    "decode": "%"
+   },
+   {
+    "decode": "%E4%B8"
+   },
+   {
+    "decode": "a%5Cb"
+   },
+   {
+    "decode": "%5C%5Cserver%5Cshare"
+   },
+   {
+    "decode": "%2Fetc%2Fpasswd"
+   },
+   {
+    "decode": "a/%2e%2e"
+   },
+   {
+    "decode": "../x"
+   },
+   {
+    "decode": "a//%2e%2e"
+   },
+   {
+    "decode": "%2e%2e%2f"
+   },
+   {
+    "decode": "x%3A//y"
+   },
+   {
+    "decode": "a\\..\\b"
+   },
+   {
+    "decode": "a/b/../c%2e"
+   },
+   {
+    "decode": ""
+   },
+   {
+    "decode": "/"
+   },
+   {
+    "decode": "//%2e%2e"
+   },
+   {
+    "decode": "a/%2e%2e/"
+   },
+   {
+    "decode": "..//%2e%2e"
+   },
+   {
+    "decode": "%2e%2e/../x"
+   },
+   {
+    "decode": "../%2e%2e"
+   },
+   {
+    "decode": "c%3A/x"
+   },
+   {
+    "decode": "c:%2Fx"
+   },
+   {
+    "decode": "%2e./x"
+   },
+   {
+    "decode": ".%2e\\x"
+   },
+   {
+    "decode": "a%252Fb"
+   },
+   {
+    "decode": "HTTP%3a//x"
+   },
+   {
+    "decode": "1a%3A//x"
+   },
+   {
+    "decode": "%41:%2F%2Fx"
+   }
+  ],
+  "out": [
+   "C:\\Users\\me\\hello world.pdf",
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   "a b",
+   "中/x",
+   "%zz",
+   "%",
+   "%E4%B8",
+   null,
+   "\\\\server\\share",
+   "/etc/passwd",
+   null,
+   "../x",
+   null,
+   null,
+   null,
+   "a\\..\\b",
+   "a/b/../c.",
+   "",
+   "/",
+   null,
+   null,
+   null,
+   null,
+   null,
+   "c:/x",
+   "c:/x",
+   null,
+   null,
+   "a%2Fb",
+   null,
+   "1a://x",
+   null
+  ]
+ },
+ {
+  "name": "the resolver",
+  "files": [
+   "workspace/src/App.tsx",
+   "workspace/apps/desktop/src/deep.tsx",
+   "workspace/apps/desktop/package.json",
+   "workspace/apps/server/package.json",
+   "workspace/Application Support/hello-word.pdf",
+   "workspace/apps/desktop/Generated Files/report final.pdf",
+   "workspace/dialogues/2026-06-23/hello word.pdf",
+   "workspace/report.pdf",
+   "workspace/D:/app.tsx",
+   "workspace/Skills/inner.md",
+   "workspace/node_modules/foo/src/Mod.tsx",
+   "workspace/Desktop/2.txt",
+   "workspace/abs/target.ts",
+   "sibling/report.pdf",
+   "secret.txt",
+   "home/Desktop/1.txt"
+  ],
+  "steps": [
+   {
+    "resolve": "src/App.tsx"
+   },
+   {
+    "resolve": "src/deep.tsx"
+   },
+   {
+    "resolve": "package.json"
+   },
+   {
+    "resolve": "does/not/exist.ts"
+   },
+   {
+    "resolve": "<root>/workspace/apps/desktop/src/deep.tsx"
+   },
+   {
+    "resolve": "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf"
+   },
+   {
+    "resolve": "Application%20Support/hello-word.pdf"
+   },
+   {
+    "resolve": "Generated%20Files/report%20final.pdf"
+   },
+   {
+    "resolve": "..%2Fsecret.txt"
+   },
+   {
+    "resolve": "%2e%2e/secret.txt"
+   },
+   {
+    "resolve": "safe/..%2Fsecret.txt"
+   },
+   {
+    "resolve": "safe%2Fsecret.txt"
+   },
+   {
+    "resolve": "docs/../report.pdf"
+   },
+   {
+    "resolve": "../sibling/report.pdf"
+   },
+   {
+    "resolve": "<root>/workspace/ghost/missing.tsx"
+   },
+   {
+    "resolve": ""
+   },
+   {
+    "resolve": "https://example.com/src/App.tsx"
+   },
+   {
+    "resolve": "https%3A//example.com/a.pdf"
+   },
+   {
+    "resolve": "/D:/app.tsx"
+   },
+   {
+    "resolve": "/D:"
+   },
+   {
+    "resolve": "D:/app.tsx"
+   },
+   {
+    "resolve": "src/App.tsx\nrm -rf /"
+   },
+   {
+    "resolve": "src/Mod.tsx"
+   },
+   {
+    "resolve": "~/Desktop/1.txt"
+   },
+   {
+    "resolve": "~/Desktop/2.txt"
+   },
+   {
+    "resolve": "~bob/secret.txt"
+   },
+   {
+    "resolve": "~"
+   },
+   {
+    "resolve": "~/"
+   },
+   {
+    "resolve": "~\\Desktop\\1.txt"
+   },
+   {
+    "resolve": "Skills"
+   },
+   {
+    "resolve": "./Skills"
+   },
+   {
+    "resolve": "Skills/"
+   },
+   {
+    "resolve": "ghost-dir"
+   },
+   {
+    "resolve": "src//App.tsx"
+   },
+   {
+    "resolve": "./src/App.tsx"
+   },
+   {
+    "resolve": "src/App.tsx/"
+   },
+   {
+    "resolve": "/"
+   },
+   {
+    "resolve": "apps"
+   },
+   {
+    "resolve": "desktop/src"
+   },
+   {
+    "resolve": "<root>/workspace/../secret.txt"
+   },
+   {
+    "resolve": "<root>/workspace/Skills/"
+   },
+   {
+    "resolve": "App.tsx"
+   },
+   {
+    "resolve": "/src/App.tsx"
+   },
+   {
+    "resolve": "%zz/App.tsx"
+   },
+   {
+    "resolve": "abs/target.ts"
+   },
+   {
+    "resolve": "ghost/x.ts"
+   },
+   {
+    "resolve": "src/App.tsx",
+    "dir": ""
+   },
+   {
+    "resolve": "src/App.tsx",
+    "dir": "relative/path"
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "dir": "<root>/workspace/"
+   },
+   {
+    "resolve": "deep.tsx",
+    "dir": "<root>/workspace/apps/../apps"
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ]
+   },
+   {
+    "resolve": "src/App.tsx",
+    "blocked": "all"
+   },
+   {
+    "resolve": "~/Desktop/1.txt",
+    "blocked": "all"
+   },
+   {
+    "resolve": "Skills",
+    "blocked": "all"
+   },
+   {
+    "resolve": "<root>/secret.txt",
+    "blocked": [
+     "<root>/secret.txt"
+    ]
+   },
+   {
+    "resolve": "package.json",
+    "max": 0
+   },
+   {
+    "resolve": "src/deep.tsx",
+    "depth": 2
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ]
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "dir": "relative/dir"
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "dir": ""
+   },
+   {
+    "batch": [
+     "src/App.tsx",
+     "src/deep.tsx",
+     "package.json",
+     "does/not/exist.ts",
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     "Application%20Support/hello-word.pdf",
+     "Generated%20Files/report%20final.pdf",
+     "..%2Fsecret.txt",
+     "%2e%2e/secret.txt",
+     "safe/..%2Fsecret.txt",
+     "safe%2Fsecret.txt",
+     "docs/../report.pdf",
+     "../sibling/report.pdf",
+     "<root>/workspace/ghost/missing.tsx",
+     "",
+     "https://example.com/src/App.tsx",
+     "https%3A//example.com/a.pdf",
+     "/D:/app.tsx",
+     "/D:",
+     "D:/app.tsx",
+     "src/App.tsx\nrm -rf /",
+     "src/Mod.tsx",
+     "~/Desktop/1.txt",
+     "~/Desktop/2.txt",
+     "~bob/secret.txt",
+     "~",
+     "~/",
+     "~\\Desktop\\1.txt",
+     "Skills",
+     "./Skills",
+     "Skills/",
+     "ghost-dir",
+     "src//App.tsx",
+     "./src/App.tsx",
+     "src/App.tsx/",
+     "/",
+     "apps",
+     "desktop/src",
+     "<root>/workspace/../secret.txt",
+     "<root>/workspace/Skills/",
+     "App.tsx",
+     "/src/App.tsx",
+     "%zz/App.tsx",
+     "abs/target.ts",
+     "ghost/x.ts",
+     "src/App.tsx"
+    ],
+    "blocked": "all"
+   },
+   {
+    "batch": [
+     "src/deep.tsx",
+     "package.json"
+    ],
+    "blocked": [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     "<root>/workspace/apps/server/package.json"
+    ]
+   },
+   {
+    "batch": []
+   },
+   {
+    "batch": [
+     "deep.tsx",
+     "src/App.tsx"
+    ],
+    "max": 1
+   },
+   {
+    "batch": [
+     "package.json",
+     "deep.tsx"
+    ],
+    "max": 0
+   },
+   {
+    "batch": [
+     "src/deep.tsx",
+     "package.json"
+    ],
+    "depth": 2
+   },
+   {
+    "resolve": "package.json",
+    "max": 1
+   },
+   {
+    "batch": [
+     "package.json",
+     "deep.tsx"
+    ],
+    "max": 1
+   }
+  ],
+  "out": [
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "multiple",
+    "candidates": [
+     "<root>/workspace/apps/desktop/package.json",
+     "<root>/workspace/apps/server/package.json"
+    ],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/dialogues/2026-06-23/hello word.pdf"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/Application Support/hello-word.pdf"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/Generated Files/report final.pdf"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/report.pdf"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/sibling/report.pdf"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/D:/app.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/home/Desktop/1.txt"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/home"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/home"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/Skills"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/Skills"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/Skills/"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "/"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/../secret.txt"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/Skills/"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/abs/target.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/deep.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "src/deep.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/deep.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/apps/desktop/package.json",
+       "<root>/workspace/apps/server/package.json"
+      ],
+      "kind": null
+     }
+    ],
+    [
+     "does/not/exist.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/deep.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/dialogues/2026-06-23/hello word.pdf"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "Application%20Support/hello-word.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/Application Support/hello-word.pdf"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "Generated%20Files/report%20final.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/Generated Files/report final.pdf"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%2e%2e/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe/..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "docs/../report.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/report.pdf"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "../sibling/report.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/sibling/report.pdf"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "<root>/workspace/ghost/missing.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https://example.com/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https%3A//example.com/a.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "D:/app.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/D:/app.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "src/App.tsx\nrm -rf /",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/Mod.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/1.txt",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/home/Desktop/1.txt"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "~/Desktop/2.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~bob/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/home"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "~/",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/home"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "~\\Desktop\\1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/Skills"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "./Skills",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/Skills"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "Skills/",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/Skills/"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "ghost-dir",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src//App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "./src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "src/App.tsx/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/",
+     {
+      "status": "unique",
+      "candidates": [
+       "/"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "apps",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "desktop/src",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/../secret.txt",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/../secret.txt"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "<root>/workspace/Skills/",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/Skills/"
+      ],
+      "kind": "directory"
+     }
+    ],
+    [
+     "App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%zz/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "abs/target.ts",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/abs/target.ts"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "ghost/x.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "does/not/exist.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Application%20Support/hello-word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Generated%20Files/report%20final.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%2e%2e/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe/..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "docs/../report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "../sibling/report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/ghost/missing.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https://example.com/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https%3A//example.com/a.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx\nrm -rf /",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/Mod.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/2.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~bob/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~\\Desktop\\1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost-dir",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src//App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "apps",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "desktop/src",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/../secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%zz/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "abs/target.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost/x.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "does/not/exist.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Application%20Support/hello-word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Generated%20Files/report%20final.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%2e%2e/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe/..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "docs/../report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "../sibling/report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/ghost/missing.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https://example.com/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https%3A//example.com/a.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx\nrm -rf /",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/Mod.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/2.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~bob/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~\\Desktop\\1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost-dir",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src//App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "apps",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "desktop/src",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/../secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%zz/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "abs/target.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost/x.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "does/not/exist.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/apps/desktop/src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/dialogues/2026-06-23/hello%20word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Application%20Support/hello-word.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Generated%20Files/report%20final.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%2e%2e/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe/..%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "safe%2Fsecret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "docs/../report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "../sibling/report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/ghost/missing.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https://example.com/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "https%3A//example.com/a.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/D:",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "D:/app.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx\nrm -rf /",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/Mod.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/Desktop/2.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~bob/secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "~\\Desktop\\1.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./Skills",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost-dir",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src//App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "./src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "src/App.tsx/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "apps",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "desktop/src",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/../secret.txt",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "<root>/workspace/Skills/",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "/src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "%zz/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "abs/target.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "ghost/x.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/package.json"
+      ],
+      "kind": "file"
+     }
+    ]
+   ],
+   [],
+   [
+    [
+     "deep.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/deep.tsx"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ],
+   [
+    [
+     "package.json",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/deep.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ],
+    [
+     "package.json",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/apps/desktop/package.json",
+       "<root>/workspace/apps/server/package.json"
+      ],
+      "kind": null
+     }
+    ]
+   ],
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/package.json"
+    ],
+    "kind": "file"
+   },
+   [
+    [
+     "package.json",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/package.json"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "deep.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/deep.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "links",
+  "files": [
+   "workspace/real/target.ts"
+  ],
+  "steps": [
+   {
+    "link": [
+     "workspace/alias.ts",
+     "real/target.ts"
+    ]
+   },
+   {
+    "link": [
+     "workspace/folder",
+     "real"
+    ]
+   },
+   {
+    "link": [
+     "workspace/broken.ts",
+     "nowhere"
+    ]
+   },
+   {
+    "resolve": "alias.ts"
+   },
+   {
+    "resolve": "folder"
+   },
+   {
+    "resolve": "folder/target.ts"
+   },
+   {
+    "resolve": "broken.ts"
+   },
+   {
+    "find": "alias.ts"
+   },
+   {
+    "find": "target.ts"
+   },
+   {
+    "many": [
+     "alias.ts",
+     "target.ts"
+    ]
+   }
+  ],
+  "out": [
+   null,
+   null,
+   null,
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/alias.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/folder"
+    ],
+    "kind": "directory"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/folder/target.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   [],
+   [
+    "<root>/workspace/real/target.ts"
+   ],
+   [
+    [
+     "alias.ts",
+     []
+    ],
+    [
+     "target.ts",
+     [
+      "<root>/workspace/real/target.ts"
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "a refresh after a cached miss",
+  "files": [],
+  "steps": [
+   {
+    "batchCached": [
+     "report.pdf"
+    ]
+   },
+   {
+    "write": "workspace/report.pdf"
+   },
+   {
+    "cached": "report.pdf"
+   },
+   {
+    "cached": "report.pdf",
+    "refresh": true
+   },
+   {
+    "batchCached": [
+     "report.pdf"
+    ]
+   }
+  ],
+  "out": [
+   [
+    [
+     "report.pdf",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   null,
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/report.pdf"
+    ],
+    "kind": "file"
+   },
+   [
+    [
+     "report.pdf",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/report.pdf"
+      ],
+      "kind": "file"
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "a cached hit",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx",
+   "workspace/apps/server/src/index.ts"
+  ],
+  "steps": [
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "cached": "src/index.ts"
+   },
+   {
+    "cached": "src/App.tsx",
+    "refresh": true
+   }
+  ],
+  "out": [
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   null,
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/server/src/index.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "none",
+    "candidates": [],
+    "kind": null
+   }
+  ]
+ },
+ {
+  "name": "a batch's cached hit",
+  "files": [
+   "workspace/apps/desktop/src/App.tsx"
+  ],
+  "steps": [
+   {
+    "batchCached": [
+     "src/App.tsx",
+     "src/App.tsx"
+    ]
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "cached": "src/App.tsx"
+   },
+   {
+    "batch": [
+     "src/App.tsx"
+    ]
+   }
+  ],
+  "out": [
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ],
+   null,
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ],
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/apps/desktop/src/App.tsx"
+    ],
+    "kind": "file"
+   },
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "negative answers read again",
+  "files": [],
+  "steps": [
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "write": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ]
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ],
+    "revalidate": true
+   },
+   {
+    "remove": "workspace/apps/desktop/src/App.tsx"
+   },
+   {
+    "batchCached": [
+     "src/App.tsx"
+    ],
+    "revalidate": true
+   }
+  ],
+  "out": [
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   null,
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ],
+   null,
+   [
+    [
+     "src/App.tsx",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/apps/desktop/src/App.tsx"
+      ],
+      "kind": "file"
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "several answers read again",
+  "files": [
+   "workspace/a/package.json",
+   "workspace/b/package.json"
+  ],
+  "steps": [
+   {
+    "batchCached": [
+     "package.json"
+    ]
+   },
+   {
+    "remove": "workspace/b/package.json"
+   },
+   {
+    "batchCached": [
+     "package.json"
+    ]
+   },
+   {
+    "batchCached": [
+     "package.json",
+     "ghost.ts"
+    ],
+    "revalidate": true
+   },
+   {
+    "cached": "package.json"
+   }
+  ],
+  "out": [
+   [
+    [
+     "package.json",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/a/package.json",
+       "<root>/workspace/b/package.json"
+      ],
+      "kind": null
+     }
+    ]
+   ],
+   null,
+   [
+    [
+     "package.json",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/a/package.json",
+       "<root>/workspace/b/package.json"
+      ],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "package.json",
+     {
+      "status": "unique",
+      "candidates": [
+       "<root>/workspace/a/package.json"
+      ],
+      "kind": "file"
+     }
+    ],
+    [
+     "ghost.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ],
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/a/package.json"
+    ],
+    "kind": "file"
+   }
+  ]
+ },
+ {
+  "name": "one cache for each folder",
+  "files": [
+   "workspace/a/x.ts",
+   "workspace/b/x.ts"
+  ],
+  "steps": [
+   {
+    "cached": "x.ts",
+    "dir": "<root>/workspace/a"
+   },
+   {
+    "cached": "x.ts",
+    "dir": "<root>/workspace/b"
+   },
+   {
+    "cached": "x.ts"
+   },
+   {
+    "batchCached": [
+     "x.ts"
+    ],
+    "dir": "relative"
+   }
+  ],
+  "out": [
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/a/x.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/b/x.ts"
+    ],
+    "kind": "file"
+   },
+   {
+    "status": "multiple",
+    "candidates": [
+     "<root>/workspace/a/x.ts",
+     "<root>/workspace/b/x.ts"
+    ],
+    "kind": null
+   },
+   [
+    [
+     "x.ts",
+     {
+      "status": "none",
+      "candidates": [],
+      "kind": null
+     }
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "a folder's entries in byte order",
+  "files": [
+   "workspace/z/target.txt",
+   "workspace/a/target.txt",
+   "workspace/m/target.txt",
+   "workspace/c/target.txt",
+   "workspace/b/target.txt",
+   "workspace/y/target.txt",
+   "workspace/n/target.txt",
+   "workspace/e/target.txt",
+   "workspace/d/target.txt",
+   "workspace/x/target.txt",
+   "workspace/q/target.txt",
+   "workspace/r/target.txt",
+   "workspace/B/target.txt",
+   "workspace/_k/target.txt",
+   "workspace/A b/target.txt",
+   "workspace/10/target.txt",
+   "workspace/9/target.txt",
+   "workspace/.h/target.txt",
+   "workspace/é/target.txt",
+   "workspace/中/target.txt",
+   "workspace/Zed.txt",
+   "workspace/target.txt.bak"
+  ],
+  "steps": [
+   {
+    "find": "target.txt",
+    "max": 1
+   },
+   {
+    "find": "target.txt"
+   },
+   {
+    "find": "target.txt",
+    "max": 30
+   },
+   {
+    "many": [
+     "target.txt",
+     "Zed.txt"
+    ],
+    "max": 3
+   },
+   {
+    "resolve": "target.txt"
+   },
+   {
+    "resolve": "target.txt",
+    "max": 1
+   },
+   {
+    "batch": [
+     "target.txt"
+    ]
+   },
+   {
+    "batchCached": [
+     "target.txt"
+    ]
+   },
+   {
+    "cached": "target.txt"
+   }
+  ],
+  "out": [
+   [
+    "<root>/workspace/.h/target.txt"
+   ],
+   [
+    "<root>/workspace/.h/target.txt",
+    "<root>/workspace/10/target.txt",
+    "<root>/workspace/9/target.txt",
+    "<root>/workspace/A b/target.txt",
+    "<root>/workspace/B/target.txt",
+    "<root>/workspace/_k/target.txt",
+    "<root>/workspace/a/target.txt",
+    "<root>/workspace/b/target.txt",
+    "<root>/workspace/c/target.txt",
+    "<root>/workspace/d/target.txt"
+   ],
+   [
+    "<root>/workspace/.h/target.txt",
+    "<root>/workspace/10/target.txt",
+    "<root>/workspace/9/target.txt",
+    "<root>/workspace/A b/target.txt",
+    "<root>/workspace/B/target.txt",
+    "<root>/workspace/_k/target.txt",
+    "<root>/workspace/a/target.txt",
+    "<root>/workspace/b/target.txt",
+    "<root>/workspace/c/target.txt",
+    "<root>/workspace/d/target.txt",
+    "<root>/workspace/e/target.txt",
+    "<root>/workspace/m/target.txt",
+    "<root>/workspace/n/target.txt",
+    "<root>/workspace/q/target.txt",
+    "<root>/workspace/r/target.txt",
+    "<root>/workspace/x/target.txt",
+    "<root>/workspace/y/target.txt",
+    "<root>/workspace/z/target.txt",
+    "<root>/workspace/é/target.txt",
+    "<root>/workspace/中/target.txt"
+   ],
+   [
+    [
+     "target.txt",
+     [
+      "<root>/workspace/.h/target.txt",
+      "<root>/workspace/10/target.txt",
+      "<root>/workspace/9/target.txt"
+     ]
+    ],
+    [
+     "Zed.txt",
+     [
+      "<root>/workspace/Zed.txt"
+     ]
+    ]
+   ],
+   {
+    "status": "multiple",
+    "candidates": [
+     "<root>/workspace/.h/target.txt",
+     "<root>/workspace/10/target.txt",
+     "<root>/workspace/9/target.txt",
+     "<root>/workspace/A b/target.txt",
+     "<root>/workspace/B/target.txt",
+     "<root>/workspace/_k/target.txt",
+     "<root>/workspace/a/target.txt",
+     "<root>/workspace/b/target.txt",
+     "<root>/workspace/c/target.txt",
+     "<root>/workspace/d/target.txt"
+    ],
+    "kind": null
+   },
+   {
+    "status": "unique",
+    "candidates": [
+     "<root>/workspace/.h/target.txt"
+    ],
+    "kind": "file"
+   },
+   [
+    [
+     "target.txt",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/.h/target.txt",
+       "<root>/workspace/10/target.txt",
+       "<root>/workspace/9/target.txt",
+       "<root>/workspace/A b/target.txt",
+       "<root>/workspace/B/target.txt",
+       "<root>/workspace/_k/target.txt",
+       "<root>/workspace/a/target.txt",
+       "<root>/workspace/b/target.txt",
+       "<root>/workspace/c/target.txt",
+       "<root>/workspace/d/target.txt"
+      ],
+      "kind": null
+     }
+    ]
+   ],
+   [
+    [
+     "target.txt",
+     {
+      "status": "multiple",
+      "candidates": [
+       "<root>/workspace/.h/target.txt",
+       "<root>/workspace/10/target.txt",
+       "<root>/workspace/9/target.txt",
+       "<root>/workspace/A b/target.txt",
+       "<root>/workspace/B/target.txt",
+       "<root>/workspace/_k/target.txt",
+       "<root>/workspace/a/target.txt",
+       "<root>/workspace/b/target.txt",
+       "<root>/workspace/c/target.txt",
+       "<root>/workspace/d/target.txt"
+      ],
+      "kind": null
+     }
+    ]
+   ],
+   {
+    "status": "multiple",
+    "candidates": [
+     "<root>/workspace/.h/target.txt",
+     "<root>/workspace/10/target.txt",
+     "<root>/workspace/9/target.txt",
+     "<root>/workspace/A b/target.txt",
+     "<root>/workspace/B/target.txt",
+     "<root>/workspace/_k/target.txt",
+     "<root>/workspace/a/target.txt",
+     "<root>/workspace/b/target.txt",
+     "<root>/workspace/c/target.txt",
+     "<root>/workspace/d/target.txt"
+    ],
+    "kind": null
+   }
+  ]
+ }
+]

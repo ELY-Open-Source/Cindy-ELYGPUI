@@ -251,6 +251,21 @@ listed in `tasks/done.md`.
   - [x] 9.6g Tables: columns, alignment, the scroll of a wide table
   - [ ] 9.6h Link targets: `MarkdownTargetLink`, `FileTargetChip`, `InlineCodeWithTarget`, the
       session, project and session-card links, in-document anchors
+    - [x] 9.6h1 The workspace path resolver (`main/pathResolver.ts`): `resolveWorkspacePath`
+      (decode, `~`, the absolute stat, the join, `bfsFindBySuffix` with its ignored folders), the
+      batch with its one walk, their cache, and Node's `path.join` for both platforms; goldens on
+      the inputs of Cindy's tests
+    - [ ] 9.6h2 The renderer's resolver (`localPathResolver.ts`): `resolveLocalPathSmart`, its
+      peek, cache and negative revalidation, and `useResolvedMarkdownTarget` for a local task
+      over the mounted content
+    - [ ] 9.6h3 `MarkdownTargetLink`'s link: the external link with its open-with menu, the
+      in-document anchor, plain text and code references, the authored local link that resolves
+      again on a click, `useLinkContextMenu`
+    - [ ] 9.6h4 Resolved local targets: `FileTargetChip`, `ResolvedLocalLink`,
+      `shouldRenderCodeReferenceLabel`, `InlineCodeWithTarget`, with `useFileChipContextMenu`;
+      what a click opens comes with 9.13's lightboxes
+    - [ ] 9.6h5 The session and project chips in Markdown and `SessionHandoffCard` for a
+      session-card link
   - [ ] 9.6i Images: `LightboxImage` in line (its lightbox with 9.13) and
       `extractRenderedMarkdownImageTargets` (from 9.4b), which 9.4c's inline media then reads
   - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
