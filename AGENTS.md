@@ -442,7 +442,22 @@ defines scope and what 1:1 means.
   `html_images.rs` is `remarkHtmlImages` with `htmlImage.ts`: an html node that is one safe `<img>`
   becomes an image at its place; mdast's `data.hProperties` are `Image.width` and `height`, fields
   added to the vendored crate. `session_links.rs` is `remarkSessionLinks`: text outside a link is split
-  at its valid deep links. A link a transformer makes has no place and no title.
+  at its valid deep links. A link a transformer makes has no place and no title. `local_images.rs` is
+  `remarkBareSpaceLocalImages`: it takes the text `parse` read, slices each text node's source (a NUL
+  counted as the U+FFFD it reads as) and, where `bare_space_images::find` (`bareSpaceLocalImages.ts`)
+  finds an image, rebuilds the node; a span that differs from the node's value is read again by
+  `markdown::plain`, remark-parse with no extension. For it the vendored crate starts a text at an
+  escape's backslash, as mdast-util-from-markdown does. `path_links.rs` is `remarkLocalPathLinks`:
+  `path_tokens::find` (`bareFilePathTokens.ts`; its lookarounds and backtracking order by hand, on
+  characters) and a link with `bare_path`, the `data-bare-path` mark. `raw_destinations.rs` is
+  `remarkPreserveRawLocalDestinations`: `Link.raw` and `Image.raw` hold a local destination as written.
+  Golden `local-paths` checks the functions under them, on the inputs of Cindy's tests and seeded
+  mixes: `local_path/shape.rs` (`looksLikeFilePath`, `looksLikeDirectoryPath`, `classifyMarkdownHref`,
+  `resolveKnownLocalFileHref`, `normalizeXdtFileUrlForRenderer`) and `src/markdown_target.rs`,
+  `markdownTarget.ts` whole (`link`, `inline_code`, `split_line`, `sandbox`, `ambiguous`,
+  `remote_lit`). An `xdt-file://` link's `new URL` is the `url` crate, which reads the scheme as Node
+  does where the golden runs; in Cindy's renderer the scheme is standard, so Chromium refuses hosts
+  Node takes.
 - Dev profiles (`src/dev_profile.rs`, Cindy's `devCliFlags.ts`): debug builds stand for Cindy's
   source run. `--isolated[=<name>]` or `XDT_ISOLATED=1` (+ `XDT_ISOLATED_NAME`) runs in
   `<userData>-dev2[-<name>]`; `XDT_USER_DATA_DIR` picks a folder (a sandbox only with

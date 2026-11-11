@@ -5,6 +5,9 @@ mod autolinks;
 mod cjk_urls;
 mod flanks;
 mod html_images;
+mod local_images;
+mod path_links;
+mod raw_destinations;
 mod session_links;
 #[cfg(test)]
 mod tests;
@@ -14,9 +17,8 @@ use markdown::{Constructs, ParseOptions, mdast::Node};
 /// micromark's replacement for NUL.
 const REPLACEMENT: char = '\u{FFFD}';
 
-/// The tree of `text`.
-pub fn parse(text: &str) -> Node {
-    // micromark's preprocess: NUL reads as U+FFFD, in a chunk of its own.
+/// micromark's preprocess: NUL reads as U+FFFD, in a chunk of its own, at these bytes.
+fn preprocess(text: &str) -> (String, Vec<usize>) {
     let mut source = String::with_capacity(text.len());
     let mut nuls = Vec::new();
     for ch in text.chars() {
@@ -27,6 +29,12 @@ pub fn parse(text: &str) -> Node {
             source.push(ch);
         }
     }
+    (source, nuls)
+}
+
+/// The tree of `text`.
+pub fn parse(text: &str) -> Node {
+    let (source, nuls) = preprocess(text);
     let options = ParseOptions {
         constructs: Constructs {
             math_flow: true,
@@ -43,4 +51,14 @@ pub fn parse(text: &str) -> Node {
     let mut root = markdown::to_mdast(&source, &options).expect("only MDX syntax fails to parse");
     autolinks::transform(&mut root);
     root
+}
+
+/// The tree remark-parse alone builds: CommonMark, with no extension.
+fn plain(text: &str) -> Node {
+    let (source, chunk_ends) = preprocess(text);
+    let options = ParseOptions {
+        chunk_ends,
+        ..ParseOptions::default()
+    };
+    markdown::to_mdast(&source, &options).expect("only MDX syntax fails to parse")
 }

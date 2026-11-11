@@ -75,6 +75,8 @@ fn split(value: &str) -> Option<Vec<Node>> {
             position: None,
             url: href.to_owned(),
             title: None,
+            bare_path: false,
+            raw: None,
         }));
         cursor = whole.start() + href.len();
     }

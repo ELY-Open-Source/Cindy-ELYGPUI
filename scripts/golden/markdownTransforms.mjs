@@ -11,9 +11,17 @@ const ENTRY = [
 
 const PARSE = 3;
 // Where each transformer stands in Cindy's list, by the name its source gives it.
-const TRANSFORMS = { truncate: [4, 'remarkTruncateCjkUrls'], images: [5, 'remarkHtmlImages'], sessions: [7, 'remarkSessionLinks'] };
+const TRANSFORMS = {
+  truncate: [4, 'remarkTruncateCjkUrls'], images: [5, 'remarkHtmlImages'], spaced: [6, 'remarkBareSpaceLocalImages'],
+  sessions: [7, 'remarkSessionLinks'], paths: [8, 'remarkLocalPathLinks'], raw: [9, 'remarkPreserveRawLocalDestinations'],
+};
+// The hast properties a transformer sets, by the name the golden gives each.
+const PROPERTIES = {
+  width: 'width', height: 'height', 'data-bare-path': 'barePath',
+  'data-cindy-raw-local-image-src': 'raw', 'data-cindy-raw-local-link-href': 'raw',
+};
 
-/** A node less its place: an image's hast size as `width` and `height`, a link's title always there. */
+/** A node less its place: its hast properties under the golden's names, a link's title always there. */
 function bare(node) {
   const out = {};
   for (const [key, value] of Object.entries(node)) {
@@ -22,7 +30,7 @@ function bare(node) {
     out[key] = key === 'children' ? value.map(bare) : value;
   }
   if (node.type === 'link' && out.title === undefined) out.title = null;
-  if (node.type === 'image') Object.assign(out, node.data?.hProperties);
+  for (const [key, value] of Object.entries(node.data?.hProperties ?? {})) out[PROPERTIES[key]] = value;
   return out;
 }
 
@@ -43,13 +51,15 @@ export async function markdownTransforms({ esbuild, tmp, nodePaths, alias, defin
     if (plugins[index].name !== name) throw new Error(`plugin ${index} is ${plugins[index].name}, not ${name}`);
     return [key, plugins[index]()];
   });
-  write(path.join(dir, 'expected.json'), cases.map((text) => [
-    text,
-    Object.fromEntries(run.map(([key, transform]) => {
+  // Each case: the source, its parsed tree, then per transformer the tree it left, or null for no change.
+  write(path.join(dir, 'expected.json'), cases.map((text) => {
+    const base = JSON.stringify(bare(parser.parse(text)));
+    return [text, JSON.parse(base), Object.fromEntries(run.map(([key, transform]) => {
       const tree = parser.parse(text);
-      transform(tree);
-      return [key, bare(tree)];
-    })),
-  ]));
+      transform(tree, text);
+      const left = bare(tree);
+      return [key, JSON.stringify(left) === base ? null : left];
+    }))];
+  }));
   return cases.length;
 }

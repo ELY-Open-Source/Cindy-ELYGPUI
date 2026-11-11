@@ -119,6 +119,8 @@ fn tail(tail: &str) -> Vec<Node> {
             position: None,
             url: url.to_owned(),
             title: None,
+            bare_path: false,
+            raw: None,
         }));
         cursor = found.range.end;
     }

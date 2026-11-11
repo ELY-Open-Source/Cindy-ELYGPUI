@@ -81,5 +81,6 @@ fn image(html: &str) -> Option<Image> {
         title: attribute("title").filter(|title| !title.is_empty()),
         width: size("width"),
         height: size("height"),
+        raw: None,
     })
 }

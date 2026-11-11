@@ -97,6 +97,15 @@ export const ATTACHMENT_TESTS = {
   [`${desktop}/shared/__tests__/attachmentSafety.test.ts`]: { '../attachmentSafety': ['attachmentExtension', 'isDangerousAttachmentName'] },
 };
 
+const target = ['classifyInlineCodeTarget', 'decideRemoteLit', 'isAmbiguousPathShape', 'classifyMarkdownLinkTarget', 'looksLikeBareFileReference', 'splitLocalLineSuffix'];
+export const LOCAL_PATH_TESTS = {
+  [`${renderer}/markdownTarget.test.ts`]: { '../lib/markdownTarget': target },
+  [`${renderer}/localPathResolver.test.ts`]: {
+    '@/lib/localPathResolver': ['classifyMarkdownHref', 'looksLikeDirectoryPath', 'looksLikeFilePath', 'resolveKnownLocalFileHref'],
+    '@/lib/markdownTarget': ['classifyMarkdownLinkTarget'],
+  },
+};
+
 export const LINK_OPEN_TESTS = {
   [`${desktop}/renderer/hooks/__tests__/useLinkOpenPreference.test.ts`]: { '../useLinkOpenPreference': ['isLocalOpenUrl'] },
 };

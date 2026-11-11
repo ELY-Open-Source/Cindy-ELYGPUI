@@ -452,9 +452,15 @@ fn on_enter_data(context: &mut CompileContext) {
     if let Some(Node::Text(_)) = children.last_mut() {
         context.tail_push_again();
     } else {
+        let mut position = position_from_event(&context.events[context.index]);
+        // Cindy: a text starts at an escape's backslash, as mdast-util-from-markdown's does.
+        if context.events[context.index].name == Name::CharacterEscapeValue {
+            position.start.column -= 1;
+            position.start.offset -= 1;
+        }
         context.tail_push(Node::Text(Text {
             value: String::new(),
-            position: None,
+            position: Some(position),
         }));
     }
 }
@@ -466,6 +472,8 @@ fn on_enter_autolink(context: &mut CompileContext) {
         title: None,
         children: vec![],
         position: None,
+        bare_path: false,
+        raw: None,
     }));
 }
 
@@ -728,6 +736,7 @@ fn on_enter_image(context: &mut CompileContext) {
         position: None,
         width: None,
         height: None,
+        raw: None,
     }));
     context.media_reference_stack.push(Reference::new());
 }
@@ -739,6 +748,8 @@ fn on_enter_link(context: &mut CompileContext) {
         title: None,
         children: vec![],
         position: None,
+        bare_path: false,
+        raw: None,
     }));
     context.media_reference_stack.push(Reference::new());
 }

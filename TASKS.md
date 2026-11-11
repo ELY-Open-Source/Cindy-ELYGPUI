@@ -234,7 +234,7 @@ listed in `tasks/done.md`.
       markdown-rs, golden `markdown-tree`
   - [x] 9.6b Transformers that read no path: `remarkTruncateCjkUrls`, `remarkHtmlImages`,
       `remarkSessionLinks`
-  - [ ] 9.6c Local paths in the tree: `remarkBareSpaceLocalImages`, `remarkLocalPathLinks`,
+  - [x] 9.6c Local paths in the tree: `remarkBareSpaceLocalImages`, `remarkLocalPathLinks`,
       `remarkPreserveRawLocalDestinations`, with `markdownTarget.ts`'s classes
   - [ ] 9.6d What react-markdown hands its renderers: `skipHtml`, the URL transforms, definitions and
       footnotes resolved, `rehype-slug`'s ids, `rehypeFencedCodeMarker`

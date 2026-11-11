@@ -1,5 +1,7 @@
 //! `localPathResolver.ts`'s joins: a tool's path made absolute against the task's folder.
 
+pub mod shape;
+
 use std::borrow::Cow;
 
 use crate::cindy_json::decode_uri_component;

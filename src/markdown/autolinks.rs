@@ -63,6 +63,8 @@ fn link(url: String, label: &str) -> Node {
         position: None,
         url,
         title: None,
+        bare_path: false,
+        raw: None,
     })
 }
 

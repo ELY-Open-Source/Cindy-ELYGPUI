@@ -282,3 +282,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 ## 9.6b Transformers that read no path
 - Round 1: PASS. The reviewer's 39,384 fresh inputs agree on all three transformers; 45 mutants
   killed, one ended in endless recursion, none survived.
+
+## 9.6c Local paths in the tree
+- Round 1: FAIL. Two classifier differences among the reviewer's 256,460 fresh calls: an attachment
+  with an empty path read as resolved, and inline code with a file shape but no local kind read as
+  nothing. All 30,041 trees agreed.
+- Round 2: PASS. Both closed: the empty path is filtered as `if (knownPath)` does, and `shape::file`
+  is back in `inline_code`. Seeds added for both; 144 mutants killed, none survived.

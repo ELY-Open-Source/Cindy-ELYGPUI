@@ -947,6 +947,12 @@ pub struct Link {
     /// appropriate for a tooltip.
     #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
     pub title: Option<String>,
+    /// Cindy: `data-bare-path`, on a link made from a bare path in text.
+    #[cfg_attr(feature = "serde", serde(default))]
+    pub bare_path: bool,
+    /// Cindy: a local destination as written, `data-cindy-raw-local-link-href`.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub raw: Option<String>,
 }
 
 /// Image.
@@ -979,6 +985,9 @@ pub struct Image {
     /// Cindy: `data.hProperties.height`.
     #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
     pub height: Option<String>,
+    /// Cindy: a local destination as written, `data-cindy-raw-local-image-src`.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub raw: Option<String>,
 }
 
 /// Link reference.
@@ -1790,11 +1799,12 @@ mod tests {
             title: None,
             width: None,
             height: None,
+            raw: None,
         });
 
         assert_eq!(
             format!("{:?}", node),
-            "Image { position: None, alt: \"a\", url: \"b\", title: None, width: None, height: None }",
+            "Image { position: None, alt: \"a\", url: \"b\", title: None, width: None, height: None, raw: None }",
             "should support `Debug`"
         );
         assert_eq!(node.to_string(), "", "should support `ToString`");
@@ -1805,7 +1815,7 @@ mod tests {
         node.position_set(Some(Position::new(1, 1, 0, 1, 2, 1)));
         assert_eq!(
             format!("{:?}", node),
-            "Image { position: Some(1:1-1:2 (0-1)), alt: \"a\", url: \"b\", title: None, width: None, height: None }",
+            "Image { position: Some(1:1-1:2 (0-1)), alt: \"a\", url: \"b\", title: None, width: None, height: None, raw: None }",
             "should support `position_set`"
         );
     }
@@ -2234,11 +2244,13 @@ mod tests {
             url: "a".into(),
             title: None,
             children: vec![],
+            bare_path: false,
+            raw: None,
         });
 
         assert_eq!(
             format!("{:?}", node),
-            "Link { children: [], position: None, url: \"a\", title: None }",
+            "Link { children: [], position: None, url: \"a\", title: None, bare_path: false, raw: None }",
             "should support `Debug`"
         );
         assert_eq!(node.to_string(), "", "should support `ToString`");
@@ -2253,7 +2265,7 @@ mod tests {
         node.position_set(Some(Position::new(1, 1, 0, 1, 2, 1)));
         assert_eq!(
             format!("{:?}", node),
-            "Link { children: [], position: Some(1:1-1:2 (0-1)), url: \"a\", title: None }",
+            "Link { children: [], position: Some(1:1-1:2 (0-1)), url: \"a\", title: None, bare_path: false, raw: None }",
             "should support `position_set`"
         );
     }

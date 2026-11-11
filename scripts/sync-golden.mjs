@@ -15,7 +15,7 @@ import { markdownTransforms } from './golden/markdownTransforms.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
 import { workGroups } from './golden/workGroups.mjs';
-import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
+import { ARTIFACT_TESTS, ATTACHMENT_TESTS, BOUNDARY_TESTS, FILE_KIND_TESTS, LINK_OPEN_TESTS, LINKIFY_TESTS, LOCAL_PATH_TESTS, PLAN_TESTS, ROW_TESTS, SENT_TEXT_TESTS, USER_MESSAGE_TESTS, VIEW_TESTS, YIELD_TESTS, recorded } from './golden/recorded.mjs';
 import { chatMessage, mapper } from './golden/chatMessage.mjs';
 import { jsDate } from './golden/jsDate.mjs';
 import { jsSort } from './golden/jsSort.mjs';
@@ -89,6 +89,10 @@ try {
     "export * as desktopGroups from './renderer/components/chat/messageWorkGroups';",
     "export * as generatedFiles from './renderer/lib/generatedFiles';",
     "export { resolveLocalPath, resolveToolFilePath } from './renderer/lib/localPathResolver';",
+    "export * as pathShape from './renderer/lib/localPathResolver';",
+    "export * as markdownTarget from './renderer/lib/markdownTarget';",
+    "export { findPathMatches } from './shared/bareFilePathTokens';",
+    "export { findBareSpaceLocalImages } from './shared/bareSpaceLocalImages';",
     "export { historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts } from './main/localDb/ipc/historyViewOutline';",
     "export { extractCommandOutputPathCandidates } from './shared/commandOutputPaths';",
     "export * as urlBoundary from '../../../packages/maker-shared/src/urlTextBoundary';",
@@ -121,7 +125,7 @@ try {
     // The sent-text golden runs `renderContent`, whose JSX needs its runtime.
     define, jsx: 'automatic',
   });
-  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
+  const { convertVsCodeTheme, normalizeLocalThemeColors, layoutTree, appShortcuts, appearance, cjkSeg, projectGrouping, mainListModel, visibility, pinnedOrder, filterCore, sourceLabel, usage, formatCompactTokens, getSessionDisplayTitle, toStoredSessionTitle, richAnswerText, markdownPreviewText, finalizePlainPreview, conversationSearch, chatHistoryPure, projectMcpAppContent, commandIntent, groupWorkRuns, normalizeDisplayCommand, toolUse, formatIslandToolDetail, createLocalizedToolRowWording, setMainLocale, payloadSummary, messageWindow, syntheticTrigger, messageNormalize, messageRender, agentTask, hasRichAnswer, richAnswerMediaSources, extractToolResultMedia, buildRenderItems, isGeneratedFilesTurnSealed, stream, desktopGroups, generatedFiles, resolveLocalPath, resolveToolFilePath, pathShape, markdownTarget, findPathMatches, findBareSpaceLocalImages, historyOutlineContent, historyOutlineContentStamp, withHistoryArtifacts, extractCommandOutputPathCandidates, urlBoundary, findLinkifyMatches, deepLink, userDisplay, userCollapse, userMessage, chatQuotes, linkOpen, filePresentation, attachmentSafety, isSafetyDowngradedAttachment, resolveCachedImage, resolveBlob, sentAgentReferenceDisplayLabel, slashCommandDisplayLabel, SQLiteSyncDialect } = await import(pathToFileURL(bundle).href);
 
   const importDir = path.join(fixtures, 'theme-import');
   fs.rmSync(path.join(importDir, 'expected'), { recursive: true, force: true });
@@ -520,6 +524,25 @@ try {
   const linkOpenCases = await recorded({ ...golden, name: 'link-open', tests: LINK_OPEN_TESTS,
     fns: { isLocalOpenUrl: linkOpen.isLocalOpenUrl } });
   console.log(`${linkOpenCases} link open cases`);
+  // Attached files: cases give name and path as a pair, Cindy's tests as an object.
+  const known = (files) => files?.map((file) => (Array.isArray(file) ? { name: file[0], path: file[1] } : file));
+  const localPathCases = await recorded({ ...golden, name: 'local-paths', tests: LOCAL_PATH_TESTS, fns: {
+    findPathMatches: (text) => findPathMatches(text).map((match) => [match.start, match.end]),
+    findBareSpaceLocalImages,
+    looksLikeFilePath: pathShape.looksLikeFilePath,
+    looksLikeDirectoryPath: pathShape.looksLikeDirectoryPath,
+    classifyMarkdownHref: pathShape.classifyMarkdownHref,
+    resolveKnownLocalFileHref: (href, files) => pathShape.resolveKnownLocalFileHref(href, known(files)),
+    normalizeXdtFileUrlForRenderer: pathShape.normalizeXdtFileUrlForRenderer,
+    splitLocalLineSuffix: markdownTarget.splitLocalLineSuffix,
+    looksLikeBareFileReference: markdownTarget.looksLikeBareFileReference,
+    normalizeSandboxHref: markdownTarget.normalizeSandboxHref,
+    isAmbiguousPathShape: (href, original) => markdownTarget.isAmbiguousPathShape(href, original ?? undefined),
+    decideRemoteLit: (verdict, href, original) => markdownTarget.decideRemoteLit(verdict ?? undefined, href, original ?? undefined),
+    classifyMarkdownLinkTarget: (href, files) => markdownTarget.classifyMarkdownLinkTarget(href ?? undefined, known(files)),
+    classifyInlineCodeTarget: markdownTarget.classifyInlineCodeTarget,
+  } });
+  console.log(`${localPathCases} local path cases`);
   const fileKindCases = await recorded({ ...golden, name: 'file-presentation', tests: FILE_KIND_TESTS, fns: {
     getFileVisualKind: filePresentation.getFileVisualKind,
     glyph: (input) => filePresentation.FILE_VISUAL_GLYPHS[filePresentation.getFileVisualKind(input)],
