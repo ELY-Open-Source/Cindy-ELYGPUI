@@ -359,7 +359,7 @@ listed in `tasks/done.md`.
           bidi class decides its cell's direction, so text under an override (U+202E) reads
           the wrong way. The fix is the line's resolved bidi levels, which gpui's shaped line
           does not hand out.
-    - [ ] 9.6k1b The other text of an answer that Blink selects: a link chip's label and a
+    - [x] 9.6k1b The other text of an answer that Blink selects: a link chip's label and a
         handoff card's lines
     - [ ] 9.6k1c A user message's text (`UserMessage.tsx`'s `select-text`, its `select-none`
         chips), measured in Blink first

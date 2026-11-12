@@ -45,6 +45,8 @@ pub struct Chip {
     stand: Stand,
     /// What a click does; `interactive` underlines the chip and lights it under the pointer.
     act: Option<Act>,
+    /// Its label is text the stream's selection holds.
+    selects: bool,
 }
 
 /// How a chip stands in its line.
@@ -107,6 +109,7 @@ fn chip(label: &str, icon: Option<&'static [u8]>, tip: &str, face: Face) -> Chip
         named: false,
         stand: Stand::Line,
         act: None,
+        selects: false,
     }
 }
 
@@ -232,6 +235,13 @@ impl Chip {
     pub fn acts(self, act: Act) -> Chip {
         Chip {
             act: Some(act),
+            ..self
+        }
+    }
+
+    pub fn selects(self) -> Chip {
+        Chip {
+            selects: true,
             ..self
         }
     }
@@ -363,7 +373,13 @@ impl Chip {
             .when_some(self.icon, |el, icon| {
                 el.child(lucide::icon(icon, 14.0, 2.0).text_color(color))
             })
-            .child(div().min_w_0().truncate().child(label.clone()))
+            .child(
+                (div().relative().min_w_0().truncate())
+                    .when(self.selects, |el| {
+                        el.child(super::select::label(&id, &label))
+                    })
+                    .child(label.clone()),
+            )
             // `Tip` mounts nothing for empty text.
             .map(|el| match (tip.is_empty(), self.face.clone()) {
                 (_, Face::Quote(source)) => el.hoverable_tooltip(tip::framed(move |_, cx| {

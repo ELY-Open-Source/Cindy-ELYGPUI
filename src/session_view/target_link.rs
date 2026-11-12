@@ -191,7 +191,7 @@ fn deep(href: &str, label: &str, wants: &mut Vec<Want>, cx: &App) -> Option<Face
         false => link_chip::project(href, label),
     };
     Some(match chip {
-        Some(chip) => Face::Chip(chip),
+        Some(chip) => Face::Chip(chip.selects()),
         None => Face::Words(label.unwrap_or(href).to_owned()),
     })
 }

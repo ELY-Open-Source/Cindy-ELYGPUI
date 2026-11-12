@@ -11,7 +11,7 @@ use gpui::{
 use icu_properties::{CodePointMapData, props::BidiClass};
 use icu_segmenter::GraphemeClusterSegmenter;
 
-use crate::theme::Appearance;
+use crate::{theme::Appearance, units::css};
 
 #[cfg(test)]
 mod tests;
@@ -45,6 +45,27 @@ struct Run {
     cells: Vec<Cell>,
     /// The bytes of it the selection holds.
     picked: Option<Range<usize>>,
+    /// The handoff card that holds it.
+    card: Option<usize>,
+    /// A flex item's text: over its box is its start, under it its end.
+    item: bool,
+}
+
+/// A handoff card's boxes: the card, its circle, its lines and its arrow.
+#[derive(Default, Clone, Copy)]
+struct Card {
+    bounds: Bounds<Pixels>,
+    disc: Bounds<Pixels>,
+    lines: Bounds<Pixels>,
+    arrow: Bounds<Pixels>,
+}
+
+/// A box of a handoff card.
+pub enum Part {
+    Card,
+    Disc,
+    Lines,
+    Arrow,
 }
 
 /// Whether `c` reads right to left by its own class; none for a neutral, which follows its place.
@@ -141,6 +162,9 @@ pub struct Selection {
     scope: Option<Bounds<Pixels>>,
     met: (bool, bool),
     inside: bool,
+    cards: Vec<Card>,
+    /// The card being drawn.
+    card: Option<usize>,
 }
 
 impl Global for Selection {}
@@ -163,6 +187,16 @@ impl Run {
             cell.bytes.start
         } else {
             cell.bytes.end
+        }
+    }
+
+    /// The place of a pointer in the run's row: an item's text ends at its own box.
+    fn place(&self, position: gpui::Point<Pixels>) -> Point {
+        let x = position.x - self.bounds.left();
+        match self.item {
+            true if position.y < self.bounds.top() => self.point(0),
+            true if position.y >= self.bounds.bottom() => self.point(self.text.len()),
+            _ => self.point(self.hit(x.into())),
         }
     }
 
@@ -225,6 +259,44 @@ impl Selection {
         (!held.is_empty()).then_some(held)
     }
 
+    /// A pointer level with card `nth`, or over it (`logs/review/9.6k1b-blink-grid.log`).
+    fn in_card(&self, nth: usize, position: gpui::Point<Pixels>) -> Option<Point> {
+        let card = &self.cards[nth];
+        let mut own = self.runs.iter().filter(|run| run.card == Some(nth));
+        let (first, last) = (own.clone().next()?, own.next_back()?);
+        if position.x < card.disc.right() {
+            return Some(first.point(0));
+        }
+        if position.x >= card.arrow.left() {
+            return Some(last.point(last.text.len()));
+        }
+        let own = || self.runs.iter().filter(|run| run.card == Some(nth));
+        // The nearer of the two lines; half way between them is the lower one.
+        let far = |run: &&Run| {
+            (run.line.start - position.y)
+                .max(position.y - run.line.end)
+                .max(Pixels::ZERO)
+        };
+        let line = own().reduce(|best, run| if far(&run) <= far(&best) { run } else { best })?;
+        let row = own().filter(|run| run.line == line.line);
+        let off = |run: &&Run| {
+            (run.bounds.left() - position.x)
+                .max(position.x - run.bounds.right())
+                .max(Pixels::ZERO)
+        };
+        let item = row.reduce(|best, run| if off(&run) < off(&best) { run } else { best })?;
+        // A badge is a run per letter: over it is its first one's start, under it its last one's end.
+        let mut whole = own().filter(|run| run.id == item.id);
+        if position.y < item.bounds.top() {
+            return Some(whole.next()?.point(0));
+        }
+        if position.y >= item.bounds.bottom() {
+            let last = whole.next_back()?;
+            return Some(last.point(last.text.len()));
+        }
+        Some(item.point(item.hit((position.x - item.bounds.left()).into())))
+    }
+
     /// The place a pointer at `position` selects to (`logs/review/9.6k1-blink-edges.log`).
     fn at(&self, position: gpui::Point<Pixels>) -> Option<Point> {
         // In a table's cell the pointer selects in that cell, whatever stands beside it.
@@ -235,6 +307,13 @@ impl Selection {
                 .iter()
                 .filter(|run| scope.is_none() || run.scope == scope)
         };
+        let level = |card: &usize| {
+            let bounds = self.cards[*card].bounds;
+            (bounds.top()..bounds.bottom()).contains(&position.y)
+        };
+        if let Some(card) = runs().filter_map(|run| run.card).find(level) {
+            return self.in_card(card, position);
+        }
         let row = runs().filter(|run| run.line.contains(&position.y));
         let off = |run: &&Run| {
             let (left, right) = (run.bounds.left(), run.bounds.right());
@@ -245,13 +324,18 @@ impl Selection {
         // Beside a row's text the row's nearest end; ties go to the earlier run.
         let nearest = row.reduce(|best, run| if off(&run) < off(&best) { run } else { best });
         if let Some(run) = nearest {
-            let x = position.x - run.bounds.left();
-            return Some(run.point(run.hit(x.into())));
+            return Some(run.place(position));
         }
         // Between rows the next row's start; under them all the last one's end.
         let next = runs().find(|run| run.line.start > position.y);
         let last = runs().next_back().map(|run| run.point(run.text.len()));
-        next.map(|run| run.point(0)).or(last)
+        match next {
+            Some(Run {
+                card: Some(card), ..
+            }) => self.in_card(*card, position),
+            Some(run) => Some(run.point(0)),
+            None => last,
+        }
     }
 
     fn down(&mut self, position: gpui::Point<Pixels>) {
@@ -260,6 +344,15 @@ impl Selection {
         };
         if self.runs.iter().any(lit) {
             self.press = Press::Held { moved: false };
+            return;
+        }
+        // A card's bare face takes no caret and keeps the selection.
+        let bare = |card: &&Card| {
+            let parts = [card.disc, card.lines, card.arrow];
+            card.bounds.contains(&position) && !parts.iter().any(|part| part.contains(&position))
+        };
+        if self.cards.iter().any(|card| bare(&card)) {
+            self.press = Press::None;
             return;
         }
         let place = self.at(position);
@@ -293,6 +386,8 @@ pub fn begin(cx: &mut App) {
     selection.runs.clear();
     (selection.line, selection.scope) = (None, None);
     (selection.met, selection.inside) = ((false, false), false);
+    selection.cards.clear();
+    selection.card = None;
 }
 
 /// `getSelection().removeAllRanges()`, and the press that drew it ends.
@@ -304,7 +399,7 @@ pub fn unselect(cx: &mut App) {
 /// A run drawn at `bounds`: recorded, and lit where the selection holds it.
 fn record(
     (id, start, text): (SharedString, usize, SharedString),
-    (bounds, cells): (Bounds<Pixels>, Vec<Cell>),
+    (bounds, cells, item): (Bounds<Pixels>, Vec<Cell>, bool),
     fades: &[(Range<usize>, f32)],
     window: &mut Window,
     cx: &mut App,
@@ -327,6 +422,8 @@ fn record(
         scope: selection.scope.filter(holds),
         cells,
         picked,
+        card: selection.card,
+        item,
     };
     for (x, by) in run.stretches(fades) {
         let lit = Bounds::from_corners(
@@ -339,12 +436,12 @@ fn record(
     cx.global_mut::<Selection>().runs.push(run);
 }
 
-/// `child`, which draws `text`, bytes from `start` of block `id`: selectable, lit where selected.
-pub fn text(
+/// The canvas under a drawn `text`, bytes from `start` of block `id`; its parent is `relative`.
+fn under(
     (id, start): (&str, usize),
     text: &str,
     fades: Vec<(Range<usize>, f32)>,
-    child: AnyElement,
+    item: bool,
 ) -> AnyElement {
     let (id, shown) = (
         SharedString::from(id.to_owned()),
@@ -364,23 +461,41 @@ pub fn text(
             let cells = cells(glyphs.collect(), &shown, shaped.width.into());
             record(
                 (id.clone(), start, shown.clone()),
-                (bounds, cells),
+                (bounds, cells, item),
                 &fades,
                 window,
                 cx,
             );
         },
     );
+    under.absolute().inset_0().into_any_element()
+}
+
+/// `child`, which draws `text`, bytes from `start` of block `id`: selectable, lit where selected.
+pub fn text(
+    place: (&str, usize),
+    text: &str,
+    fades: Vec<(Range<usize>, f32)>,
+    child: AnyElement,
+) -> AnyElement {
     div()
         .relative()
-        .child(under.absolute().inset_0())
+        .child(under(place, text, fades, false))
         .child(child)
         .into_any_element()
 }
 
-/// `child`, which stands for `text` with no glyph: a tab's advance, or a row with no text.
-pub fn space(id: &str, start: usize, text: &'static str, child: AnyElement) -> AnyElement {
-    let id = SharedString::from(id.to_owned());
+/// A flex item's whole `text`, block `id`, under the text its `relative` parent draws and cuts.
+pub fn label(id: &str, text: &str) -> AnyElement {
+    under((id, 0), text, Vec::new(), true)
+}
+
+/// `child`, which stands for `text` as one box: a tab's advance, a row with no text, a letter.
+pub fn space(id: &str, start: usize, text: &str, child: AnyElement) -> AnyElement {
+    let (id, text) = (
+        SharedString::from(id.to_owned()),
+        SharedString::from(text.to_owned()),
+    );
     let under = canvas(
         |_, _, _| (),
         move |bounds, (), window, cx| {
@@ -395,8 +510,8 @@ pub fn space(id: &str, start: usize, text: &'static str, child: AnyElement) -> A
                 vec![whole]
             };
             record(
-                (id.clone(), start, text.into()),
-                (bounds, cells),
+                (id.clone(), start, text.clone()),
+                (bounds, cells, false),
                 &[],
                 window,
                 cx,
@@ -418,6 +533,36 @@ pub fn scope() -> AnyElement {
         |bounds, (), _, cx| cx.global_mut::<Selection>().scope = Some(bounds),
     );
     mark.absolute().inset_0().into_any_element()
+}
+
+/// A box of the handoff card being drawn; its parent is `relative`.
+pub fn card(part: Part) -> AnyElement {
+    let whole = matches!(part, Part::Card);
+    let mark = canvas(
+        |_, _, _| (),
+        move |bounds, (), _, cx| {
+            let selection = cx.global_mut::<Selection>();
+            if let Part::Card = part {
+                selection.card = Some(selection.cards.len());
+                selection.cards.push(Card {
+                    bounds,
+                    ..Card::default()
+                });
+            }
+            let nth = selection.card.expect("a card's parts come after its box");
+            let card = &mut selection.cards[nth];
+            match part {
+                Part::Card => {}
+                Part::Disc => card.disc = bounds,
+                Part::Lines => card.lines = bounds,
+                // The arrow is the card's last part.
+                Part::Arrow => (card.arrow, selection.card) = (bounds, None),
+            }
+        },
+    );
+    // The card's own box counts its 1px border.
+    let out = if whole { -1.0 } else { 0.0 };
+    mark.absolute().inset(css(out)).into_any_element()
 }
 
 /// A row's line box, for the text drawn after it; its parent is `relative`.

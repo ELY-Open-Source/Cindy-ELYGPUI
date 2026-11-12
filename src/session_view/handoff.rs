@@ -13,6 +13,7 @@ use super::{
     chip::nowrap,
     flow::{self, Atom},
     link_chip::act,
+    select::{self, Part},
 };
 use crate::{
     appearance_settings::text_size,
@@ -101,7 +102,7 @@ pub(super) fn content(
 }
 
 /// `tracking-[0.4px]`: each character as wide as it is shaped, and 0.4px more.
-fn tracked(label: &str, size: f32, weight: FontWeight, window: &Window) -> Div {
+fn tracked(id: &str, label: &str, size: f32, weight: FontWeight, window: &Window) -> Div {
     let mut style = window.text_style();
     style.font_weight = weight;
     let rem = window.rem_size();
@@ -113,11 +114,12 @@ fn tracked(label: &str, size: f32, weight: FontWeight, window: &Window) -> Div {
     );
     let starts = label.char_indices().map(|(at, _)| shaped.x_for_index(at));
     let ends = starts.clone().skip(1).chain([shaped.width]);
-    let letters = label.chars().zip(starts.zip(ends)).map(|(c, (from, to))| {
-        div()
-            .flex_none()
-            .w(to - from + css(0.4).to_pixels(rem))
-            .child(c.to_string())
+    let letters = label.char_indices().zip(starts.zip(ends));
+    let letters = letters.map(|((at, c), (from, to))| {
+        let letter = c.to_string();
+        let wide = div().w(to - from + css(0.4).to_pixels(rem));
+        let drawn = wide.child(letter.clone()).into_any_element();
+        select::space(id, at, &letter, drawn)
     });
     div().flex().children(letters)
 }
@@ -198,15 +200,22 @@ pub fn element(
         let selector = format!("{id}-{name}");
         move || selector
     };
-    let label = tracked(&upper, sizes[0], FontWeight::MEDIUM, window)
-        .debug_selector(part("badge"))
-        .flex_none()
-        .rounded(css(9999.0))
-        .px(css(8.0))
-        .py(css(2.0))
-        .text_size(css(sizes[0]))
-        .font_weight(FontWeight::MEDIUM)
-        .line_height(css(16.0));
+    let block = |name: &str| format!("{id}-{name}");
+    let label = tracked(
+        &block("badge"),
+        &upper,
+        sizes[0],
+        FontWeight::MEDIUM,
+        window,
+    )
+    .debug_selector(part("badge"))
+    .flex_none()
+    .rounded(css(9999.0))
+    .px(css(8.0))
+    .py(css(2.0))
+    .text_size(css(sizes[0]))
+    .font_weight(FontWeight::MEDIUM)
+    .line_height(css(16.0));
     let label = match solid {
         true => label.bg(send).text_color(send_icon),
         false => (label.border(css(1.0)).border_color(send))
@@ -215,26 +224,38 @@ pub fn element(
     };
     let name = div()
         .debug_selector(part("title"))
+        .relative()
         .min_w_0()
         .truncate()
         .text_size(css(sizes[3]))
         .font_weight(FontWeight::SEMIBOLD)
         .line_height(css(20.0))
         .text_color(text)
+        .child(select::label(&block("title"), &title))
         .child(title);
-    let small = || div().text_size(css(sizes[2])).line_height(css(16.0));
+    let small = || {
+        div()
+            .relative()
+            .text_size(css(sizes[2]))
+            .line_height(css(16.0))
+    };
+    let cut = |said: String, color: Hsla| {
+        let under = select::label(&block("when"), &said);
+        (small().min_w_0().truncate().text_color(color))
+            .child(under)
+            .child(said)
+    };
     let when = match seen {
-        Some(seen) => vec![
-            (div().debug_selector(part("history")).flex_none())
-                .child(lucide::icon(lucide::history().as_bytes(), 12.0, 2.0).text_color(desc))
-                .into_any_element(),
-            (small().min_w_0().truncate().text_color(desc).child(seen)).into_any_element(),
-        ],
-        None => vec![
-            (small().min_w_0().truncate().italic().text_color(meta))
-                .child(never)
-                .into_any_element(),
-        ],
+        Some(seen) => {
+            let icon = (div().debug_selector(part("history")))
+                .child(lucide::icon(lucide::history().as_bytes(), 12.0, 2.0).text_color(desc));
+            vec![
+                // The icon is a place before the words.
+                select::space(&block("history"), 0, "", icon.into_any_element()),
+                cut(seen, desc).into_any_element(),
+            ]
+        }
+        None => vec![cut(never, meta).italic().into_any_element()],
     };
     let short = div()
         .debug_selector(part("short"))
@@ -243,34 +264,47 @@ pub fn element(
         .text_size(css(sizes[1]))
         .line_height(css(16.0))
         .text_color(meta)
+        .relative()
+        .child(select::label(&block("short"), &short))
         .child(short);
     let lines = div()
+        .relative()
         .min_w_0()
         .flex_1()
         .flex()
         .flex_col()
         .gap(css(4.0))
+        .child(select::card(Part::Lines))
         .child(
             div()
+                .relative()
                 .min_w_0()
                 .flex()
                 .items_center()
                 .gap(css(8.0))
+                .child(select::line())
                 .child(name)
                 .child(label),
         )
         .child(
             div()
+                .relative()
                 .min_w_0()
                 .flex()
                 .items_center()
                 .gap(css(6.0))
+                .child(select::line())
                 .children(when)
-                .child(small().flex_none().text_color(meta).child("\u{b7}"))
+                .child(
+                    (small().flex_none().text_color(meta))
+                        .child(select::label(&block("dot"), "\u{b7}"))
+                        .child("\u{b7}"),
+                )
                 .child(short),
         );
     let round = |size: f32| {
         div()
+            .relative()
             .flex_none()
             .size(css(size))
             .flex()
@@ -313,13 +347,20 @@ pub fn element(
         .p(css(16.0))
         .cursor_pointer()
         .font_weight(weight)
-        .child(round(36.0).rounded(css(9999.0)).bg(disc).child(
-            lucide::icon(lucide::corner_down_right().as_bytes(), 18.0, 2.0).text_color(glyph),
-        ))
+        .child(select::card(Part::Card))
+        .child(
+            (round(36.0).rounded(css(9999.0)).bg(disc))
+                .child(select::card(Part::Disc))
+                .child(
+                    lucide::icon(lucide::corner_down_right().as_bytes(), 18.0, 2.0)
+                        .text_color(glyph),
+                ),
+        )
         .child(lines)
         .child(
             round(24.0)
                 .debug_selector(part("arrow"))
+                .child(select::card(Part::Arrow))
                 .child(lucide::icon(IconName::ArrowUpRight.svg(), 16.0, 2.0).text_color(arrow)),
         )
         .children(rings.into_iter().flatten());

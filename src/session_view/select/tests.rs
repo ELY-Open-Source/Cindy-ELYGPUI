@@ -3,6 +3,8 @@ use gpui::{Modifiers, MouseButton, Pixels, Point, TestAppContext, VisualTestCont
 use super::{Cell, Point as Place, Run, Selection, cells, picked};
 use crate::session_view::user_row::tests::{at, open_roles};
 
+mod card;
+
 const TEXT: &str = "alpha beta\n\nsecond `code` here\n\n```\nlet a = 1;\n```\n\nlast";
 
 fn draw<'a>(cx: &'a mut TestAppContext, dir: &std::path::Path) -> &'a mut VisualTestContext {
@@ -255,6 +257,8 @@ fn run(cells: Vec<Cell>, picked: Option<std::ops::Range<usize>>) -> Run {
         scope: None,
         cells,
         picked,
+        card: None,
+        item: false,
     }
 }
 

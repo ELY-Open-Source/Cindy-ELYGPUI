@@ -216,6 +216,18 @@ that cell's runs count (`logs/review/9.6k1-r1-review-blink.log`). A press sets b
 moves the focus on the window's mouse moves, past the scroller's edge. A press on lit text holds
 the selection through the drag, as Blink drags the text, and a click there drops it when the
 button lifts. A floating panel drops it (`unselect`, `PanelDragController`'s `removeAllRanges`).
-Not ported yet: a chip's label and a card's lines (9.6k1b), a user message (9.6k1c), the clicks
-and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
+A link chip's label and a handoff card's words are text too
+(`logs/review/9.6k1b-blink-{card,grid,right,chip}.log`). Each is a flex item with a line of its
+own (`select::label`, a canvas under the text its box draws and cuts, so a cut title's hidden
+words select and its highlight stops at the box): in its line a pointer finds a glyph, over the
+line the item's start and under it its end. A chip's icon and padding fall to the label's nearer
+end. A card records its box, its circle, its lines and its arrow (`select::card`), and a pointer
+level with it, or over it, reads them as Blink reads the flex row (`in_card`): left of the lines
+the card's start, from the arrow on its end, between them the nearer of the two lines (the lower
+one from half way down the gap) and in it the nearest item: the title, the badge (a run per
+letter, since the port draws its tracking so, and one item), the history icon (a place with no
+text), the words, the dot, the short id. A press on the card's bare face (not the circle, the
+lines or the arrow) places no caret and keeps the selection. A press and a release on one card
+still click it, as in Cindy.
+Not ported yet: a user message (9.6k1c), the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
 Blink scrolls.

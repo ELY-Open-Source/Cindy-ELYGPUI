@@ -513,3 +513,10 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   of a direction run's edge glyph selects to the run's far end, where Blink selects before the
   run. P3: text under a direction override reads by its letters' own class. Both stay open;
   the entry is `[!]`. No desktop check was made.
+
+## 9.6k1b A link chip's label and a handoff card's lines in the selection
+- Round 1: PASS. 155 drag ends over eleven inputs (chips in a row, a list and a table; project
+  and message chips; a card alone, in a list, in a table, with an outlined badge, with a cut
+  title; a cut chip label) match Blink under Cindy's `MarkdownRenderer`, both ends driven by
+  mouse events. A cut title and label hold their hidden text and clip the highlight to the box.
+  9.6k1's two bidi findings stay open under that entry. No desktop check was made.
