@@ -21,7 +21,7 @@ use super::{
 use crate::{
     session_view::{
         flow::{Atom, CHIP, atoms, draw::shape, rows_where},
-        inline_image,
+        inline_image, select,
         target_link::Anchors,
     },
     units::css,
@@ -214,8 +214,10 @@ impl Look<'_> {
     }
 
     /// The text of `range`; where words fade in it, each part at its opacity.
-    fn said(inline: &Inline, range: &Range<usize>, mark: Mark) -> AnyElement {
+    fn said(&self, inline: &Inline, range: &Range<usize>, mark: Mark) -> AnyElement {
         let text = inline.text[range.clone()].to_owned();
+        let shown = text.clone();
+        let lit = |parts, child| select::text((self.path, range.start), &shown, parts, child);
         let (mut parts, mut at) = (Vec::new(), range.start);
         for (held, by) in &inline.fades {
             let (start, end) = (held.start.max(range.start), held.end.min(range.end));
@@ -229,12 +231,12 @@ impl Look<'_> {
             at = end;
         }
         if parts.is_empty() {
-            return text.into_any_element();
+            return lit(Vec::new(), text.into_any_element());
         }
         if at < range.end {
             parts.push((at - range.start..range.end - range.start, 1.0));
         }
-        fading::over(text, parts)
+        lit(parts.clone(), fading::over(text, parts))
     }
 
     /// One piece of a row in its face; `top` sets a tall row's text on the row's baseline.
@@ -245,7 +247,7 @@ impl Look<'_> {
         (top, root): (f32, &Metrics),
         window: &Window,
     ) -> Div {
-        let text = Self::said(inline, &range, mark);
+        let text = self.said(inline, &range, mark);
         let piece = div()
             .flex_none()
             .when(mark.strong, |el| {
@@ -361,7 +363,7 @@ impl Look<'_> {
         };
         let plain = matches!(&held[..], [(_, mark)] if *mark == Mark::default());
         if plain && stub.is_none() && chips(&row).next().is_none() {
-            let text = Self::said(inline, &row, Mark::default());
+            let text = self.said(inline, &row, Mark::default());
             return (text, root.baseline, root.line);
         }
         let line = self.face.line * self.zoom;
@@ -486,9 +488,11 @@ impl Look<'_> {
             parts.push((mark.file, pill));
         }
         let row = div()
+            .relative()
             .flex()
             .items_start()
             .h(css(height / self.zoom))
+            .child(select::line())
             .children(self.nest(inline, parts, 0, &place));
         (row.into_any_element(), top + root.baseline, height)
     }

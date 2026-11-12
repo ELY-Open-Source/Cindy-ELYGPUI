@@ -186,6 +186,8 @@ impl Walk<'_> {
                 .px(css(12.0))
                 .py(css(8.0))
                 .when(cell.tag == "th", |el| el.bg(fill))
+                .relative()
+                .child(crate::session_view::select::scope())
                 .child(content.pb(css(stack.tail)))
         };
         let mut drawn = Vec::new();

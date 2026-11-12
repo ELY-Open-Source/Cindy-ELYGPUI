@@ -185,3 +185,37 @@ task items; words added, lines replaced). Each step is read 45ms clear of every 
 and holds the clock, each span's class, each item's attribute, animation and delay, and the
 settled keys; the test replays the clock. Its times differ from run to run; its states do not.
 `assistant_row::Live` lets a test draw a stored message as a streaming one.
+
+## Selection
+
+`select.rs` is the browser's selection over the stream, which the port keeps itself. Under
+`.msg-markdown.select-text` every element computes `user-select: text`, a button and a chip too
+(`.select-text *` comes after the `button` rule in `globals.css`;
+`logs/review/9.6k1-blink-styles.log`, Cindy's `MarkdownRenderer` under Cindy's built CSS), so a
+press anywhere in the scroller selects: the scroller takes it in the capture phase.
+
+A drawn stretch of text is a run (`select::text` about the element that draws it): a canvas
+under the text shapes it as its piece does, records its block's id, its first byte in the block's
+text, its bounds, its row's line box (`select::line`, set by a row taller than its text), the
+table cell about it (`select::scope`) and a cell per grapheme, left to right (`cells`: its bytes,
+its x, and whether it reads right to left, since gpui's own index and x lookups walk glyphs as if
+left to right; a letter reads by its own bidi class and a neutral as the glyphs about it stand, a
+ligature's letters share its box in equal parts, and a mark shaped apart from its letter is no
+place; `logs/review/9.6k1-r2-review-extra.log`), and fills the glyphs the selection holds in `--text-selection-bg`, the piece's
+line high, at the opacity of a word on its way in. An inline block's id is its path and a code
+block's its own; a code row's tab and a row with no text are runs with no glyph
+(`select::space`): the tab one byte over its advance, the empty row one place.
+`begin` empties the runs before the stream's rows draw. The two ends are a block's id and a byte,
+so a wrap that moves a row keeps them; `cover` walks the runs in document order and lights what
+lies between the ends, each end met once, an end in a space a wrap dropped at the next run.
+
+A pointer's place (`at`) is Blink's (`logs/review/9.6k1-blink-edges.log`): in a row's line box the
+nearest run's glyph, at the nearer of its two edges, so beside a row is the row's end on that
+side; between rows the next row's start; under all the text its end. Inside a table's cell only
+that cell's runs count (`logs/review/9.6k1-r1-review-blink.log`). A press sets both ends there, the drag
+moves the focus on the window's mouse moves, past the scroller's edge. A press on lit text holds
+the selection through the drag, as Blink drags the text, and a click there drops it when the
+button lifts. A floating panel drops it (`unselect`, `PanelDragController`'s `removeAllRanges`).
+Not ported yet: a chip's label and a card's lines (9.6k1b), a user message (9.6k1c), the clicks
+and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
+Blink scrolls.

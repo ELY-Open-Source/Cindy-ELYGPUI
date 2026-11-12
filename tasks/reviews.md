@@ -501,3 +501,15 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   the wrong word. P3: a word's last space drew whole under a link's underline. P3: an empty
   code's pill moved by a line's end lost its opacity. The three were mended after the round,
   unreviewed; the entry stays `[!]`. No desktop check was made: no stored row streams before 10.0.
+
+## 9.6k1 The selection's model, a press and a drag
+- Round 1: FAIL. Six findings: a right-to-left line was hit and lit as if left to right; a
+  short table cell's blank space selected in the cell beside it; the last glyph had no
+  midpoint; a code row's tab was not lit and an empty row was no place; the highlight drew
+  whole over a word fading in.
+- Round 2: FAIL. All six closed (ten probes). P2: on a mixed line a run's last right-to-left
+  glyph read left to right. P2: no place inside a ligature.
+- Round 3: FAIL. Both closed (twelve probes, 22 native texts). P2: a pointer in the outer half
+  of a direction run's edge glyph selects to the run's far end, where Blink selects before the
+  run. P3: text under a direction override reads by its letters' own class. Both stay open;
+  the entry is `[!]`. No desktop check was made.

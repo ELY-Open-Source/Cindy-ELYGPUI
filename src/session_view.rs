@@ -28,12 +28,15 @@ mod link_chip;
 mod links;
 mod markdown;
 mod orca_card;
+mod select;
 mod source_labels;
 mod stream;
 mod streamed;
 mod target_link;
 mod user_row;
 mod width;
+
+pub use select::unselect;
 
 pub use entry_error::element;
 pub use images::focused as images_focused;

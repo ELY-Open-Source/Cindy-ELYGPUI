@@ -346,10 +346,23 @@ listed in `tasks/done.md`.
             (`logs/review/9.6j3c-post-*.log`, 1205 tests). Not checked: the reviewer's own
             probes against the mends, and a real window.
   - [ ] 9.6k Selection and copy over the drawn Markdown
-    - [ ] 9.6k1 The stream's selectable text: each drawn row of a message's text records its
-        text and where its glyphs stand, in document order; a press and a drag select from the
-        point pressed to the pointer's, painted in `--text-selection-bg`; a press clears;
-        `select-none` parts (buttons, chips) hold no selectable text
+    - [!] 9.6k1 The selection over a Markdown answer's text and code blocks: each drawn run
+        records its text and where its glyphs stand, in document order; a press and a drag
+        select from the place pressed to the pointer's, lit in `--text-selection-bg`; a press
+        drops the selection, a press on it holds it. Under `.msg-markdown.select-text` Blink
+        selects from a link, a chip, a card and a button too
+        (`logs/review/9.6k1-blink-{select,edges,styles,press}.log`)
+        - Failed round 3 (`logs/review/9.6k1-r3.md`), both open. P2: on a mixed line a
+          pointer in the outer half of a direction run's edge glyph selects to the far end of
+          that run, where Blink selects to the place before the run (`abc`, two Hebrew
+          letters, `def`: a drag to the left quarter of the second letter). P3: a letter's own
+          bidi class decides its cell's direction, so text under an override (U+202E) reads
+          the wrong way. The fix is the line's resolved bidi levels, which gpui's shaped line
+          does not hand out.
+    - [ ] 9.6k1b The other text of an answer that Blink selects: a link chip's label and a
+        handoff card's lines
+    - [ ] 9.6k1c A user message's text (`UserMessage.tsx`'s `select-text`, its `select-none`
+        chips), measured in Blink first
     - [ ] 9.6k2 A double click's word and a triple click's block, Shift with a click, Mod+A
         over the stream, as Blink selects them
     - [ ] 9.6k3 Copy: Mod+C writes the selection's `text/plain` as Blink's

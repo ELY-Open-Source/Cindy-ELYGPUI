@@ -5,7 +5,9 @@ use gpui::{
     StatefulInteractiveElement as _, Styled as _, Window, div, prelude::FluentBuilder as _,
 };
 
-use super::{assistant_row, attachments, items::items, jump, link_chip, user_row, width::Widths};
+use super::{
+    assistant_row, attachments, items::items, jump, link_chip, select, user_row, width::Widths,
+};
 use crate::{
     chat_message::merge::get, history_render::Projection, markdown_target::resolved,
     render_items::Item, rich_answer::js::Js, units::css, workspace_media,
@@ -55,6 +57,7 @@ pub fn element(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement 
     let files = projection.as_deref().map(attached).unwrap_or_default();
     let handle = jump::begin(window, cx);
     link_chip::begin(cx);
+    select::begin(cx);
     resolved::begin(cx);
     workspace_media::begin(cx);
     let rows: Vec<AnyElement> = projection
@@ -74,12 +77,11 @@ pub fn element(widths: Widths, window: &mut Window, cx: &mut App) -> AnyElement 
         .max_w(css(widths.message))
         .pt(css(28.0))
         .child(list);
-    div()
+    let scroller = div()
         .id("session-scroll")
         .debug_selector(|| "session-scroll".into())
         .size_full()
         .overflow_y_scroll()
-        .when_some(handle, |el, handle| el.track_scroll(&handle))
-        .child(content)
-        .into_any_element()
+        .when_some(handle, |el, handle| el.track_scroll(&handle));
+    select::listen(scroller).child(content).into_any_element()
 }

@@ -20,7 +20,7 @@ use self::{
     marker::{Kind, Marker},
     text::{Inline, Mark, Metrics, Piece, Swap, metrics},
 };
-use super::{fade::Fading, flow::draw, jump, target_link::Anchors};
+use super::{fade::Fading, flow::draw, jump, select, target_link::Anchors};
 use crate::{
     appearance_settings::{code_size, text_size},
     markdown::hast::{self, Element, Hast, Prop},
@@ -287,21 +287,35 @@ impl Walk<'_> {
         let at = metrics(&style, self.window);
         let inner = css((width - 2.0 * CODE).max(0.0)).to_pixels(self.window.rem_size());
         let lines = body.split('\n').filter(|_| !text.is_empty());
-        let broken = lines.flat_map(|line| text::code(line, &style, inner, self.window));
-        let piece = |piece: Piece| match piece {
-            Piece::Text(text) => text.into_any_element(),
-            Piece::Tab(width) => div()
-                .flex_none()
-                .w(css(width / self.zoom))
-                .into_any_element(),
-        };
-        let rows: Vec<AnyElement> = broken
-            .map(|row| {
-                self.row(&at)
-                    .children(row.into_iter().map(piece))
-                    .into_any_element()
-            })
-            .collect();
+        let (mut rows, mut byte) = (Vec::new(), 0);
+        for line in lines {
+            for row in text::code(line, &style, inner, self.window) {
+                let mut parts = Vec::new();
+                for piece in row {
+                    // A tab is one byte of the block's text; its advance holds no glyph to select.
+                    let part = match piece {
+                        Piece::Text(text) => {
+                            byte += text.len();
+                            let child = text.clone().into_any_element();
+                            select::text((path, byte - text.len()), &text, Vec::new(), child)
+                        }
+                        Piece::Tab(width) => {
+                            byte += 1;
+                            let advance = div().w(css(width / self.zoom)).h_full();
+                            select::space(path, byte - 1, "\t", advance.into_any_element())
+                        }
+                    };
+                    parts.push(part);
+                }
+                // A row with no text is a place of its own.
+                if parts.is_empty() {
+                    let tall = div().h(css(at.line / self.zoom)).into_any_element();
+                    parts.push(select::space(path, byte, "", tall));
+                }
+                rows.push(self.row(&at).children(parts).into_any_element());
+            }
+            byte += 1;
+        }
         let mut none = Vec::new();
         let taken = if rows.is_empty() { &mut none } else { markers };
         shift(taken, CODE);

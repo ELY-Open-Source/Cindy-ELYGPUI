@@ -224,6 +224,8 @@ impl LayoutRoot {
         else {
             return;
         };
+        // The press may have pulled a selection out before the panel floated.
+        crate::session_view::unselect(cx);
         let layout = cx.global::<LayoutStore>().layout();
         let zoom = cx.global::<units::Zoom>().0;
         let found = targets(layout, &kind, &self.rects.borrow(), zoom);

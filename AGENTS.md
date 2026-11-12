@@ -537,6 +537,11 @@ defines scope and what 1:1 means.
   with an `id` record where they paint (the first in the document keeps the id), and the stream's
   `ScrollHandle` moves along `src/smooth_scroll.rs`, Chromium's programmatic curve that
   `sessions/reveal.rs` shares; reduced motion jumps.
+- Selection: `session_view/select.rs` is the browser's text selection over the stream, kept by
+  the port (`docs/session-view.md`): each drawn run records its block, bytes and bounds, a press
+  and a drag set the two ends, and each run lights its part in `--text-selection-bg`. Blink's
+  rules are measured under Cindy's built CSS: `.scratch/9.6k1/probe.mjs` builds
+  `MarkdownRenderer` and Tailwind's output through a copy of `sync-golden.mjs`.
 - Handoff card: `deep_link::parse_card` is `parseSessionCardHref` behind the renderer's
   `session-card/` prefix check (`new URL` is the `url` crate; golden `session-card`, from the
   renderer's private function through the hast golden's bundle); a link that parses as no card draws
