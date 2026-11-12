@@ -263,8 +263,18 @@ fn rows_break_clamp_and_keep_their_semibold_lead(cx: &mut TestAppContext) {
     cx.update(|window, _| {
         let mut style = window.text_style();
         style.font_size = px(12.0).into();
-        let read =
-            |text: &str, look, width: f32| draw::pre(text, look, (&style, px(width)), window);
+        struct Read {
+            rows: Vec<(String, usize)>,
+            total: usize,
+        }
+        let read = |text: &str, look, width: f32| {
+            let pre = draw::pre(text, look, (&style, px(width)), window);
+            let rows = pre.rows.into_iter().map(|row| (row.text, row.bold));
+            Read {
+                rows: rows.collect(),
+                total: pre.total,
+            }
+        };
         let all = read("[Ann] one\ntwo\n", (5, None), 500.0);
         assert_eq!(all.rows, [("[Ann] one".into(), 5), ("two".into(), 0)]);
         assert_eq!(all.total, 2);

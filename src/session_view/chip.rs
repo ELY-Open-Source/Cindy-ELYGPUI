@@ -372,7 +372,7 @@ impl Chip {
             .line_height(css(20.0))
             .text_color(color)
             // `textSelectable={false}`: the chip is `select-none`, its icon and label text again.
-            .when(quiet, |el| el.child(super::select::quiet()))
+            .when(quiet, |el| el.child(super::select::quiet(0.0)))
             .when_some(self.icon, |el, icon| {
                 let drawn = lucide::icon(icon, 14.0, 2.0).text_color(color);
                 let held = div().relative().flex_none().child(drawn);

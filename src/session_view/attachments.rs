@@ -7,7 +7,7 @@ use gpui::{
     prelude::FluentBuilder as _,
 };
 
-use super::chip;
+use super::{chip, select};
 use crate::{
     appearance_settings::text_size,
     attachment_safety,
@@ -108,6 +108,8 @@ fn file(
         .border(css(1.0))
         .border_color(border)
         .bg(fill)
+        .relative()
+        .child(select::quiet(9999.0))
         .px(css(10.0))
         .cursor_pointer()
         .text_size(css(text_size(13.0, cx)))

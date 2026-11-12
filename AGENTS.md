@@ -541,7 +541,8 @@ defines scope and what 1:1 means.
   the port (`docs/session-view.md`): each drawn run records its block, bytes and bounds, a press
   and a drag set the two ends, and each run lights its part in `--text-selection-bg`. A link
   chip's label and a handoff card's words are runs too, placed as a flex row's items, and so
-  is a user message's bubble (words, chip labels, blank lines). Blink's
+  is a user message's bubble (words, chip labels, blank lines), the goal badge, a label that
+  opens nothing and the Orca and hook cards' words (`draw::lit`); a button selects nothing. Blink's
   rules are measured under Cindy's built CSS: `.scratch/9.6k1/probe.mjs` builds
   `MarkdownRenderer` and Tailwind's output through a copy of `sync-golden.mjs`.
 - Handoff card: `deep_link::parse_card` is `parseSessionCardHref` behind the renderer's

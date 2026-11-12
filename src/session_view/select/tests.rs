@@ -4,6 +4,7 @@ use super::{Cell, Point as Place, Run, Selection, cells, picked};
 use crate::session_view::user_row::tests::{at, open_roles};
 
 mod card;
+mod other;
 mod user;
 
 const TEXT: &str = "alpha beta\n\nsecond `code` here\n\n```\nlet a = 1;\n```\n\nlast";

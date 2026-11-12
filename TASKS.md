@@ -367,9 +367,13 @@ listed in `tasks/done.md`.
           visible row drops its selected line feed's ink when the row's text fits before the
           ellipsis (`flow/draw.rs`'s `clipped` skips the break box on every cut row); Blink
           paints it about 3.5px past the last glyph.
-    - [ ] 9.6k1d The stream's other text that `body`'s `user-select: text` makes selectable
+    - [!] 9.6k1d The stream's other text that `body`'s `user-select: text` makes selectable
         (source labels, attachment names, the Orca and hook cards' words), measured in Blink
         first: what is a `button` or `role="button"` selects nothing
+        - Failed round 3 (`logs/review/9.6k1d-r3.md`), one open. P3: a teammate avatar's quiet
+          disc is a point-in-circle test (`select.rs`'s `holds`), which parts from Blink's hit
+          region next to the arc: in the 14px box Blink hits the avatar at (2, 2) and the
+          label at (11.67, 12), the port the other way round.
     - [ ] 9.6k2 A double click's word and a triple click's block, Shift with a click, Mod+A
         over the stream, as Blink selects them
     - [ ] 9.6k3 Copy: Mod+C writes the selection's `text/plain` as Blink's

@@ -2,16 +2,15 @@
 
 use ely_gpui_component::primitives::IconName;
 use gpui::{
-    AnyElement, App, ElementId, FontWeight, HighlightStyle, InteractiveElement as _, IntoElement,
+    AnyElement, App, ElementId, FontWeight, InteractiveElement as _, IntoElement,
     ParentElement as _, Pixels, RenderOnce, Role, StatefulInteractiveElement as _, Styled as _,
-    StyledText, TextStyle, Transformation, Window, div, prelude::FluentBuilder as _, radians,
-    relative,
+    TextStyle, Transformation, Window, div, prelude::FluentBuilder as _, radians, relative,
 };
 
 use super::{
     attachments, chip,
-    flow::draw::{self, Pre},
-    images,
+    flow::draw,
+    images, select,
     source_labels::{self, Over},
     user_row,
     width::Widths,
@@ -132,22 +131,12 @@ impl RenderOnce for Disclosure {
             .on_click(move |_, _, cx| user_row::toggle(&fold, cx))
             .children(chevron)
             .child(self.label)
+            .relative()
+            .child(select::still(0.0, 0.0))
             .children(outline);
         // `w-fit`: the row keeps the button from stretching.
         div().flex().child(press::listen(el, &press, false))
     }
-}
-
-/// Rows of text; the semibold bytes lead a row.
-fn rows(pre: Pre) -> impl Iterator<Item = AnyElement> {
-    let strong = HighlightStyle {
-        font_weight: Some(FontWeight::SEMIBOLD),
-        ..Default::default()
-    };
-    pre.rows.into_iter().map(move |(row, bold)| {
-        let text = StyledText::new(row).with_highlights([(0..bold, strong)]);
-        div().child(text).into_any_element()
-    })
 }
 
 /// The window's text style at `size` CSS pixels, with the line it takes at `ratio`.
@@ -182,24 +171,32 @@ fn context(
     let mut sections = Vec::new();
     for (n, section) in context.sections.iter().enumerate() {
         let read = |text: &str, bold| draw::pre(text, (bold, None), (&style, room), window);
+        let block = |part: usize| format!("{key}-hook-s{n}-{part}");
         // The heading breaks at the weight it is drawn in.
-        let heading = draw::laid(&section.heading);
-        let heading = draw::pre(&heading, (0, None), (&medium, room), window);
+        let laid = draw::laid(&section.heading);
+        let heading = draw::pre(&laid, (0, None), (&medium, room), window);
         let mut blocks = vec![heading.total];
         let heading = div()
             .font_weight(medium.font_weight)
             .text_color(quiet)
-            .children(rows(heading));
+            .children(draw::lit(
+                &block(0),
+                (&laid, heading),
+                (&medium, line),
+                window,
+            ));
         let mut parts = vec![heading.into_any_element()];
-        for said in &section.lines {
+        for (nth, said) in section.lines.iter().enumerate() {
             let author = said.author.as_deref().map(draw::laid);
             let text = draw::laid(&said.text);
-            let pre = match &author {
-                Some(author) => read(&format!("{author} {text}"), author.len()),
-                None => read(&text, 0),
+            let (text, bold) = match &author {
+                Some(author) => (format!("{author} {text}"), author.len()),
+                None => (text, 0),
             };
+            let pre = read(&text, bold);
             blocks.push(pre.total);
-            parts.push(div().children(rows(pre)).into_any_element());
+            let rows = draw::lit(&block(nth + 1), (&text, pre), (&style, line), window);
+            parts.push(div().children(rows).into_any_element());
         }
         let gaps = between_lines * (blocks.len() - 1) as f32;
         height += line * blocks.iter().sum::<usize>() as f32 + gaps;
@@ -271,9 +268,9 @@ fn head(key: &str, card: &hook_card::Card, size: f32, cx: &App) -> AnyElement {
         Icon::Message => lucide::icon(IconName::MessageSquare.svg(), 14.0, 1.75),
     };
     let (selector, id) = (format!("{key}-hook-title"), format!("{key}-hook-title"));
-    let title = card.title.clone();
+    let (title, drawn) = (card.title.clone(), chip::nowrap(&card.label));
     let label = div()
-        .id(ElementId::Name(id.into()))
+        .id(ElementId::Name(id.clone().into()))
         .debug_selector(move || selector)
         .min_w_0()
         .truncate()
@@ -281,7 +278,9 @@ fn head(key: &str, card: &hook_card::Card, size: f32, cx: &App) -> AnyElement {
         .line_height(relative(1.5))
         .font_weight(FontWeight::SEMIBOLD)
         .text_color(ink)
-        .child(chip::nowrap(&card.label))
+        .relative()
+        .child(select::label(&id, &drawn))
+        .child(drawn.clone())
         .when_some(title, |el, title| el.tooltip(tip::tip(title)));
     let selector = format!("{key}-hook-head");
     div()
@@ -345,7 +344,8 @@ pub(super) fn element(
     });
     let appearance = cx.global::<Appearance>();
     let selector = format!("{key}-hook-text");
-    let said = div().debug_selector(move || selector).children(rows(shown));
+    let rows = draw::lit(&selector, (&text, shown), (&look, line), window);
+    let said = div().debug_selector(move || selector).children(rows);
     let said = div()
         .whitespace_nowrap()
         .text_size(css(large))

@@ -530,3 +530,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 3: FAIL, one open. A folded message's last visible row drops its selected line
   feed's ink when its text fits before the ellipsis. Eleven of the reviewer's twelve native
   probes pass; 36 run rectangles are unchanged. Marked `[!]`. No desktop check was made.
+
+## 9.6k1d The stream's other text in the selection
+- Round 1: FAIL, one. A plain label's teammate avatar (`select-none`) started a selection.
+  Mended.
+- Round 2: FAIL, one. The avatar's quiet box was its square, so the space past its disc
+  selected nothing. Mended: quiet boxes keep their corners' arcs.
+- Round 3: FAIL, one open. Next to the avatar's arc the point-in-circle test parts from
+  Blink's hit region at three measured points. The reviewer's eleven other native probes
+  pass, 42 boundary presses among them; 109 run rectangles are unchanged. Marked `[!]`. No
+  desktop check was made.

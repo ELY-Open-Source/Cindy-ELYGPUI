@@ -7,7 +7,7 @@ use gpui::{
     div, prelude::FluentBuilder as _, relative,
 };
 
-use super::chip;
+use super::{chip, select};
 use crate::{
     appearance_settings::text_size,
     chat_message::merge::{Fields, get},
@@ -73,7 +73,7 @@ impl RenderOnce for Shell {
             Icon::Plugin => lucide(IconName::Puzzle),
             Icon::Phone => lucide(IconName::Smartphone),
             Icon::Computer => lucide(IconName::Monitor),
-            // `BotAvatar` at `h-3.5 w-3.5 text-10`, a teammate with no emoji yet.
+            // `BotAvatar` at `h-3.5 w-3.5 text-10 select-none`, a teammate with no emoji yet.
             Icon::Bot(name) => div()
                 .flex()
                 .flex_none()
@@ -88,8 +88,11 @@ impl RenderOnce for Shell {
                 .font_weight(FontWeight::MEDIUM)
                 .text_color(ink)
                 .child(source_label::initial(&name))
+                .relative()
+                .child(select::still(9999.0, 9999.0))
                 .into_any_element(),
         };
+        let (words, text) = (name.clone(), chip::nowrap(&text));
         let el = div()
             .id(id)
             .debug_selector(move || name)
@@ -101,7 +104,15 @@ impl RenderOnce for Shell {
             .line_height(relative(1.5))
             .text_color(color)
             .child(icon)
-            .child(div().min_w_0().truncate().child(chip::nowrap(&text)))
+            .child(
+                div()
+                    .relative()
+                    .min_w_0()
+                    .truncate()
+                    .when(!acts, |el| el.child(select::label(&words, &text)))
+                    .child(text.clone()),
+            )
+            .when(acts, |el| el.relative().child(select::still(0.0, 0.0)))
             .when_some(tip, |el, tip| el.tooltip(tip::tip(tip)));
         let Some(route) = open else {
             return el;
@@ -182,7 +193,14 @@ pub(super) fn goal(key: &str, message: &Fields, cx: &App) -> Option<AnyElement> 
         .bg(appearance.token("surface-chip"))
         .text_color(color)
         .child(lucide::icon(IconName::Target.svg(), 11.0, 2.0).text_color(color))
-        .child(div().min_w_0().truncate().child(label));
+        .child(
+            div()
+                .relative()
+                .min_w_0()
+                .truncate()
+                .child(select::label(&format!("{key}-goal"), &label))
+                .child(label),
+        );
     Some(badge.into_any_element())
 }
 

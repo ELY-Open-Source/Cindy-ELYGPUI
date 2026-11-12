@@ -164,7 +164,7 @@ pub struct Selection {
     inside: bool,
     cards: Vec<Card>,
     /// `user-select: none` boxes whose label alone is text: a quote chip's.
-    quiet: Vec<Bounds<Pixels>>,
+    quiet: Vec<(Bounds<Pixels>, [Pixels; 2])>,
     /// A quote chip's icon, which is `user-select: text` inside that box.
     loud: Vec<Bounds<Pixels>>,
     /// The card being drawn.
@@ -369,7 +369,11 @@ impl Selection {
         let label = |run: &Run| run.item && run.bounds.contains(&position);
         let text =
             self.runs.iter().any(label) || self.loud.iter().any(|icon| icon.contains(&position));
-        let quiet = self.quiet.iter().any(|chip| chip.contains(&position)) && !text;
+        let quiet = self
+            .quiet
+            .iter()
+            .any(|(chip, radii)| holds(chip, *radii, position))
+            && !text;
         if self.cards.iter().any(|card| bare(&card)) || quiet {
             self.press = Press::None;
             return;
@@ -397,6 +401,21 @@ impl Selection {
         }
         self.press = Press::None;
     }
+}
+
+/// Whether a box round by `top` and `bottom` holds `at`: Blink hits nothing past a corner's arc.
+fn holds(bounds: &Bounds<Pixels>, [top, bottom]: [Pixels; 2], at: gpui::Point<Pixels>) -> bool {
+    let half = bounds.size.width.min(bounds.size.height) / 2.0;
+    let radius = if at.y < bounds.center().y {
+        top
+    } else {
+        bottom
+    }
+    .min(half);
+    let x = at.x.clamp(bounds.left() + radius, bounds.right() - radius);
+    let y = at.y.clamp(bounds.top() + radius, bounds.bottom() - radius);
+    let (dx, dy, radius) = (f32::from(at.x - x), f32::from(at.y - y), f32::from(radius));
+    bounds.contains(&at) && dx * dx + dy * dy <= radius * radius
 }
 
 /// A frame's start: the stream's rows record anew.
@@ -556,13 +575,26 @@ pub fn scope() -> AnyElement {
     mark.absolute().inset_0().into_any_element()
 }
 
-/// A quote chip's box, 1px border and all: a press on it off its label selects nothing.
-pub fn quiet() -> AnyElement {
+/// A box a press selects nothing in, `grow` past its parent, round by `top` and `bottom`.
+fn mute(grow: f32, radii: [f32; 2]) -> AnyElement {
     let mark = canvas(
         |_, _, _| (),
-        |bounds, (), _, cx| cx.global_mut::<Selection>().quiet.push(bounds),
+        move |bounds, (), window, cx| {
+            let radii = radii.map(|radius| css(radius).to_pixels(window.rem_size()));
+            cx.global_mut::<Selection>().quiet.push((bounds, radii));
+        },
     );
-    mark.absolute().inset(css(-1.0)).into_any_element()
+    mark.absolute().inset(css(-grow)).into_any_element()
+}
+
+/// A chip's box, 1px border and all, its corners `radius`: a press there selects nothing.
+pub fn quiet(radius: f32) -> AnyElement {
+    mute(1.0, [radius; 2])
+}
+
+/// A button's box, its corners `top` and `bottom`: a press keeps what is selected.
+pub fn still(top: f32, bottom: f32) -> AnyElement {
+    mute(0.0, [top, bottom])
 }
 
 /// A quote chip's icon: a press on it places a caret; its parent is `relative`.

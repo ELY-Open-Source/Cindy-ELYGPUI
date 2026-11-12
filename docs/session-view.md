@@ -243,6 +243,17 @@ end). The last line has one too, the block's end, which Blink lights when the se
 past the bubble. A quote chip's own box stays `select-none` (`select::quiet`): a press on it
 places no caret and keeps the selection, but on its label and its icon (`select::loud`), which
 are text again. A folded message's ellipsis is no text, and the row it cuts has neither box.
-Not ported yet: the stream's other text, which `body`'s `user-select: text` makes selectable
-(9.6k1d), the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
-Blink scrolls.
+`body`'s `user-select: text` makes the stream's other text selectable
+(`logs/review/9.6k1d-blink-other.log`): the goal badge, a source label that opens nothing, a hook
+card's heading (`select::label`), and the rows of an Orca card's body, a hook card's words and
+its context's headings and lines. `draw::lit` draws those `pre-wrap` rows, a block per text
+(`<key>-orca-text`, `<key>-hook-text`, `<key>-hook-s<n>-<m>`): a row's semibold lead and its rest
+are a run each, its hanging spaces and its line's break places as a bubble's are. A `button`
+selects nothing and keeps what is selected (`select::still`; a file chip with its border,
+`select::quiet`): a source label that opens something, a file chip, an Orca card's head, a hook
+card's folds, and a teammate's avatar in a label (`BotAvatar`'s `select-none`). A pointer on one
+is the next text's start. Each box keeps its corners' arcs (the chip's pill, the avatar's disc,
+the Orca head's 7px): past an arc Blink hits what lies under, so a press there is no button's. The time under a bubble is text in
+Cindy; it comes with the action bar (9.11).
+Not ported yet: the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's
+edge does not scroll it, where Blink scrolls.

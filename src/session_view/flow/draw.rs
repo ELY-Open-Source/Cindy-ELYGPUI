@@ -246,9 +246,20 @@ pub fn laid(text: &str) -> String {
         .collect()
 }
 
-/// Rows of text: each with its leading semibold bytes, and how many there are unclamped.
+/// A row as drawn, its leading semibold bytes, and its place in the laid text.
+pub struct Row {
+    pub text: String,
+    pub bold: usize,
+    /// The bytes of the text it holds, and where the next row or the line feed starts.
+    pub bytes: Range<usize>,
+    pub until: usize,
+    /// Its line ends here, uncut.
+    pub feed: bool,
+}
+
+/// Rows of text, and how many there are unclamped.
 pub struct Pre {
-    pub rows: Vec<(String, usize)>,
+    pub rows: Vec<Row>,
     pub total: usize,
 }
 
@@ -274,17 +285,27 @@ pub fn pre(
         let strong = bold.saturating_sub(at).min(line.len());
         let atoms = atoms(&shape(line, strong));
         let broken = rows(line, &atoms, width.into(), &[]);
-        all.extend(broken.into_iter().map(|row| (line, strong, row)));
+        let ends = broken.iter().skip(1).map(|next| next.start);
+        let ends: Vec<usize> = ends.chain([line.len()]).collect();
+        let rows = broken.into_iter().zip(ends);
+        all.extend(rows.map(|(row, until)| (line, strong, row, (at, until))));
         at += line.len() + 1;
     }
     let total = all.len();
     let cut = kept.filter(|kept| total > *kept);
     all.truncate(cut.unwrap_or(total));
     let last = all.len().saturating_sub(1);
-    let row = |(nth, (line, strong, row)): (usize, (&str, usize, Range<usize>))| {
-        let held = strong.saturating_sub(row.start).min(row.len());
+    type Laid<'a> = (&'a str, usize, Range<usize>, (usize, usize));
+    let row = |(nth, (line, strong, row, (at, until))): (usize, Laid)| {
+        let bold = strong.saturating_sub(row.start).min(row.len());
         if cut.is_none() || nth != last {
-            return (line[row].to_owned(), held);
+            return Row {
+                text: line[row.clone()].to_owned(),
+                bold,
+                bytes: at + row.start..at + row.end,
+                until: at + until,
+                feed: until == line.len(),
+            };
         }
         let dots = "\u{2026}";
         let room = f32::from(shape(dots, 0).width);
@@ -294,15 +315,81 @@ pub fn pre(
             room,
             width.into(),
         );
-        (
-            format!("{}{dots}", &line[row.start..end]),
-            held.min(end - row.start),
-        )
+        Row {
+            text: format!("{}{dots}", &line[row.start..end]),
+            bold: bold.min(end - row.start),
+            bytes: at + row.start..at + end,
+            until: at + end,
+            feed: false,
+        }
     };
     Pre {
         rows: all.into_iter().enumerate().map(row).collect(),
         total,
     }
+}
+
+/// `pre`'s rows of `text` as block `id`: each face a run, hanging spaces and line feeds places.
+pub fn lit(
+    id: &str,
+    (text, pre): (&str, Pre),
+    (style, line): (&TextStyle, Pixels),
+    window: &Window,
+) -> Vec<AnyElement> {
+    let size = style.font_size.to_pixels(window.rem_size());
+    let wide = |text: &str| {
+        let line = SharedString::from(text.to_owned());
+        let run = style.to_run(line.len());
+        let shaped = window.text_system().shape_line(line, size, &[run], None);
+        div().w(shaped.width).h_full().into_any_element()
+    };
+    let row = |row: Row| {
+        let kept = row.bytes.len();
+        let face = |part: Range<usize>, tail: &str| {
+            let at = row.bytes.start + part.start;
+            let words = div().child(format!("{}{tail}", &row.text[part.clone()]));
+            select::text(
+                (id, at),
+                &row.text[part],
+                Vec::new(),
+                words.into_any_element(),
+            )
+        };
+        let strong = div()
+            .font_weight(FontWeight::SEMIBOLD)
+            .child(face(0..row.bold, ""));
+        let mut hang = Vec::new();
+        let hung = &text[row.bytes.end..row.until];
+        if !hung.is_empty() {
+            hang.push(select::text(
+                (id, row.bytes.end),
+                hung,
+                Vec::new(),
+                wide(hung),
+            ));
+        }
+        if row.feed {
+            hang.push(select::space(id, row.until, "\n", wide(" ")));
+        }
+        // They take no room: Blink lets them hang past the line's box.
+        let hang = div()
+            .absolute()
+            .left_0()
+            .top_0()
+            .h_full()
+            .flex()
+            .children(hang);
+        div()
+            .relative()
+            .flex()
+            .h(line)
+            .child(select::line())
+            .when(row.bold > 0, |el| el.child(strong))
+            .child(face(row.bold..kept, &row.text[kept..]))
+            .child(div().relative().w_0().h_full().child(hang))
+            .into_any_element()
+    };
+    pre.rows.into_iter().map(row).collect()
 }
 
 /// The plain text's rows at `width`: `pre-wrap` with no chip and no link.

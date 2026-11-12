@@ -10,6 +10,7 @@ use gpui::{
 use super::{
     chip,
     flow::draw,
+    select,
     source_labels::{self, Over},
     user_row,
     width::Widths,
@@ -118,7 +119,9 @@ impl RenderOnce for Head {
                     .truncate()
                     .child(chip::nowrap(&self.title)),
             )
-            .child(lucide::icon(chevron.svg(), 14.0, 2.0).text_color(mark));
+            .child(lucide::icon(chevron.svg(), 14.0, 2.0).text_color(mark))
+            .relative()
+            .child(select::still(INNER, if self.open { 0.0 } else { INNER }));
         press::listen(el, &press, false)
     }
 }
@@ -132,7 +135,9 @@ fn body(key: &str, text: &str, widths: Widths, window: &Window, cx: &App) -> Any
     style.font_family = cx.theme().mono_family.clone();
     (style.font_size, style.line_height) = (size.into(), line.into());
     let width = css((COLUMN.min(widths.message) - INSET).max(0.0)).to_pixels(rem);
-    let rows = draw::pre(&draw::laid(text), (0, None), (&style, width), window).rows;
+    let (laid, block) = (draw::laid(text), format!("{key}-orca-text"));
+    let pre = draw::pre(&laid, (0, None), (&style, width), window);
+    let rows = draw::lit(&block, (&laid, pre), (&style, line.to_pixels(rem)), window);
     let appearance = cx.global::<Appearance>();
     let (selector, text_selector) = (format!("{key}-orca-body"), format!("{key}-orca-text"));
     let pre = div()
@@ -144,7 +149,7 @@ fn body(key: &str, text: &str, widths: Widths, window: &Window, cx: &App) -> Any
         .text_size(size)
         .line_height(line)
         .text_color(appearance.hsl_token("foreground"))
-        .children(rows.into_iter().map(|(row, _)| row));
+        .children(rows);
     div()
         .debug_selector(move || selector)
         .border_t(css(1.0))
