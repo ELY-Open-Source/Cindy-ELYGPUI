@@ -276,7 +276,7 @@ defines scope and what 1:1 means.
   `chunks.rs` `splitStreamingMarkdownChunks` (`split`: a chunk's `start` is its byte, the golden's a
   UTF-16 unit). JavaScript's `\s`, `.` and multiline `^` are spelled by hand. Golden
   `streaming-markdown`: `scripts/golden/streamingMarkdown.mjs` runs Cindy's functions on every
-  prefix of Cindy's test inputs, crafted texts and 240 seeded mixes. Nothing reads it before 9.6j3.
+  prefix of Cindy's test inputs, crafted texts and 240 seeded mixes.
 - Word break: `src/word_break.rs` is `Intl.Segmenter`'s word granularity as V8 answers in Cindy's
   renderer (`words`; `split` is `splitWordsUncached`). ICU4X's own segmenter follows UAX 29 and a
   longest-match dictionary, where Chromium's ICU 78 parts from both, so the port spells Chromium's
@@ -306,7 +306,7 @@ defines scope and what 1:1 means.
   Electron, for V8's words, on 36 seeded streams (chunks that grow, are edited, fall back to the
   whole document; renders given up; spans scheduled and settled on a stepped clock) and one of
   marked items come back emptied, and writes
-  each run's tree and the state after it. Nothing reads it before 9.6j3.
+  each run's tree and the state after it.
 - Streaming throttle: `src/streaming_throttle.rs` is `useStreamingThrottle` as a state its caller
   drives: `render` is the effect (it runs when the text or the switch changed), `due` when the
   timer fires, `fire` its callback, `shown` the hook's answer; times are `performance.now()`'s
@@ -314,8 +314,24 @@ defines scope and what 1:1 means.
   Cindy's hook (through the hast golden's exporter) in jsdom, the clock and `window.setTimeout`
   set by hand, each timer fired at its own time. `src/stream_fade.rs` is
   `useStreamFadePreference.ts`'s read (`enabled`, `chat.streamFadePreference`, the memo in the
-  `StreamFade` global; a stored default is removed); the setter comes with its setting. Nothing
-  reads either before 9.6j3b.
+  `StreamFade` global; a stored default is removed); the setter comes with its setting.
+- Streamed chunks: `src/streamed_chunks.rs` is `MarkdownRendererBase`'s streamed half with
+  `StreamingMarkdownChunk`: `Chunks::render` repairs the text when it fades, splits it, and
+  parses a chunk anew when its start (a UTF-16 offset, as Cindy keys it), text, `wholeDocument`
+  or fade state changed, as `React.memo` and the chunk's `useMemo` do; a parsed chunk gets its
+  candidate, the fade, then a place on the timeline for each key whose ref attaches (`mounted`:
+  a span's, then its list item's after its children; none under an `a` whose renderer draws a
+  card, a chip or the audio player in its children's place, `replaced`), then the commit and,
+  for a whole document, the retain. A key is queued once, so a ref that attaches again changes
+  nothing. The attached files are read at the parse alone. The chunks' trees stand end to end
+  in one tree. gpui draws every frame, so `streamingMarkdownBlocks`' kept React subtrees have
+  no counterpart. Golden `streamed-chunks`: `scripts/golden/streamedChunks.mjs` bundles Cindy's
+  `StreamingMarkdownChunk` and `streamedChunksRun.mjs` mounts it in jsdom under Cindy's Electron
+  as Node (V8's words), a row per chunk as the renderer maps them, with Cindy's own `a`
+  renderer (`markdownHast.mjs`'s exporter lifts its source out of the component) under a
+  `MemoryRouter`, on 36 seeded texts that grow on a stepped clock; each step holds the DOM's
+  faded spans and the timeline. `session_view/streamed.rs` is a streaming message's renderer
+  (`docs/session-view.md`).
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A

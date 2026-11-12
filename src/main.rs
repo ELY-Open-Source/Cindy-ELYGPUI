@@ -76,6 +76,7 @@ mod sidebar;
 mod smooth_scroll;
 mod source_label;
 mod stream_fade;
+mod streamed_chunks;
 mod streaming_markdown;
 mod streaming_throttle;
 mod svg_image;

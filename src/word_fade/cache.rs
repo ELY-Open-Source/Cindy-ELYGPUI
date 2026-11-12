@@ -18,7 +18,13 @@ const BYTES: usize = 2 * 1024 * 1024;
 #[derive(Default)]
 pub struct States(IndexMap<String, Rc<RefCell<Fade>>>);
 
+impl gpui::Global for States {}
+
 impl States {
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
     /// `getOrCreateWordFadeState`: a message with no key gets a state nothing keeps.
     pub fn get(&mut self, key: Option<&str>) -> Rc<RefCell<Fade>> {
         let Some(key) = key.filter(|key| !key.is_empty()) else {

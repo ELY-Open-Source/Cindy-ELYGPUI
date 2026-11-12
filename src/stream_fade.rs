@@ -1,9 +1,4 @@
 //! `useStreamFadePreference.ts`: whether a streamed answer's words fade in.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "a streamed row reads it in 9.6j3b")
-)]
-
 use std::cell::Cell;
 
 use gpui::App;

@@ -483,3 +483,11 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   `getStreamFadePreference` against `stream_fade::enabled`: 826 scenarios, 20,446 steps, no
   difference; the golden's 2,409 rows regenerate byte for byte. No desktop check was made:
   the timer and the row come with 9.6j3b.
+
+## 9.6j3b A row per chunk, its throttles and timeline
+- Round 1: FAIL. P2: every span of the parsed tree was scheduled, words under a link Cindy
+  draws as a card, a chip or the audio player among them, and a list item's own ref was missed.
+- Round 2: PASS. A replaced link's subtree schedules nothing and an item's key follows its
+  children's; 384 cases and 4,441 steps match Cindy's `StreamingMarkdownChunk` under its real
+  `a` renderer, and the golden's 1,328 steps regenerate byte for byte. No desktop, animation
+  or live message check was made: no stored row streams before 10.0.

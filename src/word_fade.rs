@@ -1,9 +1,4 @@
 //! `rehypeStreamWordFade.ts`: a streamed answer's words, their stable keys and fade timeline.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "a streamed row reads it in 9.6j3")
-)]
-
 use std::{
     cell::RefCell,
     collections::{BTreeMap, HashMap, HashSet},
@@ -114,11 +109,19 @@ impl Fade {
     }
 
     /// `markWordFadeSettled`.
+    #[cfg_attr(
+        not(test),
+        expect(dead_code, reason = "a faded span settles it in 9.6j3c")
+    )]
     pub fn settle(&self, key: &str) {
         self.timeline.borrow_mut().settled.insert(key.to_owned());
     }
 
     /// `isWordFadeSettled`.
+    #[cfg_attr(
+        not(test),
+        expect(dead_code, reason = "a faded span reads it in 9.6j3c")
+    )]
     pub fn settled(&self, key: &str) -> bool {
         self.timeline.borrow().settled.contains(key)
     }
@@ -383,7 +386,7 @@ impl Fade {
     }
 
     /// The state as the golden's `snapshot` writes it.
-    fn snapshot(&self) -> serde_json::Value {
+    pub fn snapshot(&self) -> serde_json::Value {
         use crate::cindy_json::js_value as number;
         let timeline = self.timeline.borrow();
         let sources = self.sources.iter();

@@ -1,9 +1,4 @@
 //! `repairStreamingMarkdown.ts` and `streamingMarkdownChunks.ts`: a growing answer's Markdown.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "a streamed row reads it in 9.6j3")
-)]
-
 use crate::theme_import::color::{js_space, js_trim};
 
 pub mod chunks;

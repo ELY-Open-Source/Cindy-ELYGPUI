@@ -4,12 +4,15 @@ use std::{collections::HashMap, rc::Rc};
 
 use gpui::{AnyElement, App, IntoElement as _, ParentElement as _, Styled as _, Window, div};
 
-use super::{SessionView, links, markdown, session, target_link, width::Widths};
+use super::{SessionView, links, markdown, session, streamed, target_link, width::Widths};
 use crate::{
     chat_message::merge::{Fields, get},
     goal_verdict,
     markdown::hast::{self, Hast, Urls},
-    rich_answer::{self, js},
+    rich_answer::{
+        self,
+        js::{self, Js},
+    },
     units::css,
 };
 
@@ -44,10 +47,18 @@ pub(super) fn element(
     }
     let content = get(message, "content")?.str()?;
     let shown = goal_verdict::strip(content);
-    if rich_answer::has(shown) {
-        return None;
-    }
-    let tree = tree(key, shown, cx)?;
+    let client = get(message, "clientId").and_then(Js::str);
+    let client = client.filter(|id| !id.is_empty());
+    let tree = match flag("isStreaming") {
+        true => streamed::tree(key, shown, client, files, cx)?,
+        false => {
+            streamed::ended(key, client, cx);
+            if rich_answer::has(shown) {
+                return None;
+            }
+            tree(key, shown, cx)?
+        }
+    };
     let dir = session(cx).and_then(|task| task.working_dir.clone());
     let dir = dir.unwrap_or_default();
     let anchors = target_link::read(key, &tree, files, &dir, window, cx);

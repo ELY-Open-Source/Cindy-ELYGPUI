@@ -29,6 +29,7 @@ mod markdown;
 mod orca_card;
 mod source_labels;
 mod stream;
+mod streamed;
 mod target_link;
 mod user_row;
 mod width;
@@ -73,6 +74,8 @@ struct Content {
     images: images::Held,
     /// Its assistant messages' trees, by item key.
     trees: assistant_row::Trees,
+    /// Its streaming messages' renderers, by item key.
+    streams: streamed::Streams,
     /// `handoffPillDismissed`.
     dismissed: bool,
 }
@@ -86,6 +89,7 @@ pub struct SessionView {
 impl Global for SessionView {}
 
 pub fn install(cx: &mut App) {
+    streamed::install(cx);
     cx.set_global(SessionView::default());
     cx.observe_global::<router::Router>(sync).detach();
     cx.observe_global::<sessions::Sessions>(sync).detach();
@@ -214,6 +218,7 @@ fn mount(id: &str, cx: &mut App) {
         jump: Default::default(),
         images: Default::default(),
         trees: Default::default(),
+        streams: Default::default(),
         dismissed: false,
     });
     content_read(cx);

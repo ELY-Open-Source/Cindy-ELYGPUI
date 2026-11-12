@@ -1,9 +1,4 @@
 //! `useStreamingThrottle`: a streamed text, shown at most once per interval of its length.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "a streamed row reads it in 9.6j3b")
-)]
-
 use crate::streaming_markdown::throttle;
 
 #[cfg(test)]

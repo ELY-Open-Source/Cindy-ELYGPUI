@@ -330,11 +330,12 @@ listed in `tasks/done.md`.
     - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
       - [x] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
           (`useStreamFadePreference.ts`, `chat.streamFadePreference`)
-      - [ ] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate
-          and commit, `streamingMarkdownBlocks`' kept blocks (`StreamingBody` is off in Cindy:
-          `USE_LINE_COMMIT_STREAMING` is false)
-      - [ ] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem`: a word and a marker faded on the
-          clock, settled at its end
+      - [x] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate,
+          commit and its spans' places on the timeline; the row's two throttles on a timer
+          (`StreamingBody` is off in Cindy: `USE_LINE_COMMIT_STREAMING` is false; gpui has no
+          kept subtree for `streamingMarkdownBlocks`)
+      - [ ] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem` drawn: a word and a marker faded on
+          the clock, settled at its end
   - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`

@@ -13,13 +13,24 @@ const ENTRY = [
   "export { parseRemoteMediaUrl } from './shared/remoteMediaUrl';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
-const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref, useStreamingThrottle };\n';
+const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref, useStreamingThrottle, linkRenderer };\n';
+/** The `a` renderer's own source, lifted out of the component with the values it closes over. */
+function linkRenderer(source) {
+  const begin = source.indexOf('      a: ({ children, href, ...props }) => {', source.indexOf('const components = useMemo<Components>'));
+  const end = source.indexOf('\n    }),', begin);
+  if (begin < 0 || end < 0) throw new Error('the link renderer is not where it was');
+  const closed = "const allowPrivilegedLinks = true, workingDir = '', isStreaming = true, localFileRefs = [], currentSessionId = 's1', "
+    + "currentSessionTitle = 'dispatcher', remoteMediaOrigin = undefined, setLightboxSrc = () => {}, setTextLightboxFile = () => {}, setModelLightboxPath = () => {};";
+  return `\nfunction linkRenderer() { ${closed} return {\n${source.slice(begin, end)}\n}; }\n`;
+}
+
 export const exporter = {
   name: 'renderer-exports',
   setup(build) {
-    build.onLoad({ filter: /[\\/]MarkdownRenderer\.tsx$/ }, (args) => ({
-      contents: fs.readFileSync(args.path, 'utf8') + EXPORT, loader: 'tsx',
-    }));
+    build.onLoad({ filter: /[\\/]MarkdownRenderer\.tsx$/ }, (args) => {
+      const source = fs.readFileSync(args.path, 'utf8');
+      return { contents: source + linkRenderer(source) + EXPORT, loader: 'tsx' };
+    });
   },
 };
 

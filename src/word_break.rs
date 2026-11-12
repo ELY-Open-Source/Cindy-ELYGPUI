@@ -1,9 +1,4 @@
 //! `Intl.Segmenter`'s words in Cindy's renderer: Chromium's ICU `word.txt` and its CJK engine.
-#![cfg_attr(
-    not(test),
-    expect(dead_code, reason = "the word fade reads it in 9.6j2b")
-)]
-
 use std::sync::LazyLock;
 
 use icu_properties::{

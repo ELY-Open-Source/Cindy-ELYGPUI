@@ -124,3 +124,20 @@ comes with 17.0, so that open fails with Cindy's toast), Enter and Space activat
 their modifiers, a right click, the menu key or Shift+F10 opens the menu (Ely `ContextMenu::manual`;
 Ely's `Link` for `link-2`). gpui places an underline itself, so `underline-offset-2` has no port. In
 tests `open_external` records the address and starts no program.
+
+## A streaming message
+
+`assistant_row.rs` reads the message's own `isStreaming`. `streamed.rs` is `MarkdownRenderer` for
+such a message, kept with the mounted content by item key (`Streams`): the outer throttle
+(`useStreamingThrottle` in the envelope) decides from its text whether a rich answer shows, which
+draws nothing before 9.10 and unmounts the base; the base (`MarkdownRendererBase`) has its own
+throttle on the same content, its fade state and its `Chunks`. `streamFade` is on unless reduced
+motion or the switch says no; the state comes from `word_fade::cache::States` (a global, as the
+module's cache) under `<task id>\0<clientId>`, asked for again only when the switch or the key
+changed, and a message with no client id gets a state of its own. One timer per message waits for
+the throttle that fires first (`arm`); `fire` runs each throttle due by then and draws the windows
+again. `now` is `performance.now()`: milliseconds on the executor clock since `streamed::install`,
+the app's start, so a stream's first text finds an interval already passed, as on a page loaded
+long before. A message that streams no more drops this state and calls `releaseWordFadeState`
+(`ended`); its tree is then the static one. Live rows come with 10.0: until then no stored row
+streams, and the tests call `streamed::tree` on a mounted task.

@@ -22,7 +22,7 @@ pub(super) fn db() -> Connection {
 }
 
 /// The globals the route needs, with `s1` listed and the database served.
-fn install(cx: &mut TestAppContext) -> tempfile::TempDir {
+pub(super) fn install(cx: &mut TestAppContext) -> tempfile::TempDir {
     let dir = tempfile::tempdir().unwrap();
     cx.update(|cx| {
         cx.set_global(Preferences::load(dir.path()).unwrap());
@@ -37,11 +37,11 @@ fn install(cx: &mut TestAppContext) -> tempfile::TempDir {
     dir
 }
 
-fn serve(cx: &mut TestAppContext) {
+pub(super) fn serve(cx: &mut TestAppContext) {
     cx.update(|cx| crate::localdb::serve(db(), cx));
 }
 
-fn go(to: &str, cx: &mut TestAppContext) {
+pub(super) fn go(to: &str, cx: &mut TestAppContext) {
     cx.update(|cx| router::navigate(to, cx));
     cx.run_until_parked();
 }
