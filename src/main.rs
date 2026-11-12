@@ -75,7 +75,9 @@ mod show_item;
 mod sidebar;
 mod smooth_scroll;
 mod source_label;
+mod stream_fade;
 mod streaming_markdown;
+mod streaming_throttle;
 mod svg_image;
 mod theme;
 mod theme_import;
@@ -154,6 +156,7 @@ fn open(startup: Startup, cx: &mut App) -> Result<()> {
     session_view::install(cx);
     browse_history::install(cx);
     link_open::install(cx);
+    stream_fade::install(cx);
     wallpaper::Wallpaper::install(startup.appearance.wallpaper.clone(), &startup.user_data, cx);
     cx.set_global(window_material::Material::load());
     let home = dirs::home_dir().context("this user has no home folder")?;

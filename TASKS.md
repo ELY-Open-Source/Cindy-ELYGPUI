@@ -328,7 +328,7 @@ listed in `tasks/done.md`.
       - [x] 9.6j2b The fade state: `assignKeys`, the timeline (`scheduleWordFadeSegment`), the
           candidates and the transform on the renderer tree
     - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
-      - [ ] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
+      - [x] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
           (`useStreamFadePreference.ts`, `chat.streamFadePreference`)
       - [ ] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate
           and commit, `streamingMarkdownBlocks`' kept blocks (`StreamingBody` is off in Cindy:

@@ -13,8 +13,8 @@ const ENTRY = [
   "export { parseRemoteMediaUrl } from './shared/remoteMediaUrl';",
 ].join('\n');
 // What the renderer keeps to itself, exported for the golden's bundle alone.
-const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref };\n';
-const exporter = {
+const EXPORT = '\nexport const golden = { REHYPE_PLUGINS, trustedUrlTransform, previewSafeUrlTransform, allowlistedImageUrlTransform, resolvedLocalFromResult, shouldRenderCodeReferenceLabel, parseSessionCardHref, useStreamingThrottle };\n';
+export const exporter = {
   name: 'renderer-exports',
   setup(build) {
     build.onLoad({ filter: /[\\/]MarkdownRenderer\.tsx$/ }, (args) => ({

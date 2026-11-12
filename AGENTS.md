@@ -307,6 +307,15 @@ defines scope and what 1:1 means.
   whole document; renders given up; spans scheduled and settled on a stepped clock) and one of
   marked items come back emptied, and writes
   each run's tree and the state after it. Nothing reads it before 9.6j3.
+- Streaming throttle: `src/streaming_throttle.rs` is `useStreamingThrottle` as a state its caller
+  drives: `render` is the effect (it runs when the text or the switch changed), `due` when the
+  timer fires, `fire` its callback, `shown` the hook's answer; times are `performance.now()`'s
+  milliseconds. Golden `streaming-throttle`: `scripts/golden/streamingThrottle.mjs` mounts
+  Cindy's hook (through the hast golden's exporter) in jsdom, the clock and `window.setTimeout`
+  set by hand, each timer fired at its own time. `src/stream_fade.rs` is
+  `useStreamFadePreference.ts`'s read (`enabled`, `chat.streamFadePreference`, the memo in the
+  `StreamFade` global; a stored default is removed); the setter comes with its setting. Nothing
+  reads either before 9.6j3b.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A

@@ -477,3 +477,9 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
 - Round 2: PASS. The marker sets properties as the spread does; 4,021 groups and 53,715 steps
   match Cindy's module, and the golden's 37 streams regenerate byte for byte. No desktop check
   was made: the streamed row comes with 9.6j3.
+
+## 9.6j3a The streaming throttle and the fade's switch
+- Round 1: PASS. Cindy's hook under React and jsdom against `Throttle`, and
+  `getStreamFadePreference` against `stream_fade::enabled`: 826 scenarios, 20,446 steps, no
+  difference; the golden's 2,409 rows regenerate byte for byte. No desktop check was made:
+  the timer and the row come with 9.6j3b.

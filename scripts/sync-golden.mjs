@@ -13,6 +13,7 @@ import { hookCard } from './golden/hookCard.mjs';
 import { markdownTree } from './golden/markdownTree.mjs';
 import { markdownTransforms } from './golden/markdownTransforms.mjs';
 import { streamed } from './golden/streamingMarkdown.mjs';
+import { streamingThrottle } from './golden/streamingThrottle.mjs';
 import { markdownHast } from './golden/markdownHast.mjs';
 import { sourceLabels } from './golden/sourceLabels.mjs';
 import { historyRender } from './golden/historyRender.mjs';
@@ -607,6 +608,7 @@ try {
   console.log(`${await pathResolver(golden, workspacePaths)} path resolver steps`);
   console.log(`${await smartPaths(golden, pathShape, workspacePaths)} smart path steps`);
   console.log(`${await workspaceMedia({ ...golden, define, assets: ASSETS, cindy, src }, workspacePaths)} workspace media steps`);
+  console.log(`${await streamingThrottle({ ...golden, define, assets: ASSETS, cindy, src })} streaming throttle steps`);
   const dialect = new SQLiteSyncDialect();
   write(path.join(fixtures, 'history-outline', 'sql.json'), {
     content: dialect.sqlToQuery(historyOutlineContent()),
