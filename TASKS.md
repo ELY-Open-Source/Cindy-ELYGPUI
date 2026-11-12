@@ -346,6 +346,15 @@ listed in `tasks/done.md`.
             (`logs/review/9.6j3c-post-*.log`, 1205 tests). Not checked: the reviewer's own
             probes against the mends, and a real window.
   - [ ] 9.6k Selection and copy over the drawn Markdown
+    - [ ] 9.6k1 The stream's selectable text: each drawn row of a message's text records its
+        text and where its glyphs stand, in document order; a press and a drag select from the
+        point pressed to the pointer's, painted in `--text-selection-bg`; a press clears;
+        `select-none` parts (buttons, chips) hold no selectable text
+    - [ ] 9.6k2 A double click's word and a triple click's block, Shift with a click, Mod+A
+        over the stream, as Blink selects them
+    - [ ] 9.6k3 Copy: Mod+C writes the selection's `text/plain` as Blink's
+        `Selection.toString()` gives it (block breaks, list items, table cells)
+    - [ ] 9.6k4 The `text/html` flavour, with `handleAssistantCopy`'s lone list item
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`
 - [ ] 9.8 Math: `remark-math` with `remarkStrictInlineMath` and `math-markdown`, drawn as KaTeX
