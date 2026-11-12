@@ -16,6 +16,7 @@ use crate::{
         chip::{self, Chip, Stand},
         link_chip::{self, Act, Found, Want},
         links::{self, Link, Shared},
+        select,
     },
     units::css,
     user_message::sent::{self, Kind, Part, Pasted, Reference, Span, Token},
@@ -81,7 +82,8 @@ impl Reading<'_> {
 
     fn chip(&mut self, chip: Chip) {
         let line = self.line();
-        line.chips.push((line.text.len(), chip));
+        // Under the bubble's `select-text` every chip's label is text, a quote's too.
+        line.chips.push((line.text.len(), chip.selects()));
         line.text.push(CHIP);
     }
 
@@ -403,6 +405,13 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
     let dots = "\u{2026}";
     let ellipsis = shape(dots, &look.style, window);
     let last = all.len() - 1;
+    // What follows each row in its line: the next row's start, or the line's end and its break.
+    let after = |at: usize| match all.get(at + 1) {
+        Some((n, next)) if *n == all[at].0 => (next.start, false),
+        _ => (lines[all[at].0].text.len(), true),
+    };
+    let after: Vec<(usize, bool)> = (0..all.len()).map(after).collect();
+    let space = shape(" ", &look.style, window).width;
     let row = |(at, (n, row)): (usize, (usize, Range<usize>))| {
         let (line, (atoms, first)): (&Line, _) = (&lines[n], &shaped[n]);
         // `line-clamp` ends the last kept row with an ellipsis.
@@ -427,9 +436,12 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
         let height = chips.fold(top + metrics.line, |height, chip| {
             height.max(top + over(chip) + tall(chip))
         });
+        let block = format!("{}-l{n}", look.key);
         let say = |range: Range<usize>, tail: &str, window: &Window| {
-            let words = words(line, range, tail, look.key, shared.as_ref(), window);
-            words.map(|words| div().flex_none().mt(top).child(words).into_any_element())
+            let words = words(line, range.clone(), tail, look.key, shared.as_ref(), window)?;
+            // The ellipsis of a folded message is no text.
+            let lit = select::text((&block, range.start), &line.text[range], Vec::new(), words);
+            Some(div().flex_none().mt(top).child(lit).into_any_element())
         };
         for (k, (at, chip)) in &held {
             parts.extend(say(from..*at, "", window));
@@ -442,7 +454,39 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
             from = at + CHIP.len_utf8();
         }
         parts.extend(say(from..end, tail, window));
-        div().flex().items_start().h(height).children(parts)
+        // `pre-wrap` keeps a wrap's hung spaces and the line's break; a cut row shows neither.
+        let clipped = cut.is_some() && at == last;
+        let (until, feed) = after[at];
+        let hung = &line.text[end.min(until)..until];
+        let mut hang = Vec::new();
+        if !clipped && !hung.is_empty() {
+            let wide = div().w(shape(hung, &look.style, window).width);
+            let wide = wide.h(metrics.line).into_any_element();
+            hang.push(select::text((&block, end), hung, Vec::new(), wide));
+        }
+        // The last line's is the block's end, lit when the selection goes on past the bubble.
+        if feed && !clipped {
+            let wide = div().w(space).h(metrics.line).into_any_element();
+            hang.push(select::space(&block, until, "\n", wide));
+        }
+        if parts.is_empty() && hang.is_empty() {
+            // A cut row with no text is one place.
+            let blank = div().h(height).into_any_element();
+            parts.push(select::space(&block, row.start, "", blank));
+        }
+        if !hang.is_empty() {
+            // They take no room: Blink lets them hang past the line's box.
+            let past = div().absolute().left_0().top_0().flex().children(hang);
+            let anchor = div().relative().flex_none().w_0().h(metrics.line);
+            parts.push(anchor.mt(top).child(past).into_any_element());
+        }
+        div()
+            .relative()
+            .flex()
+            .items_start()
+            .h(height)
+            .child(select::line())
+            .children(parts)
     };
     let rows: Vec<_> = all.into_iter().enumerate().map(row).collect();
     // A line that wraps fills the bubble, as shrink-to-fit gives it all the room.

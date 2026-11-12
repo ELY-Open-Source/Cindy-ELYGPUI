@@ -229,5 +229,20 @@ letter, since the port draws its tracking so, and one item), the history icon (a
 text), the words, the dot, the short id. A press on the card's bare face (not the circle, the
 lines or the arrow) places no caret and keeps the selection. A press and a release on one card
 still click it, as in Cindy.
-Not ported yet: a user message (9.6k1c), the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
+A user message's bubble is `select-text` (`logs/review/9.6k1c-blink-user.log`, Cindy's
+`renderContent`, `ChatBubble` and `QuoteChip` under Cindy's built CSS, the preload API a stub):
+all of it computes `user-select: text` but the quote chip's two wrappers, whose label is text
+again, since `.select-text *` follows `.select-none *` in `globals.css`; a press in that label
+places a caret and a drag selects it. `flow/draw.rs` records each logical line as a block
+(`<key>-l<n>`): its words by their bytes in the line, each chip's label (`Chip::selects`), a
+line with no text as one place, each row its line box. `pre-wrap` keeps what a row's end
+hides, so both are places past the row's last part, in a box that takes no room: the spaces a
+wrap hangs (a run of their own, hit by glyph) and the line's break (`select::space`, a space wide
+and the line high when selected; no caret stands after it, so right of a line is the line's
+end). The last line has one too, the block's end, which Blink lights when the selection goes on
+past the bubble. A quote chip's own box stays `select-none` (`select::quiet`): a press on it
+places no caret and keeps the selection, but on its label and its icon (`select::loud`), which
+are text again. A folded message's ellipsis is no text, and the row it cuts has neither box.
+Not ported yet: the stream's other text, which `body`'s `user-select: text` makes selectable
+(9.6k1d), the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
 Blink scrolls.

@@ -329,6 +329,7 @@ impl Chip {
         let name = self.name.clone();
         let border = appearance.token("border-default");
         let acting = self.act.as_ref().zip(shared);
+        let quiet = self.selects && matches!(self.face, Face::Quote(_));
         div()
             .id(element.clone())
             .debug_selector(move || selector)
@@ -348,7 +349,7 @@ impl Chip {
             })
             .when(self.named, |el| el.aria_label(name))
             .map(|el| match self.stand {
-                Stand::Island => el.mt(top).mx(css(4.0)),
+                Stand::Island => el.relative().mt(top).mx(css(4.0)),
                 Stand::Link => el.mt(top).cursor_pointer().underline(),
                 Stand::Line => {
                     let lift = css(1.0).to_pixels(window.rem_size());
@@ -370,8 +371,12 @@ impl Chip {
             .font_weight(FontWeight::NORMAL)
             .line_height(css(20.0))
             .text_color(color)
+            // `textSelectable={false}`: the chip is `select-none`, its icon and label text again.
+            .when(quiet, |el| el.child(super::select::quiet()))
             .when_some(self.icon, |el, icon| {
-                el.child(lucide::icon(icon, 14.0, 2.0).text_color(color))
+                let drawn = lucide::icon(icon, 14.0, 2.0).text_color(color);
+                let held = div().relative().flex_none().child(drawn);
+                el.child(held.when(quiet, |el| el.child(super::select::loud())))
             })
             .child(
                 (div().relative().min_w_0().truncate())

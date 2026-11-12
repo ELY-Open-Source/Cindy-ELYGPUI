@@ -520,3 +520,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   title; a cut chip label) match Blink under Cindy's `MarkdownRenderer`, both ends driven by
   mouse events. A cut title and label hold their hidden text and clip the highlight to the box.
   9.6k1's two bidi findings stay open under that entry. No desktop check was made.
+
+## 9.6k1c A user message's text in the selection
+- Round 1: FAIL, three. A quote chip's padding started a selection; a selected line feed had
+  no ink; a soft wrap's hanging space was no place. All mended.
+- Round 2: FAIL, three. The quiet box blocked the quote's icon; a trailing line feed and a
+  bubble's last line had no end-of-block ink; a fold dropped every row's hanging space. All
+  mended.
+- Round 3: FAIL, one open. A folded message's last visible row drops its selected line
+  feed's ink when its text fits before the ellipsis. Eleven of the reviewer's twelve native
+  probes pass; 36 run rectangles are unchanged. Marked `[!]`. No desktop check was made.

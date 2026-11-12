@@ -4,6 +4,7 @@ use super::{Cell, Point as Place, Run, Selection, cells, picked};
 use crate::session_view::user_row::tests::{at, open_roles};
 
 mod card;
+mod user;
 
 const TEXT: &str = "alpha beta\n\nsecond `code` here\n\n```\nlet a = 1;\n```\n\nlast";
 
@@ -116,7 +117,8 @@ fn a_point_off_the_text_selects_as_blink_does(cx: &mut TestAppContext) {
         at(cx, "session-scroll").unwrap().top(),
     );
     drag(cx, under, point(row.x, top + px(1.0)));
-    assert_eq!(held(cx).len(), 6);
+    // The user's message over the answer is text too, and its block's end.
+    assert_eq!(held(cx).len(), 8);
 }
 
 #[gpui::test]

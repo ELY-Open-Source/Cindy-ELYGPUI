@@ -163,6 +163,10 @@ pub struct Selection {
     met: (bool, bool),
     inside: bool,
     cards: Vec<Card>,
+    /// `user-select: none` boxes whose label alone is text: a quote chip's.
+    quiet: Vec<Bounds<Pixels>>,
+    /// A quote chip's icon, which is `user-select: text` inside that box.
+    loud: Vec<Bounds<Pixels>>,
     /// The card being drawn.
     card: Option<usize>,
 }
@@ -177,8 +181,19 @@ impl Run {
         }
     }
 
+    /// Its last place: no caret stands after a line feed on its own row.
+    fn end(&self) -> usize {
+        match &*self.text {
+            "\n" => 0,
+            text => text.len(),
+        }
+    }
+
     /// The byte a pointer `x` from the run's left selects to: the nearer edge of its glyph.
     fn hit(&self, x: f32) -> usize {
+        if &*self.text == "\n" {
+            return 0;
+        }
         let off = |cell: &Cell| (cell.x.start - x).max(x - cell.x.end).max(0.0);
         let nearest = self.cells.iter().min_by(|a, b| off(a).total_cmp(&off(b)));
         let Some(cell) = nearest else { return 0 };
@@ -328,7 +343,7 @@ impl Selection {
         }
         // Between rows the next row's start; under them all the last one's end.
         let next = runs().find(|run| run.line.start > position.y);
-        let last = runs().next_back().map(|run| run.point(run.text.len()));
+        let last = runs().next_back().map(|run| run.point(run.end()));
         match next {
             Some(Run {
                 card: Some(card), ..
@@ -351,7 +366,11 @@ impl Selection {
             let parts = [card.disc, card.lines, card.arrow];
             card.bounds.contains(&position) && !parts.iter().any(|part| part.contains(&position))
         };
-        if self.cards.iter().any(|card| bare(&card)) {
+        let label = |run: &Run| run.item && run.bounds.contains(&position);
+        let text =
+            self.runs.iter().any(label) || self.loud.iter().any(|icon| icon.contains(&position));
+        let quiet = self.quiet.iter().any(|chip| chip.contains(&position)) && !text;
+        if self.cards.iter().any(|card| bare(&card)) || quiet {
             self.press = Press::None;
             return;
         }
@@ -387,6 +406,8 @@ pub fn begin(cx: &mut App) {
     (selection.line, selection.scope) = (None, None);
     (selection.met, selection.inside) = ((false, false), false);
     selection.cards.clear();
+    selection.quiet.clear();
+    selection.loud.clear();
     selection.card = None;
 }
 
@@ -490,7 +511,7 @@ pub fn label(id: &str, text: &str) -> AnyElement {
     under((id, 0), text, Vec::new(), true)
 }
 
-/// `child`, which stands for `text` as one box: a tab's advance, a row with no text, a letter.
+/// `child`, which stands for `text` as one box: a tab, a line feed, a row with no text, a letter.
 pub fn space(id: &str, start: usize, text: &str, child: AnyElement) -> AnyElement {
     let (id, text) = (
         SharedString::from(id.to_owned()),
@@ -531,6 +552,24 @@ pub fn scope() -> AnyElement {
     let mark = canvas(
         |_, _, _| (),
         |bounds, (), _, cx| cx.global_mut::<Selection>().scope = Some(bounds),
+    );
+    mark.absolute().inset_0().into_any_element()
+}
+
+/// A quote chip's box, 1px border and all: a press on it off its label selects nothing.
+pub fn quiet() -> AnyElement {
+    let mark = canvas(
+        |_, _, _| (),
+        |bounds, (), _, cx| cx.global_mut::<Selection>().quiet.push(bounds),
+    );
+    mark.absolute().inset(css(-1.0)).into_any_element()
+}
+
+/// A quote chip's icon: a press on it places a caret; its parent is `relative`.
+pub fn loud() -> AnyElement {
+    let mark = canvas(
+        |_, _, _| (),
+        |bounds, (), _, cx| cx.global_mut::<Selection>().loud.push(bounds),
     );
     mark.absolute().inset_0().into_any_element()
 }
