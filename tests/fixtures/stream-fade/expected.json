@@ -1,0 +1,11479 @@
+{
+ "chrome": "148.0.7778.280",
+ "scenarios": [
+  [
+   [
+    "one two",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "one two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1061.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1311.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "-",
+    null,
+    "- alpha",
+    null,
+    "- alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "-",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1081.699999988079,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1081.699999988079,
+     "text": "- alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1198.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1198.3999999761581,
+     "text": "- alpha beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1449.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "-",
+    null,
+    "- alpha",
+    "- alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "-",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1300.8999999761581,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1300.8999999761581,
+     "text": "- alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.699999988079,
+     "text": "- alpha beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1552.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one",
+    null,
+    "- alpha",
+    "- alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1301.300000011921,
+     "text": "- alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1302.6000000238419,
+     "text": "- alpha beta",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1553.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "1. one",
+    null,
+    "1. alpha",
+    "1. alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.3000000119209,
+     "text": "1. one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1301.6000000238419,
+     "text": "1. alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1302.6000000238419,
+     "text": "1. alpha beta",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1553.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one",
+    null,
+    "1. alpha",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.199999988079,
+     "text": "1. alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1312.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] ",
+    null,
+    "- [ ] alpha",
+    "- [ ] alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.2000000476837,
+     "text": "- [ ] ",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1252.2000000476837,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1252.300000011921,
+     "text": "- [ ] alpha",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1254.300000011921,
+     "text": "- [ ] alpha beta",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1505.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] ",
+    null,
+    "- [ ] alpha",
+    null,
+    "- [ ] alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.2000000476837,
+     "text": "- [ ] ",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1081.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1081.5,
+     "text": "- [ ] alpha",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1291.4000000357628,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1291.5,
+     "text": "- [ ] alpha beta",
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1543.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] alpha",
+    null,
+    "- [ ] beta",
+    null,
+    "- [ ] beta gamma",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- [ ] alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.699999988079,
+     "text": "- [ ] beta",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1200.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1200.199999988079,
+     "text": "- [ ] beta gamma",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1451.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- ",
+    null,
+    "-\n  - alpha",
+    "-\n  - alpha beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.1000000238419,
+     "text": "-\n  - alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1252.3999999761581,
+     "text": "-\n  - alpha beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1503.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- a\n-",
+    null,
+    "- a b c d e\n- x",
+    null,
+    "- a b c d e\n- x y",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- a\n-",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.7000000476837,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1301.7000000476837,
+     "text": "- a b c d e\n- x",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       64
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1403.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       64
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1403.1000000238419,
+     "text": "- a b c d e\n- x y",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       64
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1654.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       64
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- a\n-",
+    null,
+    "- a b c d e\n- x",
+    null,
+    "- a b c d e\n- x y",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- a\n-",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.1000000238419,
+     "text": "- a b c d e\n- x",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       64
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1348,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1348,
+     "text": "- a b c d e\n- x y",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1599.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one",
+    null,
+    "-",
+    null,
+    "- two",
+    null,
+    "-",
+    "- one",
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.199999988079,
+     "text": "-",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1193,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1193.0999999642372,
+     "text": "- two",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1444,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1444.0999999642372,
+     "text": "-",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1444.7999999523163,
+     "text": "- one",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1695.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "a\n- one",
+    null,
+    "a\n- one\n- two",
+    null,
+    "a\n- one\n- two three",
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "a\n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       16
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1301.199999988079,
+     "text": "a\n- one\n- two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.5999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.5999999642372,
+     "text": "a\n- one\n- two three",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1613.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one\n1. two",
+    null,
+    "- one\n1. two three",
+    null,
+    "- alpha\n1. two three",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- one\n1. two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       16
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1301.4000000357628,
+     "text": "- one\n1. two three",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.6000000238419,
+     "text": "- alpha\n1. two three",
+     "spans": [
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1613.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- a\n- b c",
+    null,
+    "- a\n-",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- a\n- b c",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       16
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       16
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1061.3999999761581,
+     "text": "- a\n-",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1312.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "a\n- one",
+    null,
+    "a b\n- one",
+    null,
+    "a b\n- two",
+    null
+   ],
+   [
+    {
+     "now": 1000.2000000476837,
+     "text": "a\n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       16
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1301.300000011921,
+     "text": "a b\n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1362.5,
+     "text": "a b\n- two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1613.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one\n# h",
+    null,
+    "- one\n# h x",
+    null,
+    "- two\n# h x",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- one\n# h",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1301.699999988079,
+     "text": "- one\n# h x",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1363.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1363.199999988079,
+     "text": "- two\n# h x",
+     "spans": [
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1614.4000000357628,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- one\n\n  two",
+    null,
+    "- one\n\n  two three",
+    null,
+    "- alpha\n\n  two three",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- one\n\n  two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1301.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1302,
+     "text": "- one\n\n  two three",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1363.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1363.800000011921,
+     "text": "- alpha\n\n  two three",
+     "spans": [
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1615.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "> - one",
+    "> - one alpha",
+    null,
+    "> - one alpha\n- [ ] ",
+    "> - one alpha\n- [ ] gamma",
+    "> - one alpha\n- gamma",
+    null,
+    "> - one alpha\n- gamma two",
+    null,
+    "> - one alpha\n- gamma two `code`",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "> - one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001.1999999880791,
+     "text": "> - one alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1401.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1402,
+     "text": "> - one alpha\n- [ ] ",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1403.5,
+     "text": "> - one alpha\n- [ ] gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1404.2999999523163,
+     "text": "> - one alpha\n- gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       31
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1455,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       31
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1455,
+     "text": "> - one alpha\n- gamma two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       31
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1506.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       31
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1506.199999988079,
+     "text": "> - one alpha\n- gamma two `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       31
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1722.7999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    },
+    {
+     "now": 2022.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- beta",
+    null,
+    "- beta alpha",
+    null,
+    "- ",
+    null,
+    "- \n- [ ] beta",
+    "- \n- [ ] beta alpha",
+    null,
+    "- \n1. two",
+    null,
+    "- \n1. two beta",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1251.199999988079,
+     "text": "- beta alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1502.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1502.3999999761581,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1553.300000011921,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1553.300000011921,
+     "text": "- \n- [ ] beta",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1554.300000011921,
+     "text": "- \n- [ ] beta alpha",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1795.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1795.5,
+     "text": "- \n1. two",
+     "spans": [
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2046.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2046.8999999761581,
+     "text": "- \n1. two beta",
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2448.099999964237,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 2748.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] one",
+    null,
+    "- [ ] one alpha",
+    null,
+    "- [ ] one alpha **bold**",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- [ ] one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.199999988079,
+     "text": "- [ ] one alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1302.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1302.300000011921,
+     "text": "- [ ] one alpha **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1354,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1654.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- alpha",
+    null,
+    "- alpha one",
+    null,
+    "- alpha one alpha",
+    null,
+    "- alpha one alpha alpha",
+    null,
+    "- alpha one alpha alpha\n- ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": "- alpha one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1279.2999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1279.2999999523163,
+     "text": "- alpha one alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1380.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1380.2999999523163,
+     "text": "- alpha one alpha alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1496.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1496.5999999642372,
+     "text": "- alpha one alpha alpha\n- ",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1897.7999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2198,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "1. `code`",
+    "- ",
+    null,
+    "- `code`",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "1. `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001.1000000238419,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.7000000476837,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.7000000476837,
+     "text": "- `code`",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1502.7000000476837,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1802.9000000357628,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "  - two",
+    null,
+    "- [ ] alpha",
+    "- [ ] alpha beta",
+    null,
+    "- [ ] alpha beta one",
+    null,
+    "- alpha",
+    "- alpha beta",
+    null,
+    "- alpha beta delta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "  - two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1401.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1401.300000011921,
+     "text": "- [ ] alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1402.3999999761581,
+     "text": "- [ ] alpha beta",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1653.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1653.1000000238419,
+     "text": "- [ ] alpha beta one",
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1904.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1904.3999999761581,
+     "text": "- alpha",
+     "spans": [
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1905.5,
+     "text": "- alpha beta",
+     "spans": [
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2156.100000023842,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 2156.100000023842,
+     "text": "- alpha beta delta",
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 2457,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "1. one",
+    "**bold**",
+    null,
+    "  - ",
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "1. one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001,
+     "text": "**bold**",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1102,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1102,
+     "text": "  - ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1403,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    }
+   ]
+  ],
+  [
+   [
+    "1. `code`",
+    null,
+    "1. ",
+    "> - ",
+    "> - one",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.2000000476837,
+     "text": "1. `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.2000000476837,
+     "text": "1. ",
+     "spans": [],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.800000011921,
+     "text": "> - ",
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052.2000000476837,
+     "text": "> - one",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1302.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1603,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "",
+    null,
+    "\n- alpha",
+    null,
+    "\n- alpha\n1. beta",
+    "\n- alpha\n1. beta\n- delta",
+    null,
+    "\n- alpha\n1. beta\n- delta gamma",
+    null
+   ],
+   [
+    {
+     "now": 1000.3000000119209,
+     "text": "",
+     "spans": [],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1400.6000000238419,
+     "text": null,
+     "spans": [],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1400.699999988079,
+     "text": "\n- alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1651.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1651.699999988079,
+     "text": "\n- alpha\n1. beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1653.199999988079,
+     "text": "\n- alpha\n1. beta\n- delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "running",
+       15
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1903.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-2/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1904,
+     "text": "\n- alpha\n1. beta\n- delta gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-2/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2205.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-2/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] \n- beta",
+    null,
+    "- [ ] \n- alpha",
+    "- [ ] \n- [ ] ",
+    null,
+    "- [ ] \n- one",
+    null,
+    "- [ ] \n- delta",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- [ ] \n- beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       32
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1401.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1401.300000011921,
+     "text": "- [ ] \n- alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1402.5,
+     "text": "- [ ] \n- [ ] ",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1803.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1803.6000000238419,
+     "text": "- [ ] \n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1905.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1905.199999988079,
+     "text": "- [ ] \n- delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-7",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 2306.399999976158,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-7",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-7"
+     ]
+    },
+    {
+     "now": 2606.600000023842,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-7",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-7"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "> - gamma",
+    "> - ",
+    "> - **bold**",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "> - gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001,
+     "text": "> - ",
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001.3999999761581,
+     "text": "> - **bold**",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       15
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1252.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1552.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "1. one",
+    null,
+    "1. one one",
+    null,
+    "1. one one gamma",
+    null,
+    "1. one one gamma delta",
+    null,
+    "1. one one gamma delta gamma",
+    null,
+    "> - ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "1. one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1251.199999988079,
+     "text": "1. one one",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1652.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1652.300000011921,
+     "text": "1. one one gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1703.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1703.3999999761581,
+     "text": "1. one one gamma delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1954.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1954.5,
+     "text": "1. one one gamma delta gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2205.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2205.599999964237,
+     "text": "> - ",
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2306.5,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2606.800000011921,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- ",
+    null,
+    "- \n> - `code`",
+    null,
+    "- \n> - `code`\n- [ ] gamma",
+    null,
+    "- \n> - `code`\n- [ ] gamma **bold**",
+    "- \n> - `code`\n  - alpha",
+    "- \n> - `code`\n- **bold**",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": "- \n> - `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1302.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1302.199999988079,
+     "text": "- \n> - `code`\n- [ ] gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1353.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1353.800000011921,
+     "text": "- \n> - `code`\n- [ ] gamma **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1354.800000011921,
+     "text": "- \n> - `code`\n  - alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "running",
+       15
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1355.699999988079,
+     "text": "- \n> - `code`\n- **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       true,
+       "running",
+       30
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1756.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2056.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-2/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-4"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "two",
+    null,
+    "two gamma",
+    null,
+    "two gamma one",
+    null,
+    "two gamma one beta",
+    null,
+    "  - ",
+    null,
+    "  - delta",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": []
+    },
+    {
+     "now": 1250.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1250.800000011921,
+     "text": "two gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1351.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1351.800000011921,
+     "text": "two gamma one",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1447.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1447.800000011921,
+     "text": "two gamma one beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1848.5999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1848.5999999642372,
+     "text": "  - ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2099.599999964237,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2099.699999988079,
+     "text": "  - delta",
+     "spans": [
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2150.599999964237,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2450.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] delta",
+    null,
+    "- [ ] delta\n- delta",
+    "- [ ] delta\n- delta two",
+    null,
+    "- [ ] delta\n- delta two gamma",
+    "- [ ] delta\n- delta two gamma two",
+    null,
+    "- [ ] delta\n- delta two gamma two **bold**",
+    null,
+    "- [ ] delta\n- beta",
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "- [ ] delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": "- [ ] delta\n- delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052.0999999642372,
+     "text": "- [ ] delta\n- delta two",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1277.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1277.0999999642372,
+     "text": "- [ ] delta\n- delta two gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1278.3999999761581,
+     "text": "- [ ] delta\n- delta two gamma two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1379.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1379.199999988079,
+     "text": "- [ ] delta\n- delta two gamma two **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1588.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1588.800000011921,
+     "text": "- [ ] delta\n- beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5"
+     ]
+    },
+    {
+     "now": 1890,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- beta",
+    null,
+    "- ",
+    "- one",
+    null,
+    "- one alpha",
+    null,
+    "- one alpha alpha",
+    "- one alpha alpha\n  - ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.1000000238419,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.699999988079,
+     "text": "- one",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1261.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1261.6000000238419,
+     "text": "- one alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1662.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1662.6000000238419,
+     "text": "- one alpha alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1663.5,
+     "text": "- one alpha alpha\n  - ",
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2064.600000023842,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2364.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- gamma",
+    null,
+    "- gamma\n  - one",
+    null,
+    "- gamma\n  - one gamma",
+    null,
+    "- gamma\n  - one gamma `code`",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1401.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1401.2999999523163,
+     "text": "- gamma\n  - one",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1652.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1652.5,
+     "text": "- gamma\n  - one gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1753.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1753.7999999523163,
+     "text": "- gamma\n  - one gamma `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 2004.7999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2305,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- \n- one",
+    null,
+    "- \n1. `code`",
+    "- \n1. `code` alpha",
+    "- \n  - delta",
+    null,
+    "- \n  - delta beta",
+    null,
+    "- \n  - delta beta **bold**",
+    null,
+    "- \n  - delta beta **bold**\n- [ ] beta",
+    "- \n  - delta beta **bold**\n- [ ] beta **bold**",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- \n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051,
+     "text": "- \n1. `code`",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052.1000000238419,
+     "text": "- \n1. `code` alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-1/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052.7000000476837,
+     "text": "- \n  - delta",
+     "spans": [
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       30
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       30
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1453.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1453.300000011921,
+     "text": "- \n  - delta beta",
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1554.6000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1554.7000000476837,
+     "text": "- \n  - delta beta **bold**",
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1654.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 1654.1000000238419,
+     "text": "- \n  - delta beta **bold**\n- [ ] beta",
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 1655.2000000476837,
+     "text": "- \n  - delta beta **bold**\n- [ ] beta **bold**",
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ],
+      [
+       "wf-s0-6",
+       true
+      ],
+      [
+       "wf-s0-7",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2056.100000023842,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ],
+      [
+       "wf-s0-7",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6",
+      "wf-s0-7"
+     ]
+    },
+    {
+     "now": 2356.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ],
+      [
+       "wf-s0-7",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6",
+      "wf-s0-7"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "> - \n",
+    null,
+    "- \n",
+    null,
+    "- \n  - beta",
+    null,
+    "- \n- alpha",
+    null,
+    "- \n- alpha\n- ",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "> - \n",
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.1000000238419,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.1000000238419,
+     "text": "- \n",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1502.1000000238419,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1502.199999988079,
+     "text": "- \n  - beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1753.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1753.800000011921,
+     "text": "- \n- alpha",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1855,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1855.1000000238419,
+     "text": "- \n- alpha\n- ",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-2",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 2156.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-2",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- ",
+    "- \n- one",
+    null,
+    "- \n  - gamma",
+    "- \n  - gamma two",
+    null,
+    "- \n> - two",
+    null
+   ],
+   [
+    {
+     "now": 1000.3000000119209,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001,
+     "text": "- \n- one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1052,
+     "text": "- \n  - gamma",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1053,
+     "text": "- \n  - gamma two",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1453.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1453.699999988079,
+     "text": "- \n> - two",
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1754.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] `code`",
+    "- [ ] `code` alpha",
+    null,
+    "- [ ] `code` alpha `code`",
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- [ ] `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001.1999999880791,
+     "text": "- [ ] `code` alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1252.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1252.1000000238419,
+     "text": "- [ ] `code` alpha `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1553.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- delta",
+    null,
+    "- delta gamma",
+    "- **bold**",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "- delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1251.2999999523163,
+     "text": "- delta gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1252.0999999642372,
+     "text": "- **bold**",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       15
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1502.7999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1802.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "1. **bold**",
+    null,
+    "1. **bold** gamma",
+    "1. **bold** gamma gamma",
+    "1. **bold** gamma gamma\n- ",
+    "1. **bold** gamma gamma\n- **bold**",
+    "- \n- **bold**",
+    null,
+    "- \n  - ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "1. **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.199999988079,
+     "text": "1. **bold** gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102.1000000238419,
+     "text": "1. **bold** gamma gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102.9000000357628,
+     "text": "1. **bold** gamma gamma\n- ",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1103.5,
+     "text": "1. **bold** gamma gamma\n- **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       30
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1104,
+     "text": "- \n- **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       -104
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1204.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1204.699999988079,
+     "text": "- \n  - ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1332.800000011921,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1633,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "finished",
+       0
+      ],
+      [
+       "ul-0/li-0/ul-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- **bold**",
+    null,
+    "- ",
+    "- \n> - `code`",
+    null,
+    "- \n> - `code` gamma",
+    null,
+    "- \n- ",
+    null,
+    "- \n- ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- **bold**",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1401.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1401.199999988079,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1401.8999999761581,
+     "text": "- \n> - `code`",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1502.5999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1502.699999988079,
+     "text": "- \n> - `code` gamma",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1753.8999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-1/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1753.8999999761581,
+     "text": "- \n- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2155,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2155.099999964237,
+     "text": "- \n- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2405.300000011921,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 2705.5,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "  - `code`",
+    null,
+    "  - `code` alpha",
+    null,
+    "> - **bold**",
+    null,
+    "> - **bold** one",
+    null,
+    "> - **bold** one\n- ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.0999999642372,
+     "text": "  - `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1251,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1251,
+     "text": "  - `code` alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1302.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1302.199999988079,
+     "text": "> - **bold**",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1353.0999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1353.0999999642372,
+     "text": "> - **bold** one",
+     "spans": [
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0"
+     ]
+    },
+    {
+     "now": 1573.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1573.5,
+     "text": "> - **bold** one\n- ",
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1624.5999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1924.7999999523163,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-1/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- beta",
+    "- beta gamma",
+    null,
+    "- beta gamma gamma",
+    null,
+    "- beta gamma gamma two",
+    null,
+    "- beta gamma gamma two two",
+    null,
+    "- beta gamma gamma two two alpha",
+    null,
+    "- beta gamma gamma two two alpha gamma",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1001.1000000238419,
+     "text": "- beta gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.800000011921,
+     "text": "- beta gamma gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1352.9000000357628,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1352.9000000357628,
+     "text": "- beta gamma gamma two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1604.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1604.300000011921,
+     "text": "- beta gamma gamma two two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2005.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2005.300000011921,
+     "text": "- beta gamma gamma two two alpha",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2056.400000035763,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2056.5,
+     "text": "- beta gamma gamma two two alpha gamma",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       true
+      ],
+      [
+       "wf-s0-6",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4"
+     ]
+    },
+    {
+     "now": 2457.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    },
+    {
+     "now": 2757.699999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ],
+      [
+       "wf-s0-4",
+       false
+      ],
+      [
+       "wf-s0-5",
+       false
+      ],
+      [
+       "wf-s0-6",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3",
+      "wf-s0-4",
+      "wf-s0-5",
+      "wf-s0-6"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- `code`",
+    null,
+    "- `code` one",
+    null,
+    "- `code` one `code`",
+    "- `code` one `code` delta",
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "- `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.0999999642372,
+     "text": "- `code` one",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102,
+     "text": "- `code` one `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102.7999999523163,
+     "text": "- `code` one `code` delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1403.5999999642372,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- delta",
+    null,
+    "- `code`",
+    null,
+    "- ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- delta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.1000000238419,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.2000000476837,
+     "text": "- `code`",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1262.300000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1262.4000000357628,
+     "text": "- ",
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1363.2000000476837,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    },
+    {
+     "now": 1663.4000000357628,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "- [ ] \n  - ",
+    null,
+    "- [ ] \n  - \n- `code`",
+    null,
+    "- [ ] \n  - \n- `code` two",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1000000238419,
+     "text": "- [ ] \n  - ",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.5,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1051.5,
+     "text": "- [ ] \n  - \n- `code`",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ],
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ],
+      [
+       "ul-0/li-1",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1452.800000011921,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1452.8999999761581,
+     "text": "- [ ] \n  - \n- `code` two",
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1554.199999988079,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2"
+     ]
+    },
+    {
+     "now": 1854.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       false
+      ],
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ],
+      [
+       "ul-0/li-1",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-0",
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ],
+  [
+   [
+    "> - beta",
+    null,
+    "- delta",
+    "- delta **bold**",
+    "- delta **bold** `code`",
+    null,
+    "1. ",
+    null,
+    null
+   ],
+   [
+    {
+     "now": 1000.1999999880791,
+     "text": "> - beta",
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-0",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "blockquote-0/ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.0999999642372,
+     "text": "- delta",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1101.8999999761581,
+     "text": "- delta **bold**",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1102.5,
+     "text": "- delta **bold** `code`",
+     "spans": [
+      [
+       "wf-s0-1",
+       true
+      ],
+      [
+       "wf-s0-2",
+       true
+      ],
+      [
+       "wf-s0-3",
+       true
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": []
+    },
+    {
+     "now": 1353.3999999761581,
+     "text": null,
+     "spans": [
+      [
+       "wf-s0-1",
+       false
+      ],
+      [
+       "wf-s0-2",
+       false
+      ],
+      [
+       "wf-s0-3",
+       false
+      ]
+     ],
+     "items": [
+      [
+       "ul-0/li-0",
+       false,
+       "none",
+       null
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1353.3999999761581,
+     "text": "1. ",
+     "spans": [],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "running",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 1754.5,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    },
+    {
+     "now": 2054.699999988079,
+     "text": null,
+     "spans": [],
+     "items": [
+      [
+       "ol-0/li-0",
+       true,
+       "finished",
+       0
+      ]
+     ],
+     "settled": [
+      "wf-s0-1",
+      "wf-s0-2",
+      "wf-s0-3"
+     ]
+    }
+   ]
+  ]
+ ]
+}

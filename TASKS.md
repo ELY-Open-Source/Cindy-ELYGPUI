@@ -317,7 +317,7 @@ listed in `tasks/done.md`.
       - [x] 9.6i3c `data:` and `http(s)` images under the renderer's `img-src` policy
         - [x] 9.6i3c1 A `data:` address: Blink's data URL read (media type, base64, escapes)
         - [x] 9.6i3c2 An `http(s)` address: the fetch, with the client it needs
-  - [ ] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
+  - [!] 9.6j Rows still being written: `repairStreamingMarkdown`, `splitStreamingMarkdownChunks`, the
       throttle and the word fade
     - [x] 9.6j1 `repairStreamingMarkdown`, `splitStreamingMarkdownChunks` and
         `getStreamingMarkdownThrottleInterval`, with their golden
@@ -327,15 +327,24 @@ listed in `tasks/done.md`.
           with the state that holds it
       - [x] 9.6j2b The fade state: `assignKeys`, the timeline (`scheduleWordFadeSegment`), the
           candidates and the transform on the renderer tree
-    - [ ] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
+    - [!] 9.6j3 The streamed row: `useStreamingThrottle`, a row per chunk and `StreamFadeSpan`
       - [x] 9.6j3a `useStreamingThrottle` as a state on the executor clock, and the fade's switch
           (`useStreamFadePreference.ts`, `chat.streamFadePreference`)
       - [x] 9.6j3b A row per chunk: the repaired text split, each chunk's tree with its candidate,
           commit and its spans' places on the timeline; the row's two throttles on a timer
           (`StreamingBody` is off in Cindy: `USE_LINE_COMMIT_STREAMING` is false; gpui has no
           kept subtree for `streamingMarkdownBlocks`)
-      - [ ] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem` drawn: a word and a marker faded on
+      - [!] 9.6j3c `StreamFadeSpan` and `StreamFadeListItem` drawn: a word and a marker faded on
           the clock, settled at its end
+          - Failed round 3 (`logs/review/9.6j3c-r3.md`). P2: a fading part was clipped between
+            its bytes' x, so a right-to-left line gave a word another word's opacity. P3: the
+            space a word ends with drew whole, so a link's underline showed before its words.
+            P3: an empty code's pill a line's end moved lost its opacity.
+          - All three were mended after the round and no reviewer read the mends: each
+            character's opacity is noted as the reader writes it, and a part is clipped where
+            its glyphs stand (`inline/fading.rs`, `stretches`). Gates pass
+            (`logs/review/9.6j3c-post-*.log`, 1205 tests). Not checked: the reviewer's own
+            probes against the mends, and a real window.
   - [ ] 9.6k Selection and copy over the drawn Markdown
 - [ ] 9.7 Code blocks: `rehype-highlight`'s highlight.js grammars and classes mapped to the
   theme's syntax tokens, the language label and copy, `DiffView.tsx` and `MarkdownDiffBlock.tsx`

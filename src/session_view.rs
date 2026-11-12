@@ -14,6 +14,7 @@ mod attachments;
 mod chip;
 mod column;
 mod entry_error;
+mod fade;
 mod flow;
 mod handoff;
 mod handoff_pill;

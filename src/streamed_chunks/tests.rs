@@ -4,7 +4,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use serde_json::{Value, json};
 
-use super::{Chunks, replaced};
+use super::{BEGIN, Chunks, replaced};
 use crate::{
     markdown::hast::{self, Hast, Prop},
     word_fade::Fade,
@@ -80,4 +80,63 @@ fn a_chips_words_take_no_place_and_an_item_follows_its_words() {
         json!([["wf-s0-0", 1016], ["wf-s0-2", 1000]])
     );
     assert_eq!(state["next"], json!(1032));
+}
+
+/// Each item whose marker's animation runs: its key and the time the animation starts.
+fn begins(nodes: &[Hast], out: &mut Vec<(Option<String>, f64)>) {
+    for node in nodes {
+        let Hast::Element(element) = node else {
+            continue;
+        };
+        if let Some(Prop::Text(begin)) = element.prop(BEGIN) {
+            let key = match element.prop("dataWfKey") {
+                Some(Prop::Text(key)) => Some(key.clone()),
+                _ => None,
+            };
+            out.push((key, begin.parse().unwrap()));
+        }
+        begins(&element.children, out);
+    }
+}
+
+/// The markers after each `(time, text)` of one stream.
+fn markers(steps: &[(f64, &str)]) -> Vec<Vec<(Option<String>, f64)>> {
+    let fade: Rc<RefCell<Fade>> = Rc::default();
+    let mut chunks = Chunks::default();
+    let step = |(now, text): &(f64, &str)| {
+        let mut out = Vec::new();
+        chunks.advance(*now);
+        begins(&chunks.render(text, Some(&fade), &[], *now), &mut out);
+        out
+    };
+    steps.iter().map(step).collect()
+}
+
+#[test]
+fn a_marker_starts_with_its_items_key_from_the_items_mount() {
+    let key = |nth: usize| Some(format!("wf-s0-{nth}"));
+    // The item's key is its first word's, queued behind the words before it.
+    let found = markers(&[(1000.0, "a b c\n- x")]);
+    assert_eq!(found, [[(key(3), 1048.0)]]);
+    // A second item mounts later; the first keeps its animation.
+    let found = markers(&[(1000.0, "- a"), (1100.0, "- a\n- b")]);
+    assert_eq!(found[1], [(key(0), 1000.0), (key(1), 1100.0)]);
+    // A key that settled takes the marker's attribute off.
+    let found = markers(&[(1000.0, "- a"), (1200.0, "- a b")]);
+    assert_eq!(found[1], []);
+}
+
+// `logs/review/9.6j3c-blink-marker.log`: a delay moves a running animation, not an ended one.
+#[test]
+fn an_empty_items_marker_keeps_its_animation_when_its_word_comes() {
+    let key = Some("wf-s0-0".to_owned());
+    let found = markers(&[(1000.0, "-"), (1100.0, "- a")]);
+    assert_eq!(found, [[(None, 1000.0)], [(key.clone(), 1000.0)]]);
+    // Words queued ahead delay the key, and the running animation with it.
+    let found = markers(&[(1000.0, "- a b c\n-"), (1100.0, "- a b c d e\n- x")]);
+    let queued = (Some("wf-s0-5".to_owned()), 1032.0);
+    assert_eq!(found[1], [(key.clone(), 1000.0), queued]);
+    // An animation that ended stays ended: the item's new key starts nothing.
+    let found = markers(&[(1000.0, "-"), (1200.0, "- a")]);
+    assert_eq!(found[1], []);
 }

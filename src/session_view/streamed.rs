@@ -2,9 +2,12 @@
 
 use std::{cell::RefCell, collections::HashMap, rc::Rc, time::Duration};
 
-use gpui::{App, Global, Task};
+use gpui::{App, Global, Task, Window};
 
-use super::SessionView;
+use super::{
+    SessionView,
+    fade::{self, Fading},
+};
 use crate::{
     markdown::hast::Hast,
     motion::ReducedMotion,
@@ -129,6 +132,7 @@ pub(super) fn tree(
                 chunks: Chunks::default(),
             });
             base.throttle.render(content, true, now);
+            base.chunks.advance(now);
             // `useMemo` on the switch and the key: a kept state is asked for once.
             let kept = base
                 .fade
@@ -147,6 +151,17 @@ pub(super) fn tree(
     arm(&mut stream, key, now, cx);
     streams(cx)?.0.insert(key.to_owned(), stream);
     tree
+}
+
+/// The streaming message's words and markers on their way in at this frame.
+pub(super) fn fading(key: &str, tree: &[Hast], window: &Window, cx: &App) -> Fading {
+    let shown = cx.global::<SessionView>().shown.as_ref();
+    let streams = shown.and_then(|shown| Some(&shown.content.as_ref()?.streams));
+    let base = streams.and_then(|streams| streams.0.get(key)?.base.as_ref());
+    match base.and_then(|base| base.fade.as_ref()) {
+        Some((_, fade)) => fade::read(tree, &fade.borrow(), now(cx), window),
+        None => Fading::default(),
+    }
 }
 
 /// A message that streams no more: its renderer's state goes, and `releaseWordFadeState`.

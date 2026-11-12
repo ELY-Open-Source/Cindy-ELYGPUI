@@ -18,9 +18,9 @@ use gpui::{
 use self::{
     margins::{Margins, Stack, collapse},
     marker::{Kind, Marker},
-    text::{Inline, Mark, Metrics, Piece, metrics},
+    text::{Inline, Mark, Metrics, Piece, Swap, metrics},
 };
-use super::{flow::draw, jump, target_link::Anchors};
+use super::{fade::Fading, flow::draw, jump, target_link::Anchors};
 use crate::{
     appearance_settings::{code_size, text_size},
     markdown::hast::{self, Element, Hast, Prop},
@@ -111,6 +111,7 @@ struct Walk<'a> {
     cx: &'a App,
     zoom: f32,
     anchors: &'a Anchors,
+    fading: &'a Fading,
 }
 
 /// `drawn` with the node's `id` kept where it paints, for an anchor to find.
@@ -202,7 +203,11 @@ impl Walk<'_> {
         loop {
             let mut inline = Inline::part(out.len());
             (nodes.iter()).for_each(|node| {
-                inline.read(node, Mark::default(), &|node| self.anchors.swap(node))
+                let swap = |node| match self.fading.of(node) {
+                    Some(by) => Some(Swap::Fade(by)),
+                    None => self.anchors.swap(node),
+                };
+                inline.read(node, Mark::default(), &swap)
             });
             inline.end();
             let last = inline.cards.len() <= out.len();
@@ -346,7 +351,8 @@ impl Walk<'_> {
                         _ => Kind::Disc,
                     },
                     style: style.clone(),
-                    color: face.color,
+                    // `stream-marker-in`: the marker's colour comes in from transparent.
+                    color: face.color.opacity(self.fading.of(item).unwrap_or(1.0)),
                     x: 0.0,
                     selector: format!("{path}-marker"),
                 });
@@ -516,7 +522,7 @@ impl Walk<'_> {
 pub(super) fn element(
     key: &str,
     tree: &[Hast],
-    anchors: &Anchors,
+    (anchors, fading): (&Anchors, &Fading),
     width: f32,
     window: &Window,
     cx: &App,
@@ -526,6 +532,7 @@ pub(super) fn element(
         cx,
         zoom: cx.global::<Zoom>().0,
         anchors,
+        fading,
     };
     let size = text_size(15.0, cx);
     let face = Face {

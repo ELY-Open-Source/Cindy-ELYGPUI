@@ -109,21 +109,18 @@ impl Fade {
     }
 
     /// `markWordFadeSettled`.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "a faded span settles it in 9.6j3c")
-    )]
     pub fn settle(&self, key: &str) {
         self.timeline.borrow_mut().settled.insert(key.to_owned());
     }
 
     /// `isWordFadeSettled`.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "a faded span reads it in 9.6j3c")
-    )]
     pub fn settled(&self, key: &str) -> bool {
         self.timeline.borrow().settled.contains(key)
+    }
+
+    /// When `key`'s animation starts, once a ref queued it.
+    pub fn start(&self, key: &str) -> Option<f64> {
+        self.timeline.borrow().start.get(key).copied()
     }
 
     /// `scheduleWordFadeSegment`: the milliseconds until `key` starts, queued on first sight.

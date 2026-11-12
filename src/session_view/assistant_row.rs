@@ -4,7 +4,9 @@ use std::{collections::HashMap, rc::Rc};
 
 use gpui::{AnyElement, App, IntoElement as _, ParentElement as _, Styled as _, Window, div};
 
-use super::{SessionView, links, markdown, session, streamed, target_link, width::Widths};
+use super::{
+    SessionView, fade::Fading, links, markdown, session, streamed, target_link, width::Widths,
+};
 use crate::{
     chat_message::merge::{Fields, get},
     goal_verdict,
@@ -15,6 +17,13 @@ use crate::{
     },
     units::css,
 };
+
+/// A test draws a stored message as a streaming one: no stored row streams before 10.0.
+#[cfg(test)]
+pub struct Live;
+
+#[cfg(test)]
+impl gpui::Global for Live {}
 
 /// The mounted content's trees: each message's shown text with the tree it parsed to.
 #[derive(Default)]
@@ -49,7 +58,10 @@ pub(super) fn element(
     let shown = goal_verdict::strip(content);
     let client = get(message, "clientId").and_then(Js::str);
     let client = client.filter(|id| !id.is_empty());
-    let tree = match flag("isStreaming") {
+    let streaming = flag("isStreaming");
+    #[cfg(test)]
+    let streaming = streaming || cx.has_global::<Live>();
+    let tree = match streaming {
         true => streamed::tree(key, shown, client, files, cx)?,
         false => {
             streamed::ended(key, client, cx);
@@ -62,7 +74,12 @@ pub(super) fn element(
     let dir = session(cx).and_then(|task| task.working_dir.clone());
     let dir = dir.unwrap_or_default();
     let anchors = target_link::read(key, &tree, files, &dir, window, cx);
-    let mut body = markdown::element(key, &tree, &anchors, widths.message, window, cx);
+    let fading = match streaming {
+        true => streamed::fading(key, &tree, window, cx),
+        false => Fading::default(),
+    };
+    let marks = (&anchors, &fading);
+    let mut body = markdown::element(key, &tree, marks, widths.message, window, cx);
     if !anchors.is_empty() {
         body = links::host(&format!("{key}-md"), anchors.shared(), body, cx);
     }

@@ -1,5 +1,6 @@
 //! A block's inline text as rows: each face shaped in its own font, then drawn piece by piece.
 
+mod fading;
 mod file_box;
 
 use std::ops::Range;
@@ -48,7 +49,7 @@ pub struct Look<'a> {
 }
 
 /// A code box a wrap left: whether the dropped space was all it held, and the link that holds it.
-type Stub = (bool, Mark);
+type Stub = (bool, Mark, usize);
 
 /// A row to draw: its place among the block's rows, its bytes, and where the next row starts.
 struct Row {
@@ -204,6 +205,38 @@ impl Look<'_> {
         all
     }
 
+    /// The opacity of the box at `at`; a file box that fades draws its parts whole.
+    fn fade(inline: &Inline, mark: Mark, at: usize) -> Option<f32> {
+        let boxed = mark
+            .file
+            .is_some_and(|held| inline.files[held].fade.is_some());
+        inline.fade_at(at).filter(|_| !boxed)
+    }
+
+    /// The text of `range`; where words fade in it, each part at its opacity.
+    fn said(inline: &Inline, range: &Range<usize>, mark: Mark) -> AnyElement {
+        let text = inline.text[range.clone()].to_owned();
+        let (mut parts, mut at) = (Vec::new(), range.start);
+        for (held, by) in &inline.fades {
+            let (start, end) = (held.start.max(range.start), held.end.min(range.end));
+            if start >= end || Self::fade(inline, mark, start).is_none() {
+                continue;
+            }
+            if at < start {
+                parts.push((at - range.start..start - range.start, 1.0));
+            }
+            parts.push((start - range.start..end - range.start, *by));
+            at = end;
+        }
+        if parts.is_empty() {
+            return text.into_any_element();
+        }
+        if at < range.end {
+            parts.push((at - range.start..range.end - range.start, 1.0));
+        }
+        fading::over(text, parts)
+    }
+
     /// One piece of a row in its face; `top` sets a tall row's text on the row's baseline.
     fn piece(
         &self,
@@ -212,7 +245,7 @@ impl Look<'_> {
         (top, root): (f32, &Metrics),
         window: &Window,
     ) -> Div {
-        let text = inline.text[range.clone()].to_owned();
+        let text = Self::said(inline, &range, mark);
         let piece = div()
             .flex_none()
             .when(mark.strong, |el| {
@@ -262,6 +295,9 @@ impl Look<'_> {
                 / self.zoom))
             .when(starts, |el| el.rounded_l(css(6.0)))
             .when(ends, |el| el.rounded_r(css(6.0)))
+            .when_some(Self::fade(inline, mark, range.start), |el, by| {
+                el.opacity(by)
+            })
             .bg(self.fill);
         piece
             .relative()
@@ -277,7 +313,7 @@ impl Look<'_> {
         let mark = inline.mark(at);
         let opens = at == 0 || inline.mark(at - 1).code != mark.code;
         let whole = at + 1 == inline.text.len() || inline.mark(at + 1).code != mark.code;
-        opens.then_some((whole, mark))
+        opens.then_some((whole, mark, at))
     }
 
     /// The link whose box a part is: none when a chip inside that link holds the part.
@@ -325,11 +361,8 @@ impl Look<'_> {
         };
         let plain = matches!(&held[..], [(_, mark)] if *mark == Mark::default());
         if plain && stub.is_none() && chips(&row).next().is_none() {
-            return (
-                inline.text[row].to_owned().into_any_element(),
-                root.baseline,
-                root.line,
-            );
+            let text = Self::said(inline, &row, Mark::default());
+            return (text, root.baseline, root.line);
         }
         let line = self.face.line * self.zoom;
         let code = metrics(
@@ -409,6 +442,8 @@ impl Look<'_> {
                     }
                     Chip::Pill => {
                         let pill = pill(true, format!("{}-pill-{n}", self.path));
+                        let by = Self::fade(inline, mark, *at);
+                        let pill = pill.when_some(by, |el, by| el.opacity(by));
                         Draw::held(Self::link_of(inline, mark), pill, format!("pill-{n}"))
                     }
                     Chip::Link(link) => {
@@ -433,6 +468,8 @@ impl Look<'_> {
                     Chip::Icon(source) => {
                         let icon =
                             self.icon(source, mark, &place, format!("{}-icon-{n}", self.path));
+                        let by = Self::fade(inline, mark, *at);
+                        let icon = icon.when_some(by, |el, by| el.opacity(by));
                         Draw::held(Self::link_of(inline, mark), icon, format!("icon-{n}"))
                     }
                 };
@@ -441,8 +478,10 @@ impl Look<'_> {
             }
             say(from, range.end, &mut parts);
         }
-        if let Some((whole, mark)) = stub {
+        if let Some((whole, mark, at)) = stub {
             let pill = pill(whole, format!("{}-stub-{nth}", self.path));
+            let by = Self::fade(inline, mark, at);
+            let pill = pill.when_some(by, |el, by| el.opacity(by));
             let pill = Draw::held(Self::link_of(inline, mark), pill, "stub".into());
             parts.push((mark.file, pill));
         }

@@ -141,3 +141,47 @@ the app's start, so a stream's first text finds an interval already passed, as o
 long before. A message that streams no more drops this state and calls `releaseWordFadeState`
 (`ended`); its tree is then the static one. Live rows come with 10.0: until then no stored row
 streams, and the tests call `streamed::tree` on a mounted task.
+
+`fade.rs` is `StreamFadeSpan` and `StreamFadeListItem` with the CSS they carry (`stream-word-in`
+and `stream-marker-in`: `--motion-fast`, `--motion-ease-out`, filled both ways). Before a streaming
+row is laid out `read` takes its tree's `stream-word` spans and its running markers (`Fading`, each
+by its node's address) at `now`: a word's animation starts at its key's start on the timeline
+(Cindy's delay is that start, rounded to the millisecond, from the span's mount), a marker's at the
+start its item keeps (`wfBegin`). A word whose animation ended settles its key, as `animationend`
+does, and draws whole; while an animation runs the window is asked for its next frame. The inline
+reader notes each character's opacity as it writes it (`Swap::Fade`, `Inline.fades`): a space is
+the span's that read it, and a pill a line's end moves keeps its own. A fade is
+no face: gpui shapes each stretch of one colour alone, so a face per word would cost the kerning
+between words and move the row's breaks. The text is laid out once, unseen, and
+`inline/fading.rs` paints it over that box part by part, each part the whole text shaped in the
+part's alpha and clipped to where the part's glyphs stand (`stretches`), so a right-to-left
+word fades in its own place. An inline code's box and its pill draw at the
+opacity of their place, a file chip's box as a whole (`Held.fade`), and a marker's colour takes
+it as its alpha, as the keyframe's `transparent` does.
+A word under a link the port draws as its words before 9.13 (the audio player) is on no timeline
+and draws whole.
+
+`streamed_chunks/markers.rs` is a list item's `::marker` animation as React and Blink keep it
+(golden `stream-fade`; `logs/review/9.6j3c-blink-{marker,hold}.log`, probes in `.scratch/9.6j3c/`).
+Each item React keeps has a record (`Marker`): the row by its chunk's start and fade state, the
+block by its index and tag among the row's elements, each element under it by its tag's count. A
+render writes what React writes: `data-stream-marker` only when React's own prop changed, so an
+attribute `animationend` took off stays off while the prop stays; the delay React's style holds
+for an item with no key; the delay the ref sets when the key changed and has not settled. An
+animation lives while the attribute is on and the list draws markers (a task list's own class
+leaves `list-style: none`, and Blink animates no marker it does not make); one that comes to life
+starts then. A delay moves a running animation and leaves an ended one ended. `Chunks::advance`
+is the frame before a render: an animation past its end has its `animationend`, which settles the
+key the item rendered with and takes the attribute off, and with no key does neither. A running
+marker's start is on its item (`wfBegin`), which the draw reads. `streamingMarkdownBlocks`' memo
+needs no counterpart here either: a block it keeps has the same keys, so its items and words would
+render to what they are.
+
+Golden `stream-fade`: `scripts/golden/streamFade.mjs` bundles Cindy's `StreamingMarkdownChunk` for
+a browser and `streamFadeRun.cjs` mounts it in an offscreen window of Cindy's Electron under
+Cindy's own fade rules from `globals.css`, the animations run by Blink on the real clock: 19
+written scenarios and 30 seeded ones (items with and without words, ordered, nested, quoted and
+task items; words added, lines replaced). Each step is read 45ms clear of every animation's end
+and holds the clock, each span's class, each item's attribute, animation and delay, and the
+settled keys; the test replays the clock. Its times differ from run to run; its states do not.
+`assistant_row::Live` lets a test draw a stored message as a streaming one.

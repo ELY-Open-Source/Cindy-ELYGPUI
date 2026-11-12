@@ -491,3 +491,13 @@ Chapters 1 to 7 sit in `tasks/reviews-done.md`, chapter 8 in `tasks/reviews-done
   children's; 384 cases and 4,441 steps match Cindy's `StreamingMarkdownChunk` under its real
   `a` renderer, and the golden's 1,328 steps regenerate byte for byte. No desktop, animation
   or live message check was made: no stored row streams before 10.0.
+
+## 9.6j3c A word and a marker faded on the clock
+- Round 1: FAIL. P2: a marker whose animation had ended settled a key it took later. P2: a
+  task list's items ran a marker animation, where `list-style: none` runs none.
+- Round 2: FAIL. Both closed (57 scenarios and the golden's 49 match Blink). P2: the fade
+  was a face, so each fading word was shaped alone and a row's width moved with the kerning.
+- Round 3: FAIL. The width holds (21 font and text pairs). P2: a right-to-left line clipped
+  the wrong word. P3: a word's last space drew whole under a link's underline. P3: an empty
+  code's pill moved by a line's end lost its opacity. The three were mended after the round,
+  unreviewed; the entry stays `[!]`. No desktop check was made: no stored row streams before 10.0.

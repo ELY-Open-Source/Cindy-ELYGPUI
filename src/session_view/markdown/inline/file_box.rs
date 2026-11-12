@@ -116,7 +116,11 @@ impl Look<'_> {
         at: &At,
     ) -> AnyElement {
         let Held {
-            node, range, link, ..
+            node,
+            range,
+            link,
+            fade,
+            ..
         } = &inline.files[held];
         let end = range.end.min(inline.text.len());
         let (starts, ends) = (range.start >= at.row.start, end <= at.next);
@@ -140,6 +144,7 @@ impl Look<'_> {
             .items_start()
             .when(starts, |el| el.pl(css(PAD.0)))
             .when(ends, |el| el.pr(css(PAD.0)))
+            .when_some(*fade, |el, by| el.opacity(by))
             .child(fill)
             .children(inner);
         let fragment = chip.fragment(el, at.nth);

@@ -331,7 +331,8 @@ defines scope and what 1:1 means.
   renderer (`markdownHast.mjs`'s exporter lifts its source out of the component) under a
   `MemoryRouter`, on 36 seeded texts that grow on a stepped clock; each step holds the DOM's
   faded spans and the timeline. `session_view/streamed.rs` is a streaming message's renderer
-  (`docs/session-view.md`).
+  and `fade.rs` its words and markers on their way in (`docs/session-view.md`); a fading word
+  is painted over the row's one layout (`markdown/inline/fading.rs`), never shaped alone.
 - Markdown blocks: `session_view/assistant_row.rs` is `AssistantMessage` for a stored text: the bare
   bubble at the message width, its text through `src/goal_verdict.rs` (`stripGoalVerdictBlock`,
   golden `goal-verdict`), the tree parsed once per shown text (`Trees`, with the mounted content). A
@@ -900,6 +901,8 @@ defines scope and what 1:1 means.
   expected outputs; the Rust ports must match them.
 - `ELECTRON_RUN_AS_NODE=1 <cindy checkout>/node_modules/.bin/electron scripts/word-fade.js <cindy
   checkout> <commit>` writes `tests/fixtures/word-fade/expected.json`.
+- `sync-golden.mjs` opens an offscreen Electron window for golden `stream-fade`, whose steps run on
+  the real clock: it takes about a minute, and the fixture's times change with each run.
 - `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-data-images.js` asks Blink
   which `data:` addresses an image loads and writes `tests/fixtures/data-image/blink.json`.
 - `<cindy checkout>/node_modules/.bin/electron --no-sandbox scripts/blink-line-breaks.js` asks Blink

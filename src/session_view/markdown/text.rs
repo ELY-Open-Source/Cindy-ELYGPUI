@@ -49,9 +49,11 @@ pub enum Swap {
     Card,
     /// An image that loads: one atom of its line.
     Image,
+    /// A `stream-word` span on its way in, by its opacity.
+    Fade(f32),
 }
 
-/// The swap of an `a` or an inline `code`, by its node.
+/// The swap of an `a`, an inline `code`, an `img` or a `span`, by its node.
 pub type Files<'a> = &'a dyn Fn(*const Element) -> Option<Swap>;
 
 /// A file chip's box: its node, the box and the link about it, and the text it holds.
@@ -60,6 +62,8 @@ pub struct Held {
     pub parent: Option<usize>,
     pub link: Option<usize>,
     pub range: std::ops::Range<usize>,
+    /// The opacity of the `stream-word` span about the box.
+    pub fade: Option<f32>,
 }
 
 /// A run of inline nodes under `white-space: normal`: a `CHIP` per chip, a line feed per `br`.
@@ -73,6 +77,10 @@ pub struct Inline {
     pub files: Vec<Held>,
     /// The `img` nodes that are atoms, by address.
     pub images: Vec<*const Element>,
+    /// The text each `stream-word` span on its way in holds, with its opacity: no face of its own.
+    pub fades: Vec<(std::ops::Range<usize>, f32)>,
+    fading: Option<f32>,
+    gap_fade: Option<f32>,
     /// The collapsed space not yet written, in its first space's face.
     gap: Option<Mark>,
     /// Whether a space, or a line's start, came last: the spaces after it collapse.
@@ -92,6 +100,9 @@ impl Default for Inline {
             links: Vec::new(),
             files: Vec::new(),
             images: Vec::new(),
+            fades: Vec::new(),
+            fading: None,
+            gap_fade: None,
             gap: None,
             spaced: true,
             codes: 0,
@@ -116,15 +127,29 @@ impl Inline {
     }
 
     fn push(&mut self, c: char, mark: Mark) {
+        let at = self.text.len();
         if self.spans.last().is_none_or(|(_, last)| *last != mark) {
-            self.spans.push((self.text.len(), mark));
+            self.spans.push((at, mark));
         }
         self.text.push(c);
+        let Some(by) = self.fading else { return };
+        match self.fades.last_mut() {
+            Some((range, last)) if range.end == at && *last == by => range.end = self.text.len(),
+            _ => self.fades.push((at..self.text.len(), by)),
+        }
+    }
+
+    /// `c` at the opacity `fade`, whatever span the reader is in.
+    fn put(&mut self, c: char, mark: Mark, fade: Option<f32>) {
+        let outer = std::mem::replace(&mut self.fading, fade);
+        self.push(c, mark);
+        self.fading = outer;
     }
 
     fn end_gap(&mut self) {
+        // The space is the span's that read it, not the one whose text brings it out.
         if let Some(mark) = self.gap.take() {
-            self.push(' ', mark);
+            self.put(' ', mark, self.gap_fade);
         }
     }
 
@@ -146,15 +171,27 @@ impl Inline {
         }
         let held = (start > 0).then(|| self.mark(start - 1).code).flatten();
         let tail = self.text[start..].char_indices();
-        let tail: Vec<_> = tail.map(|(at, c)| (c, self.mark(start + at))).collect();
+        let tail = tail.map(|(at, c)| (c, self.mark(start + at), self.fade_at(start + at)));
+        let tail: Vec<_> = tail.collect();
         self.text.truncate(start);
         self.spans.retain(|(at, _)| *at < start);
         self.chips.retain(|(at, _)| *at < start);
-        for (c, mark) in tail {
+        self.fades.retain_mut(|(range, _)| {
+            range.end = range.end.min(start);
+            range.start < range.end
+        });
+        for (c, mark, fade) in tail {
             if c == CHIP || mark.code.is_some_and(|code| held != Some(code)) {
-                self.pill(Mark { code: None, ..mark });
+                self.chips.push((self.text.len(), Chip::Pill));
+                self.put(CHIP, Mark { code: None, ..mark }, fade);
             }
         }
+    }
+
+    /// The opacity of the fading span that holds the byte at `at`.
+    pub fn fade_at(&self, at: usize) -> Option<f32> {
+        let held = self.fades.iter().find(|(range, _)| range.contains(&at));
+        held.map(|(_, by)| *by)
     }
 
     /// The face of the byte at `at`.
@@ -174,7 +211,9 @@ impl Inline {
             for c in value.chars() {
                 match collapses(c) {
                     true if self.spaced => {}
-                    true => (self.gap, self.spaced) = (Some(mark), true),
+                    true => {
+                        (self.gap, self.gap_fade, self.spaced) = (Some(mark), self.fading, true);
+                    }
                     false => {
                         self.end_gap();
                         self.push(c, mark);
@@ -218,7 +257,7 @@ impl Inline {
                     return;
                 }
                 Some(Swap::Words(words)) => return self.read(&Hast::Text(words), mark, files),
-                Some(Swap::Image) | None => None,
+                Some(Swap::Image | Swap::Fade(_)) | None => None,
             },
             _ => None,
         };
@@ -258,6 +297,7 @@ impl Inline {
                 parent: mark.file,
                 link: mark.link,
                 range: self.text.len()..self.text.len(),
+                fade: self.fading,
             };
             self.files.push(held);
             inner.file = Some(self.files.len() - 1);
@@ -268,6 +308,12 @@ impl Inline {
             self.push(CHIP, inner);
             self.spaced = false;
         }
+        let fade = match (element.tag == "span").then(|| files(element)) {
+            Some(Some(Swap::Fade(by))) => Some(by),
+            _ => None,
+        };
+        let outer = self.fading;
+        self.fading = fade.or(outer);
         let before = self.text.len();
         match element.tag {
             "input" => {
@@ -287,6 +333,7 @@ impl Inline {
                 .iter()
                 .for_each(|child| self.read(child, inner, files)),
         }
+        self.fading = outer;
         if let Some(held) = inner.file.filter(|_| boxed) {
             self.files[held].range.end = self.text.len();
         }
@@ -570,6 +617,85 @@ mod tests {
         assert_eq!(face(10), code);
         assert_eq!(face(12), plain);
         assert_eq!(inline.spans.len(), 9);
+    }
+
+    #[test]
+    fn a_fading_span_gives_its_opacity_to_what_it_holds() {
+        use super::Swap;
+        use crate::markdown::hast::Element;
+        let el = |tag, child| Element {
+            tag,
+            props: Vec::new(),
+            children: vec![child],
+        };
+        let code = Hast::Element(el("code", Hast::Text("b".into())));
+        let word = Hast::Element(el("span", Hast::Text("a".into())));
+        let nodes = [
+            word,
+            Hast::Text(" ".into()),
+            Hast::Element(el("span", code)),
+        ];
+        let at = |nth: usize| match &nodes[nth] {
+            Hast::Element(element) => std::ptr::from_ref(element),
+            _ => panic!("a span"),
+        };
+        let fade = |node| match node {
+            node if node == at(0) => Some(Swap::Fade(0.25)),
+            node if node == at(2) => Some(Swap::Fade(0.5)),
+            _ => None,
+        };
+        let mut inline = Inline::default();
+        (nodes.iter()).for_each(|node| inline.read(node, Mark::default(), &fade));
+        assert_eq!(inline.text, "a b");
+        let fades = [0, 1, 2].map(|at| inline.fade_at(at));
+        assert_eq!(fades, [Some(0.25), None, Some(0.5)]);
+        // A fade is no face: the text's stretches are what they are without it.
+        assert_eq!(inline.spans.len(), 2);
+        assert_eq!(inline.mark(2).code, Some(0));
+    }
+
+    #[test]
+    fn a_space_and_an_empty_code_fade_with_the_span_that_holds_them() {
+        use super::Swap;
+        use crate::markdown::hast::Element;
+        let span = |child| Element {
+            tag: "span",
+            props: Vec::new(),
+            children: vec![child],
+        };
+        let code = Hast::Element(Element {
+            tag: "code",
+            props: Vec::new(),
+            children: vec![Hast::Text(" ".into())],
+        });
+        let read = |last: Hast| {
+            let nodes = [span(Hast::Text("one ".into())), span(last)].map(Hast::Element);
+            let first = match &nodes[0] {
+                Hast::Element(element) => std::ptr::from_ref(element),
+                _ => panic!("a span"),
+            };
+            // SAFETY: the reader hands back the nodes it reads.
+            let fade = |node: *const Element| match unsafe { (*node).tag } {
+                "span" if node == first => Some(Swap::Fade(0.25)),
+                "span" => Some(Swap::Fade(0.5)),
+                _ => None,
+            };
+            let mut inline = Inline::default();
+            (nodes.iter()).for_each(|node| inline.read(node, Mark::default(), &fade));
+            inline.end();
+            inline
+        };
+        // The space a word ends with comes out with the next word, at its own word's opacity.
+        let words = read(Hast::Text("two".into()));
+        assert_eq!(words.text, "one two");
+        assert_eq!(words.fades, [(0..4, 0.25), (4..7, 0.5)]);
+        // A line's end moves the pill to the dropped space's place; its opacity goes with it.
+        let pill = read(code);
+        assert_eq!(pill.chips, [(3, Chip::Pill)]);
+        assert_eq!(
+            pill.fades,
+            [(0..3, 0.25), (3..3 + super::CHIP.len_utf8(), 0.5)]
+        );
     }
 
     #[test]
