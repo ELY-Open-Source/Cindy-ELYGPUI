@@ -16,6 +16,7 @@ use gpui::{
 
 use super::{
     link_chip::{Act, act},
+    select,
     target_link::{self, Go, file::Resolved, file_menu},
 };
 use crate::{
@@ -221,6 +222,7 @@ pub fn listen(el: Stateful<Div>, what: What, stop: Stop, asked: &Entity<Asked>) 
     let (pressed, back) = (focus.clone(), focus.clone());
     let (menu, by_key) = (asked.clone(), asked.clone());
     el.cursor_pointer()
+        .child(select::link())
         .when(first, |el| el.track_focus(&focus).role(Role::Link))
         // Every box hears the keys of a target it holds.
         .on_key_down(move |event, window, cx| {
@@ -234,10 +236,11 @@ pub fn listen(el: Stateful<Div>, what: What, stop: Stop, asked: &Entity<Asked>) 
                 go(&keys, (k.modifiers, MouseButton::Left), window, cx);
             }
         })
-        // A target inside the link that took the press keeps the focus.
+        // A target inside the link that took the press keeps the focus; no root takes it back.
         .on_any_mouse_down(move |_, window, cx| {
             if !window.default_prevented() {
                 pressed.focus(window, cx);
+                window.prevent_default();
             }
         })
         // Keys activate on key down above; gpui's key-up click is not Cindy's.

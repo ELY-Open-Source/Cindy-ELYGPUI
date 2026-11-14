@@ -13,8 +13,12 @@ use icu_segmenter::GraphemeClusterSegmenter;
 
 use crate::{theme::Appearance, units::css};
 
+mod granular;
 #[cfg(test)]
 mod tests;
+
+use granular::{Block, Unit};
+pub use granular::{block, lines};
 
 /// A place in the text: its block and a byte of the block's text.
 #[derive(Clone, PartialEq, Debug)]
@@ -169,6 +173,13 @@ pub struct Selection {
     loud: Vec<Bounds<Pixels>>,
     /// The card being drawn.
     card: Option<usize>,
+    /// The blocks that told their whole text, in no order.
+    blocks: Vec<Block>,
+    /// Links' and images' boxes: Shift with a press there extends nothing.
+    links: Vec<Bounds<Pixels>>,
+    /// What the last press selected by, and the word or paragraph it selected first.
+    unit: Unit,
+    base: Option<(Point, Point)>,
 }
 
 impl Global for Selection {}
@@ -353,11 +364,15 @@ impl Selection {
         }
     }
 
-    fn down(&mut self, position: gpui::Point<Pixels>) {
+    /// A press of `clicks`, with Shift or not.
+    fn down(&mut self, position: gpui::Point<Pixels>, clicks: usize, shift: bool) {
         let lit = |run: &Run| {
             run.bounds.contains(&position) && run.lit((position.x - run.bounds.left()).into())
         };
-        if self.runs.iter().any(lit) {
+        // Shift extends, unless the press is on a link (`IsExtendingSelection`).
+        let extending = shift && !self.links.iter().any(|link| link.contains(&position));
+        // A single press on what is lit drags it.
+        if clicks < 2 && !extending && self.runs.iter().any(lit) {
             self.press = Press::Held { moved: false };
             return;
         }
@@ -383,12 +398,26 @@ impl Selection {
             Some(_) => Press::Selecting,
             None => Press::None,
         };
-        (self.anchor, self.focus) = (place.clone(), place);
+        // A double click on a range keeps it, and a drag extends it.
+        let range = self.anchor != self.focus;
+        match (place, Unit::of(clicks)) {
+            (_, Unit::Word) if range => {}
+            (Some(place), unit @ (Unit::Word | Unit::Paragraph)) => {
+                self.pick(place, position.y, unit)
+            }
+            (place, Unit::Char) if extending && self.anchor.is_some() => {
+                self.extend(place, position.y)
+            }
+            (place, _) => {
+                (self.anchor, self.focus) = (place.clone(), place);
+                (self.unit, self.base) = (Unit::Char, None);
+            }
+        }
     }
 
     fn moved(&mut self, position: gpui::Point<Pixels>) {
         match self.press {
-            Press::Selecting => self.focus = self.at(position),
+            Press::Selecting => self.extend(self.at(position), position.y),
             // Blink drags the selected text: the selection stays.
             Press::Held { .. } => self.press = Press::Held { moved: true },
             Press::None => {}
@@ -397,7 +426,7 @@ impl Selection {
 
     fn up(&mut self) {
         if self.press == (Press::Held { moved: false }) {
-            (self.anchor, self.focus) = (None, None);
+            (self.anchor, self.focus, self.base) = (None, None, None);
         }
         self.press = Press::None;
     }
@@ -428,12 +457,34 @@ pub fn begin(cx: &mut App) {
     selection.quiet.clear();
     selection.loud.clear();
     selection.card = None;
+    selection.blocks.clear();
+    selection.links.clear();
 }
 
 /// `getSelection().removeAllRanges()`, and the press that drew it ends.
 pub fn unselect(cx: &mut App) {
     let selection = cx.default_global::<Selection>();
     (selection.anchor, selection.focus, selection.press) = (None, None, Press::None);
+    (selection.unit, selection.base) = (Unit::Char, None);
+}
+
+gpui::actions!(session_view, [SelectAll]);
+
+/// Mod+A: Command on macOS, Control elsewhere.
+const SELECT_ALL: &str = if cfg!(target_os = "macos") {
+    "cmd-a"
+} else {
+    "ctrl-a"
+};
+
+/// Mod+A: `selectAll` over the stream, unless an Ely text field holds the focus.
+pub fn install(cx: &mut App) {
+    let binding = gpui::KeyBinding::new(SELECT_ALL, SelectAll, Some("!ElyInput"));
+    cx.bind_keys([binding]);
+    cx.on_action(|_: &SelectAll, cx| {
+        cx.default_global::<Selection>().everything();
+        cx.refresh_windows();
+    });
 }
 
 /// A run drawn at `bounds`: recorded, and lit where the selection holds it.
@@ -606,6 +657,15 @@ pub fn loud() -> AnyElement {
     mark.absolute().inset_0().into_any_element()
 }
 
+/// A link's box; its parent is `relative`.
+pub fn link() -> AnyElement {
+    let mark = canvas(
+        |_, _, _| (),
+        |bounds, (), _, cx| cx.global_mut::<Selection>().links.push(bounds),
+    );
+    mark.absolute().inset_0().into_any_element()
+}
+
 /// A box of the handoff card being drawn; its parent is `relative`.
 pub fn card(part: Part) -> AnyElement {
     let whole = matches!(part, Part::Card);
@@ -675,7 +735,7 @@ pub fn listen(scroller: Stateful<gpui::Div>) -> Stateful<gpui::Div> {
                 return;
             }
             let selection = cx.global_mut::<Selection>();
-            selection.down(event.position);
+            selection.down(event.position, event.click_count, event.modifiers.shift);
             log::debug!(target: "session-view", "selection press: {}", selection.anchor.is_some());
             window.refresh();
         })

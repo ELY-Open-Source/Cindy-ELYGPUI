@@ -94,6 +94,7 @@ impl Global for SessionView {}
 
 pub fn install(cx: &mut App) {
     streamed::install(cx);
+    select::install(cx);
     cx.set_global(SessionView::default());
     cx.observe_global::<router::Router>(sync).detach();
     cx.observe_global::<sessions::Sessions>(sync).detach();

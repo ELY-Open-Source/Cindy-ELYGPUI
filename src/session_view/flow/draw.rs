@@ -389,7 +389,9 @@ pub fn lit(
             .child(div().relative().w_0().h_full().child(hang))
             .into_any_element()
     };
-    pre.rows.into_iter().map(row).collect()
+    let mut rows: Vec<_> = pre.rows.into_iter().map(row).collect();
+    rows.push(select::block(id, text, select::lines(text)));
+    rows
 }
 
 /// The plain text's rows at `width`: `pre-wrap` with no chip and no link.
@@ -576,13 +578,25 @@ pub fn text(islands: &[Island], look: &Look, window: &mut Window, cx: &mut App) 
             .children(parts)
     };
     let rows: Vec<_> = all.into_iter().enumerate().map(row).collect();
+    // Each line is a paragraph, its line feed and all; an `inline-flex` chip cuts it.
+    let blocks = lines.iter().enumerate().map(|(n, line)| {
+        let feed = if n + 1 < lines.len() { "\n" } else { "" };
+        let text = line.text.clone() + feed;
+        let mut cuts: Vec<usize> = (line.chips.iter())
+            .flat_map(|(at, _)| [*at, at + CHIP.len_utf8()])
+            .filter(|at| (1..text.len()).contains(at))
+            .collect();
+        cuts.dedup();
+        select::block(&format!("{}-l{n}", look.key), &text, cuts)
+    });
     // A line that wraps fills the bubble, as shrink-to-fit gives it all the room.
     let column = div()
         .flex()
         .flex_col()
         .whitespace_nowrap()
         .when(wrapped, |el| el.w(look.width))
-        .children(rows);
+        .children(rows)
+        .children(blocks);
     match &shared {
         Some(shared) => links::host(look.key, shared, column.into_any_element(), cx),
         None => column.into_any_element(),

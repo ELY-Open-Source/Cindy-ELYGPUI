@@ -4,6 +4,7 @@ use super::{Cell, Point as Place, Run, Selection, cells, picked};
 use crate::session_view::user_row::tests::{at, open_roles};
 
 mod card;
+mod clicks;
 mod other;
 mod user;
 

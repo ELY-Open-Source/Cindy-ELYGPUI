@@ -330,7 +330,8 @@ impl Walk<'_> {
             .bg(appearance.token("msg-code-block-bg"))
             .p(css(16.0))
             .pt(css(40.0))
-            .child(rows);
+            .child(rows)
+            .child(select::block(path, &text, select::lines(&text)));
         Laid::new((12.0, 12.0), Some(surface.into_any_element()))
     }
 

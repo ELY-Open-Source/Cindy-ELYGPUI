@@ -18,6 +18,7 @@ use super::{
     link_chip::{self, Act, Want},
     links::{self, Shared, Spots, Stop, What},
     markdown::text::Swap,
+    select,
 };
 use crate::{
     appearance_settings::text_size,
@@ -429,6 +430,17 @@ impl Anchors {
         )
     }
 
+    /// Whether the node mounts a menu's anchor after it: a fixed span, so a block to Blink.
+    pub fn anchored(&self, node: *const Element) -> bool {
+        match self.by.get(&node) {
+            Some(nth) => matches!(
+                self.list[*nth].face,
+                Face::External(_) | Face::Inline(_) | Face::File(..)
+            ),
+            None => self.files.contains_key(&node),
+        }
+    }
+
     /// The face of an `a` or an inline `code` that is a resolved target.
     pub fn file(&self, node: *const Element) -> Option<FileFace> {
         self.files.get(&node).copied()
@@ -517,7 +529,8 @@ impl Anchors {
                     asked: self.shared.asked().clone(),
                     spots,
                 };
-                file::listen(named(piece), first, &focus, Role::Link, &asks)
+                let piece = named(piece).child(select::link());
+                file::listen(piece, first, &focus, Role::Link, &asks)
             }
             Face::External(url) => {
                 let (what, stop) = (

@@ -544,7 +544,12 @@ defines scope and what 1:1 means.
   is a user message's bubble (words, chip labels, blank lines), the goal badge, a label that
   opens nothing and the Orca and hook cards' words (`draw::lit`); a button selects nothing. Blink's
   rules are measured under Cindy's built CSS: `.scratch/9.6k1/probe.mjs` builds
-  `MarkdownRenderer` and Tailwind's output through a copy of `sync-golden.mjs`.
+  `MarkdownRenderer` and Tailwind's output through a copy of `sync-golden.mjs`. `select/granular.rs` is the click count and Shift (`SelectionController`): a double
+  click's word over the block's text (`select::block`; `word_break::words`), a triple click's
+  paragraph (cut after a line feed, about a chip or image, after a link's menu anchor), drags and
+  Shift by that unit (a hit on an empty last line takes the character before it,
+  `PreviousPositionOf`), and Mod+A as the app action `SelectAll`, bound under `!ElyInput`: the
+  main window's root holds the key context `CindyWindow`, since a `!` predicate needs one.
 - Handoff card: `deep_link::parse_card` is `parseSessionCardHref` behind the renderer's
   `session-card/` prefix check (`new URL` is the `url` crate; golden `session-card`, from the
   renderer's private function through the hast golden's bundle); a link that parses as no card draws

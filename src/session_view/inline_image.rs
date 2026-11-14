@@ -11,6 +11,7 @@ use gpui::{
 use super::{
     chip, handoff,
     images::{self, Failed, Load, Shown},
+    select,
 };
 use crate::{
     appearance_settings::text_size,
@@ -327,10 +328,12 @@ impl Picture {
         let button = div()
             .id(ElementId::Name(self.id.clone().into()))
             .debug_selector(move || selector)
+            .relative()
             .flex_none()
             .aria_label(self.label.clone())
             .when(self.live, |el| el.cursor_pointer())
-            .tooltip(tip::tip(self.tip.clone()));
+            .tooltip(tip::tip(self.tip.clone()))
+            .child(select::still(0.0, 0.0));
         match &self.state {
             State::Loading(frame) => {
                 let frame = frame.take().expect("a frame is drawn once");

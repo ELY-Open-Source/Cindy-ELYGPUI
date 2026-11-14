@@ -497,6 +497,30 @@ impl Look<'_> {
         (row.into_any_element(), top + root.baseline, height)
     }
 
+    /// Where Blink starts a paragraph in the text: after a `br`, about an atom, after a menu's anchor.
+    fn cuts(&self, inline: &Inline) -> Vec<usize> {
+        let mut out = select::lines(&inline.text);
+        for (at, chip) in &inline.chips {
+            if matches!(chip, Chip::Link(_) | Chip::Image(_)) {
+                out.extend([*at, at + CHIP.len_utf8()]);
+            }
+        }
+        for (nth, node) in inline.links.iter().enumerate() {
+            let last = (inline.spans.iter()).rposition(|(_, mark)| mark.link == Some(nth));
+            let end = last.map(|k| inline.spans.get(k + 1).map_or(inline.text.len(), |at| at.0));
+            out.extend(end.filter(|_| self.anchors.anchored(*node)));
+        }
+        let boxes = inline
+            .files
+            .iter()
+            .filter(|held| self.anchors.anchored(held.node));
+        out.extend(boxes.map(|held| held.range.end));
+        out.retain(|at| (1..inline.text.len()).contains(at));
+        out.sort_unstable();
+        out.dedup();
+        out
+    }
+
     /// The min and max content widths in window pixels, a break allowed after every atom.
     pub fn sizes(&self, inline: &Inline, window: &Window) -> (f32, f32) {
         let (mut min, mut max, mut start) = (0.0_f32, 0.0_f32, 0);
@@ -575,6 +599,7 @@ impl Look<'_> {
                 rows.push(row);
             }
         }
+        rows.push(select::block(self.path, &inline.text, self.cuts(inline)));
         Drawn {
             rows,
             baseline: baseline.expect("a line holds a row"),

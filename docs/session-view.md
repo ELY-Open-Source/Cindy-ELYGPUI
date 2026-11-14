@@ -255,5 +255,35 @@ card's folds, and a teammate's avatar in a label (`BotAvatar`'s `select-none`). 
 is the next text's start. Each box keeps its corners' arcs (the chip's pill, the avatar's disc,
 the Orca head's 7px): past an arc Blink hits what lies under, so a press there is no button's. The time under a bubble is text in
 Cindy; it comes with the action bar (9.11).
-Not ported yet: the clicks and keys (9.6k2), copy (9.6k3, 9.6k4). A drag past the scroller's
-edge does not scroll it, where Blink scrolls.
+
+`select/granular.rs` is a press's click count and Shift, as `SelectionController` and
+`SelectionAdjuster` take them (`logs/review/9.6k2-blink-{clicks,kinds}.log`, Chromium 148's
+sources in `.scratch/9.6k2/chromium`). A block tells its whole text and where its paragraphs
+start (`select::block`, a canvas that draws nothing): an inline run its `Inline` text (a chip or
+an image is U+FFFC, as Blink's atoms are), a code block its text, a user message's line its text
+and break, an Orca or hook body (`flow::draw::lit`) its text; any other block is its runs, a gap
+a space. A block ends at its text's end: the break drawn after a bubble lights only when the
+selection goes on past it. Paragraphs start after a line feed, about any user chip
+(`InlineReferenceChip` is `inline-flex`), about a deep link's chip and an image, and after each `a` or inline `code` that mounts a menu's anchor
+(a web, anchor or local link, a resolved file), whose `position: fixed` span computes
+`display: block`; words go on across those anchors (`word_break::words` over the block's text).
+A double click selects the word (`ChooseWordSide`): the one before at the end of all the text or
+of a row a wrap ends, else the one after; before a line feed the break itself, at another block's
+end nothing. A triple click or more selects the paragraph with its break. A drag then extends by
+that unit from the first one, back over it from its far end; order is the runs' order, so a
+paragraph resumes after a chip's label. A byte that ends one row and starts the next takes the
+side of the row the pointer is on. Shift with a press extends from the anchor in the selection's
+unit, or places a caret with nothing selected, unless the press is on a link
+(`select::link`, `IsExtendingSelection`). A press on an inline image's button, its image or the
+blank beside it, keeps the selection, Shift or not (`select::still`;
+`logs/review/9.6k2-r3-blink-blank.log`). A double click on a range keeps it and its drag extends;
+a triple click selects its paragraph, Shift or not. Mod+A (`SELECT_ALL`, Command on macOS through Cindy's Edit
+menu, Control elsewhere) is an app action bound outside Ely's `ElyInput` context, so a focused
+field keeps its own: it selects from the first run to the last. A double or triple click on
+an empty last line takes the word or paragraph of the character before it (`PreviousPositionOf`,
+`logs/review/9.6k2-r3-review-blink-ends.log`). On Windows a double click also takes the spaces after
+its word, up to a line feed (`selectTrailingWhitespaceEnabled`, `SkipWhitespace`), from
+Chromium's source alone. macOS extends without a direction (`editing_behavior.h`); that is not
+ported. A resolved file's anchor is read from Cindy's source, not measured.
+Not ported yet: copy (9.6k3, 9.6k4). A drag past the scroller's edge does not scroll it, where
+Blink scrolls.

@@ -90,6 +90,7 @@ impl Render for Root {
         let wallpaper = crate::wallpaper::canvas(window, cx);
         let appearance = cx.global::<Appearance>();
         let root = div()
+            .key_context(CONTEXT)
             .track_focus(&self.focus)
             .relative()
             .size_full()
@@ -134,6 +135,9 @@ impl Render for Root {
         FocusScope::new(&self.tab_scope).size_full().child(root)
     }
 }
+
+/// The root's key context: gpui's `!` predicates need one on every focus path.
+pub const CONTEXT: &str = "CindyWindow";
 
 /// `isNormal`: gpui's windowed placement, which stays normal while minimized on Windows;
 /// macOS reports `Windowed` while maximized, so the flags must agree too.

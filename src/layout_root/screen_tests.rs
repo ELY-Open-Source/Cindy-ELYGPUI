@@ -42,6 +42,8 @@ pub(crate) fn open<'a>(
 /// The content area right of a `sidebar` wide column, as the main window lays it out.
 struct Row {
     sidebar: f32,
+    /// The main window's root focus, held while nothing else is focused.
+    focus: gpui::FocusHandle,
     content: gpui::Entity<LayoutRoot>,
 }
 
@@ -51,8 +53,10 @@ impl gpui::Render for Row {
         _: &mut gpui::Window,
         _: &mut gpui::Context<Self>,
     ) -> impl gpui::IntoElement {
-        use gpui::{ParentElement as _, Styled as _};
+        use gpui::{InteractiveElement as _, ParentElement as _, Styled as _};
         gpui::div()
+            .key_context(crate::main_window::CONTEXT)
+            .track_focus(&self.focus)
             .size_full()
             .flex()
             .child(gpui::div().flex_none().w(px(self.sidebar)))
@@ -92,10 +96,17 @@ pub(super) fn open_beside<'a>(
         store.set(layout).unwrap();
         cx.set_global(store);
     });
-    let (_, vcx) = cx.add_window_view(|_, cx| {
+    let (_, vcx) = cx.add_window_view(|window, cx| {
         use gpui::AppContext as _;
+        let focus = cx.focus_handle();
+        window.focus(&focus, cx);
+        cx.on_focus_lost(window, |row: &mut Row, window, cx| {
+            window.focus(&row.focus, cx)
+        })
+        .detach();
         Row {
             sidebar,
+            focus,
             content: cx.new(|cx| {
                 LayoutRoot::new(
                     Box::new(move |_| SidebarSeen {
